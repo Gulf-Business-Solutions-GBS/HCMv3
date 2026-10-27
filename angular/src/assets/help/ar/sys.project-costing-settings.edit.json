@@ -1,0 +1,27 @@
+{
+  "helpId": "sys.project-costing-settings.edit",
+  "lang": "ar",
+  "title": "Project costing settings",
+  "entity": "HCMv3.SystemSettings.ManageProjectCostingSettings",
+  "overviewHtml": "<p>إعدادات تكاليف المشاريع.</p><p>لكل شركة سجل إعدادات واحد، ولا يمكن حذفه.</p>",
+  "aliasIndex": {
+    "loc:CalculateNetPayProjectWise": "ManageProjectCostingSettings.CalculateNetPayProjectWise",
+    "dom:ProjectCostingSettings_CalculateNetPayProjectWise": "ManageProjectCostingSettings.CalculateNetPayProjectWise"
+  },
+  "fields": [
+    {
+      "id": "ManageProjectCostingSettings.CalculateNetPayProjectWise",
+      "label": "CalculateNetPayProjectWise",
+      "section": null,
+      "aliases": [
+        "loc:CalculateNetPayProjectWise",
+        "dom:ProjectCostingSettings_CalculateNetPayProjectWise"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان صافي الراتب يُوزَّع على مشاريع الموظف.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يوزّع محرك تكاليف المشاريع صافي الراتب على المشاريع إلى جانب أنواع الأجور. وإلا فلا تُحتسب تكلفة صافي الراتب على المشاريع.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

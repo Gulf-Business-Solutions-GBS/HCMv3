@@ -1,0 +1,59 @@
+{
+  "helpId": "pay.absence-violation-action-record.edit",
+  "lang": "en",
+  "title": "Absence Violation Action Records — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.AbsenceViolationActionRecord",
+  "overviewHtml": "<p>A record of an absence or time-event violation being escalated, open until it is closed.</p><p>Not written at present: no process creates these records, so the list stays as it is entered by hand.</p>",
+  "aliasIndex": {
+    "loc:ActionLogType": "AbsenceViolationActionRecord.ActionLogType",
+    "dom:AbsenceViolationActionRecord_ActionLogType": "AbsenceViolationActionRecord.ActionLogType",
+    "loc:LogStatus": "AbsenceViolationActionRecord.LogStatus",
+    "dom:AbsenceViolationActionRecord_LogStatus": "AbsenceViolationActionRecord.LogStatus",
+    "loc:EntityObjectId": "AbsenceViolationActionRecord.EntityObjectId",
+    "dom:AbsenceViolationActionRecord_EntityObjectId": "AbsenceViolationActionRecord.EntityObjectId"
+  },
+  "fields": [
+    {
+      "id": "AbsenceViolationActionRecord.ActionLogType",
+      "label": "ActionLogType",
+      "section": "AbsenceViolationActionRecords",
+      "aliases": [
+        "loc:ActionLogType",
+        "dom:AbsenceViolationActionRecord_ActionLogType"
+      ],
+      "rules": "Required. One of: Leave, Time Event.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the violation came from leave or from a time event.</p><p><strong>Example.</strong> Leave</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationActionRecord.LogStatus",
+      "label": "LogStatus",
+      "section": "AbsenceViolationActionRecords",
+      "aliases": [
+        "loc:LogStatus",
+        "dom:AbsenceViolationActionRecord_LogStatus"
+      ],
+      "rules": "Required. One of: Open, Closed.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the escalation is still open.</p><p><strong>Example.</strong> Open</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationActionRecord.EntityObjectId",
+      "label": "EntityObjectId",
+      "section": "AbsenceViolationActionRecords",
+      "aliases": [
+        "loc:EntityObjectId",
+        "dom:AbsenceViolationActionRecord_EntityObjectId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The leave or time event the record is about.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

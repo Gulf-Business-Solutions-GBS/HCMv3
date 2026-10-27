@@ -1,0 +1,122 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Editions' | localize" [description]="'EditionsHeaderInfo' | localize">
+        <div role="actions">
+            @if ('Pages.Editions.Create' | permission) {
+                <button class="btn btn-primary" (click)="createEdition()">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNewEdition' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeEditionMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="col primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            (onLazyLoad)="getEditions()"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [tableStyle]="{ 'min-width': '50rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="!(['Pages.Editions.Edit', 'Pages.Editions.Delete'] | permissionAny)">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th>
+                                        {{ 'EditionName' | localize }}
+                                    </th>
+                                    <th>
+                                        {{ 'Price' | localize }}
+                                    </th>
+                                    <th>
+                                        {{ 'IsTrialActive' | localize }}
+                                    </th>
+                                    <th>
+                                        {{ 'WaitingDayAfterExpire' | localize }}
+                                    </th>
+                                    <th>
+                                        {{ 'ExpiringEdition' | localize }}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px; text-align: center">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showEditionMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td>
+                                        {{ record.displayName }}
+                                    </td>
+                                    <td>
+                                        @if (record.monthlyPrice || record.annualPrice) {
+                                            <span>
+                                                {{ appSession.application.currencySign }}{{ record.monthlyPrice }}
+                                                {{ 'Monthly' | localize }}
+                                                /
+                                                {{ appSession.application.currencySign }}{{ record.annualPrice }}
+                                                {{ 'Annual' | localize }}
+                                            </span>
+                                        }
+                                        @if (!record.monthlyPrice && !record.annualPrice) {
+                                            <span>
+                                                {{ 'Free' | localize }}
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (record.trialDayCount) {
+                                            <span>
+                                                {{ 'Yes' | localize }}, {{ record.trialDayCount }}
+                                                {{ 'Days' | localize }}
+                                            </span>
+                                        }
+                                        @if (!record.trialDayCount) {
+                                            <span>
+                                                {{ 'No' | localize }}
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        {{ record.waitingDayAfterExpire }}
+                                    </td>
+                                    <td>
+                                        {{ record.expiringEditionDisplayName }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="ui-table-footer"></div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createEditionModal #createEditionModal (modalSave)="getEditions()" />
+    <editEditionModal #editEditionModal (modalSave)="getEditions()" />
+    <moveTenantsToAnotherEditionModal #moveTenantsToAnotherEditionModal />
+</div>

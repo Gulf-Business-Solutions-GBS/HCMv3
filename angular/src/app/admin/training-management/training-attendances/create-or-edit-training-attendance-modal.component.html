@@ -1,0 +1,108 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'TrainingAttendances' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'TrainingAttendances' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TrainingAttendance_TrainingScheduleId">{{ 'TrainingScheduleId' | localize }}</label>
+                                <select
+                                    id="TrainingAttendance_TrainingScheduleId"
+                                    #trainingScheduleIdInput="ngModel"
+                                    class="form-select"
+                                    name="TrainingScheduleId"
+                                    [ngModel]="record().trainingScheduleId"
+                                    (ngModelChange)="updateField('trainingScheduleId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (schedule of trainingSchedules(); track schedule.id) {
+                                        <option [ngValue]="schedule.id">{{ schedule.code }} - {{ schedule.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="trainingScheduleIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TrainingAttendance_EmployeeId">{{ 'EmployeeId' | localize }}</label>
+                                <select
+                                    id="TrainingAttendance_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    [ngModel]="record().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TrainingAttendance_DayDate">{{ 'DayDate' | localize }}</label>
+                                <input
+                                    id="TrainingAttendance_DayDate"
+                                    #dayDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="DayDate"
+                                    [ngModel]="record().dayDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('dayDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="dayDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="TrainingAttendance_Attendance">{{ 'Attendance' | localize }}</label>
+                                <select
+                                    id="TrainingAttendance_Attendance"
+                                    class="form-select"
+                                    name="Attendance"
+                                    [ngModel]="record().attendance"
+                                    (ngModelChange)="updateField('attendance', $event)">
+                                    @for (option of attendanceStatuses; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

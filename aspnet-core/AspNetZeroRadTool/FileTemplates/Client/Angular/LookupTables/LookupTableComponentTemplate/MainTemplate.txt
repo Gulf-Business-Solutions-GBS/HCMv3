@@ -1,0 +1,87 @@
+﻿import { Component, {{Injector_Component_Import_Here}} EventEmitter,Output, ViewEncapsulation, output {{View_Child_Import_Here}} } from '@angular/core';
+{{Import_Modal_Directive_Here}}
+import {{{Entity_Name_Plural_Here}}ServiceProxy, {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto } from '@shared/service-proxies/service-proxies';
+import { AppComponentBase } from '@shared/common/app-component-base';
+{{DataTable_Import_Here}}{{TurboTable_Import_Here}};
+{{PrimeNG_Imports_Here}}
+{{Import_Standalone_Imports_Here}}
+
+@Component({
+    selector: '{{master_Detail_Child_Prefix_Here}}{{entity_Name_Here}}-{{nP_Foreign_Entity_Name_Here}}-lookup-table-modal',
+    styleUrls: ['./{{master_Detail_Child_Prefix_Here}}{{entity_Name_Here}}-{{nP_Foreign_Entity_Name_Here}}-lookup-table-modal.component.less'],
+    encapsulation: ViewEncapsulation.None,
+    templateUrl: './{{master_Detail_Child_Prefix_Here}}{{entity_Name_Here}}-{{nP_Foreign_Entity_Name_Here}}-lookup-table-modal.component.html'{{Standalone_Here}},
+    {{Components_For_Standalone_Here}}
+})
+export class {{Master_Detail_Child_Pascal_Case_Prefix_Here}}{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModalComponent extends AppComponentBase {
+    {{Service_Inject_Set_Here}}
+
+    {{View_Child_Inject_Here}}
+
+    {{Output_Inject_Here}}
+
+    filterText = '';
+    id: {{NP_Id_Type_TS_Here}};
+    displayName: string;
+    
+    active = false;
+    saving = false;
+
+    constructor(
+        {{Service_Constructor_Inject_Here}}
+    ) {
+        super({{Super_Metod_Input_Here}});
+    }
+
+    show(): void {
+        this.active = true;
+        this.paginator{{Signal_Syntax_Inject_Here}}.rows = 5;
+        this.getAll();
+        this.modal{{Signal_Syntax_Inject_Here}}.show();
+    }
+
+    getAll(event?: LazyLoadEvent) {
+        if (!this.active) {
+            return;
+        }
+
+        if (this.{{TruboTable_Primenghelper_Here}}{{DataTable_Primenghelper_Here}}.shouldResetPaging(event)) {
+            this.paginator{{Signal_Syntax_Inject_Here}}.changePage(0);
+            if (this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.records &&
+                this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.records.length > 0) {
+                return;
+            }
+        }
+
+        this.{{TruboTable_Primenghelper_Here}}{{DataTable_Primenghelper_Here}}.showLoadingIndicator();
+
+        this._{{entity_Name_Plural_Here}}ServiceProxy.getAll{{NP_Foreign_Entity_Name_Here}}ForLookupTable(
+            this.filterText,
+            this.{{TruboTable_Primenghelper_Here}}{{DataTable_Primenghelper_Here}}.getSorting(this.dataTable{{Signal_Syntax_Inject_Here}}),
+            this.{{TruboTable_Primenghelper_Here}}{{DataTable_Primenghelper_Here}}.getSkipCount(this.paginator{{Signal_Syntax_Inject_Here}}, event),
+            this.{{TruboTable_Primenghelper_Here}}{{DataTable_Primenghelper_Here}}.getMaxResultCount(this.paginator{{Signal_Syntax_Inject_Here}}, event)
+        ).subscribe(result => {
+            this.{{TruboTable_Primenghelper_Here}}{{DataTable_Primenghelper_Here}}.totalRecordsCount = result.totalCount;
+            this.{{TruboTable_Primenghelper_Here}}{{DataTable_Primenghelper_Here}}.records = result.items;
+            this.{{TruboTable_Primenghelper_Here}}{{DataTable_Primenghelper_Here}}.hideLoadingIndicator();
+        });
+    }
+
+    reloadPage(): void {
+        this.paginator{{Signal_Syntax_Inject_Here}}.changePage(this.paginator{{Signal_Syntax_Inject_Here}}.getPage());
+    }
+
+    setAndSave({{nP_Foreign_Entity_Name_Here}}: {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto) {
+        this.id = {{nP_Foreign_Entity_Name_Here}}.id;
+        this.displayName = {{nP_Foreign_Entity_Name_Here}}.displayName;
+        this.active = false;
+        this.modal{{Signal_Syntax_Inject_Here}}.hide();
+        this.modalSave.emit(null);
+    }
+
+    close(): void {
+        this.active = false;
+        this.modal{{Signal_Syntax_Inject_Here}}.hide();
+        this.modalSave.emit(null);
+    }
+}

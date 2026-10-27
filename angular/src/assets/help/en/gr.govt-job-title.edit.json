@@ -1,0 +1,75 @@
+{
+  "helpId": "gr.govt-job-title.edit",
+  "lang": "en",
+  "title": "Govt Job Titles — Create / Edit",
+  "entity": "HCMv3.GovtRelationsManagement.GovtJobTitle",
+  "overviewHtml": "<p>A job title as registered with the government, which can differ from the internal job title. Used on employees' sponsor records and for sponsor job-title quotas.</p>",
+  "aliasIndex": {
+    "loc:Code": "GovtJobTitle.Code",
+    "dom:GovtJobTitle_Code": "GovtJobTitle.Code",
+    "loc:GovtJobCategory": "GovtJobTitle.GovtJobCategoryId",
+    "dom:GovtJobTitle_GovtJobCategoryId": "GovtJobTitle.GovtJobCategoryId",
+    "loc:NameEn": "GovtJobTitle.NameEn",
+    "dom:GovtJobTitle_NameEn": "GovtJobTitle.NameEn",
+    "loc:NameAr": "GovtJobTitle.NameAr",
+    "dom:GovtJobTitle_NameAr": "GovtJobTitle.NameAr"
+  },
+  "fields": [
+    {
+      "id": "GovtJobTitle.Code",
+      "label": "Code",
+      "section": "GovtJobTitles",
+      "aliases": [
+        "loc:Code",
+        "dom:GovtJobTitle_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GovtJobTitle.GovtJobCategoryId",
+      "label": "GovtJobCategory",
+      "section": "GovtJobTitles",
+      "aliases": [
+        "loc:GovtJobCategory",
+        "dom:GovtJobTitle_GovtJobCategoryId"
+      ],
+      "rules": "Required. Chosen from Govt Job Category master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The government job category.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GovtJobTitle.NameEn",
+      "label": "NameEn",
+      "section": "GovtJobTitles",
+      "aliases": [
+        "loc:NameEn",
+        "dom:GovtJobTitle_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GovtJobTitle.NameAr",
+      "label": "NameAr",
+      "section": "GovtJobTitles",
+      "aliases": [
+        "loc:NameAr",
+        "dom:GovtJobTitle_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

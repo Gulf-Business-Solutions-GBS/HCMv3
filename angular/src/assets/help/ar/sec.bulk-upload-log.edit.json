@@ -1,0 +1,155 @@
+{
+  "helpId": "sec.bulk-upload-log.edit",
+  "lang": "ar",
+  "title": "سجلات الرفع الجماعي — إنشاء / تحرير",
+  "entity": "HCMv3.SystemSecurity.BulkUploadLog",
+  "overviewHtml": "<p>قيود يكتبها الرفع الجماعي، مثل استيراد صور الملفات الشخصية. وتعرض شاشة الاستيراد الجماعي تقدم آخر تشغيل منها. يكتبه النظام أثناء عمله، ولا يوجد عادةً سبب لإضافة قيود أو تعديلها يدوياً.</p>",
+  "aliasIndex": {
+    "loc:Employee": "BulkUploadLog.EmployeeId",
+    "dom:BulkUploadLog_EmployeeId": "BulkUploadLog.EmployeeId",
+    "loc:LogType": "BulkUploadLog.LogType",
+    "dom:BulkUploadLog_LogType": "BulkUploadLog.LogType",
+    "loc:RunTimeStamp": "BulkUploadLog.RunTimeStamp",
+    "dom:BulkUploadLog_RunTimeStamp": "BulkUploadLog.RunTimeStamp",
+    "loc:InPeriod": "BulkUploadLog.InPeriod",
+    "dom:BulkUploadLog_InPeriod": "BulkUploadLog.InPeriod",
+    "loc:Status": "BulkUploadLog.Status",
+    "dom:BulkUploadLog_Status": "BulkUploadLog.Status",
+    "loc:NoOfEmployee": "BulkUploadLog.NoOfEmployee",
+    "dom:BulkUploadLog_NoOfEmployee": "BulkUploadLog.NoOfEmployee",
+    "loc:RecordNo": "BulkUploadLog.RecordNo",
+    "dom:BulkUploadLog_RecordNo": "BulkUploadLog.RecordNo",
+    "loc:StopFlag": "BulkUploadLog.StopFlag",
+    "dom:BulkUploadLog_StopFlag": "BulkUploadLog.StopFlag",
+    "loc:Message": "BulkUploadLog.Message",
+    "dom:BulkUploadLog_Message": "BulkUploadLog.Message"
+  },
+  "fields": [
+    {
+      "id": "BulkUploadLog.EmployeeId",
+      "label": "Employee",
+      "section": "BulkUploadLogs",
+      "aliases": [
+        "loc:Employee",
+        "dom:BulkUploadLog_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يخصه القيد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BulkUploadLog.LogType",
+      "label": "LogType",
+      "section": "BulkUploadLogs",
+      "aliases": [
+        "loc:LogType",
+        "dom:BulkUploadLog_LogType"
+      ],
+      "rules": "إلزامي. إحدى القيم: الصورة الشخصية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما الذي رُفع.</p><p><strong>مثال.</strong> صورة الملف الشخصي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BulkUploadLog.RunTimeStamp",
+      "label": "RunTimeStamp",
+      "section": "BulkUploadLogs",
+      "aliases": [
+        "loc:RunTimeStamp",
+        "dom:BulkUploadLog_RunTimeStamp"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى كُتب القيد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BulkUploadLog.InPeriod",
+      "label": "InPeriod",
+      "section": "BulkUploadLogs",
+      "aliases": [
+        "loc:InPeriod",
+        "dom:BulkUploadLog_InPeriod"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة التشغيل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BulkUploadLog.Status",
+      "label": "Status",
+      "section": "BulkUploadLogs",
+      "aliases": [
+        "loc:Status",
+        "dom:BulkUploadLog_Status"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النتيجة: 0 نجاح.</p><p><strong>مثال.</strong> <code>0</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BulkUploadLog.NoOfEmployee",
+      "label": "NoOfEmployee",
+      "section": "BulkUploadLogs",
+      "aliases": [
+        "loc:NoOfEmployee",
+        "dom:BulkUploadLog_NoOfEmployee"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد السجلات التي كان التشغيل يعالجها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BulkUploadLog.RecordNo",
+      "label": "RecordNo",
+      "section": "BulkUploadLogs",
+      "aliases": [
+        "loc:RecordNo",
+        "dom:BulkUploadLog_RecordNo"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موقع السجل في التشغيل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BulkUploadLog.StopFlag",
+      "label": "StopFlag",
+      "section": "BulkUploadLogs",
+      "aliases": [
+        "loc:StopFlag",
+        "dom:BulkUploadLog_StopFlag"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا طُلب إيقاف التشغيل.</p><p><strong>لماذا يهم.</strong> يتوقف الاستيراد الجاري عندما يجد قيداً مؤشَّراً عليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BulkUploadLog.Message",
+      "label": "Message",
+      "section": "BulkUploadLogs",
+      "aliases": [
+        "loc:Message",
+        "dom:BulkUploadLog_Message"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما الذي حدث.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.ticket-accrual-summary.edit",
+  "lang": "ar",
+  "title": "ملخصات تراكم التذاكر — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.TicketAccrualSummary",
+  "overviewHtml": "<p>لقطة شهرية لاستحقاق تذاكر الطيران للموظف.</p><p>لا تُكتب حالياً: لا توجد عملية تملأ هذه الملخصات، ولا شيء يقرؤها. فالأرصدة تُحتسب عند الحاجة إليها من سجل الوقت وسجلات الموظف.</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "TicketAccrualSummary.EmployeeId",
+    "dom:TicketAccrualSummary_EmployeeId": "TicketAccrualSummary.EmployeeId",
+    "loc:Year": "TicketAccrualSummary.Year",
+    "dom:TicketAccrualSummary_Year": "TicketAccrualSummary.Year",
+    "loc:Month": "TicketAccrualSummary.Month",
+    "dom:TicketAccrualSummary_Month": "TicketAccrualSummary.Month",
+    "loc:TicketAccrued": "TicketAccrualSummary.TicketAccrued",
+    "dom:TicketAccrualSummary_TicketAccrued": "TicketAccrualSummary.TicketAccrued",
+    "loc:TicketUsed": "TicketAccrualSummary.TicketUsed",
+    "dom:TicketAccrualSummary_TicketUsed": "TicketAccrualSummary.TicketUsed"
+  },
+  "fields": [
+    {
+      "id": "TicketAccrualSummary.EmployeeId",
+      "label": "EmployeeId",
+      "section": "TicketAccrualSummaries",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:TicketAccrualSummary_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketAccrualSummary.Year",
+      "label": "Year",
+      "section": "TicketAccrualSummaries",
+      "aliases": [
+        "loc:Year",
+        "dom:TicketAccrualSummary_Year"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سنة اللقطة.</p><p><strong>مثال.</strong> <code>2026</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketAccrualSummary.Month",
+      "label": "Month",
+      "section": "TicketAccrualSummaries",
+      "aliases": [
+        "loc:Month",
+        "dom:TicketAccrualSummary_Month"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> شهر اللقطة.</p><p><strong>مثال.</strong> <code>4</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketAccrualSummary.TicketAccrued",
+      "label": "TicketAccrued",
+      "section": "TicketAccrualSummaries",
+      "aliases": [
+        "loc:TicketAccrued",
+        "dom:TicketAccrualSummary_TicketAccrued"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التذاكر المستحقة حتى تاريخه.</p><p><strong>مثال.</strong> <code>0.33</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketAccrualSummary.TicketUsed",
+      "label": "TicketUsed",
+      "section": "TicketAccrualSummaries",
+      "aliases": [
+        "loc:TicketUsed",
+        "dom:TicketAccrualSummary_TicketUsed"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التذاكر المستخدمة حتى تاريخه.</p><p><strong>مثال.</strong> <code>0</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

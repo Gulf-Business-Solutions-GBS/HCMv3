@@ -1,0 +1,187 @@
+{
+  "helpId": "pa.employee-disciplinary.edit",
+  "lang": "ar",
+  "title": "مخالفات الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeDisciplinary",
+  "overviewHtml": "<p>مخالفة تأديبية مسجلة على الموظف.</p><p>يمكن توجيه السجلات التأديبية للاعتماد. وعندها يكون الموظف المُبلِّغ ومكان العمل إلزاميين، ويُحدَّد نوع الخصم عند الاعتماد من شرائح نوع المخالفة بحسب عدد المخالفات السابقة من النوع نفسه الواقعة ضمن فترة التكرار الخاصة به. ولا يُقتطع أي خصم في الرواتب حالياً.</p>",
+  "aliasIndex": {
+    "loc:OrganizationUnitId": "EmployeeDisciplinary.OrganizationUnitId",
+    "dom:EmployeeDisciplinary_OrganizationUnitId": "EmployeeDisciplinary.OrganizationUnitId",
+    "loc:WorkLocationId": "EmployeeDisciplinary.WorkLocationId",
+    "dom:EmployeeDisciplinary_WorkLocationId": "EmployeeDisciplinary.WorkLocationId",
+    "loc:DisciplinaryTypeId": "EmployeeDisciplinary.DisciplinaryTypeId",
+    "dom:EmployeeDisciplinary_DisciplinaryTypeId": "EmployeeDisciplinary.DisciplinaryTypeId",
+    "loc:DisciplinaryDate": "EmployeeDisciplinary.DisciplinaryDate",
+    "dom:EmployeeDisciplinary_DisciplinaryDate": "EmployeeDisciplinary.DisciplinaryDate",
+    "loc:DisciplinaryTime": "EmployeeDisciplinary.DisciplinaryTime",
+    "dom:EmployeeDisciplinary_DisciplinaryTime": "EmployeeDisciplinary.DisciplinaryTime",
+    "loc:ReportedById": "EmployeeDisciplinary.ReportedById",
+    "dom:EmployeeDisciplinary_ReportedById": "EmployeeDisciplinary.ReportedById",
+    "loc:Severity": "EmployeeDisciplinary.Severity",
+    "dom:EmployeeDisciplinary_Severity": "EmployeeDisciplinary.Severity",
+    "loc:DisciplinaryDeductionTypeId": "EmployeeDisciplinary.DisciplinaryDeductionTypeId",
+    "dom:EmployeeDisciplinary_DisciplinaryDeductionTypeId": "EmployeeDisciplinary.DisciplinaryDeductionTypeId",
+    "loc:WlSendToEmp": "EmployeeDisciplinary.WLSendToEmp",
+    "dom:EmployeeDisciplinary_WlSendToEmp": "EmployeeDisciplinary.WLSendToEmp",
+    "loc:WlRecvFromEmp": "EmployeeDisciplinary.WLRecvFromEmp",
+    "dom:EmployeeDisciplinary_WlRecvFromEmp": "EmployeeDisciplinary.WLRecvFromEmp",
+    "loc:Comments": "EmployeeDisciplinary.Comments",
+    "dom:EmployeeDisciplinary_Comments": "EmployeeDisciplinary.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDisciplinary.OrganizationUnitId",
+      "label": "OrganizationUnitId",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:OrganizationUnitId",
+        "dom:EmployeeDisciplinary_OrganizationUnitId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الوحدات التنظيمية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القسم الذي وقعت فيه المخالفة.</p><p><strong>مثال.</strong> عمليات المستودع</p><p><strong>لماذا يهم.</strong> يظهر في تقرير المخالفات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.WorkLocationId",
+      "label": "WorkLocationId",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:WorkLocationId",
+        "dom:EmployeeDisciplinary_WorkLocationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أماكن العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان العمل الذي وقعت فيه المخالفة.</p><p><strong>مثال.</strong> المستودع — الشويخ</p><p><strong>لماذا يهم.</strong> إلزامي عند توجيه السجل للاعتماد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.DisciplinaryTypeId",
+      "label": "DisciplinaryTypeId",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:DisciplinaryTypeId",
+        "dom:EmployeeDisciplinary_DisciplinaryTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع المخالفات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع المخالفة.</p><p><strong>مثال.</strong> التأخر في الحضور</p><p><strong>لماذا يهم.</strong> تحدد المخالفات السابقة من النوع نفسه ضمن فترة التكرار الخاصة به شريحةَ التصعيد المستخدمة عند الاعتماد.</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← أنواع المخالفات.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.DisciplinaryDate",
+      "label": "DisciplinaryDate",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:DisciplinaryDate",
+        "dom:EmployeeDisciplinary_DisciplinaryDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ المخالفة.</p><p><strong>مثال.</strong> 14 سبتمبر 2026</p><p><strong>لماذا يهم.</strong> تُحتسب فترة التكرار رجوعاً من هذا التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.DisciplinaryTime",
+      "label": "DisciplinaryTime",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:DisciplinaryTime",
+        "dom:EmployeeDisciplinary_DisciplinaryTime"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت المخالفة.</p><p><strong>مثال.</strong> 08:45</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب أو تقرير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.ReportedById",
+      "label": "ReportedById",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:ReportedById",
+        "dom:EmployeeDisciplinary_ReportedById"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي أبلغ عن المخالفة.</p><p><strong>مثال.</strong> خالد الرشيدي (1044)</p><p><strong>لماذا يهم.</strong> إلزامي عند توجيه السجل للاعتماد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.Severity",
+      "label": "Severity",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:Severity",
+        "dom:EmployeeDisciplinary_Severity"
+      ],
+      "rules": "إلزامي. إحدى القيم: منخفض، مرتفع.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> درجة خطورة المخالفة.</p><p><strong>مثال.</strong> منخفضة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.DisciplinaryDeductionTypeId",
+      "label": "DisciplinaryDeductionTypeId",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:DisciplinaryDeductionTypeId",
+        "dom:EmployeeDisciplinary_DisciplinaryDeductionTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع خصم المخالفات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزاء المطبَّق.</p><p><strong>مثال.</strong> خصم أجر يوم</p><p><strong>لماذا يهم.</strong> يُحدَّد من شرائح نوع المخالفة عند الاعتماد إذا وُجِّه السجل للاعتماد. ولا يُقتطع في الرواتب حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.WLSendToEmp",
+      "label": "WlSendToEmp",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:WlSendToEmp",
+        "dom:EmployeeDisciplinary_WlSendToEmp"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل أُرسل لفت النظر إلى الموظف.</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب أو تقرير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.WLRecvFromEmp",
+      "label": "WlRecvFromEmp",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:WlRecvFromEmp",
+        "dom:EmployeeDisciplinary_WlRecvFromEmp"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل استُلم لفت النظر موقَّعاً من الموظف.</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب أو تقرير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.Comments",
+      "label": "Comments",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeDisciplinary_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

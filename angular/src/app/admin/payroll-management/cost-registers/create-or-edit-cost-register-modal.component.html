@@ -1,0 +1,91 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #costRegisterForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (costRegister().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'CostRegisters' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'CostRegisters' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="CostRegister_EmployeeId">{{ 'EmployeeId' | localize }}</label>
+                                <input
+                                    id="CostRegister_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="EmployeeId"
+                                    [ngModel]="costRegister().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="CostRegister_Period">{{ 'Period' | localize }}</label>
+                                <input
+                                    id="CostRegister_Period"
+                                    #periodInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="Period"
+                                    [ngModel]="costRegister().period?.toISODate()"
+                                    (ngModelChange)="updatePeriod($event)"
+                                    required />
+                                <validation-messages [formCtrl]="periodInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="CostRegister_PayrollRunType">{{ 'PayrollRunType' | localize }}</label>
+                                <select
+                                    id="CostRegister_PayrollRunType"
+                                    class="form-select"
+                                    name="PayrollRunType"
+                                    [ngModel]="costRegister().payrollRunType"
+                                    (ngModelChange)="updateField('payrollRunType', $event)">
+                                    @for (item of payrollRunTypes; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!costRegisterForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

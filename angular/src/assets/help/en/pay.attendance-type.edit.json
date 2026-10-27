@@ -1,0 +1,139 @@
+{
+  "helpId": "pay.attendance-type.edit",
+  "lang": "en",
+  "title": "Attendance Types — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.AttendanceType",
+  "overviewHtml": "<p>A kind of attendance away from the normal routine — business trip, training, on-site duty — recorded as employee attendance. It decides whether those days count as paid time, whether they fall on weekends and holidays, and whether they earn leave.</p>",
+  "aliasIndex": {
+    "loc:Code": "AttendanceType.Code",
+    "dom:AttendanceType_Code": "AttendanceType.Code",
+    "loc:NameEn": "AttendanceType.NameEn",
+    "dom:AttendanceType_NameEn": "AttendanceType.NameEn",
+    "loc:NameAr": "AttendanceType.NameAr",
+    "dom:AttendanceType_NameAr": "AttendanceType.NameAr",
+    "loc:WageType": "AttendanceType.WageTypeId",
+    "dom:AttendanceType_WageTypeId": "AttendanceType.WageTypeId",
+    "loc:AccrualPeriod": "AttendanceType.AccrualPeriod",
+    "dom:AttendanceType_AccrualPeriod": "AttendanceType.AccrualPeriod",
+    "loc:LinkLeaveQuota": "AttendanceType.LinkLeaveQuotaId",
+    "dom:AttendanceType_LinkLeaveQuotaId": "AttendanceType.LinkLeaveQuotaId",
+    "loc:IncludePublicHoliday": "AttendanceType.IncludePublicHoliday",
+    "dom:AttendanceType_IncludePublicHoliday": "AttendanceType.IncludePublicHoliday",
+    "loc:HaveQuotaAccrual": "AttendanceType.HaveQuotaAccrual",
+    "dom:AttendanceType_HaveQuotaAccrual": "AttendanceType.HaveQuotaAccrual"
+  },
+  "fields": [
+    {
+      "id": "AttendanceType.Code",
+      "label": "Code",
+      "section": "AttendanceTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:AttendanceType_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AttendanceType.NameEn",
+      "label": "NameEn",
+      "section": "AttendanceTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:AttendanceType_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AttendanceType.NameAr",
+      "label": "NameAr",
+      "section": "AttendanceTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:AttendanceType_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AttendanceType.WageTypeId",
+      "label": "WageType",
+      "section": "AttendanceTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:AttendanceType_WageTypeId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wagetype attendance of this type is paid under.</p><p><strong>Example.</strong> Business Trip Allowance</p><p><strong>Why it matters.</strong> An employee with attendance of this type in the pay period has this wagetype calculated as attendance pay.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AttendanceType.AccrualPeriod",
+      "label": "AccrualPeriod",
+      "section": "AttendanceTypes",
+      "aliases": [
+        "loc:AccrualPeriod",
+        "dom:AttendanceType_AccrualPeriod"
+      ],
+      "rules": "Required. One of: No Accrual, Calendar Year, Fiscal Year, Work Year, Bi-Annual, Per Employment, Custom.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> An accrual period for the attendance type.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AttendanceType.LinkLeaveQuotaId",
+      "label": "LinkLeaveQuota",
+      "section": "AttendanceTypes",
+      "aliases": [
+        "loc:LinkLeaveQuota",
+        "dom:AttendanceType_LinkLeaveQuotaId"
+      ],
+      "rules": "Optional. Chosen from Leave Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The leave that days of this attendance add to.</p><p><strong>Example.</strong> Compensatory Leave</p><p><strong>Why it matters.</strong> For that leave type, the balance is the attendance days recorded on types linked to it, less what has been taken.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AttendanceType.IncludePublicHoliday",
+      "label": "IncludePublicHoliday",
+      "section": "AttendanceTypes",
+      "aliases": [
+        "loc:IncludePublicHoliday",
+        "dom:AttendanceType_IncludePublicHoliday"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether attendance on a public holiday counts.</p><p><strong>Why it matters.</strong> Ticked, the day counts as attendance and is no longer treated as a holiday in the time register. Unticked, attendance of this type on a public holiday adds no time.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AttendanceType.HaveQuotaAccrual",
+      "label": "HaveQuotaAccrual",
+      "section": "AttendanceTypes",
+      "aliases": [
+        "loc:HaveQuotaAccrual",
+        "dom:AttendanceType_HaveQuotaAccrual"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this attendance earns leave.</p><p><strong>Why it matters.</strong> Ticked, <strong>Link Leave Quota</strong> must be filled in. The leave is earned through the link itself: any attendance type with a linked leave adds to it.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

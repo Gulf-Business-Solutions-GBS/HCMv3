@@ -1,0 +1,75 @@
+{
+  "helpId": "org.organization-bank-info.edit",
+  "lang": "ar",
+  "title": "المعلومات البنكية للشركة — إنشاء / تحرير",
+  "entity": "HCMv3.OrganizationManagement.OrganizationBankInfo",
+  "overviewHtml": "<p>حساب بنكي لجزء من المنظمة. تأخذ ملفات البنك التي تتضمن حساب الشركة الحساب من هنا: يُستخدم حساب الوحدة في المستوى الأعلى، وإلا فأي حساب مُدخل. ولا يمكن ترك الوحدة التنظيمية والبنك ورقم الحساب فارغة.</p>",
+  "aliasIndex": {
+    "loc:OrgUnit": "OrganizationBankInfo.OrganizationUnitId",
+    "dom:OrganizationBankInfo_OrganizationUnitId": "OrganizationBankInfo.OrganizationUnitId",
+    "loc:Bank": "OrganizationBankInfo.BankId",
+    "dom:OrganizationBankInfo_BankId": "OrganizationBankInfo.BankId",
+    "loc:AccountNo": "OrganizationBankInfo.AccountNo",
+    "dom:OrganizationBankInfo_AccountNo": "OrganizationBankInfo.AccountNo",
+    "loc:SC_Code": "OrganizationBankInfo.SC_Code",
+    "dom:OrganizationBankInfo_SC_Code": "OrganizationBankInfo.SC_Code"
+  },
+  "fields": [
+    {
+      "id": "OrganizationBankInfo.OrganizationUnitId",
+      "label": "OrgUnit",
+      "section": "OrganizationBankInfos",
+      "aliases": [
+        "loc:OrgUnit",
+        "dom:OrganizationBankInfo_OrganizationUnitId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الوحدات التنظيمية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> جزء المنظمة الذي يملك الحساب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationBankInfo.BankId",
+      "label": "Bank",
+      "section": "OrganizationBankInfos",
+      "aliases": [
+        "loc:Bank",
+        "dom:OrganizationBankInfo_BankId"
+      ],
+      "rules": "اختياري. يُختار من قائمة البنوك.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البنك.</p><p><strong>مثال.</strong> NBK</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationBankInfo.AccountNo",
+      "label": "AccountNo",
+      "section": "OrganizationBankInfos",
+      "aliases": [
+        "loc:AccountNo",
+        "dom:OrganizationBankInfo_AccountNo"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الحساب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationBankInfo.SC_Code",
+      "label": "SC_Code",
+      "section": "OrganizationBankInfos",
+      "aliases": [
+        "loc:SC_Code",
+        "dom:OrganizationBankInfo_SC_Code"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز الفرع للحساب.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

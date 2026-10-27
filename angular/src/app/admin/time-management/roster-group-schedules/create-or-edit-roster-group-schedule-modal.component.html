@@ -1,0 +1,132 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #rosterGroupScheduleForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (rosterGroupSchedule().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'RosterGroupSchedule' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'RosterGroupSchedule' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="RosterGroupSchedule_RosterGroupId">{{ 'RosterGroup' | localize }}</label>
+                                <select
+                                    id="RosterGroupSchedule_RosterGroupId"
+                                    #rosterGroupIdInput="ngModel"
+                                    class="form-select"
+                                    name="RosterGroupId"
+                                    [ngModel]="rosterGroupSchedule().rosterGroupId"
+                                    (ngModelChange)="updateField('rosterGroupId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (rosterGroup of rosterGroups(); track rosterGroup.id) {
+                                        <option [ngValue]="rosterGroup.id">{{ rosterGroup.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="rosterGroupIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="RosterGroupSchedule_DutyPeriodId">{{ 'DutyPeriod' | localize }}</label>
+                                <select
+                                    id="RosterGroupSchedule_DutyPeriodId"
+                                    #dutyPeriodIdInput="ngModel"
+                                    class="form-select"
+                                    name="DutyPeriodId"
+                                    [ngModel]="rosterGroupSchedule().dutyPeriodId"
+                                    (ngModelChange)="updateField('dutyPeriodId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (dutyPeriod of dutyPeriods(); track dutyPeriod.id) {
+                                        <option [ngValue]="dutyPeriod.id">{{ dutyPeriod.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="dutyPeriodIdInput" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="RosterGroupSchedule_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="RosterGroupSchedule_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="rosterGroupSchedule().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="RosterGroupSchedule_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="RosterGroupSchedule_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="rosterGroupSchedule().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="RosterGroupSchedule_StartPoint">{{ 'StartPoint' | localize }}</label>
+                                <input
+                                    id="RosterGroupSchedule_StartPoint"
+                                    #startPointInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="StartPoint"
+                                    [ngModel]="rosterGroupSchedule().startPoint"
+                                    (ngModelChange)="updateField('startPoint', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startPointInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!rosterGroupScheduleForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

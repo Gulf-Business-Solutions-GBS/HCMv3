@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.employee-sub-group-health-reimburse.edit",
+  "lang": "ar",
+  "title": "استردادات المصاريف الصحية للمجموعة الفرعية للموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupHealthReimburse",
+  "overviewHtml": "<p>استحقاق الدرجة من استرداد المصاريف الصحية لكل شخص، بحسب نوع العائل — سطر للموظف وسطر لكل نوع من العائلين.</p><p>ويجمع المبلغ المستحق للموظف سطر الموظف نفسه وأسطر عائليه، حتى الحد الأقصى لعدد العائلين في الدرجة. أما الحد السنوي وسنة التأمين فيُحدَّدان في الدرجة نفسها.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeSubGroupHealthReimburse.StartDate",
+    "dom:EmployeeSubGroupHealthReimburse_StartDate": "EmployeeSubGroupHealthReimburse.StartDate",
+    "loc:EndDate": "EmployeeSubGroupHealthReimburse.EndDate",
+    "dom:EmployeeSubGroupHealthReimburse_EndDate": "EmployeeSubGroupHealthReimburse.EndDate",
+    "loc:DependantType": "EmployeeSubGroupHealthReimburse.DependantTypeId",
+    "dom:EmployeeSubGroupHealthReimburse_DependantTypeId": "EmployeeSubGroupHealthReimburse.DependantTypeId",
+    "loc:Amount": "EmployeeSubGroupHealthReimburse.Amount",
+    "dom:EmployeeSubGroupHealthReimburse_Amount": "EmployeeSubGroupHealthReimburse.Amount",
+    "loc:AgeLimit": "EmployeeSubGroupHealthReimburse.AgeLimit",
+    "dom:EmployeeSubGroupHealthReimburse_AgeLimit": "EmployeeSubGroupHealthReimburse.AgeLimit"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupHealthReimburse.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSubGroupHealthReimburses",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSubGroupHealthReimburse_StartDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupHealthReimburse.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSubGroupHealthReimburses",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSubGroupHealthReimburse_EndDate"
+      ],
+      "rules": "اختياري. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupHealthReimburse.DependantTypeId",
+      "label": "DependantType",
+      "section": "EmployeeSubGroupHealthReimburses",
+      "aliases": [
+        "loc:DependantType",
+        "dom:EmployeeSubGroupHealthReimburse_DependantTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع صفات العائل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> لمن هذا السطر: الموظف، أو نوع من العائلين.</p><p><strong>مثال.</strong> الزوج/الزوجة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupHealthReimburse.Amount",
+      "label": "Amount",
+      "section": "EmployeeSubGroupHealthReimburses",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeSubGroupHealthReimburse_Amount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ الذي يضيفه هذا الشخص إلى المبلغ المستحق.</p><p><strong>مثال.</strong> <code>150</code></p>",
+      "adminHtml": "<p>استثناء المزايا للموظف يحل محل أسطر الموظف. واستثناء العائل يحل محل المجموع المعدود حتى تلك اللحظة كله بدلاً من أن يُضاف إليه — وهذا سلوك النظام السابق وقد أُبقي عليه عمداً.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupHealthReimburse.AgeLimit",
+      "label": "AgeLimit",
+      "section": "EmployeeSubGroupHealthReimburses",
+      "aliases": [
+        "loc:AgeLimit",
+        "dom:EmployeeSubGroupHealthReimburse_AgeLimit"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> للعائل، أكبر عمر يُحتسب فيه.</p><p><strong>مثال.</strong> <code>18</code></p>",
+      "adminHtml": "<p>حد العمر 0 يعني ألا يستحق أي عائل — لا يعني \"بلا حد\". حدّد أكبر عمر يستحق.</p>",
+      "stub": false
+    }
+  ]
+}

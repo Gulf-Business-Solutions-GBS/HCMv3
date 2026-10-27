@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.employee-basic-pay-detail.edit",
+  "lang": "en",
+  "title": "Employee Basic Pay Details — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeBasicPayDetail",
+  "overviewHtml": "<p>One wagetype and amount within a basic pay record — for example basic salary, housing allowance or transport allowance. Payroll calculates each wagetype from the detail line of the basic pay in force on the pay date.</p><p>A basic pay record can hold each wagetype only once.</p>",
+  "aliasIndex": {
+    "loc:EmployeeBasicPayId": "EmployeeBasicPayDetail.EmployeeBasicPayId",
+    "dom:EmployeeBasicPayDetail_EmployeeBasicPayId": "EmployeeBasicPayDetail.EmployeeBasicPayId",
+    "loc:WageTypeId": "EmployeeBasicPayDetail.WageTypeId",
+    "dom:EmployeeBasicPayDetail_WageTypeId": "EmployeeBasicPayDetail.WageTypeId",
+    "loc:Amount": "EmployeeBasicPayDetail.Amount",
+    "dom:EmployeeBasicPayDetail_Amount": "EmployeeBasicPayDetail.Amount",
+    "loc:CurrencyId": "EmployeeBasicPayDetail.CurrencyId",
+    "dom:EmployeeBasicPayDetail_CurrencyId": "EmployeeBasicPayDetail.CurrencyId",
+    "loc:DependantUnit": "EmployeeBasicPayDetail.DependantUnit",
+    "dom:EmployeeBasicPayDetail_DependantUnit": "EmployeeBasicPayDetail.DependantUnit",
+    "loc:DependantNumber": "EmployeeBasicPayDetail.DependantNumber",
+    "dom:EmployeeBasicPayDetail_DependantNumber": "EmployeeBasicPayDetail.DependantNumber",
+    "loc:DependantWageTypeId": "EmployeeBasicPayDetail.DependantWageTypeId",
+    "dom:EmployeeBasicPayDetail_DependantWageTypeId": "EmployeeBasicPayDetail.DependantWageTypeId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeBasicPayDetail.EmployeeBasicPayId",
+      "label": "EmployeeBasicPayId",
+      "section": "EmployeeBasicPayDetails",
+      "aliases": [
+        "loc:EmployeeBasicPayId",
+        "dom:EmployeeBasicPayDetail_EmployeeBasicPayId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The basic pay record this line belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPayDetail.WageTypeId",
+      "label": "WageTypeId",
+      "section": "EmployeeBasicPayDetails",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:EmployeeBasicPayDetail_WageTypeId"
+      ],
+      "rules": "Required. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The pay element this line pays.</p><p><strong>Example.</strong> Basic Salary</p><p><strong>Why it matters.</strong> Each wagetype can appear once per basic pay record.</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Wagetypes.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPayDetail.Amount",
+      "label": "Amount",
+      "section": "EmployeeBasicPayDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeBasicPayDetail_Amount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The rate for this wagetype, per the basic pay's pay interval.</p><p><strong>Example.</strong> 850.000</p><p><strong>Why it matters.</strong> Payroll uses it as the monthly, daily or hourly rate for this wagetype, and it is carried into the cost and journal postings.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPayDetail.CurrencyId",
+      "label": "CurrencyId",
+      "section": "EmployeeBasicPayDetails",
+      "aliases": [
+        "loc:CurrencyId",
+        "dom:EmployeeBasicPayDetail_CurrencyId"
+      ],
+      "rules": "Required. Chosen from Currency master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The currency of the amount.</p><p><strong>Example.</strong> KWD</p><p><strong>Why it matters.</strong> The journal voucher export reads it to post the employee's pay in this currency.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPayDetail.DependantUnit",
+      "label": "DependantUnit",
+      "section": "EmployeeBasicPayDetails",
+      "aliases": [
+        "loc:DependantUnit",
+        "dom:EmployeeBasicPayDetail_DependantUnit"
+      ],
+      "rules": "Required. One of: None, Percentage.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this line depends on another wagetype, and how.</p><p><strong>Example.</strong> Percentage</p><p><strong>Why it matters.</strong> Used only when a dependent wagetype is chosen.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPayDetail.DependantNumber",
+      "label": "DependantNumber",
+      "section": "EmployeeBasicPayDetails",
+      "aliases": [
+        "loc:DependantNumber",
+        "dom:EmployeeBasicPayDetail_DependantNumber"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The percentage of the dependent wagetype's amount.</p><p><strong>Example.</strong> 25</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPayDetail.DependantWageTypeId",
+      "label": "DependantWageTypeId",
+      "section": "EmployeeBasicPayDetails",
+      "aliases": [
+        "loc:DependantWageTypeId",
+        "dom:EmployeeBasicPayDetail_DependantWageTypeId"
+      ],
+      "rules": "Optional. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Another wagetype this line is calculated from.</p><p><strong>Example.</strong> Basic Salary</p>",
+      "adminHtml": "<p>When this is set, payroll calculates the percentage of that wagetype's amount but stores the result in the payroll line's number, not its amount — behaviour carried over from the legacy system. The line does not currently pay the calculated percentage.</p>",
+      "stub": false
+    }
+  ]
+}

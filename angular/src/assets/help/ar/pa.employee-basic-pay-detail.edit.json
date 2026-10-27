@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.employee-basic-pay-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل الراتب الأساسي للموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeBasicPayDetail",
+  "overviewHtml": "<p>نوع أجر ومبلغه ضمن سجل الأجر الأساسي — كالراتب الأساسي أو بدل السكن أو بدل المواصلات. تحتسب الرواتب كل نوع أجر من البند التفصيلي في سجل الأجر الأساسي الساري في تاريخ الدفع.</p><p>لا يجوز أن يتكرر نوع الأجر في سجل الأجر الأساسي الواحد.</p>",
+  "aliasIndex": {
+    "loc:EmployeeBasicPayId": "EmployeeBasicPayDetail.EmployeeBasicPayId",
+    "dom:EmployeeBasicPayDetail_EmployeeBasicPayId": "EmployeeBasicPayDetail.EmployeeBasicPayId",
+    "loc:WageTypeId": "EmployeeBasicPayDetail.WageTypeId",
+    "dom:EmployeeBasicPayDetail_WageTypeId": "EmployeeBasicPayDetail.WageTypeId",
+    "loc:Amount": "EmployeeBasicPayDetail.Amount",
+    "dom:EmployeeBasicPayDetail_Amount": "EmployeeBasicPayDetail.Amount",
+    "loc:CurrencyId": "EmployeeBasicPayDetail.CurrencyId",
+    "dom:EmployeeBasicPayDetail_CurrencyId": "EmployeeBasicPayDetail.CurrencyId",
+    "loc:DependantUnit": "EmployeeBasicPayDetail.DependantUnit",
+    "dom:EmployeeBasicPayDetail_DependantUnit": "EmployeeBasicPayDetail.DependantUnit",
+    "loc:DependantNumber": "EmployeeBasicPayDetail.DependantNumber",
+    "dom:EmployeeBasicPayDetail_DependantNumber": "EmployeeBasicPayDetail.DependantNumber",
+    "loc:DependantWageTypeId": "EmployeeBasicPayDetail.DependantWageTypeId",
+    "dom:EmployeeBasicPayDetail_DependantWageTypeId": "EmployeeBasicPayDetail.DependantWageTypeId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeBasicPayDetail.EmployeeBasicPayId",
+      "label": "EmployeeBasicPayId",
+      "section": "EmployeeBasicPayDetails",
+      "aliases": [
+        "loc:EmployeeBasicPayId",
+        "dom:EmployeeBasicPayDetail_EmployeeBasicPayId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سجل الأجر الأساسي الذي ينتمي إليه هذا البند.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPayDetail.WageTypeId",
+      "label": "WageTypeId",
+      "section": "EmployeeBasicPayDetails",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:EmployeeBasicPayDetail_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر الأجر الذي يدفعه هذا البند.</p><p><strong>مثال.</strong> الراتب الأساسي</p><p><strong>لماذا يهم.</strong> لا يتكرر نوع الأجر في سجل الأجر الأساسي الواحد.</p>",
+      "adminHtml": "<p>يُدار من إدارة الرواتب ← أنواع الأجور.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPayDetail.Amount",
+      "label": "Amount",
+      "section": "EmployeeBasicPayDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeBasicPayDetail_Amount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> معدل نوع الأجر هذا، وفق دورية الأجر في سجل الأجر الأساسي.</p><p><strong>مثال.</strong> 850.000</p><p><strong>لماذا يهم.</strong> تستخدمه الرواتب معدلاً شهرياً أو يومياً أو بالساعة لنوع الأجر هذا، ويُنقل إلى قيود التكلفة والقيود المحاسبية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPayDetail.CurrencyId",
+      "label": "CurrencyId",
+      "section": "EmployeeBasicPayDetails",
+      "aliases": [
+        "loc:CurrencyId",
+        "dom:EmployeeBasicPayDetail_CurrencyId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة العملات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عملة المبلغ.</p><p><strong>مثال.</strong> KWD</p><p><strong>لماذا يهم.</strong> يقرؤها ملف القيود المحاسبية لترحيل أجر الموظف بهذه العملة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPayDetail.DependantUnit",
+      "label": "DependantUnit",
+      "section": "EmployeeBasicPayDetails",
+      "aliases": [
+        "loc:DependantUnit",
+        "dom:EmployeeBasicPayDetail_DependantUnit"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، النسبة المئوية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يعتمد هذا البند على نوع أجر آخر، وكيف.</p><p><strong>مثال.</strong> نسبة مئوية</p><p><strong>لماذا يهم.</strong> لا يُستخدم إلا عند اختيار نوع أجر معتمَد عليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPayDetail.DependantNumber",
+      "label": "DependantNumber",
+      "section": "EmployeeBasicPayDetails",
+      "aliases": [
+        "loc:DependantNumber",
+        "dom:EmployeeBasicPayDetail_DependantNumber"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النسبة المئوية من مبلغ نوع الأجر المعتمَد عليه.</p><p><strong>مثال.</strong> 25</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPayDetail.DependantWageTypeId",
+      "label": "DependantWageTypeId",
+      "section": "EmployeeBasicPayDetails",
+      "aliases": [
+        "loc:DependantWageTypeId",
+        "dom:EmployeeBasicPayDetail_DependantWageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع أجر آخر يُحتسب منه هذا البند.</p><p><strong>مثال.</strong> الراتب الأساسي</p>",
+      "adminHtml": "<p>عند تحديد هذا الحقل، تحتسب الرواتب النسبة من مبلغ نوع الأجر ذاك، لكنها تحفظ الناتج في عدد بند الرواتب لا في مبلغه — وهو سلوك منقول من النظام السابق. لذلك لا يدفع البند حالياً النسبة المحتسبة.</p>",
+      "stub": false
+    }
+  ]
+}

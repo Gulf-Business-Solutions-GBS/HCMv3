@@ -1,0 +1,75 @@
+{
+  "helpId": "gmi.nationality.edit",
+  "lang": "en",
+  "title": "Nationalities — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.Nationality",
+  "overviewHtml": "<p>The nationalities used on employee records. An employee's nationality decides which social security (PIFSS) rules apply in payroll and how they count in the workforce quota.</p>",
+  "aliasIndex": {
+    "loc:Code": "Nationality.Code",
+    "dom:Nationality_Code": "Nationality.Code",
+    "loc:NameEn": "Nationality.NameEn",
+    "dom:Nationality_NameEn": "Nationality.NameEn",
+    "loc:NameAr": "Nationality.NameAr",
+    "dom:Nationality_NameAr": "Nationality.NameAr",
+    "loc:NationalityGroup": "Nationality.NationalityGroupId",
+    "dom:Nationality_NationalityGroupId": "Nationality.NationalityGroupId"
+  },
+  "fields": [
+    {
+      "id": "Nationality.Code",
+      "label": "Code",
+      "section": "Nationalities",
+      "aliases": [
+        "loc:Code",
+        "dom:Nationality_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Nationality.NameEn",
+      "label": "NameEn",
+      "section": "Nationalities",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Nationality_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Nationality.NameAr",
+      "label": "NameAr",
+      "section": "Nationalities",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Nationality_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Nationality.NationalityGroupId",
+      "label": "NationalityGroup",
+      "section": "Nationalities",
+      "aliases": [
+        "loc:NationalityGroup",
+        "dom:Nationality_NationalityGroupId"
+      ],
+      "rules": "Optional. Chosen from Nationality Group master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The group this nationality belongs to.</p><p><strong>Why it matters.</strong> For the workforce quota under Government Relations, nationalities whose group is named Citizen count as citizens; all others count as non-citizens.</p>",
+      "adminHtml": "<p>Groups are maintained under General Master Info → Nationality Groups.</p>",
+      "stub": false
+    }
+  ]
+}

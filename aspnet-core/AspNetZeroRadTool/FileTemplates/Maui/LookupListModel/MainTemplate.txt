@@ -1,0 +1,9 @@
+﻿using Abp.AutoMapper;
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos;
+
+namespace {{Namespace_Here}}.Maui.Models.{{Namespace_Relative_Full_Here}};
+
+[AutoMapFrom(typeof({{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto))]
+public class {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupListModel : {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto
+{
+}

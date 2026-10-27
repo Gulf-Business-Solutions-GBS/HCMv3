@@ -1,0 +1,193 @@
+{
+  "helpId": "ess.loan",
+  "lang": "ar",
+  "title": "سلفي",
+  "entity": null,
+  "overviewHtml": "<p>اطلب سلفة أو قرضاً تقدّمه شركتك، واطّلع على ما لديك منها. تحدّد المبلغ والمدة وموعد بدء السداد.</p><p>والسلفة المعتمدة تُصرف لك ثم تُستقطع من راتبك تلقائياً، قسطاً بعد قسط، حتى تُسدَّد. وإن تركت العمل قبل سدادها سُوّي الرصيد من مستحقاتك النهائية.</p>",
+  "aliasIndex": {
+    "loc:LoanType": "ess.loan.loan-type",
+    "loc:LoanAmount": "ess.loan.loan-amount",
+    "loc:Instalment": "ess.loan.instalment",
+    "loc:StartDate": "ess.loan.start-date",
+    "loc:RecoveryStartDate": "ess.loan.recovery-start-date",
+    "loc:EndDate": "ess.loan.end-date",
+    "loc:Comments": "ess.common.comments",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:RequestLoan": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:Withdraw": "ess.common.withdraw"
+  },
+  "fields": [
+    {
+      "id": "ess.loan.loan-type",
+      "label": "LoanType",
+      "section": null,
+      "aliases": [
+        "loc:LoanType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيّ أنظمة السلف في شركتك تطلب: سلفة على الراتب، أو قرض سكن، أو سلفة طارئة وغيرها.</p><p><strong>مثال.</strong> سلفة على الراتب.</p><p><strong>لماذا يهمّ.</strong> يحمل النوع القواعد: أقصى مبلغ يمكن اقتراضه، والمدة المتاحة للسداد، وهل تُحتسب فائدة، وهل يجوز أن يكون لديك أكثر من سلفة في وقت واحد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.loan.loan-amount",
+      "label": "LoanAmount",
+      "section": null,
+      "aliases": [
+        "loc:LoanAmount"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ المطلوب بعملة راتبك، ويجب أن يزيد على صفر.</p><p><strong>مثال.</strong> 1,500.000</p><p><strong>لماذا يهمّ.</strong> منه تُحتسب الأقساط، وعليه يحكم من يعتمدون الطلب مقارنةً بحدّ النظام وبما تسدّده أصلاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.loan.instalment",
+      "label": "Instalment",
+      "section": null,
+      "aliases": [
+        "loc:Instalment"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما يُستقطع من راتب كل شهر حتى تُسدَّد السلفة.</p><p><strong>مثال.</strong> 125.000 شهرياً تسدّد 1,500.000 في سنة.</p><p><strong>لماذا يهمّ.</strong> هذا ما تشعر به فعلاً. فالقسط المرتفع يسدّد السلفة بسرعة ويقتطع مبلغاً كبيراً كل شهر، والمنخفض يفعل العكس ويمتدّ إلى ما بعد تواريخ قد تهمّك، كنهاية عقدك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.loan.start-date",
+      "label": "StartDate",
+      "section": null,
+      "aliases": [
+        "loc:StartDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موعد حصولك على المبلغ.</p><p><strong>مثال.</strong> 1 أغسطس 2026.</p><p><strong>لماذا يهمّ.</strong> تصرف الرواتب السلفة المعتمدة في الدورة التي تشمل هذا التاريخ، فالتاريخ الواقع في فترة سبق تنفيذها يؤجّل الصرف إلى الدورة التالية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.loan.recovery-start-date",
+      "label": "RecoveryStartDate",
+      "section": null,
+      "aliases": [
+        "loc:RecoveryStartDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موعد بدء استقطاع الأقساط من راتبك، ولا يلزم أن يكون شهر صرف السلفة نفسه.</p><p><strong>مثال.</strong> تُصرف في 1 أغسطس ويبدأ القسط الأول في سبتمبر.</p><p><strong>لماذا يهمّ.</strong> به تحصل على مهلة شهر بين استلام السلفة وبدء سدادها، لكنه يؤخّر نهاية السلفة بالقدر نفسه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.loan.end-date",
+      "label": "EndDate",
+      "section": null,
+      "aliases": [
+        "loc:EndDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موعد استحقاق القسط الأخير.</p><p><strong>لماذا يهمّ.</strong> يجب أن يتوافق المبلغ والقسط وهذا التاريخ معاً، فهي مجتمعة تبيّن كيف تُسدَّد السلفة؛ والتاريخ الذي لا يتّسع لأقساط تغطي الرصيد هو السبب المعتاد في إعادة الطلب.</p><p><strong>مثال.</strong> 31 يوليو 2027.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما تريد أن يقرأه من يعتمدون الطلب. نص حرّ واختياري.</p><p><strong>مثال.</strong> «سفري يوم 14 وعودتي يوم 28، وقد اتُّفق على البديل مع أحمد.»</p><p><strong>لماذا يهمّ.</strong> هو المكان الوحيد الذي تشرح فيه طلباً يحتاج إلى شرح، ويبقى مع الطلب دائماً: يراه المعتمدون، ويراه كل من يعود إلى الطلب لاحقاً. والطلب الذي يفاجئ أحدهم طلبٌ يعود إليك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل ما طلبته من هذه الشاشة، والأحدث أولاً، مع ما آل إليه كل طلب.</p><p><strong>مثال.</strong> ثلاثة طلبات تذاكر: واحد اعتُمد الشهر الماضي، وواحد قيد الانتظار، وواحد سحبته.</p><p><strong>لماذا يهمّ.</strong> هذه هي السجلّ. والطلب غير الموجود في هذه القائمة لم يُقدَّم أصلاً، فإن عبّأت النموذج ولم تضغط <strong>حفظ</strong> فلم يُرسل شيء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنبيه بأن الحساب الذي سجّلت الدخول به غير مرتبط بموظف، فلا يوجد من يكون الطلب عنه.</p><p><strong>مثال.</strong> مستخدم أُنشئ حديثاً، أو حساب مسؤول تُرك عمداً بلا موظف.</p><p><strong>لماذا يهمّ.</strong> لا يعمل شيء في شاشات الخدمة الذاتية قبل أن تربط الموارد البشرية الحساب بسجلّ موظفك، ولا يفعل ذلك سواها. وكثيراً ما تُترك حسابات المسؤولين غير مرتبطة عن قصد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما آل إليه الطلب. <strong>مسودة</strong> يعني أنه لم يُقدَّم، و<strong>قيد الانتظار</strong> يعني أنه لدى أحدهم، و<strong>معتمد</strong> يعني أنه أُقرّ ونُفّذ، و<strong>مرفوض</strong> يعني أنه رُفض، و<strong>مسحوب</strong> يعني أنك استرجعته بنفسك.</p><p><strong>مثال.</strong> قيد الانتظار — لدى مديرك المباشر.</p><p><strong>لماذا يهمّ.</strong> لا يغيّر شيئاً إلا الطلب المعتمد: رصيدك أو راتبك أو سجلّك. أما الطلب قيد الانتظار فلم يفعل شيئاً بعد، مهما جاء في النموذج عند تعبئته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestLoan",
+      "section": null,
+      "aliases": [
+        "loc:RequestLoan"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزرّ في أعلى الشاشة الذي يفتح النموذج. وتعبئته ثم الضغط على <strong>حفظ</strong> يقدّم الطلب، ولا يُرسل شيء قبل ذلك.</p><p><strong>مثال.</strong> <strong>طلب إجازة</strong>، <strong>طلب تذكرة</strong>، <strong>طلب سلفة</strong> — وتتبع الصياغة الشاشة.</p><p><strong>لماذا يهمّ.</strong> بعد التقديم يذهب الطلب إلى من يعتمد هذا النوع من الطلبات في شركتك، ولا يمكنك تعديله في مكانه. ولتغيير شيء فيه اسحبه وقدّم طلباً جديداً، أو استخدم <strong>التعديل</strong> في الشاشات التي توفّره.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من وصل إليه الطلب، وما فعله كل شخص به ومتى، مع أي ملاحظة تركها.</p><p><strong>مثال.</strong> قُدّم 09:12 ← اعتمده المدير المباشر 11:40 («تم ترتيب البديل») ← لدى الموارد البشرية.</p><p><strong>لماذا يهمّ.</strong> يجيب عن سؤال «لدى من الطلب الآن؟» دون سؤال أحد. وإذا بقي الطلب عند شخص أياماً فهو يخبرك بمن هو، وهو من تراجعه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "Withdraw",
+      "section": null,
+      "aliases": [
+        "loc:Withdraw"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يسترجع الطلب. ولا يظهر إلا ما دام الاسترجاع ممكناً، فإذا اعتُمد الطلب ونُفّذ اختفى الزرّ.</p><p><strong>مثال.</strong> طلبت إجازة الأسبوع القادم ثم تغيّرت خططك، فتسحب الطلب قبل أن يصل إليه مديرك.</p><p><strong>لماذا يهمّ.</strong> لا يُحذف الطلب المسحوب، بل يبقى في القائمة بحالة <strong>مسحوب</strong> ليبيّن السجلّ ما جرى. ويحرّر السحب ما كان الطلب يحجزه، كرصيد إجازة محجوز مقابله.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

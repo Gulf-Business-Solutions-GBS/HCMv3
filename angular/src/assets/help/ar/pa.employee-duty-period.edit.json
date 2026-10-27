@@ -1,0 +1,43 @@
+{
+  "helpId": "pa.employee-duty-period.edit",
+  "lang": "ar",
+  "title": "فترات دوام الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.EmployeeDutyPeriod",
+  "overviewHtml": "<p>نمط الدوام الذي يعمل به الموظف اعتباراً من تاريخ معين. عند حفظ نمط جديد يُغلق السابق في اليوم السابق لتاريخ البداية الجديد.</p><p>يُؤخذ دوام الموظف لكل يوم من الدوام البديل لذلك التاريخ بعينه إن وُجد، وإلا فمن فترة الدوام السارية. ويحدد ذلك أيام العمل في الإجازات، والوردية المتوقعة في محرك الوقت، وعدد الأيام في الرواتب.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeDutyPeriod.StartDate",
+    "dom:EmployeeDutyPeriod_StartDate": "EmployeeDutyPeriod.StartDate",
+    "loc:DutyPeriod": "EmployeeDutyPeriod.DutyPeriodId",
+    "dom:EmployeeDutyPeriod_DutyPeriodId": "EmployeeDutyPeriod.DutyPeriodId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDutyPeriod.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeDutyPeriods",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeDutyPeriod_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يبدأ سجلان للموظف نفسه في التاريخ نفسه. عند الحفظ يُغلق السجل السابق للموظف نفسه في اليوم السابق لهذا التاريخ، ويبقى أحدث سجل مفتوحاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDutyPeriod.DutyPeriodId",
+      "label": "DutyPeriod",
+      "section": "EmployeeDutyPeriods",
+      "aliases": [
+        "loc:DutyPeriod",
+        "dom:EmployeeDutyPeriod_DutyPeriodId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة فترات الدوام.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة الدوام — نمط الدوام الأسبوعي — المخصصة اعتباراً من هذا التاريخ.</p><p><strong>مثال.</strong> الأحد–الخميس 8:00–16:00</p><p><strong>لماذا يهم.</strong> يُؤخذ دوام كل يوم من نمط هذه الفترة لذلك اليوم من الأسبوع.</p>",
+      "adminHtml": "<p>تحتاج الأنماط الدوّارة إلى نقطة بداية للتدوير، وهذا النموذج لا يحددها؛ لذلك يستخدم التعيين المحفوظ هنا دائماً نمط أيام الأسبوع. وتُدار فترات الدوام من إدارة الوقت ← فترات الدوام.</p>",
+      "stub": false
+    }
+  ]
+}

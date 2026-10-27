@@ -1,0 +1,148 @@
+<div [@routerTransition]>
+    <sub-header [title]="'NotificationMasters' | localize" [description]="'SystemSecurity' | localize">
+        <div role="actions">
+            <button (click)="showSentLog()" class="btn btn-light-primary float-end ms-2">
+                <i class="fa fa-history btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">
+                    {{ 'NotificationSentHistory' | localize }}
+                </span>
+            </button>
+            @if ('Pages.SystemSecurity.NotificationMasters.Create' | permission) {
+                <button (click)="createRecord()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="form">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-xl-8 col-md-8">
+                            <div class="input-group">
+                                <input
+                                    [ngModel]="filterText()"
+                                    (ngModelChange)="filterText.set($event)"
+                                    name="filterText"
+                                    autoFocus
+                                    class="form-control"
+                                    [placeholder]="l('SearchWithThreeDot')"
+                                    type="text"
+                                    (keydown.enter)="getRecords()" />
+                                <button class="btn btn-primary" (click)="getRecords()">
+                                    <i class="flaticon-search-1" aria-label="Search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '50rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 130px">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="notificationType">
+                                        {{ 'NotificationType' | localize }}
+                                        <p-sortIcon field="notificationType" />
+                                    </th>
+                                    <th style="min-width: 160px">
+                                        {{ 'NotificationSubType' | localize }}
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="notificationConfigName">
+                                        {{ 'NotificationConfig' | localize }}
+                                        <p-sortIcon field="notificationConfigName" />
+                                    </th>
+                                    <th style="min-width: 260px">
+                                        {{ 'Criterion' | localize }}
+                                    </th>
+                                    <th style="min-width: 110px" pSortableColumn="isEnabled">
+                                        {{ 'IsEnabled' | localize }}
+                                        <p-sortIcon field="isEnabled" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 180px">
+                                        <span pTooltip="{{ record.notificationTypeName }}" class="hide-overflown">{{ record.notificationTypeName }}</span>
+                                        @if (!record.isSupportedType) {
+                                            <span class="badge badge-light-danger ms-2" [pTooltip]="'NotificationTypeNeedsReentry' | localize">
+                                                {{ 'NotificationTypeNotSupportedShort' | localize }}
+                                            </span>
+                                        }
+                                    </td>
+                                    <td style="min-width: 160px">
+                                        <span class="hide-overflown">{{ record.notificationSubTypeName || ('All' | localize) }}</span>
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        <span pTooltip="{{ record.notificationConfigName }}" class="hide-overflown">{{ record.notificationConfigName }}</span>
+                                    </td>
+                                    <td style="min-width: 260px">
+                                        <span pTooltip="{{ criterionText(record) }}" class="hide-overflown font-monospace">{{ criterionText(record) }}</span>
+                                    </td>
+                                    <td style="min-width: 110px">
+                                        <span class="badge" [ngClass]="record.isEnabled ? 'badge-success' : 'badge-secondary'">
+                                            {{ (record.isEnabled ? 'Yes' : 'No') | localize }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditNotificationMasterModal #createOrEditModal (modalSave)="reloadPage()" />
+    <notificationSentLogModal #sentLogModal />
+</div>

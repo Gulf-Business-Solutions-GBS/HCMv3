@@ -1,0 +1,171 @@
+{
+  "helpId": "tm.break-shift.edit",
+  "lang": "ar",
+  "title": "استراحات الوردية — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.BreakShift",
+  "overviewHtml": "<p>استراحة ضمن الدوام — للغداء أو الصلاة — مع وقتي بدايتها ونهايتها. والدوام الذي فيه استراحة يحتسب وقت العمل قبل الاستراحة وبعدها، لا خلالها.</p>",
+  "aliasIndex": {
+    "loc:Code": "BreakShift.Code",
+    "dom:BreakShift_Code": "BreakShift.Code",
+    "loc:NameEn": "BreakShift.NameEn",
+    "dom:BreakShift_NameEn": "BreakShift.NameEn",
+    "loc:NameAr": "BreakShift.NameAr",
+    "dom:BreakShift_NameAr": "BreakShift.NameAr",
+    "loc:StartDate": "BreakShift.StartDate",
+    "dom:BreakShift_StartDate": "BreakShift.StartDate",
+    "loc:EndDate": "BreakShift.EndDate",
+    "dom:BreakShift_EndDate": "BreakShift.EndDate",
+    "loc:StartTime": "BreakShift.StartTime",
+    "dom:BreakShift_StartTime": "BreakShift.StartTime",
+    "loc:EndTime": "BreakShift.EndTime",
+    "dom:BreakShift_EndTime": "BreakShift.EndTime",
+    "loc:IsPaid": "BreakShift.IsPaid",
+    "dom:BreakShift_IsPaid": "BreakShift.IsPaid",
+    "loc:IsBreakStartNextDay": "BreakShift.IsBreakStartNextDay",
+    "dom:BreakShift_IsBreakStartNextDay": "BreakShift.IsBreakStartNextDay",
+    "loc:IsBreakEndNextDay": "BreakShift.IsBreakEndNextDay",
+    "dom:BreakShift_IsBreakEndNextDay": "BreakShift.IsBreakEndNextDay"
+  },
+  "fields": [
+    {
+      "id": "BreakShift.Code",
+      "label": "Code",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:Code",
+        "dom:BreakShift_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.NameEn",
+      "label": "NameEn",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:NameEn",
+        "dom:BreakShift_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.NameAr",
+      "label": "NameAr",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:NameAr",
+        "dom:BreakShift_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.StartDate",
+      "label": "StartDate",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:StartDate",
+        "dom:BreakShift_StartDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.EndDate",
+      "label": "EndDate",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:EndDate",
+        "dom:BreakShift_EndDate"
+      ],
+      "rules": "اختياري. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.StartTime",
+      "label": "StartTime",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:StartTime",
+        "dom:BreakShift_StartTime"
+      ],
+      "rules": "اختياري. وقت من اليوم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت بدء الاستراحة.</p><p><strong>مثال.</strong> <code>12:00</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.EndTime",
+      "label": "EndTime",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:EndTime",
+        "dom:BreakShift_EndTime"
+      ],
+      "rules": "اختياري. وقت من اليوم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت انتهاء الاستراحة.</p><p><strong>مثال.</strong> <code>12:30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.IsPaid",
+      "label": "IsPaid",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:IsPaid",
+        "dom:BreakShift_IsPaid"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الاستراحة مدفوعة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً: تُستبعد الاستراحة من وقت العمل سواء أُشِّر عليه أم لا.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.IsBreakStartNextDay",
+      "label": "IsBreakStartNextDay",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:IsBreakStartNextDay",
+        "dom:BreakShift_IsBreakStartNextDay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> في المناوبة الليلية، ما إذا كانت الاستراحة تبدأ في اليوم التالي.</p><p><strong>مثال.</strong> مؤشَّر عليه لاستراحة الساعة 02:00 في مناوبة 22:00–06:00.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.IsBreakEndNextDay",
+      "label": "IsBreakEndNextDay",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:IsBreakEndNextDay",
+        "dom:BreakShift_IsBreakEndNextDay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الاستراحة تنتهي في اليوم التالي.</p><p><strong>لماذا يهم.</strong> أشّر عليه للاستراحة التي تتجاوز منتصف الليل. والاستراحة التي تبدأ في اليوم التالي تُعامل دائماً على أنها تنتهي فيه.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

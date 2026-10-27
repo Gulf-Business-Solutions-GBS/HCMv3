@@ -1,0 +1,75 @@
+{
+  "helpId": "perf.papeer-nominee.edit",
+  "lang": "en",
+  "title": "PA Peer Nominees — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.PAPeerNominee",
+  "overviewHtml": "<p>A peer an employee has nominated to review them in a period. A peer can be nominated once per employee and period. A peer review shows as submitted when its nomination is marked submitted.</p>",
+  "aliasIndex": {
+    "loc:PAPeriod": "PAPeerNominee.PAPeriodId",
+    "dom:PAPeerNominee_PAPeriodId": "PAPeerNominee.PAPeriodId",
+    "loc:Employee": "PAPeerNominee.EmployeeId",
+    "dom:PAPeerNominee_EmployeeId": "PAPeerNominee.EmployeeId",
+    "loc:Peer": "PAPeerNominee.PeerId",
+    "dom:PAPeerNominee_PeerId": "PAPeerNominee.PeerId",
+    "loc:Submitted": "PAPeerNominee.Submitted",
+    "dom:PAPeerNominee_Submitted": "PAPeerNominee.Submitted"
+  },
+  "fields": [
+    {
+      "id": "PAPeerNominee.PAPeriodId",
+      "label": "PAPeriod",
+      "section": "PAPeerNominees",
+      "aliases": [
+        "loc:PAPeriod",
+        "dom:PAPeerNominee_PAPeriodId"
+      ],
+      "rules": "Required. Chosen from PA Period master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraisal period.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPeerNominee.EmployeeId",
+      "label": "Employee",
+      "section": "PAPeerNominees",
+      "aliases": [
+        "loc:Employee",
+        "dom:PAPeerNominee_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee being reviewed.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPeerNominee.PeerId",
+      "label": "Peer",
+      "section": "PAPeerNominees",
+      "aliases": [
+        "loc:Peer",
+        "dom:PAPeerNominee_PeerId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The nominated peer.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPeerNominee.Submitted",
+      "label": "Submitted",
+      "section": "PAPeerNominees",
+      "aliases": [
+        "loc:Submitted",
+        "dom:PAPeerNominee_Submitted"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the peer has submitted the review.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

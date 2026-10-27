@@ -1,0 +1,91 @@
+{
+  "helpId": "gmi.clearance-request-field.edit",
+  "lang": "en",
+  "title": "Clearance Request Fields — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.ClearanceRequestField",
+  "overviewHtml": "<p>The lines of the exit clearance checklist — \"laptop returned\", \"access badge handed in\" — that departments confirm before an employee leaves.</p><p>Details on a line in the list opens that line's own page: its fields at the top, with Edit, and below them the departments (workflow roles) it is assigned to, which can be added, changed and removed there.</p>",
+  "aliasIndex": {
+    "loc:Code": "ClearanceRequestField.Code",
+    "dom:ClearanceRequestField_Code": "ClearanceRequestField.Code",
+    "loc:NameEn": "ClearanceRequestField.NameEn",
+    "dom:ClearanceRequestField_NameEn": "ClearanceRequestField.NameEn",
+    "loc:NameAr": "ClearanceRequestField.NameAr",
+    "dom:ClearanceRequestField_NameAr": "ClearanceRequestField.NameAr",
+    "loc:ClearanceRequestType": "ClearanceRequestField.ClearanceRequestTypeId",
+    "dom:ClearanceRequestField_ClearanceRequestTypeId": "ClearanceRequestField.ClearanceRequestTypeId",
+    "loc:IsActive": "ClearanceRequestField.IsActive",
+    "dom:ClearanceRequestField_IsActive": "ClearanceRequestField.IsActive"
+  },
+  "fields": [
+    {
+      "id": "ClearanceRequestField.Code",
+      "label": "Code",
+      "section": "ClearanceRequestFields",
+      "aliases": [
+        "loc:Code",
+        "dom:ClearanceRequestField_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ClearanceRequestField.NameEn",
+      "label": "NameEn",
+      "section": "ClearanceRequestFields",
+      "aliases": [
+        "loc:NameEn",
+        "dom:ClearanceRequestField_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ClearanceRequestField.NameAr",
+      "label": "NameAr",
+      "section": "ClearanceRequestFields",
+      "aliases": [
+        "loc:NameAr",
+        "dom:ClearanceRequestField_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ClearanceRequestField.ClearanceRequestTypeId",
+      "label": "ClearanceRequestType",
+      "section": "ClearanceRequestFields",
+      "aliases": [
+        "loc:ClearanceRequestType",
+        "dom:ClearanceRequestField_ClearanceRequestTypeId"
+      ],
+      "rules": "Optional. Chosen from Clearance Request Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The clearance type this line belongs to.</p><p><strong>Why it matters.</strong> A line with a type appears only on clearances of that type. A line with no type appears on every clearance.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ClearanceRequestField.IsActive",
+      "label": "IsActive",
+      "section": "ClearanceRequestFields",
+      "aliases": [
+        "loc:IsActive",
+        "dom:ClearanceRequestField_IsActive"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the line is in use.</p><p><strong>Why it matters.</strong> Only active lines are put on clearance checklists.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

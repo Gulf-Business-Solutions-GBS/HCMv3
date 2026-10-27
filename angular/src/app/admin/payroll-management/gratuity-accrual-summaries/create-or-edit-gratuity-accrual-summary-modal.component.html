@@ -1,0 +1,155 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #gratuityAccrualSummaryForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (gratuityAccrualSummary().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'GratuityAccrualSummaries' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'GratuityAccrualSummaries' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="GratuityAccrualSummary_EmployeeId">{{ 'EmployeeId' | localize }}</label>
+                                <input
+                                    id="GratuityAccrualSummary_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="EmployeeId"
+                                    [ngModel]="gratuityAccrualSummary().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="GratuityAccrualSummary_Year">{{ 'Year' | localize }}</label>
+                                <input
+                                    id="GratuityAccrualSummary_Year"
+                                    #yearInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="Year"
+                                    [ngModel]="gratuityAccrualSummary().year"
+                                    (ngModelChange)="updateField('year', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="yearInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="GratuityAccrualSummary_Month">{{ 'Month' | localize }}</label>
+                                <input
+                                    id="GratuityAccrualSummary_Month"
+                                    #monthInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="Month"
+                                    min="1"
+                                    max="12"
+                                    [ngModel]="gratuityAccrualSummary().month"
+                                    (ngModelChange)="updateField('month', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="monthInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="GratuityAccrualSummary_GratuityDaysAccrued">{{
+                                    'GratuityDaysAccrued' | localize
+                                }}</label>
+                                <input
+                                    id="GratuityAccrualSummary_GratuityDaysAccrued"
+                                    #gratuityDaysAccruedInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="GratuityDaysAccrued"
+                                    [ngModel]="gratuityAccrualSummary().gratuityDaysAccrued"
+                                    (ngModelChange)="updateField('gratuityDaysAccrued', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="gratuityDaysAccruedInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="GratuityAccrualSummary_GratuityDaysBalance">{{
+                                    'GratuityDaysBalance' | localize
+                                }}</label>
+                                <input
+                                    id="GratuityAccrualSummary_GratuityDaysBalance"
+                                    #gratuityDaysBalanceInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="GratuityDaysBalance"
+                                    [ngModel]="gratuityAccrualSummary().gratuityDaysBalance"
+                                    (ngModelChange)="updateField('gratuityDaysBalance', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="gratuityDaysBalanceInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="GratuityAccrualSummary_GratuityAmount">{{ 'GratuityAmount' | localize }}</label>
+                                <input
+                                    id="GratuityAccrualSummary_GratuityAmount"
+                                    #gratuityAmountInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="GratuityAmount"
+                                    [ngModel]="gratuityAccrualSummary().gratuityAmount"
+                                    (ngModelChange)="updateField('gratuityAmount', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="gratuityAmountInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="GratuityAccrualSummary_GratuityAmountPaid">{{
+                                    'GratuityAmountPaid' | localize
+                                }}</label>
+                                <input
+                                    id="GratuityAccrualSummary_GratuityAmountPaid"
+                                    #gratuityAmountPaidInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="GratuityAmountPaid"
+                                    [ngModel]="gratuityAccrualSummary().gratuityAmountPaid"
+                                    (ngModelChange)="updateField('gratuityAmountPaid', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="gratuityAmountPaidInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!gratuityAccrualSummaryForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

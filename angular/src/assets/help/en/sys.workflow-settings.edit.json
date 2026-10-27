@@ -1,0 +1,139 @@
+{
+  "helpId": "sys.workflow-settings.edit",
+  "lang": "en",
+  "title": "Workflow settings",
+  "entity": "HCMv3.SystemSettings.ManageWorkflowSettings",
+  "overviewHtml": "<p>Settings for approval workflow.</p><p>Only <strong>Enable Workflow Group</strong> is read at present; the others have no effect.</p><p>There is one settings record per company; it cannot be deleted.</p>",
+  "aliasIndex": {
+    "loc:EnableWorkflowGroup": "ManageWorkflowSettings.EnableWorkflowGroup",
+    "dom:WorkflowSettings_EnableWorkflowGroup": "ManageWorkflowSettings.EnableWorkflowGroup",
+    "loc:EnableOrgUnitTypeInWorkflow": "ManageWorkflowSettings.EnableOrgUnitTypeInWorkflow",
+    "dom:WorkflowSettings_EnableOrgUnitTypeInWorkflow": "ManageWorkflowSettings.EnableOrgUnitTypeInWorkflow",
+    "loc:HideLeavePayDetailsInWorkflow": "ManageWorkflowSettings.HideLeavePayDetailsInWorkflow",
+    "dom:WorkflowSettings_HideLeavePayDetailsInWorkflow": "ManageWorkflowSettings.HideLeavePayDetailsInWorkflow",
+    "loc:DynamicWorkflowSteps": "ManageWorkflowSettings.DynamicWorkflowSteps",
+    "dom:WorkflowSettings_DynamicWorkflowSteps": "ManageWorkflowSettings.DynamicWorkflowSteps",
+    "loc:SendBackToCreator": "ManageWorkflowSettings.SendBackToCreator",
+    "dom:WorkflowSettings_SendBackToCreator": "ManageWorkflowSettings.SendBackToCreator",
+    "loc:DelegateEmployeeListByOrganizationUnitTypeId": "ManageWorkflowSettings.DelegateEmployeeListByOrganizationUnitTypeId",
+    "dom:WorkflowSettings_DelegateEmployeeListByOrganizationUnitTypeId": "ManageWorkflowSettings.DelegateEmployeeListByOrganizationUnitTypeId",
+    "loc:EnableTravelCostOnWorkflowstep": "ManageWorkflowSettings.EnableTravelCostOnWorkflowstep",
+    "dom:WorkflowSettings_EnableTravelCostOnWorkflowstep": "ManageWorkflowSettings.EnableTravelCostOnWorkflowstep",
+    "loc:OvertimeRequestModificationStep": "ManageWorkflowSettings.OvertimeRequestModificationStep",
+    "dom:WorkflowSettings_OvertimeRequestModificationStep": "ManageWorkflowSettings.OvertimeRequestModificationStep"
+  },
+  "fields": [
+    {
+      "id": "ManageWorkflowSettings.EnableWorkflowGroup",
+      "label": "EnableWorkflowGroup",
+      "section": null,
+      "aliases": [
+        "loc:EnableWorkflowGroup",
+        "dom:WorkflowSettings_EnableWorkflowGroup"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether approval chains depend on the employee's workflow group.</p><p><strong>Why it matters.</strong> Ticked, the approval configuration for a request is looked up in the workflow group on the employee's current organisation assignment, falling back to the default group. Unticked, every employee gets the same approval chain for a request type.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageWorkflowSettings.EnableOrgUnitTypeInWorkflow",
+      "label": "EnableOrgUnitTypeInWorkflow",
+      "section": null,
+      "aliases": [
+        "loc:EnableOrgUnitTypeInWorkflow",
+        "dom:WorkflowSettings_EnableOrgUnitTypeInWorkflow"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether workflow uses organisation unit types.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageWorkflowSettings.HideLeavePayDetailsInWorkflow",
+      "label": "HideLeavePayDetailsInWorkflow",
+      "section": null,
+      "aliases": [
+        "loc:HideLeavePayDetailsInWorkflow",
+        "dom:WorkflowSettings_HideLeavePayDetailsInWorkflow"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether leave pay details are hidden from approvers.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageWorkflowSettings.DynamicWorkflowSteps",
+      "label": "DynamicWorkflowSteps",
+      "section": null,
+      "aliases": [
+        "loc:DynamicWorkflowSteps",
+        "dom:WorkflowSettings_DynamicWorkflowSteps"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether approval steps are built dynamically.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageWorkflowSettings.SendBackToCreator",
+      "label": "SendBackToCreator",
+      "section": null,
+      "aliases": [
+        "loc:SendBackToCreator",
+        "dom:WorkflowSettings_SendBackToCreator"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a request can be sent back to its creator.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageWorkflowSettings.DelegateEmployeeListByOrganizationUnitTypeId",
+      "label": "DelegateEmployeeListByOrganizationUnitTypeId",
+      "section": null,
+      "aliases": [
+        "loc:DelegateEmployeeListByOrganizationUnitTypeId",
+        "dom:WorkflowSettings_DelegateEmployeeListByOrganizationUnitTypeId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The organisation unit type that limits who can be delegated to.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageWorkflowSettings.EnableTravelCostOnWorkflowstep",
+      "label": "EnableTravelCostOnWorkflowstep",
+      "section": null,
+      "aliases": [
+        "loc:EnableTravelCostOnWorkflowstep",
+        "dom:WorkflowSettings_EnableTravelCostOnWorkflowstep"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether travel cost is shown on workflow steps.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageWorkflowSettings.OvertimeRequestModificationStep",
+      "label": "OvertimeRequestModificationStep",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeRequestModificationStep",
+        "dom:WorkflowSettings_OvertimeRequestModificationStep"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The workflow step at which an overtime request can be changed.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "helpId": "pay.absence-deduction-rule.edit",
+  "lang": "en",
+  "title": "Absence Deduction Rules — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.AbsenceDeductionRule",
+  "overviewHtml": "<p>A named scale for reducing sick leave pay as sick days add up within a cycle. The steps are its details; the scale is attached to a grade's sick leave entitlement.</p>",
+  "aliasIndex": {
+    "loc:Code": "AbsenceDeductionRule.Code",
+    "dom:AbsenceDeductionRule_Code": "AbsenceDeductionRule.Code",
+    "loc:RuleName": "AbsenceDeductionRule.RuleName",
+    "dom:AbsenceDeductionRule_RuleName": "AbsenceDeductionRule.RuleName"
+  },
+  "fields": [
+    {
+      "id": "AbsenceDeductionRule.Code",
+      "label": "Code",
+      "section": "AbsenceDeductionRules",
+      "aliases": [
+        "loc:Code",
+        "dom:AbsenceDeductionRule_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceDeductionRule.RuleName",
+      "label": "RuleName",
+      "section": "AbsenceDeductionRules",
+      "aliases": [
+        "loc:RuleName",
+        "dom:AbsenceDeductionRule_RuleName"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The name of the scale. It has one name only.</p><p><strong>Example.</strong> Kuwait Sick Leave Scale</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

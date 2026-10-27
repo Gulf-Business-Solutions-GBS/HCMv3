@@ -1,0 +1,59 @@
+{
+  "helpId": "rpt.domain-type.edit",
+  "lang": "ar",
+  "title": "أنواع النطاقات — إنشاء / تحرير",
+  "entity": "HCMv3.ReportManagement.DomainType",
+  "overviewHtml": "<p>مجال بيانات يُبنى عليه تقرير مصمم. جزء من مصمم التقارير المنقول من النظام القديم. لا يُقرأ حالياً: لا يوجد في HCMv3 ما يشغّل هذه التعريفات، فلا أثر للسجلات هنا.</p>",
+  "aliasIndex": {
+    "loc:Code": "DomainType.Code",
+    "dom:DomainType_Code": "DomainType.Code",
+    "loc:NameEn": "DomainType.NameEn",
+    "dom:DomainType_NameEn": "DomainType.NameEn",
+    "loc:EntityType": "DomainType.EntityType",
+    "dom:DomainType_EntityType": "DomainType.EntityType"
+  },
+  "fields": [
+    {
+      "id": "DomainType.Code",
+      "label": "Code",
+      "section": "DomainTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:DomainType_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DomainType.NameEn",
+      "label": "NameEn",
+      "section": "DomainTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:DomainType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DomainType.EntityType",
+      "label": "EntityType",
+      "section": "DomainTypes",
+      "aliases": [
+        "loc:EntityType",
+        "dom:DomainType_EntityType"
+      ],
+      "rules": "اختياري. الحد الأقصى 512 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البيانات التي يشملها.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

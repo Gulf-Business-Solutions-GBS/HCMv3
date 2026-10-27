@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.social-security-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل التأمينات الاجتماعية — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.SocialSecurityDetail",
+  "overviewHtml": "<p>شريحة اشتراك واحدة: نطاق الأجر الذي تغطيه والنسب المدفوعة عليه.</p><p>ويختار أجر الموظف للتأمينات الاجتماعية (مع العلاوات) الشريحة التي يقع ضمن نطاقها. والأجر الذي يتجاوز كل الشرائح يستخدم أعلى شريحة، بعد تخفيضه إلى الحد الأقصى لتلك الشريحة.</p>",
+  "aliasIndex": {
+    "loc:SocialSecurityId": "SocialSecurityDetail.SocialSecurityId",
+    "dom:SocialSecurityDetail_SocialSecurityId": "SocialSecurityDetail.SocialSecurityId",
+    "loc:MinEarnings": "SocialSecurityDetail.MinEarnings",
+    "dom:SocialSecurityDetail_MinEarnings": "SocialSecurityDetail.MinEarnings",
+    "loc:MaxEarnings": "SocialSecurityDetail.MaxEarnings",
+    "dom:SocialSecurityDetail_MaxEarnings": "SocialSecurityDetail.MaxEarnings",
+    "loc:EmployeeContribution": "SocialSecurityDetail.EmployeeContribution",
+    "dom:SocialSecurityDetail_EmployeeContribution": "SocialSecurityDetail.EmployeeContribution",
+    "loc:EmployerContribution": "SocialSecurityDetail.EmployerContribution",
+    "dom:SocialSecurityDetail_EmployerContribution": "SocialSecurityDetail.EmployerContribution",
+    "loc:MinEarningsEmployeeContribution": "SocialSecurityDetail.MinEarningsEmployeeContribution",
+    "dom:SocialSecurityDetail_MinEarningsEmployeeContribution": "SocialSecurityDetail.MinEarningsEmployeeContribution"
+  },
+  "fields": [
+    {
+      "id": "SocialSecurityDetail.SocialSecurityId",
+      "label": "SocialSecurityId",
+      "section": "SocialSecurityDetails",
+      "aliases": [
+        "loc:SocialSecurityId",
+        "dom:SocialSecurityDetail_SocialSecurityId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة التأمينات الاجتماعية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إعداد التأمينات الاجتماعية الذي تتبعه هذه الشريحة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityDetail.MinEarnings",
+      "label": "MinEarnings",
+      "section": "SocialSecurityDetails",
+      "aliases": [
+        "loc:MinEarnings",
+        "dom:SocialSecurityDetail_MinEarnings"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أدنى أجر في هذه الشريحة.</p><p><strong>مثال.</strong> <code>1501</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityDetail.MaxEarnings",
+      "label": "MaxEarnings",
+      "section": "SocialSecurityDetails",
+      "aliases": [
+        "loc:MaxEarnings",
+        "dom:SocialSecurityDetail_MaxEarnings"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أعلى أجر في هذه الشريحة، ولا يجوز أن يقل عن الحد الأدنى.</p><p><strong>مثال.</strong> <code>2750</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityDetail.EmployeeContribution",
+      "label": "EmployeeContribution",
+      "section": "SocialSecurityDetails",
+      "aliases": [
+        "loc:EmployeeContribution",
+        "dom:SocialSecurityDetail_EmployeeContribution"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نصيب الموظف، نسبةً مئوية من أجره.</p><p><strong>مثال.</strong> <code>2.5</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityDetail.EmployerContribution",
+      "label": "EmployerContribution",
+      "section": "SocialSecurityDetails",
+      "aliases": [
+        "loc:EmployerContribution",
+        "dom:SocialSecurityDetail_EmployerContribution"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نصيب صاحب العمل، نسبةً مئوية من أجر الموظف.</p><p><strong>مثال.</strong> <code>11.5</code></p>",
+      "adminHtml": "<p>لا يُحتسب نصيب صاحب العمل إلا إذا لم يكن اشتراك الموظف في الشريحة صفراً. ففي الشريحة التي يدفع فيها صاحب العمل وحده، أعطِ اشتراك الموظف قيمة وإلا كان نصيب صاحب العمل صفراً — وهذا سلوك النظام السابق وقد أُبقي عليه عمداً.</p>",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityDetail.MinEarningsEmployeeContribution",
+      "label": "MinEarningsEmployeeContribution",
+      "section": "SocialSecurityDetails",
+      "aliases": [
+        "loc:MinEarningsEmployeeContribution",
+        "dom:SocialSecurityDetail_MinEarningsEmployeeContribution"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نسبة إضافية على الموظف تُحتسب على الأجر الذي يقل عن هذه الشريحة.</p><p><strong>مثال.</strong> <code>2.5</code></p><p><strong>لماذا يهم.</strong> تُضاف إلى نصيب الموظف بمقدار هذه النسبة من الحد الأدنى للشريحة ناقص 1.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'ManpowerPlanningPeriods' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'ManpowerPlanningPeriods' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label required" for="ManpowerPlanningPeriod_Name">{{ 'Name' | localize }}</label>
+                                <input
+                                    id="ManpowerPlanningPeriod_Name"
+                                    #nameInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="Name"
+                                    [ngModel]="record().name"
+                                    (ngModelChange)="updateField('name', $event)"
+                                    required
+                                    maxlength="256" />
+                                <validation-messages [formCtrl]="nameInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="ManpowerPlanningPeriod_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="ManpowerPlanningPeriod_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="ManpowerPlanningPeriod_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="ManpowerPlanningPeriod_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5 form-check form-switch">
+                                <input
+                                    id="ManpowerPlanningPeriod_Active"
+                                    type="checkbox"
+                                    class="form-check-input"
+                                    name="Active"
+                                    [ngModel]="record().active"
+                                    (ngModelChange)="updateField('active', $event)" />
+                                <label class="form-check-label" for="ManpowerPlanningPeriod_Active">{{ 'Active' | localize }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

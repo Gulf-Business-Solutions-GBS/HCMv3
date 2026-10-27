@@ -1,0 +1,109 @@
+{
+  "helpId": "pa.leave-planner",
+  "lang": "ar",
+  "title": "مخطط الإجازات",
+  "entity": null,
+  "overviewHtml": "<p>من يخطط للغياب ومن هو غائب فعلاً، يوماً بيوم لشهر واحد، مجمَّعين حسب الوحدة التنظيمية. ويُفتح على الشهر الحالي، والسهمان ينتقلان شهراً إلى الخلف أو إلى الأمام.</p><p>لكل وحدة سطر خاص بها يبيّن عدد موظفيها الغائبين، أو الذين يخططون للغياب، في كل يوم؛ وتحته سطر لكل موظف ملوَّن بحسب ما يقع في اليوم: <strong>مخططة - معتمدة</strong>، و<strong>مخططة - مفتوحة</strong>، و<strong>إجازة - معتمدة</strong>، و<strong>إجازة - مفتوحة</strong>. وقد يحمل اليوم أكثر من حالة واحدة، لأن الخطة الواقعة فوق إجازة معتمدة هي بالضبط ما يُراد اكتشافه. مرّر المؤشر فوق اليوم لرؤية التفاصيل. ولا يظهر سطر إلا للموظف الذي لديه شيء في الشهر، ويظهر كل موظف تحت الوحدة المُسنَد إليها اليوم، أما غير المُسنَدين إلى أي وحدة فيأتون في الآخر تحت <strong>بدون إدارة</strong>.</p><p>تأتي الخطط من شاشة <strong>طلب تخطيط الإجازة</strong> في الخدمة الذاتية ولا تحجز شيئاً، وتأتي الإجازات من سجلات إجازات الموظفين. ويُستبعد الغياب بالساعات، فهو استئذان قصير وليس أيام غياب. ولا تظهر المسودات أبداً، ولا الخطط والإجازات المرفوضة أو المسحوبة أو الملغاة.</p>",
+  "aliasIndex": {
+    "loc:Dashboard_Showing": "dash.common.showing",
+    "loc:OrganizationUnit": "pa.leave-planner.org-unit",
+    "loc:Employee": "pa.leave-planner.employee",
+    "loc:ShowActualLeaveApproved": "pa.leave-planner.leave-approved",
+    "loc:ShowActualLeaveUnapproved": "pa.leave-planner.leave-unapproved",
+    "loc:ShowLeavePlannerApproved": "pa.leave-planner.plan-approved",
+    "loc:ShowLeavePlannerUnapproved": "pa.leave-planner.plan-unapproved"
+  },
+  "fields": [
+    {
+      "id": "dash.common.showing",
+      "label": "Dashboard_Showing",
+      "section": null,
+      "aliases": [
+        "loc:Dashboard_Showing"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السطر في شريط الأدوات الذي يبيّن بيانات من بُنيت عليها اللوحة، وعدد هؤلاء الموظفين. ولا تختاره أنت: فهو يتحدد بحسب هويتك.</p><p><strong>كيف يُحدَّد.</strong> الموظفون الذين تراهم هم:</p><ul><li>جميع الموظفين، إذا كان لديك دور <strong>Admin</strong> (مسؤول النظام)؛</li><li>وإلا فالموظفون في الوحدات التنظيمية المخصصة لأدوارك في أمان مستوى السجلات، بما في ذلك كل وحدة تتبعها، <strong>مضافاً إليهم</strong> فريقك — أنت وكل من يتبعك في التسلسل الإداري، على جميع المستويات؛</li><li>ولا أحد، إذا لم ينتج عن أيٍّ مما سبق أي موظف. وعندئذٍ لا تعرض اللوحة شيئاً، ولا تعرض الجميع أبداً.</li></ul><p><strong>مثال.</strong> \"المعروض: المالية + الرواتب + فريقك (123 موظف)\" — أنت موظف موارد بشرية مسؤول عن المالية والرواتب، ولديك فريق تديره أيضاً.</p><p><strong>لماذا يهمّ.</strong> قد يفتح شخصان اللوحة نفسها فيريان أرقاماً مختلفة، وكلاهما صحيح. فكل رقم ورسم بياني وقائمة وملف تحميل في الصفحة يقتصر على هؤلاء الموظفين — ويمكن لعوامل التصفية أن تضيّق النطاق، لكنها لا توسّعه أبداً.</p>",
+      "adminHtml": "<p>يحدده <code>IDashboardScopeService</code> لكل لوحات المعلومات. ولا يُعتدّ عمداً بمفتاح تشغيل أمان مستوى السجلات في إعدادات الأمان: فمن لم يُخصَّص له شيء لا يرى شيئاً، أياً كانت حالة المفتاح. وتُطابَق قاعدة المسؤول مع اسم الدور الثابت <code>Admin</code> في الجهة.</p>",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-planner.org-unit",
+      "label": "OrganizationUnit",
+      "section": null,
+      "aliases": [
+        "loc:OrganizationUnit"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يقصر المخطط على وحدة واحدة وكل الوحدات التابعة لها. ويعرض خيار <strong>الجميع</strong> جميع من يحق لك رؤيتهم.</p><p><strong>مثال.</strong> المالية — ويظهر معها المالية / الرواتب والمالية / الحسابات.</p><p><strong>لماذا يهم.</strong> لا تعرض القائمة إلا الوحدات التي يعمل فيها موظفوك، ولذلك لا يؤدي اختيار إحداها إلى إفراغ القائمة من غيرها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-planner.employee",
+      "label": "Employee",
+      "section": null,
+      "aliases": [
+        "loc:Employee"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يقصر المخطط على الموظفين الذين يحتوي رقمهم أو اسمهم بالإنجليزية أو بالعربية على النص المكتوب. اضغط Enter لتطبيقه.</p><p><strong>مثال.</strong> <code>أحمد</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-planner.leave-approved",
+      "label": "ShowActualLeaveApproved",
+      "section": null,
+      "aliases": [
+        "loc:ShowActualLeaveApproved"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يعرض الإجازات السارية: المعتمدة، أو المسجلة دون اعتماد. ويكون مفعّلاً عند فتح المخطط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-planner.leave-unapproved",
+      "label": "ShowActualLeaveUnapproved",
+      "section": null,
+      "aliases": [
+        "loc:ShowActualLeaveUnapproved"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يعرض الإجازات التي لا تزال بانتظار المعتمد. أما الإجازات المرفوضة أو المعادة فلا تظهر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-planner.plan-approved",
+      "label": "ShowLeavePlannerApproved",
+      "section": null,
+      "aliases": [
+        "loc:ShowLeavePlannerApproved"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يعرض خطط الإجازات السارية: المعتمدة، أو المسجلة دون اعتماد. ويكون مفعّلاً عند فتح المخطط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-planner.plan-unapproved",
+      "label": "ShowLeavePlannerUnapproved",
+      "section": null,
+      "aliases": [
+        "loc:ShowLeavePlannerUnapproved"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يعرض خطط الإجازات التي لا تزال بانتظار المعتمد.</p><p><strong>لماذا يهم.</strong> مع الإجازات المعتمدة، يبيّن ما سيُطلب من المديرين الموافقة عليه بينما لا يزال هناك وقت لترتيب البدلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

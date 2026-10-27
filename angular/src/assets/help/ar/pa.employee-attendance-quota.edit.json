@@ -1,0 +1,107 @@
+{
+  "helpId": "pa.employee-attendance-quota.edit",
+  "lang": "ar",
+  "title": "حصص حضور الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAttendanceQuota",
+  "overviewHtml": "<p>استحقاق حضور للموظف خلال فترة.</p><p>يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب حالياً.</p>",
+  "aliasIndex": {
+    "loc:EntitlementFrom": "EmployeeAttendanceQuota.EntitlementFrom",
+    "dom:EmployeeAttendanceQuota_EntitlementFrom": "EmployeeAttendanceQuota.EntitlementFrom",
+    "loc:EntitlementTo": "EmployeeAttendanceQuota.EntitlementTo",
+    "dom:EmployeeAttendanceQuota_EntitlementTo": "EmployeeAttendanceQuota.EntitlementTo",
+    "loc:DeductionFrom": "EmployeeAttendanceQuota.DeductionFrom",
+    "dom:EmployeeAttendanceQuota_DeductionFrom": "EmployeeAttendanceQuota.DeductionFrom",
+    "loc:DeductionTo": "EmployeeAttendanceQuota.DeductionTo",
+    "dom:EmployeeAttendanceQuota_DeductionTo": "EmployeeAttendanceQuota.DeductionTo",
+    "loc:QuotaAccrued": "EmployeeAttendanceQuota.QuotaAccrued",
+    "dom:EmployeeAttendanceQuota_QuotaAccrued": "EmployeeAttendanceQuota.QuotaAccrued",
+    "loc:QuotaUsed": "EmployeeAttendanceQuota.QuotaUsed",
+    "dom:EmployeeAttendanceQuota_QuotaUsed": "EmployeeAttendanceQuota.QuotaUsed"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAttendanceQuota.EntitlementFrom",
+      "label": "EntitlementFrom",
+      "section": "EmployeeAttendanceQuotas",
+      "aliases": [
+        "loc:EntitlementFrom",
+        "dom:EmployeeAttendanceQuota_EntitlementFrom"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم في فترة الاستحقاق.</p><p><strong>مثال.</strong> 1 يناير 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendanceQuota.EntitlementTo",
+      "label": "EntitlementTo",
+      "section": "EmployeeAttendanceQuotas",
+      "aliases": [
+        "loc:EntitlementTo",
+        "dom:EmployeeAttendanceQuota_EntitlementTo"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم في فترة الاستحقاق.</p><p><strong>مثال.</strong> 31 ديسمبر 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendanceQuota.DeductionFrom",
+      "label": "DeductionFrom",
+      "section": "EmployeeAttendanceQuotas",
+      "aliases": [
+        "loc:DeductionFrom",
+        "dom:EmployeeAttendanceQuota_DeductionFrom"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يمكن فيه استخدام الاستحقاق.</p><p><strong>مثال.</strong> 1 يناير 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendanceQuota.DeductionTo",
+      "label": "DeductionTo",
+      "section": "EmployeeAttendanceQuotas",
+      "aliases": [
+        "loc:DeductionTo",
+        "dom:EmployeeAttendanceQuota_DeductionTo"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يمكن فيه استخدام الاستحقاق.</p><p><strong>مثال.</strong> 31 ديسمبر 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendanceQuota.QuotaAccrued",
+      "label": "QuotaAccrued",
+      "section": "EmployeeAttendanceQuotas",
+      "aliases": [
+        "loc:QuotaAccrued",
+        "dom:EmployeeAttendanceQuota_QuotaAccrued"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المقدار المكتسب في الفترة.</p><p><strong>مثال.</strong> 10</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendanceQuota.QuotaUsed",
+      "label": "QuotaUsed",
+      "section": "EmployeeAttendanceQuotas",
+      "aliases": [
+        "loc:QuotaUsed",
+        "dom:EmployeeAttendanceQuota_QuotaUsed"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المقدار المستخدم في الفترة.</p><p><strong>مثال.</strong> 4</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

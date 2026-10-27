@@ -1,0 +1,59 @@
+{
+  "helpId": "rec.onb-group-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل مجموعات التهيئة الوظيفية — إنشاء / تحرير",
+  "entity": "HCMv3.Recruitment.OnbGroupDetail",
+  "overviewHtml": "<p>مهمة واحدة في مجموعة التهيئة، اختيارياً لمسمى وظيفي معيّن.</p>",
+  "aliasIndex": {
+    "loc:OnbGroups": "OnbGroupDetail.OnbGroupId",
+    "dom:OnbGroupDetail_OnbGroupId": "OnbGroupDetail.OnbGroupId",
+    "loc:OnbTasks": "OnbGroupDetail.OnbTaskId",
+    "dom:OnbGroupDetail_OnbTaskId": "OnbGroupDetail.OnbTaskId",
+    "loc:JobTitle": "OnbGroupDetail.JobTitleId",
+    "dom:OnbGroupDetail_JobTitleId": "OnbGroupDetail.JobTitleId"
+  },
+  "fields": [
+    {
+      "id": "OnbGroupDetail.OnbGroupId",
+      "label": "OnbGroups",
+      "section": "OnbGroupDetails",
+      "aliases": [
+        "loc:OnbGroups",
+        "dom:OnbGroupDetail_OnbGroupId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة مجموعات التهيئة الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المجموعة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbGroupDetail.OnbTaskId",
+      "label": "OnbTasks",
+      "section": "OnbGroupDetails",
+      "aliases": [
+        "loc:OnbTasks",
+        "dom:OnbGroupDetail_OnbTaskId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مهام التهيئة الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المهمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbGroupDetail.JobTitleId",
+      "label": "JobTitle",
+      "section": "OnbGroupDetails",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:OnbGroupDetail_JobTitleId"
+      ],
+      "rules": "اختياري. يُختار من قائمة المسميات الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي الذي تخصه المهمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,219 @@
+{
+  "helpId": "tm.duty-period.edit",
+  "lang": "en",
+  "title": "Duty Periods — Create / Edit",
+  "entity": "HCMv3.TimeManagement.DutyPeriod",
+  "overviewHtml": "<p>A working pattern made of duties, and the holiday calendar that goes with it. Employees get a duty period directly (employee duty periods) or through their roster group.</p><p>It works one of two ways. Without a start point on the employee's assignment, each weekday takes the duty set for it here — Sunday's duty every Sunday. With a start point, the pattern is the rotation of weeks set in the duty period's <strong>details</strong>, and the weekday duties here are not used.</p><p>Rotations and roster groups apply only when the time setting <em>EnableRosterDuty</em> is on; otherwise every employee gets the weekday duties of their own duty period.</p>",
+  "aliasIndex": {
+    "loc:Code": "DutyPeriod.Code",
+    "dom:DutyPeriod_Code": "DutyPeriod.Code",
+    "loc:NameEn": "DutyPeriod.NameEn",
+    "dom:DutyPeriod_NameEn": "DutyPeriod.NameEn",
+    "loc:NameAr": "DutyPeriod.NameAr",
+    "dom:DutyPeriod_NameAr": "DutyPeriod.NameAr",
+    "loc:StartDate": "DutyPeriod.StartDate",
+    "dom:DutyPeriod_StartDate": "DutyPeriod.StartDate",
+    "loc:EndDate": "DutyPeriod.EndDate",
+    "dom:DutyPeriod_EndDate": "DutyPeriod.EndDate",
+    "loc:HolidayCalendar": "DutyPeriod.HolidayCalendarId",
+    "dom:DutyPeriod_HolidayCalendarId": "DutyPeriod.HolidayCalendarId",
+    "loc:Sunday": "DutyPeriod.SundayDutyId",
+    "dom:DutyPeriod_SundayDutyId": "DutyPeriod.SundayDutyId",
+    "loc:Monday": "DutyPeriod.MondayDutyId",
+    "dom:DutyPeriod_MondayDutyId": "DutyPeriod.MondayDutyId",
+    "loc:Tuesday": "DutyPeriod.TuesdayDutyId",
+    "dom:DutyPeriod_TuesdayDutyId": "DutyPeriod.TuesdayDutyId",
+    "loc:Wednesday": "DutyPeriod.WednesdayDutyId",
+    "dom:DutyPeriod_WednesdayDutyId": "DutyPeriod.WednesdayDutyId",
+    "loc:Thursday": "DutyPeriod.ThursdayDutyId",
+    "dom:DutyPeriod_ThursdayDutyId": "DutyPeriod.ThursdayDutyId",
+    "loc:Friday": "DutyPeriod.FridayDutyId",
+    "dom:DutyPeriod_FridayDutyId": "DutyPeriod.FridayDutyId",
+    "loc:Saturday": "DutyPeriod.SaturdayDutyId",
+    "dom:DutyPeriod_SaturdayDutyId": "DutyPeriod.SaturdayDutyId"
+  },
+  "fields": [
+    {
+      "id": "DutyPeriod.Code",
+      "label": "Code",
+      "section": "DutyPeriods",
+      "aliases": [
+        "loc:Code",
+        "dom:DutyPeriod_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriod.NameEn",
+      "label": "NameEn",
+      "section": "DutyPeriods",
+      "aliases": [
+        "loc:NameEn",
+        "dom:DutyPeriod_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriod.NameAr",
+      "label": "NameAr",
+      "section": "DutyPeriods",
+      "aliases": [
+        "loc:NameAr",
+        "dom:DutyPeriod_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriod.StartDate",
+      "label": "StartDate",
+      "section": "DutyPeriods",
+      "aliases": [
+        "loc:StartDate",
+        "dom:DutyPeriod_StartDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriod.EndDate",
+      "label": "EndDate",
+      "section": "DutyPeriods",
+      "aliases": [
+        "loc:EndDate",
+        "dom:DutyPeriod_EndDate"
+      ],
+      "rules": "Optional. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriod.HolidayCalendarId",
+      "label": "HolidayCalendar",
+      "section": "DutyPeriods",
+      "aliases": [
+        "loc:HolidayCalendar",
+        "dom:DutyPeriod_HolidayCalendarId"
+      ],
+      "rules": "Optional. Chosen from Holiday Calendar master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The public holidays that apply to employees on this duty period.</p><p><strong>Example.</strong> Kuwait Public Holidays</p><p><strong>Why it matters.</strong> A day is a public holiday for the employee only if it is in this calendar.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriod.SundayDutyId",
+      "label": "Sunday",
+      "section": "DutyPeriods",
+      "aliases": [
+        "loc:Sunday",
+        "dom:DutyPeriod_SundayDutyId"
+      ],
+      "rules": "Optional. Chosen from Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty on Sundays.</p><p><strong>Example.</strong> Morning Shift</p><p><strong>Why it matters.</strong> Left blank, the employee has no duty that day.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriod.MondayDutyId",
+      "label": "Monday",
+      "section": "DutyPeriods",
+      "aliases": [
+        "loc:Monday",
+        "dom:DutyPeriod_MondayDutyId"
+      ],
+      "rules": "Optional. Chosen from Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty on Mondays.</p><p><strong>Example.</strong> Morning Shift</p><p><strong>Why it matters.</strong> Left blank, the employee has no duty that day.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriod.TuesdayDutyId",
+      "label": "Tuesday",
+      "section": "DutyPeriods",
+      "aliases": [
+        "loc:Tuesday",
+        "dom:DutyPeriod_TuesdayDutyId"
+      ],
+      "rules": "Optional. Chosen from Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty on Tuesdays.</p><p><strong>Example.</strong> Morning Shift</p><p><strong>Why it matters.</strong> Left blank, the employee has no duty that day.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriod.WednesdayDutyId",
+      "label": "Wednesday",
+      "section": "DutyPeriods",
+      "aliases": [
+        "loc:Wednesday",
+        "dom:DutyPeriod_WednesdayDutyId"
+      ],
+      "rules": "Optional. Chosen from Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty on Wednesdays.</p><p><strong>Example.</strong> Morning Shift</p><p><strong>Why it matters.</strong> Left blank, the employee has no duty that day.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriod.ThursdayDutyId",
+      "label": "Thursday",
+      "section": "DutyPeriods",
+      "aliases": [
+        "loc:Thursday",
+        "dom:DutyPeriod_ThursdayDutyId"
+      ],
+      "rules": "Optional. Chosen from Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty on Thursdays.</p><p><strong>Example.</strong> Morning Shift</p><p><strong>Why it matters.</strong> Left blank, the employee has no duty that day.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriod.FridayDutyId",
+      "label": "Friday",
+      "section": "DutyPeriods",
+      "aliases": [
+        "loc:Friday",
+        "dom:DutyPeriod_FridayDutyId"
+      ],
+      "rules": "Optional. Chosen from Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty on Fridays.</p><p><strong>Example.</strong> Morning Shift</p><p><strong>Why it matters.</strong> Left blank, the employee has no duty that day.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriod.SaturdayDutyId",
+      "label": "Saturday",
+      "section": "DutyPeriods",
+      "aliases": [
+        "loc:Saturday",
+        "dom:DutyPeriod_SaturdayDutyId"
+      ],
+      "rules": "Optional. Chosen from Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty on Saturdays.</p><p><strong>Example.</strong> Morning Shift</p><p><strong>Why it matters.</strong> Left blank, the employee has no duty that day.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

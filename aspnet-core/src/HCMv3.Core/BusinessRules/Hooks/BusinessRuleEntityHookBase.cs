@@ -1,0 +1,205 @@
+using System;
+
+using Abp.Domain.Entities;
+using Abp.Domain.Uow;
+using Abp.Events.Bus.Entities;
+using Abp.Events.Bus.Handlers;
+using Abp.Runtime.Session;
+using Abp.Threading;
+using Castle.Core.Logging;
+using HCMv3.BusinessRules.AfterSave;
+using HCMv3.BusinessRules.Services;
+
+namespace HCMv3.BusinessRules.Hooks;
+
+/// <summary>
+/// Runs the rules armed on an entity's save events. One subclass per rule-enabled entity.
+///
+/// <para>
+/// A subclass per entity, rather than one open-generic handler, because ABP's event bus dispatches on the
+/// closed type <c>EntityCreatingEventData&lt;Employee&gt;</c> -- there is no way to subscribe to "any
+/// entity" without subscribing to literally every save in the system. That constraint turns out to be the
+/// feature: an entity is rule-enabled only when somebody has deliberately written five lines to make it so,
+/// which is the explicit opt-in the whitelist design is built around.
+/// </para>
+///
+/// <para><b>Cost when nothing is armed.</b> One cache lookup returning an empty list, then return. That is
+/// the case for every entity in the system today, so the engine's presence is not something an unrelated
+/// save can feel.</para>
+///
+/// <para><b>Why the synchronous bridge.</b> ABP triggers <c>EntityCreating</c> and <c>EntityUpdating</c>
+/// synchronously from inside <c>SaveChanges</c> -- there is no async trigger for the pre-save events -- so
+/// there is nowhere to await. <see cref="AsyncHelper.RunSync"/> is the same bridge ABP itself uses, and it
+/// is safe here because ASP.NET Core has no synchronization context to deadlock against. The rule side is
+/// kept cheap to match: the context is marked <c>SuppressDatabaseLogging</c> so nothing opens a nested
+/// transaction while the outer save is in flight.</para>
+///
+/// <para><b>Registration is explicit</b>, in <c>HCMv3CoreModule.Initialize</c>. Conventional registration
+/// binds a class to interfaces matching its name by suffix, and no sensible handler name ends in
+/// <c>EventHandler`1</c>, so a conventionally registered hook would be registered as itself, the event bus
+/// would never see it, and every rule armed on that entity would silently never fire. Registering the
+/// closed handler interfaces by hand is what makes the wiring visible.</para>
+/// </summary>
+public abstract class BusinessRuleEntityHookBase<TEntity> :
+    IEventHandler<EntityCreatingEventData<TEntity>>,
+    IEventHandler<EntityUpdatingEventData<TEntity>>,
+    IEventHandler<EntityDeletingEventData<TEntity>>
+    where TEntity : class, IEntity<int>
+{
+    protected BusinessRuleEntityHookBase(
+        IBusinessRuleRunner runner,
+        IRuleBaseObjectRegistry registry,
+        IAbpSession session,
+        IUnitOfWorkManager unitOfWorkManager,
+        IBusinessRuleAfterSaveDispatcher afterSaveDispatcher)
+    {
+        Runner = runner;
+        Registry = registry;
+        Session = session;
+        UnitOfWorkManager = unitOfWorkManager;
+
+        // Constructor-injected, not a property. A property that failed to inject would fall back to nothing and
+        // every AfterSave rule would silently never run -- the exact failure this engine keeps being fixed for.
+        AfterSaveDispatcher = afterSaveDispatcher;
+        Logger = NullLogger.Instance;
+    }
+
+    protected IBusinessRuleAfterSaveDispatcher AfterSaveDispatcher { get; }
+
+    public ILogger Logger { get; set; }
+
+    protected IBusinessRuleRunner Runner { get; }
+
+    protected IRuleBaseObjectRegistry Registry { get; }
+
+    protected IAbpSession Session { get; }
+
+    protected IUnitOfWorkManager UnitOfWorkManager { get; }
+
+    /// <summary>The base object code whose rules this hook runs. Must match a registered descriptor.</summary>
+    protected abstract string BaseObjectCode { get; }
+
+    /// <summary>
+    /// Registers the entity under the parameter names the descriptor declares. Subclasses that expose more
+    /// than one parameter -- a companion "original record", say -- override this.
+    /// </summary>
+    protected abstract void PopulateParameters(RuleExecutionContext context, TEntity entity);
+
+    public void HandleEvent(EntityCreatingEventData<TEntity> eventData)
+    {
+        RunSaveEvents(eventData.Entity);
+    }
+
+    public void HandleEvent(EntityUpdatingEventData<TEntity> eventData)
+    {
+        RunSaveEvents(eventData.Entity);
+    }
+
+    /// <summary>
+    /// ABP raises this for a soft delete as well as a hard one, before the change is written, so a refusal
+    /// here stops the delete from ever reaching the database.
+    /// </summary>
+    public void HandleEvent(EntityDeletingEventData<TEntity> eventData)
+    {
+        Run(eventData.Entity, RuleEventType.BeforeDelete);
+    }
+
+    /// <summary>
+    /// BeforeSave, then OnValidate -- in that order, deliberately. BeforeSave derives values; OnValidate
+    /// judges the record. Validating first would judge the values the user typed rather than the values
+    /// about to be saved, so a rule checking a derived total would pass a record that is then saved with a
+    /// different total. Validating second means what gets validated is exactly what gets written.
+    /// </summary>
+    private void RunSaveEvents(TEntity entity)
+    {
+        Run(entity, RuleEventType.BeforeSave);
+        Run(entity, RuleEventType.OnValidate);
+        QueueAfterSave(entity);
+    }
+
+    /// <summary>
+    /// Queued rather than run: this handler fires inside the save, and AfterSave rules need the record written
+    /// first -- an inserted leave has no id to point a follow-up record at until then. HCMv3DbContext runs the
+    /// queue straight after the save's SQL, in the same transaction. See BusinessRuleAfterSaveDispatcher.
+    /// </summary>
+    private void QueueAfterSave(TEntity entity)
+    {
+        if (entity == null || UnitOfWorkManager.Current == null)
+        {
+            return;
+        }
+
+        if (!AsyncHelper.RunSync(() => Runner.HasArmedRulesAsync(Session.TenantId, BaseObjectCode, RuleEventType.AfterSave, DateTime.Today)))
+        {
+            return;
+        }
+
+        AfterSaveDispatcher.Enqueue(
+            BaseObjectCode,
+            context => PopulateParameters(context, entity),
+            () => entity.Id);
+    }
+
+    private void Run(TEntity entity, RuleEventType eventType)
+    {
+        if (entity == null)
+        {
+            return;
+        }
+
+        // No ambient unit of work means no context to read from. A rule needs to look up the employee,
+        // the leave type and the org assignment, and the repositories it would use resolve their
+        // DbContext from the current unit of work -- with none open they hand back a context that has
+        // already been disposed, and the save dies with ObjectDisposedException from inside the engine.
+        //
+        // That is what a seeder, a background job, or a test reaching for a raw DbContext does. Skipping
+        // is deliberate rather than defensive: a save made outside a unit of work has already stepped
+        // outside ABP's conventions, and taking a leave record down because the rules engine could not
+        // reach its data is the trade this class refuses to make everywhere else too.
+        if (UnitOfWorkManager.Current == null)
+        {
+            Logger.Debug(
+                "No ambient unit of work while saving a rule-enabled entity for base object '"
+                + BaseObjectCode + "'. Rules were skipped for this save.");
+
+            return;
+        }
+
+        // Before anything else touches the database. Populating a context is not free -- the leave hook loads
+        // the employee snapshot and the leave type to build one -- and every save now asks about two events,
+        // so building it regardless would put those queries on every leave save in the system, twice, even
+        // though almost none have a rule armed. This keeps the empty case at one cache read per event.
+        if (!AsyncHelper.RunSync(() => Runner.HasArmedRulesAsync(Session.TenantId, BaseObjectCode, eventType, DateTime.Today)))
+        {
+            return;
+        }
+
+        var baseObject = Registry.Find(BaseObjectCode);
+
+        if (baseObject == null)
+        {
+            // The descriptor is gone but the hook is still wired. Loud in the log, harmless to the save --
+            // refusing to save an employee because a rule descriptor was renamed would be a poor trade.
+            Logger.Warn(
+                "A business rule hook is registered for base object '" + BaseObjectCode
+                + "', which no provider declares. No rules will run for it.");
+
+            return;
+        }
+
+        var context = new RuleExecutionContext(
+            baseObject,
+            eventType,
+            DateTime.Today,
+            Session.TenantId)
+        {
+            // See the class remarks: no nested transaction while the outer SaveChanges is in flight.
+            SuppressDatabaseLogging = true
+        };
+
+        PopulateParameters(context, entity);
+
+        // Id is 0 on an insert; passing null rather than 0 keeps "no id yet" out of the log as a real key.
+        AsyncHelper.RunSync(() => Runner.RunAsync(context, entity.Id == 0 ? null : entity.Id));
+    }
+}

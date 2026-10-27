@@ -1,0 +1,119 @@
+<div [@routerTransition]>
+    <sub-header [title]="'TravelPerDiems' | localize" [description]="'TravelManagement' | localize">
+        <div role="actions">
+            @if ('Pages.TravelManagement.TravelPerDiems.Create' | permission) {
+                <button (click)="createTravelPerDiem()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getTravelPerDiems($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '80rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.TravelManagement.TravelPerDiems.Edit',
+                                                    'Pages.TravelManagement.TravelPerDiems.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 180px">
+                                        {{ 'FromDestination' | localize }}
+                                    </th>
+                                    <th style="min-width: 180px">
+                                        {{ 'ToDestination' | localize }}
+                                    </th>
+                                    <th style="min-width: 180px">
+                                        {{ 'EmployeeGroup' | localize }}
+                                    </th>
+                                    <th style="min-width: 180px">
+                                        {{ 'EmployeeSubGroup' | localize }}
+                                    </th>
+                                    <th style="min-width: 130px" pSortableColumn="amount">
+                                        {{ 'Amount' | localize }}
+                                        <p-sortIcon field="amount" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.TravelManagement.TravelPerDiems.Edit',
+                                                    'Pages.TravelManagement.TravelPerDiems.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 180px">{{ record.fromDestinationNameEn }}</td>
+                                    <td style="min-width: 180px">{{ record.toDestinationNameEn }}</td>
+                                    <td style="min-width: 180px">{{ record.employeeGroupNameEn }}</td>
+                                    <td style="min-width: 180px">{{ record.employeeSubGroupNameEn }}</td>
+                                    <td style="min-width: 130px">{{ record.amount }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getTravelPerDiems($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditTravelPerDiemModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

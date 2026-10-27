@@ -1,0 +1,59 @@
+{
+  "helpId": "pay.absence-violation-action-record.edit",
+  "lang": "ar",
+  "title": "سجلات إجراءات مخالفات الغياب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.AbsenceViolationActionRecord",
+  "overviewHtml": "<p>سجل لتصعيد مخالفة غياب أو حدث وقت، يبقى مفتوحاً حتى يُغلق.</p><p>لا تُكتب حالياً: لا توجد عملية تنشئ هذه السجلات، فتبقى القائمة كما تُدخل يدوياً.</p>",
+  "aliasIndex": {
+    "loc:ActionLogType": "AbsenceViolationActionRecord.ActionLogType",
+    "dom:AbsenceViolationActionRecord_ActionLogType": "AbsenceViolationActionRecord.ActionLogType",
+    "loc:LogStatus": "AbsenceViolationActionRecord.LogStatus",
+    "dom:AbsenceViolationActionRecord_LogStatus": "AbsenceViolationActionRecord.LogStatus",
+    "loc:EntityObjectId": "AbsenceViolationActionRecord.EntityObjectId",
+    "dom:AbsenceViolationActionRecord_EntityObjectId": "AbsenceViolationActionRecord.EntityObjectId"
+  },
+  "fields": [
+    {
+      "id": "AbsenceViolationActionRecord.ActionLogType",
+      "label": "ActionLogType",
+      "section": "AbsenceViolationActionRecords",
+      "aliases": [
+        "loc:ActionLogType",
+        "dom:AbsenceViolationActionRecord_ActionLogType"
+      ],
+      "rules": "إلزامي. إحدى القيم: الإجازة، حدث الوقت.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت المخالفة ناشئة عن إجازة أو عن حدث وقت.</p><p><strong>مثال.</strong> إجازة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationActionRecord.LogStatus",
+      "label": "LogStatus",
+      "section": "AbsenceViolationActionRecords",
+      "aliases": [
+        "loc:LogStatus",
+        "dom:AbsenceViolationActionRecord_LogStatus"
+      ],
+      "rules": "إلزامي. إحدى القيم: مفتوح، مغلق.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان التصعيد لا يزال مفتوحاً.</p><p><strong>مثال.</strong> مفتوح</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationActionRecord.EntityObjectId",
+      "label": "EntityObjectId",
+      "section": "AbsenceViolationActionRecords",
+      "aliases": [
+        "loc:EntityObjectId",
+        "dom:AbsenceViolationActionRecord_EntityObjectId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإجازة أو حدث الوقت الذي يخصه السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

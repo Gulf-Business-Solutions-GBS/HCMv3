@@ -1,0 +1,110 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EmployeeSocialSecurityReport' | localize" [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [(employeeCode)]="employeeCode"
+                    [showDateRange]="false"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'AsOfDate' | localize }}</label>
+                        <p-datePicker
+                            [(ngModel)]="asOfDate"
+                            dateFormat="dd/mm/yy"
+                            [showIcon]="true"
+                            styleClass="w-100" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '260rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 120px" pSortableColumn="employeeCode">{{ 'Code' | localize }}</th>
+                                    <th style="min-width: 180px" pSortableColumn="employeeName">{{ 'Employee' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'EffectiveDate' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'Gender' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'MaritalStatus' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'BasicSalary' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'ContractSalary' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'EducationBranch' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'EducationLevel' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'MaritalAllowance' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'ChildAllowance' | localize }}</th>
+                                    <th style="min-width: 190px">{{ 'SpecialChildAllowance' | localize }}</th>
+                                    <th style="min-width: 170px">{{ 'EducationAllowance' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'GrossAmount' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'TotalAmount' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'Caps' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'ExtraCaps' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'CompanySharePer' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'EmployeeSharePer' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'CompanyShareAmount' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'EmployeeShareAmount' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.employeeCode }}" class="hide-overflown">{{ record.employeeCode }}</span>
+                                    </td>
+                                    <td style="min-width: 180px">{{ record.employeeName }}</td>
+                                    <td style="min-width: 140px">{{ record.effectiveDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 100px">{{ record.gender }}</td>
+                                    <td style="min-width: 140px">{{ record.maritalStatusName }}</td>
+                                    <td style="min-width: 130px">{{ record.basicSalary }}</td>
+                                    <td style="min-width: 140px">{{ record.contractSalary }}</td>
+                                    <td style="min-width: 150px">{{ record.educationBranchName }}</td>
+                                    <td style="min-width: 150px">{{ record.educationLevelName }}</td>
+                                    <td style="min-width: 150px">{{ record.maritalAllowance }}</td>
+                                    <td style="min-width: 140px">{{ record.childAllowance }}</td>
+                                    <td style="min-width: 190px">{{ record.specialChildAllowance }}</td>
+                                    <td style="min-width: 170px">{{ record.educationAllowance }}</td>
+                                    <td style="min-width: 140px">{{ record.grossAmount }}</td>
+                                    <td style="min-width: 140px">{{ record.totalAmount }}</td>
+                                    <td style="min-width: 140px">{{ record.caps }}</td>
+                                    <td style="min-width: 140px">{{ record.extraCaps }}</td>
+                                    <td style="min-width: 160px">{{ record.companySharePer }}</td>
+                                    <td style="min-width: 160px">{{ record.employeeSharePer }}</td>
+                                    <td style="min-width: 180px">{{ record.companyShareAmount }}</td>
+                                    <td style="min-width: 180px">{{ record.employeeShareAmount }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

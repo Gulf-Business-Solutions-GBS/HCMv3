@@ -1,0 +1,43 @@
+{
+  "helpId": "sv.employee-survey.edit",
+  "lang": "ar",
+  "title": "استبيانات الموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.SurveyManagement.EmployeeSurvey",
+  "overviewHtml": "<p>استجابة موظف لاستبيان. تُنشأ في أول مرة تُقدَّم فيها الإجابات في شاشة تعبئة الاستبيان، وتُحدِّث التقديمات اللاحقة الإجابات نفسها.</p>",
+  "aliasIndex": {
+    "loc:Employees": "EmployeeSurvey.EmployeeId",
+    "dom:EmployeeSurvey_EmployeeId": "EmployeeSurvey.EmployeeId",
+    "loc:Surveys": "EmployeeSurvey.SurveyId",
+    "dom:EmployeeSurvey_SurveyId": "EmployeeSurvey.SurveyId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSurvey.EmployeeId",
+      "label": "Employees",
+      "section": "EmployeeSurveys",
+      "aliases": [
+        "loc:Employees",
+        "dom:EmployeeSurvey_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف المجيب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSurvey.SurveyId",
+      "label": "Surveys",
+      "section": "EmployeeSurveys",
+      "aliases": [
+        "loc:Surveys",
+        "dom:EmployeeSurvey_SurveyId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الاستبيانات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الاستبيان.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

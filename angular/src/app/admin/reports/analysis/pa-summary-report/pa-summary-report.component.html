@@ -1,0 +1,112 @@
+<div [@routerTransition]>
+    <sub-header [title]="'PASummaryReport' | localize" [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [(fromDate)]="fromDate"
+                    [(toDate)]="toDate"
+                    [(employeeCode)]="employeeCode"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'Period' | localize }}</label>
+                        <input type="text" pInputText class="w-100" [(ngModel)]="periodName" name="periodName" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'Variant' | localize }}</label>
+                        <p-select
+                            [options]="variantOptions"
+                            [ngModel]="variant()"
+                            (ngModelChange)="variant.set($event)"
+                            name="variant"
+                            optionLabel="label"
+                            optionValue="value"
+                            styleClass="w-100" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '110rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 120px" pSortableColumn="employeeCode">{{ 'Code' | localize }}<p-sortIcon field="employeeCode" /></th>
+                                    <th style="min-width: 200px" pSortableColumn="employeeName">{{ 'Employee' | localize }}<p-sortIcon field="employeeName" /></th>
+                                    <th style="min-width: 160px">{{ 'JobTitle' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'Department' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'WorkLocation' | localize }}</th>
+                                    @if (variant() === variantEnum.OverallScore) {
+                                        <th style="min-width: 140px">{{ 'OverallScore' | localize }}</th>
+                                        <th style="min-width: 140px">{{ 'ModeratedScore' | localize }}</th>
+                                    }
+                                    @if (variant() === variantEnum.FeedbackReport) {
+                                        <th style="min-width: 220px">{{ 'AppraiseeStrength' | localize }}</th>
+                                        <th style="min-width: 220px">{{ 'AreaOfImprovement' | localize }}</th>
+                                    }
+                                    @if (variant() === variantEnum.GoalReport) {
+                                        <th style="min-width: 260px">{{ 'NewlySetGoals' | localize }}</th>
+                                    }
+                                    @if (variant() === variantEnum.OverallAssessment) {
+                                        <th style="min-width: 260px">{{ 'OverallComments' | localize }}</th>
+                                    }
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 120px"><span pTooltip="{{ record.employeeCode }}" class="hide-overflown">{{ record.employeeCode }}</span></td>
+                                    <td style="min-width: 200px">{{ record.employeeName }}</td>
+                                    <td style="min-width: 160px">{{ record.jobTitle }}</td>
+                                    <td style="min-width: 160px">{{ record.department }}</td>
+                                    <td style="min-width: 160px">{{ record.workLocation }}</td>
+                                    @if (variant() === variantEnum.OverallScore) {
+                                        <td style="min-width: 140px">{{ record.overallScore }}</td>
+                                        <td style="min-width: 140px">{{ record.moderatedScore }}</td>
+                                    }
+                                    @if (variant() === variantEnum.FeedbackReport) {
+                                        <td style="min-width: 220px">{{ record.appraiseeStrength }}</td>
+                                        <td style="min-width: 220px">{{ record.areasOfImprovement }}</td>
+                                    }
+                                    @if (variant() === variantEnum.GoalReport) {
+                                        <td style="min-width: 260px">{{ record.newlySetGoals }}</td>
+                                    }
+                                    @if (variant() === variantEnum.OverallAssessment) {
+                                        <td style="min-width: 260px">{{ record.overallComments }}</td>
+                                    }
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

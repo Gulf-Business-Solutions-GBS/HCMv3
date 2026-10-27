@@ -1,0 +1,43 @@
+{
+  "helpId": "perf.paperiod.edit",
+  "lang": "ar",
+  "title": "فترات تقييم الأداء — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.PAPeriod",
+  "overviewHtml": "<p>فترة تقييم لنموذج تقييم الأداء القديم — مثل \"السنة المالية 2026\". ولكل موظف نموذج تقييم واحد لكل فترة. ويمكن تصفية تقريري تقييم الأداء وملخص التقييم بها.</p>",
+  "aliasIndex": {
+    "loc:Name": "PAPeriod.Name",
+    "dom:PAPeriod_Name": "PAPeriod.Name",
+    "loc:Closed": "PAPeriod.Closed",
+    "dom:PAPeriod_Closed": "PAPeriod.Closed"
+  },
+  "fields": [
+    {
+      "id": "PAPeriod.Name",
+      "label": "Name",
+      "section": "PAPeriods",
+      "aliases": [
+        "loc:Name",
+        "dom:PAPeriod_Name"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم الفترة، ويجب ألا يتكرر.</p><p><strong>مثال.</strong> السنة المالية 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPeriod.Closed",
+      "label": "Closed",
+      "section": "PAPeriods",
+      "aliases": [
+        "loc:Closed",
+        "dom:PAPeriod_Closed"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الفترة مقفلة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

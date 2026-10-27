@@ -1,0 +1,331 @@
+{
+  "helpId": "pa.employee-separation.edit",
+  "lang": "ar",
+  "title": "حالات فصل الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeSeparation",
+  "overviewHtml": "<p>خروج الموظف: متى استقال أو أُنهيت خدمته، وآخر يوم له في الخدمة. ويبقى الفصل سارياً حتى يُلغى.</p><p>تتوقف الرواتب عن احتساب معظم الأجر بعد نهاية شهر آخر يوم في الخدمة، وتحتاج مسيرة نهاية الخدمة إلى فصل غير ملغى. ولا يؤدي حفظ الفصل إلى حذف سجلات الوقت اللاحقة؛ فتلك خطوة منفصلة.</p><p>ويمكن من خلال <strong>بيانات إيقاف الصرف</strong> إيقاف صرف أجر الموظف في الوقت نفسه. فحفظ الفصل مع <strong>تاريخ بداية الإيقاف</strong> واختيار إيقاف واحد على الأقل يُنشئ سجل إيقاف الصرف للموظف بأشهر كاملة: يُنقل تاريخ البداية إلى أول شهره، وتاريخ النهاية إلى آخر يوم في شهره. وإعادة الحفظ تستبدل الإيقاف الذي أنشأه هذا الفصل من قبل، وحذف الفصل يحذفه. والرواتب تقرأ سجل إيقاف الصرف لا الخيارات المؤشَّرة في هذا النموذج، ولذلك يظهر الإيقاف أيضاً، ويمكن مراجعته، ضمن حالات الإيقاف للموظف.</p><p>وإذا أُدخل للموظف إيقاف صرف لاحق — يبدأ بعد تاريخ بداية الإيقاف في هذا الفصل — فلا يمكن بعدها إضافة الفصل أو تعديله أو حذفه، وتذكر الرسالة تاريخَي ذلك الإيقاف.</p>",
+  "aliasIndex": {
+    "loc:SubmissionDate": "EmployeeSeparation.SubmissionDate",
+    "dom:EmployeeSeparation_SubmissionDate": "EmployeeSeparation.SubmissionDate",
+    "loc:LastDayInService": "EmployeeSeparation.LastDayInService",
+    "dom:EmployeeSeparation_LastDayInService": "EmployeeSeparation.LastDayInService",
+    "loc:NoticePeriodDays": "EmployeeSeparation.NoticePeriodDays",
+    "dom:EmployeeSeparation_NoticePeriodDays": "EmployeeSeparation.NoticePeriodDays",
+    "loc:PlannedLastDayInService": "EmployeeSeparation.PlannedLastDayInService",
+    "dom:EmployeeSeparation_PlannedLastDayInService": "EmployeeSeparation.PlannedLastDayInService",
+    "loc:SeparationType": "EmployeeSeparation.SeparationType",
+    "dom:EmployeeSeparation_SeparationType": "EmployeeSeparation.SeparationType",
+    "loc:SeparationReason": "EmployeeSeparation.SeparationReasonId",
+    "dom:EmployeeSeparation_SeparationReasonId": "EmployeeSeparation.SeparationReasonId",
+    "loc:RevokeDate": "EmployeeSeparation.RevokeDate",
+    "dom:EmployeeSeparation_RevokeDate": "EmployeeSeparation.RevokeDate",
+    "loc:RevokeComments": "EmployeeSeparation.RevokeComments",
+    "dom:EmployeeSeparation_RevokeComments": "EmployeeSeparation.RevokeComments",
+    "loc:OnHoldFromDate": "EmployeeSeparation.OnHoldFromDate",
+    "dom:EmployeeSeparation_OnHoldFromDate": "EmployeeSeparation.OnHoldFromDate",
+    "loc:OnHoldTillDate": "EmployeeSeparation.OnHoldTillDate",
+    "dom:EmployeeSeparation_OnHoldTillDate": "EmployeeSeparation.OnHoldTillDate",
+    "loc:BankTransfer": "EmployeeSeparation.BankTransfer",
+    "dom:EmployeeSeparation_BankTransfer": "EmployeeSeparation.BankTransfer",
+    "loc:OnHoldAll": "EmployeeSeparation.OnHoldAll",
+    "dom:EmployeeSeparation_onHoldAll": "EmployeeSeparation.OnHoldAll",
+    "loc:OnHoldBasicPay": "EmployeeSeparation.OnHoldBasicPay",
+    "dom:EmployeeSeparation_onHoldBasicPay": "EmployeeSeparation.OnHoldBasicPay",
+    "loc:OnHoldLeavePay": "EmployeeSeparation.OnHoldLeavePay",
+    "dom:EmployeeSeparation_onHoldLeavePay": "EmployeeSeparation.OnHoldLeavePay",
+    "loc:OnHoldIndemnityPay": "EmployeeSeparation.OnHoldIndemnityPay",
+    "dom:EmployeeSeparation_onHoldIndemnityPay": "EmployeeSeparation.OnHoldIndemnityPay",
+    "loc:OnHoldAirTicketPay": "EmployeeSeparation.OnHoldAirTicketPay",
+    "dom:EmployeeSeparation_onHoldAirTicketPay": "EmployeeSeparation.OnHoldAirTicketPay",
+    "loc:OnHoldLoanDeduction": "EmployeeSeparation.OnHoldLoanDeduction",
+    "dom:EmployeeSeparation_onHoldLoanDeduction": "EmployeeSeparation.OnHoldLoanDeduction",
+    "loc:OnHoldAllEarnings": "EmployeeSeparation.OnHoldAllEarnings",
+    "dom:EmployeeSeparation_onHoldAllEarnings": "EmployeeSeparation.OnHoldAllEarnings",
+    "loc:OnHoldAllDeductions": "EmployeeSeparation.OnHoldAllDeductions",
+    "dom:EmployeeSeparation_onHoldAllDeductions": "EmployeeSeparation.OnHoldAllDeductions",
+    "loc:Comments": "EmployeeSeparation.Comments",
+    "dom:EmployeeSeparation_Comments": "EmployeeSeparation.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSeparation.SubmissionDate",
+      "label": "SubmissionDate",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:SubmissionDate",
+        "dom:EmployeeSeparation_SubmissionDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ تقديم الاستقالة أو إنهاء الخدمة.</p><p><strong>مثال.</strong> 1 أغسطس 2026</p><p><strong>لماذا يهم.</strong> لا يجوز أن يسبقه آخر يوم في الخدمة. وتستخدم مسيرة نهاية الخدمة أحدث فصل مقدَّم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.LastDayInService",
+      "label": "LastDayInService",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:LastDayInService",
+        "dom:EmployeeSeparation_LastDayInService"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم عمل للموظف.</p><p><strong>مثال.</strong> 31 أغسطس 2026</p><p><strong>لماذا يهم.</strong> لا تحتسب الرواتب أنواع الأجور لتواريخ دفع بعد نهاية هذا الشهر، وتتوقف اقتطاعات الصندوق، وتُحتسب مكافأة نهاية الخدمة كما في هذا التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.NoticePeriodDays",
+      "label": "NoticePeriodDays",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:NoticePeriodDays",
+        "dom:EmployeeSeparation_NoticePeriodDays"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدة فترة الإشعار بالأيام.</p><p><strong>مثال.</strong> 30</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الفصل، ولا تُعاد حساب التواريخ منه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.PlannedLastDayInService",
+      "label": "PlannedLastDayInService",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:PlannedLastDayInService",
+        "dom:EmployeeSeparation_PlannedLastDayInService"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم كان مخططاً في الأصل، قبل أي تغيير.</p><p><strong>مثال.</strong> 31 أغسطس 2026</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الفصل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.SeparationType",
+      "label": "SeparationType",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:SeparationType",
+        "dom:EmployeeSeparation_SeparationType"
+      ],
+      "rules": "إلزامي. إحدى القيم: استقالة، إنهاء خدمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل استقال الموظف أم أُنهيت خدمته.</p><p><strong>مثال.</strong> استقالة</p><p><strong>لماذا يهم.</strong> يظهر في تقارير الموظفين والتكلفة الإجمالية للموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.SeparationReasonId",
+      "label": "SeparationReason",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:SeparationReason",
+        "dom:EmployeeSeparation_SeparationReasonId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أسباب الفصل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سبب مغادرة الموظف.</p><p><strong>مثال.</strong> فرصة أفضل</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← أسباب الفصل.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.RevokeDate",
+      "label": "RevokeDate",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:RevokeDate",
+        "dom:EmployeeSeparation_RevokeDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ سحب الفصل، إن سُحب.</p><p><strong>مثال.</strong> 10 أغسطس 2026</p><p><strong>لماذا يهم.</strong> بعد تحديده، تتجاهل الرواتب واحتساب مكافأة نهاية الخدمة هذا الفصل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.RevokeComments",
+      "label": "RevokeComments",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:RevokeComments",
+        "dom:EmployeeSeparation_RevokeComments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سبب إلغاء الفصل، في جملة أو جملتين.</p><p><strong>مثال.</strong> تراجع الموظف عن استقالته بعد عرض مضاد.</p><p><strong>لماذا يهم.</strong> يُسجَّل مع الفصل فقط، ولا يعرضه أي تقرير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldFromDate",
+      "label": "OnHoldFromDate",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldFromDate",
+        "dom:EmployeeSeparation_OnHoldFromDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشهر الذي يبدأ فيه إيقاف الصرف. ويكفي أي يوم من الشهر، إذ يصبح عند الحفظ أول ذلك الشهر.</p><p><strong>مثال.</strong> 15 أغسطس 2026، ويُحفظ 1 أغسطس 2026</p><p><strong>لماذا يهم.</strong> لا يُوقف أي شيء ما لم يُؤشَّر أيضاً على إيقاف واحد على الأقل مما يلي. والتاريخ المحفوظ هو ما يميّز الإيقاف الذي أنشأه هذا الفصل، وبه تستبدله إعادة الحفظ ويحذفه حذف الفصل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldTillDate",
+      "label": "OnHoldTillDate",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldTillDate",
+        "dom:EmployeeSeparation_OnHoldTillDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشهر الذي ينتهي فيه إيقاف الصرف. ويصبح عند الحفظ آخر يوم في ذلك الشهر.</p><p><strong>مثال.</strong> 10 سبتمبر 2026، ويُحفظ 30 سبتمبر 2026</p><p><strong>لماذا يهم.</strong> لازم كلما أُشِّر على إيقاف: فبدونه تقع نهاية الإيقاف قبل بدايته ويُرفض الحفظ. ولا يجوز أن تتداخل الفترة مع إيقاف آخر للموظف نفسه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.BankTransfer",
+      "label": "BankTransfer",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:BankTransfer",
+        "dom:EmployeeSeparation_BankTransfer"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا ينطبق، إيقاف، إلغاء الإيقاف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يُوقف تحويل راتب الموظف خلال فترة الإيقاف.</p><p><strong>مثال.</strong> إيقاف</p><p><strong>لماذا يهم.</strong> يُنسخ إلى سجل إيقاف الصرف، ومنه تقرؤه ملفات البنك. ولا يُنشئ إيقافاً بمفرده، بل يلزم معه أحد الخيارات التالية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldAll",
+      "label": "OnHoldAll",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldAll",
+        "dom:EmployeeSeparation_onHoldAll"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوقف صرف كل شيء خلال فترة الإيقاف.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى خيار <strong>معلق</strong> في سجل إيقاف الصرف، فتعامل الرواتب كل خيارات الإيقاف كأنها مؤشَّرة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldBasicPay",
+      "label": "OnHoldBasicPay",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldBasicPay",
+        "dom:EmployeeSeparation_onHoldBasicPay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوقف صرف الراتب الأساسي خلال فترة الإيقاف.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى سجل إيقاف الصرف، ولا تصرف الرواتب الراتب الأساسي ما دام سارياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldLeavePay",
+      "label": "OnHoldLeavePay",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldLeavePay",
+        "dom:EmployeeSeparation_onHoldLeavePay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوقف صرف بدل الإجازة خلال فترة الإيقاف.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى سجل إيقاف الصرف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldIndemnityPay",
+      "label": "OnHoldIndemnityPay",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldIndemnityPay",
+        "dom:EmployeeSeparation_onHoldIndemnityPay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوقف صرف مكافأة نهاية الخدمة خلال فترة الإيقاف.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى سجل إيقاف الصرف — وهو الخيار المعتاد ما دام إخلاء طرف الموظف المغادر مفتوحاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldAirTicketPay",
+      "label": "OnHoldAirTicketPay",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldAirTicketPay",
+        "dom:EmployeeSeparation_onHoldAirTicketPay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوقف صرف بدل تذكرة الطيران خلال فترة الإيقاف.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى سجل إيقاف الصرف، حيث يُسجَّل فقط؛ إذ لا تتحقق منه الرواتب حالياً عند صرف التذاكر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldLoanDeduction",
+      "label": "OnHoldLoanDeduction",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldLoanDeduction",
+        "dom:EmployeeSeparation_onHoldLoanDeduction"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوقف خصم أقساط القروض خلال فترة الإيقاف.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى سجل إيقاف الصرف، ولا تسترد الرواتب القروض ما دام سارياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldAllEarnings",
+      "label": "OnHoldAllEarnings",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldAllEarnings",
+        "dom:EmployeeSeparation_onHoldAllEarnings"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوقف صرف جميع الاستحقاقات خلال فترة الإيقاف.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى سجل إيقاف الصرف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldAllDeductions",
+      "label": "OnHoldAllDeductions",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldAllDeductions",
+        "dom:EmployeeSeparation_onHoldAllDeductions"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوقف جميع الخصومات خلال فترة الإيقاف.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى سجل إيقاف الصرف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.Comments",
+      "label": "Comments",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeSeparation_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

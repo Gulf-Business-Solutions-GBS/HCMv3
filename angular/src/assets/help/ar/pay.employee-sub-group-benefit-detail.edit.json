@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.employee-sub-group-benefit-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل مزايا المجموعة الفرعية للموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupBenefitDetail",
+  "overviewHtml": "<p>مبلغ مزايا الدرجة لكل نوع من العائلين، مع حد للعمر.</p><p>لا تُقرأ حالياً: لا يستخدم نظام الرواتب هذه القائمة، وهي محفوظة للرجوع إليها فقط.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeSubGroupBenefitDetail.StartDate",
+    "dom:EmployeeSubGroupBenefitDetail_StartDate": "EmployeeSubGroupBenefitDetail.StartDate",
+    "loc:EndDate": "EmployeeSubGroupBenefitDetail.EndDate",
+    "dom:EmployeeSubGroupBenefitDetail_EndDate": "EmployeeSubGroupBenefitDetail.EndDate",
+    "loc:DependantType": "EmployeeSubGroupBenefitDetail.DependantTypeId",
+    "dom:EmployeeSubGroupBenefitDetail_DependantTypeId": "EmployeeSubGroupBenefitDetail.DependantTypeId",
+    "loc:Amount": "EmployeeSubGroupBenefitDetail.Amount",
+    "dom:EmployeeSubGroupBenefitDetail_Amount": "EmployeeSubGroupBenefitDetail.Amount",
+    "loc:AgeLimit": "EmployeeSubGroupBenefitDetail.AgeLimit",
+    "dom:EmployeeSubGroupBenefitDetail_AgeLimit": "EmployeeSubGroupBenefitDetail.AgeLimit"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupBenefitDetail.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSubGroupBenefitDetails",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSubGroupBenefitDetail_StartDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupBenefitDetail.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSubGroupBenefitDetails",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSubGroupBenefitDetail_EndDate"
+      ],
+      "rules": "اختياري. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupBenefitDetail.DependantTypeId",
+      "label": "DependantType",
+      "section": "EmployeeSubGroupBenefitDetails",
+      "aliases": [
+        "loc:DependantType",
+        "dom:EmployeeSubGroupBenefitDetail_DependantTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع صفات العائل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع العائل.</p><p><strong>مثال.</strong> ابن/ابنة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupBenefitDetail.Amount",
+      "label": "Amount",
+      "section": "EmployeeSubGroupBenefitDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeSubGroupBenefitDetail_Amount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ لكل عائل من ذلك النوع.</p><p><strong>مثال.</strong> <code>500</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupBenefitDetail.AgeLimit",
+      "label": "AgeLimit",
+      "section": "EmployeeSubGroupBenefitDetails",
+      "aliases": [
+        "loc:AgeLimit",
+        "dom:EmployeeSubGroupBenefitDetail_AgeLimit"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أكبر عمر يُحتسب فيه العائل.</p><p><strong>مثال.</strong> <code>21</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

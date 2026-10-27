@@ -1,0 +1,109 @@
+{
+  "helpId": "pa.leave-planner",
+  "lang": "en",
+  "title": "Leave Planner",
+  "entity": null,
+  "overviewHtml": "<p>Who plans to be away and who is actually away, day by day for one month, grouped by organization unit. It opens on the current month; the arrows move a month back or forward.</p><p>Each unit has a line of its own showing how many of its people are away, or planning to be, on each day; below it is one line per employee, coloured by what falls on the day: <strong>Planned - Approved</strong>, <strong>Planned - Open</strong>, <strong>Leave - Approved</strong> and <strong>Leave - Open</strong>. A day can carry more than one, because a plan sitting on top of approved leave is exactly the thing to spot. Hover over a day for the details. Only employees with something in the month get a line, and each employee sits under the unit they are assigned to today; those in no unit come last, under <strong>No department</strong>.</p><p>Plans come from <strong>Leave Planner Request</strong> in self-service and book nothing; leave comes from the employees' leave records. Hourly absences are left out — they are short permissions, not days away. Drafts never show, and neither do rejected, withdrawn or cancelled plans and leave.</p>",
+  "aliasIndex": {
+    "loc:Dashboard_Showing": "dash.common.showing",
+    "loc:OrganizationUnit": "pa.leave-planner.org-unit",
+    "loc:Employee": "pa.leave-planner.employee",
+    "loc:ShowActualLeaveApproved": "pa.leave-planner.leave-approved",
+    "loc:ShowActualLeaveUnapproved": "pa.leave-planner.leave-unapproved",
+    "loc:ShowLeavePlannerApproved": "pa.leave-planner.plan-approved",
+    "loc:ShowLeavePlannerUnapproved": "pa.leave-planner.plan-unapproved"
+  },
+  "fields": [
+    {
+      "id": "dash.common.showing",
+      "label": "Dashboard_Showing",
+      "section": null,
+      "aliases": [
+        "loc:Dashboard_Showing"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The line in the toolbar that says whose data the dashboard is built from, and how many employees that is. You never choose it: it follows from who you are.</p><p><strong>How it is worked out.</strong> The employees you see are:</p><ul><li>everyone, if you hold the <strong>Admin</strong> role;</li><li>otherwise the employees in the organization units given to your roles in row-level security, including every unit below them, <strong>plus</strong> your own team — you and everybody below you in the manager hierarchy, at every level;</li><li>nobody, if neither gives anyone. The dashboard then shows nothing, never everything.</li></ul><p><strong>Example.</strong> \"Showing: Finance + Payroll + your team (123 employees)\" — you are an HR officer for Finance and Payroll, and also manage a team of your own.</p><p><strong>Why it matters.</strong> Two people can open the same dashboard and see different numbers, and both are right. Every figure, chart, list and download on the page is limited to these employees — changing a filter can narrow them further but never widen them.</p>",
+      "adminHtml": "<p>Resolved by <code>IDashboardScopeService</code> for every dashboard. The row-level security on/off switch in Security Settings is deliberately not consulted: with nothing assigned the user sees nothing, whatever the switch says. The Admin rule matches the static tenant role name <code>Admin</code>.</p>",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-planner.org-unit",
+      "label": "OrganizationUnit",
+      "section": null,
+      "aliases": [
+        "loc:OrganizationUnit"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Narrows the planner to one unit and every unit below it. <strong>All</strong> shows everybody you can see.</p><p><strong>Example.</strong> Finance — which also shows Finance / Payroll and Finance / Accounts.</p><p><strong>Why it matters.</strong> The list offers only the units your employees sit in, so choosing one never empties the list of the others.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-planner.employee",
+      "label": "Employee",
+      "section": null,
+      "aliases": [
+        "loc:Employee"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Narrows the planner to employees whose code, English name or Arabic name contains the text. Press Enter to apply it.</p><p><strong>Example.</strong> <code>Ahmed</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-planner.leave-approved",
+      "label": "ShowActualLeaveApproved",
+      "section": null,
+      "aliases": [
+        "loc:ShowActualLeaveApproved"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Shows leave that is in effect: approved, or recorded without approval. On when the planner opens.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-planner.leave-unapproved",
+      "label": "ShowActualLeaveUnapproved",
+      "section": null,
+      "aliases": [
+        "loc:ShowActualLeaveUnapproved"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Shows leave still waiting with an approver. Leave that was rejected or sent back is not shown.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-planner.plan-approved",
+      "label": "ShowLeavePlannerApproved",
+      "section": null,
+      "aliases": [
+        "loc:ShowLeavePlannerApproved"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Shows leave plans that are in effect: approved, or recorded without approval. On when the planner opens.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-planner.plan-unapproved",
+      "label": "ShowLeavePlannerUnapproved",
+      "section": null,
+      "aliases": [
+        "loc:ShowLeavePlannerUnapproved"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Shows leave plans still waiting with an approver.</p><p><strong>Why it matters.</strong> Together with approved leave, it shows what managers are about to be asked to agree to while there is still time to plan cover.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

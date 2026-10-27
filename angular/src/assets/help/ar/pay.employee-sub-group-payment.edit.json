@@ -1,0 +1,75 @@
+{
+  "helpId": "pay.employee-sub-group-payment.edit",
+  "lang": "ar",
+  "title": "مدفوعات المجموعة الفرعية للموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupPayment",
+  "overviewHtml": "<p>دفعة دائمة لكل من في الدرجة، تُصرف عبر نوع أجر.</p><p>ولا يُستخدم إلا فاصلان للدفع: فالأسطر <em>سنوية</em> تُصرف مرة في السنة في <strong>شهر الدفع</strong> الخاص بها، والأسطر <em>نهاية الخدمة</em> تُصرف في تشغيل نهاية خدمة الموظف. أما الأسطر ذات الفواصل الأخرى فلا تُصرف.</p>",
+  "aliasIndex": {
+    "loc:WageType": "EmployeeSubGroupPayment.WageTypeId",
+    "dom:EmployeeSubGroupPayment_WageTypeId": "EmployeeSubGroupPayment.WageTypeId",
+    "loc:Amount": "EmployeeSubGroupPayment.Amount",
+    "dom:EmployeeSubGroupPayment_Amount": "EmployeeSubGroupPayment.Amount",
+    "loc:PayInterval": "EmployeeSubGroupPayment.PayInterval",
+    "dom:EmployeeSubGroupPayment_PayInterval": "EmployeeSubGroupPayment.PayInterval",
+    "loc:PayMonth": "EmployeeSubGroupPayment.PayMonth",
+    "dom:EmployeeSubGroupPayment_PayMonth": "EmployeeSubGroupPayment.PayMonth"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupPayment.WageTypeId",
+      "label": "WageType",
+      "section": "EmployeeSubGroupPayments",
+      "aliases": [
+        "loc:WageType",
+        "dom:EmployeeSubGroupPayment_WageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الأجر الذي تُصرف تحته الدفعة.</p><p><strong>مثال.</strong> المكافأة السنوية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupPayment.Amount",
+      "label": "Amount",
+      "section": "EmployeeSubGroupPayments",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeSubGroupPayment_Amount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ المصروف.</p><p><strong>مثال.</strong> <code>300</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupPayment.PayInterval",
+      "label": "PayInterval",
+      "section": "EmployeeSubGroupPayments",
+      "aliases": [
+        "loc:PayInterval",
+        "dom:EmployeeSubGroupPayment_PayInterval"
+      ],
+      "rules": "إلزامي. إحدى القيم: شهري، يومي، بالساعة، نهاية الخدمة، سنوي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى تُصرف الدفعة.</p><p><strong>مثال.</strong> سنوي</p><p><strong>لماذا يهم.</strong> لا يُصرف إلا <em>سنوي</em> و<em>نهاية الخدمة</em>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupPayment.PayMonth",
+      "label": "PayMonth",
+      "section": "EmployeeSubGroupPayments",
+      "aliases": [
+        "loc:PayMonth",
+        "dom:EmployeeSubGroupPayment_PayMonth"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، يناير، فبراير، مارس، أبريل، مايو، يونيو، يوليو، أغسطس، سبتمبر، أكتوبر، نوفمبر، ديسمبر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشهر الذي تُصرف فيه الدفعة <em>السنوية</em>.</p><p><strong>مثال.</strong> ديسمبر</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

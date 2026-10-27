@@ -1,0 +1,159 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Employees' | localize" [description]="'PersonnelAdministration' | localize" />
+
+    <div [class]="containerClass">
+        <record-breadcrumb [steps]="breadcrumb()" />
+
+        <!-- Identity header. Who this record belongs to should be readable without looking at the URL
+             or remembering which row was clicked, and it stays put while sections change. -->
+        <div class="emp-identity">
+            <div class="emp-identity-avatar" aria-hidden="true">
+                <!-- getEmployeeForEdit already carries the photo as a data URL; the initial is the fallback. -->
+                @if (employee()?.photo) {
+                    <img [src]="toImageSrc(employee().photo)" alt="" />
+                } @else {
+                    {{ displayName() ? displayName().charAt(0) : '?' }}
+                }
+            </div>
+            <div class="emp-identity-text">
+                <h2 class="emp-identity-name">
+                    {{ displayName() || ('Employees' | localize) }}
+                </h2>
+                @if (employee()?.code) {
+                    <div class="emp-identity-meta">
+                        <span class="emp-identity-code">{{ employee().code }}</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="emp-layout" [class.emp-layout-collapsed]="isRailCollapsed()">
+            <!-- Section rail -->
+            <nav class="emp-rail" [attr.aria-label]="'Employees' | localize">
+                <div class="emp-rail-top">
+                    <!-- Collapsed, this button is the ONLY thing left in the rail, which is why the rail
+                         keeps a narrow strip instead of disappearing: a rail that vanishes entirely
+                         leaves no way back to it except the browser's back button. -->
+                    <button
+                        type="button"
+                        class="emp-rail-toggle"
+                        (click)="toggleRail()"
+                        [attr.aria-expanded]="!isRailCollapsed()"
+                        [attr.aria-label]="(isRailCollapsed() ? 'Expand' : 'Collapse') | localize"
+                        [title]="(isRailCollapsed() ? 'Expand' : 'Collapse') | localize">
+                        <i
+                            class="fa"
+                            [class.fa-angle-double-left]="!isRailCollapsed()"
+                            [class.fa-angle-double-right]="isRailCollapsed()"
+                            aria-hidden="true"></i>
+                    </button>
+
+                    @if (!isRailCollapsed()) {
+                        <div class="emp-search">
+                            <i class="fa fa-search emp-search-icon" aria-hidden="true"></i>
+                            <input
+                                type="search"
+                                class="emp-search-input"
+                                [ngModel]="searchTerm()"
+                                (ngModelChange)="searchTerm.set($event)"
+                                [attr.aria-label]="'EmpSectionSearch' | localize"
+                                [placeholder]="'EmpSectionSearch' | localize" />
+                            @if (searchTerm()) {
+                                <button
+                                    type="button"
+                                    class="emp-search-clear"
+                                    (click)="clearSearch()"
+                                    [attr.aria-label]="'Clear' | localize">
+                                    &times;
+                                </button>
+                            }
+                        </div>
+                    }
+                </div>
+
+                @if (isRailCollapsed()) {
+                    <!-- Collapsed: category icons, in the same flaticon family as the main application
+                         rail so this reads as the same kind of control. They reopen the rail at that
+                         category rather than navigating -- one icon cannot say which of Personal's ten
+                         sections you meant. -->
+                    <ul class="emp-rail-icons">
+                        @for (category of allCategories; track category.id) {
+                            <li>
+                                <button
+                                    type="button"
+                                    class="emp-rail-icon"
+                                    (click)="expandTo(category)"
+                                    [title]="category.labelKey | localize"
+                                    [attr.aria-label]="category.labelKey | localize">
+                                    <i [class]="category.icon" aria-hidden="true"></i>
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                }
+
+                <div class="emp-rail-scroll" [hidden]="isRailCollapsed()">
+                    @for (category of visibleCategories(); track category.id) {
+                        <!-- Same icon as the collapsed strip, so which icon means what is learned here
+                             rather than guessed there. -->
+                        <div class="emp-rail-category" [id]="'emp-cat-' + category.id">
+                            <i [class]="category.icon + ' emp-rail-category-icon'" aria-hidden="true"></i>
+                            {{ category.labelKey | localize }}
+                        </div>
+                        <ul class="emp-rail-sections">
+                            @for (section of category.sections; track section.id) {
+                                <li>
+                                    <button
+                                        type="button"
+                                        class="emp-rail-section"
+                                        [class.emp-rail-on]="activeSectionId() === section.id"
+                                        [attr.aria-current]="activeSectionId() === section.id ? 'true' : null"
+                                        (click)="selectSection(section)">
+                                        {{ section.labelKey | localize }}
+                                    </button>
+                                </li>
+                            }
+                        </ul>
+                    }
+
+                    @if (!hasSearchResults()) {
+                        <!-- Said plainly rather than left as an empty rail, which reads as a broken
+                             screen rather than as a search that matched nothing. -->
+                        <p class="emp-rail-empty">{{ 'EmpSectionSearchNoMatch' | localize }}</p>
+                    }
+                </div>
+            </nav>
+
+            <!-- The section in view -->
+            <main class="emp-main">
+                <div class="emp-main-head">
+                    <h3 class="emp-main-title">{{ activeSection()?.labelKey | localize }}</h3>
+                </div>
+
+                <div class="emp-main-body">
+                    @if (employeeId() && activeComponent()) {
+                        <!-- One section is built at a time. The previous screen mounted all 65 grids
+                             on load, with their paging state and lookup calls, to show one of them. -->
+                        <!-- Rebuilt when the employee changes, not just handed the new id. Opening another
+                             person from the header search reuses this page, and the sections load their
+                             data once on creation -- so the old person's details stayed under the new
+                             person's name. Tracking by id gives each employee a fresh section. -->
+                        @for (id of [employeeId()]; track id) {
+                            <ng-container
+                                *ngComponentOutlet="activeComponent(); inputs: sectionInputs()"></ng-container>
+                        }
+                    } @else if (isSectionLoading()) {
+                        <div class="emp-main-loading">
+                            <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+                            {{ 'LoadingWithThreeDot' | localize }}
+                        </div>
+                    } @else if (sectionLoadFailed()) {
+                        <div class="alert alert-warning" role="alert">
+                            {{ 'EmployeeSectionLoadFailed' | localize }}
+                        </div>
+                    }
+                </div>
+            </main>
+        </div>
+    </div>
+</div>

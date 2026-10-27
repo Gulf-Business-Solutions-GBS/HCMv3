@@ -1,0 +1,60 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+using HCMv3.GeneralMasterInfo;
+
+namespace HCMv3.TimeManagement.Dto;
+
+/// <summary>
+/// Create/Update input DTO for <see cref="Duty"/>. <c>Id == null</c> means create; otherwise update.
+/// </summary>
+public class CreateOrEditDutyDto
+{
+    public int? Id { get; set; }
+
+    /// <summary>
+    /// Optional. When left blank the server auto-generates the next numeric code.
+    /// </summary>
+    [StringLength(SimpleLookupConsts.MaxCodeLength)]
+    public string Code { get; set; }
+
+    [Required]
+    [StringLength(SimpleLookupConsts.MaxNameLength)]
+    public string NameEn { get; set; }
+
+    [Required]
+    [StringLength(SimpleLookupConsts.MaxNameLength)]
+    public string NameAr { get; set; }
+
+    [Required]
+    public DateTime StartDate { get; set; }
+
+    [Required]
+    public DateTime EndDate { get; set; }
+
+    public TimeSpan StartTime { get; set; }
+
+    public TimeSpan EndTime { get; set; }
+
+    public int? BreakShiftId { get; set; }
+
+    public int? OvertimeTypeId { get; set; }
+
+    public bool AllowTransStart { get; set; }
+
+    public bool AllowTransEnd { get; set; }
+
+    public bool IsNightShift { get; set; }
+
+    public bool IsWeeklyOff { get; set; }
+
+    public bool IsRestDay { get; set; }
+
+    public bool IsHalfDay { get; set; }
+
+    public TimeSpan? FlexiStartTime { get; set; }
+
+    public TimeSpan? FlexiEndTime { get; set; }
+
+    /// <summary>Legacy <c>Duty.IsActive</c>. True unless the caller says otherwise, as legacy defaulted it.</summary>
+    public bool IsActive { get; set; } = true;
+}

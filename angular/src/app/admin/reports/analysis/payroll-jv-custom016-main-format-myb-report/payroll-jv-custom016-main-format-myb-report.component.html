@@ -1,0 +1,141 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'PayrollJVCustom016MainFormatMybReport' | localize"
+        [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <!-- Legacy panel is Month/Year + Run Type + Employee Code. Payroll Area is NOT exposed:
+                     this report is locked server-side to the payroll area whose name contains "MYB". -->
+                <grid-report-filter
+                    [showDateRange]="false"
+                    [showEmployeeStatus]="false"
+                    [(employeeCode)]="employeeCode"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-1">
+                        <label class="form-label">{{ 'Month' | localize }}</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            name="payrollJv016MainMybMonth"
+                            min="1"
+                            max="12"
+                            [ngModel]="month()"
+                            (ngModelChange)="month.set($event)"
+                            (keydown.enter)="reloadPage()" />
+                    </div>
+
+                    <div class="col-md-1">
+                        <label class="form-label">{{ 'Year' | localize }}</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            name="payrollJv016MainMybYear"
+                            [ngModel]="year()"
+                            (ngModelChange)="year.set($event)"
+                            (keydown.enter)="reloadPage()" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'RunType' | localize }}</label>
+                        <p-select
+                            [options]="runTypeOptions"
+                            [ngModel]="payrollRunType()"
+                            (ngModelChange)="payrollRunType.set($event)"
+                            name="payrollJv016MainMybRunType"
+                            optionLabel="label"
+                            optionValue="value"
+                            [showClear]="true"
+                            [placeholder]="'RunType' | localize"
+                            styleClass="w-100" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '70rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <!-- Legacy DataTable column captions (lines 1578-2016) -- never localized in
+                                     legacy either, so kept literal here rather than added as new keys. -->
+                                <tr>
+                                    <th style="min-width: 70px">{{ 'LineNumber' | localize }}</th>
+                                    <th style="min-width: 90px">C.C.</th>
+                                    <th style="min-width: 100px">Exp</th>
+                                    <th style="min-width: 120px">{{ 'Date' | localize }}</th>
+                                    <th style="min-width: 120px">Doc date</th>
+                                    <th style="min-width: 80px">Srce</th>
+                                    <th style="min-width: 60px">Co</th>
+                                    <th style="min-width: 120px">{{ 'Suffix' | localize }}</th>
+                                    <th style="min-width: 120px">SL/PL AC</th>
+                                    <th style="min-width: 160px">{{ 'Reference' | localize }}</th>
+                                    <th style="min-width: 220px">{{ 'Narrative' | localize }}</th>
+                                    <th style="min-width: 160px">Reconciled reference</th>
+                                    <th style="min-width: 60px">R</th>
+                                    <th style="min-width: 120px">{{ 'Debit' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'Credit' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 70px">{{ record.lineNumber }}</td>
+                                    <td style="min-width: 90px">{{ record.costCenter }}</td>
+                                    <td style="min-width: 100px">{{ record.exp }}</td>
+                                    <td style="min-width: 120px">{{ record.date | date: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 120px">{{ record.docDate | date: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 80px">{{ record.source }}</td>
+                                    <td style="min-width: 60px">{{ record.company }}</td>
+                                    <td style="min-width: 120px">{{ record.suffix }}</td>
+                                    <td style="min-width: 120px">{{ record.slPlAccount }}</td>
+                                    <td style="min-width: 160px">{{ record.reference }}</td>
+                                    <td style="min-width: 220px">
+                                        <span pTooltip="{{ record.narrative }}" class="hide-overflown">{{
+                                            record.narrative
+                                        }}</span>
+                                    </td>
+                                    <td style="min-width: 160px">{{ record.reconciledReference }}</td>
+                                    <td style="min-width: 60px">{{ record.rColumn }}</td>
+                                    <td style="min-width: 120px">{{ record.debit }}</td>
+                                    <td style="min-width: 120px">{{ record.credit }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

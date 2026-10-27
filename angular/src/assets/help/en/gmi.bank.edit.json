@@ -1,0 +1,123 @@
+{
+  "helpId": "gmi.bank.edit",
+  "lang": "en",
+  "title": "Banks — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.Bank",
+  "overviewHtml": "<p>The banks employees are paid into and the banks the organisation pays from. Each employee bank account names one of these banks, and the salary transfer file is produced for one paying bank at a time.</p>",
+  "aliasIndex": {
+    "loc:Code": "Bank.Code",
+    "dom:Bank_Code": "Bank.Code",
+    "loc:NameEn": "Bank.NameEn",
+    "dom:Bank_NameEn": "Bank.NameEn",
+    "loc:NameAr": "Bank.NameAr",
+    "dom:Bank_NameAr": "Bank.NameAr",
+    "loc:ExternalCode": "Bank.ExternalCode",
+    "dom:Bank_ExternalCode": "Bank.ExternalCode",
+    "loc:SWIFTCode": "Bank.SWIFTCode",
+    "dom:Bank_SWIFTCode": "Bank.SWIFTCode",
+    "loc:CompanyCode": "Bank.CompanyCode",
+    "dom:Bank_CompanyCode": "Bank.CompanyCode",
+    "loc:BankFile": "Bank.BankFileId",
+    "dom:Bank_BankFileId": "Bank.BankFileId"
+  },
+  "fields": [
+    {
+      "id": "Bank.Code",
+      "label": "Code",
+      "section": "Banks",
+      "aliases": [
+        "loc:Code",
+        "dom:Bank_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Bank.NameEn",
+      "label": "NameEn",
+      "section": "Banks",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Bank_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Bank.NameAr",
+      "label": "NameAr",
+      "section": "Banks",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Bank_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Bank.ExternalCode",
+      "label": "ExternalCode",
+      "section": "Banks",
+      "aliases": [
+        "loc:ExternalCode",
+        "dom:Bank_ExternalCode"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> An identifier for this bank used outside HCMv3.</p><p><strong>Why it matters.</strong> When this bank pays salaries, its external code is written into the salary transfer file.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Bank.SWIFTCode",
+      "label": "SWIFTCode",
+      "section": "Banks",
+      "aliases": [
+        "loc:SWIFTCode",
+        "dom:Bank_SWIFTCode"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The bank's SWIFT (BIC) code.</p><p><strong>Example.</strong> <code>NBOKKWKW</code></p><p><strong>Why it matters.</strong> Written into the salary transfer file for employees who are paid into this bank.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Bank.CompanyCode",
+      "label": "CompanyCode",
+      "section": "Banks",
+      "aliases": [
+        "loc:CompanyCode",
+        "dom:Bank_CompanyCode"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A company code for this bank, as its transfer file format requires.</p><p><strong>Why it matters.</strong> When this bank pays salaries, this code is written into the salary transfer file.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Bank.BankFileId",
+      "label": "BankFile",
+      "section": "Banks",
+      "aliases": [
+        "loc:BankFile",
+        "dom:Bank_BankFileId"
+      ],
+      "rules": "Optional. Chosen from Bank File master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A bank file format linked to this bank.</p><p><strong>Why it matters.</strong> Not read at present — the salary transfer file does not use this setting.</p>",
+      "adminHtml": "<p>The codes a paying bank uses for other banks in its transfer file are set in Payee Bank Details.</p>",
+      "stub": false
+    }
+  ]
+}

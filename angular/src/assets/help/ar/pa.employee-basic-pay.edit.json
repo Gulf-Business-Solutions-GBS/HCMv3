@@ -1,0 +1,91 @@
+{
+  "helpId": "pa.employee-basic-pay.edit",
+  "lang": "ar",
+  "title": "الرواتب الأساسية للموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeBasicPay",
+  "overviewHtml": "<p>رأس سجل أجر الموظف لفترة معينة. تحمل بنوده التفصيلية أنواع الأجور والمبالغ، ويحدد هذا السجل الدورية التي يُعبَّر بها عن الأجر.</p><p>تستخدم الرواتب سجل الأجر الأساسي الذي تغطي فترته تاريخ الدفع. ولا يؤدي حفظ سجل جديد إلى إغلاق السابق، ولا يُرفض إلا تكرار تاريخ البداية، لذا حدد تاريخ انتهاء السجل السابق بنفسك.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeBasicPay.StartDate",
+    "dom:EmployeeBasicPay_StartDate": "EmployeeBasicPay.StartDate",
+    "loc:EndDate": "EmployeeBasicPay.EndDate",
+    "dom:EmployeeBasicPay_EndDate": "EmployeeBasicPay.EndDate",
+    "loc:PayType": "EmployeeBasicPay.PayType",
+    "dom:EmployeeBasicPay_PayType": "EmployeeBasicPay.PayType",
+    "loc:PayInterval": "EmployeeBasicPay.PayInterval",
+    "dom:EmployeeBasicPay_PayInterval": "EmployeeBasicPay.PayInterval",
+    "loc:EmployeeActionId": "EmployeeBasicPay.EmployeeActionId",
+    "dom:EmployeeBasicPay_EmployeeActionId": "EmployeeBasicPay.EmployeeActionId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeBasicPay.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeBasicPays",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeBasicPay_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يبدأ سجلان للموظف نفسه في التاريخ نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPay.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeBasicPays",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeBasicPay_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPay.PayType",
+      "label": "PayType",
+      "section": "EmployeeBasicPays",
+      "aliases": [
+        "loc:PayType",
+        "dom:EmployeeBasicPay_PayType"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، اعتيادي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الأجر.</p><p><strong>مثال.</strong> عادي</p><p><strong>لماذا يهم.</strong> يُحفظ للرجوع إليه، ولا يقرؤه أي احتساب حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPay.PayInterval",
+      "label": "PayInterval",
+      "section": "EmployeeBasicPays",
+      "aliases": [
+        "loc:PayInterval",
+        "dom:EmployeeBasicPay_PayInterval"
+      ],
+      "rules": "إلزامي. إحدى القيم: شهري، يومي، بالساعة، نهاية الخدمة، سنوي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الفترة التي يُعبَّر بها عن مبالغ البنود التفصيلية.</p><p><strong>مثال.</strong> شهري</p><p><strong>لماذا يهم.</strong> تحتسب الرواتب كل بند تفصيلي بناءً عليها: فالمبالغ الشهرية تُوزَّع نسبياً حسب طريقة احتساب نوع الأجر، والمبالغ اليومية وبالساعة تُضرب في الأيام أو الساعات المسجلة للموظف في مكافآت الموظف خلال ذلك الشهر.</p>",
+      "adminHtml": "<p>عند اختيار نهاية الخدمة أو سنوي، لا ينتج عن احتساب الأجر الأساسي أي مبلغ للبنود التفصيلية.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPay.EmployeeActionId",
+      "label": "EmployeeActionId",
+      "section": "EmployeeBasicPays",
+      "aliases": [
+        "loc:EmployeeActionId",
+        "dom:EmployeeBasicPay_EmployeeActionId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإجراء الشخصي الذي ينتمي إليه هذا التغيير في الأجر، إن وُجد.</p><p><strong>مثال.</strong> ترقية — 1 يناير 2026</p><p><strong>لماذا يهم.</strong> يُسجَّل كرابط فقط، ولا تقرؤه الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

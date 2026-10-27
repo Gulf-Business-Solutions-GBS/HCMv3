@@ -1,0 +1,235 @@
+{
+  "helpId": "pa.employee-fn-fpayment.edit",
+  "lang": "ar",
+  "title": "الدفعات الكاملة والنهائية للموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeFnFPayment",
+  "overviewHtml": "<p>التسوية النهائية الكاملة للموظف عند نهاية الخدمة.</p><p>تشمل مسيرة نهاية الخدمة الموظفين الذين يقع تاريخ تعويضهم في فترتها، وتحتاج إلى تسوية يساوي تاريخ تعويضها تاريخ دفع المسيرة. أما المبالغ والأيام والأعداد في هذا النموذج فتُسجَّل للرجوع إليها: إذ تحتسب الرواتب التسوية بنفسها ولا تقرؤها حالياً.</p><p>عندما يكون على الموظف رصيد قرض، يعرض النموذج <strong>تسوية القروض القائمة ضمن هذه المدفوعات</strong>. أشِّر عليه لاسترداد كامل رصيد القرض المتبقي في تاريخ التسوية؛ وبدونه لا يمكن إنهاء تسوية موظف لديه قرض قائم.</p>",
+  "aliasIndex": {
+    "loc:CompensationDate": "EmployeeFnFPayment.CompensationDate",
+    "dom:EmployeeFnFPayment_CompensationDate": "EmployeeFnFPayment.CompensationDate",
+    "loc:EmployeeActionId": "EmployeeFnFPayment.EmployeeActionId",
+    "dom:EmployeeFnFPayment_EmployeeActionId": "EmployeeFnFPayment.EmployeeActionId",
+    "loc:EmployeeBasicPayDetailId": "EmployeeFnFPayment.EmployeeBasicPayDetailId",
+    "dom:EmployeeFnFPayment_EmployeeBasicPayDetailId": "EmployeeFnFPayment.EmployeeBasicPayDetailId",
+    "loc:LeaveCompensateDays": "EmployeeFnFPayment.LeaveCompensateDays",
+    "dom:EmployeeFnFPayment_LeaveCompensateDays": "EmployeeFnFPayment.LeaveCompensateDays",
+    "loc:GratuityCompensateDays": "EmployeeFnFPayment.GratuityCompensateDays",
+    "dom:EmployeeFnFPayment_GratuityCompensateDays": "EmployeeFnFPayment.GratuityCompensateDays",
+    "loc:IndemnityCompensateAmount": "EmployeeFnFPayment.IndemnityCompensateAmount",
+    "dom:EmployeeFnFPayment_IndemnityCompensateAmount": "EmployeeFnFPayment.IndemnityCompensateAmount",
+    "loc:IndemnityPayAdjustment": "EmployeeFnFPayment.IndemnityPayAdjustment",
+    "dom:EmployeeFnFPayment_IndemnityPayAdjustment": "EmployeeFnFPayment.IndemnityPayAdjustment",
+    "loc:TicketCompensateCount": "EmployeeFnFPayment.TicketCompensateCount",
+    "dom:EmployeeFnFPayment_TicketCompensateCount": "EmployeeFnFPayment.TicketCompensateCount",
+    "loc:Dependant1TicketCompensateCount": "EmployeeFnFPayment.Dependant1TicketCompensateCount",
+    "dom:EmployeeFnFPayment_Dependant1TicketCompensateCount": "EmployeeFnFPayment.Dependant1TicketCompensateCount",
+    "loc:Dependant2TicketCompensateCount": "EmployeeFnFPayment.Dependant2TicketCompensateCount",
+    "dom:EmployeeFnFPayment_Dependant2TicketCompensateCount": "EmployeeFnFPayment.Dependant2TicketCompensateCount",
+    "loc:Dependant3TicketCompensateCount": "EmployeeFnFPayment.Dependant3TicketCompensateCount",
+    "dom:EmployeeFnFPayment_Dependant3TicketCompensateCount": "EmployeeFnFPayment.Dependant3TicketCompensateCount",
+    "loc:CompensateLoanAmount": "EmployeeFnFPayment.CompensateLoanAmount",
+    "dom:EmployeeFnFPayment_CompensateLoanAmount": "EmployeeFnFPayment.CompensateLoanAmount",
+    "loc:CompensateBonusPay": "EmployeeFnFPayment.CompensateBonusPay",
+    "dom:EmployeeFnFPayment_CompensateBonusPay": "EmployeeFnFPayment.CompensateBonusPay",
+    "loc:Comments": "EmployeeFnFPayment.Comments",
+    "dom:EmployeeFnFPayment_Comments": "EmployeeFnFPayment.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeFnFPayment.CompensationDate",
+      "label": "CompensationDate",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:CompensationDate",
+        "dom:EmployeeFnFPayment_CompensationDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ صرف التسوية.</p><p><strong>مثال.</strong> 15 سبتمبر 2026</p><p><strong>لماذا يهم.</strong> يحدد مسيرة نهاية الخدمة التي تشمل الموظف. ويُظهر تقرير بيانات الموظفين التسوية منجزة بعد مرور هذا التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.EmployeeActionId",
+      "label": "EmployeeActionId",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:EmployeeActionId",
+        "dom:EmployeeFnFPayment_EmployeeActionId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإجراء الشخصي الذي تنتمي إليه هذه التسوية، إن وُجد.</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب ولا التقارير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.EmployeeBasicPayDetailId",
+      "label": "EmployeeBasicPayDetailId",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:EmployeeBasicPayDetailId",
+        "dom:EmployeeFnFPayment_EmployeeBasicPayDetailId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بند الأجر الأساسي الذي تستند إليه التسوية، إن وُجد.</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب ولا التقارير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.LeaveCompensateDays",
+      "label": "LeaveCompensateDays",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:LeaveCompensateDays",
+        "dom:EmployeeFnFPayment_LeaveCompensateDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيام الإجازة المعوَّضة.</p><p><strong>مثال.</strong> 18</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب ولا التقارير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.GratuityCompensateDays",
+      "label": "GratuityCompensateDays",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:GratuityCompensateDays",
+        "dom:EmployeeFnFPayment_GratuityCompensateDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيام مكافأة نهاية الخدمة المعوَّضة.</p><p><strong>مثال.</strong> 255</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب ولا التقارير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.IndemnityCompensateAmount",
+      "label": "IndemnityCompensateAmount",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:IndemnityCompensateAmount",
+        "dom:EmployeeFnFPayment_IndemnityCompensateAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مبلغ مكافأة نهاية الخدمة المعوَّض.</p><p><strong>مثال.</strong> 4250.000</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب ولا التقارير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.IndemnityPayAdjustment",
+      "label": "IndemnityPayAdjustment",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:IndemnityPayAdjustment",
+        "dom:EmployeeFnFPayment_IndemnityPayAdjustment"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تعديل على صرف مكافأة نهاية الخدمة.</p><p><strong>مثال.</strong> -50.000</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب ولا التقارير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.TicketCompensateCount",
+      "label": "TicketCompensateCount",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:TicketCompensateCount",
+        "dom:EmployeeFnFPayment_TicketCompensateCount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تذاكر الموظف المعوَّضة.</p><p><strong>مثال.</strong> 1</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب ولا التقارير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.Dependant1TicketCompensateCount",
+      "label": "Dependant1TicketCompensateCount",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:Dependant1TicketCompensateCount",
+        "dom:EmployeeFnFPayment_Dependant1TicketCompensateCount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التذاكر المعوَّضة للمعال الأول.</p><p><strong>مثال.</strong> 1</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب ولا التقارير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.Dependant2TicketCompensateCount",
+      "label": "Dependant2TicketCompensateCount",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:Dependant2TicketCompensateCount",
+        "dom:EmployeeFnFPayment_Dependant2TicketCompensateCount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التذاكر المعوَّضة للمعال الثاني.</p><p><strong>مثال.</strong> 1</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب ولا التقارير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.Dependant3TicketCompensateCount",
+      "label": "Dependant3TicketCompensateCount",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:Dependant3TicketCompensateCount",
+        "dom:EmployeeFnFPayment_Dependant3TicketCompensateCount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التذاكر المعوَّضة للمعال الثالث.</p><p><strong>مثال.</strong> 0</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب ولا التقارير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.CompensateLoanAmount",
+      "label": "CompensateLoanAmount",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:CompensateLoanAmount",
+        "dom:EmployeeFnFPayment_CompensateLoanAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مبلغ القرض المسوّى.</p><p><strong>مثال.</strong> 300.000</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب ولا التقارير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.CompensateBonusPay",
+      "label": "CompensateBonusPay",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:CompensateBonusPay",
+        "dom:EmployeeFnFPayment_CompensateBonusPay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مبلغ المكافأة المسوّى.</p><p><strong>مثال.</strong> 500.000</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب ولا التقارير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.Comments",
+      "label": "Comments",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeFnFPayment_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

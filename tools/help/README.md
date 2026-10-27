@@ -1,0 +1,103 @@
+# Help content tooling
+
+Phase 0 of the help system. Design: [`docs/help/DESIGN.md`](../../docs/help/DESIGN.md).
+
+Dependency-free Node — no `package.json`, no `npm install`. Run from the repository root.
+
+## Commands
+
+```bash
+node tools/help/help-tool.mjs extract
+```
+Parses the screens listed in `docs/help/pages.json` plus the backing entity, and writes a field
+inventory to `artifacts/help/inventory.json` (gitignored). Prints how each label resolved.
+
+```bash
+node tools/help/help-tool.mjs stubs [--lang en,ar]
+```
+Creates or **merges** skeleton Markdown under `docs/help/{en,ar}/`. Safe to re-run:
+
+- hand-written prose is never touched
+- the `**Rules.**` line is regenerated every run from the entity's data annotations
+- new fields are inserted in screen order
+- sections for fields no longer on screen are **kept**, and reported by `coverage`
+
+```bash
+node tools/help/help-tool.mjs build [--lang en,ar]
+```
+Compiles the Markdown into the runtime payload the Angular drawer loads,
+`angular/src/assets/help/{lang}/{helpId}.json` — one file per screen, fetched on first open and
+cached. Rules text is regenerated here too, so prose can never carry a stale validation rule.
+Build only the languages that actually have prose: a missing language falls back to English at
+runtime, which is better than shipping a file full of `_TODO_`. English and Arabic both have
+prose for the pilot screens, so a plain `build` builds both.
+
+The Rules line is generated per language from the same rule parts, so Arabic can never state a
+different rule from English. Arabic rules name choices and master-data lists with the app's own
+strings from `HCMv3-ar.xml`, and use Arabic number agreement ("1000 حرف", "64 حرفاً"). The
+Arabic label is `**القواعد.**`; either label is recognised, so an English Rules line in an
+Arabic file is rewritten rather than duplicated. Write Arabic prose with the terms in
+`docs/localization/arabic-glossary.md`, and name fields and menus exactly as the Arabic UI does.
+
+```bash
+node tools/help/help-tool.mjs coverage [--check]
+```
+Three-bucket report (DESIGN.md §12). `--check` exits non-zero on errors, for CI.
+
+| Bucket | Meaning |
+|---|---|
+| `warn   undocumented field` | On screen, no section. Authoring gap. |
+| `ERROR  stale section` | Section exists, field does not. Fix or annotate. |
+| `ok     conditional field` | Absent field carrying `<!-- when: … -->`. Expected. |
+
+## Adding a screen
+
+Append an entry to `docs/help/pages.json`, then run `extract` and read the output before
+generating stubs. `unresolved labels: 0` means every label on the screen mapped to a real entity
+property; anything else needs an alias or a registry fix first.
+
+## Adding a whole module
+
+```bash
+node tools/help/help-tool.mjs discover <admin-module-folder> <help-id-prefix>
+```
+Registers every create/edit form in `angular/src/app/admin/<folder>` — any template whose labels
+use `for="Entity_Property"` — with its entity, a help id (`<prefix>.<entity>.edit`), a title and
+drawer group from the app's own strings, and the module's create/edit permissions. Safe to
+re-run. Then `extract` (expect `unresolved labels: 0`), `stubs`, write, `build`, `coverage`.
+
+Before writing a field's "why", find the code that **reads** it, not just where it is defined. A
+field nothing reads gets "Not read at present" — say so rather than describe what it was meant for
+as if it worked.
+
+## Shared default topics
+
+`docs/help/{lang}/_shared.md` holds topics with ids like `{#*.Code}`. Any entity's field of that
+name with no topic of its own uses it, and is never stubbed. Write only what is true for *every*
+entity there; per-entity behaviour (auto-assigned codes, uniqueness) comes from the Rules line.
+
+## Rules the generator reads from code
+
+Besides the entity's annotations, the Rules line states what the form's own application service
+enforces: auto-assigned and unique codes, unique names, end date not before start date, no
+overlapping periods, one record per start date, and effective-dated history (saving closes the
+previous record). Overlap and start-date checks name their scope from the query itself, e.g.
+"the same employee and ticket type". Choice lists come from the form's dropdown, not the enum.
+
+## Screens that share fields
+
+A field shown on several screens is written **once**, in its home file — the first screen in
+`pages.json` that shows it. Every other screen borrows it: `stubs`, `build` and `coverage` pool
+all topics of a language by canonical id. So a new screen's file only ever gets stubs for the
+fields no earlier screen documents. Defining the same field in two files is a coverage error.
+
+A screen with no read view (a form only) is registered with just an `edit` surface; give it a
+`sectionTitleClass` so its fields are grouped under the form's own section headings.
+
+## How labels are resolved
+
+A read-only screen has only a localization key in the DOM. The **edit surface** for the same
+entity carries both the key and the property (`<label for="Employee_TitleId">` +
+`{{ 'Title' | localize }}`), so it is used as the authoritative mapping. Fallbacks, in order:
+exact entity property, then `<key>Id` for lookups. Resolution source is recorded per field as
+`resolvedVia` in the inventory.

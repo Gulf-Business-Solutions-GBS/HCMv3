@@ -1,0 +1,32 @@
+﻿{{NP_Using_Looped_Template_Here}}
+{{Enum_Using_Looped_Template_Here}}
+using System.Collections.Generic;
+using Abp.Collections.Extensions;
+{{Threading_Tasks_Namespace_Here}}
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Importing.Dto;
+using {{Namespace_Here}}.DataExporting.Excel.MiniExcel;
+using {{Namespace_Here}}.DataImporting.Excel;
+using {{Namespace_Here}}.Dto;
+using {{Namespace_Here}}.Storage;
+
+namespace {{Namespace_Here}}.{{Namespace_Relative_Full_Here}};
+
+public class Invalid{{Entity_Name_Here}}Exporter(ITempFileCacheManager tempFileCacheManager)
+    : MiniExcelExcelExporterBase(tempFileCacheManager), IExcelInvalidEntityExporter<Import{{Entity_Name_Here}}Dto>
+{
+    public {{Return_Type_Here}} ExportToFile(List<Import{{Entity_Name_Here}}Dto> {{entity_Name_Here}}List)
+    {
+        var items = new List<Dictionary<string, object>>();
+
+        foreach (var {{entity_Name_Here}} in {{entity_Name_Here}}List)
+        {
+            items.Add(new Dictionary<string, object>()
+            {
+                {"Refuse Reason", {{entity_Name_Here}}.Exception}{{Property_Template_Looped_Here}}{{NP_Header_And_Value_Here}}
+            });
+        }
+
+        return {{Create_Excel_Package_Here}}("Invalid{{Entity_Name_Here}}ImportList.xlsx", items);
+    }
+}
+

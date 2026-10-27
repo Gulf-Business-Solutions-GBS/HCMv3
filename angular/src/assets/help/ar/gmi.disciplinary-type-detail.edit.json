@@ -1,0 +1,59 @@
+{
+  "helpId": "gmi.disciplinary-type-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل أنواع المخالفات — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.DisciplinaryTypeDetail",
+  "overviewHtml": "<p>درجة واحدة من سُلّم التصعيد لنوع المخالفة: ابتداءً من أي مخالفة ينطبق نوع خصم معيّن.</p><p>عند تسجيل مخالفة، يعدّ HCMv3 المخالفات السابقة للموظف من النوع نفسه ضمن مدة التكرار الخاصة بالنوع، مستبعداً ما رُفض منها، ثم يضيف واحداً للمخالفة الجديدة. والدرجة المستخدمة هي صاحبة أعلى عدد مخالفات لا يتجاوز ذلك الرقم. فمع درجات عند 1 و3 و5، تستخدم المخالفتان الأولى والثانية الدرجة 1، والثالثة والرابعة الدرجة 3، وكل مخالفة من الخامسة فصاعداً الدرجة 5.</p>",
+  "aliasIndex": {
+    "loc:DisciplinaryType": "DisciplinaryTypeDetail.DisciplinaryTypeId",
+    "dom:DisciplinaryTypeDetail_DisciplinaryTypeId": "DisciplinaryTypeDetail.DisciplinaryTypeId",
+    "loc:DisciplinaryCount": "DisciplinaryTypeDetail.DisciplinaryCount",
+    "dom:DisciplinaryTypeDetail_DisciplinaryCount": "DisciplinaryTypeDetail.DisciplinaryCount",
+    "loc:DisciplinaryDeductionType": "DisciplinaryTypeDetail.DisciplinaryDeductionTypeId",
+    "dom:DisciplinaryTypeDetail_DisciplinaryDeductionTypeId": "DisciplinaryTypeDetail.DisciplinaryDeductionTypeId"
+  },
+  "fields": [
+    {
+      "id": "DisciplinaryTypeDetail.DisciplinaryTypeId",
+      "label": "DisciplinaryType",
+      "section": "DisciplinaryTypeDetails",
+      "aliases": [
+        "loc:DisciplinaryType",
+        "dom:DisciplinaryTypeDetail_DisciplinaryTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع المخالفات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع المخالفة الذي تنتمي إليه هذه الدرجة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DisciplinaryTypeDetail.DisciplinaryCount",
+      "label": "DisciplinaryCount",
+      "section": "DisciplinaryTypeDetails",
+      "aliases": [
+        "loc:DisciplinaryCount",
+        "dom:DisciplinaryTypeDetail_DisciplinaryCount"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم المخالفة الذي تنطبق منه هذه الدرجة.</p><p><strong>مثال.</strong> <code>3</code>، من المخالفة الثالثة فصاعداً</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DisciplinaryTypeDetail.DisciplinaryDeductionTypeId",
+      "label": "DisciplinaryDeductionType",
+      "section": "DisciplinaryTypeDetails",
+      "aliases": [
+        "loc:DisciplinaryDeductionType",
+        "dom:DisciplinaryTypeDetail_DisciplinaryDeductionTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع خصم المخالفات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الخصم الذي ينطبق من هذه المخالفة فصاعداً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

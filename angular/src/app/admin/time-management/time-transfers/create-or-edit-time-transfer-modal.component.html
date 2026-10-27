@@ -1,0 +1,127 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #timeTransferForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (timeTransfer().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'TimeTransfer' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'TimeTransfer' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TimeTransfer_EmployeeId">{{ 'Employee' | localize }}</label>
+                                <select
+                                    id="TimeTransfer_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    [ngModel]="timeTransfer().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TimeTransfer_TransferDate">{{ 'TransferDate' | localize }}</label>
+                                <input
+                                    id="TimeTransfer_TransferDate"
+                                    #transferDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="TransferDate"
+                                    [ngModel]="timeTransfer().transferDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('transferDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="transferDateInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TimeTransfer_TransferTypeId">{{ 'TransferType' | localize }}</label>
+                                <select
+                                    id="TimeTransfer_TransferTypeId"
+                                    #transferTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="TransferTypeId"
+                                    [ngModel]="timeTransfer().transferTypeId"
+                                    (ngModelChange)="updateField('transferTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (transferType of transferTypes(); track transferType.id) {
+                                        <option [ngValue]="transferType.id">{{ transferType.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="transferTypeIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="TimeTransfer_TransferCount">{{ 'TransferCount' | localize }}</label>
+                                <input
+                                    id="TimeTransfer_TransferCount"
+                                    class="form-control"
+                                    type="number"
+                                    name="TransferCount"
+                                    [ngModel]="timeTransfer().transferCount"
+                                    (ngModelChange)="updateField('transferCount', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="TimeTransfer_Comments">{{ 'Comments' | localize }}</label>
+                                <textarea
+                                    id="TimeTransfer_Comments"
+                                    class="form-control"
+                                    rows="3"
+                                    name="Comments"
+                                    [ngModel]="timeTransfer().comments"
+                                    (ngModelChange)="updateField('comments', $event)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!timeTransferForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

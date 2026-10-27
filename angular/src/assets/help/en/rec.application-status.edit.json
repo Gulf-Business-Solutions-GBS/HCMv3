@@ -1,0 +1,75 @@
+{
+  "helpId": "rec.application-status.edit",
+  "lang": "en",
+  "title": "Application Statuses — Create / Edit",
+  "entity": "HCMv3.Recruitment.ApplicationStatus",
+  "overviewHtml": "<p>A candidate's application to a vacancy with one of their CVs, and how far it has got — applied, shortlisted, interviewed, offered, hired, rejected or joined.</p><p>Setting it to <em>Joined</em> creates the employee record from the applicant (see the applicant page); the applicant's joining and probation end dates must be filled in first. Once an application moves past <em>Applied</em>, the candidate can no longer change or delete that CV on the careers site.</p><p>Details on an application in the list opens its own page: the vacancy and status at the top, with Edit, then three tabs — Applicant summary (the candidate's details and the CV used), Interview Details (the application's interviews, which can be added and changed there) and Status history (every change of the status, newest first, with who made it and when). Status changes made before history was switched on for applications are not listed.</p>",
+  "aliasIndex": {
+    "loc:Vacancy": "ApplicationStatus.VacancyId",
+    "dom:ApplicationStatus_VacancyId": "ApplicationStatus.VacancyId",
+    "loc:ApplicantCVs": "ApplicationStatus.ApplicantCVId",
+    "dom:ApplicationStatus_ApplicantCVId": "ApplicationStatus.ApplicantCVId",
+    "loc:AppStatus": "ApplicationStatus.AppStatus",
+    "dom:ApplicationStatus_AppStatus": "ApplicationStatus.AppStatus",
+    "loc:CoverLetter": "ApplicationStatus.CoverLetter",
+    "dom:ApplicationStatus_CoverLetter": "ApplicationStatus.CoverLetter"
+  },
+  "fields": [
+    {
+      "id": "ApplicationStatus.VacancyId",
+      "label": "Vacancy",
+      "section": "ApplicationStatuses",
+      "aliases": [
+        "loc:Vacancy",
+        "dom:ApplicationStatus_VacancyId"
+      ],
+      "rules": "Optional. Chosen from Vacancy master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The vacancy applied for.</p><p><strong>Example.</strong> Senior Accountant</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ApplicationStatus.ApplicantCVId",
+      "label": "ApplicantCVs",
+      "section": "ApplicationStatuses",
+      "aliases": [
+        "loc:ApplicantCVs",
+        "dom:ApplicationStatus_ApplicantCVId"
+      ],
+      "rules": "Optional. Chosen from Applicant CV master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The CV the candidate applied with.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ApplicationStatus.AppStatus",
+      "label": "AppStatus",
+      "section": "ApplicationStatuses",
+      "aliases": [
+        "loc:AppStatus",
+        "dom:ApplicationStatus_AppStatus"
+      ],
+      "rules": "Required. One of: Applied, Shortlisted, Interviewed, Job offer, Hired, Rejected, Joined.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How far the application has got.</p><p><strong>Example.</strong> Shortlisted</p><p><strong>Why it matters.</strong> <em>Joined</em> creates the employee. The vacancy status report can filter by it.</p>",
+      "adminHtml": "<p>The employee created on <em>Joined</em> gets the next employee code, and its full names are built from all the name parts, the same as saving on the employee screen. No employee is created if one already has the same English names and birth date. The status change is refused, and no employee is created, if the applicant has no nationality, if the joining date is not after the birth date, or if an active employee already has the same civil ID. Fix the applicant and set <em>Joined</em> again.</p>",
+      "stub": false
+    },
+    {
+      "id": "ApplicationStatus.CoverLetter",
+      "label": "CoverLetter",
+      "section": "ApplicationStatuses",
+      "aliases": [
+        "loc:CoverLetter",
+        "dom:ApplicationStatus_CoverLetter"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The candidate's cover letter.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

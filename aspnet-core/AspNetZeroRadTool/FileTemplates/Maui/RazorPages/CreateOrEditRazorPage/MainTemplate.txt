@@ -1,0 +1,33 @@
+﻿@using {{Namespace_Here}}.Maui.Services.Navigation
+{{Enum_Using_Looped_Template_Here}}
+@inherits {{Project_Name_Here}}MainLayoutPageComponentBase
+@attribute [Route("/" + NavigationUrlConsts.{{Entity_Name_Plural_Here}}_Create_Or_Edit + "/{{{Entity_Name_Here}}Id:{{Primary_Key_Here}}?}")]
+{{Np_RouteAttribute_Here}}
+
+<div class="container">
+    <EditForm Model="CreateOrEdit{{Entity_Name_Here}}Model" OnValidSubmit="@Save">
+        <DataAnnotationsValidator/>
+        <div class="card mb-3">
+            <div class="card-body">
+                {{NP_Looped_Template_Here}}
+                {{Property_Looped_Template_Here}}
+                <div class="text-center">
+                    @if (_hasEditPermission || _hasCreatePermission)
+                    {
+                        <button type="submit" class="btn btn-primary w-100">
+                            <span class="indicator-label">@L("Save")</span>
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    </EditForm>
+    <div class="card">
+        <div class="card-body">
+            @if (CreateOrEdit{{Entity_Name_Here}}Model.IsEditMode && _hasDeletePermission)
+            {
+                <button type="button" class="btn btn-danger w-100" @onclick="Delete">@L("Delete")</button>
+            }
+        </div>
+    </div>
+</div>

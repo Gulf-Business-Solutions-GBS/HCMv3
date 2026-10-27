@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-fund-exemption.edit",
+  "lang": "ar",
+  "title": "إعفاءات صناديق الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeFundExemption",
+  "overviewHtml": "<p>فترة لا تقتطع فيها الرواتب اشتراك الصندوق.</p><p>تتخطى الرواتب الاقتطاع في أي مسيرة يقع تاريخ نهايتها داخل فترة إعفاء.</p>",
+  "aliasIndex": {
+    "loc:EmployeeFundId": "EmployeeFundExemption.EmployeeFundId",
+    "dom:EmployeeFundExemption_EmployeeFundId": "EmployeeFundExemption.EmployeeFundId",
+    "loc:StartDate": "EmployeeFundExemption.StartDate",
+    "dom:EmployeeFundExemption_StartDate": "EmployeeFundExemption.StartDate",
+    "loc:EndDate": "EmployeeFundExemption.EndDate",
+    "dom:EmployeeFundExemption_EndDate": "EmployeeFundExemption.EndDate",
+    "loc:Comments": "EmployeeFundExemption.Comments",
+    "dom:EmployeeFundExemption_Comments": "EmployeeFundExemption.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeFundExemption.EmployeeFundId",
+      "label": "EmployeeFundId",
+      "section": "EmployeeFundExemptions",
+      "aliases": [
+        "loc:EmployeeFundId",
+        "dom:EmployeeFundExemption_EmployeeFundId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حساب الصندوق الذي ينطبق عليه الإعفاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFundExemption.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeFundExemptions",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeFundExemption_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFundExemption.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeFundExemptions",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeFundExemption_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFundExemption.Comments",
+      "label": "Comments",
+      "section": "EmployeeFundExemptions",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeFundExemption_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

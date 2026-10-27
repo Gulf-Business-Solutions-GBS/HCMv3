@@ -1,0 +1,107 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'SponsorReport' | localize"
+        [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [showDateRange]="false"
+                    [showEmployeeCode]="false"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()" />
+
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '140rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 100px" pSortableColumn="code">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="code" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="name">
+                                        {{ 'Name' | localize }}
+                                        <p-sortIcon field="name" />
+                                    </th>
+                                    <th style="min-width: 180px">{{ 'OrganizationUnit' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'UnifiedNum' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'SocialSecurityNum' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'MOSALID' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'Governorate' | localize }}</th>
+                                    <th style="min-width: 200px">{{ 'Email' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'Gender' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'Profession' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'Building' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'Street' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'Area' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'Telephone' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'Nationality' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'BusinessType' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'Block' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'Fax' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'POBox' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 100px">{{ record.code }}</td>
+                                    <td style="min-width: 200px">{{ record.name }}</td>
+                                    <td style="min-width: 180px">{{ record.organizationUnitName }}</td>
+                                    <td style="min-width: 140px">{{ record.unifiedNum }}</td>
+                                    <td style="min-width: 160px">{{ record.socialSecurityNum }}</td>
+                                    <td style="min-width: 120px">{{ record.mOSALID }}</td>
+                                    <td style="min-width: 140px">{{ record.governorateName }}</td>
+                                    <td style="min-width: 200px">{{ record.email }}</td>
+                                    <td style="min-width: 100px">{{ record.gender }}</td>
+                                    <td style="min-width: 160px">{{ record.profession }}</td>
+                                    <td style="min-width: 140px">{{ record.building }}</td>
+                                    <td style="min-width: 140px">{{ record.street }}</td>
+                                    <td style="min-width: 140px">{{ record.area }}</td>
+                                    <td style="min-width: 120px">{{ record.telephone }}</td>
+                                    <td style="min-width: 160px">{{ record.nationalityName }}</td>
+                                    <td style="min-width: 160px">{{ record.businessTypeName }}</td>
+                                    <td style="min-width: 120px">{{ record.block }}</td>
+                                    <td style="min-width: 120px">{{ record.fax }}</td>
+                                    <td style="min-width: 120px">{{ record.pOBox }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+{
+  "helpId": "rpt.print-report-permission.edit",
+  "lang": "ar",
+  "title": "صلاحيات طباعة التقارير — إنشاء / تحرير",
+  "entity": "HCMv3.ReportManagement.PrintReportPermission",
+  "overviewHtml": "<p>تقارير الطباعة التي يجوز لمستخدمي دور واحد تشغيلها. يرى المستخدم التقارير الممنوحة لأي من أدواره. والمستخدم الذي ليست له منح لا يرى أياً منها، لكن مسؤولي الشركة ومستخدمي المضيف يرون دائماً كل التقارير النشطة. ولكل دور قيد واحد.</p>",
+  "aliasIndex": {
+    "loc:Code": "PrintReportPermission.Code",
+    "dom:PrintReportPermission_Code": "PrintReportPermission.Code",
+    "loc:Role": "PrintReportPermission.RoleId",
+    "dom:PrintReportPermission_RoleId": "PrintReportPermission.RoleId"
+  },
+  "fields": [
+    {
+      "id": "PrintReportPermission.Code",
+      "label": "Code",
+      "section": "PrintReportPermissions",
+      "aliases": [
+        "loc:Code",
+        "dom:PrintReportPermission_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PrintReportPermission.RoleId",
+      "label": "Role",
+      "section": "PrintReportPermissions",
+      "aliases": [
+        "loc:Role",
+        "dom:PrintReportPermission_RoleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الأدوار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدور الذي تُمنح له التقارير.</p><p><strong>مثال.</strong> الرواتب</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

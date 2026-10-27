@@ -1,0 +1,123 @@
+{
+  "helpId": "pay.employee-sub-group-fund.edit",
+  "lang": "en",
+  "title": "Employee Sub Group Funds — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupFund",
+  "overviewHtml": "<p>One pay band of the grade's fund deduction — for example a savings or provident fund. The employee's pay for the fund is the monthly total of wagetypes marked <em>Include In Fund</em>; the band whose From–To range holds that total sets the deduction.</p><p>The deduction is made only for employees enrolled in a fund, and not while they have a fund exemption or after their last day in service.</p>",
+  "aliasIndex": {
+    "loc:FromPay": "EmployeeSubGroupFund.FromPay",
+    "dom:EmployeeSubGroupFund_FromPay": "EmployeeSubGroupFund.FromPay",
+    "loc:ToPay": "EmployeeSubGroupFund.ToPay",
+    "dom:EmployeeSubGroupFund_ToPay": "EmployeeSubGroupFund.ToPay",
+    "loc:FundDedType": "EmployeeSubGroupFund.FundDedType",
+    "dom:EmployeeSubGroupFund_FundDedType": "EmployeeSubGroupFund.FundDedType",
+    "loc:Percentage": "EmployeeSubGroupFund.Percentage",
+    "dom:EmployeeSubGroupFund_Percentage": "EmployeeSubGroupFund.Percentage",
+    "loc:MinAmount": "EmployeeSubGroupFund.MinAmount",
+    "dom:EmployeeSubGroupFund_MinAmount": "EmployeeSubGroupFund.MinAmount",
+    "loc:MaxAmount": "EmployeeSubGroupFund.MaxAmount",
+    "dom:EmployeeSubGroupFund_MaxAmount": "EmployeeSubGroupFund.MaxAmount",
+    "loc:FixAmount": "EmployeeSubGroupFund.FixAmount",
+    "dom:EmployeeSubGroupFund_FixAmount": "EmployeeSubGroupFund.FixAmount"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupFund.FromPay",
+      "label": "FromPay",
+      "section": "EmployeeSubGroupFunds",
+      "aliases": [
+        "loc:FromPay",
+        "dom:EmployeeSubGroupFund_FromPay"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The lowest pay in this band.</p><p><strong>Example.</strong> <code>0</code></p><p><strong>Why it matters.</strong> From cannot be greater than To.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupFund.ToPay",
+      "label": "ToPay",
+      "section": "EmployeeSubGroupFunds",
+      "aliases": [
+        "loc:ToPay",
+        "dom:EmployeeSubGroupFund_ToPay"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The highest pay in this band.</p><p><strong>Example.</strong> <code>999</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupFund.FundDedType",
+      "label": "FundDedType",
+      "section": "EmployeeSubGroupFunds",
+      "aliases": [
+        "loc:FundDedType",
+        "dom:EmployeeSubGroupFund_FundDedType"
+      ],
+      "rules": "Required. One of: Percentage, PercentageWithinLimit, Fix Amount.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the deduction is worked out for this band.</p><p><strong>Example.</strong> Percentage</p><p><strong>Why it matters.</strong> <em>Fix Amount</em> deducts the fixed amount. <em>Percentage</em> deducts the percentage of the pay. <em>PercentageWithinLimit</em> deducts the percentage, but no more than the maximum and no less than the minimum. The result is rounded to 2 decimals.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupFund.Percentage",
+      "label": "Percentage",
+      "section": "EmployeeSubGroupFunds",
+      "aliases": [
+        "loc:Percentage",
+        "dom:EmployeeSubGroupFund_Percentage"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The percentage of pay deducted, for the two percentage types.</p><p><strong>Example.</strong> <code>5</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupFund.MinAmount",
+      "label": "MinAmount",
+      "section": "EmployeeSubGroupFunds",
+      "aliases": [
+        "loc:MinAmount",
+        "dom:EmployeeSubGroupFund_MinAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The least deducted, for <em>PercentageWithinLimit</em>.</p><p><strong>Example.</strong> <code>10</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupFund.MaxAmount",
+      "label": "MaxAmount",
+      "section": "EmployeeSubGroupFunds",
+      "aliases": [
+        "loc:MaxAmount",
+        "dom:EmployeeSubGroupFund_MaxAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most deducted, for <em>PercentageWithinLimit</em>.</p><p><strong>Example.</strong> <code>100</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupFund.FixAmount",
+      "label": "FixAmount",
+      "section": "EmployeeSubGroupFunds",
+      "aliases": [
+        "loc:FixAmount",
+        "dom:EmployeeSubGroupFund_FixAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount deducted, for <em>Fix Amount</em>.</p><p><strong>Example.</strong> <code>25</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

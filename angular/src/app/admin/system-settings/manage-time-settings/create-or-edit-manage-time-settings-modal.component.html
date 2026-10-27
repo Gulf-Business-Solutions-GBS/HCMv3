@@ -1,0 +1,586 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'TimeSettings' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'TimeSettings' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body" style="max-height: 75vh; overflow-y: auto">
+                        <fieldset>
+                            <legend>{{ 'EvaluationAndRoster' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" for="TimeSettings_EarliestEvaluationDate">{{ 'EarliestEvaluationDate' | localize }}</label>
+                                    <input
+                                        id="TimeSettings_EarliestEvaluationDate"
+                                        type="date"
+                                        class="form-control"
+                                        name="EarliestEvaluationDate"
+                                        [ngModel]="record().earliestEvaluationDate?.toISODate()"
+                                        (ngModelChange)="updateDateField('earliestEvaluationDate', $event)" />
+                                </div>
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" for="TimeSettings_FutureEvaluationInDays">{{ 'FutureEvaluationInDays' | localize }}</label>
+                                    <input
+                                        id="TimeSettings_FutureEvaluationInDays"
+                                        type="number"
+                                        class="form-control"
+                                        name="FutureEvaluationInDays"
+                                        [ngModel]="record().futureEvaluationInDays"
+                                        (ngModelChange)="updateNumberField('futureEvaluationInDays', $event)" />
+                                </div>
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" for="TimeSettings_RosterPlannerFrequency">{{ 'RosterPlannerFrequency' | localize }}</label>
+                                    <select
+                                        id="TimeSettings_RosterPlannerFrequency"
+                                        class="form-select"
+                                        name="RosterPlannerFrequency"
+                                        [ngModel]="record().rosterPlannerFrequency"
+                                        (ngModelChange)="updateField('rosterPlannerFrequency', $event)">
+                                        @for (option of rosterPlannerFrequencyOptions; track option.value) {
+                                            <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableRosterDuty"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableRosterDuty"
+                                            [ngModel]="record().enableRosterDuty"
+                                            (ngModelChange)="updateField('enableRosterDuty', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableRosterDuty">{{ 'EnableRosterDuty' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableTimeEngineAutorun"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableTimeEngineAutorun"
+                                            [ngModel]="record().enableTimeEngineAutorun"
+                                            (ngModelChange)="updateField('enableTimeEngineAutorun', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableTimeEngineAutorun">{{ 'EnableTimeEngineAutorun' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableMiddleTierTimeEvents"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableMiddleTierTimeEvents"
+                                            [ngModel]="record().enableMiddleTierTimeEvents"
+                                            (ngModelChange)="updateField('enableMiddleTierTimeEvents', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableMiddleTierTimeEvents">{{ 'EnableMiddleTierTimeEvents' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableGeoFence"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableGeoFence"
+                                            [ngModel]="record().enableGeoFence"
+                                            (ngModelChange)="updateField('enableGeoFence', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableGeoFence">{{ 'EnableGeoFence' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>{{ 'AttendanceRules' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableTimeAttendanceIntegration"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableTimeAttendanceIntegration"
+                                            [ngModel]="record().enableTimeAttendanceIntegration"
+                                            (ngModelChange)="updateField('enableTimeAttendanceIntegration', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableTimeAttendanceIntegration">{{ 'EnableTimeAttendanceIntegration' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableAttendanceOnHoliday"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableAttendanceOnHoliday"
+                                            [ngModel]="record().enableAttendanceOnHoliday"
+                                            (ngModelChange)="updateField('enableAttendanceOnHoliday', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableAttendanceOnHoliday">{{ 'EnableAttendanceOnHoliday' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableAttendanceOnWeekOff"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableAttendanceOnWeekOff"
+                                            [ngModel]="record().enableAttendanceOnWeekOff"
+                                            (ngModelChange)="updateField('enableAttendanceOnWeekOff', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableAttendanceOnWeekOff">{{ 'EnableAttendanceOnWeekOff' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableAttendanceOnRestDay"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableAttendanceOnRestDay"
+                                            [ngModel]="record().enableAttendanceOnRestDay"
+                                            (ngModelChange)="updateField('enableAttendanceOnRestDay', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableAttendanceOnRestDay">{{ 'EnableAttendanceOnRestDay' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_CountWeekoffOnPH"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="CountWeekoffOnPH"
+                                            [ngModel]="record().countWeekoffOnPH"
+                                            (ngModelChange)="updateField('countWeekoffOnPH', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_CountWeekoffOnPH">{{ 'CountWeekoffOnPH' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_CountRestDayOnPH"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="CountRestDayOnPH"
+                                            [ngModel]="record().countRestDayOnPH"
+                                            (ngModelChange)="updateField('countRestDayOnPH', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_CountRestDayOnPH">{{ 'CountRestDayOnPH' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableTimeAttIntegrationAPI"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableTimeAttIntegrationAPI"
+                                            [ngModel]="record().enableTimeAttIntegrationAPI"
+                                            (ngModelChange)="updateField('enableTimeAttIntegrationAPI', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableTimeAttIntegrationAPI">{{ 'EnableTimeAttIntegrationAPI' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_AllowDuplicateInTimeEvent"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="AllowDuplicateInTimeEvent"
+                                            [ngModel]="record().allowDuplicateInTimeEvent"
+                                            (ngModelChange)="updateField('allowDuplicateInTimeEvent', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_AllowDuplicateInTimeEvent">{{ 'AllowDuplicateInTimeEvent' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_UseActualTransInPlannedTimePolicy"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="UseActualTransInPlannedTimePolicy"
+                                            [ngModel]="record().useActualTransInPlannedTimePolicy"
+                                            (ngModelChange)="updateField('useActualTransInPlannedTimePolicy', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_UseActualTransInPlannedTimePolicy">{{ 'UseActualTransInPlannedTimePolicy' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableMySqlIntegration"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableMySqlIntegration"
+                                            [ngModel]="record().enableMySqlIntegration"
+                                            (ngModelChange)="updateField('enableMySqlIntegration', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableMySqlIntegration">{{ 'EnableMySqlIntegration' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="TimeSettings_TimeEventImportPath">{{ 'TimeEventImportPath' | localize }}</label>
+                                    <input
+                                        id="TimeSettings_TimeEventImportPath"
+                                        type="text"
+                                        class="form-control"
+                                        name="TimeEventImportPath"
+                                        maxlength="512"
+                                        [ngModel]="record().timeEventImportPath"
+                                        (ngModelChange)="updateField('timeEventImportPath', $event)" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" for="TimeSettings_TimeEventSyncBatchCount">{{ 'TimeEventSyncBatchCount' | localize }}</label>
+                                    <input
+                                        id="TimeSettings_TimeEventSyncBatchCount"
+                                        type="number"
+                                        class="form-control"
+                                        name="TimeEventSyncBatchCount"
+                                        [ngModel]="record().timeEventSyncBatchCount"
+                                        (ngModelChange)="updateNumberField('timeEventSyncBatchCount', $event)" />
+                                </div>
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" for="TimeSettings_TimeEventSyncFreq">{{ 'TimeEventSyncFreq' | localize }}</label>
+                                    <input
+                                        id="TimeSettings_TimeEventSyncFreq"
+                                        type="number"
+                                        class="form-control"
+                                        name="TimeEventSyncFreq"
+                                        [ngModel]="record().timeEventSyncFreq"
+                                        (ngModelChange)="updateNumberField('timeEventSyncFreq', $event)" />
+                                </div>
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" for="TimeSettings_MidTierSyncBatchCount">{{ 'MidTierSyncBatchCount' | localize }}</label>
+                                    <input
+                                        id="TimeSettings_MidTierSyncBatchCount"
+                                        type="number"
+                                        class="form-control"
+                                        name="MidTierSyncBatchCount"
+                                        [ngModel]="record().midTierSyncBatchCount"
+                                        (ngModelChange)="updateNumberField('midTierSyncBatchCount', $event)" />
+                                </div>
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" for="TimeSettings_MidTierSyncFreq">{{ 'MidTierSyncFreq' | localize }}</label>
+                                    <input
+                                        id="TimeSettings_MidTierSyncFreq"
+                                        type="number"
+                                        class="form-control"
+                                        name="MidTierSyncFreq"
+                                        [ngModel]="record().midTierSyncFreq"
+                                        (ngModelChange)="updateNumberField('midTierSyncFreq', $event)" />
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>{{ 'LeaveRules' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_ExcludePaidLeaveAccrualOnAbsent"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="ExcludePaidLeaveAccrualOnAbsent"
+                                            [ngModel]="record().excludePaidLeaveAccrualOnAbsent"
+                                            (ngModelChange)="updateField('excludePaidLeaveAccrualOnAbsent', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_ExcludePaidLeaveAccrualOnAbsent">{{ 'ExcludePaidLeaveAccrualOnAbsent' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_HourlyLeavelogicEnable"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="HourlyLeavelogicEnable"
+                                            [ngModel]="record().hourlyLeavelogicEnable"
+                                            (ngModelChange)="updateField('hourlyLeavelogicEnable', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_HourlyLeavelogicEnable">{{ 'HourlyLeavelogicEnable' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_HourlyLeaveShouldSignIn"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="HourlyLeaveShouldSignIn"
+                                            [ngModel]="record().hourlyLeaveShouldSignIn"
+                                            (ngModelChange)="updateField('hourlyLeaveShouldSignIn', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_HourlyLeaveShouldSignIn">{{ 'HourlyLeaveShouldSignIn' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_HourlyLeaveShouldSignOut"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="HourlyLeaveShouldSignOut"
+                                            [ngModel]="record().hourlyLeaveShouldSignOut"
+                                            (ngModelChange)="updateField('hourlyLeaveShouldSignOut', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_HourlyLeaveShouldSignOut">{{ 'HourlyLeaveShouldSignOut' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_RestrictUnpaidleaveIfAnnualleaveAvailable"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="RestrictUnpaidleaveIfAnnualleaveAvailable"
+                                            [ngModel]="record().restrictUnpaidleaveIfAnnualleaveAvailable"
+                                            (ngModelChange)="updateField('restrictUnpaidleaveIfAnnualleaveAvailable', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_RestrictUnpaidleaveIfAnnualleaveAvailable">{{ 'RestrictUnpaidleaveIfAnnualleaveAvailable' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_AllowPaidleaveBackdateEntry"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="AllowPaidleaveBackdateEntry"
+                                            [ngModel]="record().allowPaidleaveBackdateEntry"
+                                            (ngModelChange)="updateField('allowPaidleaveBackdateEntry', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_AllowPaidleaveBackdateEntry">{{ 'AllowPaidleaveBackdateEntry' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_SickLeaveAttachMandatory"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="SickLeaveAttachMandatory"
+                                            [ngModel]="record().sickLeaveAttachMandatory"
+                                            (ngModelChange)="updateField('sickLeaveAttachMandatory', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_SickLeaveAttachMandatory">{{ 'SickLeaveAttachMandatory' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableAutoReturnInConsecutiveLeave"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableAutoReturnInConsecutiveLeave"
+                                            [ngModel]="record().enableAutoReturnInConsecutiveLeave"
+                                            (ngModelChange)="updateField('enableAutoReturnInConsecutiveLeave', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableAutoReturnInConsecutiveLeave">{{ 'EnableAutoReturnInConsecutiveLeave' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_AllowFutureDatedReturnFromLeave"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="AllowFutureDatedReturnFromLeave"
+                                            [ngModel]="record().allowFutureDatedReturnFromLeave"
+                                            (ngModelChange)="updateField('allowFutureDatedReturnFromLeave', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_AllowFutureDatedReturnFromLeave">{{ 'AllowFutureDatedReturnFromLeave' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableAutoHalfDayLeave"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableAutoHalfDayLeave"
+                                            [ngModel]="record().enableAutoHalfDayLeave"
+                                            (ngModelChange)="updateField('enableAutoHalfDayLeave', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableAutoHalfDayLeave">{{ 'EnableAutoHalfDayLeave' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableSettleFractionalLeaveBalance"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableSettleFractionalLeaveBalance"
+                                            [ngModel]="record().enableSettleFractionalLeaveBalance"
+                                            (ngModelChange)="updateField('enableSettleFractionalLeaveBalance', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableSettleFractionalLeaveBalance">{{ 'EnableSettleFractionalLeaveBalance' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableBookingQuotaInLeaveRequest"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableBookingQuotaInLeaveRequest"
+                                            [ngModel]="record().enableBookingQuotaInLeaveRequest"
+                                            (ngModelChange)="updateField('enableBookingQuotaInLeaveRequest', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableBookingQuotaInLeaveRequest">{{ 'EnableBookingQuotaInLeaveRequest' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" for="TimeSettings_LeaveDeductionStartMonth">{{ 'LeaveDeductionStartMonth' | localize }}</label>
+                                    <input
+                                        id="TimeSettings_LeaveDeductionStartMonth"
+                                        type="number"
+                                        class="form-control"
+                                        name="LeaveDeductionStartMonth"
+                                        [ngModel]="record().leaveDeductionStartMonth"
+                                        (ngModelChange)="updateNumberField('leaveDeductionStartMonth', $event)" />
+                                </div>
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" for="TimeSettings_ForfeitRule">{{ 'ForfeitRule' | localize }}</label>
+                                    <select
+                                        id="TimeSettings_ForfeitRule"
+                                        class="form-select"
+                                        name="ForfeitRule"
+                                        [ngModel]="record().forfeitRule"
+                                        (ngModelChange)="updateField('forfeitRule', $event)">
+                                        @for (option of forfeitRuleOptions; track option.value) {
+                                            <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" for="TimeSettings_AbsenceViolationRuleId">{{ 'AbsenceViolationRuleId' | localize }}</label>
+                                    <input
+                                        id="TimeSettings_AbsenceViolationRuleId"
+                                        type="number"
+                                        class="form-control"
+                                        name="AbsenceViolationRuleId"
+                                        [ngModel]="record().absenceViolationRuleId"
+                                        (ngModelChange)="updateNullableNumberField('absenceViolationRuleId', $event)" />
+                                </div>
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" for="TimeSettings_AbsenceViolationEffectiveDate">{{ 'AbsenceViolationEffectiveDate' | localize }}</label>
+                                    <input
+                                        id="TimeSettings_AbsenceViolationEffectiveDate"
+                                        type="date"
+                                        class="form-control"
+                                        name="AbsenceViolationEffectiveDate"
+                                        [ngModel]="record().absenceViolationEffectiveDate?.toISODate()"
+                                        (ngModelChange)="updateDateField('absenceViolationEffectiveDate', $event)" />
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>{{ 'OvertimeAndPayroll' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableOvertimeInTimeEngine"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableOvertimeInTimeEngine"
+                                            [ngModel]="record().enableOvertimeInTimeEngine"
+                                            (ngModelChange)="updateField('enableOvertimeInTimeEngine', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableOvertimeInTimeEngine">{{ 'EnableOvertimeInTimeEngine' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableIsTravelling"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableIsTravelling"
+                                            [ngModel]="record().enableIsTravelling"
+                                            (ngModelChange)="updateField('enableIsTravelling', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableIsTravelling">{{ 'EnableIsTravelling' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnablePayFullWithPayroll"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnablePayFullWithPayroll"
+                                            [ngModel]="record().enablePayFullWithPayroll"
+                                            (ngModelChange)="updateField('enablePayFullWithPayroll', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnablePayFullWithPayroll">{{ 'EnablePayFullWithPayroll' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>{{ 'Approval' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_EnableTimeRegisterApproval"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableTimeRegisterApproval"
+                                            [ngModel]="record().enableTimeRegisterApproval"
+                                            (ngModelChange)="updateField('enableTimeRegisterApproval', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_EnableTimeRegisterApproval">{{ 'EnableTimeRegisterApproval' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="TimeSettings_AutoApproveTimeLog"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="AutoApproveTimeLog"
+                                            [ngModel]="record().autoApproveTimeLog"
+                                            (ngModelChange)="updateField('autoApproveTimeLog', $event)" />
+                                        <label class="form-check-label" for="TimeSettings_AutoApproveTimeLog">{{ 'AutoApproveTimeLog' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

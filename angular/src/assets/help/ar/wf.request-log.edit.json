@@ -1,0 +1,123 @@
+{
+  "helpId": "wf.request-log.edit",
+  "lang": "ar",
+  "title": "سجلات الطلبات — إنشاء / تحرير",
+  "entity": "HCMv3.Workflow.RequestLog",
+  "overviewHtml": "<p>إجراء واحد اتُّخذ على طلب — إنشاء أو موافقة أو رفض أو إعادة أو تصعيد أو قراءة. يغذّي سجل نشاط الطلب وسجل الموافقات في رسائل البريد. يكتبه محرك سير العمل أثناء تنقّل الطلبات، ولا يوجد عادةً سبب لإضافة قيود أو تعديلها يدوياً.</p>",
+  "aliasIndex": {
+    "loc:WorkflowRequests": "RequestLog.WorkflowRequestId",
+    "dom:RequestLog_WorkflowRequestId": "RequestLog.WorkflowRequestId",
+    "loc:ActionBy": "RequestLog.ActionById",
+    "dom:RequestLog_ActionById": "RequestLog.ActionById",
+    "loc:ActionType": "RequestLog.ActionType",
+    "dom:RequestLog_ActionType": "RequestLog.ActionType",
+    "loc:WorkflowStep": "RequestLog.WorkflowStep",
+    "dom:RequestLog_WorkflowStep": "RequestLog.WorkflowStep",
+    "loc:ActionDays": "RequestLog.ActionDays",
+    "dom:RequestLog_ActionDays": "RequestLog.ActionDays",
+    "loc:Platform": "RequestLog.Platform",
+    "dom:RequestLog_Platform": "RequestLog.Platform",
+    "loc:RequestActionComment": "RequestLog.RequestActionComment",
+    "dom:RequestLog_RequestActionComment": "RequestLog.RequestActionComment"
+  },
+  "fields": [
+    {
+      "id": "RequestLog.WorkflowRequestId",
+      "label": "WorkflowRequests",
+      "section": "RequestLogs",
+      "aliases": [
+        "loc:WorkflowRequests",
+        "dom:RequestLog_WorkflowRequestId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة طلبات سير العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طلب سير العمل الذي يخصه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestLog.ActionById",
+      "label": "ActionBy",
+      "section": "RequestLogs",
+      "aliases": [
+        "loc:ActionBy",
+        "dom:RequestLog_ActionById"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من اتخذ الإجراء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestLog.ActionType",
+      "label": "ActionType",
+      "section": "RequestLogs",
+      "aliases": [
+        "loc:ActionType",
+        "dom:RequestLog_ActionType"
+      ],
+      "rules": "إلزامي. إحدى القيم: Created، معتمد، مرفوض، Escalated، Read، SentBack، مغلق، Remarked، Assigned، محوّل، SentBackToCreator، RecordedDirectly.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما الذي تم.</p><p><strong>مثال.</strong> موافق عليه</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestLog.WorkflowStep",
+      "label": "WorkflowStep",
+      "section": "RequestLogs",
+      "aliases": [
+        "loc:WorkflowStep",
+        "dom:RequestLog_WorkflowStep"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الخطوة التي تم فيها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestLog.ActionDays",
+      "label": "ActionDays",
+      "section": "RequestLogs",
+      "aliases": [
+        "loc:ActionDays",
+        "dom:RequestLog_ActionDays"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأيام التي استغرقها الإجراء.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestLog.Platform",
+      "label": "Platform",
+      "section": "RequestLogs",
+      "aliases": [
+        "loc:Platform",
+        "dom:RequestLog_Platform"
+      ],
+      "rules": "إلزامي. إحدى القيم: Core، ESS، الهاتف المتنقل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المصدر الذي جاء منه الإجراء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestLog.RequestActionComment",
+      "label": "RequestActionComment",
+      "section": "RequestLogs",
+      "aliases": [
+        "loc:RequestActionComment",
+        "dom:RequestLog_RequestActionComment"
+      ],
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التعليق المرفق بالإجراء.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

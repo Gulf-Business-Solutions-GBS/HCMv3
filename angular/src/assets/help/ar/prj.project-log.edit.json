@@ -1,0 +1,123 @@
+{
+  "helpId": "prj.project-log.edit",
+  "lang": "ar",
+  "title": "سجلات تشغيل المشاريع — إنشاء / تحرير",
+  "entity": "HCMv3.ProjectManagement.ProjectLog",
+  "overviewHtml": "<p>سطر في سجل تشغيل محرك تكلفة المشاريع: سطر لكل موظف، إضافة إلى سطر للتشغيل الذي فشل قبل أن يبدأ. وتقرؤه شاشة المحرك لعرض التقدم. يكتبه محرك تكلفة المشاريع، ولا يوجد عادةً سبب لإضافة قيود أو تعديلها يدوياً.</p>",
+  "aliasIndex": {
+    "loc:Employee": "ProjectLog.EmployeeId",
+    "dom:ProjectLog_EmployeeId": "ProjectLog.EmployeeId",
+    "loc:RunTimeStamp": "ProjectLog.RunTimeStamp",
+    "dom:ProjectLog_RunTimeStamp": "ProjectLog.RunTimeStamp",
+    "loc:Message": "ProjectLog.Message",
+    "dom:ProjectLog_Message": "ProjectLog.Message",
+    "loc:Status": "ProjectLog.Status",
+    "dom:ProjectLog_Status": "ProjectLog.Status",
+    "loc:InPeriod": "ProjectLog.InPeriod",
+    "dom:ProjectLog_InPeriod": "ProjectLog.InPeriod",
+    "loc:NoOfEmployee": "ProjectLog.NoOfEmployee",
+    "dom:ProjectLog_NoOfEmployee": "ProjectLog.NoOfEmployee",
+    "loc:StopFlag": "ProjectLog.StopFlag",
+    "dom:ProjectLog_StopFlag": "ProjectLog.StopFlag"
+  },
+  "fields": [
+    {
+      "id": "ProjectLog.EmployeeId",
+      "label": "Employee",
+      "section": "ProjectLogs",
+      "aliases": [
+        "loc:Employee",
+        "dom:ProjectLog_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي عولج، إن وُجد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectLog.RunTimeStamp",
+      "label": "RunTimeStamp",
+      "section": "ProjectLogs",
+      "aliases": [
+        "loc:RunTimeStamp",
+        "dom:ProjectLog_RunTimeStamp"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى كُتب السطر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectLog.Message",
+      "label": "Message",
+      "section": "ProjectLogs",
+      "aliases": [
+        "loc:Message",
+        "dom:ProjectLog_Message"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النتيجة، أو الخطأ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectLog.Status",
+      "label": "Status",
+      "section": "ProjectLogs",
+      "aliases": [
+        "loc:Status",
+        "dom:ProjectLog_Status"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> 0 عند معالجة الموظف بنجاح، وأي قيمة أخرى تعني فشلاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectLog.InPeriod",
+      "label": "InPeriod",
+      "section": "ProjectLogs",
+      "aliases": [
+        "loc:InPeriod",
+        "dom:ProjectLog_InPeriod"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة الرواتب التي شُغّلت.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectLog.NoOfEmployee",
+      "label": "NoOfEmployee",
+      "section": "ProjectLogs",
+      "aliases": [
+        "loc:NoOfEmployee",
+        "dom:ProjectLog_NoOfEmployee"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الموظفين الذين يشملهم التشغيل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectLog.StopFlag",
+      "label": "StopFlag",
+      "section": "ProjectLogs",
+      "aliases": [
+        "loc:StopFlag",
+        "dom:ProjectLog_StopFlag"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طلب إيقاف التشغيل.</p><p><strong>لماذا يهم.</strong> ما دام أي سطر محدداً فيه، يتوقف المحرك قبل الموظف التالي.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+<div [@routerTransition]>
+    <sub-header [title]="'BackgroundJobs' | localize" [description]="'BackgroundJobsIntro' | localize">
+        <div role="actions">
+            <button type="button" class="btn btn-light-primary" [disabled]="isLoading()" (click)="load()">
+                <i class="fa fa-sync-alt btn-md-icon" [class.fa-spin]="isLoading()" aria-hidden="true"></i>
+                <span class="d-none d-md-inline-block">{{ 'Refresh' | localize }}</span>
+            </button>
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div [busyIf]="isLoading()">
+            @if (overview(); as data) {
+                @if (!isHost()) {
+                    <div class="alert alert-light-info d-flex align-items-start gap-3 mb-5">
+                        <i class="fa fa-info-circle mt-1" aria-hidden="true"></i>
+                        <span>{{ 'BackgroundJobsCompanyNote' | localize }}</span>
+                    </div>
+                }
+
+                <div class="text-muted small mb-3">
+                    {{ l('BgUpdatedAt', (data.generatedTime | luxonFormat: 'dd/MM/yyyy HH:mm:ss')) }}
+                </div>
+
+                <!--begin::Scheduled tasks-->
+                <div class="card card-custom mb-5">
+                    <div class="card-header border-0 pt-5">
+                        <h3 class="card-title flex-column align-items-start">
+                            <span class="card-label fw-bold">
+                                {{ 'ScheduledTasks' | localize }}
+                                @if (failingTaskCount() > 0) {
+                                    <span class="badge badge-light-danger ms-2">{{ failingTaskCount() }} {{ 'Failed' | localize }}</span>
+                                }
+                            </span>
+                            <span class="text-muted mt-1 fw-semibold fs-7">{{ 'ScheduledTasksHint' | localize }}</span>
+                        </h3>
+                    </div>
+                    <div class="card-body pt-2">
+                        <div class="table-responsive">
+                            <table class="table table-row-dashed align-middle bg-jobs-table">
+                                <thead>
+                                    <tr class="fw-bold text-muted">
+                                        <th>{{ 'BgTask' | localize }}</th>
+                                        <th>{{ 'BgRunsEvery' | localize }}</th>
+                                        <th>{{ 'LastRun' | localize }}</th>
+                                        <th>{{ 'Status' | localize }}</th>
+                                        <th>{{ 'BgLastSuccess' | localize }}</th>
+                                        <th>{{ 'BgLastFailure' | localize }}</th>
+                                        <th class="text-end">{{ 'BgRuns' | localize }}</th>
+                                        <th class="text-end">{{ 'BgFailures' | localize }}</th>
+                                        <th>{{ 'BgLastError' | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (task of tasks(); track task.workerName) {
+                                        <tr>
+                                            <td class="fw-semibold">{{ task.displayName }}</td>
+                                            <td>{{ interval(task.intervalMinutes) }}</td>
+                                            <td>
+                                                @if (task.hasRun) {
+                                                    <div>{{ task.lastEndTime | luxonFormat: 'dd/MM/yyyy HH:mm' }}</div>
+                                                    <div class="text-muted small">{{ task.lastEndTime | luxonFromNow }}</div>
+                                                } @else {
+                                                    <span class="text-muted">{{ 'BgNotRunYet' | localize }}</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (task.lastSucceeded === true) {
+                                                    <span class="badge badge-light-success">{{ 'BgSucceeded' | localize }}</span>
+                                                } @else if (task.lastSucceeded === false) {
+                                                    <span class="badge badge-light-danger">{{ 'Failed' | localize }}</span>
+                                                } @else {
+                                                    <span class="badge badge-light">—</span>
+                                                }
+                                            </td>
+                                            <td>{{ task.lastSuccessTime | luxonFormat: 'dd/MM/yyyy HH:mm' }}</td>
+                                            <td>{{ task.lastFailureTime | luxonFormat: 'dd/MM/yyyy HH:mm' }}</td>
+                                            <td class="text-end">{{ task.runCount }}</td>
+                                            <td class="text-end" [class.text-danger]="task.failureCount > 0">{{ task.failureCount }}</td>
+                                            <td class="bg-jobs-error">
+                                                @if (task.lastError) {
+                                                    <span class="text-danger" [title]="task.lastError">{{ task.lastError }}</span>
+                                                } @else if (!isHost() && task.failureCount > 0) {
+                                                    <span class="text-muted fst-italic">{{ 'BgHostOnly' | localize }}</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Scheduled tasks-->
+
+                <!--begin::Queued jobs-->
+                <div class="card card-custom mb-5">
+                    <div class="card-header border-0 pt-5">
+                        <h3 class="card-title flex-column align-items-start">
+                            <span class="card-label fw-bold">{{ 'QueuedJobs' | localize }}</span>
+                            <span class="text-muted mt-1 fw-semibold fs-7">{{ 'QueuedJobsHint' | localize }}</span>
+                        </h3>
+                    </div>
+                    <div class="card-body pt-2">
+                        @if (queuedJobs().length === 0) {
+                            <div class="text-muted py-3">{{ 'BgNoQueuedJobs' | localize }}</div>
+                        } @else {
+                            <div class="table-responsive">
+                                <table class="table table-row-dashed align-middle bg-jobs-table">
+                                    <thead>
+                                        <tr class="fw-bold text-muted">
+                                            <th>{{ 'BgJob' | localize }}</th>
+                                            @if (isHost()) {
+                                                <th>{{ 'Company' | localize }}</th>
+                                            }
+                                            <th>{{ 'Status' | localize }}</th>
+                                            <th class="text-end">{{ 'BgAttempts' | localize }}</th>
+                                            <th>{{ 'BgQueued' | localize }}</th>
+                                            <th>{{ 'BgLastTried' | localize }}</th>
+                                            <th>{{ 'BgNextTry' | localize }}</th>
+                                            <th>{{ 'BgLastError' | localize }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (job of queuedJobs(); track job.id) {
+                                            <tr>
+                                                <td class="fw-semibold">{{ job.displayName }}</td>
+                                                @if (isHost()) {
+                                                    <td>{{ job.tenantName }}</td>
+                                                }
+                                                <td>
+                                                    <span class="badge" [class]="stateClass(job.state)">{{ stateLabel(job.state) }}</span>
+                                                </td>
+                                                <td class="text-end">{{ job.tryCount }}</td>
+                                                <td>{{ job.creationTime | luxonFormat: 'dd/MM/yyyy HH:mm' }}</td>
+                                                <td>{{ job.lastTryTime | luxonFormat: 'dd/MM/yyyy HH:mm' }}</td>
+                                                <td>
+                                                    @if (job.state !== QueuedJobState.Abandoned) {
+                                                        {{ job.nextTryTime | luxonFormat: 'dd/MM/yyyy HH:mm' }}
+                                                    }
+                                                </td>
+                                                <td class="bg-jobs-error">
+                                                    @if (job.lastError) {
+                                                        <span class="text-danger" [title]="job.lastError">{{ job.lastError }}</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!--end::Queued jobs-->
+
+                <!--begin::Failures-->
+                <div class="card card-custom mb-5">
+                    <div class="card-header border-0 pt-5">
+                        <h3 class="card-title">
+                            <span class="card-label fw-bold">{{ 'RecentJobFailures' | localize }}</span>
+                        </h3>
+                    </div>
+                    <div class="card-body pt-2">
+                        @if (failures().length === 0) {
+                            <div class="text-muted py-3">{{ 'BgNoFailures' | localize }}</div>
+                        } @else {
+                            <div class="table-responsive">
+                                <table class="table table-row-dashed align-middle bg-jobs-table">
+                                    <thead>
+                                        <tr class="fw-bold text-muted">
+                                            <th>{{ 'BgFailedAt' | localize }}</th>
+                                            <th>{{ 'BgJob' | localize }}</th>
+                                            @if (isHost()) {
+                                                <th>{{ 'Company' | localize }}</th>
+                                            }
+                                            <th class="text-end">{{ 'BgAttempt' | localize }}</th>
+                                            <th>{{ 'BgLastError' | localize }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (failure of failures(); track $index) {
+                                            <tr>
+                                                <td>{{ failure.failedTime | luxonFormat: 'dd/MM/yyyy HH:mm' }}</td>
+                                                <td class="fw-semibold">{{ failure.displayName }}</td>
+                                                @if (isHost()) {
+                                                    <td>{{ failure.tenantName }}</td>
+                                                }
+                                                <td class="text-end">{{ failure.tryCount }}</td>
+                                                <td class="bg-jobs-error">
+                                                    <span class="text-danger" [title]="failure.error">{{ failure.error }}</span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!--end::Failures-->
+            }
+        </div>
+    </div>
+</div>

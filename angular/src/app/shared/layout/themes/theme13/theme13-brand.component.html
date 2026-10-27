@@ -1,0 +1,8 @@
+<a href="/" [class]="anchorClass()">
+    @if (!appSession.tenant || !appSession.tenant.HasLogo()) {
+        <img alt="Logo" [src]="defaultLogoUrl" [class]="imageClass()" />
+    }
+    @if (appSession.tenant && appSession.tenant.HasLogo()) {
+        <img alt="Logo" [src]="tenantLogoUrl" [class]="imageClass()" />
+    }
+</a>

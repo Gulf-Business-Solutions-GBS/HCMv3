@@ -1,0 +1,74 @@
+<div [@routerTransition] [helpPage]="'pa.leave-planner'">
+    <sub-header [title]="'LeavePlanner' | localize" [description]="'PersonnelAdministration' | localize">
+        <div role="actions">
+            <button (click)="load()" class="btn btn-light float-end">
+                <i class="fa fa-sync btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">{{ 'Refresh' | localize }}</span>
+            </button>
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body" [busyIf]="loading()">
+                <div class="row align-items-end g-4 mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label" for="plannerUnit" data-help-loc="OrganizationUnit">{{ 'OrganizationUnit' | localize }}</label>
+                        <select id="plannerUnit" class="form-select" [(ngModel)]="organizationUnitId" (ngModelChange)="load()">
+                            <option [ngValue]="undefined">{{ 'All' | localize }}</option>
+                            @for (u of planner()?.orgUnitOptions ?? []; track u.id) {
+                                <option [ngValue]="u.id">{{ indent(u.depth) }}{{ u.name }}</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="plannerFilter" data-help-loc="Employee">{{ 'Employee' | localize }}</label>
+                        <input id="plannerFilter" type="text" class="form-control" [(ngModel)]="filterText" (keyup.enter)="load()" />
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center justify-content-end gap-2">
+                            <button class="btn btn-sm btn-light" (click)="moveMonth(-1)" [attr.title]="'Previous' | localize">
+                                <i class="fa fa-chevron-left"></i>
+                            </button>
+                            <span class="fw-bold">{{ month().toFormat('MMMM yyyy') }}</span>
+                            <button class="btn btn-sm btn-light" (click)="moveMonth(1)" [attr.title]="'Next' | localize">
+                                <i class="fa fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legacy's four check boxes, with their legacy captions. -->
+                <div class="d-flex flex-wrap gap-5 mb-4">
+                    <div class="form-check form-switch">
+                        <input id="lpLeave" type="checkbox" class="form-check-input" [(ngModel)]="includeLeave" (ngModelChange)="load()" />
+                        <label class="form-check-label" for="lpLeave" data-help-loc="ShowActualLeaveApproved">{{ 'ShowActualLeaveApproved' | localize }}</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input id="lpLeavePending" type="checkbox" class="form-check-input" [(ngModel)]="includeLeavePending" (ngModelChange)="load()" />
+                        <label class="form-check-label" for="lpLeavePending" data-help-loc="ShowActualLeaveUnapproved">{{ 'ShowActualLeaveUnapproved' | localize }}</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input id="lpPlanned" type="checkbox" class="form-check-input" [(ngModel)]="includePlanned" (ngModelChange)="load()" />
+                        <label class="form-check-label" for="lpPlanned" data-help-loc="ShowLeavePlannerApproved">{{ 'ShowLeavePlannerApproved' | localize }}</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input id="lpPlannedPending" type="checkbox" class="form-check-input" [(ngModel)]="includePlannedPending" (ngModelChange)="load()" />
+                        <label class="form-check-label" for="lpPlannedPending" data-help-loc="ShowLeavePlannerUnapproved">{{ 'ShowLeavePlannerUnapproved' | localize }}</label>
+                    </div>
+                </div>
+
+                @if (planner(); as p) {
+                    <div class="text-muted mb-3" data-help-loc="Dashboard_Showing">
+                        <i class="la la-user-shield"></i>
+                        {{ 'Dashboard_Showing' | localize }}:
+                        <strong>{{ scopeIsNobody() ? '—' : scopeText() }}</strong>
+                        <span>({{ 'Dashboard_ScopeEmployees' | localize: (p.scope?.employeesInScope ?? 0) }})</span>
+                    </div>
+                }
+
+                <leave-planner-grid [planner]="planner()" />
+            </div>
+        </div>
+    </div>
+</div>

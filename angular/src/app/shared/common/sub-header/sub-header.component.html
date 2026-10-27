@@ -1,0 +1,66 @@
+<div [class]="currentTheme.baseSettings.subHeader.containerStyle + ' toolbar'">
+    <div [class]="containerClass + ' d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap'">
+        <div class="d-flex align-items-center flex-wrap me-2">
+            @if (currentTheme.baseSettings.subHeader.subheaderSize == 1) {
+                <h1 [class]="currentTheme.baseSettings.subHeader.titleStyle">
+                    {{ title() }}
+                </h1>
+            }
+            @if (currentTheme.baseSettings.subHeader.subheaderSize == 2) {
+                <h2 [class]="currentTheme.baseSettings.subHeader.titleStyle">
+                    {{ title() }}
+                </h2>
+            }
+            @if (currentTheme.baseSettings.subHeader.subheaderSize == 3) {
+                <h3 [class]="currentTheme.baseSettings.subHeader.titleStyle">
+                    {{ title() }}
+                </h3>
+            }
+            @if (currentTheme.baseSettings.subHeader.subheaderSize == 4) {
+                <h4 [class]="currentTheme.baseSettings.subHeader.titleStyle">
+                    {{ title() }}
+                </h4>
+            }
+            @if (currentTheme.baseSettings.subHeader.subheaderSize == 5) {
+                <h5 [class]="currentTheme.baseSettings.subHeader.titleStyle">
+                    {{ title() }}
+                </h5>
+            }
+            @if (currentTheme.baseSettings.subHeader.subheaderSize == 6) {
+                <h6 [class]="currentTheme.baseSettings.subHeader.titleStyle">
+                    {{ title() }}
+                </h6>
+            }
+            @if (description()) {
+                <div class="mt-2 mb-2 me-4 bg-gray-200"></div>
+            }
+            @if (description()) {
+                <div class="d-flex align-items-center">
+                    <span class="text-muted fw-bold me-4">{{ description() }}</span>
+                </div>
+            }
+            @if (breadcrumbs() && breadcrumbs().length > 0) {
+                <div class="mt-2 mb-2 me-4 bg-gray-200"></div>
+            }
+            @if (breadcrumbs() && breadcrumbs().length > 0) {
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot fw-bold p-0 my-2 fs-sm">
+                    @for (breadcrumbItem of breadcrumbs(); track breadcrumbItem) {
+                        <li class="breadcrumb-item">
+                            @if (breadcrumbItem.isLink()) {
+                                <a style="cursor: pointer" (click)="goToBreadcrumb(breadcrumbItem)">
+                                    {{ breadcrumbItem.text }}
+                                </a>
+                            }
+                            @if (!breadcrumbItem.isLink()) {
+                                <span class="text-muted">{{ breadcrumbItem.text }}</span>
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+        <div class="d-flex align-items-center">
+            <ng-content select="div[role=actions]" />
+        </div>
+    </div>
+</div>

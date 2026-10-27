@@ -1,0 +1,43 @@
+{
+  "helpId": "pay.absence-payment.edit",
+  "lang": "en",
+  "title": "Absence Payments — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.AbsencePayment",
+  "overviewHtml": "<p>Which wagetype pays a type of absence. Not read at present: leave is paid under the wagetype set on the leave type itself, and nothing reads this list.</p>",
+  "aliasIndex": {
+    "loc:AbsenceTypes": "AbsencePayment.AbsenceTypeId",
+    "dom:AbsencePayment_AbsenceTypeId": "AbsencePayment.AbsenceTypeId",
+    "loc:WageTypes": "AbsencePayment.WageTypeId",
+    "dom:AbsencePayment_WageTypeId": "AbsencePayment.WageTypeId"
+  },
+  "fields": [
+    {
+      "id": "AbsencePayment.AbsenceTypeId",
+      "label": "AbsenceTypes",
+      "section": "AbsencePayments",
+      "aliases": [
+        "loc:AbsenceTypes",
+        "dom:AbsencePayment_AbsenceTypeId"
+      ],
+      "rules": "Required. Chosen from Leave Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The leave type.</p><p><strong>Example.</strong> Annual Leave</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsencePayment.WageTypeId",
+      "label": "WageTypes",
+      "section": "AbsencePayments",
+      "aliases": [
+        "loc:WageTypes",
+        "dom:AbsencePayment_WageTypeId"
+      ],
+      "rules": "Required. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wagetype it would be paid under.</p><p><strong>Example.</strong> Annual Leave Pay</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

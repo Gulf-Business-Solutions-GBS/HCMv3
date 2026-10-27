@@ -1,0 +1,94 @@
+<div [@routerTransition]>
+    <sub-header [title]="'PayrollNetPayContractDiffReport' | localize" [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [showDateRange]="false"
+                    [showEmployeeCode]="false"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'Month' | localize }}</label>
+                        <input type="number" class="form-control" min="1" max="12" name="npcdMonth" [(ngModel)]="month" (keydown.enter)="reloadPage()" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'Year' | localize }}</label>
+                        <input type="number" class="form-control" name="npcdYear" [(ngModel)]="year" (keydown.enter)="reloadPage()" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'RunType' | localize }}</label>
+                        <select class="form-select" name="npcdRunType" [(ngModel)]="payrollRunType">
+                            <option [ngValue]="undefined">{{ 'All' | localize }}</option>
+                            @for (opt of runTypeOptions; track opt.value) {
+                                <option [ngValue]="opt.value">{{ opt.label }}</option>
+                            }
+                        </select>
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '50rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th pSortableColumn="employeeCode">{{ 'Code' | localize }}<p-sortIcon field="employeeCode" /></th>
+                                    <th>{{ 'Employee' | localize }}</th>
+                                    <th>{{ 'JobTitle' | localize }}</th>
+                                    @if (orgLevels.isShown(1)) {
+                                        <th>{{ orgLevels.caption(1) }}</th>
+                                    }
+                                    <th>{{ 'PayDate' | localize }}</th>
+                                    <th>{{ 'ContractPay' | localize }}</th>
+                                    <th>{{ 'NetPay' | localize }}</th>
+                                    <th>{{ 'Difference' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td>{{ record.employeeCode }}</td>
+                                    <td>{{ record.employeeName }}</td>
+                                    <td>{{ record.jobTitle }}</td>
+                                    @if (orgLevels.isShown(1)) {
+                                        <td>{{ record.orgLevel1 }}</td>
+                                    }
+                                    <td>{{ record.payDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td>{{ record.contractPay }}</td>
+                                    <td>{{ record.netPay }}</td>
+                                    <td>{{ record.difference }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

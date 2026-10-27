@@ -1,0 +1,43 @@
+{
+  "helpId": "pa.employee-manager.edit",
+  "lang": "en",
+  "title": "Employee Managers — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeManager",
+  "overviewHtml": "<p>Who the employee reports to, from a given date. Managers form a history: saving a new record closes the previous one on the day before the new start date.</p><p>The manager in force today is the one who sees this employee among their direct reports in self-service, receives the employee's requests at manager approval steps, and is copied on notifications set to go to the manager.</p>",
+  "aliasIndex": {
+    "loc:EffectiveDate": "EmployeeManager.StartDate",
+    "dom:EmployeeManager_StartDate": "EmployeeManager.StartDate",
+    "loc:Manager": "EmployeeManager.ManagerId",
+    "dom:EmployeeManager_ManagerId": "EmployeeManager.ManagerId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeManager.StartDate",
+      "label": "EffectiveDate",
+      "section": "EmployeeManagers",
+      "aliases": [
+        "loc:EffectiveDate",
+        "dom:EmployeeManager_StartDate"
+      ],
+      "rules": "Required. Date value. No two records for the same employee can start on the same date. Saving closes the previous record for the same employee on the day before this date; the latest record stays open.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeManager.ManagerId",
+      "label": "Manager",
+      "section": "EmployeeManagers",
+      "aliases": [
+        "loc:Manager",
+        "dom:EmployeeManager_ManagerId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's direct manager from this date.</p><p><strong>Example.</strong> Fatima Al-Enezi (1002)</p><p><strong>Why it matters.</strong> Drives self-service team visibility, manager approval steps (including higher levels, which follow each manager's own manager in turn), manager notifications, the organisation chart and manager reports. A record naming the employee as their own manager is ignored for all of these.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

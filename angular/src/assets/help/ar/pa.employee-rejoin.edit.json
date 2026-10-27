@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.employee-rejoin.edit",
+  "lang": "ar",
+  "title": "حالات إعادة التحاق الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeRejoin",
+  "overviewHtml": "<p>يسجل عودة موظف أُنهيت خدمته، ويعيده بإحدى طريقتين يحددهما خيار <strong>إنشاء رقم موظف جديد</strong>:</p><ul><li><strong>إذا لم يُحدَّد: يعود الموظف نفسه.</strong> يُعاد تفعيل سجل الموظف برقمه القديم، ويُصفَّر كل رصيد لم يُحدَّد خيار ترحيله في اليوم السابق لتاريخ إعادة الالتحاق.</li><li><strong>إذا حُدِّد: يُنشأ موظف جديد.</strong> يحصل الشخص على سجل موظف جديد ورقم جديد، ويكون تاريخ التحاقه هو تاريخ إعادة الالتحاق، وتُفتح له الأرصدة المحدد ترحيلها. ويبقى السجل القديم كما هو دون أي تغيير.</li></ul><p>يتم ذلك كله عند الحفظ دفعة واحدة: فإذا رُفض أي جزء منه لم يتغير شيء. وبعد بلوغ تاريخ إعادة الالتحاق لا تأخذ الرواتب في الحسبان إلا حالات الفصل التي يقع آخر يوم خدمة فيها في تاريخ إعادة الالتحاق أو بعده، فلا يعود الخروج السابق يوقف الراتب.</p><p>لا يمكن إضافة إعادة التحاق أو تعديلها أو حذفها متى وُجد للموظف، اعتباراً من تاريخ إعادة الالتحاق، فصل لاحق أو دفعة تسوية نهائية أو تشغيل رواتب منتظم أو إعادة التحاق أخرى. ولا يمكن أبداً تعديل أو حذف إعادة التحاق أنشأت موظفاً جديداً. أما تعديل أو حذف إعادة التحاق احتفظت بالرقم القديم فيعيد الموظف إلى حالة غير نشط ويحذف سجلات التصفير التي أنشأتها، ثم تُطبَّق القيم الجديدة.</p><p>:::admin لا يُرحَّل ولا يُصفَّر إلا نوع الإجازة السنوية ذو الرمز 1 ونوع التذكرة ذو الرمز 1، ومن أول سطر حصة للموظف في كل منهما فقط. وتُؤخذ مكافأة نهاية الخدمة من أول سطر رصيد لها. وتحمل سجلات التصفير التعليق \"Employee Rejoined with Nill Quota Balance\" (وللقروض: \"Nill Loan Balance\"). ولم تُعَد معالجة حالات إعادة الالتحاق المحفوظة قبل هذا السلوك. :::</p>",
+  "aliasIndex": {
+    "loc:RejoinDate": "EmployeeRejoin.RejoinDate",
+    "dom:EmployeeRejoin_RejoinDate": "EmployeeRejoin.RejoinDate",
+    "loc:Comments": "EmployeeRejoin.Comments",
+    "dom:EmployeeRejoin_Comments": "EmployeeRejoin.Comments",
+    "loc:CreateNewEmployeeCode": "EmployeeRejoin.CreateNewEmployeeCode",
+    "dom:EmployeeRejoin_CreateNewEmployeeCode": "EmployeeRejoin.CreateNewEmployeeCode",
+    "loc:CarryForwardLeaveBalance": "EmployeeRejoin.CarryForwardLeaveBalance",
+    "dom:EmployeeRejoin_CarryForwardLeaveBalance": "EmployeeRejoin.CarryForwardLeaveBalance",
+    "loc:CarryForwardTicketBalance": "EmployeeRejoin.CarryForwardTicketBalance",
+    "dom:EmployeeRejoin_CarryForwardTicketBalance": "EmployeeRejoin.CarryForwardTicketBalance",
+    "loc:CarryForwardIndemnityBalance": "EmployeeRejoin.CarryForwardIndemnityBalance",
+    "dom:EmployeeRejoin_CarryForwardIndemnityBalance": "EmployeeRejoin.CarryForwardIndemnityBalance",
+    "loc:CarryForwardLoanBalance": "EmployeeRejoin.CarryForwardLoanBalance",
+    "dom:EmployeeRejoin_CarryForwardLoanBalance": "EmployeeRejoin.CarryForwardLoanBalance"
+  },
+  "fields": [
+    {
+      "id": "EmployeeRejoin.RejoinDate",
+      "label": "RejoinDate",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:RejoinDate",
+        "dom:EmployeeRejoin_RejoinDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ عودة الموظف.</p><p><strong>مثال.</strong> 1 فبراير 2027</p><p><strong>لماذا يهم.</strong> اعتباراً من هذا التاريخ تتجاهل الرواتب حالات الفصل التي انتهت قبله. وعند إنشاء رقم موظف جديد يكون أيضاً تاريخ التحاق السجل الجديد؛ وعند الاحتفاظ بالرقم القديم تُصفَّر الأرصدة غير المرحَّلة في اليوم السابق له (31 يناير 2027 في المثال).</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRejoin.Comments",
+      "label": "Comments",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeRejoin_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 2000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRejoin.CreateNewEmployeeCode",
+      "label": "CreateNewEmployeeCode",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:CreateNewEmployeeCode",
+        "dom:EmployeeRejoin_CreateNewEmployeeCode"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الشخص يعود موظفاً جديداً برقم جديد بدلاً من إعادة تفعيل سجله القديم.</p><p><strong>مثال.</strong> يُحدَّد لموظف سابق رقمه 1045 أُعيد تعيينه بعقد جديد: فيُنشأ موظف جديد، وليكن 2310، ويُسجَّل الرقم 1045 في <strong>رقم الموظف السابق</strong>.</p><p><strong>لماذا يهم.</strong> تتغير الملاحظة الزرقاء أسفل الخيار بحسب اختيارك، فترى مسبقاً ما سيحدث عند الحفظ.</p><p>عند <strong>التحديد</strong>:</p><ul><li>يُنشأ موظف جديد نشط بالرقم التالي من تسلسل الأرقام الخاص بنوع التوظيف للموظف القديم، ويكون تاريخ التحاقه هو تاريخ إعادة الالتحاق، وفترة الاختبار صفر يوم.</li><li>تُنسخ من السجل القديم الأسماء واللقب وتاريخ الميلاد ومكانه والجنسية والديانة والجنس والحالة الاجتماعية والدولة والهواتف والعناوين والمؤهل وفصيلة الدم والبطاقة المدنية والبريد الإلكتروني.</li><li><strong>لا</strong> يُنسخ التعيين التنظيمي ولا الراتب ولا البنك ولا الوثائق ولا الصورة ولا جواز السفر ولا حساب الدخول، فأدخلها للموظف الجديد كما تفعل مع أي موظف جديد.</li><li>يُفتح كل رصيد محدد للموظف الجديد (انظر خيارات الترحيل)، أما الأرصدة غير المحددة فلا تُنقل.</li><li>لا يتغير الموظف القديم، وتعرض قائمة حالات إعادة الالتحاق رقم الموظف الجديد رابطاً في عمود <strong>رقم الموظف الجديد</strong>.</li></ul><p>وعند <strong>عدم التحديد</strong> يُعاد تفعيل الموظف نفسه، ويُصفَّر كل رصيد لم يُحدَّد خيار ترحيله في اليوم السابق لتاريخ إعادة الالتحاق.</p><p>وفي الحالتين يُحتسب الحفظ ضمن الحد الأقصى للموظفين النشطين في اشتراككم، ويُرفض إذا بُلغ هذا الحد. وإذا رُحِّل رصيد الإجازة إلى رقم جديد فيجب أن يوجد نوع نقل وقت بالرمز 1 في شاشة <strong>أنواع نقل الوقت</strong>، وإلا رُفض الحفظ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRejoin.CarryForwardLeaveBalance",
+      "label": "CarryForwardLeaveBalance",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:CarryForwardLeaveBalance",
+        "dom:EmployeeRejoin_CarryForwardLeaveBalance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان رصيد الإجازة السنوية يعود مع الموظف.</p><p><strong>مثال.</strong> رصيد 12.5 يوماً عند الفصل مع التحديد: يعود الموظف برصيد 12.5 يوماً.</p><p><strong>لماذا يهم.</strong> مع <strong>رقم جديد</strong>: يفتح التحديد الرصيد القديم للموظف الجديد بعملية نقل وقت في تاريخ إعادة الالتحاق (ويلزم لذلك نوع نقل الوقت ذو الرمز 1). ومع <strong>الرقم القديم</strong>: يُنشئ عدم التحديد تعديل إجازة في اليوم السابق لتاريخ إعادة الالتحاق يجعل الرصيد صفراً، أما التحديد فيبقي الرصيد كما هو.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRejoin.CarryForwardTicketBalance",
+      "label": "CarryForwardTicketBalance",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:CarryForwardTicketBalance",
+        "dom:EmployeeRejoin_CarryForwardTicketBalance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان رصيد التذاكر يعود مع الموظف.</p><p><strong>مثال.</strong> تذكرة واحدة مستحقة عند الفصل مع التحديد: يعود الموظف بتذكرة واحدة.</p><p><strong>لماذا يهم.</strong> مع <strong>رقم جديد</strong>: يمنح التحديد الموظف الجديد حصة تذاكر تساوي الرصيد القديم، يستحقها من تاريخ إعادة الالتحاق، ولا يُخصم منها إلا بعد 9 أشهر من الالتحاق. ومع <strong>الرقم القديم</strong>: يُنشئ عدم التحديد تعديل تذاكر في اليوم السابق لتاريخ إعادة الالتحاق يجعل الرصيد صفراً، أما التحديد فيبقيه كما هو.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRejoin.CarryForwardIndemnityBalance",
+      "label": "CarryForwardIndemnityBalance",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:CarryForwardIndemnityBalance",
+        "dom:EmployeeRejoin_CarryForwardIndemnityBalance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت أيام مكافأة نهاية الخدمة المتراكمة للموظف تعود معه.</p><p><strong>مثال.</strong> 45 يوماً من مكافأة نهاية الخدمة عند الفصل مع التحديد: تبقى الخدمة السابقة محتسبة.</p><p><strong>لماذا يهم.</strong> مع <strong>رقم جديد</strong>: يمنح التحديد الموظف الجديد رصيد مكافأة نهاية خدمة يساوي الرصيد القديم اعتباراً من تاريخ إعادة الالتحاق، ولا يُستخدم إلا بعد 9 أشهر من الالتحاق. ومع <strong>الرقم القديم</strong>: يُنشئ عدم التحديد سجل مكافأة نهاية خدمة مع خيار إعادة الاحتساب، بتاريخ اليوم السابق لإعادة الالتحاق، يسوّي الرصيد كاملاً، أما التحديد فيبقي الرصيد كما هو.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRejoin.CarryForwardLoanBalance",
+      "label": "CarryForwardLoanBalance",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:CarryForwardLoanBalance",
+        "dom:EmployeeRejoin_CarryForwardLoanBalance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت القروض المستحقة عند الفصل تُسترد بعد عودة الموظف.</p><p><strong>مثال.</strong> قرضان شخصيان مستحق منهما 300 و200 د.ك مع التحديد: قرض شخصي واحد بمبلغ 500 د.ك للموظف الجديد.</p><p><strong>لماذا يهم.</strong> مع <strong>رقم جديد</strong>: يُنشئ التحديد للموظف الجديد قرضاً واحداً لكل نوع قرض، يجمع المبالغ المستحقة وأقساط القروض القديمة، ويبدأ من تاريخ إعادة الالتحاق ويمتد سنتين. ومع <strong>الرقم القديم</strong>: يسجل عدم التحديد استرداداً خارجياً لكامل المبلغ المستحق على كل قرض قائم، بتاريخ انتهاء ذلك القرض، فتتوقف الرواتب عن خصمه؛ أما التحديد فيبقي القروض سارية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

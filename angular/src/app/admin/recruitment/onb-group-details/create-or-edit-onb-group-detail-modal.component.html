@@ -1,0 +1,82 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditOnbGroupDetail' : 'CreateNewOnbGroupDetail') | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label required" for="OnbGroupDetail_OnbGroupId">{{ 'OnbGroups' | localize }}</label>
+                            <select
+                                id="OnbGroupDetail_OnbGroupId"
+                                #onbGroupInput="ngModel"
+                                class="form-select"
+                                name="OnbGroupId"
+                                [ngModel]="record().onbGroupId"
+                                (ngModelChange)="updateField('onbGroupId', $event)"
+                                required>
+                                <option [ngValue]="undefined"></option>
+                                @for (item of onbGroups(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="onbGroupInput" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="OnbGroupDetail_OnbTaskId">{{ 'OnbTasks' | localize }}</label>
+                            <select
+                                id="OnbGroupDetail_OnbTaskId"
+                                class="form-select"
+                                name="OnbTaskId"
+                                [ngModel]="record().onbTaskId"
+                                (ngModelChange)="updateField('onbTaskId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (item of onbTasks(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.taskNameEn }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="OnbGroupDetail_JobTitleId">{{ 'JobTitle' | localize }}</label>
+                            <select
+                                id="OnbGroupDetail_JobTitleId"
+                                class="form-select"
+                                name="JobTitleId"
+                                [ngModel]="record().jobTitleId"
+                                (ngModelChange)="updateField('jobTitleId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (item of jobTitles(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            [buttonBusy]="saving()"
+                            [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

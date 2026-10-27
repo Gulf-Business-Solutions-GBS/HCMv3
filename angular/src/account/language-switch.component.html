@@ -1,0 +1,20 @@
+<!-- EN | AR as text, not flags.
+     A flag names a country, not a language: the Arabic here is not Kuwait's alone, and English was
+     represented by whichever of four flags happened to be in the list. Two letters say which language
+     you are choosing and nothing else. -->
+@if (switchableLanguages().length > 1) {
+    <div class="d-flex align-items-center fw-bold fs-6">
+        @for (language of switchableLanguages(); track language.name; let last = $last) {
+            <span
+                class="language-switch-code"
+                [class.language-switch-code-active]="language.name === currentLanguage()?.name"
+                (click)="changeLanguage(language)"
+                [title]="language.displayName">
+                {{ shortCode(language) }}
+            </span>
+            @if (!last) {
+                <span class="language-switch-divider">|</span>
+            }
+        }
+    </div>
+}

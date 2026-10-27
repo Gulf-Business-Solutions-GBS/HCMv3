@@ -1,0 +1,104 @@
+/*
+ * The formula box. Positioning is relative so the suggestion list can hang beneath it without needing a
+ * portal, and the list is given a z-index above Bootstrap's modal content -- this component lives inside a
+ * modal, where a default stacking context would clip it.
+ */
+.rule-formula {
+    position: relative;
+}
+
+.rule-formula-editor {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    resize: vertical;
+    /* Tabs are captured for autocomplete, so a wide tab stop would only ever be misleading. */
+    tab-size: 2;
+}
+
+.rule-formula-signature {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 0.75rem;
+    color: var(--bs-secondary-color, #6c757d);
+    background: var(--bs-tertiary-bg, #f5f5f5);
+    border: 1px solid var(--bs-border-color, #e4e6ef);
+    border-bottom: none;
+    border-radius: 0.375rem 0.375rem 0 0;
+    padding: 0.25rem 0.5rem;
+}
+
+.rule-formula-suggestions {
+    position: absolute;
+    z-index: 1060;
+    left: 0;
+    right: 0;
+    max-height: 15rem;
+    overflow-y: auto;
+    background: var(--bs-body-bg, #fff);
+    border: 1px solid var(--bs-border-color, #e4e6ef);
+    border-radius: 0.375rem;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+    margin-top: 0.125rem;
+}
+
+.rule-formula-suggestion {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    width: 100%;
+    border: none;
+    background: transparent;
+    text-align: start;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8125rem;
+}
+
+.rule-formula-suggestion:hover,
+.rule-formula-suggestion.highlighted {
+    background: var(--bs-primary-bg-subtle, #e9f3ff);
+}
+
+.rule-formula-suggestion-icon {
+    width: 1rem;
+    flex: 0 0 auto;
+    color: var(--bs-secondary-color, #6c757d);
+    font-size: 0.75rem;
+}
+
+.rule-formula-suggestion-label {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-weight: 600;
+    flex: 0 0 auto;
+}
+
+.rule-formula-suggestion-detail {
+    color: var(--bs-secondary-color, #6c757d);
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rule-formula-suggestion-description {
+    color: var(--bs-secondary-color, #6c757d);
+    font-size: 0.6875rem;
+    flex: 0 0 auto;
+    font-style: italic;
+}
+
+.rule-formula-error {
+    color: var(--bs-danger, #f1416c);
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.rule-formula-error-position {
+    opacity: 0.75;
+    margin-inline-start: 0.35rem;
+}
+
+.rule-formula-hint {
+    color: var(--bs-secondary-color, #6c757d);
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}

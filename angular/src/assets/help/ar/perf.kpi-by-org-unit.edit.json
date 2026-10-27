@@ -1,0 +1,43 @@
+{
+  "helpId": "perf.kpi-by-org-unit.edit",
+  "lang": "ar",
+  "title": "مؤشرات الأداء حسب وحدة الشركة — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.KpiByOrgUnit",
+  "overviewHtml": "<p>مجموعة مؤشرات أداء لوحدة تنظيمية، اعتباراً من تاريخ معيّن. ولكل وحدة مجموعة واحدة لكل تاريخ بداية.</p><p>تُحفظ نموذجاً: ولا تأخذ التقييمات مؤشراتها منها تلقائياً حالياً.</p>",
+  "aliasIndex": {
+    "loc:OrganizationUnit": "KpiByOrgUnit.OrganizationUnitId",
+    "dom:KpiByOrgUnit_OrganizationUnitId": "KpiByOrgUnit.OrganizationUnitId",
+    "loc:StartDate": "KpiByOrgUnit.StartDate",
+    "dom:KpiByOrgUnit_StartDate": "KpiByOrgUnit.StartDate"
+  },
+  "fields": [
+    {
+      "id": "KpiByOrgUnit.OrganizationUnitId",
+      "label": "OrganizationUnit",
+      "section": "KpiByOrgUnits",
+      "aliases": [
+        "loc:OrganizationUnit",
+        "dom:KpiByOrgUnit_OrganizationUnitId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الوحدات التنظيمية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوحدة التنظيمية.</p><p><strong>مثال.</strong> إدارة المالية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiByOrgUnit.StartDate",
+      "label": "StartDate",
+      "section": "KpiByOrgUnits",
+      "aliases": [
+        "loc:StartDate",
+        "dom:KpiByOrgUnit_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يبدأ سجلان لوحدة الشركة نفسه في التاريخ نفسه. عند الحفظ يُغلق السجل السابق لوحدة الشركة نفسه في اليوم السابق لهذا التاريخ، ويبقى أحدث سجل مفتوحاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

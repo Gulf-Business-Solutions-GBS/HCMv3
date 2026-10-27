@@ -1,0 +1,54 @@
+<header class="site-header">
+    <div class="container site-header__inner">
+        <a class="brand" routerLink="/" (click)="closeMenu()">
+            @if (branding.logoUrl(); as logo) {
+                <img class="brand__logo" [src]="logo" [alt]="branding.displayName()" />
+            } @else {
+                <span class="brand__mark">{{ (branding.displayName() || 'C').charAt(0) }}</span>
+            }
+            <span class="brand__text">
+                <span class="brand__name">{{ branding.displayName() }}</span>
+                <span class="brand__sub">{{ 'CareersPortalTitle' | localize }}</span>
+            </span>
+        </a>
+
+        <button
+            type="button"
+            class="site-header__toggle"
+            (click)="toggleMenu()"
+            [attr.aria-expanded]="menuOpen()"
+            aria-controls="primary-nav"
+        >
+            <span class="sr-only">{{ 'CareersJobOpenings' | localize }}</span>
+            <span class="burger" aria-hidden="true"></span>
+        </button>
+
+        <nav id="primary-nav" class="site-nav" [class.site-nav--open]="menuOpen()">
+            <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
+                {{ 'CareersJobOpenings' | localize }}
+            </a>
+
+            @if (auth.isAuthenticated()) {
+                <a routerLink="/my/applications" routerLinkActive="is-active" (click)="closeMenu()">
+                    {{ 'CareersMyApplications' | localize }}
+                </a>
+                <a routerLink="/my/cvs" routerLinkActive="is-active" (click)="closeMenu()">
+                    {{ 'CareersMyCvs' | localize }}
+                </a>
+                <a routerLink="/my/profile" routerLinkActive="is-active" (click)="closeMenu()">
+                    {{ 'CareersMyProfile' | localize }}
+                </a>
+                <button type="button" class="btn btn--secondary btn--sm" (click)="logout()">
+                    {{ 'CareersSignOut' | localize }}
+                </button>
+            } @else {
+                <a routerLink="/account/login" routerLinkActive="is-active" (click)="closeMenu()">
+                    {{ 'CareersSignIn' | localize }}
+                </a>
+                <a class="btn btn--primary btn--sm" routerLink="/account/register" (click)="closeMenu()">
+                    {{ 'CareersRegister' | localize }}
+                </a>
+            }
+        </nav>
+    </div>
+</header>

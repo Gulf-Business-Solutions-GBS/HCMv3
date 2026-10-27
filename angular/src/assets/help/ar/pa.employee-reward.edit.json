@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-reward.edit",
+  "lang": "ar",
+  "title": "حوافز الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeReward",
+  "overviewHtml": "<p>جائزة أو تكريم مُنح للموظف.</p><p>يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب أو تقرير حالياً.</p>",
+  "aliasIndex": {
+    "loc:RewardType": "EmployeeReward.RewardType",
+    "dom:EmployeeReward_RewardType": "EmployeeReward.RewardType",
+    "loc:RewardDate": "EmployeeReward.RewardDate",
+    "dom:EmployeeReward_RewardDate": "EmployeeReward.RewardDate",
+    "loc:Certificate": "EmployeeReward.Certificate",
+    "dom:EmployeeReward_Certificate": "EmployeeReward.Certificate",
+    "loc:Comments": "EmployeeReward.Comments",
+    "dom:EmployeeReward_Comments": "EmployeeReward.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeReward.RewardType",
+      "label": "RewardType",
+      "section": "EmployeeRewards",
+      "aliases": [
+        "loc:RewardType",
+        "dom:EmployeeReward_RewardType"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الجائزة، كنص حر.</p><p><strong>مثال.</strong> موظف الشهر</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeReward.RewardDate",
+      "label": "RewardDate",
+      "section": "EmployeeRewards",
+      "aliases": [
+        "loc:RewardDate",
+        "dom:EmployeeReward_RewardDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ منح الجائزة.</p><p><strong>مثال.</strong> 30 يونيو 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeReward.Certificate",
+      "label": "Certificate",
+      "section": "EmployeeRewards",
+      "aliases": [
+        "loc:Certificate",
+        "dom:EmployeeReward_Certificate"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشهادة الممنوحة مع الجائزة.</p><p><strong>مثال.</strong> شهادة تميز</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeReward.Comments",
+      "label": "Comments",
+      "section": "EmployeeRewards",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeReward_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

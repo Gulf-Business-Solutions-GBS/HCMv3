@@ -1,0 +1,53 @@
+<!-- Legend first, so the colours are read before the grid. -->
+<div class="d-flex flex-wrap gap-4 mb-3 small">
+    <span><span class="lp-swatch lp-plan"></span> {{ 'LeavePlanner_Planned' | localize }}</span>
+    <span><span class="lp-swatch lp-plan-pending"></span> {{ 'LeavePlanner_PlannedPending' | localize }}</span>
+    <span><span class="lp-swatch lp-leave"></span> {{ 'LeavePlanner_Leave' | localize }}</span>
+    <span><span class="lp-swatch lp-leave-pending"></span> {{ 'LeavePlanner_LeavePending' | localize }}</span>
+</div>
+
+@if (isEmpty()) {
+    <div class="text-muted text-center p-4">{{ 'NoData' | localize }}</div>
+} @else {
+    <div class="lp-scroll">
+        <table class="lp-matrix">
+            <thead>
+                <tr>
+                    <th class="lp-resource">{{ 'Employee' | localize }}</th>
+                    @for (day of days(); track day.index) {
+                        <th class="lp-cell" [class.lp-weekend]="day.isWeekend">
+                            <div class="text-muted">{{ day.weekday }}</div>
+                            <div>{{ day.label }}</div>
+                        </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (group of planner()?.groups ?? []; track group.organizationUnitId) {
+                    <!-- The unit's own line: how many of its people are away each day. -->
+                    <tr class="lp-group">
+                        <td class="lp-resource fw-bold">{{ group.organizationUnitName }}</td>
+                        @for (day of days(); track day.index) {
+                            <td class="lp-cell" [class.lp-weekend]="day.isWeekend">
+                                {{ group.awayCountByDay?.[day.index] || '' }}
+                            </td>
+                        }
+                    </tr>
+                    @for (row of group.rows ?? []; track row.employeeId) {
+                        <tr>
+                            <td class="lp-resource">{{ employeeName(row) }}</td>
+                            @for (day of days(); track day.index) {
+                                <td
+                                    class="lp-cell"
+                                    [class.lp-weekend]="day.isWeekend"
+                                    [ngClass]="cellClass(row.days?.[day.index])"
+                                    [pTooltip]="cellTooltip(row, day.index)"
+                                    tooltipStyleClass="lp-tooltip"></td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}

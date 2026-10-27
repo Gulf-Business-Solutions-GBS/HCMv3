@@ -1,0 +1,104 @@
+using System.Linq;
+using Abp;
+using Abp.Authorization;
+using Abp.Authorization.Roles;
+using Abp.Authorization.Users;
+using Abp.MultiTenancy;
+using Abp.Notifications;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using HCMv3.Authorization;
+using HCMv3.Authorization.Roles;
+using HCMv3.Authorization.Users;
+using HCMv3.EntityFrameworkCore;
+using HCMv3.Notifications;
+
+namespace HCMv3.Migrations.Seed.Tenants;
+
+public class TenantRoleAndUserBuilder
+{
+    private readonly HCMv3DbContext _context;
+    private readonly int _tenantId;
+
+    public TenantRoleAndUserBuilder(HCMv3DbContext context, int tenantId)
+    {
+        _context = context;
+        _tenantId = tenantId;
+    }
+
+    public void Create()
+    {
+        CreateRolesAndUsers();
+    }
+
+    private void CreateRolesAndUsers()
+    {
+        //Admin role
+
+        var adminRole = _context.Roles.IgnoreQueryFilters().FirstOrDefault(r => r.TenantId == _tenantId && r.Name == StaticRoleNames.Tenants.Admin);
+        if (adminRole == null)
+        {
+            adminRole = _context.Roles.Add(new Role(_tenantId, StaticRoleNames.Tenants.Admin, StaticRoleNames.Tenants.Admin) { IsStatic = true }).Entity;
+            _context.SaveChanges();
+        }
+
+        //User role
+
+        var userRole = _context.Roles.IgnoreQueryFilters().FirstOrDefault(r => r.TenantId == _tenantId && r.Name == StaticRoleNames.Tenants.User);
+        if (userRole == null)
+        {
+            _context.Roles.Add(new Role(_tenantId, StaticRoleNames.Tenants.User, StaticRoleNames.Tenants.User) { IsStatic = true, IsDefault = true });
+            _context.SaveChanges();
+        }
+
+        //Candidate role (careers portal). Intentionally NOT IsDefault: careers candidates must not inherit
+        //whatever the tenant admin has granted to the default "User" role. It is seeded with zero
+        //permissions; a candidate token therefore authorizes nothing beyond the anonymous careers surface
+        //and the endpoints that only require authentication (e.g. own profile).
+
+        var candidateRole = _context.Roles.IgnoreQueryFilters().FirstOrDefault(r => r.TenantId == _tenantId && r.Name == StaticRoleNames.Tenants.Candidate);
+        if (candidateRole == null)
+        {
+            _context.Roles.Add(new Role(_tenantId, StaticRoleNames.Tenants.Candidate, StaticRoleNames.Tenants.Candidate) { IsStatic = true, IsDefault = false });
+            _context.SaveChanges();
+        }
+
+        //admin user
+
+        var adminUser = _context.Users.IgnoreQueryFilters().FirstOrDefault(u => u.TenantId == _tenantId && u.UserName == AbpUserBase.AdminUserName);
+        if (adminUser == null)
+        {
+            adminUser = User.CreateTenantAdminUser(_tenantId, "admin@defaulttenant.com");
+            adminUser.Password = new PasswordHasher<User>(new OptionsWrapper<PasswordHasherOptions>(new PasswordHasherOptions())).HashPassword(adminUser, "123qwe");
+            adminUser.IsEmailConfirmed = true;
+            adminUser.ShouldChangePasswordOnNextLogin = false;
+            adminUser.IsActive = true;
+
+            _context.Users.Add(adminUser);
+            _context.SaveChanges();
+
+            //Assign Admin role to admin user
+            _context.UserRoles.Add(new UserRole(_tenantId, adminUser.Id, adminRole.Id));
+            _context.SaveChanges();
+
+            //User account of admin user
+            if (_tenantId == 1)
+            {
+                _context.UserAccounts.Add(new UserAccount
+                {
+                    TenantId = _tenantId,
+                    UserId = adminUser.Id,
+                    UserName = AbpUserBase.AdminUserName,
+                    EmailAddress = adminUser.EmailAddress
+                });
+                _context.SaveChanges();
+            }
+
+            //Notification subscription
+            _context.NotificationSubscriptions.Add(new NotificationSubscriptionInfo(SequentialGuidGenerator.Instance.Create(), _tenantId, adminUser.Id, AppNotificationNames.NewUserRegistered));
+            _context.SaveChanges();
+        }
+    }
+}
+

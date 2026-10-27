@@ -1,0 +1,75 @@
+{
+  "helpId": "sys.fi-posting-settings.edit",
+  "lang": "ar",
+  "title": "FI posting settings",
+  "entity": "HCMv3.SystemSettings.ManageFIPostingSettings",
+  "overviewHtml": "<p>طريقة ترحيل الرواتب إلى النظام المالي.</p><p>لكل شركة سجل إعدادات واحد، ولا يمكن حذفه.</p>",
+  "aliasIndex": {
+    "loc:SeparateProvisionPosting": "ManageFIPostingSettings.SeparateProvisionPosting",
+    "dom:FIPostingSettings_SeparateProvisionPosting": "ManageFIPostingSettings.SeparateProvisionPosting",
+    "loc:EnableAutoWageAccountEntry": "ManageFIPostingSettings.EnableAutoWageAccountEntry",
+    "dom:FIPostingSettings_EnableAutoWageAccountEntry": "ManageFIPostingSettings.EnableAutoWageAccountEntry",
+    "loc:AllowDuplicateCodeInCostElement": "ManageFIPostingSettings.AllowDuplicateCodeInCostElement",
+    "dom:FIPostingSettings_AllowDuplicateCodeInCostElement": "ManageFIPostingSettings.AllowDuplicateCodeInCostElement",
+    "loc:FIPostingAfterPayrollExit": "ManageFIPostingSettings.FiPostingAfterPayrollExit",
+    "dom:FIPostingSettings_FIPostingAfterPayrollExit": "ManageFIPostingSettings.FiPostingAfterPayrollExit"
+  },
+  "fields": [
+    {
+      "id": "ManageFIPostingSettings.SeparateProvisionPosting",
+      "label": "SeparateProvisionPosting",
+      "section": null,
+      "aliases": [
+        "loc:SeparateProvisionPosting",
+        "dom:FIPostingSettings_SeparateProvisionPosting"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت المخصصات تُرحَّل في قيد يومية منفصل.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُقسم ترحيل قيد اليومية إلى قسمين: أسطر الرواتب في قيد، وأسطر المخصصات (الإجازات ومكافأة نهاية الخدمة والتذاكر) في قيد آخر. وإلا فيذهب كل شيء إلى قيد رواتب واحد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageFIPostingSettings.EnableAutoWageAccountEntry",
+      "label": "EnableAutoWageAccountEntry",
+      "section": null,
+      "aliases": [
+        "loc:EnableAutoWageAccountEntry",
+        "dom:FIPostingSettings_EnableAutoWageAccountEntry"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت حسابات الأجور تُنشأ تلقائياً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageFIPostingSettings.AllowDuplicateCodeInCostElement",
+      "label": "AllowDuplicateCodeInCostElement",
+      "section": null,
+      "aliases": [
+        "loc:AllowDuplicateCodeInCostElement",
+        "dom:FIPostingSettings_AllowDuplicateCodeInCostElement"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز أن يشترك عنصرا تكلفة في رمز واحد.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageFIPostingSettings.FiPostingAfterPayrollExit",
+      "label": "FIPostingAfterPayrollExit",
+      "section": null,
+      "aliases": [
+        "loc:FIPostingAfterPayrollExit",
+        "dom:FIPostingSettings_FIPostingAfterPayrollExit"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان لا يجوز إنتاج ملفات البنك إلا لفترات الرواتب المقفلة.</p><p><strong>لماذا يهم.</strong> رغم اسمه فإنه يتحكم في ملفات البنك: إذا أُشِّر عليه يُرفض ملف البنك الذي تاريخ نهايته بعد آخر فترة مقفلة لمنطقة الرواتب. وإلا فيمكن إنتاج ملفات البنك لأي تواريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "helpId": "trn.training-attendance.edit",
+  "lang": "ar",
+  "title": "حضور التدريب — إنشاء / تحرير",
+  "entity": "HCMv3.TrainingManagement.TrainingAttendance",
+  "overviewHtml": "<p>ما إذا كان الموظف قد حضر مرة انعقاد تدريبية في يوم واحد. يجب أن يقع اليوم ضمن تواريخ الانعقاد، ولكل موظف سجل واحد لكل انعقاد في كل يوم. ولا يؤثر في الوقت أو الرواتب.</p>",
+  "aliasIndex": {
+    "loc:TrainingScheduleId": "TrainingAttendance.TrainingScheduleId",
+    "dom:TrainingAttendance_TrainingScheduleId": "TrainingAttendance.TrainingScheduleId",
+    "loc:EmployeeId": "TrainingAttendance.EmployeeId",
+    "dom:TrainingAttendance_EmployeeId": "TrainingAttendance.EmployeeId",
+    "loc:DayDate": "TrainingAttendance.DayDate",
+    "dom:TrainingAttendance_DayDate": "TrainingAttendance.DayDate",
+    "loc:Attendance": "TrainingAttendance.Attendance",
+    "dom:TrainingAttendance_Attendance": "TrainingAttendance.Attendance"
+  },
+  "fields": [
+    {
+      "id": "TrainingAttendance.TrainingScheduleId",
+      "label": "TrainingScheduleId",
+      "section": "TrainingAttendances",
+      "aliases": [
+        "loc:TrainingScheduleId",
+        "dom:TrainingAttendance_TrainingScheduleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة جداول التدريب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مرة انعقاد الدورة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingAttendance.EmployeeId",
+      "label": "EmployeeId",
+      "section": "TrainingAttendances",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:TrainingAttendance_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingAttendance.DayDate",
+      "label": "DayDate",
+      "section": "TrainingAttendances",
+      "aliases": [
+        "loc:DayDate",
+        "dom:TrainingAttendance_DayDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اليوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingAttendance.Attendance",
+      "label": "Attendance",
+      "section": "TrainingAttendances",
+      "aliases": [
+        "loc:Attendance",
+        "dom:TrainingAttendance_Attendance"
+      ],
+      "rules": "إلزامي. إحدى القيم: حاضر، غائب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حاضر أو غائب.</p><p><strong>مثال.</strong> حاضر</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

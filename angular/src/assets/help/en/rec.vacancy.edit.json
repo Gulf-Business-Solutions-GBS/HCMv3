@@ -1,0 +1,347 @@
+{
+  "helpId": "rec.vacancy.edit",
+  "lang": "en",
+  "title": "Vacancies — Create / Edit",
+  "entity": "HCMv3.Recruitment.Vacancy",
+  "overviewHtml": "<p>A job opening. An <em>Open</em> vacancy whose closing date has not passed is shown on the careers site, where candidates can apply with one of their CVs.</p><p>The publish date is shown to candidates but does not hide the vacancy before it — a vacancy is visible from the moment it is open. The vacancy status report lists vacancies and their applicants.</p>",
+  "aliasIndex": {
+    "loc:Code": "Vacancy.Code",
+    "dom:Vacancy_Code": "Vacancy.Code",
+    "loc:VacancyTitle": "Vacancy.VacancyTitle",
+    "dom:Vacancy_VacancyTitle": "Vacancy.VacancyTitle",
+    "loc:JobTitle": "Vacancy.JobTitleId",
+    "dom:Vacancy_JobTitleId": "Vacancy.JobTitleId",
+    "loc:OrganizationUnit": "Vacancy.OrganizationUnitId",
+    "dom:Vacancy_OrganizationUnitId": "Vacancy.OrganizationUnitId",
+    "loc:RequestionDate": "Vacancy.RequestionDate",
+    "dom:Vacancy_RequestionDate": "Vacancy.RequestionDate",
+    "loc:PublishOn": "Vacancy.PublishOn",
+    "dom:Vacancy_PublishOn": "Vacancy.PublishOn",
+    "loc:ClosingDate": "Vacancy.ClosingDate",
+    "dom:Vacancy_ClosingDate": "Vacancy.ClosingDate",
+    "loc:VacancyStatus": "Vacancy.VacancyStatus",
+    "dom:Vacancy_VacancyStatus": "Vacancy.VacancyStatus",
+    "loc:EmploymentType": "Vacancy.EmploymentType",
+    "dom:Vacancy_EmploymentType": "Vacancy.EmploymentType",
+    "loc:SlaDaysToFill": "Vacancy.SLADaysToFill",
+    "dom:Vacancy_SlaDaysToFill": "Vacancy.SLADaysToFill",
+    "loc:TotalVacancy": "Vacancy.TotalVacancy",
+    "dom:Vacancy_TotalVacancy": "Vacancy.TotalVacancy",
+    "loc:YearsOfExperience": "Vacancy.YearsOfExperience",
+    "dom:Vacancy_YearsOfExperience": "Vacancy.YearsOfExperience",
+    "loc:MonthlySalaryRange": "Vacancy.MonthlySalaryRange",
+    "dom:Vacancy_MonthlySalaryRange": "Vacancy.MonthlySalaryRange",
+    "loc:Qualification": "Vacancy.QualificationId",
+    "dom:Vacancy_QualificationId": "Vacancy.QualificationId",
+    "loc:Position": "Vacancy.PositionId",
+    "dom:Vacancy_PositionId": "Vacancy.PositionId",
+    "loc:Recruiter": "Vacancy.RecruiterId",
+    "dom:Vacancy_RecruiterId": "Vacancy.RecruiterId",
+    "loc:Location": "Vacancy.WorkLocationId",
+    "dom:Vacancy_WorkLocationId": "Vacancy.WorkLocationId",
+    "loc:IsBudgeted": "Vacancy.IsBudgeted",
+    "dom:Vacancy_IsBudgeted": "Vacancy.IsBudgeted",
+    "loc:TemplateOnbGroupId": "Vacancy.TemplateOnbGroupId",
+    "dom:Vacancy_TemplateOnbGroupId": "Vacancy.TemplateOnbGroupId",
+    "loc:OnbGroup": "Vacancy.OnbGroupId",
+    "dom:Vacancy_OnbGroupId": "Vacancy.OnbGroupId",
+    "loc:JobDescription": "Vacancy.JobDescription",
+    "dom:Vacancy_JobDescription": "Vacancy.JobDescription"
+  },
+  "fields": [
+    {
+      "id": "Vacancy.Code",
+      "label": "Code",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:Code",
+        "dom:Vacancy_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.VacancyTitle",
+      "label": "VacancyTitle",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:VacancyTitle",
+        "dom:Vacancy_VacancyTitle"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The vacancy's title.</p><p><strong>Example.</strong> Senior Accountant</p><p><strong>Why it matters.</strong> Shown and searched on the careers site.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.JobTitleId",
+      "label": "JobTitle",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:Vacancy_JobTitleId"
+      ],
+      "rules": "Required. Chosen from Job Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job title the vacancy is for.</p><p><strong>Why it matters.</strong> Candidates on the careers site can filter vacancies by it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.OrganizationUnitId",
+      "label": "OrganizationUnit",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:OrganizationUnit",
+        "dom:Vacancy_OrganizationUnitId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The department the vacancy is in.</p><p><strong>Why it matters.</strong> Shown as the department on the careers site.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.RequestionDate",
+      "label": "RequestionDate",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:RequestionDate",
+        "dom:Vacancy_RequestionDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the vacancy was requested.</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.PublishOn",
+      "label": "PublishOn",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:PublishOn",
+        "dom:Vacancy_PublishOn"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the vacancy is published.</p><p><strong>Why it matters.</strong> Shown on the careers site and in the vacancy reports. It does not hide the vacancy before that date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.ClosingDate",
+      "label": "ClosingDate",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:ClosingDate",
+        "dom:Vacancy_ClosingDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day candidates can see the vacancy.</p><p><strong>Example.</strong> <code>2026-05-31</code></p><p><strong>Why it matters.</strong> After it, the vacancy drops off the careers site.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.VacancyStatus",
+      "label": "VacancyStatus",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:VacancyStatus",
+        "dom:Vacancy_VacancyStatus"
+      ],
+      "rules": "Required. One of: Open, Filled, On Hold, Dropped.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the vacancy stands.</p><p><strong>Example.</strong> Open</p><p><strong>Why it matters.</strong> Only <em>Open</em> vacancies are shown on the careers site.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.EmploymentType",
+      "label": "EmploymentType",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:EmploymentType",
+        "dom:Vacancy_EmploymentType"
+      ],
+      "rules": "Required. One of: FullTime, PartTime.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Full time or part time.</p><p><strong>Why it matters.</strong> Shown on the careers site.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.SLADaysToFill",
+      "label": "SlaDaysToFill",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:SlaDaysToFill",
+        "dom:Vacancy_SlaDaysToFill"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The days allowed to fill the vacancy.</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.TotalVacancy",
+      "label": "TotalVacancy",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:TotalVacancy",
+        "dom:Vacancy_TotalVacancy"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many posts the vacancy is for.</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.YearsOfExperience",
+      "label": "YearsOfExperience",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:YearsOfExperience",
+        "dom:Vacancy_YearsOfExperience"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The years of experience asked for.</p><p><strong>Why it matters.</strong> Shown on the careers site.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.MonthlySalaryRange",
+      "label": "MonthlySalaryRange",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:MonthlySalaryRange",
+        "dom:Vacancy_MonthlySalaryRange"
+      ],
+      "rules": "Optional. Maximum 100 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The salary range offered.</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.QualificationId",
+      "label": "Qualification",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:Qualification",
+        "dom:Vacancy_QualificationId"
+      ],
+      "rules": "Optional. Chosen from Qualification master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The qualification asked for.</p><p><strong>Why it matters.</strong> Shown on the careers site.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.PositionId",
+      "label": "Position",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:Position",
+        "dom:Vacancy_PositionId"
+      ],
+      "rules": "Optional. Chosen from Position master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The position the vacancy is to fill.</p><p><strong>Example.</strong> <code>P-0142</code> - Senior Accountant, Finance</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.RecruiterId",
+      "label": "Recruiter",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:Recruiter",
+        "dom:Vacancy_RecruiterId"
+      ],
+      "rules": "Optional. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee responsible for filling the vacancy.</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.WorkLocationId",
+      "label": "Location",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:Location",
+        "dom:Vacancy_WorkLocationId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The work location the job is based at.</p><p><strong>Example.</strong> Head Office</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.IsBudgeted",
+      "label": "IsBudgeted",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:IsBudgeted",
+        "dom:Vacancy_IsBudgeted"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the post is in the budget.</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.TemplateOnbGroupId",
+      "label": "TemplateOnbGroupId",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:TemplateOnbGroupId",
+        "dom:Vacancy_TemplateOnbGroupId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> An onboarding group template for the vacancy.</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.OnbGroupId",
+      "label": "OnbGroup",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:OnbGroup",
+        "dom:Vacancy_OnbGroupId"
+      ],
+      "rules": "Optional. Chosen from Onboarding Group master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The onboarding group for people hired to the vacancy.</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.JobDescription",
+      "label": "JobDescription",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:JobDescription",
+        "dom:Vacancy_JobDescription"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job description.</p><p><strong>Why it matters.</strong> Shown on the vacancy's page on the careers site.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

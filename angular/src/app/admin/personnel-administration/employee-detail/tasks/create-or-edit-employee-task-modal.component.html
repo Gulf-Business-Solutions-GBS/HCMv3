@@ -1,0 +1,144 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeTask_TaskTypeId">{{ 'TaskTypeId' | localize }}</label>
+                                <select
+                                    id="EmployeeTask_TaskTypeId"
+                                    #taskTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="TaskTypeId"
+                                    [ngModel]="record().taskTypeId"
+                                    (ngModelChange)="updateField('taskTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (type of taskTypes(); track type.id) {
+                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="taskTypeIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeTask_TaskDate">{{ 'TaskDate' | localize }}</label>
+                                <input
+                                    id="EmployeeTask_TaskDate"
+                                    #taskDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="TaskDate"
+                                    [ngModel]="record().taskDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('taskDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="taskDateInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="EmployeeTask_TaskStatus">{{ 'TaskStatus' | localize }}</label>
+                                <input
+                                    id="EmployeeTask_TaskStatus"
+                                    class="form-control"
+                                    type="number"
+                                    name="TaskStatus"
+                                    [ngModel]="record().taskStatus"
+                                    (ngModelChange)="updateNumberField('taskStatus', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeTask_ReminderDate">{{ 'ReminderDate' | localize }}</label>
+                                <input
+                                    id="EmployeeTask_ReminderDate"
+                                    #reminderDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="ReminderDate"
+                                    [ngModel]="record().reminderDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('reminderDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="reminderDateInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeTask_MonitoringType">{{ 'MonitoringType' | localize }}</label>
+                                <input
+                                    id="EmployeeTask_MonitoringType"
+                                    class="form-control"
+                                    type="number"
+                                    name="MonitoringType"
+                                    [ngModel]="record().monitoringType"
+                                    (ngModelChange)="updateNumberField('monitoringType', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeTask_MonitoringCount">{{ 'MonitoringCount' | localize }}</label>
+                                <input
+                                    id="EmployeeTask_MonitoringCount"
+                                    class="form-control"
+                                    type="number"
+                                    name="MonitoringCount"
+                                    [ngModel]="record().monitoringCount"
+                                    (ngModelChange)="updateNumberField('monitoringCount', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeTask_MonitoringUnit">{{ 'MonitoringUnit' | localize }}</label>
+                                <input
+                                    id="EmployeeTask_MonitoringUnit"
+                                    class="form-control"
+                                    type="number"
+                                    name="MonitoringUnit"
+                                    [ngModel]="record().monitoringUnit"
+                                    (ngModelChange)="updateNumberField('monitoringUnit', $event)" />
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeTask_Comments">{{ 'Comments' | localize }}</label>
+                            <textarea
+                                id="EmployeeTask_Comments"
+                                class="form-control"
+                                rows="3"
+                                name="Comments"
+                                [ngModel]="record().comments"
+                                (ngModelChange)="updateField('comments', $event)"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

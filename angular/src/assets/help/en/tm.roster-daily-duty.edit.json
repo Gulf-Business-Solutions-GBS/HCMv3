@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.roster-daily-duty.edit",
+  "lang": "en",
+  "title": "Roster Daily Duties — Create / Edit",
+  "entity": "HCMv3.TimeManagement.RosterDailyDuty",
+  "overviewHtml": "<p>A daily duty on a date within a roster schedule.</p><p>Not read at present: the time engine and payroll take employees' duties from duty periods and roster groups, not from this list. The roster generator that would have used it was never live in the legacy system and was not ported.</p>",
+  "aliasIndex": {
+    "loc:CalendarDate": "RosterDailyDuty.CalendarDate",
+    "dom:RosterDailyDuty_CalendarDate": "RosterDailyDuty.CalendarDate",
+    "loc:RosterDutySchedule": "RosterDailyDuty.RosterDutyScheduleId",
+    "dom:RosterDailyDuty_RosterDutyScheduleId": "RosterDailyDuty.RosterDutyScheduleId",
+    "loc:DailyDuty": "RosterDailyDuty.DailyDutyId",
+    "dom:RosterDailyDuty_DailyDutyId": "RosterDailyDuty.DailyDutyId"
+  },
+  "fields": [
+    {
+      "id": "RosterDailyDuty.CalendarDate",
+      "label": "CalendarDate",
+      "section": "RosterDailyDuties",
+      "aliases": [
+        "loc:CalendarDate",
+        "dom:RosterDailyDuty_CalendarDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date.</p><p><strong>Example.</strong> <code>2026-04-14</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDailyDuty.RosterDutyScheduleId",
+      "label": "RosterDutySchedule",
+      "section": "RosterDailyDuties",
+      "aliases": [
+        "loc:RosterDutySchedule",
+        "dom:RosterDailyDuty_RosterDutyScheduleId"
+      ],
+      "rules": "Required. Chosen from Roster Duty Schedule master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The roster schedule the date belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDailyDuty.DailyDutyId",
+      "label": "DailyDuty",
+      "section": "RosterDailyDuties",
+      "aliases": [
+        "loc:DailyDuty",
+        "dom:RosterDailyDuty_DailyDutyId"
+      ],
+      "rules": "Required. Chosen from Daily Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The daily duty on that date.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

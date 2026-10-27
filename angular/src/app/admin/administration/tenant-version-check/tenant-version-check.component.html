@@ -1,0 +1,221 @@
+<div [@routerTransition]>
+    <sub-header [title]="'TenantVersionCheck' | localize" [description]="'SetupCheckDescription' | localize">
+        <div role="actions">
+            @if (comparison()) {
+                <button
+                    type="button"
+                    class="btn btn-success"
+                    [disabled]="exporting()"
+                    [busyIf]="exporting()"
+                    (click)="exportToExcel()">
+                    <i class="far fa-file-excel"></i>
+                    {{ 'ExportToExcel' | localize }}
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass" [busyIf]="loading()">
+        @if (status(); as s) {
+            <!-- Which version, and which it came from -->
+            <div class="card card-custom mb-5">
+                <div class="card-body d-flex flex-wrap align-items-center gap-5">
+                    <div>
+                        <div class="text-muted small">{{ 'WhatsNewInstalledVersion' | localize }}</div>
+                        <div class="fs-2 fw-bold">{{ s.currentVersion }}</div>
+                        @if (s.builtOn) {
+                            <div class="text-muted">
+                                {{ 'SetupCheckBuiltOn' | localize: (s.builtOn | luxonFormat: 'dd-MM-yyyy HH:mm') }}
+                            </div>
+                        }
+                    </div>
+                    <div class="vr d-none d-md-block"></div>
+                    <div>
+                        <div class="text-muted small">{{ 'WhatsNewPreviousVersion' | localize }}</div>
+                        <div class="fs-2 fw-bold">{{ s.previousVersion ?? ('WhatsNewNoPreviousVersion' | localize) }}</div>
+                        @if (s.previousVersion && s.updatedOn) {
+                            <div class="text-muted">
+                                {{ 'WhatsNewUpdatedFrom' | localize: s.previousVersion : (s.updatedOn | luxonFormat: 'dd-MM-yyyy') }}
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            @if (!s.previousVersion) {
+                <div class="alert alert-info d-flex align-items-center gap-3 mb-5">
+                    <i class="fa fa-info-circle fs-3"></i>
+                    <span>{{ 'SetupCheckNoPrevious' | localize }}</span>
+                </div>
+            }
+
+            <!-- The compare tool: from an older version to the installed one -->
+            <div class="card card-custom mb-5">
+                <div class="card-body">
+                    <div class="row g-4 align-items-end">
+                        <div class="col-md-6">
+                            <label class="form-label" for="SetupCheckCompareFrom">{{ 'SetupCheckCompareFrom' | localize }}</label>
+                            <select
+                                id="SetupCheckCompareFrom"
+                                class="form-select"
+                                [ngModel]="fromVersion()"
+                                (ngModelChange)="fromVersion.set($event)">
+                                <option value="">{{ 'SetupCheckChooseVersion' | localize }}</option>
+                                @if (s.canComparePrevious && s.previousVersion) {
+                                    <option [value]="s.previousVersion">
+                                        {{ s.previousVersion }} &middot; {{ 'WhatsNewPreviousVersion' | localize }}
+                                    </option>
+                                }
+                                @for (build of s.builds; track build.version) {
+                                    <option [value]="build.version">
+                                        {{ build.version }} &middot; {{ build.date | luxonFormat: 'dd-MM-yyyy' }} &middot;
+                                        {{ build.subject }}
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'SetupCheckCompareTo' | localize }}</label>
+                            <input type="text" class="form-control" [value]="s.currentVersion" readonly />
+                        </div>
+                        <div class="col-md-3">
+                            <button
+                                type="button"
+                                class="btn btn-primary w-100"
+                                [disabled]="!fromVersion() || comparing()"
+                                [busyIf]="comparing()"
+                                (click)="compare()">
+                                <i class="fa fa-exchange-alt"></i>
+                                {{ 'SetupCheckCompare' | localize }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (comparison(); as c) {
+            <!-- What the tenant has to set up -->
+            <div class="card card-custom mb-5">
+                <div class="card-header align-items-center">
+                    <div class="card-title">
+                        <span class="fw-bold fs-4">{{ 'SetupCheckSetupRequired' | localize }}</span>
+                        <span class="badge ms-3" [class]="needAttention().length > 0 ? 'badge-light-danger' : 'badge-light-success'">
+                            {{ needAttention().length }} {{ 'SetupCheckNeedAttention' | localize }}
+                        </span>
+                        <span class="text-muted ms-3">{{ c.fromVersion }} &rarr; {{ c.toVersion }}</span>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input
+                            id="SetupCheckShowDoneAndInfo"
+                            class="form-check-input"
+                            type="checkbox"
+                            [ngModel]="showAll()"
+                            (ngModelChange)="showAll.set($event)" />
+                        <label class="form-check-label" for="SetupCheckShowDoneAndInfo">
+                            {{ 'SetupCheckShowDoneAndInfo' | localize }} ({{ c.setupItems.length - needAttention().length }})
+                        </label>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (visibleItems().length === 0) {
+                        <div class="text-muted">{{ 'SetupCheckNoSetupItems' | localize }}</div>
+                    } @else {
+                        <div class="table-responsive">
+                            <table class="table align-middle table-row-dashed">
+                                <thead>
+                                    <tr class="fw-bold text-muted">
+                                        <th style="width: 130px">{{ 'Status' | localize }}</th>
+                                        <th style="width: 140px">{{ 'Type' | localize }}</th>
+                                        <th style="min-width: 220px">{{ 'SetupCheckWhatWasAdded' | localize }}</th>
+                                        <th style="min-width: 260px">{{ 'SetupCheckWhatToDo' | localize }}</th>
+                                        <th style="min-width: 200px">{{ 'SetupCheckCameWith' | localize }}</th>
+                                        <th style="min-width: 130px">{{ 'SetupCheckFixOn' | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (item of visibleItems(); track item.kind + ':' + item.technicalName) {
+                                        <tr>
+                                            <td>
+                                                <span class="badge" [class]="statusBadge(item.status)">{{ statusName(item.status) }}</span>
+                                            </td>
+                                            <td>{{ kindName(item.kind) }}</td>
+                                            <td>
+                                                <div class="fw-semibold">{{ item.title }}</div>
+                                                @if (item.technicalName !== item.title) {
+                                                    <div class="text-muted small">{{ item.technicalName }}</div>
+                                                }
+                                            </td>
+                                            <td>{{ item.detail }}</td>
+                                            <td>
+                                                <div>{{ item.version }}</div>
+                                                <div class="text-muted small">{{ item.changeSubject }}</div>
+                                            </td>
+                                            <td>
+                                                @if (item.fixScreenRoute) {
+                                                    <a
+                                                        [routerLink]="item.fixScreenRoute"
+                                                        [title]="'SetupCheckOpenScreen' | localize: item.fixScreenName">
+                                                        {{ item.fixScreenName }}
+                                                    </a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Everything that changed, collapsed until asked for -->
+            <div class="card card-custom">
+                <div class="card-header align-items-center">
+                    <div class="card-title">
+                        <span class="fw-bold fs-4">{{ 'SetupCheckAllChanges' | localize }}</span>
+                        <span class="text-muted ms-3">{{ 'SetupCheckChangesCount' | localize: c.changes.length }}</span>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-light" (click)="showChanges.set(!showChanges())">
+                        <i class="fa" [class.fa-chevron-down]="!showChanges()" [class.fa-chevron-up]="showChanges()"></i>
+                    </button>
+                </div>
+                @if (showChanges()) {
+                    <div class="card-body">
+                        @if (c.changes.length === 0) {
+                            <div class="text-muted">{{ 'SetupCheckNoChanges' | localize }}</div>
+                        } @else {
+                            <div class="table-responsive">
+                                <table class="table align-middle table-row-dashed">
+                                    <thead>
+                                        <tr class="fw-bold text-muted">
+                                            <th style="width: 110px">{{ 'Version' | localize }}</th>
+                                            <th style="width: 110px">{{ 'Date' | localize }}</th>
+                                            <th style="width: 200px">{{ 'Module' | localize }}</th>
+                                            <th>{{ 'SetupCheckChange' | localize }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (change of c.changes; track $index) {
+                                            <tr>
+                                                <td>{{ change.version }}</td>
+                                                <td>{{ change.date | luxonFormat: 'dd-MM-yyyy' }}</td>
+                                                <td>{{ change.moduleName }}</td>
+                                                <td>
+                                                    {{ change.subject }}
+                                                    @if (change.setupItemCount > 0) {
+                                                        <span class="badge badge-light-warning ms-2">{{ 'SetupCheckSetupItems' | localize }}</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

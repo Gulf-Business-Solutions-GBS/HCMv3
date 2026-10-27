@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.absence-ded-rule-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل قواعد الخصم على الغياب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.AbsenceDedRuleDetail",
+  "overviewHtml": "<p>خطوة واحدة من سلّم الخصم على الإجازة المرضية. يعدّ نظام الرواتب أيام الموظف المرضية خلال الدورة، ويأخذ كل يوم أول خطوة يبلغ <strong>عدد الأيام</strong> فيها رقم ذلك اليوم، ويُصرف بنسبة 100% ناقص خصم تلك الخطوة. والأيام المرضية التي تتجاوز آخر خطوة لا تُصرف إطلاقاً، فاجعل آخر خطوة تمتد إلى أقصى ما يمكن أن تبلغه الإجازة المرضية.</p>",
+  "aliasIndex": {
+    "loc:AbsenceDeductionRules": "AbsenceDedRuleDetail.AbsenceDeductionRuleId",
+    "dom:AbsenceDedRuleDetail_AbsenceDeductionRuleId": "AbsenceDedRuleDetail.AbsenceDeductionRuleId",
+    "loc:StartDate": "AbsenceDedRuleDetail.StartDate",
+    "dom:AbsenceDedRuleDetail_StartDate": "AbsenceDedRuleDetail.StartDate",
+    "loc:EndDate": "AbsenceDedRuleDetail.EndDate",
+    "dom:AbsenceDedRuleDetail_EndDate": "AbsenceDedRuleDetail.EndDate",
+    "loc:DaysCount": "AbsenceDedRuleDetail.DaysCount",
+    "dom:AbsenceDedRuleDetail_DaysCount": "AbsenceDedRuleDetail.DaysCount",
+    "loc:DeductionUnit": "AbsenceDedRuleDetail.DeductionUnit",
+    "dom:AbsenceDedRuleDetail_DeductionUnit": "AbsenceDedRuleDetail.DeductionUnit",
+    "loc:DeductionNumber": "AbsenceDedRuleDetail.DeductionNumber",
+    "dom:AbsenceDedRuleDetail_DeductionNumber": "AbsenceDedRuleDetail.DeductionNumber"
+  },
+  "fields": [
+    {
+      "id": "AbsenceDedRuleDetail.AbsenceDeductionRuleId",
+      "label": "AbsenceDeductionRules",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:AbsenceDeductionRules",
+        "dom:AbsenceDedRuleDetail_AbsenceDeductionRuleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة قواعد الخصم على الغياب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السلّم الذي تتبعه هذه الخطوة.</p><p><strong>مثال.</strong> سلّم الإجازة المرضية الكويتي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceDedRuleDetail.StartDate",
+      "label": "StartDate",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:StartDate",
+        "dom:AbsenceDedRuleDetail_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceDedRuleDetail.EndDate",
+      "label": "EndDate",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:EndDate",
+        "dom:AbsenceDedRuleDetail_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceDedRuleDetail.DaysCount",
+      "label": "DaysCount",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:DaysCount",
+        "dom:AbsenceDedRuleDetail_DaysCount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اليوم المرضي، معدوداً خلال الدورة، الذي تسري هذه الخطوة حتى بلوغه.</p><p><strong>مثال.</strong> <code>25</code> — الأيام من 16 إلى 25، بعد خطوة أولى بـ<code>15</code>.</p><p><strong>لماذا يهم.</strong> تُقرأ الخطوات بترتيب هذا الرقم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceDedRuleDetail.DeductionUnit",
+      "label": "DeductionUnit",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:DeductionUnit",
+        "dom:AbsenceDedRuleDetail_DeductionUnit"
+      ],
+      "rules": "إلزامي. إحدى القيم: ثابت، النسبة المئوية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الخصم نسبة مئوية أو مبلغاً ثابتاً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً: تُعامل قيمة الخصم دائماً على أنها نسبة مئوية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceDedRuleDetail.DeductionNumber",
+      "label": "DeductionNumber",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:DeductionNumber",
+        "dom:AbsenceDedRuleDetail_DeductionNumber"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النسبة المئوية التي تُخصم من أجر اليوم عن الأيام المرضية في هذه الخطوة.</p><p><strong>مثال.</strong> <code>25</code> — يُصرف كل يوم بنسبة 75%.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

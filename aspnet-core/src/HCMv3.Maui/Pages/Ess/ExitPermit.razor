@@ -1,0 +1,119 @@
+@using HCMv3.Maui.Services.Navigation
+@using HCMv3.Maui.Core.Helpers
+@inherits HCMv3MainLayoutPageComponentBase
+@attribute [Route("/" + NavigationUrlConsts.ExitPermit)]
+
+@if (!_loaded)
+{
+    <div></div>
+}
+else if (_notLinked)
+{
+    <div class="card mb-5">
+        <div class="card-body">
+            <div class="alert alert-warning mb-0">@L("CurrentUserHasNoEmployeeRecord")</div>
+        </div>
+    </div>
+}
+else
+{
+    @if (!_showForm)
+    {
+        <button class="btn btn-primary btn-lg w-100 mb-5" @onclick="OpenForm">
+            <i class="fa-solid fa-plus me-2"></i>@L("RequestExitPermit")
+        </button>
+    }
+    else
+    {
+        <div class="card mb-5 border border-primary">
+            <div class="card-header min-h-50px">
+                <h3 class="card-title fs-5">@L("RequestExitPermit")</h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <label class="form-label required">@L("ExitPermitNumber")</label>
+                    <input type="text" class="form-control form-control-lg" maxlength="100" @bind="_externalRequestNumber" />
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">@L("TravelReason")</label>
+                    <select class="form-select form-select-lg" @bind="_travelReason">
+                        @foreach (var reason in TravelReasons)
+                        {
+                            <option value="@reason">@TravelReasonLabel(reason)</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label required">@L("StartDate")</label>
+                    <input type="date" class="form-control form-control-lg" @bind="_startDate" />
+                </div>
+                <div class="mb-4">
+                    <label class="form-label required">@L("ExitDate")</label>
+                    <input type="date" class="form-control form-control-lg" @bind="_exitDate" />
+                </div>
+                <div class="mb-5">
+                    <label class="form-label">@L("RequestComment")</label>
+                    <textarea class="form-control" rows="3" maxlength="500" @bind="_comments"></textarea>
+                </div>
+                <div class="d-grid gap-3">
+                    <button class="btn btn-primary btn-lg" @onclick="SubmitAsync">@L("Submit")</button>
+                    <button class="btn btn-light-primary btn-lg" @onclick="SaveDraftAsync">@L("Save")</button>
+                    <button class="btn btn-light btn-lg" @onclick="CloseForm">@L("Cancel")</button>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="card mb-5">
+        <div class="card-header min-h-50px d-flex align-items-center justify-content-between">
+            <h3 class="card-title fs-5">@L("EssMyRequests")</h3>
+            <button class="btn btn-sm btn-icon btn-light" @onclick="ReloadAsync" title="@L("Refresh")">
+                <i class="fa-solid fa-rotate"></i>
+            </button>
+        </div>
+        <div class="card-body p-3">
+            @if (_rows.Count == 0)
+            {
+                <p class="text-muted mb-0">@L("NoData")</p>
+            }
+            else
+            {
+                @foreach (var row in _rows)
+                {
+                    <div class="border-bottom py-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="min-w-0 me-2">
+                                <div class="fw-bold text-gray-800">
+                                    @(string.IsNullOrWhiteSpace(row.ExternalRequestNumber) ? "-" : row.ExternalRequestNumber)
+                                </div>
+                                <div class="text-muted fs-7">@TravelReasonLabel(row.TravelReason)</div>
+                                <div class="text-muted fs-7">
+                                    @L("StartDate"): @EssText.Date(row.StartDate)
+                                    &middot; @L("ExitDate"): @EssText.Date(row.ExitDate)
+                                </div>
+                            </div>
+                            <EssStatusBadge Status="row.WorkflowStatus" IsDraft="row.IsDraft" />
+                        </div>
+                        @if (row.IsDraft || row.CanCancel)
+                        {
+                            <div class="d-flex gap-3 mt-3">
+                                @if (row.IsDraft)
+                                {
+                                    <button class="btn btn-primary flex-grow-1" @onclick="() => SubmitDraftAsync(row)">
+                                        <i class="fa-solid fa-paper-plane me-2"></i>@L("Submit")
+                                    </button>
+                                }
+                                @if (row.CanCancel)
+                                {
+                                    <button class="btn btn-light-danger flex-grow-1" @onclick="() => CancelAsync(row)">
+                                        <i class="fa-solid fa-xmark me-2"></i>@L(row.IsDraft ? "DiscardDraft" : "Withdraw")
+                                    </button>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}

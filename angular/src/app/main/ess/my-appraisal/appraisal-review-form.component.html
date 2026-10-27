@@ -1,0 +1,329 @@
+@if (loading() && !review()) {
+    <div class="text-center p-4"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+}
+
+@if (review(); as r) {
+    <div class="row">
+        <!-- Main column: the request, the KPIs, the ratings and the reviewers, as the legacy RequestForm
+             stacked them. The averages sit on the right, as balances do on every self-service form. -->
+        <div [class]="access()?.showAverages ? 'col-12 col-xl-9' : 'col-12'">
+            <div class="card card-custom gutter-b mb-5">
+                <div class="card-body">
+                    <h5 class="card-title" data-help-loc="RequestDetail">{{ 'RequestDetail' | localize }}</h5>
+                    <div class="row g-4">
+                        <div class="col-12 col-md-6 col-xl-3">
+                            <label class="form-label" data-help-loc="Employee">{{ 'Employee' | localize }}</label>
+                            <input type="text" class="form-control" [value]="employeeDisplay()" readonly disabled />
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-3">
+                            <label class="form-label" data-help-loc="Period">{{ 'Period' | localize }}</label>
+                            <input type="text" class="form-control" [value]="pick(r.paCycleNameEn, r.paCycleNameAr)" readonly disabled />
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-2">
+                            <label class="form-label" data-help-loc="FormType">{{ 'FormType' | localize }}</label>
+                            <input type="text" class="form-control" [value]="pick(r.formTypeNameEn, r.formTypeNameAr)" readonly disabled />
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-2">
+                            <label class="form-label" data-help-loc="RequestNumber">{{ 'RequestNumber' | localize }}</label>
+                            <input type="text" class="form-control" [value]="r.requestNumber ?? ''" readonly disabled />
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-2">
+                            <label class="form-label" data-help-loc="RequestStatus">{{ 'RequestStatus' | localize }}</label>
+                            <input type="text" class="form-control" [value]="statusLabel()" readonly disabled />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (access()?.showKpiDetails) {
+                <div class="card card-custom gutter-b mb-5">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <h5 class="card-title mb-0 me-auto" data-help-loc="KpiInfo">{{ 'KpiInfo' | localize }}</h5>
+                            @if (access()?.canCopyKpi) {
+                                <button class="btn btn-light-primary btn-sm" [disabled]="saving()" (click)="openCopyKpi()" data-help-loc="CopyKpi">
+                                    <i class="fa fa-copy"></i> {{ 'CopyKpi' | localize }}
+                                </button>
+                            }
+                        </div>
+
+                        @if (showCopyKpi()) {
+                            <!-- Legacy "Copy Kpi" popup, in place: where from, then which set. -->
+                            <div class="row g-3 align-items-end mb-4 border rounded p-3 mx-0">
+                                <div class="col-12 col-md-3">
+                                    <label class="form-label" data-help-loc="KpiFrom">{{ 'KpiFrom' | localize }}</label>
+                                    <select class="form-select" [(ngModel)]="kpiFrom" (ngModelChange)="kpiSourceId = undefined">
+                                        @for (from of kpiFromOptions; track from) {
+                                            <option [ngValue]="from">{{ kpiFromLabel(from) }}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label">{{ kpiFromLabel(kpiFrom) }}</label>
+                                    <select class="form-select" [(ngModel)]="kpiSourceId">
+                                        <option [ngValue]="undefined"></option>
+                                        @for (option of kpiSourceOptions(); track option.id) {
+                                            <option [ngValue]="option.id">{{ option.label }}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <button class="btn btn-primary me-2" [disabled]="saving()" (click)="copyKpi()">{{ 'CopyKpi' | localize }}</button>
+                                    <button class="btn btn-light" (click)="showCopyKpi.set(false)">{{ 'Cancel' | localize }}</button>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th data-help-loc="KpiCategory">{{ 'KpiCategory' | localize }}</th>
+                                        <th data-help-loc="ContributionReview">{{ 'ContributionReview' | localize }}</th>
+                                        @if (!access()?.useMarks) {
+                                            <th class="text-end" data-help-loc="Weight">{{ 'Weight' | localize }}</th>
+                                        }
+                                        <th data-help-loc="Target">{{ 'Target' | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (kpi of r.kpis ?? []; track kpi.id) {
+                                        <tr>
+                                            <td>{{ pick(kpi.kpiCategoryNameEn, kpi.kpiCategoryNameAr) }}</td>
+                                            <td>
+                                                <div class="fw-bold">{{ pick(kpi.kpiNameEn, kpi.kpiNameAr) }}</div>
+                                                @if (kpi.kpiDescription) {
+                                                    <div class="text-muted small">{{ kpi.kpiDescription }}</div>
+                                                }
+                                            </td>
+                                            @if (!access()?.useMarks) {
+                                                <td class="text-end">{{ kpi.weight }}</td>
+                                            }
+                                            <td>{{ kpi.target }}</td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td colspan="4" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (access()?.showRatings) {
+                <div class="card card-custom gutter-b mb-5">
+                    <div class="card-body">
+                        <h5 class="card-title" data-help-loc="Ratings">{{ 'Ratings' | localize }}</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        @if (showReviewerColumn()) {
+                                            <th data-help-loc="ReviewerName">{{ 'ReviewerName' | localize }}</th>
+                                        }
+                                        <th data-help-loc="KpiCategory">{{ 'KpiCategory' | localize }}</th>
+                                        <th data-help-loc="ContributionReview">{{ 'ContributionReview' | localize }}</th>
+                                        @if (!access()?.useMarks) {
+                                            <th class="text-end" data-help-loc="Weight">{{ 'Weight' | localize }}</th>
+                                            <th style="min-width: 220px" data-help-loc="Ratings">{{ 'Ratings' | localize }}</th>
+                                        } @else {
+                                            <th style="min-width: 120px" data-help-loc="Marks">{{ 'Marks' | localize }}</th>
+                                        }
+                                        <th style="min-width: 260px" data-help-loc="Comments">{{ 'Comments' | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (line of r.ratingLines ?? []; track line.id) {
+                                        <tr>
+                                            @if (showReviewerColumn()) {
+                                                <td>{{ pick(line.reviewerNameEn, line.reviewerNameAr) }}</td>
+                                            }
+                                            <td>{{ pick(line.kpiCategoryNameEn, line.kpiCategoryNameAr) }}</td>
+                                            <td>
+                                                <div class="fw-bold">{{ pick(line.kpiNameEn, line.kpiNameAr) }}</div>
+                                                @if (line.kpiDescription) {
+                                                    <div class="text-muted small">{{ line.kpiDescription }}</div>
+                                                }
+                                            </td>
+                                            @if (!access()?.useMarks) {
+                                                <td class="text-end">{{ line.weight }}</td>
+                                                <td>
+                                                    @if (canEdit(line)) {
+                                                        <select
+                                                            class="form-select"
+                                                            [ngModel]="edit(line).ratingId"
+                                                            (ngModelChange)="setRating(line, $event)">
+                                                            <option [ngValue]="undefined">{{ 'SelectRating' | localize }}</option>
+                                                            @for (option of r.ratingOptions ?? []; track option.id) {
+                                                                <option [ngValue]="option.id" [disabled]="!ratingSelectable(option, line)">
+                                                                    {{ ratingLabel(option) }}
+                                                                </option>
+                                                            }
+                                                        </select>
+                                                    } @else {
+                                                        <select class="form-select" disabled>
+                                                            <option>{{ lineRatingName(line) }}</option>
+                                                        </select>
+                                                    }
+                                                </td>
+                                            } @else {
+                                                <td>
+                                                    <input
+                                                        type="number"
+                                                        min="0"
+                                                        class="form-control"
+                                                        [disabled]="!canEdit(line)"
+                                                        [ngModel]="edit(line).marks"
+                                                        (ngModelChange)="setMarks(line, $event)" />
+                                                </td>
+                                            }
+                                            <td>
+                                                <textarea
+                                                    class="form-control"
+                                                    rows="2"
+                                                    maxlength="4000"
+                                                    [class.is-invalid]="canEdit(line) && commentRequired(line) && !edit(line).comments?.trim()"
+                                                    [placeholder]="commentRequired(line) ? ('CommentRequired' | localize) : ''"
+                                                    [disabled]="!canEdit(line)"
+                                                    [ngModel]="edit(line).comments"
+                                                    (ngModelChange)="setComments(line, $event)"></textarea>
+                                            </td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td colspan="6" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (access()?.showReviewers) {
+                <div class="card card-custom gutter-b mb-5">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <h5 class="card-title mb-0 me-auto" data-help-loc="Reviewers">{{ 'Reviewers' | localize }}</h5>
+                            @if (access()?.canAddPeer) {
+                                <button class="btn btn-light-primary btn-sm" [disabled]="saving()" (click)="openAddPeer()" data-help-loc="AddPeer">
+                                    <i class="fa fa-user-plus"></i> {{ 'AddPeer' | localize }}
+                                </button>
+                            }
+                        </div>
+
+                        @if (showAddPeer()) {
+                            <div class="row g-3 align-items-end mb-4 border rounded p-3 mx-0">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label">{{ 'Search' | localize }}</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" [(ngModel)]="peerFilter" (keydown.enter)="searchPeers()" />
+                                        <button class="btn btn-light-primary" (click)="searchPeers()"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-5">
+                                    <label class="form-label" data-help-loc="Peer">{{ 'Peer' | localize }}</label>
+                                    <select class="form-select" [(ngModel)]="peerId">
+                                        <option [ngValue]="undefined"></option>
+                                        @for (person of peerCandidates(); track person.id) {
+                                            <option [ngValue]="person.id">{{ personLabel(person) }}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <button class="btn btn-primary me-2" [disabled]="saving()" (click)="addPeer()">{{ 'AddPeer' | localize }}</button>
+                                    <button class="btn btn-light" (click)="showAddPeer.set(false)">{{ 'Cancel' | localize }}</button>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th data-help-loc="Employee">{{ 'Employee' | localize }}</th>
+                                        <th data-help-loc="ReviewerType">{{ 'ReviewerType' | localize }}</th>
+                                        @if (!access()?.useMarks) {
+                                            <th data-help-loc="AverageRating">{{ 'AverageRating' | localize }}</th>
+                                            <th class="text-end" data-help-loc="AverageScore">{{ 'AverageScore' | localize }}</th>
+                                        } @else {
+                                            <th class="text-end" data-help-loc="TotalMarks">{{ 'TotalMarks' | localize }}</th>
+                                        }
+                                        <th data-help-loc="ReviewSubmitted">{{ 'ReviewSubmitted' | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (reviewer of r.reviewers ?? []; track reviewer.id) {
+                                        <tr>
+                                            <td>{{ reviewer.employeeCode }} - {{ pick(reviewer.fullNameEn, reviewer.fullNameAr) }}</td>
+                                            <td>{{ reviewer.reviewerType }}</td>
+                                            @if (!access()?.useMarks) {
+                                                <td>{{ pick(reviewer.averageRatingNameEn, reviewer.averageRatingNameAr) }}</td>
+                                                <td class="text-end">{{ score(reviewer.averageScore) }}</td>
+                                            } @else {
+                                                <td class="text-end">{{ score(reviewer.totalMarks) }}</td>
+                                            }
+                                            <td>
+                                                <span class="badge" [ngClass]="reviewer.reviewSubmitted ? 'badge-success' : 'badge-light-warning'">
+                                                    {{ (reviewer.reviewSubmitted ? 'Yes' : 'No') | localize }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td colspan="5" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- Legacy captions: Save Review, Submit Review. Save first because it changes nothing for anybody
+                 else; Submit locks this reviewer's part and may complete the step; Close last and quietest. -->
+            <div class="mb-5">
+                @if (access()?.canSaveReview) {
+                    <button class="btn btn-light-primary me-2" [disabled]="saving()" (click)="saveReview()" data-help-loc="SaveReview">
+                        {{ 'SaveReview' | localize }}
+                    </button>
+                }
+                @if (access()?.canSubmitReview) {
+                    <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submitReview()" data-help-loc="SubmitReview">
+                        {{ 'SubmitReview' | localize }}
+                    </button>
+                }
+                @if (mode() !== 'approve') {
+                    <button class="btn btn-light" (click)="cancelled.emit()">{{ 'Close' | localize }}</button>
+                }
+            </div>
+        </div>
+
+        @if (access()?.showAverages) {
+            <div class="col-12 col-xl-3">
+                <div class="card card-custom gutter-b mb-5">
+                    <div class="card-body">
+                        <h5 class="card-title" data-help-loc="AppraisalInfo">{{ 'AppraisalInfo' | localize }}</h5>
+                        <div class="d-flex justify-content-between py-2 border-bottom">
+                            <span data-help-loc="OverallAverageScore">{{ 'OverallAverageScore' | localize }}</span>
+                            <span class="fw-bold">{{ score(r.overallAverageScore) }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-2 border-bottom">
+                            <span data-help-loc="PeerAverageScore">{{ 'PeerAverageScore' | localize }}</span>
+                            <span class="fw-bold">{{ score(r.peerAverageScore) }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-2">
+                            <span data-help-loc="EmployeeAverageScore">{{ 'EmployeeAverageScore' | localize }}</span>
+                            <span class="fw-bold">{{ score(r.employeeAverageScore) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

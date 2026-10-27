@@ -1,0 +1,27 @@
+{
+  "helpId": "jp.job-description-competency.edit",
+  "lang": "en",
+  "title": "Job Description Competencies — Create / Edit",
+  "entity": "HCMv3.JobProfileManagement.JobDescriptionCompetency",
+  "overviewHtml": "<p>A competency the job description asks for. Each can be listed once per job description.</p>",
+  "aliasIndex": {
+    "loc:Competency": "JobDescriptionCompetency.CompetencyId",
+    "dom:JobDescriptionCompetency_CompetencyId": "JobDescriptionCompetency.CompetencyId"
+  },
+  "fields": [
+    {
+      "id": "JobDescriptionCompetency.CompetencyId",
+      "label": "Competency",
+      "section": "JobDescriptionCompetencies",
+      "aliases": [
+        "loc:Competency",
+        "dom:JobDescriptionCompetency_CompetencyId"
+      ],
+      "rules": "Optional. Chosen from Competency master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The competency.</p><p><strong>Example.</strong> Teamwork</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

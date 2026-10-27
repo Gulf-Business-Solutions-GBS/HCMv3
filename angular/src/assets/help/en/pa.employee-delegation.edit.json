@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-delegation.edit",
+  "lang": "en",
+  "title": "Employee Delegations — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeDelegation",
+  "overviewHtml": "<p>Hands the employee's duties to a colleague for a period — typically while they are on leave.</p><p>While a delegation is in force, the colleague is copied on the notification emails the employee receives. Delegations can be routed for approval and take effect only once approved. An employee cannot delegate to themselves, and delegations for the same employee cannot overlap.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeDelegation.StartDate",
+    "dom:EmployeeDelegation_StartDate": "EmployeeDelegation.StartDate",
+    "loc:EndDate": "EmployeeDelegation.EndDate",
+    "dom:EmployeeDelegation_EndDate": "EmployeeDelegation.EndDate",
+    "loc:DelegateTo": "EmployeeDelegation.DelegateToId",
+    "dom:EmployeeDelegation_DelegateToId": "EmployeeDelegation.DelegateToId",
+    "loc:Comments": "EmployeeDelegation.Comments",
+    "dom:EmployeeDelegation_Comments": "EmployeeDelegation.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDelegation.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeDelegations",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeDelegation_StartDate"
+      ],
+      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDelegation.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeDelegations",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeDelegation_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDelegation.DelegateToId",
+      "label": "DelegateTo",
+      "section": "EmployeeDelegations",
+      "aliases": [
+        "loc:DelegateTo",
+        "dom:EmployeeDelegation_DelegateToId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The colleague who covers for the employee.</p><p><strong>Example.</strong> Ahmed Al-Kandari (1057)</p><p><strong>Why it matters.</strong> Must be a different employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDelegation.Comments",
+      "label": "Comments",
+      "section": "EmployeeDelegations",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeDelegation_Comments"
+      ],
+      "rules": "Optional. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

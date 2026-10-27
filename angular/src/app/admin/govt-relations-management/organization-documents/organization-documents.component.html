@@ -1,0 +1,137 @@
+<div [@routerTransition]>
+    <sub-header [title]="'OrganizationDocuments' | localize" [description]="'GovtRelationsManagement' | localize">
+        <div role="actions">
+            @if ('Pages.GovtRelationsManagement.OrganizationDocuments.Create' | permission) {
+                <button (click)="createOrganizationDocument()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="form">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-xl-8 col-md-8">
+                            <div class="input-group">
+                                <input
+                                    [ngModel]="filterText()"
+                                    (ngModelChange)="filterText.set($event)"
+                                    name="filterText"
+                                    autoFocus
+                                    class="form-control"
+                                    [placeholder]="l('SearchWithThreeDot')"
+                                    type="text"
+                                    (keydown.enter)="getOrganizationDocuments()" />
+                                <button class="btn btn-primary" (click)="getOrganizationDocuments()">
+                                    <i class="flaticon-search-1" aria-label="Search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getOrganizationDocuments($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '70rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.GovtRelationsManagement.OrganizationDocuments.Edit',
+                                                    'Pages.GovtRelationsManagement.OrganizationDocuments.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 180px">{{ 'OrganizationUnit' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'DocumentType' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'DocumentNum' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'IssueDate' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'ExpiryDate' | localize }}</th>
+                                    <th style="min-width: 110px">{{ 'DaysLeft' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'Sponsor' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'NotificationSent' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.GovtRelationsManagement.OrganizationDocuments.Edit',
+                                                    'Pages.GovtRelationsManagement.OrganizationDocuments.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 180px">{{ record.organizationUnitName }}</td>
+                                    <td style="min-width: 160px">{{ record.documentTypeName }}</td>
+                                    <td style="min-width: 150px">{{ record.documentNum }}</td>
+                                    <td style="min-width: 130px">{{ record.issueDate | luxonFormat: 'DD' }}</td>
+                                    <td style="min-width: 130px">{{ record.expiryDate | luxonFormat: 'DD' }}</td>
+                                    <td style="min-width: 110px" [class.text-danger]="record.daysLeft < 0">{{ record.daysLeft | number: '1.0-0' }}</td>
+                                    <td style="min-width: 160px">{{ record.sponsorName }}</td>
+                                    <td style="min-width: 130px">
+                                        <i class="fa" [class.fa-check]="record.notificationSent" [class.text-success]="record.notificationSent" [class.fa-times]="!record.notificationSent" [class.text-danger]="!record.notificationSent"></i>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getOrganizationDocuments($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditOrganizationDocumentModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

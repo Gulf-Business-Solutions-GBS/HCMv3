@@ -1,0 +1,75 @@
+{
+  "helpId": "gr.govt-job-title.edit",
+  "lang": "ar",
+  "title": "المسميات الوظيفية الحكومية — إنشاء / تحرير",
+  "entity": "HCMv3.GovtRelationsManagement.GovtJobTitle",
+  "overviewHtml": "<p>مسمى وظيفي كما هو مسجل لدى الجهات الحكومية، وقد يختلف عن المسمى الوظيفي الداخلي. يُستخدم في سجلات كفلاء الموظفين وفي حصص المسميات الوظيفية للكفلاء.</p>",
+  "aliasIndex": {
+    "loc:Code": "GovtJobTitle.Code",
+    "dom:GovtJobTitle_Code": "GovtJobTitle.Code",
+    "loc:GovtJobCategory": "GovtJobTitle.GovtJobCategoryId",
+    "dom:GovtJobTitle_GovtJobCategoryId": "GovtJobTitle.GovtJobCategoryId",
+    "loc:NameEn": "GovtJobTitle.NameEn",
+    "dom:GovtJobTitle_NameEn": "GovtJobTitle.NameEn",
+    "loc:NameAr": "GovtJobTitle.NameAr",
+    "dom:GovtJobTitle_NameAr": "GovtJobTitle.NameAr"
+  },
+  "fields": [
+    {
+      "id": "GovtJobTitle.Code",
+      "label": "Code",
+      "section": "GovtJobTitles",
+      "aliases": [
+        "loc:Code",
+        "dom:GovtJobTitle_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GovtJobTitle.GovtJobCategoryId",
+      "label": "GovtJobCategory",
+      "section": "GovtJobTitles",
+      "aliases": [
+        "loc:GovtJobCategory",
+        "dom:GovtJobTitle_GovtJobCategoryId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة فئات الوظائف الحكومية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فئة الوظيفة الحكومية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GovtJobTitle.NameEn",
+      "label": "NameEn",
+      "section": "GovtJobTitles",
+      "aliases": [
+        "loc:NameEn",
+        "dom:GovtJobTitle_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GovtJobTitle.NameAr",
+      "label": "NameAr",
+      "section": "GovtJobTitles",
+      "aliases": [
+        "loc:NameAr",
+        "dom:GovtJobTitle_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

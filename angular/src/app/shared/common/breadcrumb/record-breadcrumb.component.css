@@ -1,0 +1,28 @@
+/* Quiet by design: a breadcrumb is orientation, not content. */
+.rb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    font-size: 12.5px;
+}
+
+.rb-sep {
+    color: #b9c4ca;
+}
+
+.rb-step {
+    color: #6b7c85;
+    text-decoration: none;
+}
+
+a.rb-step:hover {
+    color: #0b6e80;
+    text-decoration: underline;
+}
+
+.rb-current {
+    color: #23313a;
+    font-weight: 600;
+}

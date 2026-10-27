@@ -1,0 +1,145 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'EmployeeSubGroupTickets' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="EmployeeSubGroupTicket_TicketTypeId">{{ 'TicketType' | localize }}</label>
+                                <select
+                                    id="EmployeeSubGroupTicket_TicketTypeId"
+                                    class="form-select"
+                                    name="TicketTypeId"
+                                    required
+                                    [ngModel]="record().ticketTypeId"
+                                    (ngModelChange)="updateField('ticketTypeId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (ticketType of ticketTypes(); track ticketType.id) {
+                                        <option [ngValue]="ticketType.id">{{ ticketType.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="EmployeeSubGroupTicket_TicketCount">{{ 'TicketCount' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupTicket_TicketCount"
+                                    class="form-control"
+                                    type="number"
+                                    name="TicketCount"
+                                    [ngModel]="record().ticketCount"
+                                    (ngModelChange)="updateField('ticketCount', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="EmployeeSubGroupTicket_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupTicket_StartDate"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    required
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateStartDate($event)" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="EmployeeSubGroupTicket_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupTicket_EndDate"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateEndDate($event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="EmployeeSubGroupTicket_MaxAmount">{{ 'MaxAmount' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupTicket_MaxAmount"
+                                    class="form-control"
+                                    type="number"
+                                    name="MaxAmount"
+                                    [ngModel]="record().maxAmount"
+                                    (ngModelChange)="updateField('maxAmount', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="EmployeeSubGroupTicket_FixAmount">{{ 'FixAmount' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupTicket_FixAmount"
+                                    class="form-control"
+                                    type="number"
+                                    name="FixAmount"
+                                    [ngModel]="record().fixAmount"
+                                    (ngModelChange)="updateField('fixAmount', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="EmployeeSubGroupTicket_FareType">{{ 'FareType' | localize }}</label>
+                                <select
+                                    id="EmployeeSubGroupTicket_FareType"
+                                    class="form-select"
+                                    name="FareType"
+                                    [ngModel]="record().fareType"
+                                    (ngModelChange)="updateField('fareType', $event)">
+                                    @for (type of fareTypes; track type.value) {
+                                        <option [ngValue]="type.value">{{ type.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="EmployeeSubGroupTicket_AgeLimit">{{ 'AgeLimit' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupTicket_AgeLimit"
+                                    class="form-control"
+                                    type="number"
+                                    name="AgeLimit"
+                                    [ngModel]="record().ageLimit"
+                                    (ngModelChange)="updateField('ageLimit', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="EmployeeSubGroupTicket_AccrualPeriod">{{ 'AccrualPeriod' | localize }}</label>
+                                <select
+                                    id="EmployeeSubGroupTicket_AccrualPeriod"
+                                    class="form-select"
+                                    name="AccrualPeriod"
+                                    [ngModel]="record().accrualPeriod"
+                                    (ngModelChange)="updateField('accrualPeriod', $event)">
+                                    @for (period of accrualPeriods; track period.value) {
+                                        <option [ngValue]="period.value">{{ period.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

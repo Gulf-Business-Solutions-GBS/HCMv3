@@ -1,0 +1,107 @@
+{
+  "helpId": "hs.action-register.edit",
+  "lang": "ar",
+  "title": "سجلات الإجراءات — إنشاء / تحرير",
+  "entity": "HCMv3.HealthAndSafetyManagement.ActionRegister",
+  "overviewHtml": "<p>إجراء تصحيحي أو وقائي. وكما في النظام القديم، يجب اختيار حادث وخطر معاً.</p>",
+  "aliasIndex": {
+    "loc:ActionDate": "ActionRegister.ActionDate",
+    "dom:ActionRegister_ActionDate": "ActionRegister.ActionDate",
+    "loc:Status": "ActionRegister.StatusId",
+    "dom:ActionRegister_StatusId": "ActionRegister.StatusId",
+    "loc:Incident": "ActionRegister.IncidentId",
+    "dom:ActionRegister_IncidentId": "ActionRegister.IncidentId",
+    "loc:Risk": "ActionRegister.RiskId",
+    "dom:ActionRegister_RiskId": "ActionRegister.RiskId",
+    "loc:AssignedTo": "ActionRegister.AssignedToId",
+    "dom:ActionRegister_AssignedToId": "ActionRegister.AssignedToId",
+    "loc:Description": "ActionRegister.Description",
+    "dom:ActionRegister_Description": "ActionRegister.Description"
+  },
+  "fields": [
+    {
+      "id": "ActionRegister.ActionDate",
+      "label": "ActionDate",
+      "section": "ActionRegisters",
+      "aliases": [
+        "loc:ActionDate",
+        "dom:ActionRegister_ActionDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى أُنشئ الإجراء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ActionRegister.StatusId",
+      "label": "Status",
+      "section": "ActionRegisters",
+      "aliases": [
+        "loc:Status",
+        "dom:ActionRegister_StatusId"
+      ],
+      "rules": "اختياري. يُختار من قائمة حالات الإجراءات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حالة الإجراء.</p><p><strong>مثال.</strong> قيد التنفيذ</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ActionRegister.IncidentId",
+      "label": "Incident",
+      "section": "ActionRegisters",
+      "aliases": [
+        "loc:Incident",
+        "dom:ActionRegister_IncidentId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة سجلات الحوادث.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحادث الذي يخصه هذا.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ActionRegister.RiskId",
+      "label": "Risk",
+      "section": "ActionRegisters",
+      "aliases": [
+        "loc:Risk",
+        "dom:ActionRegister_RiskId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة سجلات المخاطر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الخطر الذي يخصه هذا.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ActionRegister.AssignedToId",
+      "label": "AssignedTo",
+      "section": "ActionRegisters",
+      "aliases": [
+        "loc:AssignedTo",
+        "dom:ActionRegister_AssignedToId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يجب أن ينفذه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ActionRegister.Description",
+      "label": "Description",
+      "section": "ActionRegisters",
+      "aliases": [
+        "loc:Description",
+        "dom:ActionRegister_Description"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما يجب القيام به.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

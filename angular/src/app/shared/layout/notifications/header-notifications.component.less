@@ -1,0 +1,36 @@
+﻿.set-notification-as-read:before{
+    content: "\2022";
+    padding-right: 0.5rem;
+    color:#B5B5C3 !important
+}
+
+.notification-popover {
+    .p-popover-content {
+        padding: 0;
+    }
+}
+
+// Wraps rather than squeezing. There are up to three actions here and the panel is 200px wide on a
+// phone; forcing them onto one row made each button too narrow to read its own label.
+.notification-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    > .btn {
+        flex: 1 1 auto;
+    }
+}
+
+// Muted, not hidden. Revealing it on hover would keep the panel tidy but would also make it unreachable
+// on a touch screen, where there is no hover -- and the phone is where people actually clear a bell.
+.delete-notification {
+    opacity: 0.45;
+    transition: opacity 0.12s ease-in-out;
+    cursor: pointer;
+}
+
+.delete-notification:hover,
+.delete-notification:focus {
+    opacity: 1;
+}

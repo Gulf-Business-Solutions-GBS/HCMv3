@@ -1,0 +1,75 @@
+{
+  "helpId": "tm.roster-group-detail.edit",
+  "lang": "en",
+  "title": "Roster Group Details — Create / Edit",
+  "entity": "HCMv3.TimeManagement.RosterGroupDetail",
+  "overviewHtml": "<p>An employee's membership of a roster group for a period. The employee follows the group's schedule for the dates covered, unless they have their own duty period or a substitute duty.</p>",
+  "aliasIndex": {
+    "loc:RosterGroup": "RosterGroupDetail.RosterGroupId",
+    "dom:RosterGroupDetail_RosterGroupId": "RosterGroupDetail.RosterGroupId",
+    "loc:Employee": "RosterGroupDetail.EmployeeId",
+    "dom:RosterGroupDetail_EmployeeId": "RosterGroupDetail.EmployeeId",
+    "loc:StartDate": "RosterGroupDetail.StartDate",
+    "dom:RosterGroupDetail_StartDate": "RosterGroupDetail.StartDate",
+    "loc:EndDate": "RosterGroupDetail.EndDate",
+    "dom:RosterGroupDetail_EndDate": "RosterGroupDetail.EndDate"
+  },
+  "fields": [
+    {
+      "id": "RosterGroupDetail.RosterGroupId",
+      "label": "RosterGroup",
+      "section": "RosterGroupDetails",
+      "aliases": [
+        "loc:RosterGroup",
+        "dom:RosterGroupDetail_RosterGroupId"
+      ],
+      "rules": "Required. Chosen from Roster Group master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The roster group.</p><p><strong>Example.</strong> Team A</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroupDetail.EmployeeId",
+      "label": "Employee",
+      "section": "RosterGroupDetails",
+      "aliases": [
+        "loc:Employee",
+        "dom:RosterGroupDetail_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee.</p><p><strong>Why it matters.</strong> An employee's periods in the same roster group cannot overlap.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroupDetail.StartDate",
+      "label": "StartDate",
+      "section": "RosterGroupDetails",
+      "aliases": [
+        "loc:StartDate",
+        "dom:RosterGroupDetail_StartDate"
+      ],
+      "rules": "Required. Date value. Its dates cannot overlap another record for the same roster group and employee.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroupDetail.EndDate",
+      "label": "EndDate",
+      "section": "RosterGroupDetails",
+      "aliases": [
+        "loc:EndDate",
+        "dom:RosterGroupDetail_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

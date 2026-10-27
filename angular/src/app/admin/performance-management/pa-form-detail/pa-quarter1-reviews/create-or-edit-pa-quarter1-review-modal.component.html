@@ -1,0 +1,125 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'PAQuarter1Reviews' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="PAQuarter1Review_KpiInfoId">{{ 'KpiInfo' | localize }}</label>
+                                <select
+                                    id="PAQuarter1Review_KpiInfoId"
+                                    class="form-select"
+                                    name="KpiInfoId"
+                                    required
+                                    [ngModel]="record().kpiInfoId"
+                                    (ngModelChange)="updateField('kpiInfoId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (kpiInfo of kpiInfos(); track kpiInfo.id) {
+                                        <option [ngValue]="kpiInfo.id">{{ kpiInfo.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="PAQuarter1Review_Weight">{{ 'Weight' | localize }}</label>
+                                <input
+                                    id="PAQuarter1Review_Weight"
+                                    type="number"
+                                    class="form-control"
+                                    name="Weight"
+                                    required
+                                    [ngModel]="record().weight"
+                                    (ngModelChange)="updateField('weight', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="PAQuarter1Review_Target">{{ 'Target' | localize }}</label>
+                                <input
+                                    id="PAQuarter1Review_Target"
+                                    type="text"
+                                    class="form-control"
+                                    name="Target"
+                                    [ngModel]="record().target"
+                                    (ngModelChange)="updateField('target', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="PAQuarter1Review_AppraiseeRatingId">{{ 'AppraiseeRating' | localize }}</label>
+                                <select
+                                    id="PAQuarter1Review_AppraiseeRatingId"
+                                    class="form-select"
+                                    name="AppraiseeRatingId"
+                                    [ngModel]="record().appraiseeRatingId"
+                                    (ngModelChange)="updateField('appraiseeRatingId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (rating of paRatings(); track rating.id) {
+                                        <option [ngValue]="rating.id">{{ rating.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="PAQuarter1Review_RatingId">{{ 'Rating' | localize }}</label>
+                                <select
+                                    id="PAQuarter1Review_RatingId"
+                                    class="form-select"
+                                    name="RatingId"
+                                    [ngModel]="record().ratingId"
+                                    (ngModelChange)="updateField('ratingId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (rating of paRatings(); track rating.id) {
+                                        <option [ngValue]="rating.id">{{ rating.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="PAQuarter1Review_AppraiseeComments">{{ 'AppraiseeComments' | localize }}</label>
+                                <textarea
+                                    id="PAQuarter1Review_AppraiseeComments"
+                                    class="form-control"
+                                    name="AppraiseeComments"
+                                    rows="2"
+                                    [ngModel]="record().appraiseeComments"
+                                    (ngModelChange)="updateField('appraiseeComments', $event)"></textarea>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="PAQuarter1Review_AppraiserComments">{{ 'AppraiserComments' | localize }}</label>
+                                <textarea
+                                    id="PAQuarter1Review_AppraiserComments"
+                                    class="form-control"
+                                    name="AppraiserComments"
+                                    rows="2"
+                                    [ngModel]="record().appraiserComments"
+                                    (ngModelChange)="updateField('appraiserComments', $event)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

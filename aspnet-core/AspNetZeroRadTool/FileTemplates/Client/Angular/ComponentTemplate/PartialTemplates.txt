@@ -1,0 +1,824 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Filter_Def_Here}}",
+			"condition" : "{{Property_Advanced_Filter_Here}} == true",
+			"templates" : [
+					{
+					"type" : "enum",
+					"content" : "    {{property_Name_Here}}Filter = -1;
+"
+					},
+					{
+					"type" : "numeric",
+					"content" : "    max{{Property_Name_Here}}Filter : number;
+		max{{Property_Name_Here}}FilterEmpty : number;
+		min{{Property_Name_Here}}Filter : number;
+		min{{Property_Name_Here}}FilterEmpty : number;
+"
+					},
+					{
+					"type" : "DateTime",
+					"content" : "    max{{Property_Name_Here}}Filter : {{Get_Date_Here}};
+		min{{Property_Name_Here}}Filter : {{Get_Date_Here}};
+"
+					},
+					{
+					"type" : "bool",
+					"content" : "    {{property_Name_Here}}Filter = -1;
+"
+					},
+					{
+					"type" : "default",
+					"content" : "    {{property_Name_Here}}Filter = '';
+"
+					}
+				]
+		},
+				{
+			"placeholder" : "{{Property_Filter_Def_Clear_Here}}",
+			"condition" : "{{Property_Advanced_Filter_Here}} == true",
+			"templates" : [
+					{
+					"type" : "enum",
+					"content" : "    this.{{property_Name_Here}}Filter = -1;
+"
+					},
+					{
+					"type" : "DateTime",
+					"content" : "    this.max{{Property_Name_Here}}Filter = undefined;
+		this.min{{Property_Name_Here}}Filter = undefined;
+"
+					},
+					{
+					"type" : "bool",
+					"content" : "    this.{{property_Name_Here}}Filter = -1;
+"
+					},
+					{
+					"type" : "numeric",
+					"content" : "    this.max{{Property_Name_Here}}Filter = this.max{{Property_Name_Here}}FilterEmpty;
+		this.min{{Property_Name_Here}}Filter = this.max{{Property_Name_Here}}FilterEmpty;
+"
+					},
+					{
+					"type" : "default",
+					"content" : "    this.{{property_Name_Here}}Filter = '';
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Filter_Param_Here}}",
+			"condition" : "{{Property_Advanced_Filter_Here}} == true",
+			"templates" : [
+					{
+					"type" : "numeric",
+					"content" : "
+            this.max{{Property_Name_Here}}Filter == null ? this.max{{Property_Name_Here}}FilterEmpty: this.max{{Property_Name_Here}}Filter,
+            this.min{{Property_Name_Here}}Filter == null ? this.min{{Property_Name_Here}}FilterEmpty: this.min{{Property_Name_Here}}Filter,"
+					},
+					{
+					"type" : "DateTime",
+					"content" : "
+            this.max{{Property_Name_Here}}Filter === undefined || this.max{{Property_Name_Here}}Filter === null ? undefined : {{DateTime_End_Of_Day_For_Max_Filter_Here}},
+            this.min{{Property_Name_Here}}Filter === undefined || this.min{{Property_Name_Here}}Filter === null ? undefined : {{DateTime_Start_Of_Day_For_Min_Filter_Here}},"
+					},
+					{
+					"type" : "file",
+					"content" : ""
+					},
+					{
+					"type" : "default",
+					"content" : "
+            this.{{property_Name_Here}}Filter,"
+					}
+				]
+		},
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Filter_Def_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "        {{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Filter = '';
+"
+					}
+				]
+		},
+{
+			"placeholder" : "{{NP_Filter_Def_Clear_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "		this.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Filter = '';
+					"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Filter_Param_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "
+            this.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Filter,"
+					}
+				]
+		},
+        {
+            "placeholder" : "{{NP_Filter_Excel_Param_Here}}",
+            "templates" : [
+                    {
+                    "relation" : "single",
+                    "content" : "
+            this.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Filter,
+            undefined,"
+                    }
+                ]
+        },
+	],
+"enumTemplates":[
+		{
+			"placeholder" : "{{Enum_Import_Before_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} < 060600",
+			"content" : ", {{Entity_Name_Here}}Dto{{Enum_Used_For_Property_Name_Here}}"
+		},
+		{
+			"placeholder" : "{{Enum_Import_After_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} >= 060600",
+			"content" : ", {{Enum_Name_Here}}"
+		},
+		{
+			"placeholder" : "{{Enum_Def_Before_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} < 060600",
+			"content" : "    {{enum_Name_Here}} = {{Entity_Name_Here}}Dto{{Enum_Used_For_Property_Name_Here}};
+"
+		},
+		{
+			"placeholder" : "{{Enum_Def_After_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} >= 060600",
+			"content" : "    {{enum_Name_Here}} = {{Enum_Name_Here}};
+"
+		}
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{Standalone_Here}}",
+			"condition": "{{Project_Version_Here}} >= 140000 && {{Project_Version_Here}} <= 140010",
+			"content": ",
+                            standalone: false"
+		},
+		{
+			"placeholder": "{{EntityHistory_Decs_Here}}",
+			"condition": "{{Entity_History_Here}} == true",
+			"content": "    _entityTypeFullName = '{{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.{{Entity_Name_Here}}';
+    entityHistoryEnabled = false;"
+		},
+		{
+			"placeholder": "{{EntityTypeHistoryModalComponent_Import_Here}}",
+			"condition": "{{Entity_History_Here}} == true && {{Project_Version_Here}} < 140300",
+			"content": "
+                import { EntityTypeHistoryModalComponent } from '@app/shared/common/entityHistory/entity-type-history-modal.component';"
+		},
+        {
+			"placeholder": "{{EntityTypeHistoryModalComponent_Here}}",
+			"condition": "{{Entity_History_Here}} == true && {{Project_Version_Here}} < 140300",
+			"content": "EntityTypeHistoryModalComponent,"
+		},
+{
+			"placeholder": "{{Set_Entity_History_Enabled_Function_Here}}",
+			"condition": "{{Entity_History_Here}} == true",
+			"content": "
+                private setIsEntityHistoryEnabled(): boolean {
+        let customSettings = (abp as any).custom;
+        return this.isGrantedAny('Pages.Administration.AuditLogs') && customSettings.EntityHistory && customSettings.EntityHistory.isEnabled && {{Use_Lodash_Filter_Here}}(customSettings.EntityHistory.enabledEntities, entityType => entityType === this._entityTypeFullName).length === 1;
+    }
+"
+		},
+        {
+            "placeholder": "{{Implement_OnInit_Here}}",
+            "condition": "{{Entity_History_Here}} == true",
+            "content": " implements OnInit"
+        },
+        {
+            "placeholder": "{{On_Init_Function_Here}}",
+            "condition": "{{Entity_History_Here}} == true",
+            "content": "
+    ngOnInit(): void {
+        {{Set_Entity_History_Enabled_Here}}
+    }
+"
+        },
+        {
+            "placeholder": "{{Set_Entity_History_Enabled_Here}}",
+            "condition": "{{Entity_History_Here}} == true",
+            "content": "
+            this.entityHistoryEnabled = this.setIsEntityHistoryEnabled();"
+        },
+		{
+			"placeholder": "{{EntityTypeHistoryModal_Dev_Here}}",
+			"condition": "{{Entity_History_Here}} == true && {{Project_Version_Here}} < 140300",
+			"content": "
+    @ViewChild('entityTypeHistoryModal', { static: true }) entityTypeHistoryModal: EntityTypeHistoryModalComponent;"
+		},
+		{
+			"placeholder": "{{EntityTypeHistoryModal_Open_Here}}",
+			"condition": "{{Entity_History_Here}} == true",
+			"content": "
+                showHistory({{entity_Name_Here}}: {{Entity_Name_Here}}Dto): void {
+                    {{Entity_History_Show_Method_Set_Value_Here}}
+                }
+            "
+		},
+		{
+			"placeholder": "{{View_Component_Import_Here}}",
+			"condition": "{{Create_View_Only_Here}} == true && {{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "
+                import { View{{Entity_Name_Here}}ModalComponent } from './view-{{entity_Name_Here}}-modal.component';"
+		},		
+		{
+			"placeholder": "{{View_Component_Dec_Here}}",
+			"condition": "{{Create_View_Only_Here}} == true && {{Project_Version_Here}} < 140200",
+			"content": "@ViewChild('view{{Entity_Name_Here}}Modal', { static: true }) view{{Entity_Name_Here}}Modal: View{{Entity_Name_Here}}ModalComponent;"
+		},
+        {
+			"placeholder": "{{View_Component_Dec_Here}}",
+			"condition": "{{Create_View_Only_Here}} == true && {{Project_Version_Here}} >= 140200",
+			"content": "readonly view{{Entity_Name_Here}}Modal = viewChild<View{{Entity_Name_Here}}ModalComponent>('view{{Entity_Name_Here}}Modal');"
+		},
+		{
+			"placeholder": "{{TurboTable_Import_Here}}",
+			"condition": "{{Project_Version_Here}} >= 050400 && {{Project_Version_Here}} < 080500",
+			"content": "import { Table } from 'primeng/components/table/table'"
+		},
+		{
+			"placeholder": "{{TurboTable_Import_Here}}",
+			"condition": "{{Project_Version_Here}} >= 080500",
+			"content": "import { Table, TableModule} from 'primeng/table'"
+		},
+		{
+			"placeholder": "{{DataTable_Import_Here}}",
+			"condition": "{{Project_Version_Here}} < 050400",
+			"content": "import { DataTable } from 'primeng/components/datatable/datatable'"
+		},
+		{
+			"placeholder": "{{TruboTable_Primenghelper_Here}}",
+			"condition": "{{Project_Version_Here}} >= 050400",
+			"content": "primengTableHelper"
+		},
+		{
+			"placeholder": "{{DataTable_Primenghelper_Here}}",
+			"condition": "{{Project_Version_Here}} < 050400",
+			"content": "primengDatatableHelper"
+		},
+		{
+			"placeholder": "{{DataTable_Dec_Here}}",
+			"condition": "{{Project_Version_Here}} < 050400",
+			"content": "Data"
+		},
+		{
+			"placeholder": "{{Get_Excel_Method_Here}}",
+			"condition": "{{Create_Excel_Export_Here}} == true && {{Project_Version_Here}} >= 130200",
+			"content": "
+
+    exportToExcel($event): void {
+        this._{{entity_Name_Plural_Here}}ServiceProxy.get{{Entity_Name_Plural_Here}}ToExcel(
+        this.filterText, $event, {{Property_Filter_Param_Here}}{{NP_Filter_Excel_Param_Here}}
+        )
+        .subscribe(result => {
+            this._fileDownloadService.downloadTempFile(result);
+         });
+    }"
+		},
+        {
+            "placeholder": "{{Get_Excel_Method_Here}}",
+            "condition": "{{Create_Excel_Export_Here}} == true && {{Project_Version_Here}} < 130200",
+            "content": "
+
+    exportToExcel(): void {
+        this._{{entity_Name_Plural_Here}}ServiceProxy.get{{Entity_Name_Plural_Here}}ToExcel(
+        this.filterText, {{Property_Filter_Param_Here}}{{NP_Filter_Excel_Param_Here}}
+        )
+        .subscribe(result => {
+            this._fileDownloadService.downloadTempFile(result);
+         });
+    }"
+        },
+        {
+            "placeholder": "{{Get_Excel_Import_Method_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true",
+            "content": "
+                    uploadExcel(data: { files: File }): void {
+                        const formData: FormData = new FormData();
+                        const file = data.files[0];
+                        formData.append('file', file, file.name);
+                
+                        this._httpClient
+                            .post<any>(this.uploadUrl, formData)
+                            .pipe(finalize(() => this.excelFileUpload{{Signal_Syntax_Inject_Here}}.clear()))
+                            .subscribe((response) => {
+                                if (response.success) {
+                                    this.notify.success(this.l('Import{{Entity_Name_Plural_Here}}ProcessStart'));
+                                } else if (response.error != null) {
+                                    this.notify.error(this.l('Import{{Entity_Name_Plural_Here}}UploadFailed'));
+                                }
+                            });
+                    }
+                
+                    onUploadExcelError(): void {
+                        this.notify.error(this.l('Import{{Entity_Name_Plural_Here}}UploadFailed'));
+                    }
+            "
+        },
+        {
+            "placeholder": "{{Excel_Import_Imports_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true",
+            "content": "
+                    import { HttpClient } from '@angular/common/http';
+                    import { FileUpload, FileUploadModule} from 'primeng/fileupload';
+                    import { finalize } from 'rxjs';
+            "
+        },
+         {
+            "placeholder": "{{Excel_Import_File_Module_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true",
+            "content": "FileUploadModule,"
+        },
+        {
+            "placeholder": "{{Excel_Import_Properties_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true",
+            "content": "
+                    uploadUrl: string;
+            "
+        },
+        {
+            "placeholder": "{{Excel_Import_ViewChild_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true && {{Project_Version_Here}} < 140200",
+            "content": "
+                    @ViewChild('ExcelFileUpload', { static: false }) excelFileUpload: FileUpload;
+            "
+        },
+        {
+            "placeholder": "{{Excel_Import_ViewChild_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true && {{Project_Version_Here}} >= 140200",
+            "content": "
+                    readonly excelFileUpload = viewChild<FileUpload>('ExcelFileUpload');
+            "
+        },
+        {
+            "placeholder": "{{Excel_Import_Set_UploadUrl_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true",
+            "content": "
+                    this.uploadUrl = AppConsts.remoteServiceBaseUrl + '/{{Entity_Name_Plural_Here}}/ImportFromExcel';
+            "
+        },
+		{
+			"placeholder": "{{PrimeNG_Imports_Here}}",
+			"condition": "{{Project_Version_Here}} < 080500",
+			"content": "import { Paginator } from 'primeng/components/paginator/paginator';
+import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';"
+		},
+		{
+			"placeholder": "{{PrimeNG_Imports_Here}}",
+			"condition": "{{Project_Version_Here}} >= 080500 && {{Project_Version_Here}} < 100000",
+			"content": "import { Paginator } from 'primeng/paginator';
+import { LazyLoadEvent } from 'primeng/public_api';"
+		},
+		{
+			"placeholder": "{{PrimeNG_Imports_Here}}",
+			"condition": "{{Project_Version_Here}} >= 100000",
+			"content": "import { Paginator, PaginatorModule } from 'primeng/paginator';
+import { LazyLoadEvent {{PrimeNG_Prime_Template_Imports}} } from 'primeng/api';"
+		},
+		{
+			"placeholder": "{{Notify_Service_Here}}",
+			"condition": "{{Project_Version_Here}} < 080500",
+			"content": "import { NotifyService } from '@abp/notify/notify.service';"
+		},
+		{
+			"placeholder": "{{Notify_Service_Here}}",
+			"condition": "{{Project_Version_Here}} >= 080500",
+			"content": "import { NotifyService } from 'abp-ng2-module';"
+		},
+		{
+			"placeholder": "{{Import_Create_Or_Edit_Component_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "import { CreateOrEdit{{Entity_Name_Here}}ModalComponent } from './create-or-edit-{{entity_Name_Here}}-modal.component';"
+		},
+		{
+			"placeholder": "{{View_Child_Create_Or_Edit_Modal_Def_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == false && {{Project_Version_Here}} < 140200",
+			"content": "@ViewChild('createOrEdit{{Entity_Name_Here}}Modal', { static: true }) createOrEdit{{Entity_Name_Here}}Modal: CreateOrEdit{{Entity_Name_Here}}ModalComponent;{{View_Component_Dec_Here}}"
+		},
+		{
+			"placeholder": "{{On_Click_Create_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "this.createOrEdit{{Entity_Name_Here}}Modal{{Signal_Syntax_Inject_Here}}.show();"
+		},
+		{
+			"placeholder": "{{On_Click_Create_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == true",
+			"content": "this._router.navigate(['/app/{{menu_Position_Here}}/{{namespace_Relative_Here}}/{{entity_Name_Plural_Here}}/createOrEdit']);"
+		},
+		{
+			"placeholder": "{{Router_Field_Here}}",
+			"condition": "{{Entity_History_Here}} == true && {{Project_Version_Here}} < 140200",
+			"content": ", private _router: Router"
+		},
+        {
+			"placeholder": "{{Router_Field_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == true && {{Project_Version_Here}} < 140200",
+			"content": ", private _router: Router"
+		},
+        {
+			"placeholder": "{{Router_Field_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == true && {{Project_Version_Here}} >= 140200",
+			"content": "private _router = inject(Router);"
+		},
+        {
+			"placeholder": "{{Router_Field_Here}}",
+			"condition": "{{Entity_History_Here}} == true && {{Project_Version_Here}} >= 140200",
+			"content": "private _router = inject(Router);"
+		},
+		{
+             "placeholder" : "{{Import_Datetime_Here}}",
+             "condition": "{{Project_Version_Here}} < 100000",
+             "content" : "import * as moment from 'moment';"
+        },
+        {
+             "placeholder" : "{{Import_Datetime_Here}}",
+             "condition": "{{Project_Version_Here}} >= 100000",
+             "content" : "import { DateTime } from 'luxon';"
+        },
+        {
+             "placeholder" : "{{Import_DateTime_Service_Here}}",
+             "condition": "{{Project_Version_Here}} >= 100000",
+             "content" : "
+             import { DateTimeService } from '@app/shared/common/timing/date-time.service';"
+        },
+        {
+             "placeholder" : "{{Get_DateTime_Service_Here}}",
+             "condition": "{{Project_Version_Here}} >= 100000 && {{Project_Version_Here}} < 140200",
+             "content" : ",
+             private _dateTimeService: DateTimeService"
+        },
+        {
+             "placeholder" : "{{Get_DateTime_Service_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : "private _dateTimeService = inject(DateTimeService);"
+        },  
+        {
+             "placeholder" : "{{Excel_Import_Constructor_Here}}",
+             "condition": "{{Create_Excel_Import_Here}} == true && {{Project_Version_Here}} < 140200",
+             "content" : ",
+             private _httpClient: HttpClient"
+        },
+        {
+             "placeholder" : "{{Excel_Import_Constructor_Here}}",
+             "condition": "{{Create_Excel_Import_Here}} == true && {{Project_Version_Here}} >= 140200",
+             "content" : "private _httpClient = inject(HttpClient)"
+        },
+        {
+             "placeholder" : "{{Get_Date_Here}}",
+             "condition": "{{Project_Version_Here}} >= 100000",
+             "content" : "DateTime"
+        },
+        {
+             "placeholder" : "{{Get_Date_Here}}",
+             "condition": "{{Project_Version_Here}} < 100000",
+             "content" : "moment.Moment"
+        },
+        {
+             "placeholder" : "{{DateTime_Start_Of_Day_For_Min_Filter_Here}}",
+             "condition": "{{Project_Version_Here}} < 100000",
+             "content" : "moment(this.min{{Property_Name_Here}}Filter).startOf('day')"
+        },
+        {
+             "placeholder" : "{{DateTime_Start_Of_Day_For_Min_Filter_Here}}",
+             "condition": "{{Project_Version_Here}} >= 100000",
+             "content" : "this._dateTimeService.getStartOfDayForDate(this.min{{Property_Name_Here}}Filter)"
+        },
+        {
+             "placeholder" : "{{DateTime_End_Of_Day_For_Max_Filter_Here}}",
+             "condition": "{{Project_Version_Here}} < 100000",
+             "content" : "moment(this.max{{Property_Name_Here}}Filter).endOf('day')"
+        },
+        {
+             "placeholder" : "{{DateTime_End_Of_Day_For_Max_Filter_Here}}",
+             "condition": "{{Project_Version_Here}} >= 100000",
+             "content" : "this._dateTimeService.getEndOfDayForDate(this.max{{Property_Name_Here}}Filter)"
+        },
+        {
+             "placeholder" : "{{Import_Lodash_Filter_Here}}",
+             "condition": "{{Project_Version_Here}} < 100000",
+             "content" : "import * as _ from 'lodash';"
+        },
+        {
+             "placeholder" : "{{Import_Lodash_Filter_Here}}",
+             "condition": "{{Project_Version_Here}} >= 100000",
+             "content" : "import { filter as _filter } from 'lodash-es';"
+        },
+        {
+             "placeholder" : "{{Use_Lodash_Filter_Here}}",
+             "condition": "{{Project_Version_Here}} < 100000",
+             "content" : "_.filter"
+        },
+        {
+             "placeholder" : "{{Use_Lodash_Filter_Here}}",
+             "condition": "{{Project_Version_Here}} >= 100000",
+             "content" : "_filter"
+        },
+        {
+             "placeholder" : "{{Master_Detail_Table_Close_All_Child_Rows_Here}}",
+             "condition": "{{Is_Master_Detail_Page}} == true",
+             "content" : "
+                  closeAllChildRows() : void{
+                     {{Master_Detail_Table_Close_Row_Selection_Here}}
+                  }"
+        },
+        {
+             "placeholder" : "{{Get_Download_Url_Here}}",
+             "condition": "{{Has_File_Prop}} == true && {{Project_Version_Here}} >= 100300",
+             "content" : "
+                 getDownloadUrl(id: string): string {
+                     return AppConsts.remoteServiceBaseUrl + '/File/DownloadBinaryFile?id=' + id;
+                 }
+             "
+        },
+        {
+            "placeholder": "{{Show_Excel_Column_Selection_Modal_Here}}",
+            "condition": "{{Create_Excel_Export_Here}} == true && {{Project_Version_Here}} >= 130200",
+            "content": "    showExcelColumnSelectionModal(){
+                                this._{{entity_Name_Plural_Here}}ServiceProxy.get{{Entity_Name_Here}}ExcelColumnsToExcel().subscribe(result => {
+                                    this.excelColumnSelectionModal{{Signal_Syntax_Inject_Here}}.show(result);
+                                });
+                            }"
+        },
+        {
+            "placeholder": "{{Excel_Column_Selection_ViewChild_Here}}",
+            "condition": "{{Create_Excel_Export_Here}} == true && {{Project_Version_Here}} >= 130200 && {{Project_Version_Here}} < 140200",
+            "content": "@ViewChild('excelColumnSelectionModal', { static: true }) excelColumnSelectionModal: ExcelColumnSelectionModalComponent;"
+        },
+        {
+            "placeholder": "{{Excel_Column_Selection_ViewChild_Here}}",
+            "condition": "{{Create_Excel_Export_Here}} == true && {{Project_Version_Here}} >= 140200",
+            "content": "readonly excelColumnSelectionModal = viewChild<ExcelColumnSelectionModalComponent>('excelColumnSelectionModal');"
+        },
+        {
+            "placeholder": "{{Excel_Column_Selection_Importing_Here}}",
+            "condition": "{{Create_Excel_Export_Here}} == true && {{Project_Version_Here}} >= 130200",
+            "content": "import { ExcelColumnSelectionModalComponent } from '@app/shared/common/excel-column-selection/excel-column-selection-modal';"
+        },
+        {
+            "placeholder": "{{Excel_Column_Selection_Component_Here}}",
+            "condition": "{{Create_Excel_Export_Here}} == true && {{Project_Version_Here}} >= 140100",
+            "content": "ExcelColumnSelectionModalComponent,"
+        },
+        {
+             "placeholder" : "{{Import_Standalone_Imports_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140100",
+             "content" : "{{NgIf_Component_Standalone_Import_Here}}
+                import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
+                import { FormsModule } from '@angular/forms';
+                import { BusyIfDirective } from '@shared/utils/busy-if.directive';
+                import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+                import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
+                import { BsDropdownDirective, BsDropdownMenuDirective, BsDropdownToggleDirective } from 'ngx-bootstrap/dropdown';
+                {{Is_Imports_Master_Detail_Components_Here}}
+                {{DateTime_Component_Imports_Here}}"
+        },
+        { 
+			"placeholder": "{{Is_Non_Modal_Component_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "CreateOrEdit{{Entity_Name_Here}}ModalComponent,
+                View{{Entity_Name_Here}}ModalComponent,"
+		},
+        { 
+			"placeholder": "{{Is_Non_Modal_Component_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == true",
+			"content": "RouterLink,"
+		},
+        {
+             "placeholder" : "{{Components_For_Standalone_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140100",
+             "content" : "imports: [
+                {{NgIf_Component_Standalone_Here}}
+                SubHeaderComponent,
+                {{Excel_Import_File_Module_Here}}
+                LocalizePipe,
+                BsDropdownDirective,
+                BsDropdownToggleDirective,
+                BsDropdownMenuDirective,
+                PermissionPipe,
+                FormsModule,
+                TableModule{{PrimeNG_Prime_Template_Imports}},
+                BusyIfDirective,
+                PaginatorModule,
+                {{Is_Non_Modal_Component_Here}}
+                {{Excel_Column_Selection_Component_Here}}
+                {{Is_Master_Detail_Components_Here}}
+                {{DateTime_Component_Here}}
+                {{EntityTypeHistoryModalComponent_Here}}
+             ]"
+        },
+        { 
+			"placeholder": "{{Entity_History_Show_Method_Set_Value_Here}}",
+			"condition": "{{Entity_History_Here}} == true && {{Project_Version_Here}} >= 130300",
+			"content": "this._router.navigate([abp.appPath + `app/admin/entity-changes/${{{entity_Name_Here}}.id}/${this._entityTypeFullName}`]);"
+		},
+        { 
+			"placeholder": "{{Entity_History_Show_Method_Set_Value_Here}}",
+			"condition": "{{Entity_History_Here}} == true && {{Project_Version_Here}} < 130300",
+			"content": "
+                    this.entityTypeHistoryModal.show({
+                        entityId: {{entity_Name_Here}}.id.toString(),
+                        entityTypeFullName: this._entityTypeFullName,
+                        entityTypeDescription: ''
+                    });
+            "
+		},
+        {
+             "placeholder" : "{{DateTime_Component_Imports_Here}}",
+             "condition": "{{Has_DateTime_Type_Property}} == true && {{Project_Version_Here}} >= 140100",
+             "content" : "import { AbpDateTimePickerComponent } from '@app/shared/common/timing/abp-datetime-picker/abp-datetime-picker.component';
+                    import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';"
+        },
+		{
+             "placeholder" : "{{DateTime_Component_Here}}",
+             "condition": "{{Has_DateTime_Type_Property}} == true && {{Project_Version_Here}} >= 140100",
+             "content" : "AbpDateTimePickerComponent,
+                    LuxonFormatPipe,"
+        },
+         {
+             "placeholder" : "{{NgIf_Component_Standalone_Import_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "import { NgIf } from '@angular/common';"
+        },
+        {
+             "placeholder" : "{{NgIf_Component_Standalone_Import_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : ""
+        },
+        {
+             "placeholder" : "{{NgIf_Component_Standalone_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "NgIf,"
+        },
+        {
+             "placeholder" : "{{Injector_Component_Import_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "Injector,"
+        },
+        {
+             "placeholder" : "{{Injector_Component_Import_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : "inject,"
+        },
+        {
+             "placeholder" : "{{Super_Metod_Input_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "injector"
+        },
+        {
+             "placeholder" : "{{Service_Constructor_Inject_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "
+                injector: Injector,
+                private _{{entity_Name_Plural_Here}}ServiceProxy: {{Entity_Name_Plural_Here}}ServiceProxy,
+                private _notifyService: NotifyService,
+                private _tokenAuth: TokenAuthServiceProxy,
+                private _activatedRoute: ActivatedRoute,
+                private _fileDownloadService: FileDownloadService
+                {{Router_Field_Here}}
+                {{Get_DateTime_Service_Here}}
+                {{Excel_Import_Constructor_Here}}
+            "
+        },
+        {
+             "placeholder" : "{{Service_Inject_Set_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : "
+                private _{{entity_Name_Plural_Here}}ServiceProxy = inject({{Entity_Name_Plural_Here}}ServiceProxy);
+                private _notifyService = inject(NotifyService);
+                private _tokenAuth = inject(TokenAuthServiceProxy);
+                private _activatedRoute = inject(ActivatedRoute);
+                private _fileDownloadService = inject(FileDownloadService);
+                {{Router_Field_Here}}
+                {{Get_DateTime_Service_Here}}
+                {{Excel_Import_Constructor_Here}}
+             "
+        },
+        {
+		  "placeholder": "{{PrimeNG_Prime_Template_Imports}}",
+		  "condition": "{{Project_Version_Here}} > 140200",
+		  "content": ""
+		},
+		{
+		  "placeholder": "{{PrimeNG_Prime_Template_Imports}}",
+		  "condition": "{{Project_Version_Here}} <= 140200",
+		  "content": ", PrimeTemplate"
+		},
+                {
+			"placeholder": "{{View_Child_Create_Or_Edit_Modal_Def_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == false && {{Project_Version_Here}} >= 140200",
+			"content": "
+                readonly createOrEdit{{Entity_Name_Here}}Modal = viewChild<CreateOrEdit{{Entity_Name_Here}}ModalComponent>('createOrEdit{{Entity_Name_Here}}Modal');
+                {{View_Component_Dec_Here}}
+            "
+		},
+        {
+             "placeholder" : "{{View_Child_Import_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : ",ViewChild"
+        },
+		{
+             "placeholder" : "{{View_Child_Import_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : ",viewChild"
+        },
+        {
+             "placeholder" : "{{View_Child_Inject_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "
+                @ViewChild('dataTable', { static: true }) dataTable: {{DataTable_Dec_Here}}Table;
+                @ViewChild('paginator', { static: true }) paginator: Paginator;
+            "
+        },
+		{
+             "placeholder" : "{{View_Child_Inject_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : "
+				readonly dataTable = viewChild<Table>('dataTable');
+                readonly paginator = viewChild<Paginator>('paginator');
+			 "
+        },
+		{
+             "placeholder" : "{{Signal_Syntax_Inject_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : "()"
+        },
+	],
+	"navigationPropertyOneToManyTableTemplates": [
+        {
+            "placeholder": "{{Master_Detail_Table_Row_Selection_Here}}",
+            "content": "
+            {{nP_OneTwoMany_EntityName_Here}}RowSelection: boolean[] = [];
+            "
+        },
+        {
+            "placeholder": "{{Master_Detail_Table_Row_Opener_Here}}",
+            "content": "
+               openChildRowFor{{NP_OneTwoMany_EntityName_Here}}(index, table) {
+                   let isAlreadyOpened = this.{{nP_OneTwoMany_EntityName_Here}}RowSelection[index];                   
+                   this.closeAllChildRows();                   
+                   this.{{nP_OneTwoMany_EntityName_Here}}RowSelection = [];
+                   if (!isAlreadyOpened) {
+                       this.{{nP_OneTwoMany_EntityName_Here}}RowSelection[index] = true;
+                   }
+                   this.selectEditTable(table);
+               }
+            "
+        },
+        {
+            "placeholder": "{{Master_Detail_Table_Select_Edit_Table_Here}}",
+            "preventDuplicate": true,
+            "content": "
+                  selectEditTable(table){
+                      this.childEntitySelection = {};
+                      this.childEntitySelection[table] = true;
+                  }
+            "
+        },        
+        {
+            "placeholder": "{{Master_Detail_Table_Edit_Selection_Here}}",
+            "preventDuplicate": true,
+            "content": "
+                   childEntitySelection: {} = {};
+            "
+        },
+        {
+            "placeholder": "{{Master_Detail_Table_Close_Row_Selection_Here}}",
+            "content": "
+                this.{{nP_OneTwoMany_EntityName_Here}}RowSelection = [];
+            "
+        },
+        {
+            "placeholder": "{{Master_Detail_Table_Close_Row_Selection_Here}}",
+            "content": "
+                this.{{nP_OneTwoMany_EntityName_Here}}RowSelection = [];
+            "
+        },   
+        {
+             "placeholder" : "{{Is_Imports_Master_Detail_Components_Here}}",
+             "condition": "{{Is_Master_Detail_Page}} == true",
+             "content" : "import { {{Master_Detail_Pascal_Case_Prefix_Here}}{{NP_OneTwoMany_EntityNamePlural_Here}}Component } from '@app/{{menu_Position_Here}}/{{nP_OneTwoMany_Namespace_Relative_Here}}/{{nP_OneTwoMany_EntityNamePlural_Here}}/{{master_Detail_Prefix_Here}}{{nP_OneTwoMany_EntityNamePlural_Here}}.component'"
+        },
+        {
+             "placeholder" : "{{Is_Master_Detail_Components_Here}}",
+             "condition": "{{Is_Master_Detail_Page}} == true",
+             "content" : "{{Master_Detail_Pascal_Case_Prefix_Here}}{{NP_OneTwoMany_EntityNamePlural_Here}}Component,"
+        },
+    ]
+}

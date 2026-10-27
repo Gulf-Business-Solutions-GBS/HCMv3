@@ -1,0 +1,27 @@
+{
+  "helpId": "gr.sponsor-signatory.edit",
+  "lang": "en",
+  "title": "Sponsor Signatories — Create / Edit",
+  "entity": "HCMv3.GovtRelationsManagement.SponsorSignatory",
+  "overviewHtml": "<p>A signatory authorised for a sponsor. Each signatory can be added once per sponsor.</p>",
+  "aliasIndex": {
+    "loc:Signatory": "SponsorSignatory.SignatoryId",
+    "dom:SponsorSignatory_SignatoryId": "SponsorSignatory.SignatoryId"
+  },
+  "fields": [
+    {
+      "id": "SponsorSignatory.SignatoryId",
+      "label": "Signatory",
+      "section": "SponsorSignatories",
+      "aliases": [
+        "loc:Signatory",
+        "dom:SponsorSignatory_SignatoryId"
+      ],
+      "rules": "Optional. Chosen from Signatory master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The signatory.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

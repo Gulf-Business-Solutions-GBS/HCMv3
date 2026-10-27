@@ -1,0 +1,171 @@
+{
+  "helpId": "pa.employee-account-assignment.edit",
+  "lang": "ar",
+  "title": "تخصيص حسابات الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAccountAssignment",
+  "overviewHtml": "<p>حصة من تكلفة الموظف مخصصة لفترة، تحت ما يصل إلى سبعة عناصر تكلفة.</p><p>تُسجَّل للرجوع إليها، ولا يقرؤها محرك التكلفة ولا القيود المحاسبية حالياً. استخدم حسابات أجور الموظف لربط الحسابات التي تستخدمها القيود.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeAccountAssignment.StartDate",
+    "dom:EmployeeAccountAssignment_StartDate": "EmployeeAccountAssignment.StartDate",
+    "loc:EndDate": "EmployeeAccountAssignment.EndDate",
+    "dom:EmployeeAccountAssignment_EndDate": "EmployeeAccountAssignment.EndDate",
+    "loc:CostPercentage": "EmployeeAccountAssignment.CostPercentage",
+    "dom:EmployeeAccountAssignment_CostPercentage": "EmployeeAccountAssignment.CostPercentage",
+    "loc:CostElement1Id": "EmployeeAccountAssignment.CostElement1Id",
+    "dom:EmployeeAccountAssignment_costElement1Id": "EmployeeAccountAssignment.CostElement1Id",
+    "loc:CostElement2Id": "EmployeeAccountAssignment.CostElement2Id",
+    "dom:EmployeeAccountAssignment_costElement2Id": "EmployeeAccountAssignment.CostElement2Id",
+    "loc:CostElement3Id": "EmployeeAccountAssignment.CostElement3Id",
+    "dom:EmployeeAccountAssignment_costElement3Id": "EmployeeAccountAssignment.CostElement3Id",
+    "loc:CostElement4Id": "EmployeeAccountAssignment.CostElement4Id",
+    "dom:EmployeeAccountAssignment_costElement4Id": "EmployeeAccountAssignment.CostElement4Id",
+    "loc:CostElement5Id": "EmployeeAccountAssignment.CostElement5Id",
+    "dom:EmployeeAccountAssignment_costElement5Id": "EmployeeAccountAssignment.CostElement5Id",
+    "loc:CostElement6Id": "EmployeeAccountAssignment.CostElement6Id",
+    "dom:EmployeeAccountAssignment_costElement6Id": "EmployeeAccountAssignment.CostElement6Id",
+    "loc:CostElement7Id": "EmployeeAccountAssignment.CostElement7Id",
+    "dom:EmployeeAccountAssignment_costElement7Id": "EmployeeAccountAssignment.CostElement7Id"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAccountAssignment.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeAccountAssignment_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeAccountAssignment_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.CostPercentage",
+      "label": "CostPercentage",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:CostPercentage",
+        "dom:EmployeeAccountAssignment_CostPercentage"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النسبة المئوية المخصصة من التكلفة.</p><p><strong>مثال.</strong> 50</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.CostElement1Id",
+      "label": "CostElement1Id",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:CostElement1Id",
+        "dom:EmployeeAccountAssignment_costElement1Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 1 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يقرؤه محرك التكلفة ولا القيود المحاسبية حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.CostElement2Id",
+      "label": "CostElement2Id",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:CostElement2Id",
+        "dom:EmployeeAccountAssignment_costElement2Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 2 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يقرؤه محرك التكلفة ولا القيود المحاسبية حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.CostElement3Id",
+      "label": "CostElement3Id",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:CostElement3Id",
+        "dom:EmployeeAccountAssignment_costElement3Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 3 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يقرؤه محرك التكلفة ولا القيود المحاسبية حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.CostElement4Id",
+      "label": "CostElement4Id",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:CostElement4Id",
+        "dom:EmployeeAccountAssignment_costElement4Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 4 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يقرؤه محرك التكلفة ولا القيود المحاسبية حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.CostElement5Id",
+      "label": "CostElement5Id",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:CostElement5Id",
+        "dom:EmployeeAccountAssignment_costElement5Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 5 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يقرؤه محرك التكلفة ولا القيود المحاسبية حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.CostElement6Id",
+      "label": "CostElement6Id",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:CostElement6Id",
+        "dom:EmployeeAccountAssignment_costElement6Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 6 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يقرؤه محرك التكلفة ولا القيود المحاسبية حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.CostElement7Id",
+      "label": "CostElement7Id",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:CostElement7Id",
+        "dom:EmployeeAccountAssignment_costElement7Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 7 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يقرؤه محرك التكلفة ولا القيود المحاسبية حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

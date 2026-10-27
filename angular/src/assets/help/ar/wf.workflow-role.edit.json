@@ -1,0 +1,91 @@
+{
+  "helpId": "wf.workflow-role.edit",
+  "lang": "ar",
+  "title": "أدوار سير العمل — إنشاء / تحرير",
+  "entity": "HCMv3.Workflow.WorkflowRole",
+  "overviewHtml": "<p>دور معتمد، مثل مسؤول الرواتب. يُمنح الموظفون الأدوار في سجلاتهم، والخطوة التي يكون فيها الشخص المعتمد \"شخص\" تذهب إلى كل من يشغل دورها.</p>",
+  "aliasIndex": {
+    "loc:Code": "WorkflowRole.Code",
+    "dom:WorkflowRole_Code": "WorkflowRole.Code",
+    "loc:WorkflowRoleGroup": "WorkflowRole.WorkflowRoleGroup",
+    "dom:WorkflowRole_WorkflowRoleGroup": "WorkflowRole.WorkflowRoleGroup",
+    "loc:NameEn": "WorkflowRole.NameEn",
+    "dom:WorkflowRole_NameEn": "WorkflowRole.NameEn",
+    "loc:NameAr": "WorkflowRole.NameAr",
+    "dom:WorkflowRole_NameAr": "WorkflowRole.NameAr",
+    "loc:OrgLevel": "WorkflowRole.WorkflowRoleOrgId",
+    "dom:WorkflowRole_WorkflowRoleOrgId": "WorkflowRole.WorkflowRoleOrgId"
+  },
+  "fields": [
+    {
+      "id": "WorkflowRole.Code",
+      "label": "Code",
+      "section": "WorkflowRoles",
+      "aliases": [
+        "loc:Code",
+        "dom:WorkflowRole_Code"
+      ],
+      "rules": "إلزامي. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowRole.WorkflowRoleGroup",
+      "label": "WorkflowRoleGroup",
+      "section": "WorkflowRoles",
+      "aliases": [
+        "loc:WorkflowRoleGroup",
+        "dom:WorkflowRole_WorkflowRoleGroup"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، الشركة، الإدارة، الفرع، مركز التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نطاق تنظيمي افتراضي للدور.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً. النطاق الذي يضيّق المعتمدين هو الموجود في كل خطوة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowRole.NameEn",
+      "label": "NameEn",
+      "section": "WorkflowRoles",
+      "aliases": [
+        "loc:NameEn",
+        "dom:WorkflowRole_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowRole.NameAr",
+      "label": "NameAr",
+      "section": "WorkflowRoles",
+      "aliases": [
+        "loc:NameAr",
+        "dom:WorkflowRole_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowRole.WorkflowRoleOrgId",
+      "label": "OrgLevel",
+      "section": "WorkflowRoles",
+      "aliases": [
+        "loc:OrgLevel",
+        "dom:WorkflowRole_WorkflowRoleOrgId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع وحدات الشركة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مستوى وحدة تنظيمية للدور.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'PayrollDrivers' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'PayrollDrivers' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-8 mb-5">
+                                <label class="form-label required" for="PayrollDriver_CountryId">{{ 'CountryId' | localize }}</label>
+                                <select
+                                    id="PayrollDriver_CountryId"
+                                    #countryIdInput="ngModel"
+                                    class="form-select"
+                                    name="CountryId"
+                                    [ngModel]="record().countryId"
+                                    (ngModelChange)="updateField('countryId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (country of countries(); track country.id) {
+                                        <option [ngValue]="country.id">{{ country.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="countryIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5 d-flex align-items-end">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="PayrollDriver_LeaveDeductionStartMonth"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="LeaveDeductionStartMonth"
+                                        [ngModel]="record().leaveDeductionStartMonth"
+                                        (ngModelChange)="updateField('leaveDeductionStartMonth', $event)" />
+                                    <label class="form-check-label" for="PayrollDriver_LeaveDeductionStartMonth">{{ 'LeaveDeductionStartMonth' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

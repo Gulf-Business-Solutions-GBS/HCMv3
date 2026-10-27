@@ -1,0 +1,93 @@
+@if (showForm()) {
+    <!-- The form is its own component, as the exit permit's is, so that the Details view and an
+         approver are shown THIS form read-only rather than a list of label/value rows. It serves a
+         withdrawal and, opened from a row's Return button, reporting the document handed back. -->
+    <passport-withdrawal-form
+        mode="create"
+        [value]="form"
+        [saving]="saving()"
+        [documentsOut]="documentsOut()"
+        (saved)="save()"
+        (submitted)="submit()"
+        (cancelled)="closeForm()" />
+}
+
+<div class="card card-custom gutter-b">
+    <div class="card-body">
+        <h5 class="card-title" data-help-loc="DocumentWithdrawals">{{ 'DocumentWithdrawals' | localize }}</h5>
+
+        @if (loading()) {
+            <div class="text-center p-4"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+        } @else {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead [essListHead]="list" [exportTitle]="detailTitle()"></thead>
+                    <tbody>
+                        @for (row of list.view(); track row.id) {
+                            <tr>
+                                <td>{{ row.requestNumber }}</td>
+                                <td>{{ typeName(row) }}</td>
+                                <td>{{ row.documentNum }}</td>
+                                <td>{{ listDate(row.withdrawDate) }}</td>
+                                <td>{{ listDate(row.actualWithdrawDate) }}</td>
+                                <td>{{ listDate(row.returnDate) }}</td>
+                                <td>
+                                    <!-- "Still out" and "Overdue" are facts about a document that
+                                         has left: a draft or a request still awaiting approval has
+                                         not, so the cell stays empty. -->
+                                    @if (listDate(row.actualReturnDate)) {
+                                        {{ listDate(row.actualReturnDate) }}
+                                    } @else if (isOut(row) && row.isOverdue) {
+                                        <span class="text-danger" data-help-loc="Overdue">{{ 'Overdue' | localize }}</span>
+                                    } @else if (isOut(row)) {
+                                        <span class="text-muted" data-help-loc="StillOut">{{ 'StillOut' | localize }}</span>
+                                    }
+                                </td>
+                                <td>{{ guarantorName(row) }}</td>
+                                <td>
+                                    <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
+                                </td>
+                                <td class="text-end">
+                                    <!-- A draft, or a request an approver sent back, is picked up
+                                         where it was left. Anything else opens read-only in the
+                                         detail view -- every such row, not only ones with a
+                                         workflow request: a row recorded while workflow is off
+                                         still has fields worth reading. -->
+                                    @if (row.canEdit) {
+                                        <button class="btn btn-primary" (click)="continueDraft(row)" data-help-loc="ContinueDraft">
+                                            {{ 'ContinueDraft' | localize }}
+                                        </button>
+                                    } @else {
+                                        <button class="btn btn-light-primary" (click)="openDetail(row)" data-help-loc="Details">
+                                            {{ 'Details' | localize }}
+                                        </button>
+                                    }
+                                    @if (row.canReturn) {
+                                        <button class="btn btn-light-primary ms-2" data-help-loc="ReturnMyDocument" (click)="openReturnForm(row)">
+                                            {{ 'ReturnMyDocument' | localize }}
+                                        </button>
+                                    }
+                                    @if (row.canCancel) {
+                                        <!-- "Withdraw" alone would read as withdrawing the passport, which is what
+                                             this screen is FOR. Named for the request on this one screen. A draft
+                                             was never sent to anybody, so it is discarded rather than withdrawn. -->
+                                        <button class="btn btn-light-danger ms-2" data-help-loc="WithdrawRequest" (click)="cancel(row)">
+                                            {{ (row.isDraft ? 'DiscardDraft' : 'WithdrawRequest') | localize }}
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        } @empty {
+                            <tr>
+                                <td colspan="10" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <ess-list-pager [list]="list" />
+        }
+    </div>
+</div>
+
+<essRequestDetailModal #detail />

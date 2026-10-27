@@ -1,0 +1,76 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'EmployeeSubGroupBonuses' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="EmployeeSubGroupBonus_StartDate">{{ 'StartDate' | localize }}</label>
+                            <input
+                                id="EmployeeSubGroupBonus_StartDate"
+                                type="date"
+                                class="form-control"
+                                name="StartDate"
+                                required
+                                [ngModel]="record().startDate?.toISODate()"
+                                (ngModelChange)="updateStartDate($event)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="EmployeeSubGroupBonus_EndDate">{{ 'EndDate' | localize }}</label>
+                            <input
+                                id="EmployeeSubGroupBonus_EndDate"
+                                type="date"
+                                class="form-control"
+                                name="EndDate"
+                                [ngModel]="record().endDate?.toISODate()"
+                                (ngModelChange)="updateEndDate($event)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="EmployeeSubGroupBonus_ChangeYear">{{ 'ChangeYear' | localize }}</label>
+                            <input
+                                id="EmployeeSubGroupBonus_ChangeYear"
+                                class="form-control"
+                                type="number"
+                                name="ChangeYear"
+                                [ngModel]="record().changeYear"
+                                (ngModelChange)="updateField('changeYear', $event)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="EmployeeSubGroupBonus_Percentage">{{ 'Percentage' | localize }}</label>
+                            <input
+                                id="EmployeeSubGroupBonus_Percentage"
+                                class="form-control"
+                                type="number"
+                                name="Percentage"
+                                [ngModel]="record().percentage"
+                                (ngModelChange)="updateField('percentage', $event)" />
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

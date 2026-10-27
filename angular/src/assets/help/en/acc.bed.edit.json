@@ -1,0 +1,91 @@
+{
+  "helpId": "acc.bed.edit",
+  "lang": "en",
+  "title": "Beds — Create / Edit",
+  "entity": "HCMv3.AccommodationManagement.Bed",
+  "overviewHtml": "<p>A bed in a room — the place one employee is given. Company housing is set up as a tree: location, building, floor, flat, room, bed. An employee's stay names one place at every level.</p>",
+  "aliasIndex": {
+    "loc:Code": "Bed.Code",
+    "dom:Bed_Code": "Bed.Code",
+    "loc:Room": "Bed.RoomId",
+    "dom:Bed_RoomId": "Bed.RoomId",
+    "loc:NameEn": "Bed.NameEn",
+    "dom:Bed_NameEn": "Bed.NameEn",
+    "loc:NameAr": "Bed.NameAr",
+    "dom:Bed_NameAr": "Bed.NameAr",
+    "loc:Comments": "Bed.Comments",
+    "dom:Bed_Comments": "Bed.Comments"
+  },
+  "fields": [
+    {
+      "id": "Bed.Code",
+      "label": "Code",
+      "section": "Beds",
+      "aliases": [
+        "loc:Code",
+        "dom:Bed_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Bed.RoomId",
+      "label": "Room",
+      "section": "Beds",
+      "aliases": [
+        "loc:Room",
+        "dom:Bed_RoomId"
+      ],
+      "rules": "Required. Chosen from Room master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The room the bed is in.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Bed.NameEn",
+      "label": "NameEn",
+      "section": "Beds",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Bed_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Bed.NameAr",
+      "label": "NameAr",
+      "section": "Beds",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Bed_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Bed.Comments",
+      "label": "Comments",
+      "section": "Beds",
+      "aliases": [
+        "loc:Comments",
+        "dom:Bed_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "helpId": "cd.cdperiod.edit",
+  "lang": "ar",
+  "title": "فترات تطوير الكفاءات — إنشاء / تحرير",
+  "entity": "HCMv3.CompetencyDevelopment.CDPeriod",
+  "overviewHtml": "<p>دورة مراجعة، عادةً سنة، تنتمي إليها نماذج تطوير الكفاءات للموظفين.</p>",
+  "aliasIndex": {
+    "loc:Name": "CDPeriod.Name",
+    "dom:CDPeriod_Name": "CDPeriod.Name",
+    "loc:Closed": "CDPeriod.Closed",
+    "dom:CDPeriod_Closed": "CDPeriod.Closed"
+  },
+  "fields": [
+    {
+      "id": "CDPeriod.Name",
+      "label": "Name",
+      "section": "CDPeriods",
+      "aliases": [
+        "loc:Name",
+        "dom:CDPeriod_Name"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم الفترة، ويجب أن يكون فريداً.</p><p><strong>مثال.</strong> 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDPeriod.Closed",
+      "label": "Closed",
+      "section": "CDPeriods",
+      "aliases": [
+        "loc:Closed",
+        "dom:CDPeriod_Closed"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الفترة منتهية.</p><p><strong>لماذا يهم.</strong> يظهر في القائمة فقط: يمكن إضافة النماذج في فترة مغلقة وتعديلها.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>HCMv3.DevExpressReportDesigner</RootNamespace>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Arabic payslips must round-trip; invariant globalization mangles RTL text and month names. -->
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <UserSecretsId>hcmv3-devexpress-report-designer</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Real, licensed DevExpress 23.2 install on this machine (local NuGet feed
+         "DevExpress 23.2 Local" -> C:\Program Files\DevExpress 23.2\Components\System\Components\Packages).
+         This is the genuine XtraReports Web Report Designer + Web Document Viewer, not a converted format. -->
+    <PackageReference Include="DevExpress.AspNetCore.Reporting" Version="23.2.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Reports\**\*.repx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\**\*.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

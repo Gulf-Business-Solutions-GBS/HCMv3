@@ -1,0 +1,75 @@
+{
+  "helpId": "perf.patimeline.edit",
+  "lang": "en",
+  "title": "PA Timelines — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.PATimeline",
+  "overviewHtml": "<p>The dates of one stage of a period's appraisal — planning, mid-year review, year-end review. A period can have each stage once.</p><p>The performance appraisal and PA summary reports use these dates to find the periods that fall in the report's date range. The dates do not stop anyone submitting outside them.</p>",
+  "aliasIndex": {
+    "loc:PAPeriod": "PATimeline.PAPeriodId",
+    "dom:PATimeline_PAPeriodId": "PATimeline.PAPeriodId",
+    "loc:ActivityType": "PATimeline.ActivityType",
+    "dom:PATimeline_ActivityType": "PATimeline.ActivityType",
+    "loc:StartDate": "PATimeline.StartDate",
+    "dom:PATimeline_StartDate": "PATimeline.StartDate",
+    "loc:EndDate": "PATimeline.EndDate",
+    "dom:PATimeline_EndDate": "PATimeline.EndDate"
+  },
+  "fields": [
+    {
+      "id": "PATimeline.PAPeriodId",
+      "label": "PAPeriod",
+      "section": "PATimelines",
+      "aliases": [
+        "loc:PAPeriod",
+        "dom:PATimeline_PAPeriodId"
+      ],
+      "rules": "Required. Chosen from PA Period master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraisal period.</p><p><strong>Example.</strong> FY 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PATimeline.ActivityType",
+      "label": "ActivityType",
+      "section": "PATimelines",
+      "aliases": [
+        "loc:ActivityType",
+        "dom:PATimeline_ActivityType"
+      ],
+      "rules": "Required. One of: Plan, MidYearReview, AnnualReview, Quarter1Review, Quarter3Review.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The stage the dates are for.</p><p><strong>Example.</strong> Mid-Year Review</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PATimeline.StartDate",
+      "label": "StartDate",
+      "section": "PATimelines",
+      "aliases": [
+        "loc:StartDate",
+        "dom:PATimeline_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PATimeline.EndDate",
+      "label": "EndDate",
+      "section": "PATimelines",
+      "aliases": [
+        "loc:EndDate",
+        "dom:PATimeline_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

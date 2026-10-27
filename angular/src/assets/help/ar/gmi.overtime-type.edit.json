@@ -1,0 +1,91 @@
+{
+  "helpId": "gmi.overtime-type.edit",
+  "lang": "ar",
+  "title": "أنواع العمل الإضافي — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.OvertimeType",
+  "overviewHtml": "<p>أنواع العمل الإضافي — في يوم عمل، أو يوم راحة، أو عطلة رسمية، ونحو ذلك. يسمّي كل طلب عمل إضافي نوعاً منها، ويمكن للدوامات والعطل أن تشير إلى النوع الذي ينطبق عليها.</p>",
+  "aliasIndex": {
+    "loc:Code": "OvertimeType.Code",
+    "dom:OvertimeType_Code": "OvertimeType.Code",
+    "loc:NameEn": "OvertimeType.NameEn",
+    "dom:OvertimeType_NameEn": "OvertimeType.NameEn",
+    "loc:NameAr": "OvertimeType.NameAr",
+    "dom:OvertimeType_NameAr": "OvertimeType.NameAr",
+    "loc:OvertimeRate": "OvertimeType.OvertimeRate",
+    "dom:OvertimeType_OvertimeRate": "OvertimeType.OvertimeRate",
+    "loc:WageType": "OvertimeType.WageTypeId",
+    "dom:OvertimeType_WageTypeId": "OvertimeType.WageTypeId"
+  },
+  "fields": [
+    {
+      "id": "OvertimeType.Code",
+      "label": "Code",
+      "section": "OvertimeTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:OvertimeType_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OvertimeType.NameEn",
+      "label": "NameEn",
+      "section": "OvertimeTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:OvertimeType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OvertimeType.NameAr",
+      "label": "NameAr",
+      "section": "OvertimeTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:OvertimeType_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OvertimeType.OvertimeRate",
+      "label": "OvertimeRate",
+      "section": "OvertimeTypes",
+      "aliases": [
+        "loc:OvertimeRate",
+        "dom:OvertimeType_OvertimeRate"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المُضاعِف الذي يُطبَّق على ساعات العمل الإضافي المعتمدة.</p><p><strong>مثال.</strong> <code>1.25</code></p><p><strong>لماذا يهم.</strong> يضرب احتساب الرواتب ساعات العمل الإضافي المعتمدة في هذا المعدل قبل تسعيرها، وتستخدم تكاليف المشاريع المُضاعِف نفسه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OvertimeType.WageTypeId",
+      "label": "WageType",
+      "section": "OvertimeTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:OvertimeType_WageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الأجر الذي يُصرف تحته العمل الإضافي من هذا النوع.</p><p><strong>مثال.</strong> <code>OT125 - عمل إضافي 125%</code></p><p><strong>لماذا يهم.</strong> لا يصرف احتساب الرواتب العمل الإضافي المعتمد إلا لأنواع العمل الإضافي التي لها نوع أجر: فيُسعِّر الساعات عند وصوله إلى نوع الأجر هذا ويُدرج المبلغ تحته في كشف الراتب. وإذا تُرك فارغاً يُسجَّل العمل الإضافي من هذا النوع ولكنه لا يُصرف أبداً. ويستخدمه أيضاً تقرير ملخص المشاريع الشهري لتمييز تكلفة العمل الإضافي عن غيرها من الأجور.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

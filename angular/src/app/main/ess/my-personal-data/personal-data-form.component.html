@@ -1,0 +1,125 @@
+<!-- The legacy form's four cards. One markup for writing a request and for showing the profile: in view mode
+     every input is disabled where it stands, never a second layout. Bootstrap 5, so the columns need a real
+     .row parent and a picker must be .form-select. -->
+@for (section of sections; track section.label; let first = $first) {
+    <div class="card card-custom gutter-b mb-5">
+        <div class="card-body">
+            <h5 class="card-title" [attr.data-help-loc]="section.label">{{ section.label | localize }}</h5>
+
+            <div class="row g-4">
+                @if (first) {
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <label class="form-label" data-help-loc="Employee">{{ 'Employee' | localize }}</label>
+                        <!-- Shown, not chosen: the requester is always the signed-in employee and the server
+                             takes it from the session. -->
+                        <input type="text" class="form-control" [value]="value().employeeDisplay" readonly disabled />
+                    </div>
+                }
+
+                @for (field of section.fields; track field.key) {
+                    <div [class]="field.col ?? 'col-12 col-md-6 col-xl-3'">
+                        <label class="form-label" [attr.data-help-loc]="field.label">
+                            {{ field.label | localize }}{{ field.required && !readOnly() ? ' *' : '' }}
+                        </label>
+
+                        @switch (field.kind) {
+                            @case ('lookup') {
+                                <select
+                                    class="form-select"
+                                    [class.border-success]="isChanged(field)"
+                                    [disabled]="readOnly()"
+                                    [(ngModel)]="value().values[field.key]">
+                                    <option [ngValue]="null">--</option>
+                                    @for (option of options(field); track option.id) {
+                                        <option [ngValue]="option.id">{{ optionName(option) }}</option>
+                                    }
+                                </select>
+                            }
+                            @case ('gender') {
+                                <select
+                                    class="form-select"
+                                    [class.border-success]="isChanged(field)"
+                                    [disabled]="readOnly()"
+                                    [(ngModel)]="value().values[field.key]">
+                                    <option [ngValue]="null">--</option>
+                                    @for (gender of genders; track gender) {
+                                        <option [ngValue]="gender">{{ genderName(gender) }}</option>
+                                    }
+                                </select>
+                            }
+                            @case ('date') {
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    [class.border-success]="isChanged(field)"
+                                    [disabled]="readOnly()"
+                                    [(ngModel)]="value().values[field.key]" />
+                            }
+                            @case ('number') {
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    [class.border-success]="isChanged(field)"
+                                    [disabled]="readOnly()"
+                                    [(ngModel)]="value().values[field.key]" />
+                            }
+                            @case ('textarea') {
+                                <textarea
+                                    class="form-control"
+                                    rows="3"
+                                    [attr.maxlength]="field.maxlength ?? null"
+                                    [class.border-success]="isChanged(field)"
+                                    [disabled]="readOnly()"
+                                    [(ngModel)]="value().values[field.key]"></textarea>
+                            }
+                            @default {
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    [attr.maxlength]="field.maxlength ?? null"
+                                    [attr.dir]="field.arabic ? 'rtl' : null"
+                                    [class.border-success]="isChanged(field)"
+                                    [disabled]="readOnly()"
+                                    [(ngModel)]="value().values[field.key]" />
+                            }
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Request Comment is its own card, as on the exit permit: what the requester says to the approver, with the
+     proof attached beside it. Shown only while the request is being written. -->
+@if (!readOnly()) {
+    <div class="card card-custom gutter-b mb-5">
+        <div class="card-body">
+            <h5 class="card-title" data-help-loc="RequestComment">{{ 'RequestComment' | localize }}</h5>
+
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <textarea class="form-control" rows="3" maxlength="1000" [(ngModel)]="value().comments"></textarea>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <!-- With no saved record yet the chosen files wait here and are attached once the request has
+                     been saved; a draft being continued lists the files it already has. -->
+                <app-attachments #formAttachments entityType="EmployeePersonalDataChange" [entityId]="value().id ?? null" [showLimitsHint]="false" />
+            </div>
+
+            <div class="mt-4">
+                <!-- The standard three, in the standard order: Save files a draft only the requester can see,
+                     Submit sends it into the approval chain, Cancel drops what is on screen. -->
+                <button class="btn btn-light-primary me-2" [disabled]="saving()" (click)="saved.emit()" data-help-loc="Save">
+                    {{ 'Save' | localize }}
+                </button>
+                <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submitted.emit()" data-help-loc="Submit">
+                    {{ 'Submit' | localize }}
+                </button>
+                <button class="btn btn-light" (click)="cancelled.emit()">{{ 'Cancel' | localize }}</button>
+            </div>
+        </div>
+    </div>
+}

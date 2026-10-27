@@ -1,0 +1,139 @@
+{
+  "helpId": "gr.sponsor-job-title.edit",
+  "lang": "ar",
+  "title": "المسميات الوظيفية للكفيل — إنشاء / تحرير",
+  "entity": "HCMv3.GovtRelationsManagement.SponsorJobTitle",
+  "overviewHtml": "<p>عدد الموظفين الذين يجوز أن يكونوا تحت كفيل بمسمى وظيفي حكومي واحد، مقسماً بين المواطنين وغير المواطنين. ويجب أن يكون مجموع النسبتين 100. تُحسب الأماكن المسموح بها عند الحفظ: للمواطنين عدد الوظائف مضروباً في نسبتهم مقرباً إلى الأدنى، ولغير المواطنين مقرباً إلى الأعلى. ولا يمكن إضافة سجل كفيل لموظف إلا لمسمى وظيفي له سجل لدى الكفيل. وتظهر الأماكن المتبقية في تقرير حصص المسميات الوظيفية للكفلاء، ولا يوجد ما يمنع تجاوز الحصة.</p>",
+  "aliasIndex": {
+    "loc:GovtJobTitle": "SponsorJobTitle.GovtJobTitleId",
+    "dom:SponsorJobTitle_GovtJobTitleId": "SponsorJobTitle.GovtJobTitleId",
+    "loc:StartDate": "SponsorJobTitle.StartDate",
+    "dom:SponsorJobTitle_StartDate": "SponsorJobTitle.StartDate",
+    "loc:EndDate": "SponsorJobTitle.EndDate",
+    "dom:SponsorJobTitle_EndDate": "SponsorJobTitle.EndDate",
+    "loc:NoofPosition": "SponsorJobTitle.NoofPosition",
+    "dom:SponsorJobTitle_NoofPosition": "SponsorJobTitle.NoofPosition",
+    "loc:CitizenPercent": "SponsorJobTitle.CitizenPercent",
+    "dom:SponsorJobTitle_CitizenPercent": "SponsorJobTitle.CitizenPercent",
+    "loc:CitizenQuotaUsed": "SponsorJobTitle.CitizenQuotaUsed",
+    "dom:SponsorJobTitle_CitizenQuotaUsed": "SponsorJobTitle.CitizenQuotaUsed",
+    "loc:NonCitizenPercent": "SponsorJobTitle.NonCitizenPercent",
+    "dom:SponsorJobTitle_NonCitizenPercent": "SponsorJobTitle.NonCitizenPercent",
+    "loc:NonCitizenQuotaUsed": "SponsorJobTitle.NonCitizenQuotaUsed",
+    "dom:SponsorJobTitle_NonCitizenQuotaUsed": "SponsorJobTitle.NonCitizenQuotaUsed"
+  },
+  "fields": [
+    {
+      "id": "SponsorJobTitle.GovtJobTitleId",
+      "label": "GovtJobTitle",
+      "section": "SponsorJobTitles",
+      "aliases": [
+        "loc:GovtJobTitle",
+        "dom:SponsorJobTitle_GovtJobTitleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المسميات الوظيفية الحكومية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي الحكومي.</p><p><strong>مثال.</strong> محاسب</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorJobTitle.StartDate",
+      "label": "StartDate",
+      "section": "SponsorJobTitles",
+      "aliases": [
+        "loc:StartDate",
+        "dom:SponsorJobTitle_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorJobTitle.EndDate",
+      "label": "EndDate",
+      "section": "SponsorJobTitles",
+      "aliases": [
+        "loc:EndDate",
+        "dom:SponsorJobTitle_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorJobTitle.NoofPosition",
+      "label": "NoofPosition",
+      "section": "SponsorJobTitles",
+      "aliases": [
+        "loc:NoofPosition",
+        "dom:SponsorJobTitle_NoofPosition"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إجمالي عدد الوظائف المسموح بها.</p><p><strong>مثال.</strong> 20</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorJobTitle.CitizenPercent",
+      "label": "CitizenPercent",
+      "section": "SponsorJobTitles",
+      "aliases": [
+        "loc:CitizenPercent",
+        "dom:SponsorJobTitle_CitizenPercent"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حصة المواطنين من الوظائف.</p><p><strong>مثال.</strong> 30</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorJobTitle.CitizenQuotaUsed",
+      "label": "CitizenQuotaUsed",
+      "section": "SponsorJobTitles",
+      "aliases": [
+        "loc:CitizenQuotaUsed",
+        "dom:SponsorJobTitle_CitizenQuotaUsed"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأماكن التي يشغلها مواطنون.</p><p><strong>لماذا يهم.</strong> يزيد بواحد عند إضافة سجل كفيل لموظف مجموعة جنسيته \"Citizen\"، وينقص بواحد عند حذفه. ولا يعيد تعديل السجل العدّ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorJobTitle.NonCitizenPercent",
+      "label": "NonCitizenPercent",
+      "section": "SponsorJobTitles",
+      "aliases": [
+        "loc:NonCitizenPercent",
+        "dom:SponsorJobTitle_NonCitizenPercent"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حصة غير المواطنين من الوظائف.</p><p><strong>مثال.</strong> 70</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorJobTitle.NonCitizenQuotaUsed",
+      "label": "NonCitizenQuotaUsed",
+      "section": "SponsorJobTitles",
+      "aliases": [
+        "loc:NonCitizenQuotaUsed",
+        "dom:SponsorJobTitle_NonCitizenQuotaUsed"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأماكن التي يشغلها غير مواطنين.</p><p><strong>لماذا يهم.</strong> يزيد وينقص بالطريقة نفسها، للموظفين في أي مجموعة جنسية أخرى.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

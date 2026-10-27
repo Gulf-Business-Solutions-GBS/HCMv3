@@ -1,0 +1,95 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'CDPlans' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="CDPlan_CompetencyId">{{ 'Competency' | localize }}</label>
+                                <select
+                                    id="CDPlan_CompetencyId"
+                                    class="form-select"
+                                    name="CompetencyId"
+                                    required
+                                    [ngModel]="record().competencyId"
+                                    (ngModelChange)="updateField('competencyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (competency of competencies(); track competency.id) {
+                                        <option [ngValue]="competency.id">{{ competency.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="CDPlan_Weight">{{ 'Weight' | localize }}</label>
+                                <input
+                                    id="CDPlan_Weight"
+                                    type="number"
+                                    class="form-control"
+                                    name="Weight"
+                                    required
+                                    [ngModel]="record().weight"
+                                    (ngModelChange)="updateField('weight', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="CDPlan_Target">{{ 'Target' | localize }}</label>
+                                <input
+                                    id="CDPlan_Target"
+                                    type="text"
+                                    class="form-control"
+                                    name="Target"
+                                    [ngModel]="record().target"
+                                    (ngModelChange)="updateField('target', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="CDPlan_EmployeeComments">{{ 'EmployeeComments' | localize }}</label>
+                                <textarea
+                                    id="CDPlan_EmployeeComments"
+                                    class="form-control"
+                                    name="EmployeeComments"
+                                    rows="2"
+                                    [ngModel]="record().employeeComments"
+                                    (ngModelChange)="updateField('employeeComments', $event)"></textarea>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="CDPlan_ManagerComments">{{ 'ManagerComments' | localize }}</label>
+                                <textarea
+                                    id="CDPlan_ManagerComments"
+                                    class="form-control"
+                                    name="ManagerComments"
+                                    rows="2"
+                                    [ngModel]="record().managerComments"
+                                    (ngModelChange)="updateField('managerComments', $event)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

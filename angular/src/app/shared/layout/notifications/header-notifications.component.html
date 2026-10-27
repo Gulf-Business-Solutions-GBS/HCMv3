@@ -1,0 +1,145 @@
+<div class="d-flex align-items-center ms-1 ms-lg-3">
+    <div [class]="customStyle()" id="notificationIcon" (click)="notificationPanel.toggle($event)">
+        @if (unreadNotificationCount()) {
+            <i [class]="iconStyle()"></i>
+        }
+        @if (unreadNotificationCount()) {
+            <span class="position-absolute top-0 start-100 translate-middle badge badge-circle badge-warning">
+                {{ unreadNotificationCount() }}
+            </span>
+        }
+        @if (!unreadNotificationCount()) {
+            <i class="flaticon-alarm"></i>
+        }
+    </div>
+    <!-- (onShow) re-reads the list and the count. Opening the panel is the one moment the user is
+         actually looking at it, so it is the one moment the numbers have to be right. -->
+    <p-popover
+        #notificationPanel
+        appendTo="body"
+        (onShow)="onPanelShow()"
+        styleClass="notification-popover w-200px w-sm-250px w-md-400px">
+        <ng-container *ngTemplateOutlet="dropdownMenuContent" />
+    </p-popover>
+</div>
+
+<ng-template #dropdownMenuContent>
+    <ng-scrollbar>
+        <div
+            class="d-flex flex-column pt-5 bgi-size-cover bgi-no-repeat rounded-top bg-primary"
+            style="min-height: 70px">
+            <h4 class="d-flex flex-center" style="align-items: center; justify-content: space-between">
+                <span class="ms-5">
+                    <span class="text-white">{{ 'Notifications' | localize }}</span>
+                    <span class="btn btn-text btn-secondary btn-sm fw-bold btn-font-md ms-2">
+                        {{ unreadNotificationCount() }} {{ 'New' | localize }}
+                    </span>
+                </span>
+                <a
+                    id="openNotificationSettingsModalLink"
+                    class="btn btn-md btn-icon btn-secondary me-5"
+                    href="javascript:;"
+                    (click)="openNotificationSettingsModal()">
+                    <i class="flaticon2-gear"></i>
+                </a>
+            </h4>
+        </div>
+    </ng-scrollbar>
+    <div class="px-4">
+        <div
+            class="scroll pt-5"
+            data-scroll="true"
+            data-height="300"
+            data-mobile-height="200"
+            style="max-height: 300px; overflow-y: auto">
+            @for (notification of notifications(); track notification.userNotificationId) {
+                <div
+                    class="d-flex align-items-sm-center mb-7 user-notification-item-clickable user-notification-item-unread"
+                    (click)="gotoUrl(notification.url)"
+                    [ngClass]="{
+                        'user-notification-item-clickable': notification.url,
+                        'user-notification-item-unread': notification.isUnread,
+                    }">
+                    <div class="symbol symbol-50px me-5">
+                        <span class="symbol-label">
+                            <i class="{{ notification.icon }} {{ notification.iconFontClass }} icon-lg"></i>
+                        </span>
+                    </div>
+                    <div class="d-flex align-items-center flex-row-fluid flex-wrap">
+                        <div class="flex-grow-1 me-2">
+                            <a
+                                class="text-hover-primary fs-6 fw-bolder"
+                                [ngClass]="{ 'text-muted': !notification.isUnread }">
+                                {{ notification.text }}
+                            </a>
+                        </div>
+                        <span class="text-muted fw-bold d-block fs-7">
+                            {{ notification.creationTime | luxonFromNow }}
+                        </span>
+                        <!-- Per-notification actions. Both stop propagation because the row itself
+                             navigates to whatever the notification is about, and acting on the row
+                             must not also leave the page you are on. -->
+                        @if (notification.isUnread) {
+                            <span
+                                class="btn btn-link-success text-success set-notification-as-read fs-7 py-0 my-0 set-notification-as-read"
+                                (click)="
+                                    setNotificationAsRead(notification);
+                                    $event.preventDefault();
+                                    $event.stopPropagation()
+                                ">
+                                {{ 'SetAsRead' | localize }}
+                            </span>
+                        }
+                        <span
+                            class="btn btn-link-danger text-danger fs-7 py-0 my-0 ms-2 delete-notification"
+                            [attr.title]="'Delete' | localize"
+                            [attr.aria-label]="'Delete' | localize"
+                            (click)="
+                                deleteNotification(notification);
+                                $event.preventDefault();
+                                $event.stopPropagation()
+                            ">
+                            <i class="flaticon2-trash fs-7 text-danger"></i>
+                        </span>
+                    </div>
+                </div>
+            }
+
+            @if (!notifications().length) {
+                <span class="notification-empty-text text-center p-5">
+                    {{ 'ThereAreNoNotifications' | localize }}
+                </span>
+            }
+        </div>
+        <hr />
+
+        <!-- ALWAYS RENDERED, including when the list is empty. The footer used to disappear with the
+             last notification, which took "See all" and the settings link with it -- so the one state
+             in which you most want to check your notification settings was the state that hid them. -->
+        <div class="notification-actions m-1 mb-4">
+            @if (unreadNotificationCount()) {
+                <a
+                    href="javascript:;"
+                    class="btn btn-secondary btn-sm"
+                    (click)="setAllNotificationsAsRead(); $event.preventDefault(); $event.stopPropagation()"
+                    id="setAllNotificationsAsReadLink">
+                    {{ 'SetAllAsRead' | localize }}
+                </a>
+            }
+
+            @if (notifications().length) {
+                <a
+                    href="javascript:;"
+                    class="btn btn-light-danger btn-sm"
+                    (click)="deleteAllNotifications(); $event.preventDefault(); $event.stopPropagation()"
+                    id="deleteAllNotificationsLink">
+                    {{ 'DeleteAllNotifications' | localize }}
+                </a>
+            }
+
+            <a routerLink="notifications" class="btn btn-primary btn-sm">
+                {{ 'SeeAll' | localize }}
+            </a>
+        </div>
+    </div>
+</ng-template>

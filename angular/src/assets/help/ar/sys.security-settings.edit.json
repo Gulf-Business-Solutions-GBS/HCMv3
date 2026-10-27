@@ -1,0 +1,139 @@
+{
+  "helpId": "sys.security-settings.edit",
+  "lang": "ar",
+  "title": "Security settings",
+  "entity": "HCMv3.SystemSettings.ManageSecuritySettings",
+  "overviewHtml": "<p>إعدادات الأمان والتدقيق.</p><p>لكل شركة سجل إعدادات واحد، ولا يمكن حذفه.</p>",
+  "aliasIndex": {
+    "loc:EnableRowLevelSecurity": "ManageSecuritySettings.EnableRowLevelSecurity",
+    "dom:SecuritySettings_EnableRowLevelSecurity": "ManageSecuritySettings.EnableRowLevelSecurity",
+    "loc:EnableReportExportPwd": "ManageSecuritySettings.EnableReportExportPwd",
+    "dom:SecuritySettings_EnableReportExportPwd": "ManageSecuritySettings.EnableReportExportPwd",
+    "loc:EnableAuditLogInTimeEngine": "ManageSecuritySettings.EnableAuditLogInTimeEngine",
+    "dom:SecuritySettings_EnableAuditLogInTimeEngine": "ManageSecuritySettings.EnableAuditLogInTimeEngine",
+    "loc:EnableAuditLogInPayrollEngine": "ManageSecuritySettings.EnableAuditLogInPayrollEngine",
+    "dom:SecuritySettings_EnableAuditLogInPayrollEngine": "ManageSecuritySettings.EnableAuditLogInPayrollEngine",
+    "loc:EnableAuditLogInProjectCostEngine": "ManageSecuritySettings.EnableAuditLogInProjectCostEngine",
+    "dom:SecuritySettings_EnableAuditLogInProjectCostEngine": "ManageSecuritySettings.EnableAuditLogInProjectCostEngine",
+    "loc:EnableAuditLogInCostEngine": "ManageSecuritySettings.EnableAuditLogInCostEngine",
+    "dom:SecuritySettings_EnableAuditLogInCostEngine": "ManageSecuritySettings.EnableAuditLogInCostEngine",
+    "loc:EnableAuditLogInGridReport": "ManageSecuritySettings.EnableAuditLogInGridReport",
+    "dom:SecuritySettings_EnableAuditLogInGridReport": "ManageSecuritySettings.EnableAuditLogInGridReport",
+    "loc:EnableAuditLogInPrintReport": "ManageSecuritySettings.EnableAuditLogInPrintReport",
+    "dom:SecuritySettings_EnableAuditLogInPrintReport": "ManageSecuritySettings.EnableAuditLogInPrintReport"
+  },
+  "fields": [
+    {
+      "id": "ManageSecuritySettings.EnableRowLevelSecurity",
+      "label": "EnableRowLevelSecurity",
+      "section": null,
+      "aliases": [
+        "loc:EnableRowLevelSecurity",
+        "dom:SecuritySettings_EnableRowLevelSecurity"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان أمان مستوى السجلات مطبقاً.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه تقصر المواضع التي تطبّق أمان مستوى السجلات المستخدمين على الموظفين الذين تسمح بهم تعييناتهم الأمنية، ويُقيَّد مستلمو التقارير المجدولة بالطريقة نفسها. وإلا فلا يُطبَّق أي قيد على مستوى السجلات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageSecuritySettings.EnableReportExportPwd",
+      "label": "EnableReportExportPwd",
+      "section": null,
+      "aliases": [
+        "loc:EnableReportExportPwd",
+        "dom:SecuritySettings_EnableReportExportPwd"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت التقارير المصدَّرة محمية بكلمة مرور.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageSecuritySettings.EnableAuditLogInTimeEngine",
+      "label": "EnableAuditLogInTimeEngine",
+      "section": null,
+      "aliases": [
+        "loc:EnableAuditLogInTimeEngine",
+        "dom:SecuritySettings_EnableAuditLogInTimeEngine"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت تغييرات محرك الوقت تُكتب في سجل التدقيق.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageSecuritySettings.EnableAuditLogInPayrollEngine",
+      "label": "EnableAuditLogInPayrollEngine",
+      "section": null,
+      "aliases": [
+        "loc:EnableAuditLogInPayrollEngine",
+        "dom:SecuritySettings_EnableAuditLogInPayrollEngine"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت تغييرات محرك الرواتب تُكتب في سجل التدقيق.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageSecuritySettings.EnableAuditLogInProjectCostEngine",
+      "label": "EnableAuditLogInProjectCostEngine",
+      "section": null,
+      "aliases": [
+        "loc:EnableAuditLogInProjectCostEngine",
+        "dom:SecuritySettings_EnableAuditLogInProjectCostEngine"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت تغييرات محرك تكاليف المشاريع تُكتب في سجل التدقيق.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageSecuritySettings.EnableAuditLogInCostEngine",
+      "label": "EnableAuditLogInCostEngine",
+      "section": null,
+      "aliases": [
+        "loc:EnableAuditLogInCostEngine",
+        "dom:SecuritySettings_EnableAuditLogInCostEngine"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت تغييرات محرك التكلفة تُكتب في سجل التدقيق.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageSecuritySettings.EnableAuditLogInGridReport",
+      "label": "EnableAuditLogInGridReport",
+      "section": null,
+      "aliases": [
+        "loc:EnableAuditLogInGridReport",
+        "dom:SecuritySettings_EnableAuditLogInGridReport"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان تشغيل التقرير يُسجَّل.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يكتب كل تشغيل للتقرير قيداً في سجل التنفيذ. وإلا فلا تُسجَّل تشغيلات التقارير.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageSecuritySettings.EnableAuditLogInPrintReport",
+      "label": "EnableAuditLogInPrintReport",
+      "section": null,
+      "aliases": [
+        "loc:EnableAuditLogInPrintReport",
+        "dom:SecuritySettings_EnableAuditLogInPrintReport"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت طباعة التقرير تُسجَّل.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

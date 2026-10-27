@@ -1,0 +1,139 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'DocumentSettings' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'DocumentSettings' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <fieldset>
+                            <legend>{{ 'DocumentSettings' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="DocumentSettings_EnableDocSaveInFileSystem"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableDocSaveInFileSystem"
+                                            [ngModel]="record().enableDocSaveInFileSystem"
+                                            (ngModelChange)="updateField('enableDocSaveInFileSystem', $event)" />
+                                        <label class="form-check-label" for="DocumentSettings_EnableDocSaveInFileSystem">{{ 'EnableDocSaveInFileSystem' | localize }}</label>
+                                    </div>
+                                </div>
+                                <!--
+                                    A NAME, not a path. A folder typed here would be a folder the server
+                                    then writes uploads into, so the list comes from appsettings.json and
+                                    the screen can only choose among it. The old free-text path field is
+                                    gone rather than disabled: it did nothing, and a box that does nothing
+                                    is worse than no box.
+                                -->
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="DocumentSettings_FileStorageRootName">{{ 'FileStorageRootName' | localize }}</label>
+                                    <select
+                                        id="DocumentSettings_FileStorageRootName"
+                                        class="form-select form-control"
+                                        name="FileStorageRootName"
+                                        [ngModel]="record().fileStorageRootName"
+                                        (ngModelChange)="updateField('fileStorageRootName', $event)">
+                                        @for (root of record().availableRoots || []; track root.name) {
+                                            <option [ngValue]="root.name">
+                                                {{ root.isDefault ? ('FileStorageRootDefault' | localize) : root.name }}{{ root.path ? ' — ' + root.path : '' }}
+                                            </option>
+                                        }
+                                    </select>
+                                    <small class="form-text text-muted">{{ 'FileStorageRootHint' | localize }}</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="DocumentSettings_AllowedFileExtensions">{{ 'AllowedFileExtensions' | localize }}</label>
+                                    <input
+                                        id="DocumentSettings_AllowedFileExtensions"
+                                        type="text"
+                                        class="form-control"
+                                        name="AllowedFileExtensions"
+                                        maxlength="256"
+                                        [ngModel]="record().allowedFileExtensions"
+                                        (ngModelChange)="updateField('allowedFileExtensions', $event)" />
+                                </div>
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="DocumentSettings_MaxAttachmentsPerTransaction">{{ 'MaxAttachmentsPerTransaction' | localize }}</label>
+                                    <input
+                                        id="DocumentSettings_MaxAttachmentsPerTransaction"
+                                        type="number"
+                                        class="form-control"
+                                        name="MaxAttachmentsPerTransaction"
+                                        [ngModel]="record().maxAttachmentsPerTransaction"
+                                        (ngModelChange)="updateNumberField('maxAttachmentsPerTransaction', $event)" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="DocumentSettings_MaxFileSizePerAttachmentMB">{{ 'MaxFileSizePerAttachmentMB' | localize }}</label>
+                                    <input
+                                        id="DocumentSettings_MaxFileSizePerAttachmentMB"
+                                        type="number"
+                                        class="form-control"
+                                        name="MaxFileSizePerAttachmentMB"
+                                        [ngModel]="record().maxFileSizePerAttachmentMB"
+                                        (ngModelChange)="updateNumberField('maxFileSizePerAttachmentMB', $event)" />
+                                </div>
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="DocumentSettings_MaxStorageSizeMB">{{ 'MaxStorageSizeMB' | localize }}</label>
+                                    <input
+                                        id="DocumentSettings_MaxStorageSizeMB"
+                                        type="number"
+                                        class="form-control"
+                                        name="MaxStorageSizeMB"
+                                        [ngModel]="record().maxStorageSizeMB"
+                                        (ngModelChange)="updateNumberField('maxStorageSizeMB', $event)" />
+                                </div>
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="DocumentSettings_StorageWarningThresholdMB">{{ 'StorageWarningThresholdMB' | localize }}</label>
+                                    <input
+                                        id="DocumentSettings_StorageWarningThresholdMB"
+                                        type="number"
+                                        class="form-control"
+                                        name="StorageWarningThresholdMB"
+                                        [ngModel]="record().storageWarningThresholdMB"
+                                        (ngModelChange)="updateNumberField('storageWarningThresholdMB', $event)" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

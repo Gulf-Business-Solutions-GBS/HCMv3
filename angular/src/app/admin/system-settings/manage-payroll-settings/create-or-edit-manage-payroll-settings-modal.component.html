@@ -1,0 +1,480 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'PayrollSettings' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'PayrollSettings' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto">
+                        <!-- General -->
+                        <fieldset class="mb-5">
+                            <legend>{{ 'PayrollSettings' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="PayrollSettings_ClientId">{{ 'ClientId' | localize }}</label>
+                                    <input
+                                        id="PayrollSettings_ClientId"
+                                        type="text"
+                                        class="form-control"
+                                        name="ClientId"
+                                        maxlength="256"
+                                        [ngModel]="record().clientId"
+                                        (ngModelChange)="updateField('clientId', $event)" />
+                                </div>
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="PayrollSettings_DefaultWorkingHours">{{ 'DefaultWorkingHours' | localize }}</label>
+                                    <input
+                                        id="PayrollSettings_DefaultWorkingHours"
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        name="DefaultWorkingHours"
+                                        [ngModel]="record().defaultWorkingHours"
+                                        (ngModelChange)="updateNumberField('defaultWorkingHours', $event)" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="PayrollSettings_DecimalInSalaryRegister">{{ 'DecimalInSalaryRegister' | localize }}</label>
+                                    <input
+                                        id="PayrollSettings_DecimalInSalaryRegister"
+                                        type="number"
+                                        class="form-control"
+                                        name="DecimalInSalaryRegister"
+                                        [ngModel]="record().decimalInSalaryRegister"
+                                        (ngModelChange)="updateNumberField('decimalInSalaryRegister', $event)" />
+                                </div>
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="PayrollSettings_Decimal6RoundingFrom">{{ 'Decimal6RoundingFrom' | localize }}</label>
+                                    <input
+                                        id="PayrollSettings_Decimal6RoundingFrom"
+                                        type="date"
+                                        class="form-control"
+                                        name="Decimal6RoundingFrom"
+                                        [ngModel]="record().decimal6RoundingFrom?.toISODate()"
+                                        (ngModelChange)="updateDateField('decimal6RoundingFrom', $event)" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_PayslipSignature" type="checkbox" class="form-check-input" name="PayslipSignature"
+                                            [ngModel]="record().payslipSignature" (ngModelChange)="updateField('payslipSignature', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_PayslipSignature">{{ 'PayslipSignature' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_RoundNetPay" type="checkbox" class="form-check-input" name="RoundNetPay"
+                                            [ngModel]="record().roundNetPay" (ngModelChange)="updateField('roundNetPay', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_RoundNetPay">{{ 'RoundNetPay' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_EnablePayrollEngineAutorun" type="checkbox" class="form-check-input" name="EnablePayrollEngineAutorun"
+                                            [ngModel]="record().enablePayrollEngineAutorun" (ngModelChange)="updateField('enablePayrollEngineAutorun', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_EnablePayrollEngineAutorun">{{ 'EnablePayrollEngineAutorun' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_AllowSimulationRun" type="checkbox" class="form-check-input" name="AllowSimulationRun"
+                                            [ngModel]="record().allowSimulationRun" (ngModelChange)="updateField('allowSimulationRun', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_AllowSimulationRun">{{ 'AllowSimulationRun' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_DisableRetroCalculation" type="checkbox" class="form-check-input" name="DisableRetroCalculation"
+                                            [ngModel]="record().disableRetroCalculation" (ngModelChange)="updateField('disableRetroCalculation', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_DisableRetroCalculation">{{ 'DisableRetroCalculation' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_LockSalaryRegisterOnPayrollExit" type="checkbox" class="form-check-input" name="LockSalaryRegisterOnPayrollExit"
+                                            [ngModel]="record().lockSalaryRegisterOnPayrollExit" (ngModelChange)="updateField('lockSalaryRegisterOnPayrollExit', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_LockSalaryRegisterOnPayrollExit">{{ 'LockSalaryRegisterOnPayrollExit' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Leave & Encashment -->
+                        <fieldset class="mb-5">
+                            <legend>{{ 'LeaveManagement' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="PayrollSettings_DefaultLeavePaymentType">{{ 'DefaultLeavePaymentType' | localize }}</label>
+                                    <select
+                                        id="PayrollSettings_DefaultLeavePaymentType"
+                                        class="form-select"
+                                        name="DefaultLeavePaymentType"
+                                        [ngModel]="record().defaultLeavePaymentType"
+                                        (ngModelChange)="updateField('defaultLeavePaymentType', $event)">
+                                        @for (option of leavePaymentTypeOptions; track option.value) {
+                                            <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_LeaveAdvPaymentdateBefore15" type="checkbox" class="form-check-input" name="LeaveAdvPaymentdateBefore15"
+                                            [ngModel]="record().leaveAdvPaymentdateBefore15" (ngModelChange)="updateField('leaveAdvPaymentdateBefore15', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_LeaveAdvPaymentdateBefore15">{{ 'LeaveAdvPaymentdateBefore15' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_LeaveAdvPaymentdateAfter15" type="checkbox" class="form-check-input" name="LeaveAdvPaymentdateAfter15"
+                                            [ngModel]="record().leaveAdvPaymentdateAfter15" (ngModelChange)="updateField('leaveAdvPaymentdateAfter15', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_LeaveAdvPaymentdateAfter15">{{ 'LeaveAdvPaymentdateAfter15' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_LeaveProvisionAsPerCurrentSalary" type="checkbox" class="form-check-input" name="LeaveProvisionAsPerCurrentSalary"
+                                            [ngModel]="record().leaveProvisionAsPerCurrentSalary" (ngModelChange)="updateField('leaveProvisionAsPerCurrentSalary', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_LeaveProvisionAsPerCurrentSalary">{{ 'LeaveProvisionAsPerCurrentSalary' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_EnableNotReturnFromLeaveLogic" type="checkbox" class="form-check-input" name="EnableNotReturnFromLeaveLogic"
+                                            [ngModel]="record().enableNotReturnFromLeaveLogic" (ngModelChange)="updateField('enableNotReturnFromLeaveLogic', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_EnableNotReturnFromLeaveLogic">{{ 'EnableNotReturnFromLeaveLogic' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_GenerateRegisterOnNotReturnFromLeave" type="checkbox" class="form-check-input" name="GenerateRegisterOnNotReturnFromLeave"
+                                            [ngModel]="record().generateRegisterOnNotReturnFromLeave" (ngModelChange)="updateField('generateRegisterOnNotReturnFromLeave', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_GenerateRegisterOnNotReturnFromLeave">{{ 'GenerateRegisterOnNotReturnFromLeave' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_ApplyAnnualleaveNoImpactLogic" type="checkbox" class="form-check-input" name="ApplyAnnualleaveNoImpactLogic"
+                                            [ngModel]="record().applyAnnualleaveNoImpactLogic" (ngModelChange)="updateField('applyAnnualleaveNoImpactLogic', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_ApplyAnnualleaveNoImpactLogic">{{ 'ApplyAnnualleaveNoImpactLogic' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_FullMonthLeaveAdjForFixedDays" type="checkbox" class="form-check-input" name="FullMonthLeaveAdjForFixedDays"
+                                            [ngModel]="record().fullMonthLeaveAdjForFixedDays" (ngModelChange)="updateField('fullMonthLeaveAdjForFixedDays', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_FullMonthLeaveAdjForFixedDays">{{ 'FullMonthLeaveAdjForFixedDays' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_PayLeaveAsPerCutoff" type="checkbox" class="form-check-input" name="PayLeaveAsPerCutoff"
+                                            [ngModel]="record().payLeaveAsPerCutoff" (ngModelChange)="updateField('payLeaveAsPerCutoff', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_PayLeaveAsPerCutoff">{{ 'PayLeaveAsPerCutoff' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_RegularLeaveEncashOnBasicPayOnly" type="checkbox" class="form-check-input" name="RegularLeaveEncashOnBasicPayOnly"
+                                            [ngModel]="record().regularLeaveEncashOnBasicPayOnly" (ngModelChange)="updateField('regularLeaveEncashOnBasicPayOnly', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_RegularLeaveEncashOnBasicPayOnly">{{ 'RegularLeaveEncashOnBasicPayOnly' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_FnFLeaveEncashOnBasicPayOnly" type="checkbox" class="form-check-input" name="FnFLeaveEncashOnBasicPayOnly"
+                                            [ngModel]="record().fnFLeaveEncashOnBasicPayOnly" (ngModelChange)="updateField('fnFLeaveEncashOnBasicPayOnly', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_FnFLeaveEncashOnBasicPayOnly">{{ 'FnFLeaveEncashOnBasicPayOnly' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Fixed Days / Actual Logic -->
+                        <fieldset class="mb-5">
+                            <legend>{{ 'FixedDaysLogic' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_EnableBasicpayMoreThenFixedDays" type="checkbox" class="form-check-input" name="EnableBasicpayMoreThenFixedDays"
+                                            [ngModel]="record().enableBasicpayMoreThenFixedDays" (ngModelChange)="updateField('enableBasicpayMoreThenFixedDays', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_EnableBasicpayMoreThenFixedDays">{{ 'EnableBasicpayMoreThenFixedDays' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_EnableUnpaidDedSlabWise" type="checkbox" class="form-check-input" name="EnableUnpaidDedSlabWise"
+                                            [ngModel]="record().enableUnpaidDedSlabWise" (ngModelChange)="updateField('enableUnpaidDedSlabWise', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_EnableUnpaidDedSlabWise">{{ 'EnableUnpaidDedSlabWise' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_EnableFixedDaysLogicChange" type="checkbox" class="form-check-input" name="EnableFixedDaysLogicChange"
+                                            [ngModel]="record().enableFixedDaysLogicChange" (ngModelChange)="updateField('enableFixedDaysLogicChange', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_EnableFixedDaysLogicChange">{{ 'EnableFixedDaysLogicChange' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_ChangePartialPeriodFactoringInFixedDaysBilling" type="checkbox" class="form-check-input" name="ChangePartialPeriodFactoringInFixedDaysBilling"
+                                            [ngModel]="record().changePartialPeriodFactoringInFixedDaysBilling" (ngModelChange)="updateField('changePartialPeriodFactoringInFixedDaysBilling', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_ChangePartialPeriodFactoringInFixedDaysBilling">{{ 'ChangePartialPeriodFactoringInFixedDaysBilling' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_FixedToActualWhenLeaveOverlapOnMonthStart" type="checkbox" class="form-check-input" name="FixedToActualWhenLeaveOverlapOnMonthStart"
+                                            [ngModel]="record().fixedToActualWhenLeaveOverlapOnMonthStart" (ngModelChange)="updateField('fixedToActualWhenLeaveOverlapOnMonthStart', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_FixedToActualWhenLeaveOverlapOnMonthStart">{{ 'FixedToActualWhenLeaveOverlapOnMonthStart' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_FixedToActualWhenLeaveOverlapOnMonthEnd" type="checkbox" class="form-check-input" name="FixedToActualWhenLeaveOverlapOnMonthEnd"
+                                            [ngModel]="record().fixedToActualWhenLeaveOverlapOnMonthEnd" (ngModelChange)="updateField('fixedToActualWhenLeaveOverlapOnMonthEnd', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_FixedToActualWhenLeaveOverlapOnMonthEnd">{{ 'FixedToActualWhenLeaveOverlapOnMonthEnd' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_FixedToActualWhenUpaidLeaveFound" type="checkbox" class="form-check-input" name="FixedToActualWhenUpaidLeaveFound"
+                                            [ngModel]="record().fixedToActualWhenUpaidLeaveFound" (ngModelChange)="updateField('fixedToActualWhenUpaidLeaveFound', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_FixedToActualWhenUpaidLeaveFound">{{ 'FixedToActualWhenUpaidLeaveFound' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_FixedToActualWhenAbsentDayFound" type="checkbox" class="form-check-input" name="FixedToActualWhenAbsentDayFound"
+                                            [ngModel]="record().fixedToActualWhenAbsentDayFound" (ngModelChange)="updateField('fixedToActualWhenAbsentDayFound', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_FixedToActualWhenAbsentDayFound">{{ 'FixedToActualWhenAbsentDayFound' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="PayrollSettings_PartialPeriodCutoffDayInFixedDaysBilling">{{ 'PartialPeriodCutoffDayInFixedDaysBilling' | localize }}</label>
+                                    <input
+                                        id="PayrollSettings_PartialPeriodCutoffDayInFixedDaysBilling"
+                                        type="number"
+                                        class="form-control"
+                                        name="PartialPeriodCutoffDayInFixedDaysBilling"
+                                        [ngModel]="record().partialPeriodCutoffDayInFixedDaysBilling"
+                                        (ngModelChange)="updateNumberField('partialPeriodCutoffDayInFixedDaysBilling', $event)" />
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Overtime & Social Security -->
+                        <fieldset class="mb-5">
+                            <legend>{{ 'OvertimeAndSocialSecurity' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="PayrollSettings_OvertimeHoursBasis">{{ 'OvertimeHoursBasis' | localize }}</label>
+                                    <select
+                                        id="PayrollSettings_OvertimeHoursBasis"
+                                        class="form-select"
+                                        name="OvertimeHoursBasis"
+                                        [ngModel]="record().overtimeHoursBasis"
+                                        (ngModelChange)="updateField('overtimeHoursBasis', $event)">
+                                        @for (option of overtimeHoursBasisOptions; track option.value) {
+                                            <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="PayrollSettings_SocialSecurityRateRule">{{ 'SocialSecurityRateRule' | localize }}</label>
+                                    <select
+                                        id="PayrollSettings_SocialSecurityRateRule"
+                                        class="form-select"
+                                        name="SocialSecurityRateRule"
+                                        [ngModel]="record().socialSecurityRateRule"
+                                        (ngModelChange)="updateField('socialSecurityRateRule', $event)">
+                                        @for (option of socialSecurityRateRuleOptions; track option.value) {
+                                            <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_CarryAllowanceOnSalaryImport" type="checkbox" class="form-check-input" name="CarryAllowanceOnSalaryImport"
+                                            [ngModel]="record().carryAllowanceOnSalaryImport" (ngModelChange)="updateField('carryAllowanceOnSalaryImport', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_CarryAllowanceOnSalaryImport">{{ 'CarryAllowanceOnSalaryImport' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_AllowHealthReimburseBalCarryFwd" type="checkbox" class="form-check-input" name="AllowHealthReimburseBalCarryFwd"
+                                            [ngModel]="record().allowHealthReimburseBalCarryFwd" (ngModelChange)="updateField('allowHealthReimburseBalCarryFwd', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_AllowHealthReimburseBalCarryFwd">{{ 'AllowHealthReimburseBalCarryFwd' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Off-cycle & Bank -->
+                        <fieldset class="mb-5">
+                            <legend>{{ 'OffcycleAndBank' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="PayrollSettings_OffcycleBankFileCutoff">{{ 'OffcycleBankFileCutoff' | localize }}</label>
+                                    <input
+                                        id="PayrollSettings_OffcycleBankFileCutoff"
+                                        type="number"
+                                        class="form-control"
+                                        name="OffcycleBankFileCutoff"
+                                        [ngModel]="record().offcycleBankFileCutoff"
+                                        (ngModelChange)="updateNumberField('offcycleBankFileCutoff', $event)" />
+                                </div>
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="PayrollSettings_BankFileMinAmount">{{ 'BankFileMinAmount' | localize }}</label>
+                                    <input
+                                        id="PayrollSettings_BankFileMinAmount"
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        name="BankFileMinAmount"
+                                        [ngModel]="record().bankFileMinAmount"
+                                        (ngModelChange)="updateNumberField('bankFileMinAmount', $event)" />
+                                </div>
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="PayrollSettings_PickOffcyclePayment">{{ 'PickOffcyclePayment' | localize }}</label>
+                                    <select
+                                        id="PayrollSettings_PickOffcyclePayment"
+                                        class="form-select"
+                                        name="PickOffcyclePayment"
+                                        [ngModel]="record().pickOffcyclePayment"
+                                        (ngModelChange)="updateField('pickOffcyclePayment', $event)">
+                                        @for (option of pickOffcyclePaymentOptions; track option.value) {
+                                            <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_RunOffCycleForFutureDate" type="checkbox" class="form-check-input" name="RunOffCycleForFutureDate"
+                                            [ngModel]="record().runOffCycleForFutureDate" (ngModelChange)="updateField('runOffCycleForFutureDate', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_RunOffCycleForFutureDate">{{ 'RunOffCycleForFutureDate' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_AutoUpdateLoanRecoveryEndDate" type="checkbox" class="form-check-input" name="AutoUpdateLoanRecoveryEndDate"
+                                            [ngModel]="record().autoUpdateLoanRecoveryEndDate" (ngModelChange)="updateField('autoUpdateLoanRecoveryEndDate', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_AutoUpdateLoanRecoveryEndDate">{{ 'AutoUpdateLoanRecoveryEndDate' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_EnableEffectiveDateInRecPayment" type="checkbox" class="form-check-input" name="EnableEffectiveDateInRecPayment"
+                                            [ngModel]="record().enableEffectiveDateInRecPayment" (ngModelChange)="updateField('enableEffectiveDateInRecPayment', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_EnableEffectiveDateInRecPayment">{{ 'EnableEffectiveDateInRecPayment' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- FnF & Misc -->
+                        <fieldset>
+                            <legend>{{ 'FnFAndMisc' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_AllowDeleteBackdatedSalaryRegister" type="checkbox" class="form-check-input" name="AllowDeleteBackdatedSalaryRegister"
+                                            [ngModel]="record().allowDeleteBackdatedSalaryRegister" (ngModelChange)="updateField('allowDeleteBackdatedSalaryRegister', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_AllowDeleteBackdatedSalaryRegister">{{ 'AllowDeleteBackdatedSalaryRegister' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_AutoFillFnFCompensation" type="checkbox" class="form-check-input" name="AutoFillFnFCompensation"
+                                            [ngModel]="record().autoFillFnFCompensation" (ngModelChange)="updateField('autoFillFnFCompensation', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_AutoFillFnFCompensation">{{ 'AutoFillFnFCompensation' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_EditableAutoFillFnFCompensation" type="checkbox" class="form-check-input" name="EditableAutoFillFnFCompensation"
+                                            [ngModel]="record().editableAutoFillFnFCompensation" (ngModelChange)="updateField('editableAutoFillFnFCompensation', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_EditableAutoFillFnFCompensation">{{ 'EditableAutoFillFnFCompensation' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_ShowBillingTypeInPaymentScreen" type="checkbox" class="form-check-input" name="ShowBillingTypeInPaymentScreen"
+                                            [ngModel]="record().showBillingTypeInPaymentScreen" (ngModelChange)="updateField('showBillingTypeInPaymentScreen', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_ShowBillingTypeInPaymentScreen">{{ 'ShowBillingTypeInPaymentScreen' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input id="PayrollSettings_IncludeSalaryIncProvDiffInSalReg" type="checkbox" class="form-check-input" name="IncludeSalaryIncProvDiffInSalReg"
+                                            [ngModel]="record().includeSalaryIncProvDiffInSalReg" (ngModelChange)="updateField('includeSalaryIncProvDiffInSalReg', $event)" />
+                                        <label class="form-check-label" for="PayrollSettings_IncludeSalaryIncProvDiffInSalReg">{{ 'IncludeSalaryIncProvDiffInSalReg' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 mb-5">
+                                    <label class="form-label" for="PayrollSettings_IncludeSalaryIncProvDiffInSalRegEffDt">{{ 'IncludeSalaryIncProvDiffInSalRegEffDt' | localize }}</label>
+                                    <input
+                                        id="PayrollSettings_IncludeSalaryIncProvDiffInSalRegEffDt"
+                                        type="date"
+                                        class="form-control"
+                                        name="IncludeSalaryIncProvDiffInSalRegEffDt"
+                                        [ngModel]="record().includeSalaryIncProvDiffInSalRegEffDt?.toISODate()"
+                                        (ngModelChange)="updateDateField('includeSalaryIncProvDiffInSalRegEffDt', $event)" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

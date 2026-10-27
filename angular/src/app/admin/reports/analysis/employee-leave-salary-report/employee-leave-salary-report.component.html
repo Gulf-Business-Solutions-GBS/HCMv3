@@ -1,0 +1,117 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'EmployeeLeaveSalaryReport' | localize"
+        [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [(fromDate)]="fromDate"
+                    [(toDate)]="toDate"
+                    [(employeeCode)]="employeeCode"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'LeaveType' | localize }}</label>
+                        <p-select
+                            [options]="leaveTypeOptions()"
+                            [ngModel]="leaveTypeCode()"
+                            (ngModelChange)="leaveTypeCode.set($event)"
+                            [showClear]="true"
+                            optionLabel="label"
+                            optionValue="value"
+                            styleClass="w-100"
+                            [placeholder]="'LeaveType' | localize" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '220rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 120px" pSortableColumn="employeeCode">{{ 'Code' | localize }}</th>
+                                    <th style="min-width: 180px" pSortableColumn="employeeName">{{ 'Employee' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'AbsenceType' | localize }}</th>
+                                    <th style="min-width: 120px" pSortableColumn="startDate">{{ 'StartDate' | localize }}</th>
+                                    <th style="min-width: 120px" pSortableColumn="endDate">{{ 'EndDate' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'StartTime' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'EndTime' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'AbsenceHours' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'LeaveDaysInMonthStart' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'LeaveDaysInMonthEnd' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'CalendarDays' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'TotalLeaveDays' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'QuotaBalance' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'EmployeeSalaryInMonthStart' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'EmployeeSalaryInMiddleMonth' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'EmployeeSalaryInMonthEnd' | localize }}</th>
+                                    <th style="min-width: 170px">{{ 'LeaveSalaryInMonthStart' | localize }}</th>
+                                    <th style="min-width: 170px">{{ 'LeaveSalaryInMiddleMonth' | localize }}</th>
+                                    <th style="min-width: 170px">{{ 'LeaveSalaryInMonthEnd' | localize }}</th>
+                                    <th style="min-width: 170px">{{ 'TotalEmployeeSalary' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'TotalLeaveSalary' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.employeeCode }}" class="hide-overflown">{{ record.employeeCode }}</span>
+                                    </td>
+                                    <td style="min-width: 180px">{{ record.employeeName }}</td>
+                                    <td style="min-width: 140px">{{ record.absenceTypeName }}</td>
+                                    <td style="min-width: 120px">{{ record.startDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 120px">{{ record.endDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 100px">{{ record.startTime }}</td>
+                                    <td style="min-width: 100px">{{ record.endTime }}</td>
+                                    <td style="min-width: 120px">{{ record.absenceHours }}</td>
+                                    <td style="min-width: 160px">{{ record.leaveDaysInMonthStart }}</td>
+                                    <td style="min-width: 160px">{{ record.leaveDaysInMonthEnd }}</td>
+                                    <td style="min-width: 120px">{{ record.calendarDays }}</td>
+                                    <td style="min-width: 140px">{{ record.totalLeaveDays }}</td>
+                                    <td style="min-width: 120px">{{ record.quotaBalance }}</td>
+                                    <td style="min-width: 180px">{{ record.employeeSalaryInMonthStart }}</td>
+                                    <td style="min-width: 180px">{{ record.employeeSalaryInMiddleMonth }}</td>
+                                    <td style="min-width: 180px">{{ record.employeeSalaryInMonthEnd }}</td>
+                                    <td style="min-width: 170px">{{ record.leaveSalaryInMonthStart }}</td>
+                                    <td style="min-width: 170px">{{ record.leaveSalaryInMiddleMonth }}</td>
+                                    <td style="min-width: 170px">{{ record.leaveSalaryInMonthEnd }}</td>
+                                    <td style="min-width: 170px">{{ record.totalEmployeeSalary }}</td>
+                                    <td style="min-width: 160px">{{ record.totalLeaveSalary }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

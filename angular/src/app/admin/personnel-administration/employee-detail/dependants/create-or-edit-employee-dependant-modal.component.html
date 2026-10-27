@@ -1,0 +1,190 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeDependant_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="EmployeeDependant_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeDependant_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="EmployeeDependant_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeDependant_NameEn">{{ 'NameEn' | localize }}</label>
+                                <input
+                                    id="EmployeeDependant_NameEn"
+                                    #nameEnInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameEn"
+                                    [ngModel]="record().nameEn"
+                                    (ngModelChange)="updateField('nameEn', $event)"
+                                    required
+                                    maxlength="256" />
+                                <validation-messages [formCtrl]="nameEnInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeDependant_NameAr">{{ 'NameAr' | localize }}</label>
+                                <input
+                                    id="EmployeeDependant_NameAr"
+                                    #nameArInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameAr"
+                                    [ngModel]="record().nameAr"
+                                    (ngModelChange)="updateField('nameAr', $event)"
+                                    required
+                                    maxlength="256" />
+                                <validation-messages [formCtrl]="nameArInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="EmployeeDependant_DependantTypeId">{{ 'DependantTypeId' | localize }}</label>
+                                <select
+                                    id="EmployeeDependant_DependantTypeId"
+                                    #dependantTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="DependantTypeId"
+                                    [ngModel]="record().dependantTypeId"
+                                    (ngModelChange)="updateField('dependantTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (type of dependantTypes(); track type.id) {
+                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="dependantTypeIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="EmployeeDependant_BirthDate">{{ 'BirthDate' | localize }}</label>
+                                <input
+                                    id="EmployeeDependant_BirthDate"
+                                    #birthDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="BirthDate"
+                                    [ngModel]="record().birthDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('birthDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="birthDateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="EmployeeDependant_TicketTypeId">{{ 'TicketTypeId' | localize }}</label>
+                                <select
+                                    id="EmployeeDependant_TicketTypeId"
+                                    #ticketTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="TicketTypeId"
+                                    [ngModel]="record().ticketTypeId"
+                                    (ngModelChange)="updateField('ticketTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (type of ticketTypes(); track type.id) {
+                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="ticketTypeIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <div class="form-check mt-8">
+                                    <input
+                                        id="EmployeeDependant_SpecialNeed"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="SpecialNeed"
+                                        [ngModel]="record().specialNeed"
+                                        (ngModelChange)="updateField('specialNeed', $event)" />
+                                    <label class="form-check-label" for="EmployeeDependant_SpecialNeed">{{ 'SpecialNeed' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <div class="form-check mt-8">
+                                    <input
+                                        id="EmployeeDependant_IncludeInSocialSecurity"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="IncludeInSocialSecurity"
+                                        [ngModel]="record().includeInSocialSecurity"
+                                        (ngModelChange)="updateField('includeInSocialSecurity', $event)" />
+                                    <label class="form-check-label" for="EmployeeDependant_IncludeInSocialSecurity">{{ 'IncludeInSocialSecurity' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <div class="form-check mt-8">
+                                    <input
+                                        id="EmployeeDependant_IncludeInHealthInsurance"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="IncludeInHealthInsurance"
+                                        [ngModel]="record().includeInHealthInsurance"
+                                        (ngModelChange)="updateField('includeInHealthInsurance', $event)" />
+                                    <label class="form-check-label" for="EmployeeDependant_IncludeInHealthInsurance">{{ 'IncludeInHealthInsurance' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

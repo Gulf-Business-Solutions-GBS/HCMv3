@@ -1,0 +1,299 @@
+{
+  "helpId": "tm.time-event.edit",
+  "lang": "ar",
+  "title": "أحداث الوقت — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.TimeEvent",
+  "overviewHtml": "<p>بصمة واحدة: تسجيل موظف دخولاً أو خروجاً، أو خروجاً إلى الاستراحة وعودة منها، في تاريخ ووقت. وتصل البصمات من أجهزة الحضور وواجهة الحضور البرمجية والخدمة الذاتية والجوال، أو تُدخل يدوياً هنا، ويقرؤها محرك الوقت لاحتساب حضور كل يوم.</p>",
+  "aliasIndex": {
+    "loc:Employee": "TimeEvent.EmployeeId",
+    "dom:TimeEvent_EmployeeId": "TimeEvent.EmployeeId",
+    "loc:Pin": "TimeEvent.PIN",
+    "dom:TimeEvent_Pin": "TimeEvent.PIN",
+    "loc:TransType": "TimeEvent.TransTypeId",
+    "dom:TimeEvent_TransTypeId": "TimeEvent.TransTypeId",
+    "loc:ActualTransType": "TimeEvent.ActualTransTypeId",
+    "dom:TimeEvent_ActualTransTypeId": "TimeEvent.ActualTransTypeId",
+    "loc:TransDate": "TimeEvent.TransDate",
+    "dom:TimeEvent_TransDate": "TimeEvent.TransDate",
+    "loc:TransTime": "TimeEvent.TransTime",
+    "dom:TimeEvent_TransTime": "TimeEvent.TransTime",
+    "loc:TransSource": "TimeEvent.TransSource",
+    "dom:TimeEvent_TransSource": "TimeEvent.TransSource",
+    "loc:RecordSource": "TimeEvent.RecordSource",
+    "dom:TimeEvent_RecordSource": "TimeEvent.RecordSource",
+    "loc:AccessUnit": "TimeEvent.AccessUnitId",
+    "dom:TimeEvent_AccessUnitId": "TimeEvent.AccessUnitId",
+    "loc:WorkLocation": "TimeEvent.WorkLocationId",
+    "dom:TimeEvent_WorkLocationId": "TimeEvent.WorkLocationId",
+    "loc:IpAddress": "TimeEvent.IPAddress",
+    "dom:TimeEvent_IpAddress": "TimeEvent.IPAddress",
+    "loc:DeviceAgentString": "TimeEvent.DeviceAgentString",
+    "dom:TimeEvent_DeviceAgentString": "TimeEvent.DeviceAgentString",
+    "loc:GeoSelfiePath": "TimeEvent.GeoSelfiePath",
+    "dom:TimeEvent_GeoSelfiePath": "TimeEvent.GeoSelfiePath",
+    "loc:Latitude": "TimeEvent.Latitude",
+    "dom:TimeEvent_Latitude": "TimeEvent.Latitude",
+    "loc:Longitude": "TimeEvent.Longitude",
+    "dom:TimeEvent_Longitude": "TimeEvent.Longitude",
+    "loc:RangeDifference": "TimeEvent.RangeDifference",
+    "dom:TimeEvent_RangeDifference": "TimeEvent.RangeDifference",
+    "loc:Temperature": "TimeEvent.Temperature",
+    "dom:TimeEvent_Temperature": "TimeEvent.Temperature",
+    "loc:PunchInRange": "TimeEvent.PunchInRange",
+    "dom:TimeEvent_PunchInRange": "TimeEvent.PunchInRange"
+  },
+  "fields": [
+    {
+      "id": "TimeEvent.EmployeeId",
+      "label": "Employee",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:Employee",
+        "dom:TimeEvent_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف صاحب البصمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.PIN",
+      "label": "Pin",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:Pin",
+        "dom:TimeEvent_Pin"
+      ],
+      "rules": "اختياري. الحد الأقصى 50 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الموظف على جهاز الحضور.</p><p><strong>مثال.</strong> <code>10457</code></p><p><strong>لماذا يهم.</strong> تستخدمه عمليات الاستيراد من الأجهزة، مع التاريخ والوقت، لتجاوز البصمات المستوردة مسبقاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.TransTypeId",
+      "label": "TransType",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:TransType",
+        "dom:TimeEvent_TransTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الإجراءات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع البصمة: دخول أو خروج أو خروج للاستراحة أو عودة منها.</p><p><strong>مثال.</strong> دخول</p><p><strong>لماذا يهم.</strong> يبحث محرك الوقت عن كل نوع من البصمات على حدة، فالبصمة ذات النوع الخاطئ لا تُستخدم لليوم أبداً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.ActualTransTypeId",
+      "label": "ActualTransType",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:ActualTransType",
+        "dom:TimeEvent_ActualTransTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الإجراءات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع البصمة الذي أبلغ عنه الجهاز أصلاً، إن تغيّر.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.TransDate",
+      "label": "TransDate",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:TransDate",
+        "dom:TimeEvent_TransDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ البصمة.</p><p><strong>مثال.</strong> <code>2026-04-14</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.TransTime",
+      "label": "TransTime",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:TransTime",
+        "dom:TimeEvent_TransTime"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت البصمة.</p><p><strong>مثال.</strong> <code>07:42</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.TransSource",
+      "label": "TransSource",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:TransSource",
+        "dom:TimeEvent_TransSource"
+      ],
+      "rules": "إلزامي. إحدى القيم: Machine، Manual، System، ESS، MobileAPI، ExternalAPI.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مصدر البصمة: جهاز، أو إدخال يدوي، أو النظام، أو الخدمة الذاتية، أو الجوال، أو واجهة برمجية خارجية.</p><p><strong>مثال.</strong> جهاز</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.RecordSource",
+      "label": "RecordSource",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:RecordSource",
+        "dom:TimeEvent_RecordSource"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم السجل الذي أعطاه جهاز الحضور أو الاستيراد لهذا التسجيل. يحدده النظام.</p><p><strong>مثال.</strong> 10458723</p><p><strong>لماذا يهم.</strong> يُستخدم لتمييز السجلات المستوردة سابقاً حتى لا يُستورد التسجيل مرتين. ويجب أن يكون للتسجيل الذي مصدره «جهاز» رقم، وأن يكون فريداً بين تسجيلات الأجهزة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.AccessUnitId",
+      "label": "AccessUnit",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:AccessUnit",
+        "dom:TimeEvent_AccessUnitId"
+      ],
+      "rules": "اختياري. يُختار من قائمة وحدات الوصول.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجهاز الذي سُجّلت عليه البصمة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.WorkLocationId",
+      "label": "WorkLocation",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:WorkLocation",
+        "dom:TimeEvent_WorkLocationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أماكن العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موقع العمل للبصمة.</p><p><strong>مثال.</strong> المكتب الرئيسي</p><p><strong>لماذا يهم.</strong> يستخدمه تقرير ملخص ساعات العمل اليومية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.IPAddress",
+      "label": "IpAddress",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:IpAddress",
+        "dom:TimeEvent_IpAddress"
+      ],
+      "rules": "اختياري. الحد الأقصى 50 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنوان الجهاز الذي أرسل البصمة.</p><p><strong>مثال.</strong> <code>10.0.4.21</code></p><p><strong>لماذا يهم.</strong> تستخدمه عمليات الاستيراد من الأجهزة لإيجاد وحدة الدخول أو إنشائها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.DeviceAgentString",
+      "label": "DeviceAgentString",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:DeviceAgentString",
+        "dom:TimeEvent_DeviceAgentString"
+      ],
+      "rules": "اختياري. الحد الأقصى 1000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المتصفح أو الجهاز الذي أرسل تسجيل الحضور عبر الخدمة الذاتية، كما عرّف نفسه. يحدده النظام.</p><p><strong>مثال.</strong> Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) ...</p><p><strong>لماذا يهم.</strong> للتحقق من مصدر التسجيل. ولا يقرؤه شيء آخر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.GeoSelfiePath",
+      "label": "GeoSelfiePath",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:GeoSelfiePath",
+        "dom:TimeEvent_GeoSelfiePath"
+      ],
+      "rules": "اختياري. الحد الأقصى 1000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان حفظ الصورة الذاتية الملتقطة مع بصمة الجوال.</p><p><strong>لماذا يهم.</strong> تظهر في تقرير الحضور المتأخر والمبكر مع الصور.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.Latitude",
+      "label": "Latitude",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:Latitude",
+        "dom:TimeEvent_Latitude"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> خط العرض لمكان بصمة الجوال.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.Longitude",
+      "label": "Longitude",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:Longitude",
+        "dom:TimeEvent_Longitude"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> خط الطول لمكان بصمة الجوال.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.RangeDifference",
+      "label": "RangeDifference",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:RangeDifference",
+        "dom:TimeEvent_RangeDifference"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بُعد بصمة الجوال عن موقع العمل.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.Temperature",
+      "label": "Temperature",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:Temperature",
+        "dom:TimeEvent_Temperature"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> درجة حرارة الجسم المسجلة عند البصمة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.PunchInRange",
+      "label": "PunchInRange",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:PunchInRange",
+        "dom:TimeEvent_PunchInRange"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت بصمة الجوال ضمن نطاق موقع العمل.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

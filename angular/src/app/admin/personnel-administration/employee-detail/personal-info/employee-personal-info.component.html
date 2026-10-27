@@ -1,0 +1,235 @@
+<div [busyIf]="isLoading()" [helpPage]="'pa.employee.personal-info'">
+    @if (profile(); as p) {
+        <div class="epi-actions">
+            <!-- Outside the Edit permission check on purpose: understanding what a field means is
+                 not an editing privilege. Labelled, like Edit beside it -- a bare glyph in a square
+                 read as unexplained chrome. -->
+            <button
+                class="btn btn-light-primary btn-sm me-2"
+                type="button"
+                (click)="help.openPage()"
+                [attr.title]="l('HelpKeyHint')">
+                <i class="fa fa-question-circle"></i> {{ 'Help' | localize }}
+            </button>
+            @if ('Pages.PersonnelAdministration.Employees.Edit' | permission) {
+                <!-- The point of the whole section: changing a name no longer costs you your place on
+                     the record. Opens the existing form rather than a second one. -->
+                <button class="btn btn-primary btn-sm" type="button" (click)="edit()">
+                    <i class="fa fa-edit"></i> {{ 'Edit' | localize }}
+                </button>
+            }
+        </div>
+
+        <div class="epi-cards">
+            <!-- Identity -->
+            <section class="epi-card">
+                <h4 class="epi-card-title">{{ 'EmpCard_Identity' | localize }}</h4>
+                <!-- The photo comes with the edit DTO as a data URL, the same source the edit form shows;
+                     the initial stands in when none is stored. -->
+                <div class="epi-photo">
+                    @if (photo()) {
+                        <img [src]="photo()" [alt]="'Photo' | localize" />
+                    } @else {
+                        <span class="epi-photo-initial" aria-hidden="true">
+                            {{ p.fullNameEn ? p.fullNameEn.charAt(0) : '?' }}
+                        </span>
+                    }
+                </div>
+                <dl class="epi-fields">
+                    <dt data-help-loc="Code">{{ 'Code' | localize }}</dt>
+                    <dd>{{ p.code }}</dd>
+
+                    <dt data-help-loc="FullNameEn">{{ 'FullNameEn' | localize }}</dt>
+                    <dd>{{ p.fullNameEn }}</dd>
+
+                    <dt data-help-loc="FirstNameEn">{{ 'FirstNameEn' | localize }}</dt>
+                    <dd>{{ p.firstNameEn }}</dd>
+
+                    <dt data-help-loc="SecondNameEn">{{ 'SecondNameEn' | localize }}</dt>
+                    <dd>{{ p.secondNameEn }}</dd>
+
+                    <dt data-help-loc="ThirdNameEn">{{ 'ThirdNameEn' | localize }}</dt>
+                    <dd>{{ p.thirdNameEn }}</dd>
+
+                    <dt data-help-loc="LastNameEn">{{ 'LastNameEn' | localize }}</dt>
+                    <dd>{{ p.lastNameEn }}</dd>
+
+                    <dt data-help-loc="FullNameAr">{{ 'FullNameAr' | localize }}</dt>
+                    <dd dir="rtl">{{ p.fullNameAr }}</dd>
+
+                    <dt data-help-loc="FirstNameAr">{{ 'FirstNameAr' | localize }}</dt>
+                    <dd dir="rtl">{{ p.firstNameAr }}</dd>
+
+                    <dt data-help-loc="SecondNameAr">{{ 'SecondNameAr' | localize }}</dt>
+                    <dd dir="rtl">{{ p.secondNameAr }}</dd>
+
+                    <dt data-help-loc="ThirdNameAr">{{ 'ThirdNameAr' | localize }}</dt>
+                    <dd dir="rtl">{{ p.thirdNameAr }}</dd>
+
+                    <dt data-help-loc="LastNameAr">{{ 'LastNameAr' | localize }}</dt>
+                    <dd dir="rtl">{{ p.lastNameAr }}</dd>
+
+                    <dt data-help-loc="Title">{{ 'Title' | localize }}</dt>
+                    <dd>{{ p.titleName }}</dd>
+
+                    <dt data-help-loc="Status">{{ 'Status' | localize }}</dt>
+                    <dd>{{ statusText() }}</dd>
+
+                    <dt data-help-loc="EmploymentType">{{ 'EmploymentType' | localize }}</dt>
+                    <dd>{{ employmentTypeText() }}</dd>
+                </dl>
+            </section>
+
+            <!-- Personal -->
+            <section class="epi-card">
+                <h4 class="epi-card-title">{{ 'EmpCard_Personal' | localize }}</h4>
+                <dl class="epi-fields">
+                    <dt data-help-loc="Gender">{{ 'Gender' | localize }}</dt>
+                    <dd>{{ genderText() }}</dd>
+
+                    <dt data-help-loc="BirthDate">{{ 'BirthDate' | localize }}</dt>
+                    <dd>{{ p.birthDate ? (p.birthDate.toJSDate() | date: 'dd/MM/yyyy') : '' }}</dd>
+
+                    <dt data-help-loc="BirthPlace">{{ 'BirthPlace' | localize }}</dt>
+                    <dd>{{ p.birthPlaceName }}</dd>
+
+                    <dt data-help-loc="Nationality">{{ 'Nationality' | localize }}</dt>
+                    <dd>{{ p.nationalityName }}</dd>
+
+                    <dt data-help-loc="Religion">{{ 'Religion' | localize }}</dt>
+                    <dd>{{ p.religionName }}</dd>
+
+                    <dt data-help-loc="MaritalStatus">{{ 'MaritalStatus' | localize }}</dt>
+                    <dd>{{ p.maritalStatusName }}</dd>
+
+                    <dt data-help-loc="FatherNameEn">{{ 'FatherNameEn' | localize }}</dt>
+                    <dd>{{ p.fatherNameEn }}</dd>
+
+                    <dt data-help-loc="FatherNameAr">{{ 'FatherNameAr' | localize }}</dt>
+                    <dd dir="rtl">{{ details()?.fatherNameAr }}</dd>
+
+                    <dt data-help-loc="MotherNameEn">{{ 'MotherNameEn' | localize }}</dt>
+                    <dd>{{ p.motherNameEn }}</dd>
+
+                    <dt data-help-loc="MotherNameAr">{{ 'MotherNameAr' | localize }}</dt>
+                    <dd dir="rtl">{{ details()?.motherNameAr }}</dd>
+
+                    <dt data-help-loc="Qualification">{{ 'Qualification' | localize }}</dt>
+                    <dd>{{ p.qualificationName }}</dd>
+
+                    <dt data-help-loc="BloodGroup">{{ 'BloodGroup' | localize }}</dt>
+                    <dd>{{ p.bloodGroup }}</dd>
+
+                    <dt data-help-loc="CivilID">{{ 'CivilID' | localize }}</dt>
+                    <dd>{{ idNumber(p.civilID) }}</dd>
+
+                    <dt data-help-loc="PACINumber">{{ 'PACINumber' | localize }}</dt>
+                    <dd>{{ p.paciNumber }}</dd>
+                </dl>
+            </section>
+
+            <!-- Employment -->
+            <section class="epi-card">
+                <h4 class="epi-card-title">{{ 'EmpCard_Employment' | localize }}</h4>
+                <dl class="epi-fields">
+                    <dt data-help-loc="JoiningDate">{{ 'JoiningDate' | localize }}</dt>
+                    <dd>{{ p.joiningDate ? (p.joiningDate.toJSDate() | date: 'dd/MM/yyyy') : '' }}</dd>
+
+                    <dt data-help-loc="ProbationDays">{{ 'ProbationDays' | localize }}</dt>
+                    <dd>{{ p.probationDays }}</dd>
+
+                    <dt data-help-loc="ProbationEndDate">{{ 'ProbationEndDate' | localize }}</dt>
+                    <dd>
+                        {{ p.probationEndDate ? (p.probationEndDate.toJSDate() | date: 'dd/MM/yyyy') : '' }}
+                    </dd>
+
+                    <dt data-help-loc="RecruitmentType">{{ 'RecruitmentType' | localize }}</dt>
+                    <dd>{{ p.recruitmentTypeName }}</dd>
+
+                    <dt data-help-loc="PreviousEmpCode">{{ 'PreviousEmpCode' | localize }}</dt>
+                    <dd>
+                        @if (p.previousEmployeeId) {
+                            <a [routerLink]="['/app/admin/employees', p.previousEmployeeId]">{{ p.previousEmpCode }}</a>
+                        } @else {
+                            {{ p.previousEmpCode }}
+                        }
+                    </dd>
+
+                    <dt data-help-loc="ReferenceCode">{{ 'ReferenceCode' | localize }}</dt>
+                    <dd>{{ p.referenceCode }}</dd>
+                </dl>
+            </section>
+
+            <!-- Contact -->
+            <section class="epi-card">
+                <h4 class="epi-card-title">{{ 'EmpCard_Contact' | localize }}</h4>
+                <dl class="epi-fields">
+                    <dt data-help-loc="Email">{{ 'Email' | localize }}</dt>
+                    <dd>{{ p.email }}</dd>
+
+                    <dt data-help-loc="AlternateEmail">{{ 'AlternateEmail' | localize }}</dt>
+                    <dd>{{ p.alternateEmail }}</dd>
+
+                    <dt data-help-loc="Mobile">{{ 'Mobile' | localize }}</dt>
+                    <dd>{{ phone(p.mobile) }}</dd>
+
+                    <dt data-help-loc="Telephone">{{ 'Telephone' | localize }}</dt>
+                    <dd>{{ phone(p.telephone) }}</dd>
+
+                    <dt data-help-loc="BusinessLandline">{{ 'BusinessLandline' | localize }}</dt>
+                    <dd>{{ p.businessLandline }}</dd>
+
+                    <dt data-help-loc="BusinessExtension">{{ 'BusinessExtension' | localize }}</dt>
+                    <dd>{{ p.businessExtension }}</dd>
+                </dl>
+            </section>
+
+            <!-- Address -->
+            <section class="epi-card">
+                <h4 class="epi-card-title">{{ 'EmpCard_Address' | localize }}</h4>
+                <dl class="epi-fields">
+                    <dt data-help-loc="CurrentAddress">{{ 'CurrentAddress' | localize }}</dt>
+                    <dd>{{ p.currentAddress }}</dd>
+
+                    <dt data-help-loc="PermanentAddress">{{ 'PermanentAddress' | localize }}</dt>
+                    <dd>{{ p.permanentAddress }}</dd>
+
+                    <dt data-help-loc="City">{{ 'City' | localize }}</dt>
+                    <dd>{{ p.city }}</dd>
+
+                    <dt data-help-loc="Governorate">{{ 'Governorate' | localize }}</dt>
+                    <dd>{{ p.governorateName }}</dd>
+
+                    <dt data-help-loc="Country">{{ 'Country' | localize }}</dt>
+                    <dd>{{ p.countryName }}</dd>
+
+                    <dt data-help-loc="ZipCode">{{ 'ZipCode' | localize }}</dt>
+                    <dd>{{ p.zipCode }}</dd>
+                </dl>
+            </section>
+
+            <!-- Emergency -->
+            <section class="epi-card">
+                <h4 class="epi-card-title">{{ 'EmpCard_Emergency' | localize }}</h4>
+                <dl class="epi-fields">
+                    <dt data-help-loc="EmergencyContact">{{ 'EmergencyContact' | localize }}</dt>
+                    <dd>{{ p.emergencyContact }}</dd>
+
+                    <dt data-help-loc="EmergencyRelation">{{ 'EmergencyRelation' | localize }}</dt>
+                    <dd>{{ p.emergencyRelation }}</dd>
+
+                    <dt data-help-loc="EmergencyNumber">{{ 'EmergencyNumber' | localize }}</dt>
+                    <dd>{{ p.emergencyNumber }}</dd>
+
+                    <dt data-help-loc="EmergencyContactAddress">{{ 'EmergencyContactAddress' | localize }}</dt>
+                    <dd>{{ p.emergencyContactAddress }}</dd>
+
+                    <dt data-help-loc="CriticalIllness">{{ 'CriticalIllness' | localize }}</dt>
+                    <dd>{{ p.criticalIllness }}</dd>
+                </dl>
+            </section>
+        </div>
+    }
+</div>
+
+<createOrEditEmployeeModal #createOrEditModal (modalSave)="onSaved()" />

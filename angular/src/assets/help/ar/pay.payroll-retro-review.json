@@ -1,0 +1,94 @@
+{
+  "helpId": "pay.payroll-retro-review",
+  "lang": "ar",
+  "title": "تواريخ الأثر الرجعي للرواتب",
+  "entity": null,
+  "overviewHtml": "<p>يُفتح بزر <strong>عرض الأثر الرجعي (n)</strong> في محرك الرواتب. ويعرض موظفي منطقة الرواتب مع التاريخ الذي سيعيد منه تشغيل الرواتب التالي احتساب أجورهم (الأثر الرجعي)، لتتحقق منه قبل التشغيل وتغيّره أو تحذفه.</p><p>الموظفون هم الموظفون النشطون في المنطقة، ومعهم غير النشطين الذين لم تُلغَ حالة فصلهم ولم تعقبها إعادة التحاق، ولم تُنجز تسويتهم النهائية بعد أو تقع في الفترة الحالية. والفترة هي فترة سجل ضبط المنطقة (وإن لم يوجد فالشهر الحالي).</p><p>يمكن لكل من يملك شاشة محرك الرواتب الاطلاع، أما تغيير التواريخ فيحتاج صلاحية تشغيل محرك الرواتب. وتبقى التغييرات داخل النافذة إلى أن تضغط <strong>حفظ</strong>، الذي يطلب التأكيد ثم يحفظها كلها معاً أو لا يحفظ شيئاً. ويُكتب كل تغيير محفوظ في سجل أسباب الأثر الرجعي مع سببه. وكما في النظام السابق، لا يُفحص التاريخ مقابل الفترة أو تاريخ الالتحاق أو أبكر تاريخ محاسبي للأثر الرجعي، فتحقق منه بنفسك.</p>",
+  "aliasIndex": {
+    "dom:RetroEditorDate": "pay.payroll-retro-review.retro-date",
+    "dom:RetroEditorReason": "pay.payroll-retro-review.reason"
+  },
+  "fields": [
+    {
+      "id": "pay.payroll-retro-review.tabs",
+      "label": "Status",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> <strong>أثر رجعي</strong> إذا كان تاريخ بدء الأثر الرجعي للموظف قبل بداية الفترة الحالية، وإلا <strong>بدون أثر رجعي</strong>. وتعرض علامات التبويب <strong>الكل</strong> و<strong>أثر رجعي</strong> و<strong>بدون أثر رجعي</strong> و<strong>معدّل</strong> كل مجموعة مع عددها، وتضم <strong>معدّل</strong> الأسطر التي عدّلتها ولم تحفظها بعد. ويجد حقل البحث الموظفين بالرقم أو الاسم.</p><p><strong>مثال.</strong> \"أثر رجعي (4)\": أربعة موظفين سيُعاد احتسابهم عن أشهر سابقة.</p><p><strong>لماذا يهم.</strong> الرقم الظاهر على <strong>عرض الأثر الرجعي (n)</strong> هو عدد <strong>أثر رجعي</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.payroll-retro-review.from-date",
+      "label": "PayrollRetroFromDate",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي يعيد منه التشغيل التالي احتساب الموظف، ويُضبط حين تتغير بيانات بتاريخ سريان سابق. ويكون فارغاً إذا لم يُضبط.</p><p><strong>مثال.</strong> 01/02/2026، بعد زيادة راتب بأثر رجعي من فبراير.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.payroll-retro-review.months",
+      "label": "PayrollRetroMonths",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأشهر التي يعود إليها إعادة الاحتساب: الأشهر من تاريخ بدء الأثر الرجعي حتى تاريخ رواتب الفترة. وتكون 0 للموظف بدون أثر رجعي.</p><p><strong>مثال.</strong> 2 (فبراير ومارس، يُعاد احتسابهما في تشغيل أبريل)</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.payroll-retro-review.update-selected",
+      "label": "PayrollRetroUpdateSelected",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يفتح لوحة التحديث لكل الموظفين المحددين، لمنحهم جميعاً تاريخ أثر رجعي وسبباً واحداً. ويفعل القلم في السطر الشيء نفسه لذلك الموظف وحده، بدءاً من التاريخ المعروض.</p><p><strong>مثال.</strong> حدد خمسة موظفين واضبط لهم جميعاً 01/03/2026.</p><p><strong>لماذا يهم.</strong> <strong>تطبيق على المحدد</strong> (أو <strong>تطبيق</strong> لسطر واحد) يغيّر الأسطر داخل النافذة فقط وينقلها إلى <strong>معدّل</strong>، ولا يُحفظ شيء بعد. وإعادة التاريخ إلى القيمة المحفوظة لا تُعد تغييراً. ويعدّ <strong>إجمالي المحدد</strong> في الأسفل الأسطر المحددة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.payroll-retro-review.retro-date",
+      "label": "RetroDate",
+      "section": null,
+      "aliases": [
+        "dom:RetroEditorDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ بدء الأثر الرجعي الجديد.</p><p><strong>مثال.</strong> 01/03/2026</p><p><strong>لماذا يهم.</strong> امسحه لإزالة الأثر الرجعي عن الموظف، فلا يعود التشغيل التالي إلى الوراء إطلاقاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.payroll-retro-review.reason",
+      "label": "Reason",
+      "section": null,
+      "aliases": [
+        "dom:RetroEditorReason"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سبب تغيير تاريخ الأثر الرجعي، بحد أقصى 500 حرف.</p><p><strong>مثال.</strong> تصحيح بدل السكن المعتمد من الموارد البشرية بتاريخ 10/04/2026.</p><p><strong>لماذا يهم.</strong> إلزامي: فلا يعمل التطبيق ولا الحفظ بدونه. ويُحفظ في سجل أسباب الأثر الرجعي، ويُعرض آخر سبب في القائمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.payroll-retro-review.save",
+      "label": "Save",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يحفظ كل التغييرات الموجودة في <strong>معدّل</strong>، بعد تأكيد يذكر عدد الموظفين المتأثرين.</p><p><strong>مثال.</strong> \"سيتم حفظ تغييرات تاريخ الأثر الرجعي لـ 5 موظف/موظفين.\"</p><p><strong>لماذا يهم.</strong> لا يُكتب إلا ما اختلف تاريخه فعلاً عن المحفوظ؛ وإن لم يوجد شيء رُفض الحفظ برسالة \"لا توجد تغييرات على تواريخ الأثر الرجعي.\" ثم يُحدَّث العدد الظاهر على <strong>عرض الأثر الرجعي (n)</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

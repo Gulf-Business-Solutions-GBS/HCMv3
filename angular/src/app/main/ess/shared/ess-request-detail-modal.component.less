@@ -1,0 +1,123 @@
+// The approval dialog. Everything here is layout; colour comes from the theme palette so the dialog follows
+// light and dark like the rest of the shell.
+
+.ess-detail__question {
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+.ess-detail__subtitle {
+    margin-bottom: 1.5rem;
+}
+
+// The requester's name in that line, as a link. A button rather than an anchor because it opens a card
+// rather than going anywhere, stripped back to look like the prose it sits in, and coloured only on hover so
+// the line reads as a sentence rather than as a row of links. The same treatment the names in the
+// conversation and the approvers list get, on purpose: one person, named and reached the same way wherever
+// they appear.
+.ess-detail__person-link {
+    padding: 0;
+    text-align: start;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+        color: var(--bs-primary);
+        text-decoration: underline;
+    }
+}
+
+// A two-column label/value grid rather than four narrow columns. The old card used col-xl-3, which gave a
+// date eight characters of width and wrapped every reason mid-word; these are read, not scanned.
+.ess-detail__fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem 2rem;
+}
+
+@media (max-width: 767.98px) {
+    .ess-detail__fields {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.ess-detail__field-label {
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--bs-secondary-color, var(--bs-gray-600));
+}
+
+.ess-detail__field-value {
+    font-weight: 600;
+
+    // A reason or an address can be long; wrapping beats a horizontal scrollbar inside a dialog.
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.ess-detail__decision-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.ess-detail__person-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.35rem 0;
+    text-align: start;
+}
+
+// Near the full viewport, because the approver is shown the requester's REAL form and that form only
+// lays out correctly at the width the create screen gives it. Bootstrap's own modal-xl caps at 1140px;
+// once the conversation column takes its share the form was left around 900px and every field clipped
+// its own value. Capped so it does not sprawl on an ultra-wide monitor.
+.ess-detail__dialog {
+    max-width: min(1800px, 96vw);
+    margin-inline: auto;
+}
+
+// The thread sits beside the request rather than beneath it, so it has to be able to scroll on its own:
+// a long conversation must not push the decision buttons off the bottom of the dialog.
+// No height cap and no scrollbar of its own any more: the rail scrolls as one, so a card inside it with a
+// second scrollbar meant two nested scrolling regions and a thread that would not scroll the panel under
+// it into view.
+.ess-detail__conversation .card-body {
+    padding-bottom: 0.75rem;
+}
+
+// The right-hand column: stays put, scrolls on its own.
+//
+// The request and its history are read together -- that is why this is a column beside the form rather
+// than a section under it. But a twenty-field form is taller than this rail, and a rail that simply flowed
+// with the page scrolled out of view exactly when the fields it explains came into it. Sticky, with its
+// own overflow, makes the form's length stop mattering.
+//
+// Only from lg up. Below that the grid has already stacked the columns, and a sticky element in a
+// single-column layout just covers the thing underneath it.
+@media (min-width: 992px) {
+    .ess-detail__rail {
+        position: sticky;
+        top: 0;
+        align-self: flex-start;
+
+        // Its own scrollbar rather than the dialog's, so the form and the rail scroll independently.
+        max-height: calc(100vh - 12rem);
+        overflow-y: auto;
+    }
+}
+
+
+// The title is one run of text -- "Exit Permit (17)" -- and carries no pill.
+//
+// There WAS a status pill here, and lining its words up with the title's cost several attempts and never
+// quite worked: flex align-items lines up boxes, not words, and the theme gives .badge a line-height and
+// padding of its own, so each correction was wrong by a pixel in the other direction. Rather than keep
+// paying for it the status was dropped, which loses nothing: the newest entry in the conversation says what
+// just happened, and which buttons the approver is offered says what is wanted of them now. The request
+// number took its place, because that is the part of a heading one person quotes to another.

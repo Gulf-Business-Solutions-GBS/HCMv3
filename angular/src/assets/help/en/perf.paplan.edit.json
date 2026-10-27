@@ -1,0 +1,123 @@
+{
+  "helpId": "perf.paplan.edit",
+  "lang": "en",
+  "title": "PA Plans — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.PAPlan",
+  "overviewHtml": "<p>One KPI line of the plan on a PA Form: the KPI, its weight and target, the ratings from the appraisee and the appraiser, and their comments. Part of the older period-based appraisal form (PA Form).</p><p>Stored for the appraisal record; no score is worked out from these lines at present. Each KPI can appear once per form.</p>",
+  "aliasIndex": {
+    "loc:KpiInfo": "PAPlan.KpiInfoId",
+    "dom:PAPlan_KpiInfoId": "PAPlan.KpiInfoId",
+    "loc:Weight": "PAPlan.Weight",
+    "dom:PAPlan_Weight": "PAPlan.Weight",
+    "loc:Target": "PAPlan.Target",
+    "dom:PAPlan_Target": "PAPlan.Target",
+    "loc:AppraiseeRating": "PAPlan.AppraiseeRatingId",
+    "dom:PAPlan_AppraiseeRatingId": "PAPlan.AppraiseeRatingId",
+    "loc:Rating": "PAPlan.RatingId",
+    "dom:PAPlan_RatingId": "PAPlan.RatingId",
+    "loc:AppraiseeComments": "PAPlan.AppraiseeComments",
+    "dom:PAPlan_AppraiseeComments": "PAPlan.AppraiseeComments",
+    "loc:AppraiserComments": "PAPlan.AppraiserComments",
+    "dom:PAPlan_AppraiserComments": "PAPlan.AppraiserComments"
+  },
+  "fields": [
+    {
+      "id": "PAPlan.KpiInfoId",
+      "label": "KpiInfo",
+      "section": "PAPlans",
+      "aliases": [
+        "loc:KpiInfo",
+        "dom:PAPlan_KpiInfoId"
+      ],
+      "rules": "Optional. Chosen from KPI master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI.</p><p><strong>Example.</strong> Customer satisfaction</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPlan.Weight",
+      "label": "Weight",
+      "section": "PAPlans",
+      "aliases": [
+        "loc:Weight",
+        "dom:PAPlan_Weight"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI's share of the appraisal, as a percentage.</p><p><strong>Example.</strong> <code>25</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPlan.Target",
+      "label": "Target",
+      "section": "PAPlans",
+      "aliases": [
+        "loc:Target",
+        "dom:PAPlan_Target"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The target set for the KPI.</p><p><strong>Example.</strong> <code>90% on-time delivery</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPlan.AppraiseeRatingId",
+      "label": "AppraiseeRating",
+      "section": "PAPlans",
+      "aliases": [
+        "loc:AppraiseeRating",
+        "dom:PAPlan_AppraiseeRatingId"
+      ],
+      "rules": "Optional. Chosen from PA Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's own rating.</p><p><strong>Example.</strong> Meets expectations</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPlan.RatingId",
+      "label": "Rating",
+      "section": "PAPlans",
+      "aliases": [
+        "loc:Rating",
+        "dom:PAPlan_RatingId"
+      ],
+      "rules": "Optional. Chosen from PA Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraiser's rating.</p><p><strong>Example.</strong> Exceeds expectations</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPlan.AppraiseeComments",
+      "label": "AppraiseeComments",
+      "section": "PAPlans",
+      "aliases": [
+        "loc:AppraiseeComments",
+        "dom:PAPlan_AppraiseeComments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's comments.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPlan.AppraiserComments",
+      "label": "AppraiserComments",
+      "section": "PAPlans",
+      "aliases": [
+        "loc:AppraiserComments",
+        "dom:PAPlan_AppraiserComments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraiser's comments.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

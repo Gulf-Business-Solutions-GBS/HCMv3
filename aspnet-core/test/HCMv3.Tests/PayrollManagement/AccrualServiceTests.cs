@@ -1,0 +1,779 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using HCMv3.GeneralMasterInfo;
+using HCMv3.PayrollManagement;
+using HCMv3.PayrollManagement.Services;
+using HCMv3.PersonnelAdministration;
+using HCMv3.SystemSettings;
+using HCMv3.TimeManagement;
+using Shouldly;
+using Xunit;
+
+namespace HCMv3.Tests.PayrollManagement;
+
+// ReSharper disable once InconsistentNaming
+public class AccrualServiceTests : AppTestBase
+{
+    private readonly IAccrualService _accrualService;
+
+    public AccrualServiceTests()
+    {
+        LoginAsDefaultTenantAdmin();
+        _accrualService = Resolve<IAccrualService>();
+    }
+
+    private int CreateEmployee(DateTime joiningDate)
+    {
+        return UsingDbContext(context =>
+        {
+            var nationality = new Nationality
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                NameEn = "Local",
+                NameAr = "محلي"
+            };
+            context.Set<Nationality>().Add(nationality);
+            context.SaveChanges();
+
+            var employee = new Employee
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                FirstNameEn = "Test",
+                LastNameEn = "Employee",
+                FirstNameAr = "تجربة",
+                LastNameAr = "موظف",
+                NationalityId = nationality.Id,
+                JoiningDate = joiningDate
+            };
+            context.Set<Employee>().Add(employee);
+            context.SaveChanges();
+            return employee.Id;
+        });
+    }
+
+    private int CreateAbsenceType(string code, QuotaType quotaType = QuotaType.None)
+    {
+        return UsingDbContext(context =>
+        {
+            var absenceType = new AbsenceType
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                Code = code,
+                NameEn = "Leave " + code,
+                NameAr = "إجازة " + code,
+                QuotaType = quotaType
+            };
+            context.Set<AbsenceType>().Add(absenceType);
+            context.SaveChanges();
+            return absenceType.Id;
+        });
+    }
+
+    #region GetProRataBasedBalanceQuota (pure computation)
+
+    [Fact]
+    public void GetProRataBasedBalanceQuota_Should_Prorate_When_Joined_MidYear_On_CalendarYear_Prorated()
+    {
+        var joiningDate = new DateTime(2024, 7, 1);
+        var deductionStart = new DateTime(2024, 1, 1);
+        var deductionEnd = new DateTime(2024, 12, 31);
+
+        var result = _accrualService.GetProRataBasedBalanceQuota(joiningDate, AccrualPeriod.CalendarYear, LeaveEntitlement.Prorated, 30, deductionStart, deductionEnd);
+
+        // remainingDays (Jul 1 - Dec 31 inclusive) = 184, actualDays (full year) = 366 (2024 is a leap year)
+        var expectedRemainingDays = deductionEnd.Subtract(joiningDate).TotalDays + 1;
+        var expectedActualDays = deductionEnd.Subtract(deductionStart).TotalDays + 1;
+        var expected = Math.Round((30 * expectedRemainingDays) / expectedActualDays, 2);
+
+        result.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GetProRataBasedBalanceQuota_Should_Not_Prorate_When_Entitlement_Is_Full()
+    {
+        var joiningDate = new DateTime(2024, 7, 1);
+        var deductionStart = new DateTime(2024, 1, 1);
+        var deductionEnd = new DateTime(2024, 12, 31);
+
+        var result = _accrualService.GetProRataBasedBalanceQuota(joiningDate, AccrualPeriod.CalendarYear, LeaveEntitlement.Full, 30, deductionStart, deductionEnd);
+
+        result.ShouldBe(30);
+    }
+
+    #endregion
+
+    #region GetHealthReimbAccrualStartEnd (pure computation)
+
+    [Fact]
+    public void GetHealthReimbAccrualStartEnd_Should_Reinitialize_Yearly_From_Configured_Period()
+    {
+        var joiningDate = new DateTime(2020, 5, 15);
+
+        var (start, end) = _accrualService.GetHealthReimbAccrualStartEnd(joiningDate, CustomStartMonth.January, new DateTime(2024, 6, 1));
+
+        start.ShouldBe(new DateTime(2024, 1, 1));
+        end.ShouldBe(new DateTime(2024, 12, 31));
+    }
+
+    #endregion
+
+    #region GetLeaveAccrualStartEnd
+
+    [Fact]
+    public async Task GetLeaveAccrualStartEndAsync_Should_Use_JoiningDate_And_Last_Contract_EndDate_For_PerEmployment()
+    {
+        var joiningDate = new DateTime(2020, 1, 1);
+        var employeeId = CreateEmployee(joiningDate);
+        var absenceTypeId = CreateAbsenceType("9");
+
+        UsingDbContext(context =>
+        {
+            context.Set<AbsenceType>().First(r => r.Id == absenceTypeId).AccrualPeriod = AccrualPeriod.PerEmployment;
+
+            var contractType = new ContractType
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                NameEn = "Fixed",
+                NameAr = "ثابت"
+            };
+            context.Set<ContractType>().Add(contractType);
+            context.SaveChanges();
+
+            context.Set<EmployeeContract>().Add(new EmployeeContract
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeId = employeeId,
+                ContractTypeId = contractType.Id,
+                StartDate = joiningDate,
+                EndDate = new DateTime(2026, 12, 31)
+            });
+        });
+
+        var (start, end) = await _accrualService.GetLeaveAccrualStartEndAsync(employeeId, absenceTypeId, new DateTime(2024, 6, 1));
+
+        start.ShouldBe(joiningDate);
+        end.ShouldBe(new DateTime(2026, 12, 31));
+    }
+
+    [Fact]
+    public async Task GetLeaveAccrualStartEndAsync_Should_Reinitialize_On_CalendarYear()
+    {
+        var joiningDate = new DateTime(2020, 3, 15);
+        var employeeId = CreateEmployee(joiningDate);
+        var absenceTypeId = CreateAbsenceType("3", QuotaType.SickLeave);
+
+        UsingDbContext(context =>
+        {
+            var absenceType = context.Set<AbsenceType>().First(r => r.Id == absenceTypeId);
+            absenceType.AccrualPeriod = AccrualPeriod.CalendarYear;
+            absenceType.ReInitialize = true;
+            absenceType.ReInitializeAfter = 1;
+        });
+
+        var (start, end) = await _accrualService.GetLeaveAccrualStartEndAsync(employeeId, absenceTypeId, new DateTime(2024, 6, 1));
+
+        start.ShouldBe(new DateTime(2024, 1, 1));
+        end.ShouldBe(new DateTime(2024, 12, 31));
+    }
+
+    #endregion
+
+    #region GetAsOnDateQuota
+
+    [Fact]
+    public async Task GetAsOnDateQuotaAsync_Should_Compute_Annual_Leave_Balance_From_Accrual_Minus_Used()
+    {
+        var joiningDate = new DateTime(2024, 1, 1);
+        var employeeId = CreateEmployee(joiningDate);
+        var absenceTypeId = CreateAbsenceType("1", QuotaType.AnnualLeave);
+
+        var employeeGroupId = UsingDbContext(context =>
+        {
+            var group = new EmployeeGroup { TenantId = AbpSession.TenantId ?? 1, NameEn = "G1", NameAr = "ج1" };
+            context.Set<EmployeeGroup>().Add(group);
+            context.SaveChanges();
+            return group.Id;
+        });
+
+        var employeeSubGroupId = UsingDbContext(context =>
+        {
+            var subGroup = new EmployeeSubGroup { TenantId = AbpSession.TenantId ?? 1, EmployeeGroupId = employeeGroupId, NameEn = "SG1", NameAr = "ف1" };
+            context.Set<EmployeeSubGroup>().Add(subGroup);
+            context.SaveChanges();
+            return subGroup.Id;
+        });
+
+        UsingDbContext(context =>
+        {
+            context.Set<EmployeeSubGroupAbsence>().Add(new EmployeeSubGroupAbsence
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeSubGroupId = employeeSubGroupId,
+                AbsenceTypeId = absenceTypeId,
+                StartDate = new DateTime(2020, 1, 1),
+                EndDate = new DateTime(9999, 12, 31),
+                ChangeYear = 0,
+                TotalDays = 30,
+                MaxLimit = 60
+            });
+
+            // 30 days of TimeRegister, each accruing 30/365 days -> total accrual ~= 30 * (30/365)
+            for (var day = new DateTime(2024, 1, 1); day < new DateTime(2024, 1, 31); day = day.AddDays(1))
+            {
+                context.Set<TimeRegister>().Add(new TimeRegister
+                {
+                    TenantId = AbpSession.TenantId ?? 1,
+                    EmployeeId = employeeId,
+                    DayDate = day,
+                    AnnualLeaveAccrualPerDay = 30.0 / 365.0
+                });
+            }
+        });
+
+        var asOnDate = new DateTime(2024, 1, 30);
+        var balance = await _accrualService.GetAsOnDateQuotaAsync(employeeId, employeeSubGroupId, absenceTypeId, asOnDate, includeFutureTrans: false);
+
+        // No leave taken yet, so balance should equal accrued amount (approximately 30 days * daily rate).
+        balance.ShouldBeGreaterThan(0);
+        balance.ShouldBeLessThanOrEqualTo(30);
+    }
+
+    #endregion
+
+    #region GetActualWeekOffs
+
+    [Fact]
+    public async Task GetActualWeekOffsAsync_Simple_Overload_Should_Sum_WeeklyOff_Column_For_Full_Month()
+    {
+        var employeeId = CreateEmployee(new DateTime(2024, 1, 1));
+        var payDate = new DateTime(2024, 2, 15);
+        var daysInMonth = DateTime.DaysInMonth(2024, 2);
+
+        UsingDbContext(context =>
+        {
+            for (var day = 1; day <= daysInMonth; day++)
+            {
+                var date = new DateTime(2024, 2, day);
+                context.Set<TimeRegister>().Add(new TimeRegister
+                {
+                    TenantId = AbpSession.TenantId ?? 1,
+                    EmployeeId = employeeId,
+                    DayDate = date,
+                    WeeklyOff = date.DayOfWeek == DayOfWeek.Friday ? 1 : 0
+                });
+            }
+        });
+
+        var weeklyOffDays = await _accrualService.GetActualWeekOffsAsync(employeeId, payDate);
+
+        var expectedFridays = Enumerable.Range(1, daysInMonth)
+            .Count(d => new DateTime(2024, 2, d).DayOfWeek == DayOfWeek.Friday);
+
+        weeklyOffDays.ShouldBe(expectedFridays);
+    }
+
+    [Fact]
+    public async Task GetActualWeekOffsAsync_Should_Resolve_Missing_Days_Via_RosterService_When_EnableRosterDuty()
+    {
+        var employeeId = CreateEmployee(new DateTime(2020, 1, 1));
+        var payDate = new DateTime(2024, 2, 15);
+        var daysInMonth = DateTime.DaysInMonth(2024, 2);
+
+        var (workingDutyId, weeklyOffDutyId) = UsingDbContext(context =>
+        {
+            context.Set<ManageTimeSettings>().Add(new ManageTimeSettings
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EnableRosterDuty = true
+            });
+
+            var working = new Duty { TenantId = AbpSession.TenantId ?? 1, Code = "AW", NameEn = "Work", NameAr = "عمل", StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(17, 0, 0), IsWeeklyOff = false };
+            var weeklyOff = new Duty { TenantId = AbpSession.TenantId ?? 1, Code = "AWO", NameEn = "WeeklyOff", NameAr = "عطلة", StartTime = new TimeSpan(0, 0, 0), EndTime = new TimeSpan(0, 0, 0), IsWeeklyOff = true };
+            context.Set<Duty>().Add(working);
+            context.Set<Duty>().Add(weeklyOff);
+            context.SaveChanges();
+
+            var dutyPeriod = new DutyPeriod
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                NameEn = "AccrualDP",
+                NameAr = "AccrualDP",
+                StartDate = new DateTime(2020, 1, 1),
+                EndDate = new DateTime(2030, 12, 31),
+                SundayDutyId = working.Id,
+                MondayDutyId = working.Id,
+                TuesdayDutyId = working.Id,
+                WednesdayDutyId = working.Id,
+                ThursdayDutyId = working.Id,
+                FridayDutyId = weeklyOff.Id,
+                SaturdayDutyId = working.Id
+            };
+            context.Set<DutyPeriod>().Add(dutyPeriod);
+            context.SaveChanges();
+
+            context.Set<EmployeeDutyPeriod>().Add(new EmployeeDutyPeriod
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeId = employeeId,
+                DutyPeriodId = dutyPeriod.Id,
+                StartDate = new DateTime(2020, 1, 1),
+                EndDate = new DateTime(2030, 12, 31),
+                StartPoint = 0 // no rotation configured -> falls back to day-of-week duty
+            });
+            context.SaveChanges();
+
+            return (working.Id, weeklyOff.Id);
+        });
+
+        // No TimeRegister rows at all for the month -> every day is resolved via IRosterService.
+        var weeklyOffDays = await _accrualService.GetActualWeekOffsAsync(employeeId, payDate);
+
+        var expectedFridays = Enumerable.Range(1, daysInMonth)
+            .Count(d => new DateTime(2024, 2, d).DayOfWeek == DayOfWeek.Friday);
+
+        weeklyOffDays.ShouldBe(expectedFridays);
+    }
+
+    #endregion
+
+    #region CalculateMonthlyForfeit
+
+    [Fact]
+    public async Task CalculateMonthlyForfeitAsync_Should_Create_Forfeit_When_Balance_Exceeds_MaxLimit()
+    {
+        var joiningDate = new DateTime(2020, 1, 1);
+        var employeeId = CreateEmployee(joiningDate);
+        var annualLeaveTypeId = CreateAbsenceType("1", QuotaType.AnnualLeave);
+
+        var employeeGroupId = UsingDbContext(context =>
+        {
+            var group = new EmployeeGroup { TenantId = AbpSession.TenantId ?? 1, NameEn = "G1", NameAr = "ج1" };
+            context.Set<EmployeeGroup>().Add(group);
+            context.SaveChanges();
+            return group.Id;
+        });
+
+        var employeeSubGroupId = UsingDbContext(context =>
+        {
+            var subGroup = new EmployeeSubGroup { TenantId = AbpSession.TenantId ?? 1, EmployeeGroupId = employeeGroupId, NameEn = "SG1", NameAr = "ف1" };
+            context.Set<EmployeeSubGroup>().Add(subGroup);
+            context.SaveChanges();
+            return subGroup.Id;
+        });
+
+        var monthStart = new DateTime(2024, 6, 1);
+        var monthEnd = new DateTime(2024, 6, 30);
+
+        UsingDbContext(context =>
+        {
+            context.Set<EmployeeSubGroupAbsence>().Add(new EmployeeSubGroupAbsence
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeSubGroupId = employeeSubGroupId,
+                AbsenceTypeId = annualLeaveTypeId,
+                StartDate = new DateTime(2020, 1, 1),
+                EndDate = new DateTime(9999, 12, 31),
+                ChangeYear = 0,
+                TotalDays = 30,
+                MaxLimit = 5 // very small cap so the accrued balance forfeits quickly
+            });
+
+            context.Set<EmployeeAbsenceQuota>().Add(new EmployeeAbsenceQuota
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeId = employeeId,
+                AbsenceTypeId = annualLeaveTypeId,
+                EntitlementFrom = new DateTime(2024, 1, 1),
+                EntitlementTo = new DateTime(2024, 12, 31),
+                DeductionFrom = new DateTime(2024, 1, 1),
+                DeductionTo = new DateTime(2024, 12, 31),
+                QuotaAccrued = 30,
+                QuotaForfeited = 0
+            });
+
+            // High daily accrual so the balance blows past MaxLimit=5 quickly within June.
+            for (var day = monthStart; day <= monthEnd; day = day.AddDays(1))
+            {
+                context.Set<TimeRegister>().Add(new TimeRegister
+                {
+                    TenantId = AbpSession.TenantId ?? 1,
+                    EmployeeId = employeeId,
+                    DayDate = day,
+                    AnnualLeaveAccrualPerDay = 1 // 1 day/day accrual, so balance quickly exceeds MaxLimit=5
+                });
+            }
+        });
+
+        var result = await _accrualService.CalculateMonthlyForfeitAsync(employeeId, employeeSubGroupId, monthStart, monthEnd);
+
+        result.TotalForfeitDays.ShouldBeGreaterThan(0);
+        result.ForfeitRecordCreated.ShouldBeTrue();
+
+        var quota = UsingDbContext(context => context.Set<EmployeeAbsenceQuota>().First(r => r.EmployeeId == employeeId && r.AbsenceTypeId == annualLeaveTypeId));
+        quota.QuotaForfeited.ShouldBe(result.TotalForfeitDays, 0.000001);
+    }
+
+    [Fact]
+    public async Task CalculateMonthlyForfeitAsync_Should_Return_Zero_When_No_MaxLimit_Configured()
+    {
+        var joiningDate = new DateTime(2020, 1, 1);
+        var employeeId = CreateEmployee(joiningDate);
+        var annualLeaveTypeId = CreateAbsenceType("1", QuotaType.AnnualLeave);
+
+        UsingDbContext(context =>
+        {
+            context.Set<EmployeeAbsenceQuota>().Add(new EmployeeAbsenceQuota
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeId = employeeId,
+                AbsenceTypeId = annualLeaveTypeId,
+                EntitlementFrom = new DateTime(2024, 1, 1),
+                EntitlementTo = new DateTime(2024, 12, 31),
+                DeductionFrom = new DateTime(2024, 1, 1),
+                DeductionTo = new DateTime(2024, 12, 31),
+                QuotaAccrued = 30
+            });
+        });
+
+        // No EmployeeSubGroupAbsence configured at all (employeeSubGroupId null) -> maxLimit stays 0.
+        var result = await _accrualService.CalculateMonthlyForfeitAsync(employeeId, null, new DateTime(2024, 6, 1), new DateTime(2024, 6, 30));
+
+        result.TotalForfeitDays.ShouldBe(0);
+        result.ForfeitRecordCreated.ShouldBeFalse();
+    }
+
+    #endregion
+
+    #region GetAvailableNegativeBalance
+
+    [Fact]
+    public async Task GetAvailableNegativeBalanceAsync_Should_Return_Zero_When_Feature_Disabled()
+    {
+        var employeeId = CreateEmployee(new DateTime(2024, 1, 1));
+
+        var result = await _accrualService.GetAvailableNegativeBalanceAsync(employeeId, enableNegativeBalance: false, negativeBalanceLimit: 10, yearlyQuota: 30, leaveStartDate: new DateTime(2024, 6, 1));
+
+        result.ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task GetAvailableNegativeBalanceAsync_Should_Cap_At_NegativeBalanceLimit()
+    {
+        var joiningDate = new DateTime(2020, 1, 1);
+        var employeeId = CreateEmployee(joiningDate);
+
+        // No TimeRegister rows at all this year -> full accrual-since-year-start is projected, which will
+        // exceed a small negativeBalanceLimit and get capped.
+        var result = await _accrualService.GetAvailableNegativeBalanceAsync(employeeId, enableNegativeBalance: true, negativeBalanceLimit: 2, yearlyQuota: 30, leaveStartDate: new DateTime(2024, 6, 1));
+
+        result.ShouldBe(2);
+    }
+
+    #endregion
+
+    #region GetMaxIndemnityLimit
+
+    [Fact]
+    public async Task GetMaxIndemnityLimitAsync_Should_Return_Zero_When_No_BasicPay_Configured()
+    {
+        var employeeId = CreateEmployee(new DateTime(2020, 1, 1));
+
+        var employeeGroupId = UsingDbContext(context =>
+        {
+            var group = new EmployeeGroup
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                NameEn = "G1",
+                NameAr = "ج1",
+                IndemnityMaxNumber = 18,
+                IndemnityMaxUnit = Unit.Month,
+                IndemnityMaxAccruePercentage = 100
+            };
+            context.Set<EmployeeGroup>().Add(group);
+            context.SaveChanges();
+            return group.Id;
+        });
+
+        var result = await _accrualService.GetMaxIndemnityLimitAsync(employeeId, new DateTime(2024, 6, 1), employeeGroupId, null, enableUnpaidDedSlabWise: false, indemnitySlabs: null);
+
+        // With no EmployeeBasicPay row, currentPay/totalBasicPay stay 0, so the result is 0 (division-by-zero
+        // guarded by legacy's "if (totalBasicPay != 0)" branch).
+        result.ShouldBe(0);
+    }
+
+    #endregion
+
+    #region GetTotalIndemnityTable
+
+    /// <summary>
+    /// REGRESSION (defect: NullReferenceException in GetTotalIndemnityTableAsync). The TimeTransfer list is
+    /// materialised with .ToList() and GetTotalUnpaidLeaveDays then dereferences r.TransferType.Code in
+    /// memory. Lazy-loading proxies are NOT enabled, so without an eager load of TransferType this throws for
+    /// ANY employee with at least one TimeTransfer row. The previous suite seeded no TimeTransfer rows at all,
+    /// which is why it was never caught -- so this test's whole point is to seed one.
+    /// </summary>
+    [Fact]
+    public async Task GetTotalIndemnityTableAsync_Should_Deduct_OpeningBalance_TimeTransfer_Without_Throwing()
+    {
+        var contractStart = new DateTime(2024, 1, 1);
+        var payDate = new DateTime(2024, 6, 30);
+        var employeeId = CreateEmployee(contractStart);
+
+        var employeeSubGroupId = UsingDbContext(context =>
+        {
+            var group = new EmployeeGroup { TenantId = AbpSession.TenantId ?? 1, NameEn = "IndemG", NameAr = "ج1" };
+            context.Set<EmployeeGroup>().Add(group);
+            context.SaveChanges();
+
+            var subGroup = new EmployeeSubGroup { TenantId = AbpSession.TenantId ?? 1, EmployeeGroupId = group.Id, NameEn = "IndemSG", NameAr = "ف1" };
+            context.Set<EmployeeSubGroup>().Add(subGroup);
+            context.SaveChanges();
+            return subGroup.Id;
+        });
+
+        UsingDbContext(context =>
+        {
+            var contractType = new ContractType { TenantId = AbpSession.TenantId ?? 1, NameEn = "Fixed", NameAr = "ثابت" };
+            context.Set<ContractType>().Add(contractType);
+            context.SaveChanges();
+
+            context.Set<EmployeeContract>().Add(new EmployeeContract
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeId = employeeId,
+                ContractTypeId = contractType.Id,
+                StartDate = contractStart,
+                EndDate = new DateTime(2030, 12, 31)
+            });
+
+            context.Set<EmployeeSubGroupGratuity>().Add(new EmployeeSubGroupGratuity
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeSubGroupId = employeeSubGroupId,
+                StartDate = new DateTime(2020, 1, 1),
+                EndDate = new DateTime(9999, 12, 31),
+                ChangeYear = 5,
+                GratuityDays = 15,
+                BasisDays = 30
+            });
+
+            // THE SEED THAT WAS MISSING: an unpaid-opening-balance transfer (TimeTransferType.Code == "5").
+            var transferType = new TimeTransferType
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                Code = "5",
+                NameEn = "Opening Balance",
+                NameAr = "رصيد افتتاحي"
+            };
+            context.Set<TimeTransferType>().Add(transferType);
+            context.SaveChanges();
+
+            context.Set<TimeTransfer>().Add(new TimeTransfer
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeId = employeeId,
+                TransferTypeId = transferType.Id,
+                TransferDate = new DateTime(2024, 2, 15),
+                TransferCount = 3
+            });
+        });
+
+        var slabs = await _accrualService.GetTotalIndemnityTableAsync(employeeId, payDate, employeeSubGroupId);
+
+        // No WageType 4001/4029 with IncludeInIndemnity is seeded, so the ONLY unpaid contribution is the
+        // 3-day transfer -- proving TransferType.Code was actually read rather than throwing.
+        // 182 calendar days, less 29/02/2024: a leap day is not service (IndemnityServiceDays).
+        var totalCalendarDays = payDate.Subtract(contractStart).TotalDays + 1 - 1;
+
+        slabs.Count.ShouldBe(1);
+        slabs[0].UnpaidDays.ShouldBe(3);
+        slabs[0].TotalDays.ShouldBe(totalCalendarDays - 3);
+        slabs[0].StartDate.ShouldBe(contractStart);
+    }
+
+    [Fact]
+    public async Task GetTotalIndemnityTableAsync_Should_Ignore_TimeTransfers_Of_Other_Types()
+    {
+        var contractStart = new DateTime(2024, 1, 1);
+        var payDate = new DateTime(2024, 6, 30);
+        var employeeId = CreateEmployee(contractStart);
+
+        var employeeSubGroupId = UsingDbContext(context =>
+        {
+            var group = new EmployeeGroup { TenantId = AbpSession.TenantId ?? 1, NameEn = "IndemG2", NameAr = "ج2" };
+            context.Set<EmployeeGroup>().Add(group);
+            context.SaveChanges();
+
+            var subGroup = new EmployeeSubGroup { TenantId = AbpSession.TenantId ?? 1, EmployeeGroupId = group.Id, NameEn = "IndemSG2", NameAr = "ف2" };
+            context.Set<EmployeeSubGroup>().Add(subGroup);
+            context.SaveChanges();
+            return subGroup.Id;
+        });
+
+        UsingDbContext(context =>
+        {
+            var contractType = new ContractType { TenantId = AbpSession.TenantId ?? 1, NameEn = "Fixed2", NameAr = "ثابت2" };
+            context.Set<ContractType>().Add(contractType);
+            context.SaveChanges();
+
+            context.Set<EmployeeContract>().Add(new EmployeeContract
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeId = employeeId,
+                ContractTypeId = contractType.Id,
+                StartDate = contractStart,
+                EndDate = new DateTime(2030, 12, 31)
+            });
+
+            context.Set<EmployeeSubGroupGratuity>().Add(new EmployeeSubGroupGratuity
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeSubGroupId = employeeSubGroupId,
+                StartDate = new DateTime(2020, 1, 1),
+                EndDate = new DateTime(9999, 12, 31),
+                ChangeYear = 5,
+                GratuityDays = 15,
+                BasisDays = 30
+            });
+
+            // Code "2" (sick-leave transfer), NOT the "5" the indemnity unpaid-days rule looks for. Its
+            // TransferType still has to be readable, otherwise the code throws before it can filter it out.
+            var transferType = new TimeTransferType
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                Code = "2",
+                NameEn = "Sick Transfer",
+                NameAr = "تحويل مرضي"
+            };
+            context.Set<TimeTransferType>().Add(transferType);
+            context.SaveChanges();
+
+            context.Set<TimeTransfer>().Add(new TimeTransfer
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeId = employeeId,
+                TransferTypeId = transferType.Id,
+                TransferDate = new DateTime(2024, 2, 15),
+                TransferCount = 7
+            });
+        });
+
+        var slabs = await _accrualService.GetTotalIndemnityTableAsync(employeeId, payDate, employeeSubGroupId);
+
+        var totalCalendarDays = payDate.Subtract(contractStart).TotalDays + 1 - 1; // less 29/02/2024
+
+        slabs.Count.ShouldBe(1);
+        slabs[0].UnpaidDays.ShouldBe(0);
+        slabs[0].TotalDays.ShouldBe(totalCalendarDays);
+    }
+
+    /// <summary>
+    /// REGRESSION. Legacy <c>GetTotalUnpaidLeaveDays</c> (<c>Program.cs</c> line 3701) reads TWO different
+    /// absence types and this port collapsed them onto one:
+    /// <list type="bullet">
+    /// <item><description>the <c>TimeRegister.LeaveDay</c> term (lines 3734-3737) filters on
+    /// <c>r.LeaveType.Code == "15"</c> -- Unapproved Absence Leave;</description></item>
+    /// <item><description>the <c>EmployeeAbsAdjustment</c> term (line 3739) filters on
+    /// <c>Program.UnpaidLeaveOid</c> -- code "2".</description></item>
+    /// </list>
+    ///
+    /// <para>Passing the code-"2" id to BOTH summed genuine unpaid-leave <c>LeaveDay</c> rows into the
+    /// indemnity unpaid-day total on top of the <c>UnpaidLeaveDay</c> column that had already counted them.
+    /// For employee 3400 that inflated the unpaid days over the 2012-2024 slab from 255 to 272 -- exactly 17
+    /// days -- which understated total indemnity days by 17 * 26/365 = 1.210959 and put wage code 3003 at
+    /// 2616.80 instead of legacy's 2625.42.</para>
+    ///
+    /// <para>Here the code-"2" row carries 9 LeaveDay and the code-"15" row 4. Only the 4 may count.</para>
+    /// </summary>
+    [Fact]
+    public async Task GetTotalIndemnityTableAsync_Should_Count_LeaveDay_Only_For_Absence_Code_15_Not_Code_2()
+    {
+        var contractStart = new DateTime(2024, 1, 1);
+        var payDate = new DateTime(2024, 6, 30);
+        var employeeId = CreateEmployee(contractStart);
+        var tenantId = AbpSession.TenantId ?? 1;
+
+        var employeeSubGroupId = UsingDbContext(context =>
+        {
+            var group = new EmployeeGroup { TenantId = tenantId, NameEn = "IndemG15", NameAr = "ج15" };
+            context.Set<EmployeeGroup>().Add(group);
+            context.SaveChanges();
+
+            var subGroup = new EmployeeSubGroup { TenantId = tenantId, EmployeeGroupId = group.Id, NameEn = "IndemSG15", NameAr = "ف15" };
+            context.Set<EmployeeSubGroup>().Add(subGroup);
+            context.SaveChanges();
+            return subGroup.Id;
+        });
+
+        UsingDbContext(context =>
+        {
+            var contractType = new ContractType { TenantId = tenantId, NameEn = "Fixed15", NameAr = "ثابت15" };
+            context.Set<ContractType>().Add(contractType);
+            context.SaveChanges();
+
+            context.Set<EmployeeContract>().Add(new EmployeeContract
+            {
+                TenantId = tenantId,
+                EmployeeId = employeeId,
+                ContractTypeId = contractType.Id,
+                StartDate = contractStart,
+                EndDate = new DateTime(2030, 12, 31)
+            });
+
+            context.Set<EmployeeSubGroupGratuity>().Add(new EmployeeSubGroupGratuity
+            {
+                TenantId = tenantId,
+                EmployeeSubGroupId = employeeSubGroupId,
+                StartDate = new DateTime(2020, 1, 1),
+                EndDate = new DateTime(9999, 12, 31),
+                ChangeYear = 5,
+                GratuityDays = 15,
+                BasisDays = 30
+            });
+
+            // The LeaveDay term is gated on wage code 4001 existing with IncludeInIndemnity.
+            context.Set<WageType>().Add(new WageType
+            {
+                TenantId = tenantId,
+                Code = "4001",
+                NameEn = "Unpaid Leave",
+                NameAr = "إجازة بدون راتب",
+                IncludeInIndemnity = true,
+                Status = true
+            });
+
+            var unpaidLeave = new AbsenceType { TenantId = tenantId, Code = "2", NameEn = "Unpaid Leave", NameAr = "بدون راتب" };
+            var unapprovedAbsence = new AbsenceType { TenantId = tenantId, Code = "15", NameEn = "Unapproved Absence", NameAr = "غياب" };
+            context.Set<AbsenceType>().AddRange(unpaidLeave, unapprovedAbsence);
+            context.SaveChanges();
+
+            // Code "2" -- legacy does NOT count this row's LeaveDay here.
+            context.Set<TimeRegister>().Add(new TimeRegister
+            {
+                TenantId = tenantId,
+                EmployeeId = employeeId,
+                DayDate = new DateTime(2024, 3, 10),
+                LeaveTypeId = unpaidLeave.Id,
+                LeaveDay = 9
+            });
+
+            // Code "15" -- legacy DOES count this one.
+            context.Set<TimeRegister>().Add(new TimeRegister
+            {
+                TenantId = tenantId,
+                EmployeeId = employeeId,
+                DayDate = new DateTime(2024, 4, 12),
+                LeaveTypeId = unapprovedAbsence.Id,
+                LeaveDay = 4
+            });
+        });
+
+        var slabs = await _accrualService.GetTotalIndemnityTableAsync(employeeId, payDate, employeeSubGroupId);
+
+        slabs.Count.ShouldBe(1);
+        slabs[0].UnpaidDays.ShouldBe(4);
+    }
+
+    #endregion
+}

@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-abs-quota-forfeit.edit",
+  "lang": "en",
+  "title": "Employee Absence Quota Forfeitures — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAbsQuotaForfeit",
+  "overviewHtml": "<p>A manual record of leave days the employee has lost from a leave type.</p><p>Saving it adds the days to the Forfeited figure of the employee's annual leave quota covering the effective date, so the leave balance goes down; changing it first gives back the days saved before, and deleting it gives them all back. Only annual leave types move the quota, and always the quota of the annual leave type with code 1. Nothing moves for a date before the earliest evaluation date in time settings. The save is refused when the days are more than the balance, or when the employee has no annual leave quota for that date.</p><p><strong>Do not update quota balance</strong> — tick it to save the record without touching the quota. It is not stored: it is always unticked when the form opens, and a delete always gives the days back. Leave forfeiture calculations maintain their own forfeit records.</p>",
+  "aliasIndex": {
+    "loc:EffectiveDate": "EmployeeAbsQuotaForfeit.EffectiveDate",
+    "dom:EmployeeAbsQuotaForfeit_EffectiveDate": "EmployeeAbsQuotaForfeit.EffectiveDate",
+    "loc:AbsenceTypeId": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
+    "dom:EmployeeAbsQuotaForfeit_AbsenceTypeId": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
+    "loc:QuotaForfeited": "EmployeeAbsQuotaForfeit.QuotaForfeited",
+    "dom:EmployeeAbsQuotaForfeit_QuotaForfeited": "EmployeeAbsQuotaForfeit.QuotaForfeited",
+    "loc:Comments": "EmployeeAbsQuotaForfeit.Comments",
+    "dom:EmployeeAbsQuotaForfeit_Comments": "EmployeeAbsQuotaForfeit.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAbsQuotaForfeit.EffectiveDate",
+      "label": "EffectiveDate",
+      "section": "EmployeeAbsQuotaForfeits",
+      "aliases": [
+        "loc:EffectiveDate",
+        "dom:EmployeeAbsQuotaForfeit_EffectiveDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the forfeit takes effect.</p><p><strong>Example.</strong> 31 Mar 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
+      "label": "AbsenceTypeId",
+      "section": "EmployeeAbsQuotaForfeits",
+      "aliases": [
+        "loc:AbsenceTypeId",
+        "dom:EmployeeAbsQuotaForfeit_AbsenceTypeId"
+      ],
+      "rules": "Required. Chosen from Leave Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The leave type days are forfeited from.</p><p><strong>Example.</strong> Annual Leave</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Leave Types.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsQuotaForfeit.QuotaForfeited",
+      "label": "QuotaForfeited",
+      "section": "EmployeeAbsQuotaForfeits",
+      "aliases": [
+        "loc:QuotaForfeited",
+        "dom:EmployeeAbsQuotaForfeit_QuotaForfeited"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The number of days forfeited.</p><p><strong>Example.</strong> 3</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsQuotaForfeit.Comments",
+      "label": "Comments",
+      "section": "EmployeeAbsQuotaForfeits",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeAbsQuotaForfeit_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

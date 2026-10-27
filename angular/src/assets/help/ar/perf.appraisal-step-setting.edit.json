@@ -1,0 +1,235 @@
+{
+  "helpId": "perf.appraisal-step-setting.edit",
+  "lang": "ar",
+  "title": "إعداد سير عمل التقييم — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.Review.AppraisalStepSetting",
+  "overviewHtml": "<p>يحدد من يقيّم الموظف في تقييم 360 درجة، وما يمكن لكل شخص الاطلاع عليه والقيام به، خطوةً خطوة في سلسلة اعتماد التقييم. وكل سطر هو خطوة واحدة من سلسلة واحدة في شاشة <strong>الطلبات الأساسية</strong>. ولا يقرأ هذا الإعداد إلا تقييم 360 درجة، فلا تتأثر به الإجازات والقروض وسائر الطلبات.</p><p>السطر المطبَّق هو سطر الخطوة التي ينتظر عندها التقييم. أما التقييم الذي لم يُرسل بعد إلى سير العمل فيُطبَّق عليه سطر الخطوة 1 من السلسلة التي سيسلكها.</p><p><strong>لا يُعَدّ شيء مسبقاً.</strong> تبدأ جميع الخيارات غير محددة، ولا تُنشأ أي سطور تلقائياً. والخطوة التي ليس لها سطر لا تضيف مقيّمين ولا تعرض أزرار التقييم في شاشة <strong>تقييم 360 درجة</strong>، وإن كان المقيّم لا يزال يرى أسطر تقديره هناك. فأعدّ كل خطوة قبل أن تصل إليها التقييمات.</p><p><strong>متى يُضاف المقيّمون.</strong> تعمل خيارات <strong>المقيّمون المضافون تلقائياً</strong> لحظة تعيين المعتمِدين للخطوة، أي عند وصول التقييم إليها، لا عند اعتمادها. ويحصل كل مقيّم جديد على سطر تقدير فارغ لكل مؤشر أداء. ولا يُضاف أحد مرتين، ويبقى المقيّم في القائمة بعد إضافته حتى لو أُعيدت الخطوة لاحقاً. وتُفحص كل إضافة مقابل <strong>الحد الأقصى لعدد المراجعين</strong> في نوع النموذج؛ فإذا تجاوزته الخطوة رُفض الإجراء الذي ينقل التقييم إليها برسالة \"تم بلوغ الحد الأقصى لعدد المراجعين\".</p><p><strong>المقيّم العادي.</strong> الشخص المدرج في قائمة المقيّمين وليس معتمِداً في الخطوة الحالية لا يرى إلا أسطر تقديره هو، أياً كانت خيارات <strong>ما يمكن الاطلاع عليه</strong>: فلا يرى قائمة مؤشرات الأداء ولا قائمة المقيّمين ولا المتوسطات. والموظف الذي يقيّم نفسه مقيّم عادي كذلك. أما خيارات الاطلاع فتحكم من سواهم: المعتمِدين في الخطوة، والموظف حين لا يقيّم نفسه، والمدراء الذين يطّلعون من <strong>تقييمات الفريق</strong>.</p><p>وبعد اعتماد طلب التقييم أو رفضه أو إغلاقه لا يمكن تغيير أي شيء.</p>",
+  "aliasIndex": {
+    "loc:RequestMaster": "AppraisalStepSetting.RequestMasterId",
+    "dom:AppraisalStepSetting_RequestMasterId": "AppraisalStepSetting.RequestMasterId",
+    "loc:Step": "AppraisalStepSetting.Step",
+    "dom:AppraisalStepSetting_Step": "AppraisalStepSetting.Step",
+    "loc:CanEmployeeSelfRate": "AppraisalStepSetting.CanEmployeeSelfRate",
+    "dom:AppraisalStepSetting_CanEmployeeSelfRate": "AppraisalStepSetting.CanEmployeeSelfRate",
+    "loc:CanAddRatings": "AppraisalStepSetting.CanAddRatings",
+    "dom:AppraisalStepSetting_CanAddRatings": "AppraisalStepSetting.CanAddRatings",
+    "loc:AutoAddManager": "AppraisalStepSetting.AutoAddManager",
+    "dom:AppraisalStepSetting_AutoAddManager": "AppraisalStepSetting.AutoAddManager",
+    "loc:AutoAddRelationShip": "AppraisalStepSetting.AutoAddRelationShip",
+    "dom:AppraisalStepSetting_AutoAddRelationShip": "AppraisalStepSetting.AutoAddRelationShip",
+    "loc:CanAddKpi": "AppraisalStepSetting.CanAddKpi",
+    "dom:AppraisalStepSetting_CanAddKpi": "AppraisalStepSetting.CanAddKpi",
+    "loc:CanAddPeer": "AppraisalStepSetting.CanAddPeer",
+    "dom:AppraisalStepSetting_CanAddPeer": "AppraisalStepSetting.CanAddPeer",
+    "loc:CanPeerAddRatings": "AppraisalStepSetting.CanPeerAddRatings",
+    "dom:AppraisalStepSetting_CanPeerAddRatings": "AppraisalStepSetting.CanPeerAddRatings",
+    "loc:AutoSubmitOnLastFill": "AppraisalStepSetting.AutoSubmitOnLastFill",
+    "dom:AppraisalStepSetting_AutoSubmitOnLastFill": "AppraisalStepSetting.AutoSubmitOnLastFill",
+    "loc:AllowedPeerCount": "AppraisalStepSetting.AllowedPeerCount",
+    "dom:AppraisalStepSetting_AllowedPeerCount": "AppraisalStepSetting.AllowedPeerCount",
+    "loc:CanViewRatings": "AppraisalStepSetting.CanViewRatings",
+    "dom:AppraisalStepSetting_CanViewRatings": "AppraisalStepSetting.CanViewRatings",
+    "loc:CanViewPeerRatings": "AppraisalStepSetting.CanViewPeerRatings",
+    "dom:AppraisalStepSetting_CanViewPeerRatings": "AppraisalStepSetting.CanViewPeerRatings",
+    "loc:CanViewOverallAverageRating": "AppraisalStepSetting.CanViewOverallAverageRating",
+    "dom:AppraisalStepSetting_CanViewOverallAverageRating": "AppraisalStepSetting.CanViewOverallAverageRating"
+  },
+  "fields": [
+    {
+      "id": "AppraisalStepSetting.RequestMasterId",
+      "label": "RequestMaster",
+      "section": "AppraisalWFSetup",
+      "aliases": [
+        "loc:RequestMaster",
+        "dom:AppraisalStepSetting_RequestMasterId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الطلبات الأساسية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سلسلة الاعتماد التي يتبعها هذا السطر. اختر السلسلة التي تُوجَّه عبرها تقييماتكم؛ وتعرض القائمة كل الطلبات الأساسية برمزها واسمها.</p><p><strong>مثال.</strong> PA01 - التقييم السنوي</p><p><strong>لماذا يهم.</strong> تغييره يفرّغ الخطوة إذا لم تكن الخطوة نفسها معرّفة في السلسلة الجديدة. ويمكن تصفية شاشة القائمة به.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AppraisalStepSetting.Step",
+      "label": "Step",
+      "section": "AppraisalWFSetup",
+      "aliases": [
+        "loc:Step",
+        "dom:AppraisalStepSetting_Step"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> خطوة السلسلة التي يخصها هذا السطر. ولا تُعرض إلا الخطوات المعرّفة في السلسلة.</p><p><strong>مثال.</strong> 2 (خطوة المدير المباشر)</p><p><strong>لماذا يهم.</strong> لكل خطوة من السلسلة سطر واحد فقط: ويُرفض سطر ثانٍ للخطوة نفسها برسالة \"يوجد إعداد مسبق للطلب ... في الخطوة ...\".</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AppraisalStepSetting.CanEmployeeSelfRate",
+      "label": "CanEmployeeSelfRate",
+      "section": "AppraisalWFSetup",
+      "aliases": [
+        "loc:CanEmployeeSelfRate",
+        "dom:AppraisalStepSetting_CanEmployeeSelfRate"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يُضاف الموظف موضوع التقييم مقيّماً لتقييمه هو عند تعيين المعتمِدين لهذه الخطوة.</p><p><strong>مثال.</strong> يُحدَّد في الخطوة 1 ليقيّم الموظف نفسه أولاً.</p><p><strong>لماذا يهم.</strong> تصبح للموظف أسطر تقدير خاصة به وزر <strong>تقديم التقييم</strong> في شاشة الخدمة الذاتية، وتظهر درجته في <strong>متوسط درجة الموظف</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AppraisalStepSetting.CanAddRatings",
+      "label": "CanAddRatings",
+      "section": "AppraisalWFSetup",
+      "aliases": [
+        "loc:CanAddRatings",
+        "dom:AppraisalStepSetting_CanAddRatings"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يُضاف كل معتمِد في هذه الخطوة مقيّماً، لا زميلاً، ويمكنه إدخال التقديرات.</p><p><strong>مثال.</strong> يُحدَّد في خطوة المدير ليقدّر المدير كل مؤشرات الأداء.</p><p><strong>لماذا يهم.</strong> يفتح أيضاً قسم التقديرات للمعتمِد. والمعتمِد الذي يقدّر ينهي عمله باعتماد الخطوة كالمعتاد، إلا إذا حُدِّد أيضاً خيار <strong>التقديم التلقائي عند اكتمال آخر تقييم</strong>، فيظهر له زر <strong>تقديم التقييم</strong> كذلك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AppraisalStepSetting.AutoAddManager",
+      "label": "AutoAddManager",
+      "section": "AppraisalWFSetup",
+      "aliases": [
+        "loc:AutoAddManager",
+        "dom:AppraisalStepSetting_AutoAddManager"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يُضاف المدير الحالي للموظف، بحسب <strong>مدراء الموظف</strong> في يوم تعيين الخطوة، مقيّماً بصفة زميل.</p><p><strong>مثال.</strong> موظف يذكر سجل مديره الرقم 1020 يُضاف إلى قائمة مقيّميه الرقم 1020.</p><p><strong>لماذا يهم.</strong> لا يُضاف أحد إذا لم يكن للموظف سجل مدير يغطي ذلك اليوم. وبصفته زميلاً يقدّر المدير ويقدّم تقييمه كأي زميل آخر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AppraisalStepSetting.AutoAddRelationShip",
+      "label": "AutoAddRelationShip",
+      "section": "AppraisalWFSetup",
+      "aliases": [
+        "loc:AutoAddRelationShip",
+        "dom:AppraisalStepSetting_AutoAddRelationShip"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يُضاف كل من يرتبط بالموظف بإحدى صلات القرابة المختارة، بحسب <strong>صلات قرابة الموظف</strong> في يوم تعيين الخطوة، مقيّماً بصفة زميل.</p><p><strong>مثال.</strong> يُحدَّد مع صلة \"مدير غير مباشر\": فينضم المدير غير المباشر إلى التقييم تلقائياً.</p><p><strong>لماذا يهم.</strong> تحديده يعرض أسفله قائمة صلات القرابة، فحدد الصلات المطلوبة. وإذا لم تُحدَّد أي صلة لم يُضف أحد. ولا يُحتسب إلا ما يربط الموظف بموظف آخر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AppraisalStepSetting.CanAddKpi",
+      "label": "CanAddKpi",
+      "section": "AppraisalWFSetup",
+      "aliases": [
+        "loc:CanAddKpi",
+        "dom:AppraisalStepSetting_CanAddKpi"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يمكن للمعتمِد في هذه الخطوة استخدام <strong>نسخ مؤشرات الأداء</strong>، الذي يملأ قائمة مؤشرات الأداء للتقييم من مسمى وظيفي أو وحدة شركة أو تقييم موظف آخر في الفترة نفسها.</p><p><strong>مثال.</strong> يُحدَّد في الخطوة 1 ليضع المدير مؤشرات الأداء قبل أن يقدّر أحد.</p><p><strong>لماذا يهم.</strong> يحدد أيضاً ما إذا كانت قائمة مؤشرات الأداء تظهر أصلاً في شاشة الخدمة الذاتية: فإن لم يُحدَّد أُخفي قسم مؤشرات الأداء عن الجميع في هذه الخطوة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AppraisalStepSetting.CanAddPeer",
+      "label": "CanAddPeer",
+      "section": "AppraisalWFSetup",
+      "aliases": [
+        "loc:CanAddPeer",
+        "dom:AppraisalStepSetting_CanAddPeer"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يمكن للمعتمِد في هذه الخطوة وللموظف إضافة زملاء مقيّمين بزر <strong>إضافة زميل</strong>. ولا يمكن للزميل إضافة زملاء آخرين.</p><p><strong>مثال.</strong> يُحدَّد مع عدد زملاء مسموح به 3.</p><p><strong>لماذا يهم.</strong> يفعّل حقل <strong>عدد الزملاء المسموح به</strong> بجانبه ويعرض قائمة المقيّمين. وتتطلب إضافة الزملاء أيضاً ضبط <strong>الحد الأقصى لعدد الزملاء</strong> في إعدادات تقييم الأداء، وإلا رُفضت كل إضافة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AppraisalStepSetting.CanPeerAddRatings",
+      "label": "CanPeerAddRatings",
+      "section": "AppraisalWFSetup",
+      "aliases": [
+        "loc:CanPeerAddRatings",
+        "dom:AppraisalStepSetting_CanPeerAddRatings"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يفتح قسم التقديرات للمدرجين في قائمة المقيّمين.</p><p><strong>مثال.</strong> يُحدَّد في خطوة يكون فيها أحد المقيّمين من المعتمِدين أيضاً.</p><p><strong>لماذا يهم.</strong> المقيّمون العاديون (غير المعتمِدين في هذه الخطوة) يرون أسطرهم ويقدّرونها دائماً أياً كان هذا الخيار، حتى يتمكن المدير المضاف تلقائياً من إنهاء تقييمه في كل الأحوال. وعملياً لا يؤثر هذا الخيار إلا في مقيّم هو أيضاً معتمِد في هذه الخطوة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AppraisalStepSetting.AutoSubmitOnLastFill",
+      "label": "AutoSubmitOnLastFill",
+      "section": "AppraisalWFSetup",
+      "aliases": [
+        "loc:AutoSubmitOnLastFill",
+        "dom:AppraisalStepSetting_AutoSubmitOnLastFill"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عندما يضغط آخر مقيّم متبقٍّ زر <strong>تقديم التقييم</strong> تُعتمد الخطوة تلقائياً باسم أول معتمِد في الخطوة لم يعتمدها بعد.</p><p><strong>مثال.</strong> تنتظر الخطوة 3 أربعة زملاء؛ وحين يقدّم الرابع تقييمه ينتقل التقييم إلى الخطوة 4 تلقائياً.</p><p><strong>لماذا يهم.</strong> يحمل الاعتماد الملاحظة \"تمت الموافقة تلقائياً عند تقديم آخر تقييم.\" ويرى المقيّم رسالة \"اكتملت جميع التقييمات فتمت الموافقة على الخطوة\". ولا يعمل إلا ما دام الطلب مفتوحاً عند هذه الخطوة، فلا يمكن أن يعتمد مرتين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AppraisalStepSetting.AllowedPeerCount",
+      "label": "AllowedPeerCount",
+      "section": "AppraisalWFSetup",
+      "aliases": [
+        "loc:AllowedPeerCount",
+        "dom:AppraisalStepSetting_AllowedPeerCount"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الزملاء الذين يمكن للموظف ترشيحهم بنفسه في هذه الخطوة. ولا يتاح إلا عند تحديد <strong>يمكن إضافة زميل</strong>.</p><p><strong>مثال.</strong> 3</p><p><strong>لماذا يهم.</strong> الزملاء الذين يضيفهم المعتمِد أو الذين يُضافون تلقائياً لا يُحتسبون من حصة الموظف. ويُرفض الترشيح الرابع برسالة \"لا يمكن للموظف إضافة أكثر من 3 من الزملاء\". ومع القيمة 0 لا يمكن للموظف ترشيح أحد، وإن بقي ذلك متاحاً للمعتمِد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AppraisalStepSetting.CanViewRatings",
+      "label": "CanViewRatings",
+      "section": "AppraisalWFSetup",
+      "aliases": [
+        "loc:CanViewRatings",
+        "dom:AppraisalStepSetting_CanViewRatings"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يرى الجميع، عدا المقيّمين العاديين (انظر النظرة العامة)، أسطر تقدير المقيّمين من غير الزملاء، لا أسطرهم فقط.</p><p><strong>مثال.</strong> يُحدَّد في خطوة الموارد البشرية لترى تقديرات الموظف والمدير.</p><p><strong>لماذا يهم.</strong> يعرض أيضاً قائمة المقيّمين. ولا تُعرض أسطر الآخرين على المقيّمين العاديين أبداً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AppraisalStepSetting.CanViewPeerRatings",
+      "label": "CanViewPeerRatings",
+      "section": "AppraisalWFSetup",
+      "aliases": [
+        "loc:CanViewPeerRatings",
+        "dom:AppraisalStepSetting_CanViewPeerRatings"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يرى الجميع، عدا المقيّمين العاديين (انظر النظرة العامة)، أسطر تقدير الزملاء.</p><p><strong>مثال.</strong> لا يُحدَّد في خطوة الموظف فلا يرى الموظف ما كتبه الزملاء، ويُحدَّد في خطوة المدير.</p><p><strong>لماذا يهم.</strong> يعرض أيضاً قائمة المقيّمين. ويبقى كل زميل يرى أسطره هو.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AppraisalStepSetting.CanViewOverallAverageRating",
+      "label": "CanViewOverallAverageRating",
+      "section": "AppraisalWFSetup",
+      "aliases": [
+        "loc:CanViewOverallAverageRating",
+        "dom:AppraisalStepSetting_CanViewOverallAverageRating"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يرى الجميع، عدا المقيّمين العاديين (انظر النظرة العامة)، متوسط الدرجة الإجمالي ومتوسط درجة الزملاء ومتوسط درجة الموظف بجانب التقييم.</p><p><strong>مثال.</strong> يُحدَّد في خطوة الموارد البشرية الأخيرة.</p><p><strong>لماذا يهم.</strong> لا تُعرض المتوسطات أبداً إذا كان خيار <strong>تفعيل الدرجات في مراجعة تقييم الأداء</strong> مفعّلاً في إعدادات تقييم الأداء، لأن الدرجات تحل محل سلّم التقديرات للجميع.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

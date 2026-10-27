@@ -1,0 +1,136 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #payrollLogForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (payrollLog().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'PayrollLogs' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'PayrollLogs' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="PayrollLog_Message">{{ 'Message' | localize }}</label>
+                                <textarea
+                                    id="PayrollLog_Message"
+                                    #messageInput="ngModel"
+                                    class="form-control"
+                                    name="Message"
+                                    rows="3"
+                                    [ngModel]="payrollLog().message"
+                                    (ngModelChange)="updateField('message', $event)"></textarea>
+                                <validation-messages [formCtrl]="messageInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="PayrollLog_RunTimeStamp">{{ 'RunTimeStamp' | localize }}</label>
+                                <input
+                                    id="PayrollLog_RunTimeStamp"
+                                    #runTimeStampInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="RunTimeStamp"
+                                    [ngModel]="payrollLog().runTimeStamp?.toISODate()"
+                                    (ngModelChange)="updateDateField('runTimeStamp', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="runTimeStampInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="PayrollLog_EmployeeId">{{ 'EmployeeId' | localize }}</label>
+                                <input
+                                    id="PayrollLog_EmployeeId"
+                                    class="form-control"
+                                    type="number"
+                                    name="EmployeeId"
+                                    [ngModel]="payrollLog().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="PayrollLog_Status">{{ 'Status' | localize }}</label>
+                                <input
+                                    id="PayrollLog_Status"
+                                    class="form-control"
+                                    type="number"
+                                    name="Status"
+                                    [ngModel]="payrollLog().status"
+                                    (ngModelChange)="updateField('status', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="PayrollLog_InPeriod">{{ 'InPeriod' | localize }}</label>
+                                <input
+                                    id="PayrollLog_InPeriod"
+                                    #inPeriodInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="InPeriod"
+                                    [ngModel]="payrollLog().inPeriod?.toISODate()"
+                                    (ngModelChange)="updateDateField('inPeriod', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="inPeriodInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="PayrollLog_NoOfEmployee">{{ 'NoOfEmployee' | localize }}</label>
+                                <input
+                                    id="PayrollLog_NoOfEmployee"
+                                    class="form-control"
+                                    type="number"
+                                    name="NoOfEmployee"
+                                    [ngModel]="payrollLog().noOfEmployee"
+                                    (ngModelChange)="updateField('noOfEmployee', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input
+                                        id="PayrollLog_StopFlag"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="StopFlag"
+                                        [ngModel]="payrollLog().stopFlag"
+                                        (ngModelChange)="updateField('stopFlag', $event)" />
+                                    <label class="form-check-label" for="PayrollLog_StopFlag">{{ 'StopFlag' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!payrollLogForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

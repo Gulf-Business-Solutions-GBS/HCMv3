@@ -1,0 +1,104 @@
+<div class="d-flex flex-column flex-root">
+    <div
+        class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed"
+        style="background-image: url(/assets/metronic/assets/media/svg/illustrations/{{ backgroundImageName }}.png)">
+        <div
+            class="d-flex flex-center flex-column flex-column-fluid"
+            [class.pb-lg-20]="!isSelectEditionPage()"
+            [class.pb-0]="isSelectEditionPage()">
+            <!--begin::Logo-->
+            <!-- h-60px, up from h-40px, to match the legacy self-service sign-in. The supplied artwork is
+                 65px tall, so this stays inside its native resolution and does not blur. -->
+            <a
+                (click)="goToHome()"
+                href=""
+                class="d-flex justify-content-center mt-6"
+                [class.mb-12]="!isSelectEditionPage()">
+                @if (!appSession.tenant || !appSession.tenant.HasLogo()) {
+                    <img [src]="defaultLogo" alt="logo" class="h-60px" [class.mb-12]="isSelectEditionPage()" />
+                }
+                @if (appSession.tenant && appSession.tenant.HasLogo()) {
+                    <img [src]="tenantLogoUrl" alt="logo" class="h-60px" />
+                }
+            </a>
+            <!--end::Logo-->
+
+            <!--begin::Wrapper-->
+            @if (isSelectEditionPage()) {
+                <div class="container-xxl mx-auto">
+                    @if (showTenantChange()) {
+                        <div class="tenant-change-box mb-5">
+                            <tenant-change />
+                        </div>
+                    }
+                    <!--begin::Form-->
+                    <router-outlet />
+                    <!--end::Form-->
+                </div>
+            } @else {
+                @if (isQrLoginEnabled()) {
+                    <div>
+                        <ng-container *ngTemplateOutlet="qrLoginWithRow" />
+                    </div>
+                } @else {
+                    <div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
+                        @if (showTenantChange()) {
+                            <div class="tenant-change-box mb-5">
+                                <tenant-change />
+                            </div>
+                        }
+                        <router-outlet />
+                    </div>
+                }
+            }
+
+            <ng-template #qrLoginWithRow>
+                <div class="w-1000px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
+                    <div class="row">
+                        <div class="col">
+                            @if (showTenantChange()) {
+                                <div class="tenant-change-box mb-5">
+                                    <tenant-change />
+                                </div>
+                            }
+                            <router-outlet />
+                        </div>
+                        <div class="col d-flex justify-content-center align-items-center">
+                            <div class="card justify-content-center align-items-center p-2">
+                                @if (qrCodeUrl()) {
+                                    <div>
+                                        <img
+                                            [src]="qrCodeUrl()"
+                                            alt="qr code"
+                                            width="250px"
+                                            height="250px"
+                                            class="mb-4" />
+                                        <p class="text-center fs-4">Log in with QR Code</p>
+                                    </div>
+                                }
+                                @if (!qrCodeUrl()) {
+                                    <div class="root-initial-loader">
+                                        <i class="fas fa-circle-notch fa-3x fa-spin-2x"></i>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            <!--end::Wrapper-->
+        </div>
+        <!--end::Content-->
+
+        <!--begin::Footer-->
+        <!-- Language switch at the foot of the page, where the template had it. It was tried above the
+             logo and on the tenant row; the first displaced the brand and the second was not wanted.
+             This is the only one of the three the user has not asked to move. -->
+        <div class="d-flex flex-center flex-column-auto p-10" [class.pt-0]="isSelectEditionPage()">
+            <language-switch />
+        </div>
+        <!--end::Footer-->
+
+    </div>
+    <!--end::Authentication - Sign-in-->
+</div>

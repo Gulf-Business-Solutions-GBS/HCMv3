@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-fund-exemption.edit",
+  "lang": "en",
+  "title": "Employee Fund Exemptions — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeFundExemption",
+  "overviewHtml": "<p>A period during which payroll does not deduct the fund contribution.</p><p>Payroll skips the deduction for any payroll whose end date falls inside an exemption period.</p>",
+  "aliasIndex": {
+    "loc:EmployeeFundId": "EmployeeFundExemption.EmployeeFundId",
+    "dom:EmployeeFundExemption_EmployeeFundId": "EmployeeFundExemption.EmployeeFundId",
+    "loc:StartDate": "EmployeeFundExemption.StartDate",
+    "dom:EmployeeFundExemption_StartDate": "EmployeeFundExemption.StartDate",
+    "loc:EndDate": "EmployeeFundExemption.EndDate",
+    "dom:EmployeeFundExemption_EndDate": "EmployeeFundExemption.EndDate",
+    "loc:Comments": "EmployeeFundExemption.Comments",
+    "dom:EmployeeFundExemption_Comments": "EmployeeFundExemption.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeFundExemption.EmployeeFundId",
+      "label": "EmployeeFundId",
+      "section": "EmployeeFundExemptions",
+      "aliases": [
+        "loc:EmployeeFundId",
+        "dom:EmployeeFundExemption_EmployeeFundId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The fund account the exemption applies to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFundExemption.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeFundExemptions",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeFundExemption_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFundExemption.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeFundExemptions",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeFundExemption_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFundExemption.Comments",
+      "label": "Comments",
+      "section": "EmployeeFundExemptions",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeFundExemption_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

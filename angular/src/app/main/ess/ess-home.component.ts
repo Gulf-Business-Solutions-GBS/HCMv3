@@ -1,0 +1,201 @@
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject, input, signal, viewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+import { AppComponentBase } from '@shared/common/app-component-base';
+import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
+import {
+    EssContextDto,
+    EssRecentRequestDto,
+    EssSessionServiceProxy,
+    EssTransactionTypeDto,
+    RequestStatus,
+} from '@shared/service-proxies/service-proxies';
+import { finalize } from 'rxjs/operators';
+import { SubHeaderComponent } from '../../shared/common/sub-header/sub-header.component';
+import { EssRequestDetailModalComponent } from './shared/ess-request-detail-modal.component';
+import { HelpPageDirective } from '@app/shared/help/help-page.directive';
+
+/**
+ * The Employee Self Service landing page.
+ *
+ * <p>The tile list is NOT hardcoded: it comes from the WorkflowTransactionType catalog via GetEssContext, so
+ * enabling a seventh self-service transaction is a catalog row plus a form, not a change here. That is also
+ * why this lives in the admin application at all -- the admin menu is permission-filtered, so an employee
+ * holding only the Employee role never sees it, and legacy HCM10's separate ESS project is not needed.</p>
+ *
+ * <p>The two counts are deliberately shown as separate cards rather than one "pending" number. Most people
+ * are on both sides of a workflow, and what you are waiting on somebody else for is a completely different
+ * thing from what somebody else is waiting on you for.</p>
+ */
+@Component({
+    selector: 'ess-home',
+    templateUrl: './ess-home.component.html',
+    styleUrls: ['./ess-home.component.less'],
+    animations: [appModuleAnimation()],
+    imports: [
+        CommonModule,
+        SubHeaderComponent,
+        LocalizePipe,
+        LuxonFormatPipe,
+        RouterModule,
+        EssRequestDetailModalComponent,
+        HelpPageDirective,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class EssHomeComponent extends AppComponentBase implements OnInit {
+    /**
+     * True when rendered inside the dashboard rather than as its own page.
+     *
+     * Suppresses the page chrome -- sub-header and container -- because the dashboard supplies both.
+     * Kept as a flag rather than splitting the component in two: the ESS logic here (recent requests,
+     * what is waiting on you, workflow history) is the same either way, and two copies of it would drift.
+     */
+    readonly embedded = input(false);
+
+    private readonly _essSessionService = inject(EssSessionServiceProxy);
+
+    readonly loading = signal(true);
+    readonly context = signal<EssContextDto | undefined>(undefined);
+
+    readonly detail = viewChild<EssRequestDetailModalComponent>('detail');
+
+    /**
+     * The transactions that share the one Documents screen: recording a document, withdrawing one, and
+     * asking for a letter. The same three the Documents menu entry stands for.
+     */
+    private static readonly documentScreenTypes = ['EmployeeDocument', 'EmployeeDocumentMvmt', 'EmployeeLetterRequest'];
+
+    /**
+     * One tile per screen. The catalog lists a transaction per row, but the three document transactions open
+     * the same screen, and three tiles leading to one place read as three different things. They are shown
+     * as a single Documents tile, where the first of them would have stood.
+     */
+    readonly tiles = computed(() => {
+        const types = this.context()?.availableTransactionTypes ?? [];
+        const documents = types.filter((type) => EssHomeComponent.documentScreenTypes.includes(type.code ?? ''));
+
+        if (documents.length < 2) {
+            return types;
+        }
+
+        const merged = new EssTransactionTypeDto();
+        merged.code = documents[0].code;
+        merged.nameEn = this.l('EssMyDocuments');
+        merged.nameAr = this.l('EssMyDocuments');
+        merged.essRoute = '/app/main/ess/document';
+        merged.iconClass = documents[0].iconClass;
+        merged.displayOrder = documents[0].displayOrder;
+
+        // "No approval needed" only when none of the three goes to an approver.
+        merged.isWorkflowEnabled = documents.some((type) => type.isWorkflowEnabled);
+
+        return types
+            .filter((type) => type === documents[0] || !documents.includes(type))
+            .map((type) => (type === documents[0] ? merged : type));
+    });
+    readonly recent = computed(() => this.context()?.recentRequests ?? []);
+
+    ngOnInit(): void {
+        this.loadContext();
+    }
+
+    loadContext(): void {
+        this.loading.set(true);
+
+        this._essSessionService
+            .getEssContext()
+            .pipe(finalize(() => this.loading.set(false)))
+            .subscribe((result) => this.context.set(result));
+    }
+
+    /**
+     * Employee names follow the UI language rather than being transliterated -- the English and Arabic name
+     * fields are maintained separately on Employee.
+     */
+    employeeName(): string {
+        const ctx = this.context();
+        if (!ctx) {
+            return '';
+        }
+
+        return this.isRtl ? ctx.employeeFullNameAr || ctx.employeeFullNameEn : ctx.employeeFullNameEn;
+    }
+
+    /** Initials stand in for a missing photo, so the card never shows a broken image or an empty circle. */
+    initials(): string {
+        // ?? '' because employeeName() legitimately returns null -- an unlinked account has no name, and
+        // a template that reaches this while the context says so would otherwise throw on every
+        // change-detection pass, taking the rest of the page's rendering down with it.
+        const name = (this.employeeName() ?? '').trim();
+        if (!name) {
+            return '?';
+        }
+
+        const parts = name.split(/\s+/);
+        const first = parts[0]?.charAt(0) ?? '';
+        const last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : '';
+
+        return (first + last).toUpperCase();
+    }
+
+    photoUrl(): string | undefined {
+        const ctx = this.context();
+
+        return ctx?.hasPhoto && ctx.employeeId ? `/api/employee-photo/${ctx.employeeId}` : undefined;
+    }
+
+    typeName(type: EssTransactionTypeDto): string {
+        return this.isRtl ? type.nameAr || type.nameEn : type.nameEn;
+    }
+
+    requestTypeName(request: EssRecentRequestDto): string {
+        return this.isRtl
+            ? request.requestTypeNameAr || request.requestTypeNameEn || request.requestType
+            : request.requestTypeNameEn || request.requestType;
+    }
+
+    requestSummary(request: EssRecentRequestDto): string {
+        return this.isRtl ? request.summaryAr || request.summaryEn : request.summaryEn;
+    }
+
+    statusLabel(request: EssRecentRequestDto): string {
+        return this.l('WorkflowRequestStatus_' + RequestStatus[request.requestStatus]);
+    }
+
+    statusClass(request: EssRecentRequestDto): string {
+        switch (request.requestStatus) {
+            case RequestStatus.Open:
+                return 'badge-warning';
+            case RequestStatus.Approved:
+            case RequestStatus.Closed:
+                return 'badge-success';
+            case RequestStatus.Rejected:
+                return 'badge-danger';
+            default:
+                return 'badge-secondary';
+        }
+    }
+
+    /**
+     * Opens the request read-only, the same dialog the self-service lists use.
+     *
+     * <p>No fields are passed: every row here has a workflow request, so the dialog fetches that type's own
+     * projection and shows more than this summary card knows. It replaced a Workflow History button that
+     * showed the action trail without the request it belonged to.</p>
+     */
+    openDetail(request: EssRecentRequestDto): void {
+        this.detail()?.show({
+            title: this.requestTypeName(request),
+            workflowRequestId: request.id,
+            statusLabel: this.statusLabel(request),
+            statusClass: this.statusClass(request),
+        });
+    }
+
+    private get isRtl(): boolean {
+        return document?.documentElement?.getAttribute('dir') === 'rtl';
+    }
+}

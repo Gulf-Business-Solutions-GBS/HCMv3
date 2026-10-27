@@ -1,0 +1,91 @@
+{
+  "helpId": "gp.gate-pass-material.edit",
+  "lang": "ar",
+  "title": "مواد تصاريح الدخول والخروج — إنشاء / تحرير",
+  "entity": "HCMv3.GatePassManagement.GatePassMaterial",
+  "overviewHtml": "<p>مادة تمر عبر البوابة بموجب تصريح، والكمية التي أُعيدت منها.</p>",
+  "aliasIndex": {
+    "loc:ItemCode": "GatePassMaterial.ItemCode",
+    "dom:GatePassMaterial_ItemCode": "GatePassMaterial.ItemCode",
+    "loc:ItemName": "GatePassMaterial.ItemName",
+    "dom:GatePassMaterial_ItemName": "GatePassMaterial.ItemName",
+    "loc:Quantity": "GatePassMaterial.Quantity",
+    "dom:GatePassMaterial_Quantity": "GatePassMaterial.Quantity",
+    "loc:ExpectedReturnDate": "GatePassMaterial.ExpectedReturnDate",
+    "dom:GatePassMaterial_ExpectedReturnDate": "GatePassMaterial.ExpectedReturnDate",
+    "loc:ReturnedQuantity": "GatePassMaterial.ReturnedQuantity",
+    "dom:GatePassMaterial_ReturnedQuantity": "GatePassMaterial.ReturnedQuantity"
+  },
+  "fields": [
+    {
+      "id": "GatePassMaterial.ItemCode",
+      "label": "ItemCode",
+      "section": "GatePassMaterials",
+      "aliases": [
+        "loc:ItemCode",
+        "dom:GatePassMaterial_ItemCode"
+      ],
+      "rules": "إلزامي. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز المادة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassMaterial.ItemName",
+      "label": "ItemName",
+      "section": "GatePassMaterials",
+      "aliases": [
+        "loc:ItemName",
+        "dom:GatePassMaterial_ItemName"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم المادة.</p><p><strong>مثال.</strong> حاسوب محمول</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassMaterial.Quantity",
+      "label": "Quantity",
+      "section": "GatePassMaterials",
+      "aliases": [
+        "loc:Quantity",
+        "dom:GatePassMaterial_Quantity"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الكمية التي خرجت.</p><p><strong>مثال.</strong> 2</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassMaterial.ExpectedReturnDate",
+      "label": "ExpectedReturnDate",
+      "section": "GatePassMaterials",
+      "aliases": [
+        "loc:ExpectedReturnDate",
+        "dom:GatePassMaterial_ExpectedReturnDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى يجب أن تعود المواد.</p><p><strong>لماذا يهم.</strong> للتسجيل فقط: لا يوجد ما ينبّه عند حلوله.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassMaterial.ReturnedQuantity",
+      "label": "ReturnedQuantity",
+      "section": "GatePassMaterials",
+      "aliases": [
+        "loc:ReturnedQuantity",
+        "dom:GatePassMaterial_ReturnedQuantity"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الكمية التي عادت.</p><p><strong>مثال.</strong> 1</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

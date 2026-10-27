@@ -1,0 +1,105 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'SponsorLicenseInfos' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SponsorLicenseInfo_TradeLicenseNum">{{ 'TradeLicenseNum' | localize }}</label>
+                                <input
+                                    id="SponsorLicenseInfo_TradeLicenseNum"
+                                    #tradeLicenseNumInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="TradeLicenseNum"
+                                    [ngModel]="record().tradeLicenseNum"
+                                    (ngModelChange)="updateField('tradeLicenseNum', $event)"
+                                    required
+                                    maxlength="100" />
+                                <validation-messages [formCtrl]="tradeLicenseNumInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SponsorLicenseInfo_CivilId">{{ 'CivilId' | localize }}</label>
+                                <input
+                                    id="SponsorLicenseInfo_CivilId"
+                                    #civilIdInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="CivilId"
+                                    [ngModel]="record().civilId"
+                                    (ngModelChange)="updateField('civilId', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="civilIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SponsorLicenseInfo_LicenseIssueDate">{{ 'LicenseIssueDate' | localize }}</label>
+                                <input
+                                    id="SponsorLicenseInfo_LicenseIssueDate"
+                                    #licenseIssueDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="LicenseIssueDate"
+                                    [ngModel]="record().licenseIssueDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('licenseIssueDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="licenseIssueDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SponsorLicenseInfo_LicenseExpiryDate">{{ 'LicenseExpiryDate' | localize }}</label>
+                                <input
+                                    id="SponsorLicenseInfo_LicenseExpiryDate"
+                                    #licenseExpiryDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="LicenseExpiryDate"
+                                    [ngModel]="record().licenseExpiryDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('licenseExpiryDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="licenseExpiryDateInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="SponsorLicenseInfo_ActivityType">{{ 'ActivityType' | localize }}</label>
+                                <input
+                                    id="SponsorLicenseInfo_ActivityType"
+                                    class="form-control"
+                                    type="text"
+                                    name="ActivityType"
+                                    [ngModel]="record().activityType"
+                                    (ngModelChange)="updateField('activityType', $event)"
+                                    maxlength="200" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

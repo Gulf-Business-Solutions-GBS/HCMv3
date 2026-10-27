@@ -1,0 +1,219 @@
+{
+  "helpId": "pay.wage-account.edit",
+  "lang": "en",
+  "title": "Wage Accounts — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.WageAccount",
+  "overviewHtml": "<p>A company-wide mapping of a wagetype to a ledger account, from a given date, with its offset account and cost elements.</p><p>Not read at present: the cost engine and the journal voucher take their accounts from each employee's own <strong>Wage Accounts</strong> (on the employee record), and nothing reads this list. A wagetype with no employee wage account for the period stops costing for that employee (\"WageType : '…' not configured for Employee\"), whatever is set here.</p>",
+  "aliasIndex": {
+    "loc:WageTypeId": "WageAccount.WageTypeId",
+    "dom:WageAccount_WageTypeId": "WageAccount.WageTypeId",
+    "loc:StartDate": "WageAccount.StartDate",
+    "dom:WageAccount_StartDate": "WageAccount.StartDate",
+    "loc:EndDate": "WageAccount.EndDate",
+    "dom:WageAccount_EndDate": "WageAccount.EndDate",
+    "loc:AccountInfoId": "WageAccount.AccountInfoId",
+    "dom:WageAccount_AccountInfoId": "WageAccount.AccountInfoId",
+    "loc:OffsetAccountInfoId": "WageAccount.OffsetAccountInfoId",
+    "dom:WageAccount_OffsetAccountInfoId": "WageAccount.OffsetAccountInfoId",
+    "loc:CostPercentage": "WageAccount.CostPercentage",
+    "dom:WageAccount_CostPercentage": "WageAccount.CostPercentage",
+    "loc:CostElement1Id": "WageAccount.CostElement1Id",
+    "dom:WageAccount_costElement1Id": "WageAccount.CostElement1Id",
+    "loc:CostElement2Id": "WageAccount.CostElement2Id",
+    "dom:WageAccount_costElement2Id": "WageAccount.CostElement2Id",
+    "loc:CostElement3Id": "WageAccount.CostElement3Id",
+    "dom:WageAccount_costElement3Id": "WageAccount.CostElement3Id",
+    "loc:CostElement4Id": "WageAccount.CostElement4Id",
+    "dom:WageAccount_costElement4Id": "WageAccount.CostElement4Id",
+    "loc:CostElement5Id": "WageAccount.CostElement5Id",
+    "dom:WageAccount_costElement5Id": "WageAccount.CostElement5Id",
+    "loc:CostElement6Id": "WageAccount.CostElement6Id",
+    "dom:WageAccount_costElement6Id": "WageAccount.CostElement6Id",
+    "loc:CostElement7Id": "WageAccount.CostElement7Id",
+    "dom:WageAccount_costElement7Id": "WageAccount.CostElement7Id"
+  },
+  "fields": [
+    {
+      "id": "WageAccount.WageTypeId",
+      "label": "WageTypeId",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:WageAccount_WageTypeId"
+      ],
+      "rules": "Required. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wagetype this mapping is for.</p><p><strong>Example.</strong> Housing Allowance</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.StartDate",
+      "label": "StartDate",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:StartDate",
+        "dom:WageAccount_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.EndDate",
+      "label": "EndDate",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:EndDate",
+        "dom:WageAccount_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.AccountInfoId",
+      "label": "AccountInfoId",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:AccountInfoId",
+        "dom:WageAccount_AccountInfoId"
+      ],
+      "rules": "Required. Chosen from Account Info master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The ledger account the wagetype would post to.</p><p><strong>Example.</strong> 510100 — Salaries and Wages</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.OffsetAccountInfoId",
+      "label": "OffsetAccountInfoId",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:OffsetAccountInfoId",
+        "dom:WageAccount_OffsetAccountInfoId"
+      ],
+      "rules": "Optional. Chosen from Account Info master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The balancing account for the entry.</p><p><strong>Example.</strong> 210500 — Salaries Payable</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.CostPercentage",
+      "label": "CostPercentage",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostPercentage",
+        "dom:WageAccount_CostPercentage"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The share of the wagetype's amount this mapping would carry.</p><p><strong>Example.</strong> <code>100</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.CostElement1Id",
+      "label": "CostElement1Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement1Id",
+        "dom:WageAccount_costElement1Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 1 — one of up to seven accounting dimensions.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.CostElement2Id",
+      "label": "CostElement2Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement2Id",
+        "dom:WageAccount_costElement2Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 2 — one of up to seven accounting dimensions.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.CostElement3Id",
+      "label": "CostElement3Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement3Id",
+        "dom:WageAccount_costElement3Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 3 — one of up to seven accounting dimensions.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.CostElement4Id",
+      "label": "CostElement4Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement4Id",
+        "dom:WageAccount_costElement4Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 4 — one of up to seven accounting dimensions.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.CostElement5Id",
+      "label": "CostElement5Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement5Id",
+        "dom:WageAccount_costElement5Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 5 — one of up to seven accounting dimensions.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.CostElement6Id",
+      "label": "CostElement6Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement6Id",
+        "dom:WageAccount_costElement6Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 6 — one of up to seven accounting dimensions.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.CostElement7Id",
+      "label": "CostElement7Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement7Id",
+        "dom:WageAccount_costElement7Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 7 — one of up to seven accounting dimensions.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

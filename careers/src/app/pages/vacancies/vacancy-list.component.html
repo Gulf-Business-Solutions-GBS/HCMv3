@@ -1,0 +1,172 @@
+<section class="hero">
+    <div class="container">
+        <h1 class="hero__title">{{ heroTitle() }}</h1>
+        <p class="hero__subtitle">{{ 'CareersHeroSubtitle' | localize }}</p>
+
+        <form class="searchbar" (ngSubmit)="search()">
+            <label class="sr-only" for="jobSearch">{{ 'Search' | localize }}</label>
+            <input
+                id="jobSearch"
+                type="search"
+                class="searchbar__input"
+                [placeholder]="'CareersSearchPlaceholder' | localize"
+                [ngModel]="searchText()"
+                (ngModelChange)="searchText.set($event)"
+                name="jobSearch"
+            />
+            <button type="submit" class="btn btn--primary btn--lg">{{ 'Search' | localize }}</button>
+        </form>
+    </div>
+</section>
+
+<div class="container page">
+    <div class="layout">
+        <!-- ------------------------------------------------------------ facets -- -->
+        <aside class="facets" [class.facets--open]="filtersOpen()">
+            <div class="facets__head">
+                <h2 class="facets__title">{{ 'CareersFilters' | localize }}</h2>
+                @if (hasActiveFilters()) {
+                    <button type="button" class="btn btn--ghost btn--sm" (click)="clearFilters()">
+                        {{ 'CareersClearFilters' | localize }}
+                    </button>
+                }
+            </div>
+
+            @if (jobTitleFacets().length) {
+                <div class="facet">
+                    <h3 class="facet__title">{{ 'CareersJobTitleFacet' | localize }}</h3>
+                    @for (option of jobTitleFacets(); track option.id) {
+                        <label class="facet__option">
+                            <input
+                                type="checkbox"
+                                [checked]="selectedJobTitleIds().includes(option.id)"
+                                (change)="toggleJobTitle(option.id)"
+                            />
+                            <span class="facet__name">{{ option.name }}</span>
+                            <span class="facet__count">{{ option.count }}</span>
+                        </label>
+                    }
+                </div>
+            }
+
+            @if (workLocationFacets().length) {
+                <div class="facet">
+                    <h3 class="facet__title">{{ 'CareersLocationFacet' | localize }}</h3>
+                    @for (option of workLocationFacets(); track option.id) {
+                        <label class="facet__option">
+                            <input
+                                type="checkbox"
+                                [checked]="selectedWorkLocationIds().includes(option.id)"
+                                (change)="toggleWorkLocation(option.id)"
+                            />
+                            <span class="facet__name">{{ option.name }}</span>
+                            <span class="facet__count">{{ option.count }}</span>
+                        </label>
+                    }
+                </div>
+            }
+        </aside>
+
+        <!-- ------------------------------------------------------------- results -- -->
+        <div class="results">
+            <div class="results__bar">
+                <p class="results__count">{{ resultLabel() }}</p>
+
+                <div class="results__actions">
+                    <button type="button" class="btn btn--secondary btn--sm results__filter-toggle" (click)="toggleFilters()">
+                        {{ 'CareersFilters' | localize }}
+                    </button>
+
+                    <label class="sr-only" for="sortBy">{{ 'CareersSortBy' | localize }}</label>
+                    <select
+                        id="sortBy"
+                        class="select select--inline"
+                        [ngModel]="sorting()"
+                        (ngModelChange)="changeSorting($event)"
+                        name="sortBy"
+                    >
+                        @for (option of sortOptions; track option.value) {
+                            <option [value]="option.value">{{ option.labelKey | localize }}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            @if (loading()) {
+                <div class="loading-block">
+                    <span class="spinner"></span>
+                    <span>{{ 'CareersLoading' | localize }}</span>
+                </div>
+            } @else if (!vacancies().length) {
+                <div class="card empty">
+                    <p class="empty__title">{{ 'CareersNoVacancies' | localize }}</p>
+                </div>
+            } @else {
+                <ul class="joblist">
+                    @for (vacancy of vacancies(); track vacancy.id) {
+                        <li class="jobcard">
+                            <a class="jobcard__link" [routerLink]="['/jobs', vacancy.id]">
+                                <div class="jobcard__main">
+                                    <h3 class="jobcard__title">{{ vacancy.vacancyTitle }}</h3>
+
+                                    <div class="jobcard__meta">
+                                        @if (vacancy.departmentName) {
+                                            <span class="jobcard__meta-item">{{ vacancy.departmentName }}</span>
+                                        }
+                                        @if (vacancy.workLocationName) {
+                                            <span class="jobcard__meta-item">{{ vacancy.workLocationName }}</span>
+                                        }
+                                        @if (vacancy.code) {
+                                            <span class="jobcard__meta-item">#{{ vacancy.code }}</span>
+                                        }
+                                    </div>
+
+                                    <div class="jobcard__chips">
+                                        <span class="chip chip--accent">{{ employmentTypeKey(vacancy) | localize }}</span>
+                                        @if (vacancy.jobTitleName) {
+                                            <span class="chip">{{ vacancy.jobTitleName }}</span>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="jobcard__aside">
+                                    <span class="small muted">
+                                        {{ 'CareersPostedOn' | localize }} {{ vacancy.publishOn | careersDate }}
+                                    </span>
+                                    <span class="small muted">
+                                        {{ 'ClosingDate' | localize }}: {{ vacancy.closingDate | careersDate }}
+                                    </span>
+                                    <span class="jobcard__cta">{{ 'CareersApplyNow' | localize }}</span>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                </ul>
+
+                @if (totalPages() > 1) {
+                    <nav class="pager">
+                        <button
+                            type="button"
+                            class="btn btn--secondary btn--sm"
+                            [disabled]="page() === 0"
+                            (click)="goToPage(page() - 1)"
+                        >
+                            {{ 'Previous' | localize }}
+                        </button>
+
+                        <span class="pager__status small muted">{{ page() + 1 }} / {{ totalPages() }}</span>
+
+                        <button
+                            type="button"
+                            class="btn btn--secondary btn--sm"
+                            [disabled]="page() + 1 >= totalPages()"
+                            (click)="goToPage(page() + 1)"
+                        >
+                            {{ 'Next' | localize }}
+                        </button>
+                    </nav>
+                }
+            }
+        </div>
+    </div>
+</div>

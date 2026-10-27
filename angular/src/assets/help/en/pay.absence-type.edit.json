@@ -1,0 +1,987 @@
+{
+  "helpId": "pay.absence-type.edit",
+  "lang": "en",
+  "title": "Leave Types — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.AbsenceType",
+  "overviewHtml": "<p>A type of leave or absence — annual, sick, unpaid, Hajj, maternity and so on — and how it is counted, paid and accrued.</p><p>What each employee is entitled to is set per grade, on the grade's leave rules; this form sets how the type behaves.</p><p><strong>Many settings on this form are saved but not enforced.</strong> The limits and restrictions on applying for leave — maximum and minimum days, days it may not start on, attachments, probation, notice period, gender, religion, negative balance, hourly limits — are not checked when leave is entered or approved. Each such field says so below. To enforce a leave policy, use a business rule on leave under <strong>Configure Business Rules</strong>; rules can read the leave type's code, whether it is paid, whether it is active and its minimum days in service.</p>",
+  "aliasIndex": {
+    "loc:Code": "AbsenceType.Code",
+    "dom:AbsenceType_Code": "AbsenceType.Code",
+    "loc:NameEn": "AbsenceType.NameEn",
+    "dom:AbsenceType_NameEn": "AbsenceType.NameEn",
+    "loc:NameAr": "AbsenceType.NameAr",
+    "dom:AbsenceType_NameAr": "AbsenceType.NameAr",
+    "loc:IsActive": "AbsenceType.IsActive",
+    "dom:AbsenceType_IsActive": "AbsenceType.IsActive",
+    "loc:LeaveBasisPeriod": "AbsenceType.LeaveBasisPeriod",
+    "dom:AbsenceType_LeaveBasisPeriod": "AbsenceType.LeaveBasisPeriod",
+    "loc:LeaveBasisFixedDays": "AbsenceType.LeaveBasisFixedDays",
+    "dom:AbsenceType_LeaveBasisFixedDays": "AbsenceType.LeaveBasisFixedDays",
+    "loc:IsPaid": "AbsenceType.IsPaid",
+    "dom:AbsenceType_IsPaid": "AbsenceType.IsPaid",
+    "loc:WageType": "AbsenceType.WageTypeId",
+    "dom:AbsenceType_WageTypeId": "AbsenceType.WageTypeId",
+    "loc:IncludeWeekend": "AbsenceType.IncludeWeekend",
+    "dom:AbsenceType_IncludeWeekend": "AbsenceType.IncludeWeekend",
+    "loc:IncludeRestDay": "AbsenceType.IncludeRestDay",
+    "dom:AbsenceType_IncludeRestDay": "AbsenceType.IncludeRestDay",
+    "loc:IncludePublicHoliday": "AbsenceType.IncludePublicHoliday",
+    "dom:AbsenceType_IncludePublicHoliday": "AbsenceType.IncludePublicHoliday",
+    "loc:IncludeInWorkflow": "AbsenceType.IncludeInWorkflow",
+    "dom:AbsenceType_IncludeInWorkflow": "AbsenceType.IncludeInWorkflow",
+    "loc:HaveQuotaAccrual": "AbsenceType.HaveQuotaAccrual",
+    "dom:AbsenceType_HaveQuotaAccrual": "AbsenceType.HaveQuotaAccrual",
+    "loc:AccrualPeriod": "AbsenceType.AccrualPeriod",
+    "dom:AbsenceType_AccrualPeriod": "AbsenceType.AccrualPeriod",
+    "loc:CustomStartMonth": "AbsenceType.CustomStartMonth",
+    "dom:AbsenceType_CustomStartMonth": "AbsenceType.CustomStartMonth",
+    "loc:ExcludePaidLeaveAccrual": "AbsenceType.ExcludePaidLeaveAccrual",
+    "dom:AbsenceType_ExcludePaidLeaveAccrual": "AbsenceType.ExcludePaidLeaveAccrual",
+    "loc:MinActiveDaysInService": "AbsenceType.MinActiveDaysInService",
+    "dom:AbsenceType_MinActiveDaysInService": "AbsenceType.MinActiveDaysInService",
+    "loc:CanApplyAgain": "AbsenceType.CanApplyAgain",
+    "dom:AbsenceType_CanApplyAgain": "AbsenceType.CanApplyAgain",
+    "loc:CanApplyAfterDays": "AbsenceType.CanApplyAfterDays",
+    "dom:AbsenceType_CanApplyAfterDays": "AbsenceType.CanApplyAfterDays",
+    "loc:CanApplyBeforeDays": "AbsenceType.CanApplyBeforeDays",
+    "dom:AbsenceType_CanApplyBeforeDays": "AbsenceType.CanApplyBeforeDays",
+    "loc:ReInitialize": "AbsenceType.ReInitialize",
+    "dom:AbsenceType_ReInitialize": "AbsenceType.ReInitialize",
+    "loc:ReInitializeAfter": "AbsenceType.ReInitializeAfter",
+    "dom:AbsenceType_ReInitializeAfter": "AbsenceType.ReInitializeAfter",
+    "loc:ApplyLeaveInAdvance": "AbsenceType.ApplyLeaveInAdvance",
+    "dom:AbsenceType_ApplyLeaveInAdvance": "AbsenceType.ApplyLeaveInAdvance",
+    "loc:ApplyLeaveInAdvanceDays": "AbsenceType.ApplyLeaveInAdvanceDays",
+    "dom:AbsenceType_ApplyLeaveInAdvanceDays": "AbsenceType.ApplyLeaveInAdvanceDays",
+    "loc:ApplyMaxLeave": "AbsenceType.ApplyMaxLeave",
+    "dom:AbsenceType_ApplyMaxLeave": "AbsenceType.ApplyMaxLeave",
+    "loc:MaxLimitInDays": "AbsenceType.MaxLimitInDays",
+    "dom:AbsenceType_MaxLimitInDays": "AbsenceType.MaxLimitInDays",
+    "loc:CreateUnpaidAboveMaxLimitDays": "AbsenceType.CreateUnpaidAboveMaxLimitDays",
+    "dom:AbsenceType_CreateUnpaidAboveMaxLimitDays": "AbsenceType.CreateUnpaidAboveMaxLimitDays",
+    "loc:ApplyMinLeave": "AbsenceType.ApplyMinLeave",
+    "dom:AbsenceType_ApplyMinLeave": "AbsenceType.ApplyMinLeave",
+    "loc:MinLimitInDays": "AbsenceType.MinLimitInDays",
+    "dom:AbsenceType_MinLimitInDays": "AbsenceType.MinLimitInDays",
+    "loc:ResetFrequency": "AbsenceType.ResetFrequency",
+    "dom:AbsenceType_ResetFrequency": "AbsenceType.ResetFrequency",
+    "loc:TotalMinutes": "AbsenceType.TotalMinutes",
+    "dom:AbsenceType_TotalMinutes": "AbsenceType.TotalMinutes",
+    "loc:MaxMinutes": "AbsenceType.MaxMinutes",
+    "dom:AbsenceType_MaxMinutes": "AbsenceType.MaxMinutes",
+    "loc:MaxCount": "AbsenceType.MaxCount",
+    "dom:AbsenceType_MaxCount": "AbsenceType.MaxCount",
+    "loc:RestrictType": "AbsenceType.PolicyRestrictType",
+    "dom:AbsenceType_PolicyRestrictType": "AbsenceType.PolicyRestrictType",
+    "loc:AbsenceViolationRules": "AbsenceType.AbsenceViolationRuleId",
+    "dom:AbsenceType_AbsenceViolationRuleId": "AbsenceType.AbsenceViolationRuleId",
+    "loc:LeaveGender": "AbsenceType.LeaveGender",
+    "dom:AbsenceType_LeaveGender": "AbsenceType.LeaveGender",
+    "loc:LeaveReligion": "AbsenceType.LeaveReligion",
+    "dom:AbsenceType_LeaveReligion": "AbsenceType.LeaveReligion",
+    "loc:QuotaType": "AbsenceType.QuotaType",
+    "dom:AbsenceType_QuotaType": "AbsenceType.QuotaType",
+    "loc:LeaveEntitlement": "AbsenceType.LeaveEntitlement",
+    "dom:AbsenceType_LeaveEntitlement": "AbsenceType.LeaveEntitlement",
+    "loc:AllowBackDatedDays": "AbsenceType.AllowBackDatedDays",
+    "dom:AbsenceType_AllowBackDatedDays": "AbsenceType.AllowBackDatedDays",
+    "loc:TotalDaysAllowed": "AbsenceType.TotalDaysAllowed",
+    "dom:AbsenceType_TotalDaysAllowed": "AbsenceType.TotalDaysAllowed",
+    "loc:NegativeBalanceLimit": "AbsenceType.NegativeBalanceLimit",
+    "dom:AbsenceType_NegativeBalanceLimit": "AbsenceType.NegativeBalanceLimit",
+    "loc:EnableNegativeBalance": "AbsenceType.EnableNegativeBalance",
+    "dom:AbsenceType_EnableNegativeBalance": "AbsenceType.EnableNegativeBalance",
+    "loc:IncludeInSalaryProfile": "AbsenceType.IncludeInSalaryProfile",
+    "dom:AbsenceType_IncludeInSalaryProfile": "AbsenceType.IncludeInSalaryProfile",
+    "loc:AllowDuringProbation": "AbsenceType.AllowDuringProbation",
+    "dom:AbsenceType_AllowDuringProbation": "AbsenceType.AllowDuringProbation",
+    "loc:AllowToReturnEarly": "AbsenceType.AllowToReturnEarly",
+    "dom:AbsenceType_AllowToReturnEarly": "AbsenceType.AllowToReturnEarly",
+    "loc:AllowInTerminationNoticeOnly": "AbsenceType.AllowInTerminationNoticeOnly",
+    "dom:AbsenceType_AllowInTerminationNoticeOnly": "AbsenceType.AllowInTerminationNoticeOnly",
+    "loc:IsReturnDateRequired": "AbsenceType.IsReturnDateRequired",
+    "dom:AbsenceType_IsReturnDateRequired": "AbsenceType.IsReturnDateRequired",
+    "loc:IsAttachmentRequired": "AbsenceType.IsAttachmentRequired",
+    "dom:AbsenceType_IsAttachmentRequired": "AbsenceType.IsAttachmentRequired",
+    "loc:AllowPartialLeave": "AbsenceType.AllowPartialLeave",
+    "dom:AbsenceType_AllowPartialLeave": "AbsenceType.AllowPartialLeave",
+    "loc:SendNotification": "AbsenceType.SendNotification",
+    "dom:AbsenceType_SendNotification": "AbsenceType.SendNotification",
+    "loc:RequirePolicyAcceptance": "AbsenceType.RequirePolicyAcceptance",
+    "dom:AbsenceType_RequirePolicyAcceptance": "AbsenceType.RequirePolicyAcceptance",
+    "loc:LeaveDurationType": "AbsenceType.LeaveDurationType",
+    "dom:AbsenceType_LeaveDurationType": "AbsenceType.LeaveDurationType",
+    "loc:MaxFutureDays": "AbsenceType.MaxFutureDays",
+    "dom:AbsenceType_MaxFutureDays": "AbsenceType.MaxFutureDays",
+    "loc:Sunday": "AbsenceType.DontAllowToStartOnSunday",
+    "dom:AbsenceType_DontAllowToStartOnSunday": "AbsenceType.DontAllowToStartOnSunday",
+    "loc:Monday": "AbsenceType.DontAllowToStartOnMonday",
+    "dom:AbsenceType_DontAllowToStartOnMonday": "AbsenceType.DontAllowToStartOnMonday",
+    "loc:Tuesday": "AbsenceType.DontAllowToStartOnTuesday",
+    "dom:AbsenceType_DontAllowToStartOnTuesday": "AbsenceType.DontAllowToStartOnTuesday",
+    "loc:Wednesday": "AbsenceType.DontAllowToStartOnWednesday",
+    "dom:AbsenceType_DontAllowToStartOnWednesday": "AbsenceType.DontAllowToStartOnWednesday",
+    "loc:Thursday": "AbsenceType.DontAllowToStartOnThursday",
+    "dom:AbsenceType_DontAllowToStartOnThursday": "AbsenceType.DontAllowToStartOnThursday",
+    "loc:Friday": "AbsenceType.DontAllowToStartOnFriday",
+    "dom:AbsenceType_DontAllowToStartOnFriday": "AbsenceType.DontAllowToStartOnFriday",
+    "loc:Saturday": "AbsenceType.DontAllowToStartOnSaturday",
+    "dom:AbsenceType_DontAllowToStartOnSaturday": "AbsenceType.DontAllowToStartOnSaturday"
+  },
+  "fields": [
+    {
+      "id": "AbsenceType.Code",
+      "label": "Code",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:AbsenceType_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The leave type's code.</p><p><strong>Example.</strong> <code>1</code> — annual leave.</p><p><strong>Why it matters.</strong> Payroll and the time engine recognise some leave types by code: <code>1</code> annual leave, <code>2</code> unpaid leave, <code>3</code> sick leave and <code>15</code> unapproved absence each have their own rules for balances, indemnity and pay. Use those codes only for those types.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.NameEn",
+      "label": "NameEn",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:AbsenceType_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.NameAr",
+      "label": "NameAr",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:AbsenceType_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.IsActive",
+      "label": "IsActive",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IsActive",
+        "dom:AbsenceType_IsActive"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the leave type is in use.</p><p><strong>Why it matters.</strong> Not enforced at present: an inactive type is still offered when leave is entered, including in self-service. Business rules on leave can read it, so a rule can refuse leave of an inactive type.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.LeaveBasisPeriod",
+      "label": "LeaveBasisPeriod",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:LeaveBasisPeriod",
+        "dom:AbsenceType_LeaveBasisPeriod"
+      ],
+      "rules": "Required. One of: Calendar Days, Fixed Days.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a leave day is valued on calendar days or on a fixed number of days.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.LeaveBasisFixedDays",
+      "label": "LeaveBasisFixedDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:LeaveBasisFixedDays",
+        "dom:AbsenceType_LeaveBasisFixedDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The fixed number of days, for the fixed-days basis.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.IsPaid",
+      "label": "IsPaid",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IsPaid",
+        "dom:AbsenceType_IsPaid"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the leave is paid.</p><p><strong>Why it matters.</strong> Only paid leave can be paid in advance: an advance-leave off-cycle run picks up only leave of paid types set to <em>Pay In Advance</em>. When the payroll setting <em>Fixed To Actual When Unpaid Leave Found</em> is on, a month containing leave of an unpaid type is paid on actual days instead of fixed days. Business rules on leave can read it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.WageTypeId",
+      "label": "WageType",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:AbsenceType_WageTypeId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wagetype this leave is paid under.</p><p><strong>Example.</strong> Annual Leave Pay</p><p><strong>Why it matters.</strong> Leave pay for this type is paid on this wagetype, and its billing method decides how an accrued leave day is valued. Which wagetypes make up the daily amount is set in <strong>Wagetype Leaves</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.IncludeWeekend",
+      "label": "IncludeWeekend",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IncludeWeekend",
+        "dom:AbsenceType_IncludeWeekend"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a weekly off inside the leave counts as a leave day.</p><p><strong>Why it matters.</strong> Ticked, weekly offs within the leave are counted as leave and taken from the balance. Unticked, they are not.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.IncludeRestDay",
+      "label": "IncludeRestDay",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IncludeRestDay",
+        "dom:AbsenceType_IncludeRestDay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a rest day inside the leave counts as a leave day.</p><p><strong>Why it matters.</strong> Ticked, rest days within the leave are counted as leave and taken from the balance. Unticked, they are not.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.IncludePublicHoliday",
+      "label": "IncludePublicHoliday",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IncludePublicHoliday",
+        "dom:AbsenceType_IncludePublicHoliday"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a public holiday inside the leave counts as a leave day.</p><p><strong>Why it matters.</strong> Ticked, public holidays within the leave are counted as leave and taken from the balance. Unticked, they are not.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.IncludeInWorkflow",
+      "label": "IncludeInWorkflow",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IncludeInWorkflow",
+        "dom:AbsenceType_IncludeInWorkflow"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether leave of this type goes through workflow approval.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.HaveQuotaAccrual",
+      "label": "HaveQuotaAccrual",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:HaveQuotaAccrual",
+        "dom:AbsenceType_HaveQuotaAccrual"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the employee builds up a balance of this leave over time.</p><p><strong>Why it matters.</strong> Ticked, the balance is worked out from the employee's leave quota records, and the leave quota balance and quota provision reports show an accrued balance. Unticked, no accrued balance is kept.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.AccrualPeriod",
+      "label": "AccrualPeriod",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:AccrualPeriod",
+        "dom:AbsenceType_AccrualPeriod"
+      ],
+      "rules": "Required. One of: No Accrual, Calendar Year, Fiscal Year, Work Year, Bi-Annual, Per Employment, Custom.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The cycle the leave balance runs over.</p><p><strong>Example.</strong> Work Year</p><p><strong>Why it matters.</strong> <em>Calendar Year</em> starts each cycle on 1 January, <em>Fiscal Year</em> on 1 April, <em>Work Year</em> on the employee's joining anniversary, and <em>Custom</em> on the first of the <strong>Custom Start Month</strong>. <em>Per Employment</em> makes one cycle from the joining date to the end of the employee's latest contract — and fails for an employee with no contract. <em>Bi-Annual</em> and <em>No Accrual</em> count from the joining date like <em>Work Year</em>. Whichever is chosen, a cycle lasts <strong>Re-Initialize After</strong> years.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.CustomStartMonth",
+      "label": "CustomStartMonth",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:CustomStartMonth",
+        "dom:AbsenceType_CustomStartMonth"
+      ],
+      "rules": "Required. One of: None, January, February, March, April, May, June, July, August, September, October, November, December.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The month the cycle starts, for the <em>Custom</em> accrual period.</p><p><strong>Example.</strong> July</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.ExcludePaidLeaveAccrual",
+      "label": "ExcludePaidLeaveAccrual",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:ExcludePaidLeaveAccrual",
+        "dom:AbsenceType_ExcludePaidLeaveAccrual"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether days on this leave stop annual leave from building up.</p><p><strong>Why it matters.</strong> Ticked, the time engine accrues no annual leave for days the employee spends on this type of leave.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.MinActiveDaysInService",
+      "label": "MinActiveDaysInService",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:MinActiveDaysInService",
+        "dom:AbsenceType_MinActiveDaysInService"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The days of service an employee needs before taking this leave.</p><p><strong>Example.</strong> <code>730</code> — Hajj leave after two years.</p><p><strong>Why it matters.</strong> Not checked by itself. Business rules on leave can read it, so a rule can refuse the leave for an employee with fewer days of service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.CanApplyAgain",
+      "label": "CanApplyAgain",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:CanApplyAgain",
+        "dom:AbsenceType_CanApplyAgain"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the leave can be taken more than once.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.CanApplyAfterDays",
+      "label": "CanApplyAfterDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:CanApplyAfterDays",
+        "dom:AbsenceType_CanApplyAfterDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The days that must pass before the leave can be taken again.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.CanApplyBeforeDays",
+      "label": "CanApplyBeforeDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:CanApplyBeforeDays",
+        "dom:AbsenceType_CanApplyBeforeDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many days ahead the leave must be applied for.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.ReInitialize",
+      "label": "ReInitialize",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:ReInitialize",
+        "dom:AbsenceType_ReInitialize"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the balance starts again at the end of each cycle.</p><p><strong>Why it matters.</strong> Ticked, the cycle restarts every <strong>Re-Initialize After</strong> years from its start. Unticked, the first cycle never ends.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.ReInitializeAfter",
+      "label": "ReInitializeAfter",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:ReInitializeAfter",
+        "dom:AbsenceType_ReInitializeAfter"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many years each cycle lasts before the balance starts again.</p><p><strong>Example.</strong> <code>1</code></p><p><strong>Why it matters.</strong> Used when <strong>Re-Initialize</strong> is ticked. It must be greater than 0 when that box is ticked.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.ApplyLeaveInAdvance",
+      "label": "ApplyLeaveInAdvance",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:ApplyLeaveInAdvance",
+        "dom:AbsenceType_ApplyLeaveInAdvance"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the leave may be taken before it has been earned.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.ApplyLeaveInAdvanceDays",
+      "label": "ApplyLeaveInAdvanceDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:ApplyLeaveInAdvanceDays",
+        "dom:AbsenceType_ApplyLeaveInAdvanceDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many unearned days may be taken in advance.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.ApplyMaxLeave",
+      "label": "ApplyMaxLeave",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:ApplyMaxLeave",
+        "dom:AbsenceType_ApplyMaxLeave"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a maximum length applies to one leave.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.MaxLimitInDays",
+      "label": "MaxLimitInDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:MaxLimitInDays",
+        "dom:AbsenceType_MaxLimitInDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most days one leave may last.</p><p><strong>Example.</strong> <code>30</code></p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.CreateUnpaidAboveMaxLimitDays",
+      "label": "CreateUnpaidAboveMaxLimitDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:CreateUnpaidAboveMaxLimitDays",
+        "dom:AbsenceType_CreateUnpaidAboveMaxLimitDays"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether days beyond the maximum are turned into unpaid leave.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.ApplyMinLeave",
+      "label": "ApplyMinLeave",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:ApplyMinLeave",
+        "dom:AbsenceType_ApplyMinLeave"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a minimum length applies to one leave.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.MinLimitInDays",
+      "label": "MinLimitInDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:MinLimitInDays",
+        "dom:AbsenceType_MinLimitInDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The fewest days one leave may last.</p><p><strong>Example.</strong> <code>3</code></p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.ResetFrequency",
+      "label": "ResetFrequency",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:ResetFrequency",
+        "dom:AbsenceType_ResetFrequency"
+      ],
+      "rules": "Required. One of: Daily, Weekly, Monthly, Quarterly, Annually.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> For leave taken in hours: the period the hourly limits apply over.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.TotalMinutes",
+      "label": "TotalMinutes",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:TotalMinutes",
+        "dom:AbsenceType_TotalMinutes"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> For leave taken in hours: the total minutes allowed in one period.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.MaxMinutes",
+      "label": "MaxMinutes",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:MaxMinutes",
+        "dom:AbsenceType_MaxMinutes"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> For leave taken in hours: the most minutes in one request.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.MaxCount",
+      "label": "MaxCount",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:MaxCount",
+        "dom:AbsenceType_MaxCount"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> For leave taken in hours: the most requests in one period.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.PolicyRestrictType",
+      "label": "RestrictType",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:RestrictType",
+        "dom:AbsenceType_PolicyRestrictType"
+      ],
+      "rules": "Required. One of: Warning, Error!.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether breaking the hourly limits warns or refuses.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.AbsenceViolationRuleId",
+      "label": "AbsenceViolationRules",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:AbsenceViolationRules",
+        "dom:AbsenceType_AbsenceViolationRuleId"
+      ],
+      "rules": "Optional. Chosen from Absence Violation Rule master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> An absence violation rule linked to this leave type.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.LeaveGender",
+      "label": "LeaveGender",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:LeaveGender",
+        "dom:AbsenceType_LeaveGender"
+      ],
+      "rules": "Required. One of: All, Male, Female.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which gender the leave is for.</p><p><strong>Example.</strong> Female — maternity leave.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.LeaveReligion",
+      "label": "LeaveReligion",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:LeaveReligion",
+        "dom:AbsenceType_LeaveReligion"
+      ],
+      "rules": "Required. One of: All, Muslim, Non Muslim.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which religion the leave is for.</p><p><strong>Example.</strong> Muslim — Hajj leave.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.QuotaType",
+      "label": "QuotaType",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:QuotaType",
+        "dom:AbsenceType_QuotaType"
+      ],
+      "rules": "Required. One of: None, Annual Leave, Sick Leave.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this leave type shares the annual leave or sick leave balance rules.</p><p><strong>Example.</strong> Annual Leave</p><p><strong>Why it matters.</strong> <em>Annual Leave</em> balances it like annual leave: accrued day by day through the year, capped by the grade's maximum. <em>Sick Leave</em> balances it like sick leave: a yearly entitlement per cycle, less what has been taken. <em>None</em> gives it neither.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.LeaveEntitlement",
+      "label": "LeaveEntitlement",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:LeaveEntitlement",
+        "dom:AbsenceType_LeaveEntitlement"
+      ],
+      "rules": "Required. One of: Full, Prorated.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether an employee who joins part-way through a cycle gets the full entitlement or a share of it.</p><p><strong>Example.</strong> Prorated</p><p><strong>Why it matters.</strong> Used for leave balanced like sick leave, and only with the <em>Calendar Year</em> accrual period: <em>Prorated</em> reduces the first year's entitlement in proportion to the part of the year left after joining.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.AllowBackDatedDays",
+      "label": "AllowBackDatedDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:AllowBackDatedDays",
+        "dom:AbsenceType_AllowBackDatedDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many days back leave may be entered.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.TotalDaysAllowed",
+      "label": "TotalDaysAllowed",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:TotalDaysAllowed",
+        "dom:AbsenceType_TotalDaysAllowed"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The yearly entitlement, for employees whose grade sets none.</p><p><strong>Example.</strong> <code>30</code></p><p><strong>Why it matters.</strong> When the employee's grade has a leave rule for this type, the grade's total days are used instead. The leave quota balance report shows the figure in use.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.NegativeBalanceLimit",
+      "label": "NegativeBalanceLimit",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:NegativeBalanceLimit",
+        "dom:AbsenceType_NegativeBalanceLimit"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How far the balance may go below zero.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.EnableNegativeBalance",
+      "label": "EnableNegativeBalance",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:EnableNegativeBalance",
+        "dom:AbsenceType_EnableNegativeBalance"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the balance may go below zero.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.IncludeInSalaryProfile",
+      "label": "IncludeInSalaryProfile",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IncludeInSalaryProfile",
+        "dom:AbsenceType_IncludeInSalaryProfile"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the leave appears on the salary profile.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.AllowDuringProbation",
+      "label": "AllowDuringProbation",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:AllowDuringProbation",
+        "dom:AbsenceType_AllowDuringProbation"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the leave may be taken during probation.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.AllowToReturnEarly",
+      "label": "AllowToReturnEarly",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:AllowToReturnEarly",
+        "dom:AbsenceType_AllowToReturnEarly"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the leave can be cut short.</p><p><strong>Why it matters.</strong> Unticked, a request to shorten the leave or return early is refused: \"… must be taken in full, so it cannot be shortened or returned from early.\"</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.AllowInTerminationNoticeOnly",
+      "label": "AllowInTerminationNoticeOnly",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:AllowInTerminationNoticeOnly",
+        "dom:AbsenceType_AllowInTerminationNoticeOnly"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the leave may be taken only during a termination notice period.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.IsReturnDateRequired",
+      "label": "IsReturnDateRequired",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IsReturnDateRequired",
+        "dom:AbsenceType_IsReturnDateRequired"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the employee's return from this leave must be recorded.</p><p><strong>Why it matters.</strong> An employee whose leave of this type has ended with no return recorded is treated as not returned. A leave-resumption reminder goes out, when that notification is set up. When the payroll setting <em>Enable Not Return From Leave Logic</em> is on, the employee's basic pay is not paid for that run, and the time engine counts their rest days — and weekly offs, where basic pay is on calendar days — as absent until the return is recorded.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.IsAttachmentRequired",
+      "label": "IsAttachmentRequired",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IsAttachmentRequired",
+        "dom:AbsenceType_IsAttachmentRequired"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a document must be attached to the leave.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.AllowPartialLeave",
+      "label": "AllowPartialLeave",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:AllowPartialLeave",
+        "dom:AbsenceType_AllowPartialLeave"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether part of a day may be taken.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.SendNotification",
+      "label": "SendNotification",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:SendNotification",
+        "dom:AbsenceType_SendNotification"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a notification is sent for this leave.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.RequirePolicyAcceptance",
+      "label": "RequirePolicyAcceptance",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:RequirePolicyAcceptance",
+        "dom:AbsenceType_RequirePolicyAcceptance"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether employees must accept the leave policy before sending a request for this leave type.</p><p><strong>Why it matters.</strong> Ticked, self-service shows the latest policy document attached to the leave type with an acceptance box, and the request cannot be sent until it is ticked.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.LeaveDurationType",
+      "label": "LeaveDurationType",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:LeaveDurationType",
+        "dom:AbsenceType_LeaveDurationType"
+      ],
+      "rules": "Required. One of: All, FullDay, Partial.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this leave can be taken in full days, in hours, or both.</p><p><strong>Example.</strong> Full day only</p><p><strong>Why it matters.</strong> With Full day only, a request with hours or a half day is refused. With Partial (hourly) only, a request without hours or a half day is refused. Full day or partial leaves it to <strong>Allow Partial Leave</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.MaxFutureDays",
+      "label": "MaxFutureDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:MaxFutureDays",
+        "dom:AbsenceType_MaxFutureDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many days ahead a new leave of this type may start.</p><p><strong>Example.</strong> 90</p><p><strong>Why it matters.</strong> A new request starting later than today plus this many days is refused, and the self-service date picker stops there. 0 means no limit. Amendments are not checked.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.DontAllowToStartOnSunday",
+      "label": "Sunday",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:Sunday",
+        "dom:AbsenceType_DontAllowToStartOnSunday"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether leave of this type may not start on a Sunday.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.DontAllowToStartOnMonday",
+      "label": "Monday",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:Monday",
+        "dom:AbsenceType_DontAllowToStartOnMonday"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether leave of this type may not start on a Monday.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.DontAllowToStartOnTuesday",
+      "label": "Tuesday",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:Tuesday",
+        "dom:AbsenceType_DontAllowToStartOnTuesday"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether leave of this type may not start on a Tuesday.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.DontAllowToStartOnWednesday",
+      "label": "Wednesday",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:Wednesday",
+        "dom:AbsenceType_DontAllowToStartOnWednesday"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether leave of this type may not start on a Wednesday.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.DontAllowToStartOnThursday",
+      "label": "Thursday",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:Thursday",
+        "dom:AbsenceType_DontAllowToStartOnThursday"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether leave of this type may not start on a Thursday.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.DontAllowToStartOnFriday",
+      "label": "Friday",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:Friday",
+        "dom:AbsenceType_DontAllowToStartOnFriday"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether leave of this type may not start on a Friday.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.DontAllowToStartOnSaturday",
+      "label": "Saturday",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:Saturday",
+        "dom:AbsenceType_DontAllowToStartOnSaturday"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether leave of this type may not start on a Saturday.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

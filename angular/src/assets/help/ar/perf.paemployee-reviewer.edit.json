@@ -1,0 +1,107 @@
+{
+  "helpId": "perf.paemployee-reviewer.edit",
+  "lang": "ar",
+  "title": "مراجعو تقييم الأداء — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.PAEmployeeReviewer",
+  "overviewHtml": "<p>شخص يراجع التقييم — المدير أو زميل. ويحدّ عدد المراجعين الحد الأقصى في نوع النموذج، ولا يراجع الشخص التقييم إلا مرة واحدة، ولا يمكن حذف إلا المراجعين الزملاء.</p>",
+  "aliasIndex": {
+    "loc:Employee": "PAEmployeeReviewer.EmployeeId",
+    "dom:PAEmployeeReviewer_EmployeeId": "PAEmployeeReviewer.EmployeeId",
+    "loc:PeerAddedBy": "PAEmployeeReviewer.PeerAddedById",
+    "dom:PAEmployeeReviewer_PeerAddedById": "PAEmployeeReviewer.PeerAddedById",
+    "loc:IsPeer": "PAEmployeeReviewer.IsPeer",
+    "dom:PAEmployeeReviewer_IsPeer": "PAEmployeeReviewer.IsPeer",
+    "loc:CustomTextField1": "PAEmployeeReviewer.CustomTextField1",
+    "dom:PAEmployeeReviewer_CustomTextField1": "PAEmployeeReviewer.CustomTextField1",
+    "loc:CustomTextField2": "PAEmployeeReviewer.CustomTextField2",
+    "dom:PAEmployeeReviewer_CustomTextField2": "PAEmployeeReviewer.CustomTextField2",
+    "loc:CustomTextField3": "PAEmployeeReviewer.CustomTextField3",
+    "dom:PAEmployeeReviewer_CustomTextField3": "PAEmployeeReviewer.CustomTextField3"
+  },
+  "fields": [
+    {
+      "id": "PAEmployeeReviewer.EmployeeId",
+      "label": "Employee",
+      "section": "PAEmployeeReviewers",
+      "aliases": [
+        "loc:Employee",
+        "dom:PAEmployeeReviewer_EmployeeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المراجع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeReviewer.PeerAddedById",
+      "label": "PeerAddedBy",
+      "section": "PAEmployeeReviewers",
+      "aliases": [
+        "loc:PeerAddedBy",
+        "dom:PAEmployeeReviewer_PeerAddedById"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من أضاف المراجع الزميل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeReviewer.IsPeer",
+      "label": "IsPeer",
+      "section": "PAEmployeeReviewers",
+      "aliases": [
+        "loc:IsPeer",
+        "dom:PAEmployeeReviewer_IsPeer"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المراجع زميلاً لا المدير.</p><p><strong>لماذا يهم.</strong> لا يستخدم تقرير تقييم المدير إلا المراجعين غير الزملاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeReviewer.CustomTextField1",
+      "label": "CustomTextField1",
+      "section": "PAEmployeeReviewers",
+      "aliases": [
+        "loc:CustomTextField1",
+        "dom:PAEmployeeReviewer_CustomTextField1"
+      ],
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نقاط قوة الموظف المُقيَّم، بكلمات المراجع.</p><p><strong>لماذا يهم.</strong> تظهر نقاطَ قوة في تقرير ملخص المراجعين، من مراجعة المدير.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeReviewer.CustomTextField2",
+      "label": "CustomTextField2",
+      "section": "PAEmployeeReviewers",
+      "aliases": [
+        "loc:CustomTextField2",
+        "dom:PAEmployeeReviewer_CustomTextField2"
+      ],
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المجالات التي ينبغي أن يتحسن فيها الموظف المُقيَّم.</p><p><strong>لماذا يهم.</strong> تظهر في تقرير ملخص المراجعين، من مراجعة المدير.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeReviewer.CustomTextField3",
+      "label": "CustomTextField3",
+      "section": "PAEmployeeReviewers",
+      "aliases": [
+        "loc:CustomTextField3",
+        "dom:PAEmployeeReviewer_CustomTextField3"
+      ],
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التقييم العام والاحتياجات التدريبية.</p><p><strong>لماذا يهم.</strong> يظهر في تقرير ملخص المراجعين، من مراجعة المدير.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EmployeeSponsorReport' | localize" [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <!--
+                    Legacy hides dtTo on this screen and labels dtFrom "As On Date", so the shared panel's
+                    date range is switched OFF and a single As-On picker is projected into its <ng-content>
+                    slot. The panel itself is never forked.
+                -->
+                <grid-report-filter
+                    [showDateRange]="false"
+                    [(employeeCode)]="employeeCode"
+                    [(employeeStatus)]="employeeStatus"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'AsOnDate' | localize }}</label>
+                        <p-datepicker
+                            [ngModel]="fromDate()"
+                            (ngModelChange)="fromDate.set($event)"
+                            name="sponsorAsOnDate"
+                            dateFormat="dd/mm/yy"
+                            [showIcon]="true"
+                            styleClass="w-100" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '140rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 120px" pSortableColumn="employeeCode">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="employeeCode" />
+                                    </th>
+                                    <th style="min-width: 220px" pSortableColumn="employeeName">
+                                        {{ 'Employee' | localize }}
+                                        <p-sortIcon field="employeeName" />
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="employeeStatus">
+                                        {{ 'EmployeeStatus' | localize }}
+                                        <p-sortIcon field="employeeStatus" />
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="sponsorStatus">
+                                        {{ 'SponsorStatus' | localize }}
+                                        <p-sortIcon field="sponsorStatus" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="sponsorName">
+                                        {{ 'Sponsor' | localize }}
+                                        <p-sortIcon field="sponsorName" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="govtJobTitleEn">
+                                        {{ 'GovtJobTitle' | localize }}
+                                        <p-sortIcon field="govtJobTitleEn" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="govtJobTitleAr">
+                                        {{ 'GovtJobTitleAr' | localize }}
+                                        <p-sortIcon field="govtJobTitleAr" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="govtJobTitleCategoryName">
+                                        {{ 'GovtJobTitleCategory' | localize }}
+                                        <p-sortIcon field="govtJobTitleCategoryName" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="startDate">
+                                        {{ 'StartDate' | localize }}
+                                        <p-sortIcon field="startDate" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="endDate">
+                                        {{ 'EndDate' | localize }}
+                                        <p-sortIcon field="endDate" />
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="contractSalary">
+                                        {{ 'ContractSalary' | localize }}
+                                        <p-sortIcon field="contractSalary" />
+                                    </th>
+                                    <th style="min-width: 160px" pSortableColumn="salaryCurrencyName">
+                                        {{ 'SalaryCurrency' | localize }}
+                                        <p-sortIcon field="salaryCurrencyName" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="employeeSponsorRelation">
+                                        {{ 'EmployeeSponsorRelation' | localize }}
+                                        <p-sortIcon field="employeeSponsorRelation" />
+                                    </th>
+                                    <th style="min-width: 160px" pSortableColumn="countryName">
+                                        {{ 'Country' | localize }}
+                                        <p-sortIcon field="countryName" />
+                                    </th>
+                                    <th style="min-width: 160px" pSortableColumn="nationalityName">
+                                        {{ 'Nationality' | localize }}
+                                        <p-sortIcon field="nationalityName" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="nationalityGroupName">
+                                        {{ 'NationalityGroup' | localize }}
+                                        <p-sortIcon field="nationalityGroupName" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="contractTypeName">
+                                        {{ 'ContractType' | localize }}
+                                        <p-sortIcon field="contractTypeName" />
+                                    </th>
+                                    <th style="min-width: 170px" pSortableColumn="contractStartDate">
+                                        {{ 'ContractStartDate' | localize }}
+                                        <p-sortIcon field="contractStartDate" />
+                                    </th>
+                                    <th style="min-width: 170px" pSortableColumn="contractEndDate">
+                                        {{ 'ContractEndDate' | localize }}
+                                        <p-sortIcon field="contractEndDate" />
+                                    </th>
+                                    <th style="min-width: 160px" pSortableColumn="residencyType">
+                                        {{ 'ResidencyType' | localize }}
+                                        <p-sortIcon field="residencyType" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.employeeCode }}" class="hide-overflown">
+                                            {{ record.employeeCode }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 220px">{{ record.employeeName }}</td>
+                                    <td style="min-width: 150px">{{ employeeStatusLabel(record.employeeStatus) }}</td>
+                                    <td style="min-width: 150px">{{ record.sponsorStatus }}</td>
+                                    <td style="min-width: 200px">{{ record.sponsorName }}</td>
+                                    <td style="min-width: 200px">{{ record.govtJobTitleEn }}</td>
+                                    <td style="min-width: 200px">{{ record.govtJobTitleAr }}</td>
+                                    <td style="min-width: 200px">{{ record.govtJobTitleCategoryName }}</td>
+                                    <td style="min-width: 140px">{{ record.startDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 140px">{{ record.endDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 150px">{{ record.contractSalary }}</td>
+                                    <td style="min-width: 160px">{{ record.salaryCurrencyName }}</td>
+                                    <td style="min-width: 200px">{{ record.employeeSponsorRelation }}</td>
+                                    <td style="min-width: 160px">{{ record.countryName }}</td>
+                                    <td style="min-width: 160px">{{ record.nationalityName }}</td>
+                                    <td style="min-width: 180px">{{ record.nationalityGroupName }}</td>
+                                    <td style="min-width: 180px">{{ record.contractTypeName }}</td>
+                                    <td style="min-width: 170px">
+                                        {{ record.contractStartDate | luxonFormat: 'dd/MM/yyyy' }}
+                                    </td>
+                                    <td style="min-width: 170px">
+                                        {{ record.contractEndDate | luxonFormat: 'dd/MM/yyyy' }}
+                                    </td>
+                                    <td style="min-width: 160px">{{ record.residencyType }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

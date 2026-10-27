@@ -1,0 +1,89 @@
+import { Component, inject, output, signal, viewChild } from '@angular/core';
+import { AppComponentBase } from '@shared/common/app-component-base';
+import {
+    CreateOrEditFlatDto,
+    FlatsServiceProxy,
+    FloorDto,
+    FloorsServiceProxy,
+    GetAllFloorsInput,
+} from '@shared/service-proxies/service-proxies';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { finalize } from 'rxjs/operators';
+import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.directive';
+import { FormsModule } from '@angular/forms';
+import { ValidationMessagesComponent } from '@shared/utils/validation-messages.component';
+import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
+import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+
+@Component({
+    selector: 'createOrEditFlatModal',
+    templateUrl: './create-or-edit-flat-modal.component.html',
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+})
+export class CreateOrEditFlatModalComponent extends AppComponentBase {
+    private _service = inject(FlatsServiceProxy);
+    private _floorsService = inject(FloorsServiceProxy);
+
+    readonly modal = viewChild<ModalDirective>('createOrEditModal');
+    readonly modalSave = output<void>();
+
+    readonly active = signal<boolean>(false);
+    readonly saving = signal<boolean>(false);
+    readonly record = signal<CreateOrEditFlatDto>(new CreateOrEditFlatDto());
+    readonly floors = signal<FloorDto[]>([]);
+
+    show(id?: number): void {
+        this.active.set(true);
+
+        this._floorsService
+            .getAll(
+                new GetAllFloorsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    buildingId: undefined,
+                })
+            )
+            .subscribe((result) => this.floors.set(result.items));
+
+        if (!id) {
+            this.record.set(new CreateOrEditFlatDto());
+            this.modal().show();
+        } else {
+            this._service.getFlatForEdit(id).subscribe((result) => {
+                this.record.set(result.flat);
+                this.modal().show();
+            });
+        }
+    }
+
+    onShown(): void {
+        document.getElementById('Flat_NameEn')?.focus();
+    }
+
+    save(): void {
+        this.saving.set(true);
+        this._service
+            .createOrEdit(this.record())
+            .pipe(finalize(() => this.saving.set(false)))
+            .subscribe(() => {
+                this.notify.info(this.l('SavedSuccessfully'));
+                this.close();
+                this.modalSave.emit();
+            });
+    }
+
+    close(): void {
+        this.active.set(false);
+        this.modal().hide();
+    }
+
+    updateField(field: keyof CreateOrEditFlatDto, value: any): void {
+        const current = this.record();
+        (current as any)[field] = value;
+        const next = new CreateOrEditFlatDto();
+        Object.assign(next, current);
+        this.record.set(next);
+    }
+}

@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.simulation-time-register.edit",
+  "lang": "ar",
+  "title": "سجلات الوقت التجريبية — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.SimulationTimeRegister",
+  "overviewHtml": "<p>يوم من تشغيل تجريبي لمحرك الوقت.</p><p>لا تُكتب حالياً: لا توجد عملية تملأ هذه السجلات ولا شيء يقرؤها. ويعمل نظام الرواتب والتقارير من سجل الوقت اليومي.</p>",
+  "aliasIndex": {
+    "loc:Employee": "SimulationTimeRegister.EmployeeId",
+    "dom:SimulationTimeRegister_EmployeeId": "SimulationTimeRegister.EmployeeId",
+    "loc:DayDate": "SimulationTimeRegister.DayDate",
+    "dom:SimulationTimeRegister_DayDate": "SimulationTimeRegister.DayDate",
+    "loc:DutyPeriod": "SimulationTimeRegister.DutyPeriodId",
+    "dom:SimulationTimeRegister_DutyPeriodId": "SimulationTimeRegister.DutyPeriodId"
+  },
+  "fields": [
+    {
+      "id": "SimulationTimeRegister.EmployeeId",
+      "label": "Employee",
+      "section": "SimulationTimeRegisters",
+      "aliases": [
+        "loc:Employee",
+        "dom:SimulationTimeRegister_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationTimeRegister.DayDate",
+      "label": "DayDate",
+      "section": "SimulationTimeRegisters",
+      "aliases": [
+        "loc:DayDate",
+        "dom:SimulationTimeRegister_DayDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اليوم.</p><p><strong>مثال.</strong> <code>2026-04-14</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationTimeRegister.DutyPeriodId",
+      "label": "DutyPeriod",
+      "section": "SimulationTimeRegisters",
+      "aliases": [
+        "loc:DutyPeriod",
+        "dom:SimulationTimeRegister_DutyPeriodId"
+      ],
+      "rules": "اختياري. يُختار من قائمة فترات الدوام.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة الدوام المطبقة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

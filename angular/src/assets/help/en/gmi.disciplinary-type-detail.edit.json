@@ -1,0 +1,59 @@
+{
+  "helpId": "gmi.disciplinary-type-detail.edit",
+  "lang": "en",
+  "title": "Violation Type Details — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.DisciplinaryTypeDetail",
+  "overviewHtml": "<p>One rung of a violation type's escalation ladder: from which offence onwards a deduction type applies.</p><p>When an offence is recorded, HCMv3 counts the employee's earlier offences of the same type within the type's repeat duration, leaving out any that were refused, and adds one for the new offence. The rung used is the one with the highest offence count that does not exceed that number. With rungs at 1, 3 and 5, the first and second offences use rung 1, the third and fourth rung 3, and every offence from the fifth on rung 5.</p>",
+  "aliasIndex": {
+    "loc:DisciplinaryType": "DisciplinaryTypeDetail.DisciplinaryTypeId",
+    "dom:DisciplinaryTypeDetail_DisciplinaryTypeId": "DisciplinaryTypeDetail.DisciplinaryTypeId",
+    "loc:DisciplinaryCount": "DisciplinaryTypeDetail.DisciplinaryCount",
+    "dom:DisciplinaryTypeDetail_DisciplinaryCount": "DisciplinaryTypeDetail.DisciplinaryCount",
+    "loc:DisciplinaryDeductionType": "DisciplinaryTypeDetail.DisciplinaryDeductionTypeId",
+    "dom:DisciplinaryTypeDetail_DisciplinaryDeductionTypeId": "DisciplinaryTypeDetail.DisciplinaryDeductionTypeId"
+  },
+  "fields": [
+    {
+      "id": "DisciplinaryTypeDetail.DisciplinaryTypeId",
+      "label": "DisciplinaryType",
+      "section": "DisciplinaryTypeDetails",
+      "aliases": [
+        "loc:DisciplinaryType",
+        "dom:DisciplinaryTypeDetail_DisciplinaryTypeId"
+      ],
+      "rules": "Optional. Chosen from Violation Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The violation type this rung belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DisciplinaryTypeDetail.DisciplinaryCount",
+      "label": "DisciplinaryCount",
+      "section": "DisciplinaryTypeDetails",
+      "aliases": [
+        "loc:DisciplinaryCount",
+        "dom:DisciplinaryTypeDetail_DisciplinaryCount"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The offence number from which this rung applies.</p><p><strong>Example.</strong> <code>3</code>, for the third offence onwards</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DisciplinaryTypeDetail.DisciplinaryDeductionTypeId",
+      "label": "DisciplinaryDeductionType",
+      "section": "DisciplinaryTypeDetails",
+      "aliases": [
+        "loc:DisciplinaryDeductionType",
+        "dom:DisciplinaryTypeDetail_DisciplinaryDeductionTypeId"
+      ],
+      "rules": "Optional. Chosen from Violation Deduction Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The deduction that applies from this offence onwards.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

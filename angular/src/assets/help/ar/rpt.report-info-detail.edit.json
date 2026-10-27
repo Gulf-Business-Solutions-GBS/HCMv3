@@ -1,0 +1,235 @@
+{
+  "helpId": "rpt.report-info-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل بيانات التقارير — إنشاء / تحرير",
+  "entity": "HCMv3.ReportManagement.ReportInfoDetail",
+  "overviewHtml": "<p>حقل واحد اختير لتقرير مصمم. جزء من مصمم التقارير المنقول من النظام القديم. لا يُقرأ حالياً: لا يوجد في HCMv3 ما يشغّل هذه التعريفات، فلا أثر للسجلات هنا.</p>",
+  "aliasIndex": {
+    "loc:ReportInfo": "ReportInfoDetail.ReportInfoId",
+    "dom:ReportInfoDetail_ReportInfoId": "ReportInfoDetail.ReportInfoId",
+    "loc:NodeId": "ReportInfoDetail.NodeId",
+    "dom:ReportInfoDetail_NodeId": "ReportInfoDetail.NodeId",
+    "loc:NodeAlias": "ReportInfoDetail.NodeAlias",
+    "dom:ReportInfoDetail_NodeAlias": "ReportInfoDetail.NodeAlias",
+    "loc:EntityName": "ReportInfoDetail.EntityName",
+    "dom:ReportInfoDetail_EntityName": "ReportInfoDetail.EntityName",
+    "loc:PropertyName": "ReportInfoDetail.PropertyName",
+    "dom:ReportInfoDetail_PropertyName": "ReportInfoDetail.PropertyName",
+    "loc:PropertyDisplayName": "ReportInfoDetail.PropertyDisplayName",
+    "dom:ReportInfoDetail_PropertyDisplayName": "ReportInfoDetail.PropertyDisplayName",
+    "loc:PropertyType": "ReportInfoDetail.PropertyType",
+    "dom:ReportInfoDetail_PropertyType": "ReportInfoDetail.PropertyType",
+    "loc:BaseType": "ReportInfoDetail.BaseType",
+    "dom:ReportInfoDetail_BaseType": "ReportInfoDetail.BaseType",
+    "loc:AssemblyName": "ReportInfoDetail.AssemblyName",
+    "dom:ReportInfoDetail_AssemblyName": "ReportInfoDetail.AssemblyName",
+    "loc:ParentEntity": "ReportInfoDetail.ParentEntity",
+    "dom:ReportInfoDetail_ParentEntity": "ReportInfoDetail.ParentEntity",
+    "loc:ParentAssembly": "ReportInfoDetail.ParentAssembly",
+    "dom:ReportInfoDetail_ParentAssembly": "ReportInfoDetail.ParentAssembly",
+    "loc:IsAssociate": "ReportInfoDetail.IsAssociate",
+    "dom:ReportInfoDetail_IsAssociate": "ReportInfoDetail.IsAssociate",
+    "loc:AssociateEntity": "ReportInfoDetail.AssociateEntity",
+    "dom:ReportInfoDetail_AssociateEntity": "ReportInfoDetail.AssociateEntity",
+    "loc:AssociateProperty": "ReportInfoDetail.AssociateProperty",
+    "dom:ReportInfoDetail_AssociateProperty": "ReportInfoDetail.AssociateProperty"
+  },
+  "fields": [
+    {
+      "id": "ReportInfoDetail.ReportInfoId",
+      "label": "ReportInfo",
+      "section": "ReportInfoDetails",
+      "aliases": [
+        "loc:ReportInfo",
+        "dom:ReportInfoDetail_ReportInfoId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة بيانات التقارير.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التقرير المصمم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfoDetail.NodeId",
+      "label": "NodeId",
+      "section": "ReportInfoDetails",
+      "aliases": [
+        "loc:NodeId",
+        "dom:ReportInfoDetail_NodeId"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موقع الحقل في المصمم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfoDetail.NodeAlias",
+      "label": "NodeAlias",
+      "section": "ReportInfoDetails",
+      "aliases": [
+        "loc:NodeAlias",
+        "dom:ReportInfoDetail_NodeAlias"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم مختصر للحقل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfoDetail.EntityName",
+      "label": "EntityName",
+      "section": "ReportInfoDetails",
+      "aliases": [
+        "loc:EntityName",
+        "dom:ReportInfoDetail_EntityName"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السجل الذي فيه الحقل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfoDetail.PropertyName",
+      "label": "PropertyName",
+      "section": "ReportInfoDetails",
+      "aliases": [
+        "loc:PropertyName",
+        "dom:ReportInfoDetail_PropertyName"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحقل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfoDetail.PropertyDisplayName",
+      "label": "PropertyDisplayName",
+      "section": "ReportInfoDetails",
+      "aliases": [
+        "loc:PropertyDisplayName",
+        "dom:ReportInfoDetail_PropertyDisplayName"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنوان الحقل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfoDetail.PropertyType",
+      "label": "PropertyType",
+      "section": "ReportInfoDetails",
+      "aliases": [
+        "loc:PropertyType",
+        "dom:ReportInfoDetail_PropertyType"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع القيمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfoDetail.BaseType",
+      "label": "BaseType",
+      "section": "ReportInfoDetails",
+      "aliases": [
+        "loc:BaseType",
+        "dom:ReportInfoDetail_BaseType"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النوع الأساسي للقيمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfoDetail.AssemblyName",
+      "label": "AssemblyName",
+      "section": "ReportInfoDetails",
+      "aliases": [
+        "loc:AssemblyName",
+        "dom:ReportInfoDetail_AssemblyName"
+      ],
+      "rules": "اختياري. الحد الأقصى 512 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان تعريف السجل في النظام القديم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfoDetail.ParentEntity",
+      "label": "ParentEntity",
+      "section": "ReportInfoDetails",
+      "aliases": [
+        "loc:ParentEntity",
+        "dom:ReportInfoDetail_ParentEntity"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السجل الأعلى منه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfoDetail.ParentAssembly",
+      "label": "ParentAssembly",
+      "section": "ReportInfoDetails",
+      "aliases": [
+        "loc:ParentAssembly",
+        "dom:ReportInfoDetail_ParentAssembly"
+      ],
+      "rules": "اختياري. الحد الأقصى 512 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان تعريف السجل الأعلى في النظام القديم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfoDetail.IsAssociate",
+      "label": "IsAssociate",
+      "section": "ReportInfoDetails",
+      "aliases": [
+        "loc:IsAssociate",
+        "dom:ReportInfoDetail_IsAssociate"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الحقل يأتي عبر ربط بسجل آخر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfoDetail.AssociateEntity",
+      "label": "AssociateEntity",
+      "section": "ReportInfoDetails",
+      "aliases": [
+        "loc:AssociateEntity",
+        "dom:ReportInfoDetail_AssociateEntity"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السجل المرتبط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfoDetail.AssociateProperty",
+      "label": "AssociateProperty",
+      "section": "ReportInfoDetails",
+      "aliases": [
+        "loc:AssociateProperty",
+        "dom:ReportInfoDetail_AssociateProperty"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحقل في السجل المرتبط.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

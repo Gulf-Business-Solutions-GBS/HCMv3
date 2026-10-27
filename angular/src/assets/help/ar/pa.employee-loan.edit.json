@@ -1,0 +1,171 @@
+{
+  "helpId": "pa.employee-loan.edit",
+  "lang": "ar",
+  "title": "قروض الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeLoan",
+  "overviewHtml": "<p>قرض للموظف وطريقة استرداده. تسترده الرواتب اعتباراً من تاريخ بدء الاسترداد وفق نوع القرض؛ ويُسجَّل كل قسط تقتطعه استرداداً للقرض فينقص الرصيد المستحق.</p><p>لا يجوز أن يقل المبلغ الفعلي عن المبلغ المستحق، ولا أن يسبق تاريخ بدء الاسترداد أو تاريخ الانتهاء تاريخَ البداية.</p><p>يفتح خيار <strong>الأقساط والاستردادات والإعفاءات</strong>، في قائمة صف القرض ضمن قسم القروض في سجل الموظف، جدول أقساط القرض ومبالغ السداد والأشهر المُعفاة في نافذة واحدة، تحت المبلغ الفعلي للقرض والمبلغ المستحق والرصيد المستحق. ويُعدَّل القسط الشهري اعتباراً من شهر معيّن في جدول الأقساط؛ راجع مساعدة أقساط القرض. وتُضاف الاستردادات والإعفاءات وتُعدَّل هناك بالنوافذ نفسها، وبالقواعد نفسها، المستخدمة في شاشتي استردادات قروض الموظف وإعفاءات قروض الموظف، مع تعبئة القرض مسبقاً، ولا تظهر كل قائمة إلا لمن يحق له الاطلاع على شاشتها. أما الاستردادات التي يكتبها تشغيل الرواتب (استرداد عبر الرواتب) فتظهر ولا يمكن تعديلها أو حذفها هناك، لأن التشغيل التالي لتلك الفترة يحذفها ويعيد كتابتها.</p><p>إذا كان خيار <strong>التحديث التلقائي لتاريخ نهاية استرداد القرض</strong> مفعّلاً في إعدادات الرواتب، فإن حفظ القرض يستبدل بتاريخ نهاية الاسترداد التاريخَ المحتسب: شهراً بعد شهر من بدء الاسترداد، وفق جدول الأقساط ومع تخطّي الأشهر المُعفاة، حتى يُستردّ المبلغ المستحق.</p>",
+  "aliasIndex": {
+    "loc:LoanPaymentDate": "EmployeeLoan.StartDate",
+    "dom:EmployeeLoan_StartDate": "EmployeeLoan.StartDate",
+    "loc:RecoveryEndDate": "EmployeeLoan.EndDate",
+    "dom:EmployeeLoan_EndDate": "EmployeeLoan.EndDate",
+    "loc:LoanTypeId": "EmployeeLoan.LoanTypeId",
+    "dom:EmployeeLoan_LoanTypeId": "EmployeeLoan.LoanTypeId",
+    "loc:RecoveryStartDate": "EmployeeLoan.RecoveryStartDate",
+    "dom:EmployeeLoan_RecoveryStartDate": "EmployeeLoan.RecoveryStartDate",
+    "loc:ActualAmount": "EmployeeLoan.ActualAmount",
+    "dom:EmployeeLoan_ActualAmount": "EmployeeLoan.ActualAmount",
+    "loc:DueAmount": "EmployeeLoan.DueAmount",
+    "dom:EmployeeLoan_DueAmount": "EmployeeLoan.DueAmount",
+    "loc:FixedAmount": "EmployeeLoan.FixedAmount",
+    "dom:EmployeeLoan_FixedAmount": "EmployeeLoan.FixedAmount",
+    "loc:RecoverFracInLastTrans": "EmployeeLoan.RecoverFracInLastTrans",
+    "dom:EmployeeLoan_RecoverFracInLastTrans": "EmployeeLoan.RecoverFracInLastTrans",
+    "loc:IncludeLoanPaymentInPayroll": "EmployeeLoan.IncludeInLoanPay",
+    "dom:EmployeeLoan_IncludeInLoanPay": "EmployeeLoan.IncludeInLoanPay",
+    "loc:Comments": "EmployeeLoan.Comments",
+    "dom:EmployeeLoan_Comments": "EmployeeLoan.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeLoan.StartDate",
+      "label": "LoanPaymentDate",
+      "section": "EmployeeLoans",
+      "aliases": [
+        "loc:LoanPaymentDate",
+        "dom:EmployeeLoan_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoan.EndDate",
+      "label": "RecoveryEndDate",
+      "section": "EmployeeLoans",
+      "aliases": [
+        "loc:RecoveryEndDate",
+        "dom:EmployeeLoan_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoan.LoanTypeId",
+      "label": "LoanTypeId",
+      "section": "EmployeeLoans",
+      "aliases": [
+        "loc:LoanTypeId",
+        "dom:EmployeeLoan_LoanTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع القروض.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع القرض.</p><p><strong>مثال.</strong> قرض شخصي</p><p><strong>لماذا يهم.</strong> يحدد نوع الاقتطاع وخيار الاسترداد فيه طريقة استرداد الرواتب للقرض.</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← أنواع القروض. وإذا كان نوع الاقتطاع متغيراً توقفت الرواتب بخطأ عند معالجة الموظف.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoan.RecoveryStartDate",
+      "label": "RecoveryStartDate",
+      "section": "EmployeeLoans",
+      "aliases": [
+        "loc:RecoveryStartDate",
+        "dom:EmployeeLoan_RecoveryStartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي تبدأ فيه الرواتب استرداد القرض.</p><p><strong>مثال.</strong> 1 أكتوبر 2026</p><p><strong>لماذا يهم.</strong> تسترد الرواتب اعتباراً من أول مسيرة تنتهي في هذا التاريخ أو بعده. ويجب أن تقع الإعفاءات بين هذا التاريخ وتاريخ انتهاء القرض.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoan.ActualAmount",
+      "label": "ActualAmount",
+      "section": "EmployeeLoans",
+      "aliases": [
+        "loc:ActualAmount",
+        "dom:EmployeeLoan_ActualAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ الذي يستلمه الموظف.</p><p><strong>مثال.</strong> 1200.000</p><p><strong>لماذا يهم.</strong> لا يجوز أن يقل عن المبلغ المستحق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoan.DueAmount",
+      "label": "DueAmount",
+      "section": "EmployeeLoans",
+      "aliases": [
+        "loc:DueAmount",
+        "dom:EmployeeLoan_DueAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ الواجب استرداده.</p><p><strong>مثال.</strong> 1200.000</p><p><strong>لماذا يهم.</strong> يبدأ الرصيد المستحق بهذا المبلغ عند إنشاء القرض. وعند صرف القرض عبر الرواتب، يكون هو المبلغ المصروف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoan.FixedAmount",
+      "label": "FixedAmount",
+      "section": "EmployeeLoans",
+      "aliases": [
+        "loc:FixedAmount",
+        "dom:EmployeeLoan_FixedAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القسط الشهري الأول للقرض.</p><p><strong>مثال.</strong> 100.000</p><p><strong>لماذا يهم.</strong> يصبح عند سريان القرض السطرَ الأول في جدول الأقساط اعتباراً من شهر بدء الاسترداد. ولا يمكن تعديله هنا بعد ذلك، بل يُعدَّل القسط بإضافة سطر إلى الجدول. ولا تعتمد عليه الرواتب مباشرة إلا في القرض الذي لا جدول أقساط له. ولا تقتطع الرواتب أكثر من الرصيد المتبقي المستحق، فقد يكون القسط الأخير أصغر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoan.RecoverFracInLastTrans",
+      "label": "RecoverFracInLastTrans",
+      "section": "EmployeeLoans",
+      "aliases": [
+        "loc:RecoverFracInLastTrans",
+        "dom:EmployeeLoan_RecoverFracInLastTrans"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يُضاف الباقي الصغير إلى القسط الأخير.</p><p><strong>لماذا يهم.</strong> عندما لا يكون هناك استرداد لاحق مجدول ويكون الرصيد المتبقي بعد القسط أصغر من القسط، تضيفه الرواتب ليُسدَّد القرض.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoan.IncludeInLoanPay",
+      "label": "IncludeLoanPaymentInPayroll",
+      "section": "EmployeeLoans",
+      "aliases": [
+        "loc:IncludeLoanPaymentInPayroll",
+        "dom:EmployeeLoan_IncludeInLoanPay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يُصرف القرض للموظف عبر الرواتب.</p><p><strong>لماذا يهم.</strong> عند تحديده، تصرف الرواتب المبلغ المستحق في شهر الرواتب الذي يبدأ فيه القرض.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoan.Comments",
+      "label": "Comments",
+      "section": "EmployeeLoans",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeLoan_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

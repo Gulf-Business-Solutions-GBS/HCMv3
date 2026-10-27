@@ -1,0 +1,52 @@
+:host {
+    display: block;
+
+    /* In fullscreen the host is the fullscreen element, so it must paint its own background --
+       otherwise the chart floats on the browser's default black. */
+    &:fullscreen {
+        background: var(--bs-body-bg, #ffffff);
+        padding: 16px;
+        overflow: auto;
+    }
+}
+
+.org-chart-viewport {
+    position: relative;
+    overflow: hidden;
+    min-height: 420px;
+    cursor: grab;
+
+    /*
+     * Touch keeps its native gestures. Drag-to-pan is a mouse affordance only (the component ignores
+     * touch pointers), and "touch-action: none" here meant that on a phone the page stopped scrolling
+     * the moment a finger landed anywhere on the chart -- which, since the chart fills the screen, left
+     * the page stuck.
+     */
+    touch-action: pan-x pan-y;
+}
+
+/*
+ * On a touch device there is no drag-to-pan, so a chart wider or taller than the frame has to scroll
+ * natively -- otherwise "overflow: hidden" would simply cut it off with no way to reach the rest.
+ */
+@media (pointer: coarse) {
+    .org-chart-viewport {
+        overflow: auto;
+        cursor: default;
+    }
+}
+
+.org-chart-viewport--panning {
+    cursor: grabbing;
+    user-select: none;
+}
+
+.org-chart-viewport__canvas {
+    transform-origin: top center;
+    transition: transform 0.1s ease-out;
+    will-change: transform;
+}
+
+:host(:fullscreen) .org-chart-viewport {
+    min-height: calc(100vh - 32px);
+}

@@ -1,0 +1,107 @@
+{
+  "helpId": "trn.training-schedule.edit",
+  "lang": "ar",
+  "title": "جداول التدريب — إنشاء / تحرير",
+  "entity": "HCMv3.TrainingManagement.TrainingSchedule",
+  "overviewHtml": "<p>مرة انعقاد واحدة لدورة، بين تاريخ بدء وتاريخ انتهاء. ولا يمكن أن يكون تاريخ الانتهاء قبل تاريخ البدء.</p>",
+  "aliasIndex": {
+    "loc:Code": "TrainingSchedule.Code",
+    "dom:TrainingSchedule_Code": "TrainingSchedule.Code",
+    "loc:TrainingCourseId": "TrainingSchedule.TrainingCourseId",
+    "dom:TrainingSchedule_TrainingCourseId": "TrainingSchedule.TrainingCourseId",
+    "loc:NameEn": "TrainingSchedule.NameEn",
+    "dom:TrainingSchedule_NameEn": "TrainingSchedule.NameEn",
+    "loc:NameAr": "TrainingSchedule.NameAr",
+    "dom:TrainingSchedule_NameAr": "TrainingSchedule.NameAr",
+    "loc:StartDate": "TrainingSchedule.StartDate",
+    "dom:TrainingSchedule_StartDate": "TrainingSchedule.StartDate",
+    "loc:EndDate": "TrainingSchedule.EndDate",
+    "dom:TrainingSchedule_EndDate": "TrainingSchedule.EndDate"
+  },
+  "fields": [
+    {
+      "id": "TrainingSchedule.Code",
+      "label": "Code",
+      "section": "TrainingSchedules",
+      "aliases": [
+        "loc:Code",
+        "dom:TrainingSchedule_Code"
+      ],
+      "rules": "إلزامي. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingSchedule.TrainingCourseId",
+      "label": "TrainingCourseId",
+      "section": "TrainingSchedules",
+      "aliases": [
+        "loc:TrainingCourseId",
+        "dom:TrainingSchedule_TrainingCourseId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الدورات التدريبية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدورة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingSchedule.NameEn",
+      "label": "NameEn",
+      "section": "TrainingSchedules",
+      "aliases": [
+        "loc:NameEn",
+        "dom:TrainingSchedule_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingSchedule.NameAr",
+      "label": "NameAr",
+      "section": "TrainingSchedules",
+      "aliases": [
+        "loc:NameAr",
+        "dom:TrainingSchedule_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingSchedule.StartDate",
+      "label": "StartDate",
+      "section": "TrainingSchedules",
+      "aliases": [
+        "loc:StartDate",
+        "dom:TrainingSchedule_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingSchedule.EndDate",
+      "label": "EndDate",
+      "section": "TrainingSchedules",
+      "aliases": [
+        "loc:EndDate",
+        "dom:TrainingSchedule_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

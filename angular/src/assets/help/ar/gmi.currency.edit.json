@@ -1,0 +1,139 @@
+{
+  "helpId": "gmi.currency.edit",
+  "lang": "ar",
+  "title": "العملات — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.Currency",
+  "overviewHtml": "<p>العملات التي تُدفع بها الرواتب. لكل منطقة رواتب عملة، وتقرّب الرواتب المبالغ إلى عدد المنازل العشرية لتلك العملة.</p>",
+  "aliasIndex": {
+    "loc:Code": "Currency.Code",
+    "dom:Currency_Code": "Currency.Code",
+    "loc:NameEn": "Currency.NameEn",
+    "dom:Currency_NameEn": "Currency.NameEn",
+    "loc:NameAr": "Currency.NameAr",
+    "dom:Currency_NameAr": "Currency.NameAr",
+    "loc:DecimalCount": "Currency.DecimalCount",
+    "dom:Currency_DecimalCount": "Currency.DecimalCount",
+    "loc:CurrencyShortFormEn": "Currency.CurrencyShortFormEn",
+    "dom:Currency_CurrencyShortFormEn": "Currency.CurrencyShortFormEn",
+    "loc:CurrencyDenominationFormEn": "Currency.CurrencyDenominationFormEn",
+    "dom:Currency_CurrencyDenominationFormEn": "Currency.CurrencyDenominationFormEn",
+    "loc:CurrencyShortFormAr": "Currency.CurrencyShortFormAr",
+    "dom:Currency_CurrencyShortFormAr": "Currency.CurrencyShortFormAr",
+    "loc:CurrencyDenominationFormAr": "Currency.CurrencyDenominationFormAr",
+    "dom:Currency_CurrencyDenominationFormAr": "Currency.CurrencyDenominationFormAr"
+  },
+  "fields": [
+    {
+      "id": "Currency.Code",
+      "label": "Code",
+      "section": "Currencies",
+      "aliases": [
+        "loc:Code",
+        "dom:Currency_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Currency.NameEn",
+      "label": "NameEn",
+      "section": "Currencies",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Currency_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Currency.NameAr",
+      "label": "NameAr",
+      "section": "Currencies",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Currency_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Currency.DecimalCount",
+      "label": "DecimalCount",
+      "section": "Currencies",
+      "aliases": [
+        "loc:DecimalCount",
+        "dom:Currency_DecimalCount"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد المنازل العشرية التي تستخدمها العملة.</p><p><strong>مثال.</strong> <code>3</code> للدينار الكويتي</p><p><strong>لماذا يهم.</strong> تقرّب الرواتب المبالغ إلى هذا العدد من المنازل لمناطق الرواتب التي تُدفع بهذه العملة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Currency.CurrencyShortFormEn",
+      "label": "CurrencyShortFormEn",
+      "section": "Currencies",
+      "aliases": [
+        "loc:CurrencyShortFormEn",
+        "dom:Currency_CurrencyShortFormEn"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الاختصار الإنجليزي للعملة.</p><p><strong>مثال.</strong> <code>KWD</code></p><p><strong>لماذا يهم.</strong> يظهر بجوار المبالغ في تقارير مثل تقريري بيانات الموظفين والراتب الأساسي، ويُستخدم في قيود اليومية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Currency.CurrencyDenominationFormEn",
+      "label": "CurrencyDenominationFormEn",
+      "section": "Currencies",
+      "aliases": [
+        "loc:CurrencyDenominationFormEn",
+        "dom:Currency_CurrencyDenominationFormEn"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> صيغة فئة العملة بالإنجليزية.</p><p><strong>لماذا يهم.</strong> لا يستخدمها أي تقرير أو احتساب حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Currency.CurrencyShortFormAr",
+      "label": "CurrencyShortFormAr",
+      "section": "Currencies",
+      "aliases": [
+        "loc:CurrencyShortFormAr",
+        "dom:Currency_CurrencyShortFormAr"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الاختصار العربي للعملة.</p><p><strong>مثال.</strong> <code>د.ك</code></p><p><strong>لماذا يهم.</strong> يظهر بدلاً من الاختصار الإنجليزي عندما يُصدر التقرير بالأسماء العربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Currency.CurrencyDenominationFormAr",
+      "label": "CurrencyDenominationFormAr",
+      "section": "Currencies",
+      "aliases": [
+        "loc:CurrencyDenominationFormAr",
+        "dom:Currency_CurrencyDenominationFormAr"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> صيغة فئة العملة بالعربية.</p><p><strong>لماذا يهم.</strong> لا يستخدمها أي تقرير أو احتساب حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

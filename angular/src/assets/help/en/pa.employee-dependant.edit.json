@@ -1,0 +1,171 @@
+{
+  "helpId": "pa.employee-dependant.edit",
+  "lang": "en",
+  "title": "Employee Dependants — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeDependant",
+  "overviewHtml": "<p>A family member who depends on the employee — a spouse, child or parent — and the benefits they count towards. Dependants of the same ticket type for the same employee cannot overlap.</p><p>Dependants feed health reimbursement entitlement, dependant air tickets, and the child allowance in social security.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeDependant.StartDate",
+    "dom:EmployeeDependant_StartDate": "EmployeeDependant.StartDate",
+    "loc:EndDate": "EmployeeDependant.EndDate",
+    "dom:EmployeeDependant_EndDate": "EmployeeDependant.EndDate",
+    "loc:NameEn": "EmployeeDependant.NameEn",
+    "dom:EmployeeDependant_NameEn": "EmployeeDependant.NameEn",
+    "loc:NameAr": "EmployeeDependant.NameAr",
+    "dom:EmployeeDependant_NameAr": "EmployeeDependant.NameAr",
+    "loc:DependantTypeId": "EmployeeDependant.DependantTypeId",
+    "dom:EmployeeDependant_DependantTypeId": "EmployeeDependant.DependantTypeId",
+    "loc:BirthDate": "EmployeeDependant.BirthDate",
+    "dom:EmployeeDependant_BirthDate": "EmployeeDependant.BirthDate",
+    "loc:TicketTypeId": "EmployeeDependant.TicketTypeId",
+    "dom:EmployeeDependant_TicketTypeId": "EmployeeDependant.TicketTypeId",
+    "loc:SpecialNeed": "EmployeeDependant.SpecialNeed",
+    "dom:EmployeeDependant_SpecialNeed": "EmployeeDependant.SpecialNeed",
+    "loc:IncludeInSocialSecurity": "EmployeeDependant.IncludeInSocialSecurity",
+    "dom:EmployeeDependant_IncludeInSocialSecurity": "EmployeeDependant.IncludeInSocialSecurity",
+    "loc:IncludeInHealthInsurance": "EmployeeDependant.IncludeInHealthInsurance",
+    "dom:EmployeeDependant_IncludeInHealthInsurance": "EmployeeDependant.IncludeInHealthInsurance"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDependant.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeDependant_StartDate"
+      ],
+      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee and ticket type.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeDependant_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.NameEn",
+      "label": "NameEn",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:NameEn",
+        "dom:EmployeeDependant_NameEn"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The dependant's name in English.</p><p><strong>Example.</strong> Sara Ahmed Al-Mutairi</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.NameAr",
+      "label": "NameAr",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:NameAr",
+        "dom:EmployeeDependant_NameAr"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The dependant's name in Arabic.</p><p><strong>Example.</strong> سارة أحمد المطيري</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.DependantTypeId",
+      "label": "DependantTypeId",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:DependantTypeId",
+        "dom:EmployeeDependant_DependantTypeId"
+      ],
+      "rules": "Required. Chosen from Dependant Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the dependant is related to the employee.</p><p><strong>Example.</strong> Daughter</p><p><strong>Why it matters.</strong> Health reimbursement entitlement is set per dependant type on the employee's grade.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Dependant Types.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.BirthDate",
+      "label": "BirthDate",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:BirthDate",
+        "dom:EmployeeDependant_BirthDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The dependant's date of birth.</p><p><strong>Example.</strong> 12 May 2015</p><p><strong>Why it matters.</strong> Health reimbursement applies the dependant type's age limit from it, and air ticket fares can depend on the dependant's age.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.TicketTypeId",
+      "label": "TicketTypeId",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:TicketTypeId",
+        "dom:EmployeeDependant_TicketTypeId"
+      ],
+      "rules": "Required. Chosen from Ticket Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The ticket type the dependant's air tickets use.</p><p><strong>Example.</strong> Dependant 1</p><p><strong>Why it matters.</strong> The time engine accrues dependant tickets for the dependant in force on each day.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.SpecialNeed",
+      "label": "SpecialNeed",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:SpecialNeed",
+        "dom:EmployeeDependant_SpecialNeed"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the dependant has special needs.</p><p><strong>Why it matters.</strong> Social security pays the special-needs child allowance for these dependants instead of the ordinary child allowance.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.IncludeInSocialSecurity",
+      "label": "IncludeInSocialSecurity",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:IncludeInSocialSecurity",
+        "dom:EmployeeDependant_IncludeInSocialSecurity"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the dependant counts for social security child allowances.</p><p><strong>Why it matters.</strong> Only ticked dependants are counted, and only for male employees.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.IncludeInHealthInsurance",
+      "label": "IncludeInHealthInsurance",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:IncludeInHealthInsurance",
+        "dom:EmployeeDependant_IncludeInHealthInsurance"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the dependant is covered by health insurance.</p><p><strong>Why it matters.</strong> Recorded for reference; no calculation or report reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

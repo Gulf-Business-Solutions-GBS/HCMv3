@@ -1,0 +1,91 @@
+{
+  "helpId": "cd.cdmid-year-review.edit",
+  "lang": "ar",
+  "title": "مراجعات منتصف السنة لتطوير الكفاءات — إنشاء / تحرير",
+  "entity": "HCMv3.CompetencyDevelopment.CDMidYearReview",
+  "overviewHtml": "<p>كفاءة واحدة تُراجع في منتصف السنة. لا تُدرج الكفاءة إلا مرة واحدة في هذا الجزء من النموذج. وتُسجَّل الأوزان كما أُدخلت، ولا تُجمع أو تُتحقق منها هنا.</p>",
+  "aliasIndex": {
+    "loc:Competency": "CDMidYearReview.CompetencyId",
+    "dom:CDMidYearReview_CompetencyId": "CDMidYearReview.CompetencyId",
+    "loc:Weight": "CDMidYearReview.Weight",
+    "dom:CDMidYearReview_Weight": "CDMidYearReview.Weight",
+    "loc:Target": "CDMidYearReview.Target",
+    "dom:CDMidYearReview_Target": "CDMidYearReview.Target",
+    "loc:EmployeeComments": "CDMidYearReview.EmployeeComments",
+    "dom:CDMidYearReview_EmployeeComments": "CDMidYearReview.EmployeeComments",
+    "loc:ManagerComments": "CDMidYearReview.ManagerComments",
+    "dom:CDMidYearReview_ManagerComments": "CDMidYearReview.ManagerComments"
+  },
+  "fields": [
+    {
+      "id": "CDMidYearReview.CompetencyId",
+      "label": "Competency",
+      "section": "CDMidYearReviews",
+      "aliases": [
+        "loc:Competency",
+        "dom:CDMidYearReview_CompetencyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الكفاءات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الكفاءة.</p><p><strong>مثال.</strong> العمل الجماعي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDMidYearReview.Weight",
+      "label": "Weight",
+      "section": "CDMidYearReviews",
+      "aliases": [
+        "loc:Weight",
+        "dom:CDMidYearReview_Weight"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مقدار أهمية الكفاءة، كنسبة مئوية.</p><p><strong>مثال.</strong> 20</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDMidYearReview.Target",
+      "label": "Target",
+      "section": "CDMidYearReviews",
+      "aliases": [
+        "loc:Target",
+        "dom:CDMidYearReview_Target"
+      ],
+      "rules": "اختياري. الحد الأقصى 512 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما يُتوقع أن يحققه الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDMidYearReview.EmployeeComments",
+      "label": "EmployeeComments",
+      "section": "CDMidYearReviews",
+      "aliases": [
+        "loc:EmployeeComments",
+        "dom:CDMidYearReview_EmployeeComments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تعليقات الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDMidYearReview.ManagerComments",
+      "label": "ManagerComments",
+      "section": "CDMidYearReviews",
+      "aliases": [
+        "loc:ManagerComments",
+        "dom:CDMidYearReview_ManagerComments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تعليقات المدير.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

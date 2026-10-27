@@ -1,0 +1,91 @@
+{
+  "helpId": "trv.travel-per-diem.edit",
+  "lang": "en",
+  "title": "Travel Per Diems — Create / Edit",
+  "entity": "HCMv3.TravelManagement.TravelPerDiem",
+  "overviewHtml": "<p>The daily allowance for a route and a salary profile and grade. Only one rate can exist for each combination. It is used only to show an expected per diem on a trip leg.</p>",
+  "aliasIndex": {
+    "loc:FromDestination": "TravelPerDiem.FromDestinationId",
+    "dom:TravelPerDiem_FromDestinationId": "TravelPerDiem.FromDestinationId",
+    "loc:ToDestination": "TravelPerDiem.ToDestinationId",
+    "dom:TravelPerDiem_ToDestinationId": "TravelPerDiem.ToDestinationId",
+    "loc:EmployeeGroup": "TravelPerDiem.EmployeeGroupId",
+    "dom:TravelPerDiem_EmployeeGroupId": "TravelPerDiem.EmployeeGroupId",
+    "loc:EmployeeSubGroup": "TravelPerDiem.EmployeeSubGroupId",
+    "dom:TravelPerDiem_EmployeeSubGroupId": "TravelPerDiem.EmployeeSubGroupId",
+    "loc:Amount": "TravelPerDiem.Amount",
+    "dom:TravelPerDiem_Amount": "TravelPerDiem.Amount"
+  },
+  "fields": [
+    {
+      "id": "TravelPerDiem.FromDestinationId",
+      "label": "FromDestination",
+      "section": "TravelPerDiems",
+      "aliases": [
+        "loc:FromDestination",
+        "dom:TravelPerDiem_FromDestinationId"
+      ],
+      "rules": "Required. Chosen from Travel Destination master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the route starts.</p><p><strong>Example.</strong> Kuwait</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelPerDiem.ToDestinationId",
+      "label": "ToDestination",
+      "section": "TravelPerDiems",
+      "aliases": [
+        "loc:ToDestination",
+        "dom:TravelPerDiem_ToDestinationId"
+      ],
+      "rules": "Required. Chosen from Travel Destination master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the route ends.</p><p><strong>Example.</strong> London</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelPerDiem.EmployeeGroupId",
+      "label": "EmployeeGroup",
+      "section": "TravelPerDiems",
+      "aliases": [
+        "loc:EmployeeGroup",
+        "dom:TravelPerDiem_EmployeeGroupId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The salary profile.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelPerDiem.EmployeeSubGroupId",
+      "label": "EmployeeSubGroup",
+      "section": "TravelPerDiems",
+      "aliases": [
+        "loc:EmployeeSubGroup",
+        "dom:TravelPerDiem_EmployeeSubGroupId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The grade.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelPerDiem.Amount",
+      "label": "Amount",
+      "section": "TravelPerDiems",
+      "aliases": [
+        "loc:Amount",
+        "dom:TravelPerDiem_Amount"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The allowance per night.</p><p><strong>Example.</strong> 45.000</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

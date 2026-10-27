@@ -1,0 +1,155 @@
+{
+  "helpId": "gr.organization-document.edit",
+  "lang": "en",
+  "title": "Organization Documents — Create / Edit",
+  "entity": "HCMv3.GovtRelationsManagement.OrganizationDocument",
+  "overviewHtml": "<p>A document or licence held by the organisation, such as a commercial licence. The expiry date cannot be before the issue date. The Organization Documents report lists documents valid in a date range and the days left before each expires.</p>",
+  "aliasIndex": {
+    "loc:OrganizationUnit": "OrganizationDocument.OrganizationUnitId",
+    "dom:OrganizationDocument_OrganizationUnitId": "OrganizationDocument.OrganizationUnitId",
+    "loc:DocumentType": "OrganizationDocument.DocumentTypeId",
+    "dom:OrganizationDocument_DocumentTypeId": "OrganizationDocument.DocumentTypeId",
+    "loc:DocumentNum": "OrganizationDocument.DocumentNum",
+    "dom:OrganizationDocument_DocumentNum": "OrganizationDocument.DocumentNum",
+    "loc:Sponsor": "OrganizationDocument.SponsorId",
+    "dom:OrganizationDocument_SponsorId": "OrganizationDocument.SponsorId",
+    "loc:IssueDate": "OrganizationDocument.IssueDate",
+    "dom:OrganizationDocument_IssueDate": "OrganizationDocument.IssueDate",
+    "loc:ExpiryDate": "OrganizationDocument.ExpiryDate",
+    "dom:OrganizationDocument_ExpiryDate": "OrganizationDocument.ExpiryDate",
+    "loc:DocumentPlace": "OrganizationDocument.DocumentPlace",
+    "dom:OrganizationDocument_DocumentPlace": "OrganizationDocument.DocumentPlace",
+    "loc:NotificationSent": "OrganizationDocument.NotificationSent",
+    "dom:OrganizationDocument_NotificationSent": "OrganizationDocument.NotificationSent",
+    "loc:Comments": "OrganizationDocument.Comments",
+    "dom:OrganizationDocument_Comments": "OrganizationDocument.Comments"
+  },
+  "fields": [
+    {
+      "id": "OrganizationDocument.OrganizationUnitId",
+      "label": "OrganizationUnit",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:OrganizationUnit",
+        "dom:OrganizationDocument_OrganizationUnitId"
+      ],
+      "rules": "Required. Chosen from Organization Unit master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The part of the organisation the document belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationDocument.DocumentTypeId",
+      "label": "DocumentType",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:DocumentType",
+        "dom:OrganizationDocument_DocumentTypeId"
+      ],
+      "rules": "Required. Chosen from Document Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of document.</p><p><strong>Example.</strong> Commercial licence</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationDocument.DocumentNum",
+      "label": "DocumentNum",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:DocumentNum",
+        "dom:OrganizationDocument_DocumentNum"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The document number.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationDocument.SponsorId",
+      "label": "Sponsor",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:Sponsor",
+        "dom:OrganizationDocument_SponsorId"
+      ],
+      "rules": "Optional. Chosen from Sponsor master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The sponsor the document is for, if any.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationDocument.IssueDate",
+      "label": "IssueDate",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:IssueDate",
+        "dom:OrganizationDocument_IssueDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When it was issued.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationDocument.ExpiryDate",
+      "label": "ExpiryDate",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:ExpiryDate",
+        "dom:OrganizationDocument_ExpiryDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When it expires.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationDocument.DocumentPlace",
+      "label": "DocumentPlace",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:DocumentPlace",
+        "dom:OrganizationDocument_DocumentPlace"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the original is kept.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationDocument.NotificationSent",
+      "label": "NotificationSent",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:NotificationSent",
+        "dom:OrganizationDocument_NotificationSent"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether an expiry notice has been sent.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationDocument.Comments",
+      "label": "Comments",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:Comments",
+        "dom:OrganizationDocument_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

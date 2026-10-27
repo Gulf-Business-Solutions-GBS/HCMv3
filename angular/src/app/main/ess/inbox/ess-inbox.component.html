@@ -1,0 +1,345 @@
+<div [@routerTransition] [helpPage]="'ess.inbox'">
+    <sub-header [title]="'EssInbox' | localize" [description]="'EssInboxHeaderInfo' | localize">
+        <div role="actions">
+            <button type="button" class="btn btn-primary" (click)="reloadFromServer()">
+                <i class="fa fa-sync btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">{{ 'Refresh' | localize }}</span>
+            </button>
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        @if (notLinked()) {
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <div class="alert alert-warning mb-0" data-help-loc="CurrentUserHasNoEmployeeRecord">
+                        {{ 'CurrentUserHasNoEmployeeRecord' | localize }}
+                    </div>
+                </div>
+            </div>
+        } @else {
+            <!-- The four questions somebody asks of their own inbox: what needs me, what was I asked
+                 about, what did I push back, and did the thing I approved go through. Counts come from
+                 their own call, so the strip can say how many are behind a tab before it is opened. -->
+            <div class="card card-custom gutter-b">
+                <div class="card-body py-3">
+                    <ul class="nav inbox-tabs" role="tablist">
+                        @for (t of tabs; track t.id) {
+                            <li class="nav-item" role="presentation">
+                                <button
+                                    type="button"
+                                    role="tab"
+                                    class="inbox-tab"
+                                    [class.inbox-tab-active]="tab() === t.id"
+                                    [attr.aria-selected]="tab() === t.id"
+                                    (click)="selectTab(t.id)">
+                                    {{ t.labelKey | localize }}
+                                    <span class="badge badge-light ms-1">{{ tabCount(t.id) }}</span>
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <form class="form" autocomplete="off">
+                        <div class="row mb-4">
+                            <div class="col-xl-6">
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        name="filterText"
+                                        class="form-control m-input"
+                                        data-help-loc="SearchWithThreeDot"
+                                        [placeholder]="'SearchWithThreeDot' | localize"
+                                        [ngModel]="filterText()"
+                                        (ngModelChange)="filterText.set($event)"
+                                        (keyup.enter)="applyFilters()" />
+                                    <button type="button" class="btn btn-primary" (click)="applyFilters()">
+                                        <i class="flaticon-search-1" [attr.aria-label]="'Search' | localize"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-3 mb-2">
+                                <label class="form-label text-muted">{{ 'RequestType' | localize }}</label>
+                                <select
+                                    name="requestTypeFilter"
+                                    class="form-select"
+                                    data-help-loc="RequestType"
+                                    [ngModel]="requestTypeFilter()"
+                                    (ngModelChange)="requestTypeFilter.set($event); applyFilters()">
+                                    <option value="">{{ 'All' | localize }}</option>
+                                    @for (option of requestTypeOptions(); track option.value) {
+                                        <option [value]="option.value">{{ option.label }}</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-3 mb-2">
+                                <label class="form-label text-muted">{{ 'Employee' | localize }}</label>
+                                <select
+                                    name="employeeFilter"
+                                    class="form-select"
+                                    data-help-loc="Employee"
+                                    [ngModel]="employeeFilter()"
+                                    (ngModelChange)="employeeFilter.set($event); applyFilters()">
+                                    <option value="">{{ 'All' | localize }}</option>
+                                    @for (option of employeeOptions(); track option.value) {
+                                        <option [value]="option.value">{{ option.label }}</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-2 mb-2">
+                                <label class="form-label text-muted">{{ 'Status' | localize }}</label>
+                                <select
+                                    name="statusFilter"
+                                    class="form-select"
+                                    data-help-loc="Status"
+                                    [ngModel]="statusFilter()"
+                                    (ngModelChange)="statusFilter.set($event); applyFilters()">
+                                    <option value="">{{ 'All' | localize }}</option>
+                                    @for (option of statusOptions(); track option.value) {
+                                        <option [value]="option.value">{{ option.label }}</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-2 mb-2">
+                                <label class="form-label text-muted">{{ 'FromDate' | localize }}</label>
+                                <input
+                                    type="date"
+                                    name="dateFrom"
+                                    class="form-control"
+                                    data-help-loc="FromDate"
+                                    [ngModel]="dateFrom()"
+                                    (ngModelChange)="dateFrom.set($event); applyFilters()" />
+                            </div>
+
+                            <div class="col-md-2 mb-2">
+                                <label class="form-label text-muted">{{ 'ToDate' | localize }}</label>
+                                <input
+                                    type="date"
+                                    name="dateTo"
+                                    class="form-control"
+                                    data-help-loc="ToDate"
+                                    [ngModel]="dateTo()"
+                                    (ngModelChange)="dateTo.set($event); applyFilters()" />
+                            </div>
+                        </div>
+
+                        @if (hasFilters()) {
+                            <div class="row mb-4">
+                                <div class="col-sm-12 text-end">
+                                    <button type="button" class="btn btn-light" (click)="clearFilters()">
+                                        <i class="fa fa-times btn-md-icon"></i>
+                                        <span class="d-none d-md-inline-block">{{ 'Clear' | localize }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </form>
+
+                    @if (truncated()) {
+                        <div class="alert alert-warning">{{ 'OnlyFirstRecordsAreShown' | localize }}</div>
+                    }
+
+
+                    <!-- Appears only once something is ticked. A bar that is always there, greyed out, is
+                         one more thing to read past on a screen whose job is to be scanned. -->
+                    @if (canBulkApprove() && checkedCount() > 0) {
+                        <div class="alert alert-light-primary d-flex flex-wrap align-items-center gap-2 mb-4">
+                            <span class="fw-bold me-2">{{ 'SelectedCount' | localize: checkedCount() }}</span>
+
+                            <!-- Offered up front rather than after the first attempt: a step that demands a
+                                 comment is skipped without one, and finding that out from the result is a
+                                 wasted round trip for everybody. -->
+                            <input
+                                type="text"
+                                name="bulkComment"
+                                class="form-control form-control-sm flex-grow-1"
+                                style="min-width: 240px"
+                                [placeholder]="'BulkApproveComment' | localize"
+                                [(ngModel)]="bulkComment"
+                                [ngModelOptions]="{ standalone: true }" />
+
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-primary"
+                                [disabled]="acting()"
+                                (click)="bulkApprove()">
+                                <i class="fa fa-check"></i>
+                                {{ 'ApproveSelected' | localize }}
+                            </button>
+                            <button type="button" class="btn btn-sm btn-light" (click)="toggleAll(false)">
+                                {{ 'Cancel' | localize }}
+                            </button>
+                        </div>
+                    }
+                    <div class="row align-items-center">
+                        <!--<Primeng-TurboTable-Start>-->
+                        <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                            <p-table
+                                #dataTable
+                                (onLazyLoad)="getRequests($event)"
+                                [value]="primengTableHelper.records()"
+                                rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                                [paginator]="false"
+                                [lazy]="true"
+                                [scrollable]="true"
+                                [tableStyle]="{ 'min-width': '60rem' }"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template #header>
+                                    <tr>
+                                        <!-- Only on the actionable tab: nothing on the other three can be
+                                             approved, so a column of ticks there would promise something
+                                             the server would refuse. -->
+                                        @if (canBulkApprove()) {
+                                            <th style="width: 48px">
+                                                <input
+                                                    type="checkbox"
+                                                    class="form-check-input"
+                                                    [checked]="allChecked()"
+                                                    (change)="toggleAll($any($event.target).checked)"
+                                                    [attr.aria-label]="'SelectAll' | localize" />
+                                            </th>
+                                        }
+                                        <th style="min-width: 110px">{{ 'Actions' | localize }}</th>
+                                        <th style="min-width: 160px" pSortableColumn="typeName">
+                                            {{ 'RequestType' | localize }}
+                                            <p-sortIcon field="typeName" />
+                                        </th>
+                                        <th style="min-width: 150px" pSortableColumn="requestNumber">
+                                            {{ 'RequestNumber' | localize }}
+                                            <p-sortIcon field="requestNumber" />
+                                        </th>
+                                        <th style="min-width: 200px" pSortableColumn="employeeName">
+                                            {{ 'Employee' | localize }}
+                                            <p-sortIcon field="employeeName" />
+                                        </th>
+                                        <th style="min-width: 260px" pSortableColumn="summary">
+                                            {{ 'Summary' | localize }}
+                                            <p-sortIcon field="summary" />
+                                        </th>
+                                        <th style="min-width: 150px" pSortableColumn="submittedOnMs">
+                                            {{ 'SubmittedOn' | localize }}
+                                            <p-sortIcon field="submittedOnMs" />
+                                        </th>
+                                        <th style="min-width: 120px" pSortableColumn="stepNumber">
+                                            {{ 'WorkflowStep' | localize }}
+                                            <p-sortIcon field="stepNumber" />
+                                        </th>
+                                        <th style="min-width: 150px" pSortableColumn="statusLabel">
+                                            {{ 'Status' | localize }}
+                                            <p-sortIcon field="statusLabel" />
+                                        </th>
+                                    </tr>
+                                </ng-template>
+
+                                <ng-template #body let-record="$implicit">
+                                    <tr
+                                        class="ess-inbox__row"
+                                        [class.ess-inbox__row--selected]="selected()?.id === record.id"
+                                        (click)="openDetail(record)">
+                                        @if (canBulkApprove()) {
+                                            <td style="width: 48px" (click)="$event.stopPropagation()">
+                                                <!-- A feedback ask offers no tick: this person cannot
+                                                     approve it, so including it in a batch would only
+                                                     produce a refusal. -->
+                                                @if (!record.isFeedbackRequest) {
+                                                    <input
+                                                        type="checkbox"
+                                                        class="form-check-input"
+                                                        [checked]="isChecked(record)"
+                                                        (change)="toggleChecked(record, $any($event.target).checked)" />
+                                                }
+                                            </td>
+                                        }
+                                        <td style="min-width: 110px" (click)="$event.stopPropagation()">
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary btn-sm dropdown-toggle"
+                                                data-help-loc="Actions"
+                                                (click)="showMenu($event, record, actionsMenu)">
+                                                <i class="fa fa-cog"></i>
+                                                {{ 'Actions' | localize }}
+                                            </button>
+                                        </td>
+                                        <td style="min-width: 160px">
+                                            {{ record.typeName }}
+
+                                            @if (record.isFeedbackRequest) {
+                                                <!-- Marked in the grid, not only once the row is opened. A
+                                                     feedback request and an approval look identical here
+                                                     otherwise, and the difference is whether this person
+                                                     is expected to decide anything. -->
+                                                <span class="badge badge-light-primary ms-2">
+                                                    {{ 'AskedForMyFeedback' | localize }}
+                                                </span>
+                                            }
+                                        </td>
+                                        <td style="min-width: 150px">{{ record.requestNumber }}</td>
+                                        <td style="min-width: 200px">
+                                            <div class="d-flex align-items-center">
+                                                <!-- See workflow-activity-rail: the photo endpoint needs a
+                                                     bearer token an <img src> cannot send. -->
+                                                <employee-avatar
+                                                    class="me-3"
+                                                    [photoUrl]="record.photoUrl"
+                                                    [name]="record.employeeName"
+                                                    [size]="32" />
+                                                <span>{{ record.employeeName }}</span>
+                                            </div>
+                                        </td>
+                                        <td style="min-width: 260px">
+                                            <span pTooltip="{{ record.summary }}">{{ record.summary }}</span>
+                                        </td>
+                                        <td style="min-width: 150px">
+                                            {{ record.submittedOn | luxonFormat: 'dd MMM yyyy' }}
+                                        </td>
+                                        <td style="min-width: 120px" data-help-loc="Step">{{ record.stepLabel }}</td>
+                                        <td style="min-width: 150px">
+                                            <span class="badge" [ngClass]="record.statusClass">
+                                                {{ record.statusLabel }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+
+                            @if (primengTableHelper.totalRecordsCount() == 0) {
+                                <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+                            }
+
+                            <div class="primeng-paging-container">
+                                <p-paginator
+                                    #paginator
+                                    [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                    (onPageChange)="getRequests($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                    [showCurrentPageReport]="true"
+                                    [currentPageReportTemplate]="
+                                        'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                    " />
+                            </div>
+                        </div>
+                        <!--<Primeng-TurboTable-End>-->
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- The decision bar that used to be docked here is gone. It existed only because the detail dialog had
+         no approver mode, so the buttons had nowhere else to live and ended up floating at the bottom of the
+         window underneath a dialog they belonged to. The dialog now carries the decision itself, next to the
+         fields being decided on, which is what the user asked for. -->
+</div>
+
+<essRequestDetailModal #detail (decided)="onDecided($event)" (feedbackSubmitted)="reloadFromServer()" />

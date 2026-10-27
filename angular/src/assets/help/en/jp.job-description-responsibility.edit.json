@@ -1,0 +1,27 @@
+{
+  "helpId": "jp.job-description-responsibility.edit",
+  "lang": "en",
+  "title": "Job Description Responsibilities — Create / Edit",
+  "entity": "HCMv3.JobProfileManagement.JobDescriptionResponsibility",
+  "overviewHtml": "<p>A responsibility the job description asks for. Each can be listed once per job description.</p>",
+  "aliasIndex": {
+    "loc:JobResponsibility": "JobDescriptionResponsibility.JobResponsibilityId",
+    "dom:JobDescriptionResponsibility_JobResponsibilityId": "JobDescriptionResponsibility.JobResponsibilityId"
+  },
+  "fields": [
+    {
+      "id": "JobDescriptionResponsibility.JobResponsibilityId",
+      "label": "JobResponsibility",
+      "section": "JobDescriptionResponsibilities",
+      "aliases": [
+        "loc:JobResponsibility",
+        "dom:JobDescriptionResponsibility_JobResponsibilityId"
+      ],
+      "rules": "Optional. Chosen from Job Responsibility master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The responsibility.</p><p><strong>Example.</strong> Prepare the monthly payroll</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

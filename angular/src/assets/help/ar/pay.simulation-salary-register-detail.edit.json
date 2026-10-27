@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.simulation-salary-register-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل سجلات الرواتب التجريبية — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.SimulationSalaryRegisterDetail",
+  "overviewHtml": "<p>سطر واحد من كشف راتب المحاكاة: نوع أجر مع أجره وعدده ومبلغه.</p>",
+  "aliasIndex": {
+    "loc:SimulationSalaryRegisterId": "SimulationSalaryRegisterDetail.SimulationSalaryRegisterId",
+    "dom:SimulationSalaryRegisterDetail_SimulationSalaryRegisterId": "SimulationSalaryRegisterDetail.SimulationSalaryRegisterId",
+    "loc:WageTypeId": "SimulationSalaryRegisterDetail.WageTypeId",
+    "dom:SimulationSalaryRegisterDetail_WageTypeId": "SimulationSalaryRegisterDetail.WageTypeId",
+    "loc:Rate": "SimulationSalaryRegisterDetail.Rate",
+    "dom:SimulationSalaryRegisterDetail_Rate": "SimulationSalaryRegisterDetail.Rate",
+    "loc:Number": "SimulationSalaryRegisterDetail.Number",
+    "dom:SimulationSalaryRegisterDetail_Number": "SimulationSalaryRegisterDetail.Number",
+    "loc:Amount": "SimulationSalaryRegisterDetail.Amount",
+    "dom:SimulationSalaryRegisterDetail_Amount": "SimulationSalaryRegisterDetail.Amount"
+  },
+  "fields": [
+    {
+      "id": "SimulationSalaryRegisterDetail.SimulationSalaryRegisterId",
+      "label": "SimulationSalaryRegisterId",
+      "section": "SimulationSalaryRegisterDetails",
+      "aliases": [
+        "loc:SimulationSalaryRegisterId",
+        "dom:SimulationSalaryRegisterDetail_SimulationSalaryRegisterId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة سجلات الرواتب التجريبية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كشف راتب المحاكاة الذي يتبعه هذا السطر. ولا يظهر عند فتح النافذة من صفحة كشف المحاكاة نفسه، إذ يُملأ تلقائياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegisterDetail.WageTypeId",
+      "label": "WageTypeId",
+      "section": "SimulationSalaryRegisterDetails",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:SimulationSalaryRegisterDetail_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الأجر لهذا السطر.</p><p><strong>مثال.</strong> الراتب الأساسي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegisterDetail.Rate",
+      "label": "Rate",
+      "section": "SimulationSalaryRegisterDetails",
+      "aliases": [
+        "loc:Rate",
+        "dom:SimulationSalaryRegisterDetail_Rate"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأجر الشهري الذي احتُسب منه السطر.</p><p><strong>مثال.</strong> <code>800</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegisterDetail.Number",
+      "label": "Number",
+      "section": "SimulationSalaryRegisterDetails",
+      "aliases": [
+        "loc:Number",
+        "dom:SimulationSalaryRegisterDetail_Number"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الكمية — أيام أو ساعات أو وحدات — التي احتُسب عليها السطر.</p><p><strong>مثال.</strong> <code>30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegisterDetail.Amount",
+      "label": "Amount",
+      "section": "SimulationSalaryRegisterDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:SimulationSalaryRegisterDetail_Amount"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مبلغ السطر.</p><p><strong>مثال.</strong> <code>800.000</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

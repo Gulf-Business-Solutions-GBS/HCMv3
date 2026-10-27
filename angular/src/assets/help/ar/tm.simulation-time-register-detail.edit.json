@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.simulation-time-register-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل سجلات الوقت التجريبية — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.SimulationTimeRegisterDetail",
+  "overviewHtml": "<p>قيمة نوع وقت واحد ليوم محاكاة.</p><p>لا تُكتب حالياً: لا توجد عملية تملأ هذه السجلات ولا شيء يقرؤها. ويعمل نظام الرواتب والتقارير من سجل الوقت اليومي.</p>",
+  "aliasIndex": {
+    "loc:SimulationTimeRegister": "SimulationTimeRegisterDetail.SimulationTimeRegisterId",
+    "dom:SimulationTimeRegisterDetail_SimulationTimeRegisterId": "SimulationTimeRegisterDetail.SimulationTimeRegisterId",
+    "loc:TimeType": "SimulationTimeRegisterDetail.TimeTypeId",
+    "dom:SimulationTimeRegisterDetail_TimeTypeId": "SimulationTimeRegisterDetail.TimeTypeId",
+    "loc:TimeValue": "SimulationTimeRegisterDetail.TimeValue",
+    "dom:SimulationTimeRegisterDetail_TimeValue": "SimulationTimeRegisterDetail.TimeValue"
+  },
+  "fields": [
+    {
+      "id": "SimulationTimeRegisterDetail.SimulationTimeRegisterId",
+      "label": "SimulationTimeRegister",
+      "section": "SimulationTimeRegisterDetails",
+      "aliases": [
+        "loc:SimulationTimeRegister",
+        "dom:SimulationTimeRegisterDetail_SimulationTimeRegisterId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة سجلات الوقت التجريبية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوم المحاكاة الذي يتبعه هذا السطر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationTimeRegisterDetail.TimeTypeId",
+      "label": "TimeType",
+      "section": "SimulationTimeRegisterDetails",
+      "aliases": [
+        "loc:TimeType",
+        "dom:SimulationTimeRegisterDetail_TimeTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الوقت.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الوقت الذي تخصه القيمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationTimeRegisterDetail.TimeValue",
+      "label": "TimeValue",
+      "section": "SimulationTimeRegisterDetails",
+      "aliases": [
+        "loc:TimeValue",
+        "dom:SimulationTimeRegisterDetail_TimeValue"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القيمة.</p><p><strong>مثال.</strong> <code>2.5</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

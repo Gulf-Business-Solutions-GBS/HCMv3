@@ -1,0 +1,43 @@
+{
+  "helpId": "gmi.clearance-request-field-detail.edit",
+  "lang": "en",
+  "title": "Clearance Request Field Details — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.ClearanceRequestFieldDetail",
+  "overviewHtml": "<p>Assigns one line of the exit clearance checklist to a department. On a parallel approval step, every department's approver looks at the same clearance at the same time, and each is shown only the lines assigned to their role — IT answers the IT lines, Finance the Finance lines. One line can be assigned to more than one department.</p>",
+  "aliasIndex": {
+    "loc:ClearanceRequestField": "ClearanceRequestFieldDetail.ClearanceRequestFieldId",
+    "dom:ClearanceRequestFieldDetail_ClearanceRequestFieldId": "ClearanceRequestFieldDetail.ClearanceRequestFieldId",
+    "loc:WorkflowRole": "ClearanceRequestFieldDetail.WorkflowRoleId",
+    "dom:ClearanceRequestFieldDetail_WorkflowRoleId": "ClearanceRequestFieldDetail.WorkflowRoleId"
+  },
+  "fields": [
+    {
+      "id": "ClearanceRequestFieldDetail.ClearanceRequestFieldId",
+      "label": "ClearanceRequestField",
+      "section": "ClearanceRequestFieldDetails",
+      "aliases": [
+        "loc:ClearanceRequestField",
+        "dom:ClearanceRequestFieldDetail_ClearanceRequestFieldId"
+      ],
+      "rules": "Optional. Chosen from Clearance Request Field master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The checklist line being assigned. Not shown when the dialog is opened from a clearance request field's own page: that line is filled in for you.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ClearanceRequestFieldDetail.WorkflowRoleId",
+      "label": "WorkflowRole",
+      "section": "ClearanceRequestFieldDetails",
+      "aliases": [
+        "loc:WorkflowRole",
+        "dom:ClearanceRequestFieldDetail_WorkflowRoleId"
+      ],
+      "rules": "Required. Chosen from Workflow Role master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The workflow role that answers this checklist line during a clearance approval.</p><p><strong>Example.</strong> IT Department, for the line \"Laptop returned\"</p><p><strong>Why it matters.</strong> When a clearance request reaches an approver, they see only the checklist lines whose role they hold on that day, and the line is recorded against them. An approver without the role does not see the line, so a line with a role nobody holds is never answered.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

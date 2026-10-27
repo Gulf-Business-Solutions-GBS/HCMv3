@@ -1,0 +1,101 @@
+<div class="row align-items-center mb-4">
+    <div class="col-md-4">
+        <input
+            type="text"
+            class="form-control"
+            [placeholder]="'AbsenceDedRuleDetailsSearchHint' | localize"
+            [ngModel]="filterText()"
+            (ngModelChange)="onFilterChange($event)" />
+    </div>
+    <div class="col-md-8 text-end">
+        @if ('Pages.PayrollManagement.AbsenceDedRuleDetails.Create' | permission) {
+            <button type="button" class="btn btn-primary" (click)="createRecord()">
+                <i class="fa fa-plus"></i>
+                {{ 'CreateNew' | localize }}
+            </button>
+        }
+    </div>
+</div>
+<div class="row align-items-center">
+    <!--<Primeng-TurboTable-Start>-->
+    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+        <p-table
+            #dataTable
+            sortMode="multiple"
+            (onLazyLoad)="getRecords($event)"
+            [value]="primengTableHelper.records()"
+            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+            [paginator]="false"
+            [lazy]="true"
+            [scrollable]="true"
+            scrollDirection="horizontal"
+            [resizableColumns]="primengTableHelper.resizableColumns">
+            <ng-template #header>
+                <tr>
+                    <th
+                        style="width: 130px"
+                        [hidden]="
+                            !(['Pages.PayrollManagement.AbsenceDedRuleDetails.Edit', 'Pages.PayrollManagement.AbsenceDedRuleDetails.Delete'] | permissionAny)
+                        ">
+                        {{ 'Actions' | localize }}
+                    </th>
+                    <th style="min-width: 130px" pSortableColumn="startDate">
+                        {{ 'StartDate' | localize }}
+                        <p-sortIcon field="startDate" />
+                    </th>
+                    <th style="min-width: 130px" pSortableColumn="endDate">
+                        {{ 'EndDate' | localize }}
+                        <p-sortIcon field="endDate" />
+                    </th>
+                    <th style="min-width: 100px" pSortableColumn="daysCount">
+                        {{ 'DaysCount' | localize }}
+                        <p-sortIcon field="daysCount" />
+                    </th>
+                    <th style="min-width: 130px">{{ 'DeductionUnit' | localize }}</th>
+                    <th style="min-width: 130px" pSortableColumn="deductionNumber">
+                        {{ 'DeductionNumber' | localize }}
+                        <p-sortIcon field="deductionNumber" />
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-record="$implicit">
+                <tr>
+                    <td
+                        style="width: 130px"
+                        [hidden]="
+                            !(['Pages.PayrollManagement.AbsenceDedRuleDetails.Edit', 'Pages.PayrollManagement.AbsenceDedRuleDetails.Delete'] | permissionAny)
+                        ">
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" (click)="showMenu($event, record, actionsMenu)">
+                            <i class="fa fa-cog"></i>
+                            {{ 'Actions' | localize }}
+                        </button>
+                    </td>
+                    <td style="min-width: 130px">{{ record.startDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                    <td style="min-width: 130px">{{ record.endDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                    <td style="min-width: 100px">{{ record.daysCount }}</td>
+                    <td style="min-width: 130px">{{ deductionUnitName(record.deductionUnit) }}</td>
+                    <td style="min-width: 130px">{{ record.deductionNumber }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        @if (primengTableHelper.totalRecordsCount() == 0) {
+            <div class="primeng-no-data">
+                {{ 'NoData' | localize }}
+            </div>
+        }
+        <div class="primeng-paging-container">
+            <p-paginator
+                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                #paginator
+                (onPageChange)="getRecords($event)"
+                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                [showCurrentPageReport]="true"
+                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+        </div>
+    </div>
+    <!--<Primeng-TurboTable-End>-->
+</div>
+
+<createOrEditAbsenceDedRuleDetailModal #createOrEditModal (modalSave)="reloadPage()" />

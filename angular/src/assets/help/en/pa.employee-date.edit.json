@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-date.edit",
+  "lang": "en",
+  "title": "Employee Dates — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeDate",
+  "overviewHtml": "<p>A significant date for the employee — for example a medical check-up or a contract review — with an optional number of days.</p><p>It is recorded for reference; no calculation or report reads it at present.</p>",
+  "aliasIndex": {
+    "loc:DateType": "EmployeeDate.DateTypeId",
+    "dom:EmployeeDate_DateTypeId": "EmployeeDate.DateTypeId",
+    "loc:DateData": "EmployeeDate.DateData",
+    "dom:EmployeeDate_DateData": "EmployeeDate.DateData",
+    "loc:DayData": "EmployeeDate.DayData",
+    "dom:EmployeeDate_DayData": "EmployeeDate.DayData"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDate.DateTypeId",
+      "label": "DateType",
+      "section": "EmployeeDates",
+      "aliases": [
+        "loc:DateType",
+        "dom:EmployeeDate_DateTypeId"
+      ],
+      "rules": "Optional. Chosen from Date Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of date.</p><p><strong>Example.</strong> Medical check-up</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Date Types.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDate.DateData",
+      "label": "DateData",
+      "section": "EmployeeDates",
+      "aliases": [
+        "loc:DateData",
+        "dom:EmployeeDate_DateData"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date itself.</p><p><strong>Example.</strong> 15 Jan 2027</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDate.DayData",
+      "label": "DayData",
+      "section": "EmployeeDates",
+      "aliases": [
+        "loc:DayData",
+        "dom:EmployeeDate_DayData"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A number of days recorded with the date.</p><p><strong>Example.</strong> 0</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

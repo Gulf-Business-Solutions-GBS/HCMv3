@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.payroll-control-record.edit",
+  "lang": "ar",
+  "title": "سجلات ضبط الرواتب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.PayrollControlRecord",
+  "overviewHtml": "<p>فترة الرواتب الحالية لمنطقة رواتب، وحالتها. لكل منطقة رواتب سجل ضبط واحد فقط. وعند الحفظ يُحتسب تاريخا بداية الفترة ونهايتها الميلاديان من شهر الرواتب وسنة الرواتب والسنة المالية للمنطقة.</p><p>وتحدد الحالةُ ما يجوز عمله:</p><ul><li><strong>مفتوحة</strong> — لم تبدأ بعد. يمكن تعديل البيانات الأساسية، ويُرفض تشغيل الرواتب العادي.</li><li><strong>مفتوحة لتشغيل الرواتب</strong> — يُسمح بالتشغيل العادي للشهر الذي ينتهي في تاريخ الدفع. ويُرفض تعديل السجلات المتعلقة بالرواتب لموظفي هذه المنطقة.</li><li><strong>مقفلة</strong> — انتهى الشهر. يُسمح بالتشغيل خارج الدورة، ويُرفض التشغيل العادي.</li></ul><p>وتُنقل الحالة عادةً من القائمة بالإجراءات <strong>فتح لتشغيل الرواتب</strong> و<strong>فتح للتصحيح</strong> و<strong>إقفال الفترة</strong> و<strong>إعادة فتح الفترة</strong>، وهي تسجّل أيضاً من نقلها ومتى. أما خانتا الاختيار في هذا النموذج فتضبطان الحالة نفسها مباشرة.</p>",
+  "aliasIndex": {
+    "loc:PayrollAreaId": "PayrollControlRecord.PayrollAreaId",
+    "dom:PayrollControlRecord_PayrollAreaId": "PayrollControlRecord.PayrollAreaId",
+    "loc:PayrollMonth": "PayrollControlRecord.PayrollMonth",
+    "dom:PayrollControlRecord_PayrollMonth": "PayrollControlRecord.PayrollMonth",
+    "loc:PayrollYear": "PayrollControlRecord.PayrollYear",
+    "dom:PayrollControlRecord_PayrollYear": "PayrollControlRecord.PayrollYear",
+    "loc:PeriodLocked": "PayrollControlRecord.PeriodLocked",
+    "dom:PayrollControlRecord_PeriodLocked": "PayrollControlRecord.PeriodLocked",
+    "loc:PeriodClosed": "PayrollControlRecord.PeriodClosed",
+    "dom:PayrollControlRecord_PeriodClosed": "PayrollControlRecord.PeriodClosed"
+  },
+  "fields": [
+    {
+      "id": "PayrollControlRecord.PayrollAreaId",
+      "label": "PayrollAreaId",
+      "section": "PayrollControlRecords",
+      "aliases": [
+        "loc:PayrollAreaId",
+        "dom:PayrollControlRecord_PayrollAreaId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة مناطق الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> منطقة الرواتب التي يحكمها سجل الضبط هذا.</p><p><strong>مثال.</strong> Kuwait Monthly</p><p><strong>لماذا يهم.</strong> لا يكون للمنطقة إلا سجل ضبط واحد، ويُرفض السجل الثاني.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollControlRecord.PayrollMonth",
+      "label": "PayrollMonth",
+      "section": "PayrollControlRecords",
+      "aliases": [
+        "loc:PayrollMonth",
+        "dom:PayrollControlRecord_PayrollMonth"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الفترة الجاري احتسابها، بوصفها شهراً من السنة المالية للمنطقة، من 1 إلى 12.</p><p><strong>مثال.</strong> <code>1</code> — أبريل، للمنطقة التي سنتها أبريل–مارس.</p><p><strong>لماذا يهم.</strong> يعطي مع سنة الرواتب والسنة المالية للمنطقة تاريخَي بداية الفترة ونهايتها الميلاديين. ولا يُسمح بالتشغيل العادي إلا إذا كان تاريخ النهاية هو تاريخ الدفع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollControlRecord.PayrollYear",
+      "label": "PayrollYear",
+      "section": "PayrollControlRecords",
+      "aliases": [
+        "loc:PayrollYear",
+        "dom:PayrollControlRecord_PayrollYear"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السنة المالية للفترة الجاري احتسابها.</p><p><strong>مثال.</strong> <code>2026</code></p><p><strong>لماذا يهم.</strong> إذا لم تبدأ السنة المالية في يناير فإن أشهرها الأخيرة تقع في السنة الميلادية التالية: فالشهر 10 من سنة أبريل–مارس 2026 هو يناير 2027.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollControlRecord.PeriodLocked",
+      "label": "PeriodLocked",
+      "section": "PayrollControlRecords",
+      "aliases": [
+        "loc:PeriodLocked",
+        "dom:PayrollControlRecord_PeriodLocked"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إذا أُشِّر عليها فالفترة مفتوحة لتشغيل الرواتب.</p><p><strong>لماذا يهم.</strong> يحتاجها تشغيل الرواتب العادي. وما دامت مؤشَّراً عليها يُرفض إضافة السجلات المتعلقة بالرواتب لموظفي هذه المنطقة الحاليين أو تعديلها أو حذفها. ولا يُعتدّ إلا بآخر فترة للمنطقة، فالفترة السابقة التي بقيت مقفلة لا تمنع شيئاً.</p>",
+      "adminHtml": "<p>نقل الحالة بالإجراء <strong>فتح لتشغيل الرواتب</strong> يُقفل أيضاً كشوف الرواتب خارج الدورة لذلك الشهر، إذا كان إعداد الرواتب <em>إقفال سجل الرواتب عند إقفال الرواتب</em> مفعّلاً. أما التأشير على الخانة هنا فيضبط الحالة دون هذه الخطوة.</p>",
+      "stub": false
+    },
+    {
+      "id": "PayrollControlRecord.PeriodClosed",
+      "label": "PeriodClosed",
+      "section": "PayrollControlRecords",
+      "aliases": [
+        "loc:PeriodClosed",
+        "dom:PayrollControlRecord_PeriodClosed"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إذا أُشِّر عليها فالفترة مقفلة.</p><p><strong>لماذا يهم.</strong> يحتاجها التشغيل خارج الدورة، فهو يُرفض إلى أن تُقفل الفترة.</p>",
+      "adminHtml": "<p>نقل الحالة بالإجراء <strong>إقفال الفترة</strong> يُقفل أيضاً كشوف الرواتب العادية لذلك الشهر إذا كان إعداد <em>إقفال سجل الرواتب عند إقفال الرواتب</em> مفعّلاً، ولا يفعل ذلك التأشير على الخانة هنا. وإذا كان إعداد الرواتب <em>تعطيل الاحتساب بأثر رجعي</em> مفعّلاً، يُرفض أي تعديل بتاريخ سابق للفترة: قبل أول يوم فيها ما دامت مفتوحة أو مفتوحة لتشغيل الرواتب، وحتى آخر يوم فيها بعد إقفالها.</p>",
+      "stub": false
+    }
+  ]
+}

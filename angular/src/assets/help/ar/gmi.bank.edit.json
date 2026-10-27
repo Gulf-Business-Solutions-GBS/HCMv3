@@ -1,0 +1,123 @@
+{
+  "helpId": "gmi.bank.edit",
+  "lang": "ar",
+  "title": "البنوك — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.Bank",
+  "overviewHtml": "<p>البنوك التي تُحوَّل إليها رواتب الموظفين، والبنوك التي تدفع منها الشركة. يسمّي كل حساب بنكي للموظف أحد هذه البنوك، ويُنشأ ملف تحويل الرواتب لبنك دافع واحد في كل مرة.</p>",
+  "aliasIndex": {
+    "loc:Code": "Bank.Code",
+    "dom:Bank_Code": "Bank.Code",
+    "loc:NameEn": "Bank.NameEn",
+    "dom:Bank_NameEn": "Bank.NameEn",
+    "loc:NameAr": "Bank.NameAr",
+    "dom:Bank_NameAr": "Bank.NameAr",
+    "loc:ExternalCode": "Bank.ExternalCode",
+    "dom:Bank_ExternalCode": "Bank.ExternalCode",
+    "loc:SWIFTCode": "Bank.SWIFTCode",
+    "dom:Bank_SWIFTCode": "Bank.SWIFTCode",
+    "loc:CompanyCode": "Bank.CompanyCode",
+    "dom:Bank_CompanyCode": "Bank.CompanyCode",
+    "loc:BankFile": "Bank.BankFileId",
+    "dom:Bank_BankFileId": "Bank.BankFileId"
+  },
+  "fields": [
+    {
+      "id": "Bank.Code",
+      "label": "Code",
+      "section": "Banks",
+      "aliases": [
+        "loc:Code",
+        "dom:Bank_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Bank.NameEn",
+      "label": "NameEn",
+      "section": "Banks",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Bank_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Bank.NameAr",
+      "label": "NameAr",
+      "section": "Banks",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Bank_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Bank.ExternalCode",
+      "label": "ExternalCode",
+      "section": "Banks",
+      "aliases": [
+        "loc:ExternalCode",
+        "dom:Bank_ExternalCode"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> معرّف لهذا البنك يُستخدم خارج HCMv3.</p><p><strong>لماذا يهم.</strong> عندما يدفع هذا البنك الرواتب، يُكتب رمزه الخارجي في ملف تحويل الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Bank.SWIFTCode",
+      "label": "SWIFTCode",
+      "section": "Banks",
+      "aliases": [
+        "loc:SWIFTCode",
+        "dom:Bank_SWIFTCode"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز السويفت (BIC) الخاص بالبنك.</p><p><strong>مثال.</strong> <code>NBOKKWKW</code></p><p><strong>لماذا يهم.</strong> يُكتب في ملف تحويل الرواتب للموظفين الذين تُحوَّل رواتبهم إلى هذا البنك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Bank.CompanyCode",
+      "label": "CompanyCode",
+      "section": "Banks",
+      "aliases": [
+        "loc:CompanyCode",
+        "dom:Bank_CompanyCode"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز الشركة لدى هذا البنك، كما يتطلبه تنسيق ملف التحويل لديه.</p><p><strong>لماذا يهم.</strong> عندما يدفع هذا البنك الرواتب، يُكتب هذا الرمز في ملف تحويل الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Bank.BankFileId",
+      "label": "BankFile",
+      "section": "Banks",
+      "aliases": [
+        "loc:BankFile",
+        "dom:Bank_BankFileId"
+      ],
+      "rules": "اختياري. يُختار من قائمة ملفات البنك.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنسيق ملف بنكي مرتبط بهذا البنك.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — فملف تحويل الرواتب لا يستخدم هذا الإعداد.</p>",
+      "adminHtml": "<p>الرموز التي يستخدمها البنك الدافع للبنوك الأخرى في ملف التحويل تُضبط في تفاصيل بنوك المستفيدين.</p>",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,189 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #rosterDutyPeriodDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (rosterDutyPeriodDetail().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'RosterDutyPeriodDetail' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'RosterDutyPeriodDetail' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="RosterDutyPeriodDetail_RosterDutyPeriodId">{{ 'RosterDutyPeriod' | localize }}</label>
+                                <select
+                                    id="RosterDutyPeriodDetail_RosterDutyPeriodId"
+                                    #rosterDutyPeriodIdInput="ngModel"
+                                    class="form-select"
+                                    name="RosterDutyPeriodId"
+                                    [ngModel]="rosterDutyPeriodDetail().rosterDutyPeriodId"
+                                    (ngModelChange)="updateField('rosterDutyPeriodId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (rosterDutyPeriod of rosterDutyPeriods(); track rosterDutyPeriod.id) {
+                                        <option [ngValue]="rosterDutyPeriod.id">{{ rosterDutyPeriod.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="rosterDutyPeriodIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="RosterDutyPeriodDetail_Week">{{ 'Week' | localize }}</label>
+                                <input
+                                    id="RosterDutyPeriodDetail_Week"
+                                    #weekInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="Week"
+                                    [ngModel]="rosterDutyPeriodDetail().week"
+                                    (ngModelChange)="updateField('week', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="weekInput" />
+                            </div>
+                        </div>
+
+                        <h6>{{ 'WeeklyDutyAssignment' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="RosterDutyPeriodDetail_Day1DutyId">{{ 'Day1' | localize }}</label>
+                                <select
+                                    id="RosterDutyPeriodDetail_Day1DutyId"
+                                    class="form-select"
+                                    name="Day1DutyId"
+                                    [ngModel]="rosterDutyPeriodDetail().day1DutyId"
+                                    (ngModelChange)="updateField('day1DutyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (dailyDuty of dailyDuties(); track dailyDuty.id) {
+                                        <option [ngValue]="dailyDuty.id">{{ dailyDuty.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="RosterDutyPeriodDetail_Day2DutyId">{{ 'Day2' | localize }}</label>
+                                <select
+                                    id="RosterDutyPeriodDetail_Day2DutyId"
+                                    class="form-select"
+                                    name="Day2DutyId"
+                                    [ngModel]="rosterDutyPeriodDetail().day2DutyId"
+                                    (ngModelChange)="updateField('day2DutyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (dailyDuty of dailyDuties(); track dailyDuty.id) {
+                                        <option [ngValue]="dailyDuty.id">{{ dailyDuty.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="RosterDutyPeriodDetail_Day3DutyId">{{ 'Day3' | localize }}</label>
+                                <select
+                                    id="RosterDutyPeriodDetail_Day3DutyId"
+                                    class="form-select"
+                                    name="Day3DutyId"
+                                    [ngModel]="rosterDutyPeriodDetail().day3DutyId"
+                                    (ngModelChange)="updateField('day3DutyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (dailyDuty of dailyDuties(); track dailyDuty.id) {
+                                        <option [ngValue]="dailyDuty.id">{{ dailyDuty.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="RosterDutyPeriodDetail_Day4DutyId">{{ 'Day4' | localize }}</label>
+                                <select
+                                    id="RosterDutyPeriodDetail_Day4DutyId"
+                                    class="form-select"
+                                    name="Day4DutyId"
+                                    [ngModel]="rosterDutyPeriodDetail().day4DutyId"
+                                    (ngModelChange)="updateField('day4DutyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (dailyDuty of dailyDuties(); track dailyDuty.id) {
+                                        <option [ngValue]="dailyDuty.id">{{ dailyDuty.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="RosterDutyPeriodDetail_Day5DutyId">{{ 'Day5' | localize }}</label>
+                                <select
+                                    id="RosterDutyPeriodDetail_Day5DutyId"
+                                    class="form-select"
+                                    name="Day5DutyId"
+                                    [ngModel]="rosterDutyPeriodDetail().day5DutyId"
+                                    (ngModelChange)="updateField('day5DutyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (dailyDuty of dailyDuties(); track dailyDuty.id) {
+                                        <option [ngValue]="dailyDuty.id">{{ dailyDuty.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="RosterDutyPeriodDetail_Day6DutyId">{{ 'Day6' | localize }}</label>
+                                <select
+                                    id="RosterDutyPeriodDetail_Day6DutyId"
+                                    class="form-select"
+                                    name="Day6DutyId"
+                                    [ngModel]="rosterDutyPeriodDetail().day6DutyId"
+                                    (ngModelChange)="updateField('day6DutyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (dailyDuty of dailyDuties(); track dailyDuty.id) {
+                                        <option [ngValue]="dailyDuty.id">{{ dailyDuty.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="RosterDutyPeriodDetail_Day7DutyId">{{ 'Day7' | localize }}</label>
+                                <select
+                                    id="RosterDutyPeriodDetail_Day7DutyId"
+                                    class="form-select"
+                                    name="Day7DutyId"
+                                    [ngModel]="rosterDutyPeriodDetail().day7DutyId"
+                                    (ngModelChange)="updateField('day7DutyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (dailyDuty of dailyDuties(); track dailyDuty.id) {
+                                        <option [ngValue]="dailyDuty.id">{{ dailyDuty.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!rosterDutyPeriodDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

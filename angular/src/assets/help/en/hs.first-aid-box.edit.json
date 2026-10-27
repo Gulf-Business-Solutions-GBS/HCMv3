@@ -1,0 +1,91 @@
+{
+  "helpId": "hs.first-aid-box.edit",
+  "lang": "en",
+  "title": "First Aid Box — Create / Edit",
+  "entity": "HCMv3.HealthAndSafetyManagement.FirstAidBox",
+  "overviewHtml": "<p>A first-aid box, where it is and who looks after it. Its medicines are listed as details. Leave the code blank to have the next number given.</p>",
+  "aliasIndex": {
+    "loc:Code": "FirstAidBox.Code",
+    "dom:FirstAidBox_Code": "FirstAidBox.Code",
+    "loc:Location": "FirstAidBox.LocationId",
+    "dom:FirstAidBox_LocationId": "FirstAidBox.LocationId",
+    "loc:AllocationDate": "FirstAidBox.AllocationDate",
+    "dom:FirstAidBox_AllocationDate": "FirstAidBox.AllocationDate",
+    "loc:ResponsiblePerson": "FirstAidBox.ResponsiblePersonId",
+    "dom:FirstAidBox_ResponsiblePersonId": "FirstAidBox.ResponsiblePersonId",
+    "loc:Comments": "FirstAidBox.Comments",
+    "dom:FirstAidBox_Comments": "FirstAidBox.Comments"
+  },
+  "fields": [
+    {
+      "id": "FirstAidBox.Code",
+      "label": "Code",
+      "section": "HealthAndSafetyManagement",
+      "aliases": [
+        "loc:Code",
+        "dom:FirstAidBox_Code"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBox.LocationId",
+      "label": "Location",
+      "section": "HealthAndSafetyManagement",
+      "aliases": [
+        "loc:Location",
+        "dom:FirstAidBox_LocationId"
+      ],
+      "rules": "Required. Chosen from Work Location master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The work location.</p><p><strong>Example.</strong> Main warehouse</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBox.AllocationDate",
+      "label": "AllocationDate",
+      "section": "HealthAndSafetyManagement",
+      "aliases": [
+        "loc:AllocationDate",
+        "dom:FirstAidBox_AllocationDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the box was put in place.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBox.ResponsiblePersonId",
+      "label": "ResponsiblePerson",
+      "section": "HealthAndSafetyManagement",
+      "aliases": [
+        "loc:ResponsiblePerson",
+        "dom:FirstAidBox_ResponsiblePersonId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who looks after the box.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBox.Comments",
+      "label": "Comments",
+      "section": "HealthAndSafetyManagement",
+      "aliases": [
+        "loc:Comments",
+        "dom:FirstAidBox_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

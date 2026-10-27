@@ -1,0 +1,123 @@
+{
+  "helpId": "tm.roster-duty-schedule.edit",
+  "lang": "ar",
+  "title": "جداول ورديات العمل — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.RosterDutySchedule",
+  "overviewHtml": "<p>جدول مناوبات: فترة دوام مع نقطة بداية وتقويم عطلات، مخصص لتوليد الدوامات اليومية للمناوبات.</p><p>لا يُقرأ حالياً: يأخذ محرك الوقت ونظام الرواتب دوامات الموظفين من فترات الدوام ومجموعات المناوبة، لا من هذه القائمة. ومولّد المناوبات الذي كان سيستخدمها لم يعمل قط في النظام السابق ولم يُنقل.</p>",
+  "aliasIndex": {
+    "loc:Code": "RosterDutySchedule.Code",
+    "dom:RosterDutySchedule_Code": "RosterDutySchedule.Code",
+    "loc:NameEn": "RosterDutySchedule.NameEn",
+    "dom:RosterDutySchedule_NameEn": "RosterDutySchedule.NameEn",
+    "loc:NameAr": "RosterDutySchedule.NameAr",
+    "dom:RosterDutySchedule_NameAr": "RosterDutySchedule.NameAr",
+    "loc:StartDate": "RosterDutySchedule.StartDate",
+    "dom:RosterDutySchedule_StartDate": "RosterDutySchedule.StartDate",
+    "loc:DutyPeriod": "RosterDutySchedule.DutyPeriodId",
+    "dom:RosterDutySchedule_DutyPeriodId": "RosterDutySchedule.DutyPeriodId",
+    "loc:StartPoint": "RosterDutySchedule.StartPoint",
+    "dom:RosterDutySchedule_StartPoint": "RosterDutySchedule.StartPoint",
+    "loc:HolidayCalendar": "RosterDutySchedule.HolidayCalendarId",
+    "dom:RosterDutySchedule_HolidayCalendarId": "RosterDutySchedule.HolidayCalendarId"
+  },
+  "fields": [
+    {
+      "id": "RosterDutySchedule.Code",
+      "label": "Code",
+      "section": "RosterDutySchedules",
+      "aliases": [
+        "loc:Code",
+        "dom:RosterDutySchedule_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutySchedule.NameEn",
+      "label": "NameEn",
+      "section": "RosterDutySchedules",
+      "aliases": [
+        "loc:NameEn",
+        "dom:RosterDutySchedule_NameEn"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutySchedule.NameAr",
+      "label": "NameAr",
+      "section": "RosterDutySchedules",
+      "aliases": [
+        "loc:NameAr",
+        "dom:RosterDutySchedule_NameAr"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutySchedule.StartDate",
+      "label": "StartDate",
+      "section": "RosterDutySchedules",
+      "aliases": [
+        "loc:StartDate",
+        "dom:RosterDutySchedule_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutySchedule.DutyPeriodId",
+      "label": "DutyPeriod",
+      "section": "RosterDutySchedules",
+      "aliases": [
+        "loc:DutyPeriod",
+        "dom:RosterDutySchedule_DutyPeriodId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة فترات الدوام.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة الدوام التي يتبعها الجدول.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutySchedule.StartPoint",
+      "label": "StartPoint",
+      "section": "RosterDutySchedules",
+      "aliases": [
+        "loc:StartPoint",
+        "dom:RosterDutySchedule_StartPoint"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوم الدورة الذي يبدأ منه الجدول.</p><p><strong>مثال.</strong> <code>1</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutySchedule.HolidayCalendarId",
+      "label": "HolidayCalendar",
+      "section": "RosterDutySchedules",
+      "aliases": [
+        "loc:HolidayCalendar",
+        "dom:RosterDutySchedule_HolidayCalendarId"
+      ],
+      "rules": "اختياري. يُختار من قائمة تقاويم العطلات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تقويم العطلات للجدول.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

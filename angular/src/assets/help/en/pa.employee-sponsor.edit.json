@@ -1,0 +1,155 @@
+{
+  "helpId": "pa.employee-sponsor.edit",
+  "lang": "en",
+  "title": "Employee Sponsors — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeSponsor",
+  "overviewHtml": "<p>The sponsor (كفيل) the employee's work visa is under, for a period, with their government job title and contract salary.</p><p>Creating an assignment counts it against the sponsor's quota for that government job title, as a citizen or non-citizen according to the employee's nationality; deleting it releases the place. Editing an existing assignment does not move the count. An assignment is refused if the sponsor has no quota for the government job title.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeSponsor.StartDate",
+    "dom:EmployeeSponsor_StartDate": "EmployeeSponsor.StartDate",
+    "loc:EndDate": "EmployeeSponsor.EndDate",
+    "dom:EmployeeSponsor_EndDate": "EmployeeSponsor.EndDate",
+    "loc:SponsorId": "EmployeeSponsor.SponsorId",
+    "dom:EmployeeSponsor_SponsorId": "EmployeeSponsor.SponsorId",
+    "loc:GovtJobTitleId": "EmployeeSponsor.GovtJobTitleId",
+    "dom:EmployeeSponsor_GovtJobTitleId": "EmployeeSponsor.GovtJobTitleId",
+    "loc:EmpSponsorRelation": "EmployeeSponsor.EmpSponsorRelation",
+    "dom:EmployeeSponsor_EmpSponsorRelation": "EmployeeSponsor.EmpSponsorRelation",
+    "loc:ContractSalary": "EmployeeSponsor.ContractSalary",
+    "dom:EmployeeSponsor_ContractSalary": "EmployeeSponsor.ContractSalary",
+    "loc:SalaryCurrencyId": "EmployeeSponsor.SalaryCurrencyId",
+    "dom:EmployeeSponsor_SalaryCurrencyId": "EmployeeSponsor.SalaryCurrencyId",
+    "loc:ResidencyType": "EmployeeSponsor.ResidencyType",
+    "dom:EmployeeSponsor_ResidencyType": "EmployeeSponsor.ResidencyType",
+    "loc:WorkVisaTypeId": "EmployeeSponsor.WorkVisaTypeId",
+    "dom:EmployeeSponsor_WorkVisaTypeId": "EmployeeSponsor.WorkVisaTypeId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSponsor.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSponsor_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSponsor_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.SponsorId",
+      "label": "SponsorId",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:SponsorId",
+        "dom:EmployeeSponsor_SponsorId"
+      ],
+      "rules": "Required. Chosen from Sponsor master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The sponsor.</p><p><strong>Example.</strong> Al-Mutairi General Trading Co.</p><p><strong>Why it matters.</strong> Bank files and report distribution can be filtered by sponsor.</p>",
+      "adminHtml": "<p>Maintained under Government Relations Management → Sponsors.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.GovtJobTitleId",
+      "label": "GovtJobTitleId",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:GovtJobTitleId",
+        "dom:EmployeeSponsor_GovtJobTitleId"
+      ],
+      "rules": "Required. Chosen from Govt Job Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job title registered with the government.</p><p><strong>Example.</strong> Accountant</p><p><strong>Why it matters.</strong> The sponsor must have a quota for this title; the assignment takes one of its places.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.EmpSponsorRelation",
+      "label": "EmpSponsorRelation",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:EmpSponsorRelation",
+        "dom:EmployeeSponsor_EmpSponsorRelation"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's relation to the sponsor, as free text.</p><p><strong>Example.</strong> Employee</p><p><strong>Why it matters.</strong> Shown on the sponsor report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.ContractSalary",
+      "label": "ContractSalary",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:ContractSalary",
+        "dom:EmployeeSponsor_ContractSalary"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The salary on the government contract.</p><p><strong>Example.</strong> 600.000</p><p><strong>Why it matters.</strong> When social security is set to use the contract salary, payroll takes it from the sponsor assignment covering the month.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.SalaryCurrencyId",
+      "label": "SalaryCurrencyId",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:SalaryCurrencyId",
+        "dom:EmployeeSponsor_SalaryCurrencyId"
+      ],
+      "rules": "Required. Chosen from Currency master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The currency of the contract salary.</p><p><strong>Example.</strong> KWD</p><p><strong>Why it matters.</strong> Recorded for reference; no calculation or report reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.ResidencyType",
+      "label": "ResidencyType",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:ResidencyType",
+        "dom:EmployeeSponsor_ResidencyType"
+      ],
+      "rules": "Required. One of: Company, Non Company.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the residency is on the company or not.</p><p><strong>Example.</strong> Company</p><p><strong>Why it matters.</strong> Shown on employee reports.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.WorkVisaTypeId",
+      "label": "WorkVisaTypeId",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:WorkVisaTypeId",
+        "dom:EmployeeSponsor_WorkVisaTypeId"
+      ],
+      "rules": "Required. Chosen from Work Visa Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of work visa.</p><p><strong>Example.</strong> Article 18</p><p><strong>Why it matters.</strong> Recorded for reference; no calculation or report reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

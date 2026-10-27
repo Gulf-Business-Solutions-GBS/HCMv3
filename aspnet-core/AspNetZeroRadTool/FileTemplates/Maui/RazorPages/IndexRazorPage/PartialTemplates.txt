@@ -1,0 +1,67 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Looped_Template_Here}}",
+			"condition" : "{{Property_Listed_Maui_Here}} == true",
+			"templates" : [
+					{
+					"type" : "default",
+					"content" : "<div class=\"row\">
+                            <div class=\"text-muted col-6\">
+                                @L(\"{{Property_Name_Here}}\")
+                            </div>
+                            <div class=\"fw-semibold col-6\">
+                                @model.{{Entity_Name_Here}}.{{Property_Name_Here}}
+                            </div>
+                        </div>
+                        "
+					},
+					{
+					"type" : "file",
+					"content" : "<div class=\"row\">
+                            <div class=\"text-muted col-6\">
+                                @L(\"{{Property_Name_Here}}\")
+                            </div>
+                            <div class=\"fw-semibold col-6\">
+                                @model.{{Entity_Name_Here}}.{{Property_Name_Here}}FileName
+                            </div>
+                        </div>
+                        "
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "<div class=\"row\">
+                        <div class=\"text-muted col-6\">
+                            @L(\"{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}\")
+                        </div>
+                        <div class=\"fw-semibold col-6\">
+                            @model.{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}
+                        </div>
+                    </div>
+                    "
+					}
+				]
+		},
+	],
+"enumTemplates":[
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{Item_OnClick_Page_Value_Here}}",
+			"condition": "{{Create_Maui_View_Here}} == true",
+			"content": "View"
+		},
+		{
+			"placeholder": "{{Item_OnClick_Page_Value_Here}}",
+			"condition": "{{Create_Maui_View_Here}} == false",
+			"content": "Edit"
+		},
+	]
+}

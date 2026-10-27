@@ -1,0 +1,91 @@
+{
+  "helpId": "pa.employee-action.edit",
+  "lang": "en",
+  "title": "Employee Actions — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAction",
+  "overviewHtml": "<p>A personnel action for the employee — a promotion, transfer, re-grading or separation — with its reason and date.</p><p>Personnel actions can be routed for approval; HR raises them, not the employee. The same kind of action cannot be recorded twice on the same day for the same employee.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeAction.StartDate",
+    "dom:EmployeeAction_StartDate": "EmployeeAction.StartDate",
+    "loc:PersonalAction": "EmployeeAction.PersonalActionId",
+    "dom:EmployeeAction_PersonalActionId": "EmployeeAction.PersonalActionId",
+    "loc:ActionReason": "EmployeeAction.ActionReasonId",
+    "dom:EmployeeAction_ActionReasonId": "EmployeeAction.ActionReasonId",
+    "loc:RecommendedBy": "EmployeeAction.RecommendedBy",
+    "dom:EmployeeAction_RecommendedBy": "EmployeeAction.RecommendedBy",
+    "loc:Comments": "EmployeeAction.Comments",
+    "dom:EmployeeAction_Comments": "EmployeeAction.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAction.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeActions",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeAction_StartDate"
+      ],
+      "rules": "Required. Date value. No two records for the same employee and personal action can start on the same date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAction.PersonalActionId",
+      "label": "PersonalAction",
+      "section": "EmployeeActions",
+      "aliases": [
+        "loc:PersonalAction",
+        "dom:EmployeeAction_PersonalActionId"
+      ],
+      "rules": "Required. Chosen from Personal Action master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of action.</p><p><strong>Example.</strong> Promotion</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Personal Actions. Their requirement flags are not enforced here at present.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAction.ActionReasonId",
+      "label": "ActionReason",
+      "section": "EmployeeActions",
+      "aliases": [
+        "loc:ActionReason",
+        "dom:EmployeeAction_ActionReasonId"
+      ],
+      "rules": "Required. Chosen from Personal Action Reason master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Why the action is being taken.</p><p><strong>Example.</strong> Annual performance review</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Personal Action Reasons.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAction.RecommendedBy",
+      "label": "RecommendedBy",
+      "section": "EmployeeActions",
+      "aliases": [
+        "loc:RecommendedBy",
+        "dom:EmployeeAction_RecommendedBy"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who recommended the action, as free text.</p><p><strong>Example.</strong> Department Head, Finance</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAction.Comments",
+      "label": "Comments",
+      "section": "EmployeeActions",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeAction_Comments"
+      ],
+      "rules": "Optional. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+<div class="container page">
+    <careers-candidate-nav />
+
+    <h1>{{ 'CareersMyApplications' | localize }}</h1>
+
+    @if (loading()) {
+        <div class="loading-block">
+            <span class="spinner"></span>
+            <span>{{ 'CareersLoading' | localize }}</span>
+        </div>
+    } @else if (!applications().length) {
+        <div class="card empty">
+            <p class="empty__title">{{ 'CareersNoApplications' | localize }}</p>
+            <a class="btn btn--primary" routerLink="/">{{ 'CareersJobOpenings' | localize }}</a>
+        </div>
+    } @else {
+        <ul class="applist">
+            @for (application of applications(); track application.id) {
+                <li class="appcard card">
+                    <div class="appcard__main">
+                        <h2 class="appcard__title">
+                            @if (application.vacancyId) {
+                                <a [routerLink]="['/jobs', application.vacancyId]">{{ application.vacancyTitle }}</a>
+                            } @else {
+                                {{ application.vacancyTitle }}
+                            }
+                        </h2>
+
+                        <div class="appcard__meta small muted">
+                            @if (application.departmentName) {
+                                <span>{{ application.departmentName }}</span>
+                            }
+                            @if (application.jobTitleName) {
+                                <span>{{ application.jobTitleName }}</span>
+                            }
+                            @if (application.cvName) {
+                                <span>{{ application.cvName }}</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="appcard__side">
+                        <span class="chip chip--{{ statusTone(application) }}">
+                            {{ statusLabelKey(application) | localize }}
+                        </span>
+                        <span class="small muted">
+                            {{ 'CareersAppliedOn' | localize }} {{ application.appliedOn | careersDate }}
+                        </span>
+                        <span class="small muted">
+                            {{ 'ClosingDate' | localize }}: {{ application.closingDate | careersDate }}
+                        </span>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+</div>

@@ -1,0 +1,75 @@
+{
+  "helpId": "trv.travel-detail-cost.edit",
+  "lang": "en",
+  "title": "Travel Detail Costs — Create / Edit",
+  "entity": "HCMv3.TravelManagement.TravelDetailCost",
+  "overviewHtml": "<p>One cost of a trip leg, such as the air fare or hotel. The trip's costs are added up for the approver and for the employee's self-service view.</p>",
+  "aliasIndex": {
+    "loc:TravelDetail": "TravelDetailCost.TravelDetailId",
+    "dom:TravelDetailCost_TravelDetailId": "TravelDetailCost.TravelDetailId",
+    "loc:ExpenseType": "TravelDetailCost.ExpenseTypeId",
+    "dom:TravelDetailCost_ExpenseTypeId": "TravelDetailCost.ExpenseTypeId",
+    "loc:Amount": "TravelDetailCost.Amount",
+    "dom:TravelDetailCost_Amount": "TravelDetailCost.Amount",
+    "loc:Comments": "TravelDetailCost.Comments",
+    "dom:TravelDetailCost_Comments": "TravelDetailCost.Comments"
+  },
+  "fields": [
+    {
+      "id": "TravelDetailCost.TravelDetailId",
+      "label": "TravelDetail",
+      "section": "TravelDetailCosts",
+      "aliases": [
+        "loc:TravelDetail",
+        "dom:TravelDetailCost_TravelDetailId"
+      ],
+      "rules": "Required. Chosen from Travel Detail master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The leg.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetailCost.ExpenseTypeId",
+      "label": "ExpenseType",
+      "section": "TravelDetailCosts",
+      "aliases": [
+        "loc:ExpenseType",
+        "dom:TravelDetailCost_ExpenseTypeId"
+      ],
+      "rules": "Required. Chosen from Expense Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of cost.</p><p><strong>Example.</strong> Air fare</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetailCost.Amount",
+      "label": "Amount",
+      "section": "TravelDetailCosts",
+      "aliases": [
+        "loc:Amount",
+        "dom:TravelDetailCost_Amount"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount.</p><p><strong>Example.</strong> 180.000</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetailCost.Comments",
+      "label": "Comments",
+      "section": "TravelDetailCosts",
+      "aliases": [
+        "loc:Comments",
+        "dom:TravelDetailCost_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

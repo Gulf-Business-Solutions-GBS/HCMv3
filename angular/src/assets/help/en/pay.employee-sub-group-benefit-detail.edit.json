@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.employee-sub-group-benefit-detail.edit",
+  "lang": "en",
+  "title": "Employee Sub Group Benefit Details — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupBenefitDetail",
+  "overviewHtml": "<p>The amount of a grade benefit per kind of dependant, with an age limit.</p><p>Not read at present: payroll does not use this list, and it is kept for reference only.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeSubGroupBenefitDetail.StartDate",
+    "dom:EmployeeSubGroupBenefitDetail_StartDate": "EmployeeSubGroupBenefitDetail.StartDate",
+    "loc:EndDate": "EmployeeSubGroupBenefitDetail.EndDate",
+    "dom:EmployeeSubGroupBenefitDetail_EndDate": "EmployeeSubGroupBenefitDetail.EndDate",
+    "loc:DependantType": "EmployeeSubGroupBenefitDetail.DependantTypeId",
+    "dom:EmployeeSubGroupBenefitDetail_DependantTypeId": "EmployeeSubGroupBenefitDetail.DependantTypeId",
+    "loc:Amount": "EmployeeSubGroupBenefitDetail.Amount",
+    "dom:EmployeeSubGroupBenefitDetail_Amount": "EmployeeSubGroupBenefitDetail.Amount",
+    "loc:AgeLimit": "EmployeeSubGroupBenefitDetail.AgeLimit",
+    "dom:EmployeeSubGroupBenefitDetail_AgeLimit": "EmployeeSubGroupBenefitDetail.AgeLimit"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupBenefitDetail.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSubGroupBenefitDetails",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSubGroupBenefitDetail_StartDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupBenefitDetail.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSubGroupBenefitDetails",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSubGroupBenefitDetail_EndDate"
+      ],
+      "rules": "Optional. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupBenefitDetail.DependantTypeId",
+      "label": "DependantType",
+      "section": "EmployeeSubGroupBenefitDetails",
+      "aliases": [
+        "loc:DependantType",
+        "dom:EmployeeSubGroupBenefitDetail_DependantTypeId"
+      ],
+      "rules": "Optional. Chosen from Dependant Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of dependant.</p><p><strong>Example.</strong> Child</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupBenefitDetail.Amount",
+      "label": "Amount",
+      "section": "EmployeeSubGroupBenefitDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeSubGroupBenefitDetail_Amount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount per dependant of that kind.</p><p><strong>Example.</strong> <code>500</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupBenefitDetail.AgeLimit",
+      "label": "AgeLimit",
+      "section": "EmployeeSubGroupBenefitDetails",
+      "aliases": [
+        "loc:AgeLimit",
+        "dom:EmployeeSubGroupBenefitDetail_AgeLimit"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The oldest age at which a dependant counts.</p><p><strong>Example.</strong> <code>21</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

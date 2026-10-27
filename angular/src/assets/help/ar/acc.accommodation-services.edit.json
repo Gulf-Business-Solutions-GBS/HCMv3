@@ -1,0 +1,91 @@
+{
+  "helpId": "acc.accommodation-services.edit",
+  "lang": "ar",
+  "title": "خدمات السكن — إنشاء / تحرير",
+  "entity": "HCMv3.AccommodationManagement.AccommodationServices",
+  "overviewHtml": "<p>خدمة تُقدَّم للموظف أثناء إقامة، لفترة من التواريخ. لا يمكن أن يكون تاريخ الانتهاء قبل تاريخ البدء. وتظهر الخدمات في تقارير سكن الموظفين، والموظفون حسب الوظيفة، والرواتب والمزايا.</p>",
+  "aliasIndex": {
+    "loc:EmployeeAccommodation": "AccommodationServices.EmployeeAccommodationId",
+    "dom:AccommodationService_EmployeeAccommodationId": "AccommodationServices.EmployeeAccommodationId",
+    "loc:AccommodationServiceType": "AccommodationServices.AccommodationServiceTypeId",
+    "dom:AccommodationService_AccommodationServiceTypeId": "AccommodationServices.AccommodationServiceTypeId",
+    "loc:StartDate": "AccommodationServices.StartDate",
+    "dom:AccommodationService_StartDate": "AccommodationServices.StartDate",
+    "loc:EndDate": "AccommodationServices.EndDate",
+    "dom:AccommodationService_EndDate": "AccommodationServices.EndDate",
+    "loc:Comments": "AccommodationServices.Comments",
+    "dom:AccommodationService_Comments": "AccommodationServices.Comments"
+  },
+  "fields": [
+    {
+      "id": "AccommodationServices.EmployeeAccommodationId",
+      "label": "EmployeeAccommodation",
+      "section": "AccommodationServices",
+      "aliases": [
+        "loc:EmployeeAccommodation",
+        "dom:AccommodationService_EmployeeAccommodationId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإقامة التي تخصها الخدمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationServices.AccommodationServiceTypeId",
+      "label": "AccommodationServiceType",
+      "section": "AccommodationServices",
+      "aliases": [
+        "loc:AccommodationServiceType",
+        "dom:AccommodationService_AccommodationServiceTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع خدمات السكن.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الخدمة.</p><p><strong>مثال.</strong> الغسيل</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationServices.StartDate",
+      "label": "StartDate",
+      "section": "AccommodationServices",
+      "aliases": [
+        "loc:StartDate",
+        "dom:AccommodationService_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationServices.EndDate",
+      "label": "EndDate",
+      "section": "AccommodationServices",
+      "aliases": [
+        "loc:EndDate",
+        "dom:AccommodationService_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationServices.Comments",
+      "label": "Comments",
+      "section": "AccommodationServices",
+      "aliases": [
+        "loc:Comments",
+        "dom:AccommodationService_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

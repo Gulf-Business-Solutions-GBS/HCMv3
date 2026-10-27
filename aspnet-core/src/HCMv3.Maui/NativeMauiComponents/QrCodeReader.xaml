@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<nativeMauiComponents:HCMv3NativeMauiComponentBase
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
+    xmlns:maui="clr-namespace:ZXing.Net.Maui;assembly=ZXing.Net.MAUI"
+    xmlns:nativeMauiComponents="clr-namespace:HCMv3.Maui.NativeMauiComponents"
+    x:Class="HCMv3.Maui.NativeMauiComponents.QrCodeReader"
+    Title="QrCodeReader" BackgroundColor="Black">
+
+    <Grid>
+        <controls:CameraBarcodeReaderView
+            x:Name="Scanner"
+            IsDetecting="True"
+            BarcodesDetected="scanner_BarcodesDetected">
+            <controls:CameraBarcodeReaderView.Options>
+                <maui:BarcodeReaderOptions AutoRotate="True" Formats="QrCode" />
+            </controls:CameraBarcodeReaderView.Options>
+        </controls:CameraBarcodeReaderView>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="300" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <BoxView BackgroundColor="Black" Opacity="0.6" Grid.Row="0" Grid.ColumnSpan="3" />
+            <BoxView BackgroundColor="Black" Opacity="0.6" Grid.Row="2" Grid.ColumnSpan="3" Grid.Column="0" />
+            <BoxView BackgroundColor="Black" Opacity="0.6" Grid.Row="1" Grid.Column="0" Margin="0,0,-2,0" />
+            <BoxView BackgroundColor="Black" Opacity="0.6" Grid.Row="1" Grid.Column="2" Margin="-2,0,0,0" />
+
+        </Grid>
+    </Grid>
+</nativeMauiComponents:HCMv3NativeMauiComponentBase>

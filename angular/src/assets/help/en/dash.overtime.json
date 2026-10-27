@@ -1,0 +1,221 @@
+{
+  "helpId": "dash.overtime",
+  "lang": "en",
+  "title": "Overtime Dashboard",
+  "entity": null,
+  "overviewHtml": "<p>How much overtime people worked over a period, what it cost, and where it went: approved hours against what was claimed, the cost payroll paid, and the split by month, overtime type, department and employee. It opens on this year to date.</p><p><strong>Hours</strong> come from the approved overtime entries whose month falls in the period. An entry still waiting for approval is not counted in the hours; it appears only in <strong>Awaiting approval</strong>. <strong>Cost</strong> comes from payroll, not from the hours: it is what each month's payroll paid under the wage type set on each overtime type, so a month payroll has not been run for has hours but no cost yet.</p><p>Click an overtime type to show every tile for that type only, a month to list its entries, a department to see the units inside it, and a name to show only that employee. Each choice appears as a chip in the toolbar; remove the chip to go back. A period longer than five years is shortened to the last five.</p>",
+  "aliasIndex": {
+    "loc:Dashboard_Showing": "dash.common.showing",
+    "loc:Filter": "dash.common.filter",
+    "loc:Download": "dash.common.download",
+    "loc:OvertimeDashboard_ApprovedHours": "dash.overtime.approved-hours",
+    "loc:OvertimeDashboard_ApprovedOfClaimed": "dash.overtime.approved-of-claimed",
+    "loc:OvertimeDashboard_Employees": "dash.overtime.employees",
+    "loc:OvertimeDashboard_AveragePerEmployee": "dash.overtime.average",
+    "loc:OvertimeDashboard_Cost": "dash.overtime.cost",
+    "loc:OvertimeDashboard_Pending": "dash.overtime.pending",
+    "loc:OvertimeDashboard_ByMonth": "dash.overtime.trend",
+    "loc:OvertimeDashboard_ByType": "dash.overtime.by-type",
+    "loc:OvertimeDashboard_CostByMonth": "dash.overtime.cost-trend",
+    "loc:OvertimeDashboard_ByDepartment": "dash.overtime.by-department",
+    "loc:OvertimeDashboard_TopEmployees": "dash.overtime.top-employees",
+    "loc:OvertimeDashboard_Entries": "dash.overtime.entries"
+  },
+  "fields": [
+    {
+      "id": "dash.common.showing",
+      "label": "Dashboard_Showing",
+      "section": null,
+      "aliases": [
+        "loc:Dashboard_Showing"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The line in the toolbar that says whose data the dashboard is built from, and how many employees that is. You never choose it: it follows from who you are.</p><p><strong>How it is worked out.</strong> The employees you see are:</p><ul><li>everyone, if you hold the <strong>Admin</strong> role;</li><li>otherwise the employees in the organization units given to your roles in row-level security, including every unit below them, <strong>plus</strong> your own team — you and everybody below you in the manager hierarchy, at every level;</li><li>nobody, if neither gives anyone. The dashboard then shows nothing, never everything.</li></ul><p><strong>Example.</strong> \"Showing: Finance + Payroll + your team (123 employees)\" — you are an HR officer for Finance and Payroll, and also manage a team of your own.</p><p><strong>Why it matters.</strong> Two people can open the same dashboard and see different numbers, and both are right. Every figure, chart, list and download on the page is limited to these employees — changing a filter can narrow them further but never widen them.</p>",
+      "adminHtml": "<p>Resolved by <code>IDashboardScopeService</code> for every dashboard. The row-level security on/off switch in Security Settings is deliberately not consulted: with nothing assigned the user sees nothing, whatever the switch says. The Admin rule matches the static tenant role name <code>Admin</code>.</p>",
+      "stub": false
+    },
+    {
+      "id": "dash.common.filter",
+      "label": "Filter",
+      "section": null,
+      "aliases": [
+        "loc:Filter"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The window behind the <strong>Filter</strong> button: the period and the organization unit. Nothing changes until you press <strong>Apply</strong>; <strong>Reset</strong> goes back to the defaults.</p><p><strong>How the period works.</strong></p><ul><li><strong>This year to date</strong> (the default): 1 January of this year up to today.</li><li><strong>This year</strong> and <strong>Last year</strong>: 1 January to 31 December.</li><li><strong>This month</strong>: the first to the last day of the current month.</li><li><strong>Custom</strong>: any From and To dates you choose. A period longer than five years is shortened to the last five.</li></ul><p><strong>Example.</strong> Pick <strong>Last year</strong> to see 2025 while this year's data is still thin.</p><p><strong>Why it matters.</strong> Figures \"as of today\" (who is on leave today, headcount) do not depend on the period; figures \"in the period\" (leave days, joiners, leavers, turnover) do. Choosing an organization unit includes every unit below it. Clicking a bar or a slice on a chart adds another filter, shown as a chip next to <strong>Showing</strong> — remove it with its <strong>×</strong>, or all of them with <strong>Clear filters</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.common.download",
+      "label": "Download",
+      "section": null,
+      "aliases": [
+        "loc:Download"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The download icon on the toolbar and on every tile. Clicking it offers three formats.</p><p><strong>What each format contains.</strong></p><ul><li><strong>PDF</strong> and <strong>JPEG</strong>: a picture of the tile exactly as it looks on screen, charts included. From the toolbar, a picture of the whole dashboard.</li><li><strong>XLSX</strong>: the data behind the tile, with the same filters. From the toolbar, a workbook with a <strong>Summary</strong> sheet (whose data, the period, the headline figures) and one sheet per tile.</li></ul><p><strong>Example.</strong> Send the <strong>Leave by type</strong> chart as a JPEG in an email; give payroll the <strong>Not returned from leave</strong> list as XLSX.</p><p><strong>Why it matters.</strong> Whatever you download contains only what you are allowed to see, and exactly what the screen shows for the filters you have applied.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.approved-hours",
+      "label": "OvertimeDashboard_ApprovedHours",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_ApprovedHours"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The overtime hours approved for the period. The line below it gives the hours claimed. Click it for the list of entries.</p><p><strong>How it is calculated.</strong> <code>Sum of approved hours of the approved entries dated in the period</code>; <strong>claimed</strong> = <code>sum of the hours requested on the same entries</code>.</p><ul><li>Rounded to one decimal.</li></ul><p><strong>Example.</strong> 1,284.5 approved hours · of 1,410 hours claimed.</p><p><strong>Why it matters.</strong> It is the volume payroll pays for, and the starting point for every other figure.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.approved-of-claimed",
+      "label": "OvertimeDashboard_ApprovedOfClaimed",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_ApprovedOfClaimed"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The share of the hours people claimed that was approved.</p><p><strong>How it is calculated.</strong> <code>Approved hours ÷ claimed hours × 100</code></p><ul><li>Rounded to one decimal. Shown as \"—\" when nothing was claimed.</li></ul><p><strong>Example.</strong> 91.1% — 1,284.5 of 1,410 hours.</p><p><strong>Why it matters.</strong> A low figure means claims are routinely cut back, which is worth a word with the managers concerned.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.employees",
+      "label": "OvertimeDashboard_Employees",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_Employees"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many different employees had overtime approved.</p><p><strong>How it is calculated.</strong> <code>Distinct employees with approved hours &gt; 0</code></p><ul><li>An employee with ten entries counts once. An entry approved at zero hours does not count.</li></ul><p><strong>Example.</strong> 146 employees.</p><p><strong>Why it matters.</strong> Many hours spread over a few people is a workload problem; the same hours spread widely is usually seasonal.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.average",
+      "label": "OvertimeDashboard_AveragePerEmployee",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_AveragePerEmployee"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The average approved hours of each employee who had overtime.</p><p><strong>How it is calculated.</strong> <code>Approved hours ÷ employees with overtime</code></p><ul><li>Only employees who had overtime are counted, so it is not diluted by everyone who had none. Shown as \"—\" when nobody had overtime.</li></ul><p><strong>Example.</strong> 8.8 hours per employee.</p><p><strong>Why it matters.</strong> Compare it with <strong>Most overtime</strong> to see whether a few people are far above the average.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.cost",
+      "label": "OvertimeDashboard_Cost",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_Cost"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What payroll paid for overtime in the period.</p><p><strong>How it is calculated.</strong> <code>Sum of payroll amounts under each overtime type's wage type, from each month's regular payroll result</code></p><ul><li>Only the result calculated in its own month is used (in-period equals for-period). A retroactive recalculation of an earlier month is not added again, so a month is never counted twice.</li><li>The wage type is the one set on each overtime type; nothing is hard-coded.</li><li>Shown with three decimals.</li></ul><p><strong>Example.</strong> 18,452.750.</p><p><strong>Why it matters.</strong> It is the real money, including rates that differ by employee and by type, which hours alone cannot show.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.pending",
+      "label": "OvertimeDashboard_Pending",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_Pending"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Overtime requests still waiting for approval, and the hours they ask for. Click it for the list.</p><p><strong>How it is calculated.</strong> <code>Entries whose approval status is Open</code>; <strong>hours</strong> = <code>sum of hours requested</code>.</p><ul><li>Counted whatever month the request is for, not only the period, because a request left waiting is late whenever it was raised.</li></ul><p><strong>Example.</strong> 12 requests · 47 hours requested.</p><p><strong>Why it matters.</strong> These hours will not be paid until someone approves them; clear them before the payroll run.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.trend",
+      "label": "OvertimeDashboard_ByMonth",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_ByMonth"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Approved hours in each month of the period, stacked by overtime type. Click a month to list its entries.</p><p><strong>How it is calculated.</strong> <code>Sum of approved hours per month and overtime type</code></p><ul><li>Every month of the period is shown, including months with no overtime.</li><li>Each type keeps the same colour here and in <strong>Overtime by type</strong>.</li></ul><p><strong>Example.</strong> March: 180 normal-day hours and 64 weekend hours.</p><p><strong>Why it matters.</strong> It shows seasonal peaks, and whether weekend or holiday overtime — the most expensive — is growing.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.by-type",
+      "label": "OvertimeDashboard_ByType",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_ByType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the approved hours split across overtime types. Click a type to show every tile for that type only.</p><p><strong>How it is calculated.</strong> <code>Sum of approved hours per overtime type</code>, largest first; each type's cost comes from its own wage type.</p><p><strong>Example.</strong> Normal day 72%, weekend 21%, public holiday 7%.</p><p><strong>Why it matters.</strong> Types are paid at different rates, so the mix drives the cost as much as the hours.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.cost-trend",
+      "label": "OvertimeDashboard_CostByMonth",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_CostByMonth"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What payroll paid for overtime in each month.</p><p><strong>How it is calculated.</strong> The <strong>Overtime cost</strong> rule, per month: <code>sum of overtime wage-type amounts in that month's regular payroll result</code></p><ul><li>A month with no cost is usually a month payroll has not been run for yet. When no month has a cost, the tile says so.</li></ul><p><strong>Example.</strong> February: 2,310.500.</p><p><strong>Why it matters.</strong> Set it against the hours chart: cost rising faster than hours means more expensive overtime types or higher-paid people.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.by-department",
+      "label": "OvertimeDashboard_ByDepartment",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_ByDepartment"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Approved hours, employees and cost for each department one level below the unit you are looking at. Click a department to see the units inside it.</p><p><strong>How it is calculated.</strong> For each department: <code>sum of approved hours</code>, <code>distinct employees with overtime</code> and <code>overtime cost</code> of the employees in that department or any unit below it.</p><ul><li>An employee is placed by the department they were in on the last day of the period.</li><li>People attached directly to the unit you are looking at, rather than to a unit below it, are shown on their own line.</li></ul><p><strong>Example.</strong> Operations: 610 hours · 58 employees · 8,904.000.</p><p><strong>Why it matters.</strong> It shows which departments rely on overtime, and lets you follow it down to the team.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.top-employees",
+      "label": "OvertimeDashboard_TopEmployees",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_TopEmployees"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The ten employees with the most approved overtime hours in the period. Click a name to show every tile for that employee only.</p><p><strong>How it is calculated.</strong> <code>Sum of approved hours per employee</code>, largest first; each with their overtime cost.</p><p><strong>Example.</strong> 96 hours · 1,520.000.</p><p><strong>Why it matters.</strong> Very high overtime for one person is a fatigue and cost risk, and often a sign the post needs another person.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.entries",
+      "label": "OvertimeDashboard_Entries",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_Entries"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The list behind a figure or a clicked month: each entry with its month, employee, department, type, and the hours claimed and approved. Click a row to open the employee.</p><p><strong>How it is calculated.</strong> The same rule as the figure you clicked: <strong>Approved overtime hours</strong> lists the approved entries of the period, a clicked month lists that month's approved entries, and <strong>Awaiting approval</strong> lists the open requests.</p><p><strong>Example.</strong> Click <strong>Awaiting approval</strong>: 12 rows, each with the hours requested.</p><p><strong>Why it matters.</strong> It is the evidence under the numbers, and it downloads as XLSX with the same filters.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

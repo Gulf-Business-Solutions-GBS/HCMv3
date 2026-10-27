@@ -1,0 +1,115 @@
+﻿using Abp.Application.Services.Dto;
+using {{Namespace_Here}}.Authorization;
+using {{Namespace_Here}}.Maui.Core.Components;
+using {{Namespace_Here}}.Maui.Core.Threading;
+using {{Namespace_Here}}.Maui.Models.{{Namespace_Relative_Full_Here}};
+using {{Namespace_Here}}.Maui.Services.Navigation;
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}};
+using Microsoft.AspNetCore.Components;
+using {{Namespace_Here}}.Maui.Services.Permission;
+using {{Namespace_Here}}.Storage;
+using Microsoft.AspNetCore.Components.Forms;
+
+namespace {{Namespace_Here}}.Maui.Pages.{{Namespace_Relative_Full_Here}};
+
+public partial class CreateOrEdit{{Entity_Name_Here}} : {{Project_Name_Here}}MainLayoutPageComponentBase
+{
+    [Parameter] public {{Primary_Key_Here}}{{Nullable_Primary_Key_Tag_Here}} {{Entity_Name_Here}}Id { get; set; }
+    
+    {{Uploaded_File_Dictionary_Here}}
+
+    {{Uploaded_File_Service_Here}}
+
+    {{Np_Looped_Parameter_Here}}
+
+    private readonly bool _hasCreatePermission;
+    
+    private readonly bool _hasEditPermission;
+    
+    private readonly bool _hasDeletePermission;
+    
+    private I{{Entity_Name_Plural_Here}}AppService {{Entity_Name_Plural_Here}}AppService { get; }
+
+    public CreateOrEdit{{Entity_Name_Here}}Model CreateOrEdit{{Entity_Name_Here}}Model { get; set; } = new(){
+        {{Property_Initializers_Here}}
+    };
+    
+    public CreateOrEdit{{Entity_Name_Here}}()
+    {
+        {{Entity_Name_Plural_Here}}AppService = Resolve<I{{Entity_Name_Plural_Here}}AppService>();
+        _hasCreatePermission = PermissionService.HasPermission(AppPermissions.Pages_{{Entity_Name_Plural_Here}}_Create);
+        _hasEditPermission = PermissionService.HasPermission(AppPermissions.Pages_{{Entity_Name_Plural_Here}}_Edit);
+        _hasDeletePermission = PermissionService.HasPermission(AppPermissions.Pages_{{Entity_Name_Plural_Here}}_Delete);
+        {{Uploaded_File_Service_Inject_Here}}
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        if ({{Entity_Name_Here}}Id{{Entity_Id_Has_Value_If_Here}})
+        {
+            await SetBusyAsync(async () =>
+            {
+                await WebRequestExecuter.Execute(
+                    async () => await {{Entity_Name_Plural_Here}}AppService.Get{{Entity_Name_Here}}ForEdit(new EntityDto{{Primary_Key_Inside_Tag_Here}} { Id = {{Entity_Name_Here}}Id{{Entity_Id_Value_Here}} }),
+                    (get{{Entity_Name_Here}}ForEditOutput) =>
+                    {
+                        CreateOrEdit{{Entity_Name_Here}}Model = ObjectMapper.Map<CreateOrEdit{{Entity_Name_Here}}Model>(get{{Entity_Name_Here}}ForEditOutput.{{Entity_Name_Here}});
+                        {{Uploaded_File_Name_Set_Here}}
+                        {{Np_Looped_Initialize_Here}}
+                        return Task.CompletedTask;
+                    }
+                );
+            });
+        }
+        
+        {{Np_Looped_OnInitializedAsync_Here}}
+       
+        var title = CreateOrEdit{{Entity_Name_Here}}Model.IsEditMode ? L("Edit{{Entity_Name_Here}}") : L("CreateNew{{Entity_Name_Here}}");
+        
+        await SetPageHeader(title);
+    }
+
+    private async Task Save()
+    {
+        await SetBusyAsync(async () =>
+        {
+            {{File_Property_Token_Set_Here}}
+            await WebRequestExecuter.Execute(
+                async () => await {{Entity_Name_Plural_Here}}AppService.CreateOrEdit(CreateOrEdit{{Entity_Name_Here}}Model),
+                async () =>
+                {
+                    NavigationService.NavigateTo(NavigationUrlConsts.{{Entity_Name_Plural_Here}});
+                    await UserDialogsService.AlertSuccess(L("SuccessfullySaved"));
+                }
+            );
+        });
+    }
+    
+    private async Task Delete()
+    {
+        var input = new EntityDto{{Primary_Key_Inside_Tag_Here}} { Id = CreateOrEdit{{Entity_Name_Here}}Model.Id{{Entity_Id_Value_Here}} };
+
+        var confirm = await UserDialogsService.Confirm(L("AreYouSure"));
+
+        if (confirm)
+        {
+            await SetBusyAsync(async () =>
+            {
+                await WebRequestExecuter.Execute(
+                    async () => await {{Entity_Name_Plural_Here}}AppService.Delete(input),
+                    async () =>
+                    {
+                        await UserDialogsService.AlertSuccess(L("SuccessfullyDeleted"));
+                        NavigationService.NavigateTo(NavigationUrlConsts.{{Entity_Name_Plural_Here}});
+                    }
+                );
+            });
+        }
+    }
+    
+    {{Np_Looped_Lookup_Method_Here}}
+
+    {{Np_Looped_Remove_Method_Here}}
+
+    {{On_File_Selected_Method_Here}}
+}

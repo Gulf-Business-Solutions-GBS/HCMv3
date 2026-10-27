@@ -1,0 +1,187 @@
+{
+  "helpId": "pa.employee-education.edit",
+  "lang": "en",
+  "title": "Employee Educations — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeEducation",
+  "overviewHtml": "<p>A qualification the employee holds from their education.</p><p>The education and branch are matched against the social security education allowance table in payroll. The other details are recorded for reference.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeEducation.StartDate",
+    "dom:EmployeeEducation_StartDate": "EmployeeEducation.StartDate",
+    "loc:EndDate": "EmployeeEducation.EndDate",
+    "dom:EmployeeEducation_EndDate": "EmployeeEducation.EndDate",
+    "loc:Education": "EmployeeEducation.EducationId",
+    "dom:EmployeeEducation_EducationId": "EmployeeEducation.EducationId",
+    "loc:EducationBranch": "EmployeeEducation.EducationBranchId",
+    "dom:EmployeeEducation_EducationBranchId": "EmployeeEducation.EducationBranchId",
+    "loc:University": "EmployeeEducation.UniversityId",
+    "dom:EmployeeEducation_UniversityId": "EmployeeEducation.UniversityId",
+    "loc:Institution": "EmployeeEducation.InstitutionId",
+    "dom:EmployeeEducation_InstitutionId": "EmployeeEducation.InstitutionId",
+    "loc:Country": "EmployeeEducation.CountryId",
+    "dom:EmployeeEducation_CountryId": "EmployeeEducation.CountryId",
+    "loc:Location": "EmployeeEducation.Location",
+    "dom:EmployeeEducation_Location": "EmployeeEducation.Location",
+    "loc:DurationOfCourse": "EmployeeEducation.DurationOfCourse",
+    "dom:EmployeeEducation_DurationOfCourse": "EmployeeEducation.DurationOfCourse",
+    "loc:Grade": "EmployeeEducation.Grade",
+    "dom:EmployeeEducation_Grade": "EmployeeEducation.Grade",
+    "loc:YearOfPassing": "EmployeeEducation.YearOfPassing",
+    "dom:EmployeeEducation_YearOfPassing": "EmployeeEducation.YearOfPassing"
+  },
+  "fields": [
+    {
+      "id": "EmployeeEducation.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeEducation_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeEducation_EndDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.EducationId",
+      "label": "Education",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:Education",
+        "dom:EmployeeEducation_EducationId"
+      ],
+      "rules": "Required. Chosen from Education master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The level of education.</p><p><strong>Example.</strong> Bachelor's Degree</p><p><strong>Why it matters.</strong> Used with the branch for the social security education allowance.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.EducationBranchId",
+      "label": "EducationBranch",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:EducationBranch",
+        "dom:EmployeeEducation_EducationBranchId"
+      ],
+      "rules": "Required. Chosen from Education Branch master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The field of study.</p><p><strong>Example.</strong> Engineering</p><p><strong>Why it matters.</strong> Used with the education level for the social security education allowance.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.UniversityId",
+      "label": "University",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:University",
+        "dom:EmployeeEducation_UniversityId"
+      ],
+      "rules": "Optional. Chosen from University master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The university.</p><p><strong>Example.</strong> Kuwait University</p><p><strong>Why it matters.</strong> Recorded for reference; no calculation or report reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.InstitutionId",
+      "label": "Institution",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:Institution",
+        "dom:EmployeeEducation_InstitutionId"
+      ],
+      "rules": "Optional. Chosen from Institution master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The institution within the university.</p><p><strong>Example.</strong> College of Engineering</p><p><strong>Why it matters.</strong> Recorded for reference; no calculation or report reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.CountryId",
+      "label": "Country",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:Country",
+        "dom:EmployeeEducation_CountryId"
+      ],
+      "rules": "Optional. Chosen from Country master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The country of study.</p><p><strong>Example.</strong> Kuwait</p><p><strong>Why it matters.</strong> Recorded for reference; no calculation or report reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.Location",
+      "label": "Location",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:Location",
+        "dom:EmployeeEducation_Location"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the study took place, as free text.</p><p><strong>Example.</strong> Shuwaikh</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.DurationOfCourse",
+      "label": "DurationOfCourse",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:DurationOfCourse",
+        "dom:EmployeeEducation_DurationOfCourse"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The length of the course.</p><p><strong>Example.</strong> 4</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.Grade",
+      "label": "Grade",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:Grade",
+        "dom:EmployeeEducation_Grade"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The grade achieved.</p><p><strong>Example.</strong> Very Good</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.YearOfPassing",
+      "label": "YearOfPassing",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:YearOfPassing",
+        "dom:EmployeeEducation_YearOfPassing"
+      ],
+      "rules": "Optional. Maximum 16 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The year the qualification was completed.</p><p><strong>Example.</strong> 2012</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

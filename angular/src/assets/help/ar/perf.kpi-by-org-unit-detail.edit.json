@@ -1,0 +1,75 @@
+{
+  "helpId": "perf.kpi-by-org-unit-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل مؤشرات الأداء حسب وحدة الشركة — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.KpiByOrgUnitDetail",
+  "overviewHtml": "<p>مؤشر أداء واحد في مجموعة الوحدة التنظيمية. ولا يظهر المؤشر إلا مرة واحدة، ويجب ألا يتجاوز مجموع الأوزان في المجموعة 100.</p>",
+  "aliasIndex": {
+    "loc:KpiByOrgUnit": "KpiByOrgUnitDetail.KpiByOrgUnitId",
+    "dom:KpiByOrgUnitDetail_KpiByOrgUnitId": "KpiByOrgUnitDetail.KpiByOrgUnitId",
+    "loc:KpiInfo": "KpiByOrgUnitDetail.KpiInfoId",
+    "dom:KpiByOrgUnitDetail_KpiInfoId": "KpiByOrgUnitDetail.KpiInfoId",
+    "loc:Weight": "KpiByOrgUnitDetail.Weight",
+    "dom:KpiByOrgUnitDetail_Weight": "KpiByOrgUnitDetail.Weight",
+    "loc:Target": "KpiByOrgUnitDetail.Target",
+    "dom:KpiByOrgUnitDetail_Target": "KpiByOrgUnitDetail.Target"
+  },
+  "fields": [
+    {
+      "id": "KpiByOrgUnitDetail.KpiByOrgUnitId",
+      "label": "KpiByOrgUnit",
+      "section": "KpiByOrgUnitDetails",
+      "aliases": [
+        "loc:KpiByOrgUnit",
+        "dom:KpiByOrgUnitDetail_KpiByOrgUnitId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة مؤشرات الأداء حسب وحدة الشركة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموعة مؤشرات الوحدة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiByOrgUnitDetail.KpiInfoId",
+      "label": "KpiInfo",
+      "section": "KpiByOrgUnitDetails",
+      "aliases": [
+        "loc:KpiInfo",
+        "dom:KpiByOrgUnitDetail_KpiInfoId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة مؤشرات الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مؤشر الأداء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiByOrgUnitDetail.Weight",
+      "label": "Weight",
+      "section": "KpiByOrgUnitDetails",
+      "aliases": [
+        "loc:Weight",
+        "dom:KpiByOrgUnitDetail_Weight"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وزن المؤشر، نسبةً مئوية.</p><p><strong>مثال.</strong> <code>20</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiByOrgUnitDetail.Target",
+      "label": "Target",
+      "section": "KpiByOrgUnitDetails",
+      "aliases": [
+        "loc:Target",
+        "dom:KpiByOrgUnitDetail_Target"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المستهدف للمؤشر.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

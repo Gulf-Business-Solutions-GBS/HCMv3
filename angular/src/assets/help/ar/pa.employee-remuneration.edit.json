@@ -1,0 +1,91 @@
+{
+  "helpId": "pa.employee-remuneration.edit",
+  "lang": "ar",
+  "title": "مكافآت الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeRemuneration",
+  "overviewHtml": "<p>أيام أو ساعات يُدفع أجرها للموظف في تاريخ معين، للموظفين الذين يُدفع لهم باليوم أو بالساعة.</p><p>عندما تكون دورية الأجر الأساسي للموظف يومية أو بالساعة، تجمع الرواتب الأيام أو الساعات المسجلة هنا خلال الشهر وتصرفها بمعدل الأجر الأساسي.</p>",
+  "aliasIndex": {
+    "loc:WageTypeId": "EmployeeRemuneration.WageTypeId",
+    "dom:EmployeeRemuneration_WageTypeId": "EmployeeRemuneration.WageTypeId",
+    "loc:PaymentDate": "EmployeeRemuneration.PaymentDate",
+    "dom:EmployeeRemuneration_PaymentDate": "EmployeeRemuneration.PaymentDate",
+    "loc:PaymentNumber": "EmployeeRemuneration.PaymentNumber",
+    "dom:EmployeeRemuneration_PaymentNumber": "EmployeeRemuneration.PaymentNumber",
+    "loc:PaymentUnit": "EmployeeRemuneration.PaymentUnit",
+    "dom:EmployeeRemuneration_PaymentUnit": "EmployeeRemuneration.PaymentUnit",
+    "loc:Comments": "EmployeeRemuneration.Comments",
+    "dom:EmployeeRemuneration_Comments": "EmployeeRemuneration.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeRemuneration.WageTypeId",
+      "label": "WageTypeId",
+      "section": "EmployeeRemunerations",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:EmployeeRemuneration_WageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع أجر يُسجَّل مع القيد.</p><p><strong>مثال.</strong> الراتب الأساسي</p><p><strong>لماذا يهم.</strong> يحتسب الاحتساب اليومي وبالساعة كل قيود الشهر أياً كان نوع الأجر فيها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRemuneration.PaymentDate",
+      "label": "PaymentDate",
+      "section": "EmployeeRemunerations",
+      "aliases": [
+        "loc:PaymentDate",
+        "dom:EmployeeRemuneration_PaymentDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي تنتمي إليه الأيام أو الساعات.</p><p><strong>مثال.</strong> 15 سبتمبر 2026</p><p><strong>لماذا يهم.</strong> تُحتسب القيود المؤرخة في شهر الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRemuneration.PaymentNumber",
+      "label": "PaymentNumber",
+      "section": "EmployeeRemunerations",
+      "aliases": [
+        "loc:PaymentNumber",
+        "dom:EmployeeRemuneration_PaymentNumber"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأيام أو الساعات.</p><p><strong>مثال.</strong> 22</p><p><strong>لماذا يهم.</strong> لا يجوز أن يكون صفراً. وتُحوَّل الساعات إلى أيام بحسب ساعات عمل الموظف في اليوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRemuneration.PaymentUnit",
+      "label": "PaymentUnit",
+      "section": "EmployeeRemunerations",
+      "aliases": [
+        "loc:PaymentUnit",
+        "dom:EmployeeRemuneration_PaymentUnit"
+      ],
+      "rules": "إلزامي. إحدى القيم: أيام، ساعات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل العدد أيام أم ساعات.</p><p><strong>مثال.</strong> أيام</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRemuneration.Comments",
+      "label": "Comments",
+      "section": "EmployeeRemunerations",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeRemuneration_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

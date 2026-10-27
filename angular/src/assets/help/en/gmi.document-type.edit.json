@@ -1,0 +1,267 @@
+{
+  "helpId": "gmi.document-type.edit",
+  "lang": "en",
+  "title": "Document Types — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.DocumentType",
+  "overviewHtml": "<p>The kinds of document HCMv3 keeps — for employees and for the organisation. Employee documents, organisation documents and self-service letter requests each name a document type.</p><p>The reminder settings on this form are stored, but no process reads them at present, so they do not yet send reminders before a document expires.</p>",
+  "aliasIndex": {
+    "loc:Code": "DocumentType.Code",
+    "dom:DocumentType_Code": "DocumentType.Code",
+    "loc:NameEn": "DocumentType.NameEn",
+    "dom:DocumentType_NameEn": "DocumentType.NameEn",
+    "loc:NameAr": "DocumentType.NameAr",
+    "dom:DocumentType_NameAr": "DocumentType.NameAr",
+    "loc:ReminderDays": "DocumentType.NotificationPeriod",
+    "dom:DocumentType_NotificationPeriod": "DocumentType.NotificationPeriod",
+    "loc:NotificationConfig": "DocumentType.NotificationConfigId",
+    "dom:DocumentType_NotificationConfigId": "DocumentType.NotificationConfigId",
+    "loc:NotificationFrequency": "DocumentType.NotificationFrequency",
+    "dom:DocumentType_NotificationFrequency": "DocumentType.NotificationFrequency",
+    "loc:NotificationCountLimit": "DocumentType.NotificationCountLimit",
+    "dom:DocumentType_NotificationCountLimit": "DocumentType.NotificationCountLimit",
+    "loc:DocumentBelongsTo": "DocumentType.DocumentBelongsTo",
+    "dom:DocumentType_DocumentBelongsTo": "DocumentType.DocumentBelongsTo",
+    "loc:IncludeInWorkflow": "DocumentType.IncludeInWorkflow",
+    "dom:DocumentType_IncludeInWorkflow": "DocumentType.IncludeInWorkflow",
+    "loc:IsLetterType": "DocumentType.IsLetterType",
+    "dom:DocumentType_IsLetterType": "DocumentType.IsLetterType",
+    "loc:PrintReport": "DocumentType.PrintReportId",
+    "dom:DocumentType_PrintReportId": "DocumentType.PrintReportId",
+    "loc:IsWithdrawable": "DocumentType.IsWithdrawable",
+    "dom:DocumentType_IsWithdrawable": "DocumentType.IsWithdrawable",
+    "loc:IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee",
+    "dom:DocumentType_IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee",
+    "loc:ShowToAll": "DocumentType.ShowToAll",
+    "dom:DocumentType_ShowToAll": "DocumentType.ShowToAll",
+    "loc:IsExpiryDateRequired": "DocumentType.IsExpiryDateRequired",
+    "dom:DocumentType_IsExpiryDateRequired": "DocumentType.IsExpiryDateRequired",
+    "loc:AllowDateOverlap": "DocumentType.AllowDateOverlap",
+    "dom:DocumentType_AllowDateOverlap": "DocumentType.AllowDateOverlap"
+  },
+  "fields": [
+    {
+      "id": "DocumentType.Code",
+      "label": "Code",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:DocumentType_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NameEn",
+      "label": "NameEn",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:DocumentType_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NameAr",
+      "label": "NameAr",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:DocumentType_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NotificationPeriod",
+      "label": "ReminderDays",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:ReminderDays",
+        "dom:DocumentType_NotificationPeriod"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How long before a document's expiry reminders were meant to start.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:DocumentType_NotificationConfigId"
+      ],
+      "rules": "Optional. Chosen from Notification Config master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The notification settings meant for this document type's reminders.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NotificationFrequency",
+      "label": "NotificationFrequency",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NotificationFrequency",
+        "dom:DocumentType_NotificationFrequency"
+      ],
+      "rules": "Required. One of: Once, Daily, Weekly, Monthly.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How often a reminder was meant to repeat.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NotificationCountLimit",
+      "label": "NotificationCountLimit",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NotificationCountLimit",
+        "dom:DocumentType_NotificationCountLimit"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most reminders meant to be sent for one document.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.DocumentBelongsTo",
+      "label": "DocumentBelongsTo",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:DocumentBelongsTo",
+        "dom:DocumentType_DocumentBelongsTo"
+      ],
+      "rules": "Required. One of: All, Employee, Organization.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether documents of this type belong to employees or to the organisation.</p><p><strong>Why it matters.</strong> Recorded for information; nothing filters document types by it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IncludeInWorkflow",
+      "label": "IncludeInWorkflow",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IncludeInWorkflow",
+        "dom:DocumentType_IncludeInWorkflow"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether employees are offered this type when they raise a request in self service.</p><p><strong>Example.</strong> Ticked for Passport and Salary Certificate; unticked for a type only HR records.</p><p><strong>Why it matters.</strong> Untick it and the type disappears from the New Request list on the employee's Documents screen, and a request for it is refused. HR can still record documents of the type.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IsLetterType",
+      "label": "IsLetterType",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IsLetterType",
+        "dom:DocumentType_IsLetterType"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this type is a letter the company issues to the employee, such as a salary certificate, and not a document the employee holds.</p><p><strong>Example.</strong> Ticked for Salary Certificate and Experience Certificate; unticked for Passport and Civil ID.</p><p><strong>Why it matters.</strong> A ticked type is offered when the employee chooses Print Letter, and asks who the letter is addressed to. An unticked type is offered when the employee chooses New Document, and asks for a number and dates. A type cannot be both.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.PrintReportId",
+      "label": "PrintReport",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:PrintReport",
+        "dom:DocumentType_PrintReportId"
+      ],
+      "rules": "Optional. Chosen from Print Report master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The report a letter of this type is produced from: automatically when a request is approved, and again whenever HR presses Print Letter. Shown only when Issued As Letter is ticked.</p><p><strong>Example.</strong> Salary Certificate English for the Salary Certificate type; Experience Certificate for an Employment Certificate type.</p><p><strong>Why it matters.</strong> Without a choice here, the report is found from the type's English name with the spaces removed — \"Salary Certificate\" prints the first report whose name starts with SalaryCertificate — and a type whose name matches no report cannot be printed at all. Choosing the report removes the guesswork and lets a type print a report with a different name, such as the Arabic certificate.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IsWithdrawable",
+      "label": "IsWithdrawable",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IsWithdrawable",
+        "dom:DocumentType_IsWithdrawable"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether employees may ask to take a document of this type out of company custody and hand it back.</p><p><strong>Example.</strong> Ticked for Passport.</p><p><strong>Why it matters.</strong> Only ticked types offer Withdraw Document to the employee. More than one type may be ticked. If no type at all is ticked, the system falls back to the single type named by the older passport setting (code 2 unless changed).</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IsHiddenFromEmployee",
+      "label": "IsHiddenFromEmployee",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IsHiddenFromEmployee",
+        "dom:DocumentType_IsHiddenFromEmployee"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Keeps documents of this type out of the employee's own Documents screen.</p><p><strong>Example.</strong> Ticked for a document HR holds about the employee and not for them.</p><p><strong>Why it matters.</strong> The employee neither sees these documents nor can record one. HR's own screens are not affected.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.ShowToAll",
+      "label": "ShowToAll",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:ShowToAll",
+        "dom:DocumentType_ShowToAll"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Makes organisation documents of this type company policies everyone may read.</p><p><strong>Example.</strong> Ticked for Employee Handbook and Code of Conduct; unticked for Commercial Licence.</p><p><strong>Why it matters.</strong> Organisation documents of a ticked type are listed, read-only, on the Org Policy screen for everyone who has access to it, and their attached files can be opened there. Untick it and they disappear from that screen; they stay on Organization Documents for HR.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IsExpiryDateRequired",
+      "label": "IsExpiryDateRequired",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IsExpiryDateRequired",
+        "dom:DocumentType_IsExpiryDateRequired"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a document of this type must carry an expiry date.</p><p><strong>Example.</strong> Ticked for Passport and Civil ID; unticked for a qualification certificate, which does not expire.</p><p><strong>Why it matters.</strong> When ticked, a document saved without an expiry date is refused, on HR's screen and on the employee's own request. When unticked, the expiry date may be left blank and the document is treated as never expiring. It also changes how Allow Date Overlap compares two documents.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.AllowDateOverlap",
+      "label": "AllowDateOverlap",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:AllowDateOverlap",
+        "dom:DocumentType_AllowDateOverlap"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether an employee may hold two documents of this type whose dates overlap.</p><p><strong>Example.</strong> Unticked for Passport: a second passport dated inside the first one's validity is refused.</p><p><strong>Why it matters.</strong> When unticked, a new document of the type is refused if its issue-to-expiry period overlaps one already on the employee's file. For a type with no required expiry date, only two documents issued on the same day clash. <strong>A renewal entered before the old document runs out counts as an overlap</strong>, so tick this for types that are renewed early. Document types that existed before this switch was added were ticked automatically, so nothing that was accepted before is refused now.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+<div [@routerTransition]>
+    <sub-header [title]="'ConfigureBusinessRules' | localize" [description]="'BusinessRulesDescription' | localize">
+        <div role="actions">
+            @if ('Pages.BusinessRules.Create' | permission) {
+                <button (click)="installSampleRules()" class="btn btn-light-primary float-end me-2">
+                    <i class="fa fa-magic btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'InstallSampleRules' | localize }}
+                    </span>
+                </button>
+                <button (click)="createRecord()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="form">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-xl-5 col-md-5">
+                            <div class="input-group">
+                                <input
+                                    [ngModel]="filterText()"
+                                    (ngModelChange)="filterText.set($event)"
+                                    name="filterText"
+                                    autoFocus
+                                    class="form-control"
+                                    [placeholder]="l('SearchWithThreeDot')"
+                                    type="text"
+                                    (keydown.enter)="getRecords()" />
+                                <button class="btn btn-primary" (click)="getRecords()">
+                                    <i class="flaticon-search-1" aria-label="Search"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-3">
+                            <label class="form-label">{{ 'AsOfDate' | localize }}</label>
+                            <input
+                                type="date"
+                                class="form-control"
+                                name="asOfDate"
+                                [ngModel]="asOfDate()"
+                                (ngModelChange)="asOfDate.set($event); getRecords()" />
+                        </div>
+
+                        <div class="col-xl-4 col-md-4">
+                            <label class="form-label">{{ 'BaseObject' | localize }}</label>
+                            <select
+                                class="form-select"
+                                name="baseObjectFilter"
+                                [ngModel]="baseObjectFilter()"
+                                (ngModelChange)="baseObjectFilter.set($event); getRecords()">
+                                <option value="">{{ 'All' | localize }}</option>
+                                @for (baseObject of baseObjects(); track baseObject.code) {
+                                    <option [value]="baseObject.code">{{ baseObject.displayName }}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '70rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="!(['Pages.BusinessRules.Edit', 'Pages.BusinessRules.Delete'] | permissionAny)">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="code">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="code" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="nameEn">
+                                        {{ 'Name' | localize }}
+                                        <p-sortIcon field="nameEn" />
+                                    </th>
+                                    <th style="min-width: 160px">{{ 'BaseObject' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'RulePurpose' | localize }}</th>
+                                    <th style="min-width: 200px">{{ 'EffectiveDates' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'RuleAssignments' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="!(['Pages.BusinessRules.Edit', 'Pages.BusinessRules.Delete'] | permissionAny)">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 180px">
+                                        <span pTooltip="{{ record.code }}" class="hide-overflown">{{ record.code }}</span>
+                                        @if (record.hasDefinitionError) {
+                                            <i
+                                                class="fa fa-exclamation-triangle text-danger ms-2"
+                                                [pTooltip]="l('RuleDefinitionIsBroken')"></i>
+                                        }
+                                    </td>
+                                    <td style="min-width: 200px">{{ record.nameEn }}</td>
+                                    <td style="min-width: 160px">{{ record.baseObjectDisplayName }}</td>
+                                    <td style="min-width: 120px">{{ purposeLabel(record.purpose) }}</td>
+                                    <td style="min-width: 200px">
+                                        {{ record.effectiveFrom | date: 'dd/MM/yyyy' }}
+                                        &ndash;
+                                        {{ record.effectiveTo ? (record.effectiveTo | date: 'dd/MM/yyyy') : ('Open' | localize) }}
+                                    </td>
+                                    <td style="min-width: 120px">
+                                        @if (!record.isActive) {
+                                            <span class="badge badge-light-secondary">{{ 'Inactive' | localize }}</span>
+                                        } @else if (record.activeAssignmentCount > 0) {
+                                            <span class="badge badge-light-success">
+                                                <i class="fa fa-check me-1"></i>{{ record.activeAssignmentCount }}
+                                            </span>
+                                        } @else {
+                                            <span class="badge badge-light-warning" [pTooltip]="l('RuleIsNotAssignedHint')">
+                                                {{ 'RuleIsNotAssigned' | localize }}
+                                            </span>
+                                        }
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditBusinessRuleModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

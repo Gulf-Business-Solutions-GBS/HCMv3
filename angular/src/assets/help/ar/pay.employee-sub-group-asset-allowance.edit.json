@@ -1,0 +1,43 @@
+{
+  "helpId": "pay.employee-sub-group-asset-allowance.edit",
+  "lang": "ar",
+  "title": "بدلات عهد المجموعة الفرعية للموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupAssetAllowance",
+  "overviewHtml": "<p>بدل عن أصول الشركة، يُصرف عبر نوع أجر.</p><p>لا تُقرأ حالياً: لا يستخدم نظام الرواتب هذه القائمة، وهي محفوظة للرجوع إليها فقط.</p>",
+  "aliasIndex": {
+    "loc:WageType": "EmployeeSubGroupAssetAllowance.WageTypeId",
+    "dom:EmployeeSubGroupAssetAllowance_WageTypeId": "EmployeeSubGroupAssetAllowance.WageTypeId",
+    "loc:Amount": "EmployeeSubGroupAssetAllowance.Amount",
+    "dom:EmployeeSubGroupAssetAllowance_Amount": "EmployeeSubGroupAssetAllowance.Amount"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupAssetAllowance.WageTypeId",
+      "label": "WageType",
+      "section": "EmployeeSubGroupAssetAllowances",
+      "aliases": [
+        "loc:WageType",
+        "dom:EmployeeSubGroupAssetAllowance_WageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع أجر البدل.</p><p><strong>مثال.</strong> بدل سيارة</p><p><strong>لماذا يهم.</strong> لا يُدرج نوع الأجر إلا مرة واحدة لكل مجموعة فرعية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAssetAllowance.Amount",
+      "label": "Amount",
+      "section": "EmployeeSubGroupAssetAllowances",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeSubGroupAssetAllowance_Amount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مبلغ البدل.</p><p><strong>مثال.</strong> <code>100</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

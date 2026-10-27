@@ -1,0 +1,87 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #wageTypeSecurityRoleForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (wageTypeSecurityRole().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'WageTypeSecurityRoles' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'WageTypeSecurityRoles' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="WageTypeSecurityRole_WageTypeId">{{ 'WageTypeId' | localize }}</label>
+                                <select
+                                    id="WageTypeSecurityRole_WageTypeId"
+                                    #wageTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="WageTypeId"
+                                    [ngModel]="wageTypeSecurityRole().wageTypeId"
+                                    (ngModelChange)="updateField('wageTypeId', $event)"
+                                    [disabled]="!!presetWageTypeId()"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (wt of wageTypes(); track wt.id) {
+                                        <option [ngValue]="wt.id">{{ wt.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="wageTypeIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="WageTypeSecurityRole_RoleId">{{ 'RoleId' | localize }}</label>
+                                <select
+                                    id="WageTypeSecurityRole_RoleId"
+                                    #roleIdInput="ngModel"
+                                    class="form-select"
+                                    name="RoleId"
+                                    [ngModel]="wageTypeSecurityRole().roleId"
+                                    (ngModelChange)="updateField('roleId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (role of roles(); track role.id) {
+                                        <option [ngValue]="role.id">{{ role.displayName }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="roleIdInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!wageTypeSecurityRoleForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

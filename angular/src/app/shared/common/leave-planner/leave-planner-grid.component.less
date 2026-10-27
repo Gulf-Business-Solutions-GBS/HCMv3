@@ -1,0 +1,69 @@
+// Same shape as the roster schedule viewer's matrix: sticky name column, narrow day columns, horizontal scroll.
+.lp-scroll {
+    overflow-x: auto;
+}
+
+table.lp-matrix {
+    border-collapse: collapse;
+    font-size: 0.85rem;
+
+    th,
+    td {
+        border: 1px solid var(--bs-border-color, #e4e6ef);
+        padding: 0.25rem 0.3rem;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    th.lp-resource,
+    td.lp-resource {
+        text-align: start;
+        position: sticky;
+        inset-inline-start: 0;
+        background: var(--bs-body-bg, #fff);
+        z-index: 1;
+        min-width: 220px;
+    }
+}
+
+.lp-cell {
+    min-width: 30px;
+    height: 28px;
+}
+
+.lp-weekend {
+    background-color: #f5f8fa;
+}
+
+.lp-group td {
+    background-color: #eef3f7;
+}
+
+// Leave fills the cell; a plan is a stripe, so a plan on top of leave still shows both.
+.lp-leave {
+    background-color: #f1416c !important;
+}
+
+.lp-leave-pending {
+    background-color: #ffd4de !important;
+}
+
+.lp-plan {
+    background-image: linear-gradient(to bottom, transparent 60%, #f6a609 60%);
+}
+
+.lp-plan-pending {
+    background-image: linear-gradient(to bottom, transparent 60%, #f9d19b 60%);
+}
+
+.lp-swatch {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+    border: 1px solid var(--bs-border-color, #e4e6ef);
+}
+
+:host ::ng-deep .lp-tooltip .p-tooltip-text {
+    white-space: pre-line;
+}

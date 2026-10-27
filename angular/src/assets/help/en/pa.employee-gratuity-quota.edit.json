@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.employee-gratuity-quota.edit",
+  "lang": "en",
+  "title": "Employee Indemnity Quotas — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeGratuityQuota",
+  "overviewHtml": "<p>The employee's indemnity entitlement over an entitlement period.</p><p>The time engine creates a quota itself for any day no quota covers when the employee's grade has an indemnity rule. The indemnity calculation overwrites Quota Accrued and Quota Used from its own results each time it runs.</p>",
+  "aliasIndex": {
+    "loc:EntitlementFrom": "EmployeeGratuityQuota.EntitlementFrom",
+    "dom:EmployeeGratuityQuota_EntitlementFrom": "EmployeeGratuityQuota.EntitlementFrom",
+    "loc:EntitlementTo": "EmployeeGratuityQuota.EntitlementTo",
+    "dom:EmployeeGratuityQuota_EntitlementTo": "EmployeeGratuityQuota.EntitlementTo",
+    "loc:DeductionFrom": "EmployeeGratuityQuota.DeductionFrom",
+    "dom:EmployeeGratuityQuota_DeductionFrom": "EmployeeGratuityQuota.DeductionFrom",
+    "loc:DeductionTo": "EmployeeGratuityQuota.DeductionTo",
+    "dom:EmployeeGratuityQuota_DeductionTo": "EmployeeGratuityQuota.DeductionTo",
+    "loc:QuotaAccrued": "EmployeeGratuityQuota.QuotaAccrued",
+    "dom:EmployeeGratuityQuota_QuotaAccrued": "EmployeeGratuityQuota.QuotaAccrued",
+    "loc:QuotaUsed": "EmployeeGratuityQuota.QuotaUsed",
+    "dom:EmployeeGratuityQuota_QuotaUsed": "EmployeeGratuityQuota.QuotaUsed",
+    "loc:QuotaAdjusted": "EmployeeGratuityQuota.QuotaAdjusted",
+    "dom:EmployeeGratuityQuota_QuotaAdjusted": "EmployeeGratuityQuota.QuotaAdjusted"
+  },
+  "fields": [
+    {
+      "id": "EmployeeGratuityQuota.EntitlementFrom",
+      "label": "EntitlementFrom",
+      "section": "EmployeeGratuityQuotas",
+      "aliases": [
+        "loc:EntitlementFrom",
+        "dom:EmployeeGratuityQuota_EntitlementFrom"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day of the entitlement period.</p><p><strong>Example.</strong> 1 Jan 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuityQuota.EntitlementTo",
+      "label": "EntitlementTo",
+      "section": "EmployeeGratuityQuotas",
+      "aliases": [
+        "loc:EntitlementTo",
+        "dom:EmployeeGratuityQuota_EntitlementTo"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day of the entitlement period.</p><p><strong>Example.</strong> 31 Dec 2026</p><p><strong>Why it matters.</strong> The indemnity provision report uses the quota covering its as-on date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuityQuota.DeductionFrom",
+      "label": "DeductionFrom",
+      "section": "EmployeeGratuityQuotas",
+      "aliases": [
+        "loc:DeductionFrom",
+        "dom:EmployeeGratuityQuota_DeductionFrom"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day of the deduction period.</p><p><strong>Example.</strong> 1 Jan 2026</p><p><strong>Why it matters.</strong> Shown on the indemnity provision report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuityQuota.DeductionTo",
+      "label": "DeductionTo",
+      "section": "EmployeeGratuityQuotas",
+      "aliases": [
+        "loc:DeductionTo",
+        "dom:EmployeeGratuityQuota_DeductionTo"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day of the deduction period.</p><p><strong>Example.</strong> 31 Dec 2026</p><p><strong>Why it matters.</strong> Shown on the indemnity provision report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuityQuota.QuotaAccrued",
+      "label": "QuotaAccrued",
+      "section": "EmployeeGratuityQuotas",
+      "aliases": [
+        "loc:QuotaAccrued",
+        "dom:EmployeeGratuityQuota_QuotaAccrued"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Indemnity days accrued.</p><p><strong>Example.</strong> 21</p><p><strong>Why it matters.</strong> Overwritten by the indemnity calculation.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuityQuota.QuotaUsed",
+      "label": "QuotaUsed",
+      "section": "EmployeeGratuityQuotas",
+      "aliases": [
+        "loc:QuotaUsed",
+        "dom:EmployeeGratuityQuota_QuotaUsed"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Indemnity days paid.</p><p><strong>Example.</strong> 0</p><p><strong>Why it matters.</strong> Overwritten by the indemnity calculation.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuityQuota.QuotaAdjusted",
+      "label": "QuotaAdjusted",
+      "section": "EmployeeGratuityQuotas",
+      "aliases": [
+        "loc:QuotaAdjusted",
+        "dom:EmployeeGratuityQuota_QuotaAdjusted"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Indemnity days adjusted.</p><p><strong>Example.</strong> 0</p><p><strong>Why it matters.</strong> Recorded only; the indemnity calculation does not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,208 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>{{ 'FileLicenseNumbers' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_CurrentFileNo">{{ 'CurrentFileNo' | localize }}</label>
+                                <input id="VisaInfo_CurrentFileNo" class="form-control" type="text" name="CurrentFileNo"
+                                    [ngModel]="record().currentFileNo" (ngModelChange)="updateField('currentFileNo', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_CurrentContractNo">{{ 'CurrentContractNo' | localize }}</label>
+                                <input id="VisaInfo_CurrentContractNo" class="form-control" type="text" name="CurrentContractNo"
+                                    [ngModel]="record().currentContractNo" (ngModelChange)="updateField('currentContractNo', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_CurrentLicenseNo">{{ 'CurrentLicenseNo' | localize }}</label>
+                                <input id="VisaInfo_CurrentLicenseNo" class="form-control" type="text" name="CurrentLicenseNo"
+                                    [ngModel]="record().currentLicenseNo" (ngModelChange)="updateField('currentLicenseNo', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_OldFileNo">{{ 'OldFileNo' | localize }}</label>
+                                <input id="VisaInfo_OldFileNo" class="form-control" type="text" name="OldFileNo"
+                                    [ngModel]="record().oldFileNo" (ngModelChange)="updateField('oldFileNo', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_OldContractNo">{{ 'OldContractNo' | localize }}</label>
+                                <input id="VisaInfo_OldContractNo" class="form-control" type="text" name="OldContractNo"
+                                    [ngModel]="record().oldContractNo" (ngModelChange)="updateField('oldContractNo', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_OldLicenseNo">{{ 'OldLicenseNo' | localize }}</label>
+                                <input id="VisaInfo_OldLicenseNo" class="form-control" type="text" name="OldLicenseNo"
+                                    [ngModel]="record().oldLicenseNo" (ngModelChange)="updateField('oldLicenseNo', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_MoiFileNumber">{{ 'MoiFileNumber' | localize }}</label>
+                                <input id="VisaInfo_MoiFileNumber" class="form-control" type="text" name="MoiFileNumber"
+                                    [ngModel]="record().moiFileNumber" (ngModelChange)="updateField('moiFileNumber', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_VisaNum">{{ 'VisaNum' | localize }}</label>
+                                <input id="VisaInfo_VisaNum" class="form-control" type="number" name="VisaNum"
+                                    [ngModel]="record().visaNum" (ngModelChange)="updateField('visaNum', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_ResidencyNum">{{ 'ResidencyNum' | localize }}</label>
+                                <input id="VisaInfo_ResidencyNum" class="form-control" type="number" name="ResidencyNum"
+                                    [ngModel]="record().residencyNum" (ngModelChange)="updateField('residencyNum', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_AuthorizedSign">{{ 'AuthorizedSign' | localize }}</label>
+                                <input id="VisaInfo_AuthorizedSign" class="form-control" type="text" name="AuthorizedSign"
+                                    [ngModel]="record().authorizedSign" (ngModelChange)="updateField('authorizedSign', $event)" />
+                            </div>
+                        </div>
+
+                        <h6>{{ 'OldValues' | localize }} / {{ 'CurrentValues' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_PreviousResidencyPeriod">{{ 'PreviousResidencyPeriod' | localize }}</label>
+                                <input id="VisaInfo_PreviousResidencyPeriod" class="form-control" type="text" name="PreviousResidencyPeriod"
+                                    [ngModel]="record().previousResidencyPeriod" (ngModelChange)="updateField('previousResidencyPeriod', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_CurrentResidencyPeriod">{{ 'CurrentResidencyPeriod' | localize }}</label>
+                                <input id="VisaInfo_CurrentResidencyPeriod" class="form-control" type="text" name="CurrentResidencyPeriod"
+                                    [ngModel]="record().currentResidencyPeriod" (ngModelChange)="updateField('currentResidencyPeriod', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_OldContractSalary">{{ 'OldContractSalary' | localize }}</label>
+                                <input id="VisaInfo_OldContractSalary" class="form-control" type="number" name="OldContractSalary"
+                                    [ngModel]="record().oldContractSalary" (ngModelChange)="updateField('oldContractSalary', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_CurrentContractSalary">{{ 'CurrentContractSalary' | localize }}</label>
+                                <input id="VisaInfo_CurrentContractSalary" class="form-control" type="number" name="CurrentContractSalary"
+                                    [ngModel]="record().currentContractSalary" (ngModelChange)="updateField('currentContractSalary', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_NewProfesion">{{ 'NewProfession' | localize }}</label>
+                                <input id="VisaInfo_NewProfesion" class="form-control" type="text" name="NewProfesion"
+                                    [ngModel]="record().newProfesion" (ngModelChange)="updateField('newProfesion', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_NewProfessionAr">{{ 'NewProfessionAr' | localize }}</label>
+                                <input id="VisaInfo_NewProfessionAr" class="form-control" type="text" dir="rtl" name="NewProfessionAr"
+                                    [ngModel]="record().newProfessionAr" (ngModelChange)="updateField('newProfessionAr', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_OldProfession">{{ 'OldProfession' | localize }}</label>
+                                <input id="VisaInfo_OldProfession" class="form-control" type="text" name="OldProfession"
+                                    [ngModel]="record().oldProfession" (ngModelChange)="updateField('oldProfession', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_OldCompany">{{ 'OldCompany' | localize }}</label>
+                                <input id="VisaInfo_OldCompany" class="form-control" type="text" name="OldCompany"
+                                    [ngModel]="record().oldCompany" (ngModelChange)="updateField('oldCompany', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_OldSponser">{{ 'OldSponsor' | localize }}</label>
+                                <input id="VisaInfo_OldSponser" class="form-control" type="text" name="OldSponser"
+                                    [ngModel]="record().oldSponser" (ngModelChange)="updateField('oldSponser', $event)" />
+                            </div>
+                        </div>
+
+                        <h6>{{ 'PassportInfo' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_PassportTypeId">{{ 'PassportType' | localize }}</label>
+                                <select id="VisaInfo_PassportTypeId" class="form-select" name="PassportTypeId"
+                                    [ngModel]="record().passportTypeId" (ngModelChange)="updateField('passportTypeId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of passportTypes(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_TypeOfPassport">{{ 'TypeOfPassport' | localize }}</label>
+                                <input id="VisaInfo_TypeOfPassport" class="form-control" type="text" name="TypeOfPassport"
+                                    [ngModel]="record().typeOfPassport" (ngModelChange)="updateField('typeOfPassport', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_IssuePlacePassport">{{ 'IssuePlacePassport' | localize }}</label>
+                                <input id="VisaInfo_IssuePlacePassport" class="form-control" type="text" name="IssuePlacePassport"
+                                    [ngModel]="record().issuePlacePassport" (ngModelChange)="updateField('issuePlacePassport', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_PassportIssueDate">{{ 'PassportIssueDate' | localize }}</label>
+                                <input id="VisaInfo_PassportIssueDate" class="form-control" type="date" name="PassportIssueDate"
+                                    [ngModel]="record().passportIssueDate?.toISODate()" (ngModelChange)="updateDateField('passportIssueDate', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_PassportExpiryDate">{{ 'PassportExpiryDate' | localize }}</label>
+                                <input id="VisaInfo_PassportExpiryDate" class="form-control" type="date" name="PassportExpiryDate"
+                                    [ngModel]="record().passportExpiryDate?.toISODate()" (ngModelChange)="updateDateField('passportExpiryDate', $event)" />
+                            </div>
+                        </div>
+
+                        <h6>{{ 'Dates' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_EntryDate">{{ 'EntryDate' | localize }}</label>
+                                <input id="VisaInfo_EntryDate" class="form-control" type="date" name="EntryDate"
+                                    [ngModel]="record().entryDate?.toISODate()" (ngModelChange)="updateDateField('entryDate', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_TerminationDate">{{ 'TerminationDate' | localize }}</label>
+                                <input id="VisaInfo_TerminationDate" class="form-control" type="date" name="TerminationDate"
+                                    [ngModel]="record().terminationDate?.toISODate()" (ngModelChange)="updateDateField('terminationDate', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input id="VisaInfo_StartDate" class="form-control" type="date" name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()" (ngModelChange)="updateDateField('startDate', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="VisaInfo_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input id="VisaInfo_EndDate" class="form-control" type="date" name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()" (ngModelChange)="updateDateField('endDate', $event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

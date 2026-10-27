@@ -1,0 +1,120 @@
+{
+  "helpId": "tm.time-engine",
+  "lang": "en",
+  "title": "Time Engine",
+  "entity": null,
+  "overviewHtml": "<p>Evaluates attendance into time results day by day, for the employees of a payroll area or for the employees you name, over a date range. Payroll then reads those results.</p><p>Before a run is queued the screen checks, in this order: an end date is given; the start date is not after it; a payroll area or at least one employee code is given; the payroll area's control record exists (with only codes, the area of the first code's org assignment today is used); the end date is not more than the allowed number of days (time setting \"TE_MAX_LIMIT_DAYS\") past the control record's month end; and the start date is not before the earliest time evaluation date (time setting \"TIME_EVAL_EARLIEST_DATE\"), which must be set.</p><p>The run works in the background. Only one run can be in progress per payroll area at a time; different areas can run together. Progress, per-employee results and the day-by-day log appear below, and each run is added to <strong>Time Engine Run History</strong>.</p>",
+  "aliasIndex": {},
+  "fields": [
+    {
+      "id": "tm.time-engine.payroll-area",
+      "label": "PayrollArea",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The payroll area whose employees are evaluated: the active employees whose org assignment on the day is in this area.</p><p><strong>Example.</strong> Kuwait Monthly</p><p><strong>Why it matters.</strong> It also decides which run the progress panel below follows. Either an area or employee codes is required. When codes are typed they win: only those employees are run, whatever the area.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "tm.time-engine.employee-codes",
+      "label": "EmployeeCode",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The codes of the employees to evaluate, separated by commas. Blank evaluates the payroll area.</p><p><strong>Example.</strong> <code>1001, 1002</code></p><p><strong>Why it matters.</strong> Named employees are run even if they are inactive, so time can still be evaluated for someone who has left. Up to 4000 characters.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "tm.time-engine.select-employees",
+      "label": "PayrollRunSelectEmployees",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The button beside <strong>Employee Code</strong>. It lists the employees whose org assignment in the chosen payroll area overlaps the date range (start date or today, to end date or the start date), whatever their status. Tick employees and press <strong>Ok</strong> to put their codes in the box.</p><p><strong>Example.</strong> Open <strong>Pending</strong>, press <strong>Select all</strong>, then <strong>Ok</strong>.</p><p><strong>Why it matters.</strong> <strong>Processed</strong> means payroll has already made a regular salary register for the area's current period: re-running that employee's time will show up in payroll as a retro difference. <strong>Pending</strong> means it has not. The tabs <strong>All</strong>, <strong>Processed</strong>, <strong>Pending</strong> and <strong>Selected</strong> count the whole list; search finds by code or name; <strong>Select all</strong> and <strong>Unselect all</strong> apply to every row the tab and search show, on every page. Available only once a payroll area is chosen.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "tm.time-engine.start-date",
+      "label": "StartDate",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day to evaluate.</p><p><strong>Example.</strong> <code>2026-04-01</code></p><p><strong>Why it matters.</strong> Optional: blank starts on the 1st of the current month. It may not be after the end date, nor before the earliest time evaluation date in Time Settings.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "tm.time-engine.end-date",
+      "label": "EndDate",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day to evaluate.</p><p><strong>Example.</strong> <code>2026-04-30</code></p><p><strong>Why it matters.</strong> Required. It may not be more than the allowed number of days past the payroll control record's month end; the message names the latest date allowed.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "tm.time-engine.run",
+      "label": "RunTimeEngine",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Checks the entries and queues the run.</p><p><strong>Example.</strong> \"Time Engine run has been queued. Progress appears in the run history below.\"</p><p><strong>Why it matters.</strong> Refused while another run of the same payroll area is in progress, with the name of the user who started it and when. Needs the right to run the Time Engine.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "common.engine-run-progress",
+      "label": "EngineRunProgress",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The live panel for the latest run: a progress gauge, the counts of employees (total, processed, failed, skipped), the time taken so far and an estimate of the time left, and a grid of the employees with their result and message. The grid has a search box and <strong>All</strong>, <strong>Succeeded Only</strong> and <strong>Failed Only</strong>.</p><p><strong>Example.</strong> \"120 of 400 employees processed\", about 6 minutes remaining (an estimate only).</p><p><strong>Why it matters.</strong> <strong>Stop Run</strong> asks the run to stop; it ends after the employee in progress. <strong>Clear Progress</strong> clears the progress of finished runs. When a run stops responding, for example after a server restart, the panel says so and <strong>Abandon Interrupted Runs</strong> marks it as abandoned so it no longer blocks a new run. These actions need the right to run the engine.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "tm.time-engine.days",
+      "label": "Days",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The button on each employee row of the progress grid. It opens that employee's day-by-day log for the run: day, status, message and run time, with <strong>All</strong>, <strong>Succeeded Only</strong> and <strong>Failed Only</strong>.</p><p><strong>Example.</strong> One of 30 days failed: that day shows Failed with its error message, and the employee is shown as failed.</p><p><strong>Why it matters.</strong> A failed day does not stop the employee's other days, but the employee is reported <strong>Failed</strong> if any of their days failed. This is where to read why.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "tm.time-engine.export",
+      "label": "ExportToExcel",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Downloads the day-by-day log of the run shown in the panel: one row per employee per day, with the panel's search and success/failure filter applied.</p><p><strong>Example.</strong> Filter on <strong>Failed Only</strong> first to get just the days to fix.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "tm.time-engine.history",
+      "label": "TimeEngineRunHistory",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Every run: when, by whom, its status, how many records, how many succeeded and failed, and the parameters it was run with.</p><p><strong>Example.</strong> 2026-05-01 08:15, admin, SUCCESS, 400, 398, 2.</p><p><strong>Why it matters.</strong> While a run is in progress the list refreshes itself every 10 seconds.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

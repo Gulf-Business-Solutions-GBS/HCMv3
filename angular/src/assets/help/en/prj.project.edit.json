@@ -1,0 +1,123 @@
+{
+  "helpId": "prj.project.edit",
+  "lang": "en",
+  "title": "Projects — Create / Edit",
+  "entity": "HCMv3.ProjectManagement.Project",
+  "overviewHtml": "<p>A project that salary costs are charged to. Its wagetypes decide which pay lines the Project Cost Engine splits onto it.</p>",
+  "aliasIndex": {
+    "loc:Code": "Project.Code",
+    "dom:Project_Code": "Project.Code",
+    "loc:ProjectType": "Project.ProjectTypeId",
+    "dom:Project_ProjectTypeId": "Project.ProjectTypeId",
+    "loc:NameEn": "Project.NameEn",
+    "dom:Project_NameEn": "Project.NameEn",
+    "loc:NameAr": "Project.NameAr",
+    "dom:Project_NameAr": "Project.NameAr",
+    "loc:StartDate": "Project.StartDate",
+    "dom:Project_StartDate": "Project.StartDate",
+    "loc:EndDate": "Project.EndDate",
+    "dom:Project_EndDate": "Project.EndDate",
+    "loc:Comments": "Project.Comments",
+    "dom:Project_Comments": "Project.Comments"
+  },
+  "fields": [
+    {
+      "id": "Project.Code",
+      "label": "Code",
+      "section": "Projects",
+      "aliases": [
+        "loc:Code",
+        "dom:Project_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Project.ProjectTypeId",
+      "label": "ProjectType",
+      "section": "Projects",
+      "aliases": [
+        "loc:ProjectType",
+        "dom:Project_ProjectTypeId"
+      ],
+      "rules": "Required. Chosen from Project Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of project.</p><p><strong>Example.</strong> Construction</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Project.NameEn",
+      "label": "NameEn",
+      "section": "Projects",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Project_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Project.NameAr",
+      "label": "NameAr",
+      "section": "Projects",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Project_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Project.StartDate",
+      "label": "StartDate",
+      "section": "Projects",
+      "aliases": [
+        "loc:StartDate",
+        "dom:Project_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Project.EndDate",
+      "label": "EndDate",
+      "section": "Projects",
+      "aliases": [
+        "loc:EndDate",
+        "dom:Project_EndDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Project.Comments",
+      "label": "Comments",
+      "section": "Projects",
+      "aliases": [
+        "loc:Comments",
+        "dom:Project_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

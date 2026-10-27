@@ -1,0 +1,91 @@
+{
+  "helpId": "acc.building.edit",
+  "lang": "ar",
+  "title": "المباني — إنشاء / تحرير",
+  "entity": "HCMv3.AccommodationManagement.Building",
+  "overviewHtml": "<p>مبنى يُستخدم لسكن الشركة. يُعدّ سكن الشركة على شكل شجرة: الموقع، المبنى، الطابق، الشقة، الغرفة، السرير. وتحدد إقامة الموظف مكاناً واحداً في كل مستوى.</p>",
+  "aliasIndex": {
+    "loc:Code": "Building.Code",
+    "dom:Building_Code": "Building.Code",
+    "loc:Location": "Building.LocationId",
+    "dom:Building_LocationId": "Building.LocationId",
+    "loc:NameEn": "Building.NameEn",
+    "dom:Building_NameEn": "Building.NameEn",
+    "loc:NameAr": "Building.NameAr",
+    "dom:Building_NameAr": "Building.NameAr",
+    "loc:Comments": "Building.Comments",
+    "dom:Building_Comments": "Building.Comments"
+  },
+  "fields": [
+    {
+      "id": "Building.Code",
+      "label": "Code",
+      "section": "Buildings",
+      "aliases": [
+        "loc:Code",
+        "dom:Building_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Building.LocationId",
+      "label": "Location",
+      "section": "Buildings",
+      "aliases": [
+        "loc:Location",
+        "dom:Building_LocationId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المواقع.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموقع الذي يقع فيه المبنى.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Building.NameEn",
+      "label": "NameEn",
+      "section": "Buildings",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Building_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Building.NameAr",
+      "label": "NameAr",
+      "section": "Buildings",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Building_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Building.Comments",
+      "label": "Comments",
+      "section": "Buildings",
+      "aliases": [
+        "loc:Comments",
+        "dom:Building_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

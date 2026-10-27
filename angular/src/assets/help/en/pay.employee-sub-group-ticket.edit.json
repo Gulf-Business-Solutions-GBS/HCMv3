@@ -1,0 +1,155 @@
+{
+  "helpId": "pay.employee-sub-group-ticket.edit",
+  "lang": "en",
+  "title": "Employee Sub Group Tickets — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupTicket",
+  "overviewHtml": "<p>The grade's air ticket entitlement for one ticket type — the employee's own ticket or a dependant's: how many tickets, over what period, and how each ticket is valued.</p><p>How a ticket is valued is chosen on the grade itself (<strong>Air Ticket Pay Type</strong>); this row supplies the amounts that choice uses.</p>",
+  "aliasIndex": {
+    "loc:TicketType": "EmployeeSubGroupTicket.TicketTypeId",
+    "dom:EmployeeSubGroupTicket_TicketTypeId": "EmployeeSubGroupTicket.TicketTypeId",
+    "loc:TicketCount": "EmployeeSubGroupTicket.TicketCount",
+    "dom:EmployeeSubGroupTicket_TicketCount": "EmployeeSubGroupTicket.TicketCount",
+    "loc:StartDate": "EmployeeSubGroupTicket.StartDate",
+    "dom:EmployeeSubGroupTicket_StartDate": "EmployeeSubGroupTicket.StartDate",
+    "loc:EndDate": "EmployeeSubGroupTicket.EndDate",
+    "dom:EmployeeSubGroupTicket_EndDate": "EmployeeSubGroupTicket.EndDate",
+    "loc:MaxAmount": "EmployeeSubGroupTicket.MaxAmount",
+    "dom:EmployeeSubGroupTicket_MaxAmount": "EmployeeSubGroupTicket.MaxAmount",
+    "loc:FixAmount": "EmployeeSubGroupTicket.FixAmount",
+    "dom:EmployeeSubGroupTicket_FixAmount": "EmployeeSubGroupTicket.FixAmount",
+    "loc:FareType": "EmployeeSubGroupTicket.FareType",
+    "dom:EmployeeSubGroupTicket_FareType": "EmployeeSubGroupTicket.FareType",
+    "loc:AgeLimit": "EmployeeSubGroupTicket.AgeLimit",
+    "dom:EmployeeSubGroupTicket_AgeLimit": "EmployeeSubGroupTicket.AgeLimit",
+    "loc:AccrualPeriod": "EmployeeSubGroupTicket.AccrualPeriod",
+    "dom:EmployeeSubGroupTicket_AccrualPeriod": "EmployeeSubGroupTicket.AccrualPeriod"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupTicket.TicketTypeId",
+      "label": "TicketType",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:TicketType",
+        "dom:EmployeeSubGroupTicket_TicketTypeId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The ticket type this entitlement is for.</p><p><strong>Example.</strong> Employee Ticket</p><p><strong>Why it matters.</strong> Ticket type <code>1</code> is the employee's own ticket; the others are for dependants.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupTicket.TicketCount",
+      "label": "TicketCount",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:TicketCount",
+        "dom:EmployeeSubGroupTicket_TicketCount"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many tickets are earned in each accrual period.</p><p><strong>Example.</strong> <code>1</code></p><p><strong>Why it matters.</strong> The time engine accrues it day by day — over one year, or two years for a <em>Bi-Annual</em> period — unless the ticket type is entitled immediately. Automatic ticket pay uses it as the entitlement.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupTicket.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSubGroupTicket_StartDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupTicket.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSubGroupTicket_EndDate"
+      ],
+      "rules": "Optional. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupTicket.MaxAmount",
+      "label": "MaxAmount",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:MaxAmount",
+        "dom:EmployeeSubGroupTicket_MaxAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most one ticket can be worth.</p><p><strong>Example.</strong> <code>250</code></p><p><strong>Why it matters.</strong> <em>ActualAmountWithinMaxlimit</em> never goes above it, and <em>Actual Amount</em> uses it when nothing was actually paid.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupTicket.FixAmount",
+      "label": "FixAmount",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:FixAmount",
+        "dom:EmployeeSubGroupTicket_FixAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The value of one ticket, for the <em>Fix Amount</em> pay type.</p><p><strong>Example.</strong> <code>180</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupTicket.FareType",
+      "label": "FareType",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:FareType",
+        "dom:EmployeeSubGroupTicket_FareType"
+      ],
+      "rules": "Required. One of: OneWay, Return.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the one-way or the return fare is used, for the <em>FareAmount</em> pay type.</p><p><strong>Example.</strong> Return</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupTicket.AgeLimit",
+      "label": "AgeLimit",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:AgeLimit",
+        "dom:EmployeeSubGroupTicket_AgeLimit"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> For a dependant ticket, the oldest age at which the dependant is entitled.</p><p><strong>Example.</strong> <code>21</code></p><p><strong>Why it matters.</strong> Automatic ticket pay skips dependants older than this, and dependants with no birth date recorded, unless they have a ticket exception.</p>",
+      "adminHtml": "<p>An age limit of 0 means no dependant qualifies — it is not \"no limit\". Set the oldest age that is entitled.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupTicket.AccrualPeriod",
+      "label": "AccrualPeriod",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:AccrualPeriod",
+        "dom:EmployeeSubGroupTicket_AccrualPeriod"
+      ],
+      "rules": "Required. One of: No Accrual, Calendar Year, Fiscal Year, Work Year, Bi-Annual, Per Employment, Custom.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The period the ticket entitlement runs over.</p><p><strong>Example.</strong> Work Year</p><p><strong>Why it matters.</strong> Automatic ticket pay adds the ticket on the first day of each period. <em>Bi-Annual</em> spreads the accrual over two years.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

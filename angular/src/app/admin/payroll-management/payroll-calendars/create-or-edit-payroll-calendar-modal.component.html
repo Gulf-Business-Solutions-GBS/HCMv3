@@ -1,0 +1,127 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #payrollCalendarForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (payrollCalendar().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'PayrollCalendars' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'PayrollCalendars' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label required" for="PayrollCalendar_PayrollAreaId">{{ 'PayrollAreaId' | localize }}</label>
+                                <select
+                                    id="PayrollCalendar_PayrollAreaId"
+                                    #payrollAreaIdInput="ngModel"
+                                    class="form-select"
+                                    name="PayrollAreaId"
+                                    [ngModel]="payrollCalendar().payrollAreaId"
+                                    (ngModelChange)="updateField('payrollAreaId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (area of payrollAreas(); track area.id) {
+                                        <option [ngValue]="area.id">{{ area.name }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="payrollAreaIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PayrollCalendar_PayrollMonth">{{ 'PayrollMonth' | localize }}</label>
+                                <input
+                                    id="PayrollCalendar_PayrollMonth"
+                                    #payrollMonthInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="PayrollMonth"
+                                    required
+                                    min="1"
+                                    max="12"
+                                    [ngModel]="payrollCalendar().payrollMonth"
+                                    (ngModelChange)="updateField('payrollMonth', $event)" />
+                                <validation-messages [formCtrl]="payrollMonthInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PayrollCalendar_PayrollYear">{{ 'PayrollYear' | localize }}</label>
+                                <input
+                                    id="PayrollCalendar_PayrollYear"
+                                    #payrollYearInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="PayrollYear"
+                                    required
+                                    [ngModel]="payrollCalendar().payrollYear"
+                                    (ngModelChange)="updateField('payrollYear', $event)" />
+                                <validation-messages [formCtrl]="payrollYearInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PayrollCalendar_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="PayrollCalendar_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="payrollCalendar().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PayrollCalendar_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="PayrollCalendar_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="payrollCalendar().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!payrollCalendarForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

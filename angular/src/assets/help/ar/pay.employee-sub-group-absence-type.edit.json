@@ -1,0 +1,27 @@
+{
+  "helpId": "pay.employee-sub-group-absence-type.edit",
+  "lang": "ar",
+  "title": "أنواع غياب المجموعة الفرعية للموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupAbsenceType",
+  "overviewHtml": "<p>أنواع غياب مدرجة لمجموعة فرعية للموظفين. لا تُقرأ حالياً: تأتي الاستحقاقات من قواعد الإجازات للمجموعة الفرعية، ولا شيء يقرأ هذه القائمة.</p>",
+  "aliasIndex": {
+    "loc:AbsenceType": "EmployeeSubGroupAbsenceType.AbsenceTypeId",
+    "dom:EmployeeSubGroupAbsenceType_AbsenceTypeId": "EmployeeSubGroupAbsenceType.AbsenceTypeId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupAbsenceType.AbsenceTypeId",
+      "label": "AbsenceType",
+      "section": "EmployeeSubGroupAbsenceTypes",
+      "aliases": [
+        "loc:AbsenceType",
+        "dom:EmployeeSubGroupAbsenceType_AbsenceTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الإجازات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع غياب مدرج للمجموعة الفرعية.</p><p><strong>مثال.</strong> إجازة الحج</p><p><strong>لماذا يهم.</strong> لا يُدرج النوع إلا مرة واحدة لكل مجموعة فرعية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

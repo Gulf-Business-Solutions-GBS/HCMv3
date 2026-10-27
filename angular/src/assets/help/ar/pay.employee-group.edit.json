@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.employee-group.edit",
+  "lang": "ar",
+  "title": "ملفات الرواتب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeeGroup",
+  "overviewHtml": "<p>تصنيف عام للموظفين، مثل الموظفين الإداريين والعمال، تندرج تحته الدرجات. ويحدد التعيين التنظيمي لكل موظف مجموعته ومجموعته الفرعية.</p><p>وتحمل المجموعة الحد الأقصى لمكافأة نهاية الخدمة، ولا يُطبَّق هذا الحد إلا إذا لم يكن <strong>الحد الأقصى لمكافأة نهاية الخدمة</strong> صفراً.</p>",
+  "aliasIndex": {
+    "loc:Code": "EmployeeGroup.Code",
+    "dom:EmployeeGroup_Code": "EmployeeGroup.Code",
+    "loc:NameEn": "EmployeeGroup.NameEn",
+    "dom:EmployeeGroup_NameEn": "EmployeeGroup.NameEn",
+    "loc:NameAr": "EmployeeGroup.NameAr",
+    "dom:EmployeeGroup_NameAr": "EmployeeGroup.NameAr",
+    "loc:IndemnityMaxNumber": "EmployeeGroup.IndemnityMaxNumber",
+    "dom:EmployeeGroup_IndemnityMaxNumber": "EmployeeGroup.IndemnityMaxNumber",
+    "loc:IndemnityMaxUnit": "EmployeeGroup.IndemnityMaxUnit",
+    "dom:EmployeeGroup_IndemnityMaxUnit": "EmployeeGroup.IndemnityMaxUnit",
+    "loc:IndemnityMaxAccruePercentage": "EmployeeGroup.IndemnityMaxAccruePercentage",
+    "dom:EmployeeGroup_IndemnityMaxAccruePercentage": "EmployeeGroup.IndemnityMaxAccruePercentage"
+  },
+  "fields": [
+    {
+      "id": "EmployeeGroup.Code",
+      "label": "Code",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:Code",
+        "dom:EmployeeGroup_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGroup.NameEn",
+      "label": "NameEn",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:NameEn",
+        "dom:EmployeeGroup_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGroup.NameAr",
+      "label": "NameAr",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:NameAr",
+        "dom:EmployeeGroup_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGroup.IndemnityMaxNumber",
+      "label": "IndemnityMaxNumber",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:IndemnityMaxNumber",
+        "dom:EmployeeGroup_IndemnityMaxNumber"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أقصى ما يمكن أن تبلغه مكافأة نهاية الخدمة من الراتب، محسوباً بالوحدة أدناه.</p><p><strong>مثال.</strong> <code>18</code> مع الوحدة شهر — أي راتب ثمانية عشر شهراً على الأكثر، وهو حد قانون العمل الكويتي.</p><p><strong>لماذا يهم.</strong> الحد هو الراتب الشهري للموظف من أنواع الأجور المؤشَّر عليها <em>إدراج في مكافأة نهاية الخدمة</em>، مضروباً في هذا العدد من الأشهر، ثم في النسبة أدناه. ولا تُستحق أيام المكافأة التي تتجاوز الحد. والقيمة 0 تعني عدم وجود حد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGroup.IndemnityMaxUnit",
+      "label": "IndemnityMaxUnit",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:IndemnityMaxUnit",
+        "dom:EmployeeGroup_IndemnityMaxUnit"
+      ],
+      "rules": "إلزامي. إحدى القيم: اليوم، الشهر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الحد الأقصى محسوباً بالأشهر أو بالأيام.</p><p><strong>مثال.</strong> شهر</p><p><strong>لماذا يهم.</strong> تُحوَّل الأيام إلى أشهر بقسمتها على 30: فـ540 يوماً هي الحد نفسه لـ18 شهراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGroup.IndemnityMaxAccruePercentage",
+      "label": "IndemnityMaxAccruePercentage",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:IndemnityMaxAccruePercentage",
+        "dom:EmployeeGroup_IndemnityMaxAccruePercentage"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النسبة التي يمكن للموظف أن يستحقها فعلاً من ذلك الحد الأقصى.</p><p><strong>مثال.</strong> <code>100</code></p><p><strong>لماذا يهم.</strong> يُضرب فيها الحد. وإذا تُركت صفراً صار الحد صفراً — فإذا حُدد الحد الأقصى فيجب تحديد هذه النسبة أيضاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

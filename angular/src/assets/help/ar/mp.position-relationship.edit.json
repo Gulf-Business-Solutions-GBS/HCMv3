@@ -1,0 +1,91 @@
+{
+  "helpId": "mp.position-relationship.edit",
+  "lang": "ar",
+  "title": "علاقات الوظائف — إنشاء / تحرير",
+  "entity": "HCMv3.ManpowerPlanningManagement.PositionRelationship",
+  "overviewHtml": "<p>موظف يشغل وظيفة لفترة من التواريخ. لا يمكن أن يكون تاريخ الانتهاء قبل تاريخ البدء، ولا يجوز تجاوز \"حد الوظائف بدوام كامل\" للوظيفة. ويُحدَّث مؤشر \"شاغرة\" للوظيفة، ويظهر الشاغل في مخطط الوظائف.</p>",
+  "aliasIndex": {
+    "loc:Position": "PositionRelationship.PositionId",
+    "dom:PositionRelationship_PositionId": "PositionRelationship.PositionId",
+    "loc:RelationType": "PositionRelationship.RelationType",
+    "dom:PositionRelationship_RelationType": "PositionRelationship.RelationType",
+    "loc:Employee": "PositionRelationship.EmployeeId",
+    "dom:PositionRelationship_EmployeeId": "PositionRelationship.EmployeeId",
+    "loc:StartDate": "PositionRelationship.StartDate",
+    "dom:PositionRelationship_StartDate": "PositionRelationship.StartDate",
+    "loc:EndDate": "PositionRelationship.EndDate",
+    "dom:PositionRelationship_EndDate": "PositionRelationship.EndDate"
+  },
+  "fields": [
+    {
+      "id": "PositionRelationship.PositionId",
+      "label": "Position",
+      "section": "PositionRelationships",
+      "aliases": [
+        "loc:Position",
+        "dom:PositionRelationship_PositionId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الوظائف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوظيفة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PositionRelationship.RelationType",
+      "label": "RelationType",
+      "section": "PositionRelationships",
+      "aliases": [
+        "loc:RelationType",
+        "dom:PositionRelationship_RelationType"
+      ],
+      "rules": "إلزامي. إحدى القيم: شاغل الوظيفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> علاقة الموظف بالوظيفة. \"شاغل الوظيفة\" هو الخيار الوحيد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PositionRelationship.EmployeeId",
+      "label": "Employee",
+      "section": "PositionRelationships",
+      "aliases": [
+        "loc:Employee",
+        "dom:PositionRelationship_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يشغل الوظيفة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PositionRelationship.StartDate",
+      "label": "StartDate",
+      "section": "PositionRelationships",
+      "aliases": [
+        "loc:StartDate",
+        "dom:PositionRelationship_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PositionRelationship.EndDate",
+      "label": "EndDate",
+      "section": "PositionRelationships",
+      "aliases": [
+        "loc:EndDate",
+        "dom:PositionRelationship_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

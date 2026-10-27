@@ -1,0 +1,94 @@
+<div class="row">
+    <div class="col-12 p-3">
+        @if ('Pages.PersonnelAdministration.EmployeeDisciplinaries.Create' | permission) {
+            <button (click)="createRecord()" class="btn btn-primary btn-sm float-end mb-3">
+                <i class="fa fa-plus"></i>
+                {{ 'CreateNew' | localize }}
+            </button>
+        }
+    </div>
+    <div class="col-12">
+        <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+            <p-table
+                #dataTable
+                sortMode="multiple"
+                (onLazyLoad)="getRecords($event)"
+                [value]="primengTableHelper.records()"
+                rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                [paginator]="false"
+                [lazy]="true"
+                [scrollable]="true"
+                scrollDirection="horizontal"
+                [tableStyle]="{ 'min-width': '90rem' }">
+                <ng-template #header>
+                    <tr>
+                        <th
+                            style="width: 130px"
+                            [hidden]="
+                                !(
+                                    [
+                                        'Pages.PersonnelAdministration.EmployeeDisciplinaries.Edit',
+                                        'Pages.PersonnelAdministration.EmployeeDisciplinaries.Delete'
+                                    ] | permissionAny
+                                )
+                            ">
+                            {{ 'Actions' | localize }}
+                        </th>
+                        <th>{{ 'WorkLocationId' | localize }}</th>
+                        <th pSortableColumn="disciplinaryDate">
+                            {{ 'DisciplinaryDate' | localize }}
+                            <p-sortIcon field="disciplinaryDate" />
+                        </th>
+                        <th>{{ 'DisciplinaryTypeId' | localize }}</th>
+                        <th>{{ 'ReportedById' | localize }}</th>
+                        <th>{{ 'Severity' | localize }}</th>
+                        <th>{{ 'DisciplinaryDeductionTypeId' | localize }}</th>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-record="$implicit">
+                    <tr>
+                        <td
+                            [hidden]="
+                                !(
+                                    [
+                                        'Pages.PersonnelAdministration.EmployeeDisciplinaries.Edit',
+                                        'Pages.PersonnelAdministration.EmployeeDisciplinaries.Delete'
+                                    ] | permissionAny
+                                )
+                            ">
+                            <button
+                                type="button"
+                                class="btn btn-primary btn-sm dropdown-toggle"
+                                (click)="showMenu($event, record, actionsMenu)">
+                                <i class="fa fa-cog"></i>
+                                {{ 'Actions' | localize }}
+                            </button>
+                        </td>
+                        <td>{{ record.workLocationNameEn }}</td>
+                        <td>{{ record.disciplinaryDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                        <td>{{ record.disciplinaryTypeNameEn }}</td>
+                        <td>{{ record.reportedByFullNameEn }}</td>
+                        <td>{{ record.severity }}</td>
+                        <td>{{ record.disciplinaryDeductionTypeNameEn }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            @if (primengTableHelper.totalRecordsCount() == 0) {
+                <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+            }
+            <div class="primeng-paging-container">
+                <p-paginator
+                    [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                    #paginator
+                    (onPageChange)="getRecords($event)"
+                    [totalRecords]="primengTableHelper.totalRecordsCount()"
+                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                    [showCurrentPageReport]="true"
+                    [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<createOrEditEmployeeDisciplinaryModal #createOrEditModal (modalSave)="reloadPage()" />

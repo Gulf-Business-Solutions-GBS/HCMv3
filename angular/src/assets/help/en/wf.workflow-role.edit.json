@@ -1,0 +1,91 @@
+{
+  "helpId": "wf.workflow-role.edit",
+  "lang": "en",
+  "title": "Workflow Roles — Create / Edit",
+  "entity": "HCMv3.Workflow.WorkflowRole",
+  "overviewHtml": "<p>An approver role, such as Payroll Officer. Employees are given roles on their record, and a step whose Approver Person is Person goes to everyone holding its role.</p>",
+  "aliasIndex": {
+    "loc:Code": "WorkflowRole.Code",
+    "dom:WorkflowRole_Code": "WorkflowRole.Code",
+    "loc:WorkflowRoleGroup": "WorkflowRole.WorkflowRoleGroup",
+    "dom:WorkflowRole_WorkflowRoleGroup": "WorkflowRole.WorkflowRoleGroup",
+    "loc:NameEn": "WorkflowRole.NameEn",
+    "dom:WorkflowRole_NameEn": "WorkflowRole.NameEn",
+    "loc:NameAr": "WorkflowRole.NameAr",
+    "dom:WorkflowRole_NameAr": "WorkflowRole.NameAr",
+    "loc:OrgLevel": "WorkflowRole.WorkflowRoleOrgId",
+    "dom:WorkflowRole_WorkflowRoleOrgId": "WorkflowRole.WorkflowRoleOrgId"
+  },
+  "fields": [
+    {
+      "id": "WorkflowRole.Code",
+      "label": "Code",
+      "section": "WorkflowRoles",
+      "aliases": [
+        "loc:Code",
+        "dom:WorkflowRole_Code"
+      ],
+      "rules": "Required. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowRole.WorkflowRoleGroup",
+      "label": "WorkflowRoleGroup",
+      "section": "WorkflowRoles",
+      "aliases": [
+        "loc:WorkflowRoleGroup",
+        "dom:WorkflowRole_WorkflowRoleGroup"
+      ],
+      "rules": "Required. One of: None, Company, Department, Branch, CostCenter.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A default organisation scope for the role.</p><p><strong>Why it matters.</strong> Not read at present. The scope that narrows approvers is the one on each step.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowRole.NameEn",
+      "label": "NameEn",
+      "section": "WorkflowRoles",
+      "aliases": [
+        "loc:NameEn",
+        "dom:WorkflowRole_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowRole.NameAr",
+      "label": "NameAr",
+      "section": "WorkflowRoles",
+      "aliases": [
+        "loc:NameAr",
+        "dom:WorkflowRole_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowRole.WorkflowRoleOrgId",
+      "label": "OrgLevel",
+      "section": "WorkflowRoles",
+      "aliases": [
+        "loc:OrgLevel",
+        "dom:WorkflowRole_WorkflowRoleOrgId"
+      ],
+      "rules": "Optional. Chosen from Organization Unit Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> An organisation unit level for the role.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'PrintReportPermissionDetails' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'PrintReportPermissionDetails' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PrintReportPermissionDetail_PrintReportPermissionId">{{ 'PrintReportPermission' | localize }}</label>
+                                <select
+                                    id="PrintReportPermissionDetail_PrintReportPermissionId"
+                                    #printReportPermissionIdInput="ngModel"
+                                    class="form-select"
+                                    name="PrintReportPermissionId"
+                                    [ngModel]="record().printReportPermissionId"
+                                    (ngModelChange)="updateField('printReportPermissionId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of printReportPermissions(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.roleName }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="printReportPermissionIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PrintReportPermissionDetail_PrintReportId">{{ 'PrintReport' | localize }}</label>
+                                <select
+                                    id="PrintReportPermissionDetail_PrintReportId"
+                                    #printReportIdInput="ngModel"
+                                    class="form-select"
+                                    name="PrintReportId"
+                                    [ngModel]="record().printReportId"
+                                    (ngModelChange)="updateField('printReportId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of printReports(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="printReportIdInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+{
+  "helpId": "rpt.domain-type.edit",
+  "lang": "en",
+  "title": "Domain Types — Create / Edit",
+  "entity": "HCMv3.ReportManagement.DomainType",
+  "overviewHtml": "<p>An area of data a designed report is built on. Part of the report designer carried over from the old system. Not read at present: nothing in HCMv3 runs these definitions, so records here have no effect.</p>",
+  "aliasIndex": {
+    "loc:Code": "DomainType.Code",
+    "dom:DomainType_Code": "DomainType.Code",
+    "loc:NameEn": "DomainType.NameEn",
+    "dom:DomainType_NameEn": "DomainType.NameEn",
+    "loc:EntityType": "DomainType.EntityType",
+    "dom:DomainType_EntityType": "DomainType.EntityType"
+  },
+  "fields": [
+    {
+      "id": "DomainType.Code",
+      "label": "Code",
+      "section": "DomainTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:DomainType_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DomainType.NameEn",
+      "label": "NameEn",
+      "section": "DomainTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:DomainType_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DomainType.EntityType",
+      "label": "EntityType",
+      "section": "DomainTypes",
+      "aliases": [
+        "loc:EntityType",
+        "dom:DomainType_EntityType"
+      ],
+      "rules": "Optional. Maximum 512 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The data it covers.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

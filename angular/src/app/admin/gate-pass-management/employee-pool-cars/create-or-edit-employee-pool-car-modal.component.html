@@ -1,0 +1,139 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'EmployeePoolCars' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeePoolCar_DriverEmployeeId">{{ 'DriverEmployee' | localize }}</label>
+                                <select
+                                    id="EmployeePoolCar_DriverEmployeeId"
+                                    #driverEmployeeInput="ngModel"
+                                    class="form-select"
+                                    name="DriverEmployeeId"
+                                    [ngModel]="record().driverEmployeeId"
+                                    (ngModelChange)="updateField('driverEmployeeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of employees(); track item.id) {
+                                        <option [ngValue]="item.id">{{ employeeLabel(item) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="driverEmployeeInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeePoolCar_PoolCarId">{{ 'PoolCar' | localize }}</label>
+                                <select
+                                    id="EmployeePoolCar_PoolCarId"
+                                    #poolCarInput="ngModel"
+                                    class="form-select"
+                                    name="PoolCarId"
+                                    [ngModel]="record().poolCarId"
+                                    (ngModelChange)="updateField('poolCarId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of poolCars(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.vehiclePlateNumber }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="poolCarInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="EmployeePoolCar_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="EmployeePoolCar_StartDate"
+                                    #startDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="EmployeePoolCar_StartTime">{{ 'StartTime' | localize }}</label>
+                                <input
+                                    id="EmployeePoolCar_StartTime"
+                                    #startTimeInput="ngModel"
+                                    class="form-control"
+                                    type="time"
+                                    name="StartTime"
+                                    [ngModel]="record().startTime?.toFormat('HH:mm')"
+                                    (ngModelChange)="updateTimeField('startTime', 'startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startTimeInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="EmployeePoolCar_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="EmployeePoolCar_EndDate"
+                                    #endDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="EmployeePoolCar_EndTime">{{ 'EndTime' | localize }}</label>
+                                <input
+                                    id="EmployeePoolCar_EndTime"
+                                    #endTimeInput="ngModel"
+                                    class="form-control"
+                                    type="time"
+                                    name="EndTime"
+                                    [ngModel]="record().endTime?.toFormat('HH:mm')"
+                                    (ngModelChange)="updateTimeField('endTime', 'endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endTimeInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <div class="form-check">
+                                    <input
+                                        id="EmployeePoolCar_IsReturned"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="IsReturned"
+                                        [ngModel]="record().isReturned"
+                                        (ngModelChange)="updateField('isReturned', $event)" />
+                                    <label class="form-check-label" for="EmployeePoolCar_IsReturned">{{ 'IsReturned' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

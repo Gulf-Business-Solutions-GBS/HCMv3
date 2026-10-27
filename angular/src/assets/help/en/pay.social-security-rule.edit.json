@@ -1,0 +1,155 @@
+{
+  "helpId": "pay.social-security-rule.edit",
+  "lang": "en",
+  "title": "Social Security Rules — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.SocialSecurityRule",
+  "overviewHtml": "<p>The social security allowance — wagetype <code>5</code> — by qualification, gender, marital status and number of dependants.</p><p>Social security applies to an employee only when they have a social security record with <em>Social Security Contribution</em> ticked for the month, and there is a social security setup for their nationality in force on the pay date. Payroll then takes the rule in force that matches the employee's qualification, gender and marital status exactly, with the highest <strong>Dependant</strong> not above the employee's number of dependants, and pays its amount.</p>",
+  "aliasIndex": {
+    "loc:SocialSecurityId": "SocialSecurityRule.SocialSecurityId",
+    "dom:SocialSecurityRule_SocialSecurityId": "SocialSecurityRule.SocialSecurityId",
+    "loc:StartDate": "SocialSecurityRule.StartDate",
+    "dom:SocialSecurityRule_StartDate": "SocialSecurityRule.StartDate",
+    "loc:EndDate": "SocialSecurityRule.EndDate",
+    "dom:SocialSecurityRule_EndDate": "SocialSecurityRule.EndDate",
+    "loc:QualificationId": "SocialSecurityRule.QualificationId",
+    "dom:SocialSecurityRule_QualificationId": "SocialSecurityRule.QualificationId",
+    "loc:Gender": "SocialSecurityRule.Gender",
+    "dom:SocialSecurityRule_Gender": "SocialSecurityRule.Gender",
+    "loc:MaritalStatusId": "SocialSecurityRule.MaritalStatusId",
+    "dom:SocialSecurityRule_MaritalStatusId": "SocialSecurityRule.MaritalStatusId",
+    "loc:Dependant": "SocialSecurityRule.Dependant",
+    "dom:SocialSecurityRule_Dependant": "SocialSecurityRule.Dependant",
+    "loc:Amount": "SocialSecurityRule.Amount",
+    "dom:SocialSecurityRule_Amount": "SocialSecurityRule.Amount",
+    "loc:Disability": "SocialSecurityRule.Disability",
+    "dom:SocialSecurityRule_Disability": "SocialSecurityRule.Disability"
+  },
+  "fields": [
+    {
+      "id": "SocialSecurityRule.SocialSecurityId",
+      "label": "SocialSecurityId",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:SocialSecurityId",
+        "dom:SocialSecurityRule_SocialSecurityId"
+      ],
+      "rules": "Required. Chosen from Social Security master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The social security setup this rule belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityRule.StartDate",
+      "label": "StartDate",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:StartDate",
+        "dom:SocialSecurityRule_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityRule.EndDate",
+      "label": "EndDate",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:EndDate",
+        "dom:SocialSecurityRule_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityRule.QualificationId",
+      "label": "QualificationId",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:QualificationId",
+        "dom:SocialSecurityRule_QualificationId"
+      ],
+      "rules": "Required. Chosen from Qualification master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The qualification the rule is for.</p><p><strong>Example.</strong> University</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityRule.Gender",
+      "label": "Gender",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:Gender",
+        "dom:SocialSecurityRule_Gender"
+      ],
+      "rules": "Required. One of: Male, Female.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The gender the rule is for.</p><p><strong>Example.</strong> Male</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityRule.MaritalStatusId",
+      "label": "MaritalStatusId",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:MaritalStatusId",
+        "dom:SocialSecurityRule_MaritalStatusId"
+      ],
+      "rules": "Optional. Chosen from Marital Status master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The marital status the rule is for.</p><p><strong>Example.</strong> Married</p><p><strong>Why it matters.</strong> Left blank, the rule matches only employees with no marital status recorded.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityRule.Dependant",
+      "label": "Dependant",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:Dependant",
+        "dom:SocialSecurityRule_Dependant"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The number of dependants the rule starts from.</p><p><strong>Example.</strong> <code>2</code></p><p><strong>Why it matters.</strong> All of the employee's dependants are counted, whatever their type.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityRule.Amount",
+      "label": "Amount",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:Amount",
+        "dom:SocialSecurityRule_Amount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The allowance paid.</p><p><strong>Example.</strong> <code>120</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityRule.Disability",
+      "label": "Disability",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:Disability",
+        "dom:SocialSecurityRule_Disability"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the rule is for employees with a disability.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

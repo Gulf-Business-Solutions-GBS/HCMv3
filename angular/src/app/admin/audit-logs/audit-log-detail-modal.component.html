@@ -1,0 +1,150 @@
+<div
+    appBsModal
+    #auditLogDetailModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="auditLogDetailModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #roleForm="ngForm">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (auditLog.userId) {
+                                <span>{{ 'AuditLogDetail' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>
+                            {{ 'UserInformations' | localize }}
+                        </h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-5 row">
+                                    <label class="col-lg-3 col-form-label">{{ 'UserName' | localize }}:</label>
+                                    <div class="col-lg-9">
+                                        <span>{{ auditLog.userName }}</span>
+                                    </div>
+                                </div>
+                                <div class="mb-5 row">
+                                    <label class="col-lg-3 col-form-label">{{ 'IpAddress' | localize }}:</label>
+                                    <div class="col-lg-9">
+                                        <span>{{ auditLog.clientIpAddress }}</span>
+                                    </div>
+                                </div>
+                                <div class="mb-5 row">
+                                    <label class="col-lg-3 col-form-label">{{ 'Client' | localize }}:</label>
+                                    <div class="col-lg-9">
+                                        <span>{{ auditLog.clientName }}</span>
+                                    </div>
+                                </div>
+                                <div class="mb-5 row">
+                                    <label class="col-lg-3 col-form-label">{{ 'Browser' | localize }}:</label>
+                                    <div class="col-lg-9">
+                                        <span>{{ auditLog.browserInfo }}</span>
+                                    </div>
+                                </div>
+                                @if (auditLog.impersonatorUserId) {
+                                    <div class="mb-5 row">
+                                        <label class="col-lg-3 col-form-label"></label>
+                                        <div class="col-lg-9 text-warning">
+                                            <span>{{ 'AuditLogImpersonatedOperationInfo' | localize }}</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <h3>{{ 'ActionInformations' | localize }}</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-5 row">
+                                    <label class="col-lg-3 col-form-label">{{ 'Service' | localize }}:</label>
+                                    <div class="col-lg-9">
+                                        <span>{{ auditLog.serviceName }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="mb-5 row">
+                                    <label class="col-lg-3 col-form-label">{{ 'Action' | localize }}:</label>
+                                    <div class="col-lg-9">
+                                        <span>{{ auditLog.methodName }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="mb-5 row">
+                                    <label class="col-lg-3 col-form-label">{{ 'Time' | localize }}:</label>
+                                    <div class="col-lg-9">
+                                        <span>{{ getExecutionTime() }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="mb-5 row">
+                                    <label class="col-lg-3 col-form-label">{{ 'Duration' | localize }}:</label>
+                                    <div class="col-lg-9">
+                                        <span>{{ getDurationAsMs() }}</span>
+                                    </div>
+                                </div>
+                                <div class="mb-5 row">
+                                    <label class="col-lg-3 col-form-label">{{ 'Parameters' | localize }}:</label>
+                                    <div class="col-lg-9">
+                                        <pre lang="js" class="form-control form-control-solid">{{
+                                            getFormattedParameters()
+                                        }}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3>{{ 'CustomData' | localize }}</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-5 row">
+                                    <label class="col-lg-3 col-form-label">{{ 'None' | localize }}:</label>
+                                    @if (auditLog.customData) {
+                                        <div class="col-lg-9">
+                                            <pre class="form-control form-control-solid">{{ auditLog.customData }}</pre>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <h3>{{ 'ErrorState' | localize }}</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-5 row">
+                                    @if (!auditLog.exception) {
+                                        <label class="col-lg-12 col-form-label">
+                                            <i class="fa fa-check-circle text-success"></i>
+                                            {{ 'Success' | localize }}
+                                        </label>
+                                    }
+                                    @if (auditLog.exception) {
+                                        <div class="col-lg-12">
+                                            <pre class="form-control form-control-solid">{{ auditLog.exception }}</pre>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Close' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

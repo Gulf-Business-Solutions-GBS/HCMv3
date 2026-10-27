@@ -1,0 +1,66 @@
+.profile__head {
+    align-items: flex-end;
+}
+
+.profile__head h1 {
+    margin-bottom: 0.125rem;
+}
+
+.profile__head p {
+    margin: 0;
+}
+
+.completion {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-width: 15rem;
+}
+
+.completion__label {
+    white-space: nowrap;
+}
+
+.completion__bar {
+    flex: 1;
+    height: 0.5rem;
+    background: var(--c-line);
+    border-radius: 999px;
+    overflow: hidden;
+    min-width: 6rem;
+}
+
+.completion__fill {
+    display: block;
+    height: 100%;
+    background: var(--c-accent);
+    border-radius: 999px;
+    transition: width 240ms ease;
+}
+
+.completion__value {
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: var(--c-ink);
+}
+
+form .card + .card {
+    margin-top: 1.25rem;
+}
+
+form .card h2 {
+    font-size: 1.0625rem;
+    margin-bottom: 1rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 640px) {
+    .form-actions .btn {
+        width: 100%;
+    }
+}

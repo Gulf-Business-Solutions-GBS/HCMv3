@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.ticket-fare.edit",
+  "lang": "ar",
+  "title": "أجور التذاكر — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.TicketFare",
+  "overviewHtml": "<p>الأجرة لمسار واحد ونوع مسافر ودرجة تذكرة، اعتباراً من تاريخ معيّن.</p><p>والتذاكر المقيَّمة بـ<em>FareAmount</em> تأخذ أجرة مسار الموظف، ودرجة التذكرة لمجموعته الفرعية، ونوع المسافر بحسب عمره. ويقيّم مخصص التذاكر الشهري التذاكر المتراكمة بأجرة الذهاب والعودة.</p>",
+  "aliasIndex": {
+    "loc:TicketRouteId": "TicketFare.TicketRouteId",
+    "dom:TicketFare_TicketRouteId": "TicketFare.TicketRouteId",
+    "loc:TicketPaxTypeId": "TicketFare.TicketPaxTypeId",
+    "dom:TicketFare_TicketPaxTypeId": "TicketFare.TicketPaxTypeId",
+    "loc:TicketClassId": "TicketFare.TicketClassId",
+    "dom:TicketFare_TicketClassId": "TicketFare.TicketClassId",
+    "loc:StartDate": "TicketFare.StartDate",
+    "dom:TicketFare_StartDate": "TicketFare.StartDate",
+    "loc:OneWayTicketFare": "TicketFare.OneWayTicketFare",
+    "dom:TicketFare_OneWayTicketFare": "TicketFare.OneWayTicketFare",
+    "loc:ReturnTicketFare": "TicketFare.ReturnTicketFare",
+    "dom:TicketFare_ReturnTicketFare": "TicketFare.ReturnTicketFare"
+  },
+  "fields": [
+    {
+      "id": "TicketFare.TicketRouteId",
+      "label": "TicketRouteId",
+      "section": "TicketFares",
+      "aliases": [
+        "loc:TicketRouteId",
+        "dom:TicketFare_TicketRouteId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة مسارات التذاكر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسار.</p><p><strong>مثال.</strong> الكويت – القاهرة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketFare.TicketPaxTypeId",
+      "label": "TicketPaxTypeId",
+      "section": "TicketFares",
+      "aliases": [
+        "loc:TicketPaxTypeId",
+        "dom:TicketFare_TicketPaxTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع ركاب التذاكر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع المسافر، بحسب العمر.</p><p><strong>مثال.</strong> بالغ</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketFare.TicketClassId",
+      "label": "TicketClassId",
+      "section": "TicketFares",
+      "aliases": [
+        "loc:TicketClassId",
+        "dom:TicketFare_TicketClassId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة درجات التذاكر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> درجة التذكرة.</p><p><strong>مثال.</strong> الدرجة السياحية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketFare.StartDate",
+      "label": "StartDate",
+      "section": "TicketFares",
+      "aliases": [
+        "loc:StartDate",
+        "dom:TicketFare_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. عند الحفظ يُغلق السجل السابق لTicket Route نفسه وTicket Pax Type نفسه ودرجة التذكرة نفسه في اليوم السابق لهذا التاريخ، ويبقى أحدث سجل مفتوحاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketFare.OneWayTicketFare",
+      "label": "OneWayTicketFare",
+      "section": "TicketFares",
+      "aliases": [
+        "loc:OneWayTicketFare",
+        "dom:TicketFare_OneWayTicketFare"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أجرة الذهاب فقط.</p><p><strong>مثال.</strong> <code>95</code></p><p><strong>لماذا يهم.</strong> تُستخدم إذا كانت قاعدة التذاكر للمجموعة الفرعية على الذهاب فقط، ولا يجوز أن تكون سالبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketFare.ReturnTicketFare",
+      "label": "ReturnTicketFare",
+      "section": "TicketFares",
+      "aliases": [
+        "loc:ReturnTicketFare",
+        "dom:TicketFare_ReturnTicketFare"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أجرة الذهاب والعودة.</p><p><strong>مثال.</strong> <code>170</code></p><p><strong>لماذا يهم.</strong> تُستخدم إذا كانت قاعدة التذاكر للمجموعة الفرعية على الذهاب والعودة، ولمخصص التذاكر الشهري. ولا يجوز أن تكون سالبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

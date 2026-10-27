@@ -1,0 +1,71 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'PAEmployeeDetails' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="PAEmployeeDetail_KpiInfoId">{{ 'KpiInfo' | localize }}</label>
+                            <select
+                                id="PAEmployeeDetail_KpiInfoId"
+                                class="form-select"
+                                name="KpiInfoId"
+                                required
+                                [ngModel]="record().kpiInfoId"
+                                (ngModelChange)="updateField('kpiInfoId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (kpiInfo of kpiInfos(); track kpiInfo.id) {
+                                    <option [ngValue]="kpiInfo.id">{{ kpiInfo.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="PAEmployeeDetail_Weight">{{ 'Weight' | localize }}</label>
+                            <input
+                                id="PAEmployeeDetail_Weight"
+                                type="number"
+                                class="form-control"
+                                name="Weight"
+                                required
+                                [ngModel]="record().weight"
+                                (ngModelChange)="updateField('weight', $event)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="PAEmployeeDetail_Target">{{ 'Target' | localize }}</label>
+                            <input
+                                id="PAEmployeeDetail_Target"
+                                type="text"
+                                class="form-control"
+                                name="Target"
+                                [ngModel]="record().target"
+                                (ngModelChange)="updateField('target', $event)" />
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

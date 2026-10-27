@@ -1,0 +1,1003 @@
+{
+  "helpId": "tm.time-register.edit",
+  "lang": "ar",
+  "title": "سجلات تسجيل الوقت — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.TimeRegister",
+  "overviewHtml": "<p>يوم موظف واحد كما احتسبه محرك الوقت: الدوام والسياسة المطبقان، والأوقات المخططة والفعلية، والبصمات المستخدمة، وما يُعدّ به اليوم — عمل أو غياب أو إجازة أو عطلة أو راحة أسبوعية — مع دقائق التأخير والانصراف المبكر والعمل الإضافي. ويأخذ نظام الرواتب أعداد الأيام من هذه الأسطر.</p><p>ويكتب محرك الوقت هذه الأسطر ويعيد كتابتها عند تشغيله، فلا تعدّل سطراً يدوياً إلا لتصحيح يوم، وتوقّع أن يعيد تشغيل لاحق احتسابه.</p><p>وإذا كان إعداد الوقت <em>EnableTimeRegisterApproval</em> مفعّلاً يستخدم نظام الرواتب الأرقام <strong>المعتمدة</strong>، ويرفض التشغيل للموظف الذي له أي يوم غير معتمد في الفترة.</p>",
+  "aliasIndex": {
+    "loc:Employee": "TimeRegister.EmployeeId",
+    "dom:TimeRegister_EmployeeId": "TimeRegister.EmployeeId",
+    "loc:DayDate": "TimeRegister.DayDate",
+    "dom:TimeRegister_DayDate": "TimeRegister.DayDate",
+    "loc:DutyPeriod": "TimeRegister.DutyPeriodId",
+    "dom:TimeRegister_DutyPeriodId": "TimeRegister.DutyPeriodId",
+    "loc:Duty": "TimeRegister.DutyId",
+    "dom:TimeRegister_DutyId": "TimeRegister.DutyId",
+    "loc:TimePolicy": "TimeRegister.TimePolicyId",
+    "dom:TimeRegister_TimePolicyId": "TimeRegister.TimePolicyId",
+    "loc:ShiftStartTime": "TimeRegister.ShiftStartTime1",
+    "dom:TimeRegister_ShiftStartTime1": "TimeRegister.ShiftStartTime1",
+    "loc:ShiftEndTime": "TimeRegister.ShiftEndTime1",
+    "dom:TimeRegister_ShiftEndTime1": "TimeRegister.ShiftEndTime1",
+    "loc:BreakStartTime": "TimeRegister.BreakStartTime",
+    "dom:TimeRegister_BreakStartTime": "TimeRegister.BreakStartTime",
+    "loc:BreakEndTime": "TimeRegister.BreakEndTime",
+    "dom:TimeRegister_BreakEndTime": "TimeRegister.BreakEndTime",
+    "loc:ActualIn": "TimeRegister.ActualIn",
+    "dom:TimeRegister_ActualIn": "TimeRegister.ActualIn",
+    "loc:ActualOut": "TimeRegister.ActualOut",
+    "dom:TimeRegister_ActualOut": "TimeRegister.ActualOut",
+    "loc:BreakOut": "TimeRegister.BreakOut",
+    "dom:TimeRegister_BreakOut": "TimeRegister.BreakOut",
+    "loc:BreakIn": "TimeRegister.BreakIn",
+    "dom:TimeRegister_BreakIn": "TimeRegister.BreakIn",
+    "loc:ActualStartTime": "TimeRegister.ActualStartTime1",
+    "dom:TimeRegister_ActualStartTime1": "TimeRegister.ActualStartTime1",
+    "loc:ActualEndTime": "TimeRegister.ActualEndTime1",
+    "dom:TimeRegister_ActualEndTime1": "TimeRegister.ActualEndTime1",
+    "loc:ActualBreakStartTime": "TimeRegister.ActualBreakStartTime",
+    "dom:TimeRegister_ActualBreakStartTime": "TimeRegister.ActualBreakStartTime",
+    "loc:ActualBreakEndTime": "TimeRegister.ActualBreakEndTime",
+    "dom:TimeRegister_ActualBreakEndTime": "TimeRegister.ActualBreakEndTime",
+    "loc:PlannedWorkingMins": "TimeRegister.PlannedWorkingMins",
+    "dom:TimeRegister_PlannedWorkingMins": "TimeRegister.PlannedWorkingMins",
+    "loc:ActualWorkingMins": "TimeRegister.ActualWorkingMins",
+    "dom:TimeRegister_ActualWorkingMins": "TimeRegister.ActualWorkingMins",
+    "loc:TotalWorkingMins": "TimeRegister.TotalWorkingMins",
+    "dom:TimeRegister_TotalWorkingMins": "TimeRegister.TotalWorkingMins",
+    "loc:ActualAbsenceMins": "TimeRegister.ActualAbsenceMins",
+    "dom:TimeRegister_ActualAbsenceMins": "TimeRegister.ActualAbsenceMins",
+    "loc:PlannedWorkingDay": "TimeRegister.PlannedWorkingDay",
+    "dom:TimeRegister_PlannedWorkingDay": "TimeRegister.PlannedWorkingDay",
+    "loc:ActualWorkingDay": "TimeRegister.ActualWorkingDay",
+    "dom:TimeRegister_ActualWorkingDay": "TimeRegister.ActualWorkingDay",
+    "loc:AttendanceDay": "TimeRegister.AttendanceDay",
+    "dom:TimeRegister_AttendanceDay": "TimeRegister.AttendanceDay",
+    "loc:AttendanceType": "TimeRegister.AttendanceTypeId",
+    "dom:TimeRegister_AttendanceTypeId": "TimeRegister.AttendanceTypeId",
+    "loc:AttendanceMinutes": "TimeRegister.AttendanceMinutes",
+    "dom:TimeRegister_AttendanceMinutes": "TimeRegister.AttendanceMinutes",
+    "loc:AbsentDay": "TimeRegister.AbsentDay",
+    "dom:TimeRegister_AbsentDay": "TimeRegister.AbsentDay",
+    "loc:ActiveDay": "TimeRegister.ActiveDay",
+    "dom:TimeRegister_ActiveDay": "TimeRegister.ActiveDay",
+    "loc:InactiveDay": "TimeRegister.InactiveDay",
+    "dom:TimeRegister_InactiveDay": "TimeRegister.InactiveDay",
+    "loc:LeaveDay": "TimeRegister.LeaveDay",
+    "dom:TimeRegister_LeaveDay": "TimeRegister.LeaveDay",
+    "loc:LeaveType": "TimeRegister.LeaveTypeId",
+    "dom:TimeRegister_LeaveTypeId": "TimeRegister.LeaveTypeId",
+    "loc:LeaveMinutes": "TimeRegister.LeaveMinutes",
+    "dom:TimeRegister_LeaveMinutes": "TimeRegister.LeaveMinutes",
+    "loc:AnnualLeaveDay": "TimeRegister.AnnualLeaveDay",
+    "dom:TimeRegister_AnnualLeaveDay": "TimeRegister.AnnualLeaveDay",
+    "loc:UnpaidLeaveDay": "TimeRegister.UnpaidLeaveDay",
+    "dom:TimeRegister_UnpaidLeaveDay": "TimeRegister.UnpaidLeaveDay",
+    "loc:SickLeavePaidDay": "TimeRegister.SickLeavePaidDay",
+    "dom:TimeRegister_SickLeavePaidDay": "TimeRegister.SickLeavePaidDay",
+    "loc:SickLeaveUnpaidDay": "TimeRegister.SickLeaveUnpaidDay",
+    "dom:TimeRegister_SickLeaveUnpaidDay": "TimeRegister.SickLeaveUnpaidDay",
+    "loc:PublicHoliday": "TimeRegister.PublicHoliday",
+    "dom:TimeRegister_PublicHoliday": "TimeRegister.PublicHoliday",
+    "loc:WeeklyOff": "TimeRegister.WeeklyOff",
+    "dom:TimeRegister_WeeklyOff": "TimeRegister.WeeklyOff",
+    "loc:RestDay": "TimeRegister.RestDay",
+    "dom:TimeRegister_RestDay": "TimeRegister.RestDay",
+    "loc:AnnualLeaveAccrualPerDay": "TimeRegister.AnnualLeaveAccrualPerDay",
+    "dom:TimeRegister_AnnualLeaveAccrualPerDay": "TimeRegister.AnnualLeaveAccrualPerDay",
+    "loc:TicketAccrualPerDay": "TimeRegister.TicketAccrualPerDay",
+    "dom:TimeRegister_TicketAccrualPerDay": "TimeRegister.TicketAccrualPerDay",
+    "loc:AirTicketPaidDay": "TimeRegister.AirTicketPaidDay",
+    "dom:TimeRegister_AirTicketPaidDay": "TimeRegister.AirTicketPaidDay",
+    "loc:LeaveAdjDay": "TimeRegister.LeaveAdjDay",
+    "dom:TimeRegister_LeaveAdjDay": "TimeRegister.LeaveAdjDay",
+    "loc:IncludeInLeavePay": "TimeRegister.IncludeInLeavePay",
+    "dom:TimeRegister_IncludeInLeavePay": "TimeRegister.IncludeInLeavePay",
+    "loc:OvertimeMinutes": "TimeRegister.OvertimeMinutes",
+    "dom:TimeRegister_OvertimeMinutes": "TimeRegister.OvertimeMinutes",
+    "loc:OvertimeType": "TimeRegister.OvertimeTypeId",
+    "dom:TimeRegister_OvertimeTypeId": "TimeRegister.OvertimeTypeId",
+    "loc:LateIn": "TimeRegister.LateIn",
+    "dom:TimeRegister_LateIn": "TimeRegister.LateIn",
+    "loc:DeductionLateIn": "TimeRegister.DeductionLateIn",
+    "dom:TimeRegister_DeductionLateIn": "TimeRegister.DeductionLateIn",
+    "loc:EarlyOut": "TimeRegister.EarlyOut",
+    "dom:TimeRegister_EarlyOut": "TimeRegister.EarlyOut",
+    "loc:DeductionEarlyOut": "TimeRegister.DeductionEarlyOut",
+    "dom:TimeRegister_DeductionEarlyOut": "TimeRegister.DeductionEarlyOut",
+    "loc:BreakEarlyOut": "TimeRegister.BreakEarlyOut",
+    "dom:TimeRegister_BreakEarlyOut": "TimeRegister.BreakEarlyOut",
+    "loc:BreakLateIn": "TimeRegister.BreakLateIn",
+    "dom:TimeRegister_BreakLateIn": "TimeRegister.BreakLateIn",
+    "loc:BreakDeductionEarlyOut": "TimeRegister.BreakDeductionEarlyOut",
+    "dom:TimeRegister_BreakDeductionEarlyOut": "TimeRegister.BreakDeductionEarlyOut",
+    "loc:BreakDeductionLateIn": "TimeRegister.BreakDeductionLateIn",
+    "dom:TimeRegister_BreakDeductionLateIn": "TimeRegister.BreakDeductionLateIn",
+    "loc:DedLateInEarlyOutMins": "TimeRegister.DedLateInEarlyOutMins",
+    "dom:TimeRegister_DedLateInEarlyOutMins": "TimeRegister.DedLateInEarlyOutMins",
+    "loc:DedLateInEarlyOutDay": "TimeRegister.DedLateInEarlyOutDay",
+    "dom:TimeRegister_DedLateInEarlyOutDay": "TimeRegister.DedLateInEarlyOutDay",
+    "loc:DedAfterMonthlyTol": "TimeRegister.DedAfterMonthlyTol",
+    "dom:TimeRegister_DedAfterMonthlyTol": "TimeRegister.DedAfterMonthlyTol",
+    "loc:Status": "TimeRegister.Status",
+    "dom:TimeRegister_Status": "TimeRegister.Status",
+    "loc:ApprovedActualWorkingDay": "TimeRegister.ApprovedActualWorkingDay",
+    "dom:TimeRegister_ApprovedActualWorkingDay": "TimeRegister.ApprovedActualWorkingDay",
+    "loc:ApprovedAbsentDay": "TimeRegister.ApprovedAbsentDay",
+    "dom:TimeRegister_ApprovedAbsentDay": "TimeRegister.ApprovedAbsentDay",
+    "loc:ApprovedDedLateInEarlyOutMins": "TimeRegister.ApprovedDedLateInEarlyOutMins",
+    "dom:TimeRegister_ApprovedDedLateInEarlyOutMins": "TimeRegister.ApprovedDedLateInEarlyOutMins",
+    "loc:Remarks": "TimeRegister.Remarks",
+    "dom:TimeRegister_Remarks": "TimeRegister.Remarks"
+  },
+  "fields": [
+    {
+      "id": "TimeRegister.EmployeeId",
+      "label": "Employee",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:Employee",
+        "dom:TimeRegister_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.DayDate",
+      "label": "DayDate",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:DayDate",
+        "dom:TimeRegister_DayDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اليوم.</p><p><strong>مثال.</strong> <code>2026-04-14</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.DutyPeriodId",
+      "label": "DutyPeriod",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:DutyPeriod",
+        "dom:TimeRegister_DutyPeriodId"
+      ],
+      "rules": "اختياري. يُختار من قائمة فترات الدوام.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة الدوام المطبقة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.DutyId",
+      "label": "Duty",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:Duty",
+        "dom:TimeRegister_DutyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدوامات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدوام المطبق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.TimePolicyId",
+      "label": "TimePolicy",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:TimePolicy",
+        "dom:TimeRegister_TimePolicyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة سياسات الوقت.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سياسة الوقت المطبقة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.ShiftStartTime1",
+      "label": "ShiftStartTime",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:ShiftStartTime",
+        "dom:TimeRegister_ShiftStartTime1"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بداية المناوبة المخططة.</p><p><strong>مثال.</strong> <code>07:30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.ShiftEndTime1",
+      "label": "ShiftEndTime",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:ShiftEndTime",
+        "dom:TimeRegister_ShiftEndTime1"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نهاية المناوبة المخططة.</p><p><strong>مثال.</strong> <code>14:30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.BreakStartTime",
+      "label": "BreakStartTime",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:BreakStartTime",
+        "dom:TimeRegister_BreakStartTime"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بداية الاستراحة المخططة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.BreakEndTime",
+      "label": "BreakEndTime",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:BreakEndTime",
+        "dom:TimeRegister_BreakEndTime"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نهاية الاستراحة المخططة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.ActualIn",
+      "label": "ActualIn",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:ActualIn",
+        "dom:TimeRegister_ActualIn"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بصمة الدخول المستخدمة.</p><p><strong>مثال.</strong> <code>07:42</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.ActualOut",
+      "label": "ActualOut",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:ActualOut",
+        "dom:TimeRegister_ActualOut"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بصمة الخروج المستخدمة.</p><p><strong>مثال.</strong> <code>14:35</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.BreakOut",
+      "label": "BreakOut",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:BreakOut",
+        "dom:TimeRegister_BreakOut"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بصمة الخروج إلى الاستراحة المستخدمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.BreakIn",
+      "label": "BreakIn",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:BreakIn",
+        "dom:TimeRegister_BreakIn"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بصمة العودة من الاستراحة المستخدمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.ActualStartTime1",
+      "label": "ActualStartTime",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:ActualStartTime",
+        "dom:TimeRegister_ActualStartTime1"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بداية وقت العمل المحتسب — الأكثر تأخراً من بداية المناوبة وبصمة الدخول.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.ActualEndTime1",
+      "label": "ActualEndTime",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:ActualEndTime",
+        "dom:TimeRegister_ActualEndTime1"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نهاية وقت العمل المحتسب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.ActualBreakStartTime",
+      "label": "ActualBreakStartTime",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:ActualBreakStartTime",
+        "dom:TimeRegister_ActualBreakStartTime"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بداية الاستراحة المحتسبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.ActualBreakEndTime",
+      "label": "ActualBreakEndTime",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:ActualBreakEndTime",
+        "dom:TimeRegister_ActualBreakEndTime"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نهاية الاستراحة المحتسبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.PlannedWorkingMins",
+      "label": "PlannedWorkingMins",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:PlannedWorkingMins",
+        "dom:TimeRegister_PlannedWorkingMins"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدقائق التي كان مخططاً أن يعملها الموظف.</p><p><strong>مثال.</strong> <code>420</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.ActualWorkingMins",
+      "label": "ActualWorkingMins",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:ActualWorkingMins",
+        "dom:TimeRegister_ActualWorkingMins"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدقائق المعمولة ضمن المناوبة.</p><p><strong>مثال.</strong> <code>408</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.TotalWorkingMins",
+      "label": "TotalWorkingMins",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:TotalWorkingMins",
+        "dom:TimeRegister_TotalWorkingMins"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل الدقائق بين الدخول والخروج، ناقص الاستراحة، مضافاً إليها دقائق المواظبة.</p><p><strong>مثال.</strong> <code>413</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.ActualAbsenceMins",
+      "label": "ActualAbsenceMins",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:ActualAbsenceMins",
+        "dom:TimeRegister_ActualAbsenceMins"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدقائق المخططة التي غاب عنها الموظف.</p><p><strong>مثال.</strong> <code>12</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.PlannedWorkingDay",
+      "label": "PlannedWorkingDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:PlannedWorkingDay",
+        "dom:TimeRegister_PlannedWorkingDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> 1 إذا كان اليوم يوم عمل مخططاً.</p><p><strong>مثال.</strong> <code>1</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.ActualWorkingDay",
+      "label": "ActualWorkingDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:ActualWorkingDay",
+        "dom:TimeRegister_ActualWorkingDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء المعمول فعلاً من اليوم.</p><p><strong>مثال.</strong> <code>1</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.AttendanceDay",
+      "label": "AttendanceDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:AttendanceDay",
+        "dom:TimeRegister_AttendanceDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> 1 إذا سُجّل اليوم مواظبة (مهمة عمل، تدريب).</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.AttendanceTypeId",
+      "label": "AttendanceType",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:AttendanceType",
+        "dom:TimeRegister_AttendanceTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع المواظبة، في يوم المواظبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.AttendanceMinutes",
+      "label": "AttendanceMinutes",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:AttendanceMinutes",
+        "dom:TimeRegister_AttendanceMinutes"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدقائق المحتسبة للمواظبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.AbsentDay",
+      "label": "AbsentDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:AbsentDay",
+        "dom:TimeRegister_AbsentDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> 1 إذا كان الموظف غائباً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.ActiveDay",
+      "label": "ActiveDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:ActiveDay",
+        "dom:TimeRegister_ActiveDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> 1 إذا كان الموظف على رأس العمل في ذلك اليوم.</p><p><strong>مثال.</strong> <code>1</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.InactiveDay",
+      "label": "InactiveDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:InactiveDay",
+        "dom:TimeRegister_InactiveDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> 1 إذا لم يكن الموظف قد التحق بعد أو كان قد ترك العمل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.LeaveDay",
+      "label": "LeaveDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:LeaveDay",
+        "dom:TimeRegister_LeaveDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء من اليوم الذي كان في إجازة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.LeaveTypeId",
+      "label": "LeaveType",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:LeaveType",
+        "dom:TimeRegister_LeaveTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة، في يوم الإجازة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.LeaveMinutes",
+      "label": "LeaveMinutes",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:LeaveMinutes",
+        "dom:TimeRegister_LeaveMinutes"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق الإجازة بالساعات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.AnnualLeaveDay",
+      "label": "AnnualLeaveDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:AnnualLeaveDay",
+        "dom:TimeRegister_AnnualLeaveDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> 1 إذا كان اليوم إجازة سنوية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.UnpaidLeaveDay",
+      "label": "UnpaidLeaveDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:UnpaidLeaveDay",
+        "dom:TimeRegister_UnpaidLeaveDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> 1 إذا كان اليوم إجازة غير مدفوعة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.SickLeavePaidDay",
+      "label": "SickLeavePaidDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:SickLeavePaidDay",
+        "dom:TimeRegister_SickLeavePaidDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء المدفوع من يوم الإجازة المرضية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.SickLeaveUnpaidDay",
+      "label": "SickLeaveUnpaidDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:SickLeaveUnpaidDay",
+        "dom:TimeRegister_SickLeaveUnpaidDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء غير المدفوع من يوم الإجازة المرضية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.PublicHoliday",
+      "label": "PublicHoliday",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:PublicHoliday",
+        "dom:TimeRegister_PublicHoliday"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> 1 إذا كان اليوم عطلة رسمية في تقويم الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.WeeklyOff",
+      "label": "WeeklyOff",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:WeeklyOff",
+        "dom:TimeRegister_WeeklyOff"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> 1 إذا كان اليوم راحة أسبوعية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.RestDay",
+      "label": "RestDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:RestDay",
+        "dom:TimeRegister_RestDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> 1 إذا كان اليوم يوم راحة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.AnnualLeaveAccrualPerDay",
+      "label": "AnnualLeaveAccrualPerDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:AnnualLeaveAccrualPerDay",
+        "dom:TimeRegister_AnnualLeaveAccrualPerDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإجازة السنوية المكتسبة في هذا اليوم.</p><p><strong>مثال.</strong> <code>0.0822</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.TicketAccrualPerDay",
+      "label": "TicketAccrualPerDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:TicketAccrualPerDay",
+        "dom:TimeRegister_TicketAccrualPerDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> استحقاق تذاكر الطيران المكتسب في هذا اليوم.</p><p><strong>مثال.</strong> <code>0.0027</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.AirTicketPaidDay",
+      "label": "AirTicketPaidDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:AirTicketPaidDay",
+        "dom:TimeRegister_AirTicketPaidDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> 1 إذا صُرفت تذكرة طيران في هذا اليوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.LeaveAdjDay",
+      "label": "LeaveAdjDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:LeaveAdjDay",
+        "dom:TimeRegister_LeaveAdjDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تعديل إجازة محتسب في هذا اليوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.IncludeInLeavePay",
+      "label": "IncludeInLeavePay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:IncludeInLeavePay",
+        "dom:TimeRegister_IncludeInLeavePay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء من اليوم المصروف عبر أجر الإجازة لا الراتب الأساسي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.OvertimeMinutes",
+      "label": "OvertimeMinutes",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:OvertimeMinutes",
+        "dom:TimeRegister_OvertimeMinutes"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق العمل الإضافي المحتسبة، بعد الحد الأدنى في السياسة.</p><p><strong>مثال.</strong> <code>45</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.OvertimeTypeId",
+      "label": "OvertimeType",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:OvertimeType",
+        "dom:TimeRegister_OvertimeTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع العمل الإضافي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع العمل الإضافي الذي يُسجَّل تحته العمل الإضافي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.LateIn",
+      "label": "LateIn",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:LateIn",
+        "dom:TimeRegister_LateIn"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق التأخير في بداية المناوبة.</p><p><strong>مثال.</strong> <code>12</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.DeductionLateIn",
+      "label": "DeductionLateIn",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:DeductionLateIn",
+        "dom:TimeRegister_DeductionLateIn"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق التأخير المطلوب خصمها، بعد السماح.</p><p><strong>مثال.</strong> <code>2</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.EarlyOut",
+      "label": "EarlyOut",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:EarlyOut",
+        "dom:TimeRegister_EarlyOut"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق الانصراف المبكر في نهاية المناوبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.DeductionEarlyOut",
+      "label": "DeductionEarlyOut",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:DeductionEarlyOut",
+        "dom:TimeRegister_DeductionEarlyOut"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق الانصراف المبكر المطلوب خصمها، بعد السماح.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.BreakEarlyOut",
+      "label": "BreakEarlyOut",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:BreakEarlyOut",
+        "dom:TimeRegister_BreakEarlyOut"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق الخروج المبكر إلى الاستراحة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.BreakLateIn",
+      "label": "BreakLateIn",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:BreakLateIn",
+        "dom:TimeRegister_BreakLateIn"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق التأخر في العودة من الاستراحة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.BreakDeductionEarlyOut",
+      "label": "BreakDeductionEarlyOut",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:BreakDeductionEarlyOut",
+        "dom:TimeRegister_BreakDeductionEarlyOut"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق الخروج المبكر إلى الاستراحة المطلوب خصمها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.BreakDeductionLateIn",
+      "label": "BreakDeductionLateIn",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:BreakDeductionLateIn",
+        "dom:TimeRegister_BreakDeductionLateIn"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق التأخر في العودة من الاستراحة المطلوب خصمها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.DedLateInEarlyOutMins",
+      "label": "DedLateInEarlyOutMins",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:DedLateInEarlyOutMins",
+        "dom:TimeRegister_DedLateInEarlyOutMins"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل دقائق التأخير والانصراف المبكر المطلوب خصمها لليوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.DedLateInEarlyOutDay",
+      "label": "DedLateInEarlyOutDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:DedLateInEarlyOutDay",
+        "dom:TimeRegister_DedLateInEarlyOutDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تلك الدقائق جزءاً من يوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.DedAfterMonthlyTol",
+      "label": "DedAfterMonthlyTol",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:DedAfterMonthlyTol",
+        "dom:TimeRegister_DedAfterMonthlyTol"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق التأخير والانصراف المبكر للشهر التي تتجاوز السماح الشهري، محمولة على يوم واحد من الشهر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.Status",
+      "label": "Status",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:Status",
+        "dom:TimeRegister_Status"
+      ],
+      "rules": "إلزامي. إحدى القيم: Opened، معتمد، Reopened.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان اليوم مفتوحاً أو معتمداً أو معاد فتحه.</p><p><strong>مثال.</strong> مفتوح</p><p><strong>لماذا يهم.</strong> عند تفعيل اعتماد سجل الوقت يحتاج نظام الرواتب إلى أن تكون كل أيام الفترة معتمدة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.ApprovedActualWorkingDay",
+      "label": "ApprovedActualWorkingDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:ApprovedActualWorkingDay",
+        "dom:TimeRegister_ApprovedActualWorkingDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الرقم المعتمد لليوم المعمول، يستخدمه نظام الرواتب عند تفعيل الاعتماد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.ApprovedAbsentDay",
+      "label": "ApprovedAbsentDay",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:ApprovedAbsentDay",
+        "dom:TimeRegister_ApprovedAbsentDay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الرقم المعتمد للغياب، يستخدمه نظام الرواتب عند تفعيل الاعتماد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.ApprovedDedLateInEarlyOutMins",
+      "label": "ApprovedDedLateInEarlyOutMins",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:ApprovedDedLateInEarlyOutMins",
+        "dom:TimeRegister_ApprovedDedLateInEarlyOutMins"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق التأخير والانصراف المبكر المعتمدة للخصم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeRegister.Remarks",
+      "label": "Remarks",
+      "section": "TimeRegisters",
+      "aliases": [
+        "loc:Remarks",
+        "dom:TimeRegister_Remarks"
+      ],
+      "rules": "اختياري. الحد الأقصى 1000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظة على اليوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

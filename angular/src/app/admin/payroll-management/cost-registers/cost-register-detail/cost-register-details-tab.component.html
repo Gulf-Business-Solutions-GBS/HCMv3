@@ -1,0 +1,86 @@
+<div class="row align-items-center mb-4">
+    <div class="col-12 text-end">
+        @if ('Pages.PayrollManagement.CostRegisterDetails.Create' | permission) {
+            <button type="button" class="btn btn-primary" (click)="createRecord()">
+                <i class="fa fa-plus"></i>
+                {{ 'CreateNew' | localize }}
+            </button>
+        }
+    </div>
+</div>
+<div class="row align-items-center">
+    <!--<Primeng-TurboTable-Start>-->
+    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+        <p-table
+            #dataTable
+            sortMode="multiple"
+            (onLazyLoad)="getRecords($event)"
+            [value]="primengTableHelper.records()"
+            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+            [paginator]="false"
+            [lazy]="true"
+            [scrollable]="true"
+            scrollDirection="horizontal"
+            [resizableColumns]="primengTableHelper.resizableColumns">
+            <ng-template #header>
+                <tr>
+                    <th
+                        style="width: 130px"
+                        [hidden]="
+                            !(['Pages.PayrollManagement.CostRegisterDetails.Edit', 'Pages.PayrollManagement.CostRegisterDetails.Delete'] | permissionAny)
+                        ">
+                        {{ 'Actions' | localize }}
+                    </th>
+                    <th style="min-width: 180px">{{ 'WageTypeId' | localize }}</th>
+                    <th style="min-width: 180px">{{ 'AccountInfoId' | localize }}</th>
+                    <th style="min-width: 120px" pSortableColumn="amount">
+                        {{ 'Amount' | localize }}
+                        <p-sortIcon field="amount" />
+                    </th>
+                    @for (slot of costElementSlots.slots(); track slot.slot) {
+                        <th style="min-width: 150px">{{ costElementSlots.label(slot) }}</th>
+                    }
+                </tr>
+            </ng-template>
+            <ng-template #body let-record="$implicit">
+                <tr>
+                    <td
+                        style="width: 130px"
+                        [hidden]="
+                            !(['Pages.PayrollManagement.CostRegisterDetails.Edit', 'Pages.PayrollManagement.CostRegisterDetails.Delete'] | permissionAny)
+                        ">
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" (click)="showMenu($event, record, actionsMenu)">
+                            <i class="fa fa-cog"></i>
+                            {{ 'Actions' | localize }}
+                        </button>
+                    </td>
+                    <td style="min-width: 180px">{{ record.wageTypeName }}</td>
+                    <td style="min-width: 180px">{{ record.accountInfoName }}</td>
+                    <td style="min-width: 120px">{{ record.amount }}</td>
+                    @for (slot of costElementSlots.slots(); track slot.slot) {
+                        <td style="min-width: 150px">{{ costElementSlots.valueName(slot, record) }}</td>
+                    }
+                </tr>
+            </ng-template>
+        </p-table>
+        @if (primengTableHelper.totalRecordsCount() == 0) {
+            <div class="primeng-no-data">
+                {{ 'NoData' | localize }}
+            </div>
+        }
+        <div class="primeng-paging-container">
+            <p-paginator
+                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                #paginator
+                (onPageChange)="getRecords($event)"
+                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                [showCurrentPageReport]="true"
+                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+        </div>
+    </div>
+    <!--<Primeng-TurboTable-End>-->
+</div>
+
+<createOrEditCostRegisterDetailModal #createOrEditModal (modalSave)="reloadPage()" />

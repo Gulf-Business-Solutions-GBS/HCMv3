@@ -1,0 +1,129 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #socialSecurityForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (socialSecurity().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'SocialSecurities' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'SocialSecurities' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SocialSecurity_NationalityId">{{ 'NationalityId' | localize }}</label>
+                                <select
+                                    id="SocialSecurity_NationalityId"
+                                    #nationalityIdInput="ngModel"
+                                    class="form-select"
+                                    name="NationalityId"
+                                    [ngModel]="socialSecurity().nationalityId"
+                                    (ngModelChange)="updateField('nationalityId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (nationality of nationalities(); track nationality.id) {
+                                        <option [ngValue]="nationality.id">{{ nationality.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="nationalityIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="SocialSecurity_EarningsCap">{{ 'EarningsCap' | localize }}</label>
+                                <input
+                                    id="SocialSecurity_EarningsCap"
+                                    class="form-control"
+                                    type="number"
+                                    name="EarningsCap"
+                                    [ngModel]="socialSecurity().earningsCap"
+                                    (ngModelChange)="updateField('earningsCap', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SocialSecurity_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="SocialSecurity_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="socialSecurity().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SocialSecurity_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="SocialSecurity_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="socialSecurity().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="SocialSecurity_ChildAllowance">{{ 'ChildAllowance' | localize }}</label>
+                                <input
+                                    id="SocialSecurity_ChildAllowance"
+                                    class="form-control"
+                                    type="number"
+                                    name="ChildAllowance"
+                                    [ngModel]="socialSecurity().childAllowance"
+                                    (ngModelChange)="updateField('childAllowance', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="SocialSecurity_SpecialNeedChildAllowance">{{ 'SpecialNeedChildAllowance' | localize }}</label>
+                                <input
+                                    id="SocialSecurity_SpecialNeedChildAllowance"
+                                    class="form-control"
+                                    type="number"
+                                    name="SpecialNeedChildAllowance"
+                                    [ngModel]="socialSecurity().specialNeedChildAllowance"
+                                    (ngModelChange)="updateField('specialNeedChildAllowance', $event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!socialSecurityForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+{
+  "helpId": "perf.pagoal.edit",
+  "lang": "ar",
+  "title": "أهداف تقييم الأداء — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.PAGoal",
+  "overviewHtml": "<p>هدف مكتوب في نموذج تقييم الأداء. جزء من نموذج التقييم القديم القائم على الفترات (نموذج تقييم الأداء). يُحفظ مع النموذج، ولا يقرؤه أي تقرير حالياً.</p>",
+  "aliasIndex": {
+    "loc:Goal": "PAGoal.Goal",
+    "dom:PAGoal_Goal": "PAGoal.Goal"
+  },
+  "fields": [
+    {
+      "id": "PAGoal.Goal",
+      "label": "Goal",
+      "section": "PAGoals",
+      "aliases": [
+        "loc:Goal",
+        "dom:PAGoal_Goal"
+      ],
+      "rules": "اختياري. الحد الأقصى 2000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الهدف، بالكلمات.</p><p><strong>مثال.</strong> تقليص إقفال نهاية الشهر إلى خمسة أيام</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

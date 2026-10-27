@@ -1,0 +1,65 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace HCMv3.GeneralMasterInfo.Dto;
+
+/// <summary>
+/// Create/Update input DTO for <see cref="DocumentType"/>. <c>Id == null</c> means create; otherwise update.
+/// </summary>
+public class CreateOrEditDocumentTypeDto
+{
+    public int? Id { get; set; }
+
+    /// <summary>
+    /// Optional. When left blank the server auto-generates the next numeric code (legacy <c>GetMaxCode</c> parity).
+    /// </summary>
+    [StringLength(SimpleLookupConsts.MaxCodeLength)]
+    public string Code { get; set; }
+
+    [Required]
+    [StringLength(SimpleLookupConsts.MaxNameLength)]
+    public string NameEn { get; set; }
+
+    [Required]
+    [StringLength(SimpleLookupConsts.MaxNameLength)]
+    public string NameAr { get; set; }
+
+    public int NotificationPeriod { get; set; }
+
+    public int? NotificationConfigId { get; set; }
+
+    public NotificationFrequency NotificationFrequency { get; set; }
+
+    public int NotificationCountLimit { get; set; }
+
+    public DocumentBelongsTo DocumentBelongsTo { get; set; }
+
+    /// <summary>
+    /// Tick to offer this type on the letter-request screen. Defaults to false, so a newly created document
+    /// type is not silently requestable as a letter until somebody says it is.
+    /// </summary>
+    public bool IsLetterType { get; set; }
+
+    /// <summary>
+    /// The report a letter of this type prints as. Empty leaves it to the report named after the type.
+    /// See <see cref="DocumentType.PrintReportId"/>.
+    /// </summary>
+    public int? PrintReportId { get; set; }
+
+    /// <summary>Tick to let employees ask to take a document of this type out of custody and return it.</summary>
+    public bool IsWithdrawable { get; set; }
+
+    /// <summary>Whether the type is offered to employees raising a request. Defaults to true.</summary>
+    public bool IncludeInWorkflow { get; set; } = true;
+
+    /// <summary>Tick to keep documents of this type out of the employee's own view in self-service.</summary>
+    public bool IsHiddenFromEmployee { get; set; }
+
+    /// <summary>Organisation documents of this type are listed for everyone on the Org Policy screen.</summary>
+    public bool ShowToAll { get; set; }
+
+    /// <summary>A document of this type must carry an expiry date. See <see cref="DocumentType.IsExpiryDateRequired"/>.</summary>
+    public bool IsExpiryDateRequired { get; set; }
+
+    /// <summary>An employee may hold two documents of this type whose dates overlap. See <see cref="DocumentType.AllowDateOverlap"/>.</summary>
+    public bool AllowDateOverlap { get; set; }
+}

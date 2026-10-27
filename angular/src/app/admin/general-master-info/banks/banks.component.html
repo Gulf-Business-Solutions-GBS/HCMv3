@@ -1,0 +1,147 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Banks' | localize" [description]="'GeneralMasterInfo' | localize">
+        <div role="actions">
+            @if ('Pages.GeneralMasterInfo.Banks.Create' | permission) {
+                <button (click)="createBank()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="form">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-xl-8 col-md-8">
+                            <div class="input-group">
+                                <input
+                                    [ngModel]="filterText()"
+                                    (ngModelChange)="filterText.set($event)"
+                                    name="filterText"
+                                    autoFocus
+                                    class="form-control"
+                                    [placeholder]="l('SearchWithThreeDot')"
+                                    type="text"
+                                    (keydown.enter)="getBanks()" />
+                                <button class="btn btn-primary" (click)="getBanks()">
+                                    <i class="flaticon-search-1" aria-label="Search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getBanks($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '50rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.GeneralMasterInfo.Banks.Edit',
+                                                    'Pages.GeneralMasterInfo.Banks.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="code">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="code" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="nameEn">
+                                        {{ 'NameEn' | localize }}
+                                        <p-sortIcon field="nameEn" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="nameAr">
+                                        {{ 'NameAr' | localize }}
+                                        <p-sortIcon field="nameAr" />
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="swiftCode">
+                                        {{ 'SWIFTCode' | localize }}
+                                        <p-sortIcon field="swiftCode" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.GeneralMasterInfo.Banks.Edit',
+                                                    'Pages.GeneralMasterInfo.Banks.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.code }}" class="hide-overflown">{{ record.code }}</span>
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        <span pTooltip="{{ record.nameEn }}" class="hide-overflown">{{ record.nameEn }}</span>
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        <span pTooltip="{{ record.nameAr }}" class="hide-overflown">{{ record.nameAr }}</span>
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        <span pTooltip="{{ record.swiftCode }}" class="hide-overflown">{{ record.swiftCode }}</span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getBanks($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditBankModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

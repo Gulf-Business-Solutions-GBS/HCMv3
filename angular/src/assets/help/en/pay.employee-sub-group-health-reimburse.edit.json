@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.employee-sub-group-health-reimburse.edit",
+  "lang": "en",
+  "title": "Employee Sub Group Health Reimburses — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupHealthReimburse",
+  "overviewHtml": "<p>The grade's health reimbursement entitlement per person, by dependant type — one row for the employee and one for each kind of dependant.</p><p>The employee's eligible amount adds up the employee's own row and the rows for their dependants, up to the grade's maximum number of dependants. The yearly cap and the insurance year are set on the grade itself.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeSubGroupHealthReimburse.StartDate",
+    "dom:EmployeeSubGroupHealthReimburse_StartDate": "EmployeeSubGroupHealthReimburse.StartDate",
+    "loc:EndDate": "EmployeeSubGroupHealthReimburse.EndDate",
+    "dom:EmployeeSubGroupHealthReimburse_EndDate": "EmployeeSubGroupHealthReimburse.EndDate",
+    "loc:DependantType": "EmployeeSubGroupHealthReimburse.DependantTypeId",
+    "dom:EmployeeSubGroupHealthReimburse_DependantTypeId": "EmployeeSubGroupHealthReimburse.DependantTypeId",
+    "loc:Amount": "EmployeeSubGroupHealthReimburse.Amount",
+    "dom:EmployeeSubGroupHealthReimburse_Amount": "EmployeeSubGroupHealthReimburse.Amount",
+    "loc:AgeLimit": "EmployeeSubGroupHealthReimburse.AgeLimit",
+    "dom:EmployeeSubGroupHealthReimburse_AgeLimit": "EmployeeSubGroupHealthReimburse.AgeLimit"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupHealthReimburse.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSubGroupHealthReimburses",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSubGroupHealthReimburse_StartDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupHealthReimburse.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSubGroupHealthReimburses",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSubGroupHealthReimburse_EndDate"
+      ],
+      "rules": "Optional. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupHealthReimburse.DependantTypeId",
+      "label": "DependantType",
+      "section": "EmployeeSubGroupHealthReimburses",
+      "aliases": [
+        "loc:DependantType",
+        "dom:EmployeeSubGroupHealthReimburse_DependantTypeId"
+      ],
+      "rules": "Optional. Chosen from Dependant Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who this row is for: the employee, or a kind of dependant.</p><p><strong>Example.</strong> Spouse</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupHealthReimburse.Amount",
+      "label": "Amount",
+      "section": "EmployeeSubGroupHealthReimburses",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeSubGroupHealthReimburse_Amount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount this person adds to the eligible amount.</p><p><strong>Example.</strong> <code>150</code></p>",
+      "adminHtml": "<p>A benefit exception for the employee replaces the employee's rows. A dependant's exception replaces the whole total counted so far rather than adding to it — legacy behaviour, kept on purpose.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupHealthReimburse.AgeLimit",
+      "label": "AgeLimit",
+      "section": "EmployeeSubGroupHealthReimburses",
+      "aliases": [
+        "loc:AgeLimit",
+        "dom:EmployeeSubGroupHealthReimburse_AgeLimit"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> For a dependant, the oldest age at which they count.</p><p><strong>Example.</strong> <code>18</code></p>",
+      "adminHtml": "<p>An age limit of 0 means no dependant qualifies — it is not \"no limit\". Set the oldest age that is entitled.</p>",
+      "stub": false
+    }
+  ]
+}

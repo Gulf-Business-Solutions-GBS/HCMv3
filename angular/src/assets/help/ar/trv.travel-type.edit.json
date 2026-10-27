@@ -1,0 +1,75 @@
+{
+  "helpId": "trv.travel-type.edit",
+  "lang": "ar",
+  "title": "أنواع السفر — إنشاء / تحرير",
+  "entity": "HCMv3.TravelManagement.TravelType",
+  "overviewHtml": "<p>نوع من الرحلات، مثل اجتماع عمل أو تدريب.</p>",
+  "aliasIndex": {
+    "loc:Code": "TravelType.Code",
+    "dom:TravelType_Code": "TravelType.Code",
+    "loc:WageType": "TravelType.WageTypeId",
+    "dom:TravelType_WageTypeId": "TravelType.WageTypeId",
+    "loc:NameEn": "TravelType.NameEn",
+    "dom:TravelType_NameEn": "TravelType.NameEn",
+    "loc:NameAr": "TravelType.NameAr",
+    "dom:TravelType_NameAr": "TravelType.NameAr"
+  },
+  "fields": [
+    {
+      "id": "TravelType.Code",
+      "label": "Code",
+      "section": "TravelTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:TravelType_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelType.WageTypeId",
+      "label": "WageType",
+      "section": "TravelTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:TravelType_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الأجر الذي يُدفع السفر من خلاله.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً: لا يوجد في الرواتب حساب للسفر، فلا يُدفع شيء من خلاله.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelType.NameEn",
+      "label": "NameEn",
+      "section": "TravelTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:TravelType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelType.NameAr",
+      "label": "NameAr",
+      "section": "TravelTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:TravelType_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+import { Component, inject, output, signal, viewChild } from '@angular/core';
+import { AppComponentBase } from '@shared/common/app-component-base';
+import {
+    CreateOrEditEmployeeFnFPaymentDto,
+    EmployeeActionDto,
+    EmployeeActionsServiceProxy,
+    EmployeeBasicPayDetailDto,
+    EmployeeBasicPayDetailsServiceProxy,
+    EmployeeFnFPaymentsServiceProxy,
+    FullAndFinalBalancesDto,
+    GetAllEmployeeActionsInput,
+    GetAllEmployeeBasicPayDetailsInput,
+} from '@shared/service-proxies/service-proxies';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { finalize } from 'rxjs/operators';
+import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.directive';
+import { FormsModule } from '@angular/forms';
+import { ValidationMessagesComponent } from '@shared/utils/validation-messages.component';
+import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
+import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
+import { DecimalPipe } from '@angular/common';
+import { DateTime } from 'luxon';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
+
+@Component({
+    selector: 'createOrEditEmployeeFnFPaymentModal',
+    templateUrl: './create-or-edit-employee-fnf-payment-modal.component.html',
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+        LuxonFormatPipe,
+        DecimalPipe,
+    ],
+})
+export class CreateOrEditEmployeeFnFPaymentModalComponent extends AppComponentBase {
+    private _service = inject(EmployeeFnFPaymentsServiceProxy);
+    private _employeeActionsService = inject(EmployeeActionsServiceProxy);
+    private _employeeBasicPayDetailsService = inject(EmployeeBasicPayDetailsServiceProxy);
+
+    readonly modal = viewChild<ModalDirective>('createOrEditModal');
+    readonly modalSave = output<void>();
+
+    readonly active = signal<boolean>(false);
+    readonly saving = signal<boolean>(false);
+    readonly record = signal<CreateOrEditEmployeeFnFPaymentDto>(new CreateOrEditEmployeeFnFPaymentDto());
+
+    readonly employeeActions = signal<EmployeeActionDto[]>([]);
+    readonly employeeBasicPayDetails = signal<EmployeeBasicPayDetailDto[]>([]);
+
+    /** What this employee can be settled for, and the suggested indemnity days (resignation is paid less). */
+    readonly balances = signal<FullAndFinalBalancesDto | undefined>(undefined);
+
+    /**
+     * A dependant's ticket is offered only when the employee is entitled to one, as legacy did. Until the
+     * balances arrive, and whenever a figure is already saved, the field stays so nothing is hidden by surprise.
+     */
+    showDependantTicket(n: 1 | 2 | 3): boolean {
+        const b = this.balances();
+        const saved = (this.record() as any)[`dependant${n}TicketCompensateCount`] ?? 0;
+        if (!b || saved) return true;
+        return (
+            ((b as any)[`dependant${n}TicketCount`] ?? 0) > 0 ||
+            ((b as any)[`dependant${n}TicketRemainingCount`] ?? 0) > 0
+        );
+    }
+
+    show(employeeId: number, id?: number): void {
+        this.active.set(true);
+        this.balances.set(undefined);
+
+        this._employeeActionsService
+            .getAll(
+                new GetAllEmployeeActionsInput({ employeeId, maxResultCount: 1000, skipCount: 0, sorting: undefined })
+            )
+            .subscribe((result) => this.employeeActions.set(result.items));
+
+        // EmployeeBasicPayDetail is scoped by EmployeeBasicPayId (not directly by EmployeeId); no employee-scoped
+        // filter is exposed by the backend, so the full lookup list is fetched here, consistent with the
+        // EmployeeFundExemptions modal precedent (Wave 3 deferred bucket) for cross-parent dropdowns.
+        this._employeeBasicPayDetailsService
+            .getAll(
+                new GetAllEmployeeBasicPayDetailsInput({
+                    employeeBasicPayId: undefined,
+                    filter: undefined,
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                })
+            )
+            .subscribe((result) => this.employeeBasicPayDetails.set(result.items));
+
+        if (!id) {
+            const record = new CreateOrEditEmployeeFnFPaymentDto();
+            record.employeeId = employeeId;
+            record.leaveCompensateDays = 0;
+            record.gratuityCompensateDays = 0;
+            record.indemnityCompensateAmount = 0;
+            record.indemnityPayAdjustment = 0;
+            record.ticketCompensateCount = 0;
+            record.dependant1TicketCompensateCount = 0;
+            record.dependant2TicketCompensateCount = 0;
+            record.dependant3TicketCompensateCount = 0;
+            record.compensateLoanAmount = 0;
+            record.compensateBonusPay = 0;
+            // Not stored: it only tells the save whether to recover the open loans (legacy's own tick box).
+            record.settleLoanInEndOfService = false;
+            this.record.set(record);
+            this.modal().show();
+
+            // As legacy: a NEW entry is pre-filled with the leave balance and the suggested indemnity days (the
+            // backend returns 0 for both when the tenant has auto-fill switched off). Tickets are never pre-filled.
+            this._service.getFullAndFinalBalances(employeeId).subscribe((balances) => {
+                this.balances.set(balances);
+                this.updateField('leaveCompensateDays', balances.autoFillLeaveCompensateDays);
+                this.updateField('gratuityCompensateDays', balances.autoFillGratuityCompensateDays);
+            });
+        } else {
+            this._service.getEmployeeFnFPaymentForEdit(id).subscribe((result) => {
+                this.record.set(result.employeeFnFPayment);
+                this.modal().show();
+            });
+            // An existing entry keeps its saved figures; the balances are shown for reference only.
+            this._service.getFullAndFinalBalances(employeeId).subscribe((balances) => this.balances.set(balances));
+        }
+    }
+
+    onShown(): void {
+        document.getElementById('EmployeeFnFPayment_CompensationDate')?.focus();
+    }
+
+    save(): void {
+        this.saving.set(true);
+        this._service
+            .createOrEdit(this.record())
+            .pipe(finalize(() => this.saving.set(false)))
+            .subscribe(() => {
+                this.notify.info(this.l('SavedSuccessfully'));
+                this.close();
+                this.modalSave.emit();
+            });
+    }
+
+    close(): void {
+        this.active.set(false);
+        this.modal().hide();
+    }
+
+    updateField(field: keyof CreateOrEditEmployeeFnFPaymentDto, value: any): void {
+        const current = this.record();
+        (current as any)[field] = value;
+        const next = new CreateOrEditEmployeeFnFPaymentDto();
+        Object.assign(next, current);
+        this.record.set(next);
+    }
+
+    updateDateField(field: keyof CreateOrEditEmployeeFnFPaymentDto, value: string): void {
+        this.updateField(field, value ? DateTime.fromISO(value) : (undefined as any));
+    }
+
+    updateNumberField(field: keyof CreateOrEditEmployeeFnFPaymentDto, value: string): void {
+        this.updateField(field, value !== null && value !== undefined && value !== '' ? Number(value) : 0);
+    }
+}

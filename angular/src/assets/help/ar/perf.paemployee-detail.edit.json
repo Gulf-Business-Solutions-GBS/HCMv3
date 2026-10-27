@@ -1,0 +1,59 @@
+{
+  "helpId": "perf.paemployee-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل موظفي تقييم الأداء — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.PAEmployeeDetail",
+  "overviewHtml": "<p>مؤشر أداء واحد في التقييم، مع وزنه والمستهدف منه. ويقيّم المراجعون التقييم مؤشراً مؤشراً.</p><p>ويحتسب تقرير بطاقة أداء الموظف درجة كل مؤشر بوزنه مضروباً في متوسط التقدير، نسبةً إلى أعلى رمز تقدير، ثم يجمعها. ولا يظهر المؤشر إلا مرة واحدة في التقييم.</p>",
+  "aliasIndex": {
+    "loc:KpiInfo": "PAEmployeeDetail.KpiInfoId",
+    "dom:PAEmployeeDetail_KpiInfoId": "PAEmployeeDetail.KpiInfoId",
+    "loc:Weight": "PAEmployeeDetail.Weight",
+    "dom:PAEmployeeDetail_Weight": "PAEmployeeDetail.Weight",
+    "loc:Target": "PAEmployeeDetail.Target",
+    "dom:PAEmployeeDetail_Target": "PAEmployeeDetail.Target"
+  },
+  "fields": [
+    {
+      "id": "PAEmployeeDetail.KpiInfoId",
+      "label": "KpiInfo",
+      "section": "PAEmployeeDetails",
+      "aliases": [
+        "loc:KpiInfo",
+        "dom:PAEmployeeDetail_KpiInfoId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مؤشرات الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مؤشر الأداء.</p><p><strong>مثال.</strong> رضا العملاء</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeDetail.Weight",
+      "label": "Weight",
+      "section": "PAEmployeeDetails",
+      "aliases": [
+        "loc:Weight",
+        "dom:PAEmployeeDetail_Weight"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حصة المؤشر من التقييم، نسبةً مئوية.</p><p><strong>مثال.</strong> <code>25</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeDetail.Target",
+      "label": "Target",
+      "section": "PAEmployeeDetails",
+      "aliases": [
+        "loc:Target",
+        "dom:PAEmployeeDetail_Target"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المستهدف المحدد للمؤشر.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

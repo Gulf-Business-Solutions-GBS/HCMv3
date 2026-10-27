@@ -1,0 +1,126 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #indemnityPayRuleDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (indemnityPayRuleDetail().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'IndemnityPayRuleDetails' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'IndemnityPayRuleDetails' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label required" for="IndemnityPayRuleDetail_IndemnityPayRuleId">{{ 'IndemnityPayRuleId' | localize }}</label>
+                                <select
+                                    id="IndemnityPayRuleDetail_IndemnityPayRuleId"
+                                    #indemnityPayRuleIdInput="ngModel"
+                                    class="form-select"
+                                    name="IndemnityPayRuleId"
+                                    [ngModel]="indemnityPayRuleDetail().indemnityPayRuleId"
+                                    (ngModelChange)="updateField('indemnityPayRuleId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (rule of indemnityPayRules(); track rule.id) {
+                                        <option [ngValue]="rule.id">#{{ rule.id }} - {{ rule.separationType }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="indemnityPayRuleIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="IndemnityPayRuleDetail_MinYearOfService">{{ 'MinYearOfService' | localize }}</label>
+                                <input
+                                    id="IndemnityPayRuleDetail_MinYearOfService"
+                                    class="form-control"
+                                    type="number"
+                                    name="MinYearOfService"
+                                    [ngModel]="indemnityPayRuleDetail().minYearOfService"
+                                    (ngModelChange)="updateField('minYearOfService', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="IndemnityPayRuleDetail_MaxYearOfService">{{ 'MaxYearOfService' | localize }}</label>
+                                <input
+                                    id="IndemnityPayRuleDetail_MaxYearOfService"
+                                    class="form-control"
+                                    type="number"
+                                    name="MaxYearOfService"
+                                    [ngModel]="indemnityPayRuleDetail().maxYearOfService"
+                                    (ngModelChange)="updateField('maxYearOfService', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="IndemnityPayRuleDetail_Number">{{ 'Number' | localize }}</label>
+                                <input
+                                    id="IndemnityPayRuleDetail_Number"
+                                    class="form-control"
+                                    type="number"
+                                    name="Number"
+                                    [ngModel]="indemnityPayRuleDetail().number"
+                                    (ngModelChange)="updateField('number', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="IndemnityPayRuleDetail_Unit">{{ 'Unit' | localize }}</label>
+                                <select
+                                    id="IndemnityPayRuleDetail_Unit"
+                                    class="form-select"
+                                    name="Unit"
+                                    [ngModel]="indemnityPayRuleDetail().unit"
+                                    (ngModelChange)="updateField('unit', $event)">
+                                    @for (item of units; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="IndemnityPayRuleDetail_PayPercentage">{{ 'PayPercentage' | localize }}</label>
+                                <input
+                                    id="IndemnityPayRuleDetail_PayPercentage"
+                                    class="form-control"
+                                    type="number"
+                                    name="PayPercentage"
+                                    [ngModel]="indemnityPayRuleDetail().payPercentage"
+                                    (ngModelChange)="updateField('payPercentage', $event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!indemnityPayRuleDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

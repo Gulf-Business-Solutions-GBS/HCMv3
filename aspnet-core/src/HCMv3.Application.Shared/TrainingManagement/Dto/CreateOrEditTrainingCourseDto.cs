@@ -1,0 +1,34 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace HCMv3.TrainingManagement.Dto;
+
+/// <summary>
+/// Create/Update input DTO for <see cref="TrainingCourse"/>. <c>Id == null</c> means create; otherwise
+/// update.
+/// </summary>
+public class CreateOrEditTrainingCourseDto
+{
+    public int? Id { get; set; }
+
+    [StringLength(GeneralMasterInfo.SimpleLookupConsts.MaxCodeLength)]
+    public string Code { get; set; }
+
+    [Required]
+    [StringLength(GeneralMasterInfo.SimpleLookupConsts.MaxNameLength)]
+    public string NameEn { get; set; }
+
+    [Required]
+    [StringLength(GeneralMasterInfo.SimpleLookupConsts.MaxNameLength)]
+    public string NameAr { get; set; }
+
+    public TrainingDeliveryMethod DeliveryMethod { get; set; }
+
+    public double Fees { get; set; }
+
+    public bool Active { get; set; }
+
+    /// <summary>Legacy <c>TrainingCourse.Institution</c>. Optional.</summary>
+    public int? InstitutionId { get; set; }
+
+    public TrainingCourseSource Source { get; set; }
+}

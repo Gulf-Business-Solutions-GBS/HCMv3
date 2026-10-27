@@ -1,0 +1,139 @@
+{
+  "helpId": "pa.employee-timesheet.edit",
+  "lang": "ar",
+  "title": "كشوف دوام الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.EmployeeTimesheet",
+  "overviewHtml": "<p>كشف دوام يدوي للموظف في تاريخ واحد: أوقات الدخول والخروج والاستراحة الفعلية. كشف واحد لكل موظف في كل تاريخ.</p><p>للموظفين الذين تأخذ سياسة الوقت الخاصة بهم البصمات من كشوف الدوام، يبني محرك الوقت أوقات الدخول والاستراحة لليوم من هذه القيود، ويقرأ إجمالي الساعات.</p>",
+  "aliasIndex": {
+    "loc:TransDate": "EmployeeTimesheet.TransDate",
+    "dom:EmployeeTimesheet_TransDate": "EmployeeTimesheet.TransDate",
+    "loc:ActualStartTime": "EmployeeTimesheet.ActualStartTime",
+    "dom:EmployeeTimesheet_ActualStartTime": "EmployeeTimesheet.ActualStartTime",
+    "loc:ActualEndTime": "EmployeeTimesheet.ActualEndTime",
+    "dom:EmployeeTimesheet_ActualEndTime": "EmployeeTimesheet.ActualEndTime",
+    "loc:BreakStartTime": "EmployeeTimesheet.BreakStartTime",
+    "dom:EmployeeTimesheet_BreakStartTime": "EmployeeTimesheet.BreakStartTime",
+    "loc:BreakEndTime": "EmployeeTimesheet.BreakEndTime",
+    "dom:EmployeeTimesheet_BreakEndTime": "EmployeeTimesheet.BreakEndTime",
+    "loc:TotalHours": "EmployeeTimesheet.TotalHours",
+    "dom:EmployeeTimesheet_TotalHours": "EmployeeTimesheet.TotalHours",
+    "loc:Approved": "EmployeeTimesheet.Approved",
+    "dom:EmployeeTimesheet_Approved": "EmployeeTimesheet.Approved",
+    "loc:Comments": "EmployeeTimesheet.Comments",
+    "dom:EmployeeTimesheet_Comments": "EmployeeTimesheet.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeTimesheet.TransDate",
+      "label": "TransDate",
+      "section": "EmployeeTimesheets",
+      "aliases": [
+        "loc:TransDate",
+        "dom:EmployeeTimesheet_TransDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي يخصه كشف الدوام.</p><p><strong>مثال.</strong> 10 سبتمبر 2026</p>",
+      "adminHtml": "<p>عند بناء اليوم من كشوف الدوام، يبحث محرك الوقت عن الكشف بالتاريخ فقط لا بالموظف. لذلك قد يُعطى الموظف أوقات الدخول والاستراحة الخاصة بموظف آخر في تاريخ فيه كشوف لأكثر من موظف، ولا يتأثر إجمالي الساعات. وقد أُبقي على هذا السلوك عمداً مطابقةً للنظام السابق، لذا يُرجى مراجعة أوقات الدخول والاستراحة في تلك التواريخ.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTimesheet.ActualStartTime",
+      "label": "ActualStartTime",
+      "section": "EmployeeTimesheets",
+      "aliases": [
+        "loc:ActualStartTime",
+        "dom:EmployeeTimesheet_ActualStartTime"
+      ],
+      "rules": "اختياري. وقت من اليوم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوقت الذي بدأ فيه الموظف العمل.</p><p><strong>مثال.</strong> 07:55</p><p><strong>لماذا يهم.</strong> يُستخدم وقتاً فعلياً للدخول في اليوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTimesheet.ActualEndTime",
+      "label": "ActualEndTime",
+      "section": "EmployeeTimesheets",
+      "aliases": [
+        "loc:ActualEndTime",
+        "dom:EmployeeTimesheet_ActualEndTime"
+      ],
+      "rules": "اختياري. وقت من اليوم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوقت الذي أنهى فيه الموظف العمل.</p><p><strong>مثال.</strong> 16:10</p><p><strong>لماذا يهم.</strong> يُسجَّل مع الكشف، ولا يقرؤه محرك الوقت حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTimesheet.BreakStartTime",
+      "label": "BreakStartTime",
+      "section": "EmployeeTimesheets",
+      "aliases": [
+        "loc:BreakStartTime",
+        "dom:EmployeeTimesheet_BreakStartTime"
+      ],
+      "rules": "اختياري. وقت من اليوم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت بدء الاستراحة.</p><p><strong>مثال.</strong> 12:00</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTimesheet.BreakEndTime",
+      "label": "BreakEndTime",
+      "section": "EmployeeTimesheets",
+      "aliases": [
+        "loc:BreakEndTime",
+        "dom:EmployeeTimesheet_BreakEndTime"
+      ],
+      "rules": "اختياري. وقت من اليوم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت انتهاء الاستراحة.</p><p><strong>مثال.</strong> 12:30</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTimesheet.TotalHours",
+      "label": "TotalHours",
+      "section": "EmployeeTimesheets",
+      "aliases": [
+        "loc:TotalHours",
+        "dom:EmployeeTimesheet_TotalHours"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إجمالي ساعات العمل في التاريخ.</p><p><strong>مثال.</strong> 7.75</p><p><strong>لماذا يهم.</strong> يقرؤه محرك الوقت لهذا الموظف وهذا التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTimesheet.Approved",
+      "label": "Approved",
+      "section": "EmployeeTimesheets",
+      "aliases": [
+        "loc:Approved",
+        "dom:EmployeeTimesheet_Approved"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> علامة اعتماد تُسجَّل مع الكشف.</p><p><strong>لماذا يهم.</strong> تُسجَّل فقط، ولا يتحقق منها محرك الوقت حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTimesheet.Comments",
+      "label": "Comments",
+      "section": "EmployeeTimesheets",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeTimesheet_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+<div class="row">
+    <div class="col-12 p-3 d-flex align-items-center justify-content-between">
+        <h4 class="mb-0">{{ title() }}</h4>
+        <button type="button" class="btn btn-light-primary btn-sm" (click)="goBack()">
+            <i class="fa fa-arrow-left"></i>
+            {{ 'Back' | localize }}
+        </button>
+    </div>
+    <div class="col-12">
+        <div class="card card-custom mb-5" [busyIf]="loading()">
+            <div class="card-body">
+                @if (loaded()) {
+                    <form #basicPayForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                        <employeeBasicPayForm [(record)]="record" [employeeId]="employeeId()" [readOnly]="!canEdit" />
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeBasicPay_TotalAmount">{{ 'TotalAmount' | localize }}</label>
+                                <input
+                                    id="EmployeeBasicPay_TotalAmount"
+                                    type="text"
+                                    class="form-control"
+                                    readonly
+                                    disabled
+                                    [value]="totalAmount() ?? ''" />
+                            </div>
+                        </div>
+                        @if (canEdit) {
+                            <div class="d-flex justify-content-end">
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary fw-bold"
+                                    [disabled]="!basicPayForm.form.valid || saving()"
+                                    [buttonBusy]="saving()"
+                                    [busyText]="l('SavingWithThreeDot')">
+                                    <i class="fa fa-save"></i>
+                                    <span>{{ 'Save' | localize }}</span>
+                                </button>
+                            </div>
+                        }
+                    </form>
+                }
+            </div>
+        </div>
+
+        @if (loaded() && tabs.length > 0) {
+            <div class="card card-custom">
+                <div class="card-body">
+                    <ul class="nav bp-detail-tabs mb-5" role="tablist">
+                        @for (tab of tabs; track tab.id) {
+                            <li class="nav-item" role="presentation">
+                                <button
+                                    type="button"
+                                    role="tab"
+                                    class="bp-detail-tab"
+                                    [class.bp-detail-tab-active]="activeTabId() === tab.id"
+                                    [attr.aria-selected]="activeTabId() === tab.id"
+                                    (click)="selectTab(tab)">
+                                    {{ tab.labelKey | localize }}
+                                </button>
+                            </li>
+                        }
+                    </ul>
+
+                    <div role="tabpanel">
+                        @switch (activeTabId()) {
+                            @case ('wage-types') {
+                                <employeeBasicPayLinesTab [employeeBasicPayId]="basicPayId()" (changed)="loadTotalAmount()" />
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

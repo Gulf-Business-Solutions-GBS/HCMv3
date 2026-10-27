@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.roster-duty-period.edit",
+  "lang": "ar",
+  "title": "فترات ورديات العمل — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.RosterDutyPeriod",
+  "overviewHtml": "<p>نسخة مناوبات من فترة الدوام، مبنية من الدوامات اليومية.</p><p>لا يُقرأ حالياً: يأخذ محرك الوقت ونظام الرواتب دوامات الموظفين من فترات الدوام ومجموعات المناوبة، لا من هذه القائمة. ومولّد المناوبات الذي كان سيستخدمها لم يعمل قط في النظام السابق ولم يُنقل.</p>",
+  "aliasIndex": {
+    "loc:Code": "RosterDutyPeriod.Code",
+    "dom:RosterDutyPeriod_Code": "RosterDutyPeriod.Code",
+    "loc:NameEn": "RosterDutyPeriod.NameEn",
+    "dom:RosterDutyPeriod_NameEn": "RosterDutyPeriod.NameEn",
+    "loc:NameAr": "RosterDutyPeriod.NameAr",
+    "dom:RosterDutyPeriod_NameAr": "RosterDutyPeriod.NameAr"
+  },
+  "fields": [
+    {
+      "id": "RosterDutyPeriod.Code",
+      "label": "Code",
+      "section": "RosterDutyPeriods",
+      "aliases": [
+        "loc:Code",
+        "dom:RosterDutyPeriod_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriod.NameEn",
+      "label": "NameEn",
+      "section": "RosterDutyPeriods",
+      "aliases": [
+        "loc:NameEn",
+        "dom:RosterDutyPeriod_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriod.NameAr",
+      "label": "NameAr",
+      "section": "RosterDutyPeriods",
+      "aliases": [
+        "loc:NameAr",
+        "dom:RosterDutyPeriod_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

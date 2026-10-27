@@ -1,0 +1,123 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #socialSecurityDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (socialSecurityDetail().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'SocialSecurityDetails' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'SocialSecurityDetails' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label required" for="SocialSecurityDetail_SocialSecurityId">{{ 'SocialSecurityId' | localize }}</label>
+                                <select
+                                    id="SocialSecurityDetail_SocialSecurityId"
+                                    #socialSecurityIdInput="ngModel"
+                                    class="form-select"
+                                    name="SocialSecurityId"
+                                    [ngModel]="socialSecurityDetail().socialSecurityId"
+                                    (ngModelChange)="updateField('socialSecurityId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (ss of socialSecurities(); track ss.id) {
+                                        <option [ngValue]="ss.id">{{ ss.nationalityName }} ({{ ss.startDate?.toISODate() }})</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="socialSecurityIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="SocialSecurityDetail_MinEarnings">{{ 'MinEarnings' | localize }}</label>
+                                <input
+                                    id="SocialSecurityDetail_MinEarnings"
+                                    class="form-control"
+                                    type="number"
+                                    name="MinEarnings"
+                                    [ngModel]="socialSecurityDetail().minEarnings"
+                                    (ngModelChange)="updateField('minEarnings', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="SocialSecurityDetail_MaxEarnings">{{ 'MaxEarnings' | localize }}</label>
+                                <input
+                                    id="SocialSecurityDetail_MaxEarnings"
+                                    class="form-control"
+                                    type="number"
+                                    name="MaxEarnings"
+                                    [ngModel]="socialSecurityDetail().maxEarnings"
+                                    (ngModelChange)="updateField('maxEarnings', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="SocialSecurityDetail_EmployeeContribution">{{ 'EmployeeContribution' | localize }}</label>
+                                <input
+                                    id="SocialSecurityDetail_EmployeeContribution"
+                                    class="form-control"
+                                    type="number"
+                                    name="EmployeeContribution"
+                                    [ngModel]="socialSecurityDetail().employeeContribution"
+                                    (ngModelChange)="updateField('employeeContribution', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="SocialSecurityDetail_EmployerContribution">{{ 'EmployerContribution' | localize }}</label>
+                                <input
+                                    id="SocialSecurityDetail_EmployerContribution"
+                                    class="form-control"
+                                    type="number"
+                                    name="EmployerContribution"
+                                    [ngModel]="socialSecurityDetail().employerContribution"
+                                    (ngModelChange)="updateField('employerContribution', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="SocialSecurityDetail_MinEarningsEmployeeContribution">{{ 'MinEarningsEmployeeContribution' | localize }}</label>
+                                <input
+                                    id="SocialSecurityDetail_MinEarningsEmployeeContribution"
+                                    class="form-control"
+                                    type="number"
+                                    name="MinEarningsEmployeeContribution"
+                                    [ngModel]="socialSecurityDetail().minEarningsEmployeeContribution"
+                                    (ngModelChange)="updateField('minEarningsEmployeeContribution', $event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!socialSecurityDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

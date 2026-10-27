@@ -1,0 +1,155 @@
+{
+  "helpId": "pa.employee-ticket.edit",
+  "lang": "en",
+  "title": "Employee Tickets — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeTicket",
+  "overviewHtml": "<p>An air ticket entitlement taken or paid for the employee or a dependant.</p><p>When the employee's grade pays air tickets automatically, the time engine creates these records itself on the day each ticket's accrual period starts. Payroll's average ticket calculation reads the tickets on the latest payment date. HCMv3 payroll does not currently calculate an air ticket payment from these records.</p>",
+  "aliasIndex": {
+    "loc:TicketTypeId": "EmployeeTicket.TicketTypeId",
+    "dom:EmployeeTicket_TicketTypeId": "EmployeeTicket.TicketTypeId",
+    "loc:TicketDate": "EmployeeTicket.TicketDate",
+    "dom:EmployeeTicket_TicketDate": "EmployeeTicket.TicketDate",
+    "loc:PaymentDate": "EmployeeTicket.PaymentDate",
+    "dom:EmployeeTicket_PaymentDate": "EmployeeTicket.PaymentDate",
+    "loc:Compensate": "EmployeeTicket.Compensate",
+    "dom:EmployeeTicket_Compensate": "EmployeeTicket.Compensate",
+    "loc:TicketPaymentType": "EmployeeTicket.TicketPaymentType",
+    "dom:EmployeeTicket_TicketPaymentType": "EmployeeTicket.TicketPaymentType",
+    "loc:Amount": "EmployeeTicket.Amount",
+    "dom:EmployeeTicket_Amount": "EmployeeTicket.Amount",
+    "loc:AdvancedTicketPaid": "EmployeeTicket.AdvancedTicketPaid",
+    "dom:EmployeeTicket_AdvancedTicketPaid": "EmployeeTicket.AdvancedTicketPaid",
+    "loc:OverrideAmount": "EmployeeTicket.OverrideAmount",
+    "dom:EmployeeTicket_OverrideAmount": "EmployeeTicket.OverrideAmount",
+    "loc:Comments": "EmployeeTicket.Comments",
+    "dom:EmployeeTicket_Comments": "EmployeeTicket.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeTicket.TicketTypeId",
+      "label": "TicketTypeId",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:TicketTypeId",
+        "dom:EmployeeTicket_TicketTypeId"
+      ],
+      "rules": "Required. Chosen from Ticket Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whose ticket it is — the employee's own or a dependant ticket type.</p><p><strong>Example.</strong> Employee</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Ticket Types.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicket.TicketDate",
+      "label": "TicketDate",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:TicketDate",
+        "dom:EmployeeTicket_TicketDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date of the ticket.</p><p><strong>Example.</strong> 1 Jul 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicket.PaymentDate",
+      "label": "PaymentDate",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:PaymentDate",
+        "dom:EmployeeTicket_PaymentDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the ticket was paid or used.</p><p><strong>Example.</strong> 1 Jul 2026</p><p><strong>Why it matters.</strong> Tickets paid within an accrual period count as used when the time engine works out the remaining entitlement.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicket.Compensate",
+      "label": "Compensate",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:Compensate",
+        "dom:EmployeeTicket_Compensate"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The number of tickets.</p><p><strong>Example.</strong> 1</p><p><strong>Why it matters.</strong> The time engine subtracts it from the entitlement, and the average ticket calculation multiplies it by the route fare.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicket.TicketPaymentType",
+      "label": "TicketPaymentType",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:TicketPaymentType",
+        "dom:EmployeeTicket_TicketPaymentType"
+      ],
+      "rules": "Required. One of: Pay With Payroll, Pay In Advance.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the ticket is paid.</p><p><strong>Example.</strong> Pay With Payroll</p><p><strong>Why it matters.</strong> Recorded only; payroll and reports do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicket.Amount",
+      "label": "Amount",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeTicket_Amount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The ticket amount, when it overrides the route fare.</p><p><strong>Example.</strong> 180.000</p><p><strong>Why it matters.</strong> The time engine fills it from a benefit or dependant exception.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicket.AdvancedTicketPaid",
+      "label": "AdvancedTicketPaid",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:AdvancedTicketPaid",
+        "dom:EmployeeTicket_AdvancedTicketPaid"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A marker for an advance ticket payment.</p><p><strong>Why it matters.</strong> Recorded only; payroll and reports do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicket.OverrideAmount",
+      "label": "OverrideAmount",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:OverrideAmount",
+        "dom:EmployeeTicket_OverrideAmount"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the amount overrides the route fare.</p><p><strong>Why it matters.</strong> The time engine ticks it when it takes the amount from an exception.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicket.Comments",
+      "label": "Comments",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeTicket_Comments"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "helpId": "cd.cdrating.edit",
+  "lang": "en",
+  "title": "CD Ratings — Create / Edit",
+  "entity": "HCMv3.CompetencyDevelopment.CDRating",
+  "overviewHtml": "<p>A rating given in the annual review, such as Exceeds expectations.</p>",
+  "aliasIndex": {
+    "loc:Code": "CDRating.Code",
+    "dom:CDRating_Code": "CDRating.Code",
+    "loc:NameEn": "CDRating.NameEn",
+    "dom:CDRating_NameEn": "CDRating.NameEn",
+    "loc:NameAr": "CDRating.NameAr",
+    "dom:CDRating_NameAr": "CDRating.NameAr"
+  },
+  "fields": [
+    {
+      "id": "CDRating.Code",
+      "label": "Code",
+      "section": "CDRatings",
+      "aliases": [
+        "loc:Code",
+        "dom:CDRating_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDRating.NameEn",
+      "label": "NameEn",
+      "section": "CDRatings",
+      "aliases": [
+        "loc:NameEn",
+        "dom:CDRating_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDRating.NameAr",
+      "label": "NameAr",
+      "section": "CDRatings",
+      "aliases": [
+        "loc:NameAr",
+        "dom:CDRating_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

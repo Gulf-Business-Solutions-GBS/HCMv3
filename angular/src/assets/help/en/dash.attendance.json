@@ -1,0 +1,235 @@
+{
+  "helpId": "dash.attendance",
+  "lang": "en",
+  "title": "Time & Attendance Dashboard",
+  "entity": null,
+  "overviewHtml": "<p>How well people are keeping their working hours over a period: the attendance rate, absences, late arrivals, early departures, missing punches and punch requests — by month or day, by department, by weekday and by employee. It opens on this month.</p><p>Every figure comes from the <strong>Time Engine's</strong> results for each employee and day, the same results payroll uses. A period the Time Engine has not been run for has nothing to show, and the dashboard says so rather than showing zeros that look like perfect attendance.</p><p><strong>A working day</strong> is a day the employee was scheduled to work: a planned working day that is not leave, a public holiday, a weekly off or a rest day. <strong>Present</strong> is a working day that is not absent. Lateness, early departure and missing punches are only looked for on present days. A period longer than two years is shortened to the last two.</p>",
+  "aliasIndex": {
+    "loc:Dashboard_Showing": "dash.common.showing",
+    "loc:Filter": "dash.common.filter",
+    "loc:Download": "dash.common.download",
+    "loc:AttendanceDashboard_AttendanceRate": "dash.attendance.attendance-rate",
+    "loc:AttendanceDashboard_AbsentDays": "dash.attendance.absent",
+    "loc:AttendanceDashboard_LateArrivals": "dash.attendance.late",
+    "loc:AttendanceDashboard_EarlyDepartures": "dash.attendance.early",
+    "loc:AttendanceDashboard_MissingPunches": "dash.attendance.missing-punches",
+    "loc:AttendanceDashboard_PunchRequests": "dash.attendance.punch-requests",
+    "loc:AttendanceDashboard_ByMonth": "dash.attendance.trend",
+    "loc:AttendanceDashboard_ByDepartment": "dash.attendance.by-department",
+    "loc:AttendanceDashboard_ByWeekday": "dash.attendance.weekday",
+    "loc:AttendanceDashboard_TopAbsent": "dash.attendance.top-absent",
+    "loc:AttendanceDashboard_TopLate": "dash.attendance.top-late",
+    "loc:AttendanceDashboard_TopEarly": "dash.attendance.top-early",
+    "loc:AttendanceDashboard_Exceptions": "dash.attendance.exceptions"
+  },
+  "fields": [
+    {
+      "id": "dash.common.showing",
+      "label": "Dashboard_Showing",
+      "section": null,
+      "aliases": [
+        "loc:Dashboard_Showing"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The line in the toolbar that says whose data the dashboard is built from, and how many employees that is. You never choose it: it follows from who you are.</p><p><strong>How it is worked out.</strong> The employees you see are:</p><ul><li>everyone, if you hold the <strong>Admin</strong> role;</li><li>otherwise the employees in the organization units given to your roles in row-level security, including every unit below them, <strong>plus</strong> your own team — you and everybody below you in the manager hierarchy, at every level;</li><li>nobody, if neither gives anyone. The dashboard then shows nothing, never everything.</li></ul><p><strong>Example.</strong> \"Showing: Finance + Payroll + your team (123 employees)\" — you are an HR officer for Finance and Payroll, and also manage a team of your own.</p><p><strong>Why it matters.</strong> Two people can open the same dashboard and see different numbers, and both are right. Every figure, chart, list and download on the page is limited to these employees — changing a filter can narrow them further but never widen them.</p>",
+      "adminHtml": "<p>Resolved by <code>IDashboardScopeService</code> for every dashboard. The row-level security on/off switch in Security Settings is deliberately not consulted: with nothing assigned the user sees nothing, whatever the switch says. The Admin rule matches the static tenant role name <code>Admin</code>.</p>",
+      "stub": false
+    },
+    {
+      "id": "dash.common.filter",
+      "label": "Filter",
+      "section": null,
+      "aliases": [
+        "loc:Filter"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The window behind the <strong>Filter</strong> button: the period and the organization unit. Nothing changes until you press <strong>Apply</strong>; <strong>Reset</strong> goes back to the defaults.</p><p><strong>How the period works.</strong></p><ul><li><strong>This year to date</strong> (the default): 1 January of this year up to today.</li><li><strong>This year</strong> and <strong>Last year</strong>: 1 January to 31 December.</li><li><strong>This month</strong>: the first to the last day of the current month.</li><li><strong>Custom</strong>: any From and To dates you choose. A period longer than five years is shortened to the last five.</li></ul><p><strong>Example.</strong> Pick <strong>Last year</strong> to see 2025 while this year's data is still thin.</p><p><strong>Why it matters.</strong> Figures \"as of today\" (who is on leave today, headcount) do not depend on the period; figures \"in the period\" (leave days, joiners, leavers, turnover) do. Choosing an organization unit includes every unit below it. Clicking a bar or a slice on a chart adds another filter, shown as a chip next to <strong>Showing</strong> — remove it with its <strong>×</strong>, or all of them with <strong>Clear filters</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.common.download",
+      "label": "Download",
+      "section": null,
+      "aliases": [
+        "loc:Download"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The download icon on the toolbar and on every tile. Clicking it offers three formats.</p><p><strong>What each format contains.</strong></p><ul><li><strong>PDF</strong> and <strong>JPEG</strong>: a picture of the tile exactly as it looks on screen, charts included. From the toolbar, a picture of the whole dashboard.</li><li><strong>XLSX</strong>: the data behind the tile, with the same filters. From the toolbar, a workbook with a <strong>Summary</strong> sheet (whose data, the period, the headline figures) and one sheet per tile.</li></ul><p><strong>Example.</strong> Send the <strong>Leave by type</strong> chart as a JPEG in an email; give payroll the <strong>Not returned from leave</strong> list as XLSX.</p><p><strong>Why it matters.</strong> Whatever you download contains only what you are allowed to see, and exactly what the screen shows for the filters you have applied.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.attendance-rate",
+      "label": "AttendanceDashboard_AttendanceRate",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_AttendanceRate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The share of working days on which people turned up.</p><p><strong>How it is calculated.</strong> <code>Present days ÷ working days × 100</code></p><ul><li>Counted across every employee and every day of the period; one employee absent for one day out of 20 working days is 95%.</li><li>Rounded to one decimal. Shown as \"—\" when nobody was due to work.</li></ul><p><strong>Example.</strong> 96.8% — 4,356 of 4,500 working days present.</p><p><strong>Why it matters.</strong> It is the single figure to compare months and departments by, whatever their size.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.absent",
+      "label": "AttendanceDashboard_AbsentDays",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_AbsentDays"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The working days on which someone was absent. Click it for the list.</p><p><strong>How it is calculated.</strong> <code>Working days the Time Engine marked absent</code></p><ul><li>When your company approves attendance before payroll (time register approval switched on), the <strong>approved</strong> absence is counted, not the engine's first result — the same rule payroll uses.</li></ul><p><strong>Example.</strong> 144 absent days in March.</p><p><strong>Why it matters.</strong> Unpaid absence is deducted in payroll from these same days, so this list is what to check before the payroll run.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.late",
+      "label": "AttendanceDashboard_LateArrivals",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_LateArrivals"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many times people arrived after their shift start, and the hours lost. Click it for the list.</p><p><strong>How it is calculated.</strong> <code>Present days with minutes late &gt; 0</code>; <strong>hours</strong> = <code>sum of minutes late ÷ 60</code>.</p><ul><li>Minutes late are the Time Engine's, so any grace period in the time policy has already been applied. Flexi-time employees are never late.</li></ul><p><strong>Example.</strong> 212 late arrivals · 64.5 hours in total.</p><p><strong>Why it matters.</strong> Repeated lateness is usually concentrated in a few people or a few days; the charts below show which.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.early",
+      "label": "AttendanceDashboard_EarlyDepartures",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_EarlyDepartures"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many times people left before their shift end, and the hours lost. Click it for the list.</p><p><strong>How it is calculated.</strong> <code>Present days with minutes early &gt; 0</code>; <strong>hours</strong> = <code>sum of minutes early ÷ 60</code>.</p><p><strong>Example.</strong> 58 early departures · 21 hours in total.</p><p><strong>Why it matters.</strong> Together with lateness it is the working time paid for but not worked.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.missing-punches",
+      "label": "AttendanceDashboard_MissingPunches",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_MissingPunches"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Present days where the employee punched only once. Click it for the list.</p><p><strong>How it is calculated.</strong> <code>Present days with an out-punch but no in-punch, or an in-punch but no out-punch</code></p><ul><li>A missing out-punch is not counted for today — the employee may simply not have left yet.</li></ul><p><strong>Example.</strong> 17 days with one punch only.</p><p><strong>Why it matters.</strong> A day with one punch cannot be timed correctly. Employees can ask for the missing punch through self service; until then the day may be treated as short or absent.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.punch-requests",
+      "label": "AttendanceDashboard_PunchRequests",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_PunchRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Punches employees asked for through self service because they forgot or could not punch, and how many are still waiting for approval. Click it for the list.</p><p><strong>How it is calculated.</strong> <code>Punches with an approval request dated in the period</code>, whatever their status; <strong>awaiting approval</strong> = those still open.</p><p><strong>Example.</strong> 23 punch requests · 5 awaiting approval.</p><p><strong>Why it matters.</strong> A pending request is not yet a punch, so the Time Engine does not use it until it is approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.trend",
+      "label": "AttendanceDashboard_ByMonth",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_ByMonth"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Absent days, late arrivals and early departures side by side, one group per month. For a period of two months or less it becomes one group per day.</p><p><strong>How it is calculated.</strong> Each bar uses the formula of its figure above, for that month or day.</p><p><strong>Example.</strong> Click <strong>Mar 2026</strong> and the dashboard narrows to March and shows its days; click <strong>14 Mar</strong> to list that day's exceptions.</p><p><strong>Why it matters.</strong> It shows whether attendance is improving and which days go wrong — the day after a holiday, the start of Ramadan.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.by-department",
+      "label": "AttendanceDashboard_ByDepartment",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_ByDepartment"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The attendance rate of each department, lowest first, one organization level at a time, with its working days, absences and late arrivals.</p><p><strong>How it is calculated.</strong> <code>Present days ÷ working days × 100</code> for the employees of the department.</p><ul><li>An employee belongs to the unit of their organization assignment in force at the end of the period.</li></ul><p><strong>Example.</strong> Click <strong>ABC Software</strong> to see which of its departments pulls the rate down.</p><p><strong>Why it matters.</strong> A company-wide 97% can hide a department at 85%.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.weekday",
+      "label": "AttendanceDashboard_ByWeekday",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_ByWeekday"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Late arrivals and absent days for each day of the week.</p><p><strong>How it is calculated.</strong> <code>Late days</code> and <code>absent days</code> of the period, grouped by the weekday they fell on.</p><p><strong>Example.</strong> Sundays and Thursdays standing out.</p><p><strong>Why it matters.</strong> A pattern tied to a weekday points to a cause — traffic, a weekly meeting, long weekends — that a monthly figure hides.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.top-absent",
+      "label": "AttendanceDashboard_TopAbsent",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_TopAbsent"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The ten employees with the most absent days in the period.</p><p><strong>How it is calculated.</strong> <code>Absent days per employee</code>, largest first.</p><p><strong>Example.</strong> Click a name to see every tile for that employee only; remove the chip to go back.</p><p><strong>Why it matters.</strong> It is where a conversation about attendance usually starts.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.top-late",
+      "label": "AttendanceDashboard_TopLate",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_TopLate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The ten employees who lost the most time to late arrival.</p><p><strong>How it is calculated.</strong> <code>Sum of minutes late ÷ 60 per employee</code>, largest first.</p><p><strong>Example.</strong> 6.5 hours over 13 late arrivals.</p><p><strong>Why it matters.</strong> Hours rather than the number of late days shows the real cost: ten minutes a day adds up.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.top-early",
+      "label": "AttendanceDashboard_TopEarly",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_TopEarly"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The ten employees who lost the most time to leaving early.</p><p><strong>How it is calculated.</strong> <code>Sum of minutes early ÷ 60 per employee</code>, largest first.</p><p><strong>Example.</strong> 4 hours over 3 early departures.</p><p><strong>Why it matters.</strong> It singles out the few people behind most early departures.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.exceptions",
+      "label": "AttendanceDashboard_Exceptions",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_Exceptions"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The list behind a figure or a clicked day: each employee-day with its planned and actual times and what went wrong. Click a row to open the employee. From <strong>Punch requests</strong> it lists the requested punches and their status instead.</p><p><strong>How it is calculated.</strong> The same rule as the figure you clicked, so the list has exactly as many rows as the number said. A clicked day lists every exception of any kind on that day.</p><p><strong>Example.</strong> Click <strong>Late arrivals</strong>: 212 rows, each with the planned and actual in-time.</p><p><strong>Why it matters.</strong> It is the evidence under the numbers, and it downloads as XLSX with the same filters.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

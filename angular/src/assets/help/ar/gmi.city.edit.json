@@ -1,0 +1,75 @@
+{
+  "helpId": "gmi.city.edit",
+  "lang": "ar",
+  "title": "المدن — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.City",
+  "overviewHtml": "<p>المدن المستخدمة في HCMv3 — وأوضح استخداماتها مكان ميلاد الموظف.</p>",
+  "aliasIndex": {
+    "loc:Code": "City.Code",
+    "dom:City_Code": "City.Code",
+    "loc:NameEn": "City.NameEn",
+    "dom:City_NameEn": "City.NameEn",
+    "loc:NameAr": "City.NameAr",
+    "dom:City_NameAr": "City.NameAr",
+    "loc:State": "City.StateId",
+    "dom:City_StateId": "City.StateId"
+  },
+  "fields": [
+    {
+      "id": "City.Code",
+      "label": "Code",
+      "section": "Cities",
+      "aliases": [
+        "loc:Code",
+        "dom:City_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "City.NameEn",
+      "label": "NameEn",
+      "section": "Cities",
+      "aliases": [
+        "loc:NameEn",
+        "dom:City_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "City.NameAr",
+      "label": "NameAr",
+      "section": "Cities",
+      "aliases": [
+        "loc:NameAr",
+        "dom:City_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "City.StateId",
+      "label": "State",
+      "section": "Cities",
+      "aliases": [
+        "loc:State",
+        "dom:City_StateId"
+      ],
+      "rules": "اختياري. يُختار من قائمة المناطق.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المنطقة التي تقع فيها المدينة، من قائمة المناطق.</p><p><strong>لماذا يهم.</strong> تُسجَّل للرجوع إليها، ولا يستخدمها شيء آخر.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

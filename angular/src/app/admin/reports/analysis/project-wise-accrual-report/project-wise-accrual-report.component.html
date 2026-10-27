@@ -1,0 +1,114 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'ProjectWiseAccrualReport' | localize"
+        [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [(employeeCode)]="employeeCode"
+                    [showDateRange]="false"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="form-group mr-2">
+                        <label>{{ 'Month' | localize }}</label>
+                        <input type="number" min="1" max="12" class="form-control" [(ngModel)]="month" />
+                    </div>
+                    <div class="form-group mr-2">
+                        <label>{{ 'Year' | localize }}</label>
+                        <input type="number" class="form-control" [(ngModel)]="year" />
+                    </div>
+                    <div class="form-group mr-2">
+                        <label>{{ 'PayrollArea' | localize }}</label>
+                        <input type="text" class="form-control" [(ngModel)]="payrollAreaCode" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '110rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 120px" pSortableColumn="employeeCode">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="employeeCode" />
+                                    </th>
+                                    <th style="min-width: 200px">{{ 'Employee' | localize }}</th>
+                                    <th style="min-width: 180px" pSortableColumn="projectName">
+                                        {{ 'Project' | localize }}
+                                        <p-sortIcon field="projectName" />
+                                    </th>
+                                    <th style="min-width: 130px">{{ 'BasicPay' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'Allowance' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'AnnualLeavePay' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'SickLeavePay' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'NormalOTPay' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'WeekendOTPay' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'PublicHolidayOTPay' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'SpecialOTPay' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'NetPay' | localize }}</th>
+                                    <th style="min-width: 170px">{{ 'ALCurrentMonthAccrual' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'AnnualLeaveProvision' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.employeeCode }}" class="hide-overflown">
+                                            {{ record.employeeCode }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 200px">{{ record.employeeName }}</td>
+                                    <td style="min-width: 180px">{{ record.projectName }}</td>
+                                    <td style="min-width: 130px">{{ record.basicPay }}</td>
+                                    <td style="min-width: 130px">{{ record.allowance }}</td>
+                                    <td style="min-width: 140px">{{ record.annualLeavePay }}</td>
+                                    <td style="min-width: 130px">{{ record.sickLeavePay }}</td>
+                                    <td style="min-width: 140px">{{ record.normalOTPay }}</td>
+                                    <td style="min-width: 140px">{{ record.weekendOTPay }}</td>
+                                    <td style="min-width: 160px">{{ record.publicHolidayOTPay }}</td>
+                                    <td style="min-width: 140px">{{ record.specialOTPay }}</td>
+                                    <td style="min-width: 130px">{{ record.netPay }}</td>
+                                    <td style="min-width: 170px">{{ record.alCurrentMonthAccrual }}</td>
+                                    <td style="min-width: 160px">{{ record.annualLeaveProvision }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

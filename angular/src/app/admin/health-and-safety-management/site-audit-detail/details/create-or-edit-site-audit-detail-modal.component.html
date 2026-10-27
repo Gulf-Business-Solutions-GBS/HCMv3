@@ -1,0 +1,64 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'SiteAuditDetails' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label required" for="SiteAuditDetail_Observation">{{ 'Observation' | localize }}</label>
+                                <textarea
+                                    id="SiteAuditDetail_Observation"
+                                    #observationInput="ngModel"
+                                    class="form-control"
+                                    name="Observation"
+                                    rows="3"
+                                    [ngModel]="record().observation"
+                                    (ngModelChange)="updateField('observation', $event)"
+                                    required
+                                    maxlength="1000"></textarea>
+                                <validation-messages [formCtrl]="observationInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="SiteAuditDetail_CorrectionAction">{{ 'CorrectionAction' | localize }}</label>
+                                <textarea
+                                    id="SiteAuditDetail_CorrectionAction"
+                                    class="form-control"
+                                    name="CorrectionAction"
+                                    rows="3"
+                                    [ngModel]="record().correctionAction"
+                                    (ngModelChange)="updateField('correctionAction', $event)"
+                                    maxlength="1000"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

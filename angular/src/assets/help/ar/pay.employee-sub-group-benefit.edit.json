@@ -1,0 +1,43 @@
+{
+  "helpId": "pay.employee-sub-group-benefit.edit",
+  "lang": "ar",
+  "title": "مزايا المجموعة الفرعية للموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupBenefit",
+  "overviewHtml": "<p>نوع مزايا تستحقه الدرجة، مع حد أقصى للمبلغ.</p><p>لا تُقرأ حالياً: لا يستخدم نظام الرواتب هذه القائمة، وهي محفوظة للرجوع إليها فقط.</p>",
+  "aliasIndex": {
+    "loc:BenefitType": "EmployeeSubGroupBenefit.BenefitTypeId",
+    "dom:EmployeeSubGroupBenefit_BenefitTypeId": "EmployeeSubGroupBenefit.BenefitTypeId",
+    "loc:MaxAmount": "EmployeeSubGroupBenefit.MaxAmount",
+    "dom:EmployeeSubGroupBenefit_MaxAmount": "EmployeeSubGroupBenefit.MaxAmount"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupBenefit.BenefitTypeId",
+      "label": "BenefitType",
+      "section": "EmployeeSubGroupBenefits",
+      "aliases": [
+        "loc:BenefitType",
+        "dom:EmployeeSubGroupBenefit_BenefitTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع المزايا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع المزايا.</p><p><strong>مثال.</strong> بدل تعليم</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupBenefit.MaxAmount",
+      "label": "MaxAmount",
+      "section": "EmployeeSubGroupBenefits",
+      "aliases": [
+        "loc:MaxAmount",
+        "dom:EmployeeSubGroupBenefit_MaxAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أقصى ما يمكن أن تصرفه المزايا.</p><p><strong>مثال.</strong> <code>2000</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

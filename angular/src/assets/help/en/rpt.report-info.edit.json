@@ -1,0 +1,107 @@
+{
+  "helpId": "rpt.report-info.edit",
+  "lang": "en",
+  "title": "Report Infos — Create / Edit",
+  "entity": "HCMv3.ReportManagement.ReportInfo",
+  "overviewHtml": "<p>A designed report. Part of the report designer carried over from the old system. Not read at present: nothing in HCMv3 runs these definitions, so records here have no effect.</p>",
+  "aliasIndex": {
+    "loc:ReportName": "ReportInfo.ReportName",
+    "dom:ReportInfo_ReportName": "ReportInfo.ReportName",
+    "loc:ReportType": "ReportInfo.ReportTypeId",
+    "dom:ReportInfo_ReportTypeId": "ReportInfo.ReportTypeId",
+    "loc:DomainType": "ReportInfo.DomainTypeId",
+    "dom:ReportInfo_DomainTypeId": "ReportInfo.DomainTypeId",
+    "loc:Description": "ReportInfo.Description",
+    "dom:ReportInfo_Description": "ReportInfo.Description",
+    "loc:ReportQuery": "ReportInfo.ReportQuery",
+    "dom:ReportInfo_ReportQuery": "ReportInfo.ReportQuery",
+    "loc:IsActive": "ReportInfo.IsActive",
+    "dom:ReportInfo_IsActive": "ReportInfo.IsActive"
+  },
+  "fields": [
+    {
+      "id": "ReportInfo.ReportName",
+      "label": "ReportName",
+      "section": "ReportInfos",
+      "aliases": [
+        "loc:ReportName",
+        "dom:ReportInfo_ReportName"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The report's name.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfo.ReportTypeId",
+      "label": "ReportType",
+      "section": "ReportInfos",
+      "aliases": [
+        "loc:ReportType",
+        "dom:ReportInfo_ReportTypeId"
+      ],
+      "rules": "Required. Chosen from Report Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfo.DomainTypeId",
+      "label": "DomainType",
+      "section": "ReportInfos",
+      "aliases": [
+        "loc:DomainType",
+        "dom:ReportInfo_DomainTypeId"
+      ],
+      "rules": "Required. Chosen from Domain Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The area of data.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfo.Description",
+      "label": "Description",
+      "section": "ReportInfos",
+      "aliases": [
+        "loc:Description",
+        "dom:ReportInfo_Description"
+      ],
+      "rules": "Optional. Maximum 512 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A description.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfo.ReportQuery",
+      "label": "ReportQuery",
+      "section": "ReportInfos",
+      "aliases": [
+        "loc:ReportQuery",
+        "dom:ReportInfo_ReportQuery"
+      ],
+      "rules": "Optional. Maximum 1500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The query behind the report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfo.IsActive",
+      "label": "IsActive",
+      "section": "ReportInfos",
+      "aliases": [
+        "loc:IsActive",
+        "dom:ReportInfo_IsActive"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the report is in use.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

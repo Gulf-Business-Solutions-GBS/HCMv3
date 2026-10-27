@@ -1,0 +1,123 @@
+{
+  "helpId": "sys.document-settings.edit",
+  "lang": "ar",
+  "title": "Document settings",
+  "entity": "HCMv3.SystemSettings.ManageDocumentSettings",
+  "overviewHtml": "<p>مكان حفظ المرفقات وأحجامها المسموح بها.</p><p>لا يُقرأ حالياً إلا <strong>حفظ المستندات في نظام الملفات</strong>، ويقرؤه تقرير الحضور المتأخر والمبكر مع الصور، أما حدود الحجم والامتدادات فلا تُطبَّق.</p><p>لكل شركة سجل إعدادات واحد، ولا يمكن حذفه.</p>",
+  "aliasIndex": {
+    "loc:EnableDocSaveInFileSystem": "ManageDocumentSettings.EnableDocSaveInFileSystem",
+    "dom:DocumentSettings_EnableDocSaveInFileSystem": "ManageDocumentSettings.EnableDocSaveInFileSystem",
+    "loc:FileStorageRootName": "ManageDocumentSettings.FileStorageRootName",
+    "dom:DocumentSettings_FileStorageRootName": "ManageDocumentSettings.FileStorageRootName",
+    "loc:AllowedFileExtensions": "ManageDocumentSettings.AllowedFileExtensions",
+    "dom:DocumentSettings_AllowedFileExtensions": "ManageDocumentSettings.AllowedFileExtensions",
+    "loc:MaxAttachmentsPerTransaction": "ManageDocumentSettings.MaxAttachmentsPerTransaction",
+    "dom:DocumentSettings_MaxAttachmentsPerTransaction": "ManageDocumentSettings.MaxAttachmentsPerTransaction",
+    "loc:MaxFileSizePerAttachmentMB": "ManageDocumentSettings.MaxFileSizePerAttachmentMB",
+    "dom:DocumentSettings_MaxFileSizePerAttachmentMB": "ManageDocumentSettings.MaxFileSizePerAttachmentMB",
+    "loc:MaxStorageSizeMB": "ManageDocumentSettings.MaxStorageSizeMB",
+    "dom:DocumentSettings_MaxStorageSizeMB": "ManageDocumentSettings.MaxStorageSizeMB",
+    "loc:StorageWarningThresholdMB": "ManageDocumentSettings.StorageWarningThresholdMB",
+    "dom:DocumentSettings_StorageWarningThresholdMB": "ManageDocumentSettings.StorageWarningThresholdMB"
+  },
+  "fields": [
+    {
+      "id": "ManageDocumentSettings.EnableDocSaveInFileSystem",
+      "label": "EnableDocSaveInFileSystem",
+      "section": null,
+      "aliases": [
+        "loc:EnableDocSaveInFileSystem",
+        "dom:DocumentSettings_EnableDocSaveInFileSystem"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت المستندات تُحفظ في نظام الملفات بدلاً من قاعدة البيانات.</p><p><strong>لماذا يهم.</strong> يقرؤه تقرير الحضور المتأخر والمبكر مع الصور ليعرف مكان صور البصمات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageDocumentSettings.FileStorageRootName",
+      "label": "FileStorageRootName",
+      "section": null,
+      "aliases": [
+        "loc:FileStorageRootName",
+        "dom:DocumentSettings_FileStorageRootName"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيّ مواقع التخزين المعتمدة على هذا الخادم تُكتب فيه ملفات شركتك: المرفقات والمستندات الممسوحة وصور الموظفين وصور البصمة بالموقع. وتختار الموقع بالاسم، ولا تكتب مجلداً.</p><p><strong>مثال.</strong> الافتراضي، أو «الأرشيف» عندما يوفّر الخادم قرصاً ثانياً للسجلات القديمة.</p><p><strong>لماذا يهمّ.</strong> تبقى الملفات المحفوظة سابقاً في مكانها وتظل تعمل بعد التغيير، لأن كل ملف يحتفظ باسم الموقع الذي كُتب فيه. ولا ينتقل إلى الموقع الجديد إلا الملفات الجديدة، فلا يفقد من ينقل شركة إلى قرص آخر ما سبق.</p>",
+      "adminHtml": "<p>تأتي القائمة من <code>FileStorage:Roots</code> في ملف <code>appsettings.json</code> على الخادم، ويرى مستخدم المضيف أيضاً المجلد الذي يشير إليه كل اسم. ولا شيء يُكتب في هذه الشاشة يمكنه تحديد موضع الكتابة على الخادم، وهذا مقصود: فالمجلد الذي يُكتب هنا يصبح مجلداً يكتب فيه حساب الخدمة الملفات المرفوعة، وتوجيهه إلى موقع الويب أو إلى مجلد مستأجر آخر يفتح ثغرة. أما الحقل النصي القديم <strong>مسار مرفقات نظام الملفات</strong> فلم يكن يُقرأ وقد أُزيل، وبقيت قيمته المخزَّنة في قاعدة البيانات دون تغيير.</p>",
+      "stub": false
+    },
+    {
+      "id": "ManageDocumentSettings.AllowedFileExtensions",
+      "label": "AllowedFileExtensions",
+      "section": null,
+      "aliases": [
+        "loc:AllowedFileExtensions",
+        "dom:DocumentSettings_AllowedFileExtensions"
+      ],
+      "rules": "اختياري. الحد الأقصى 200 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أنواع الملفات المسموح بإرفاقها.</p><p><strong>مثال.</strong> <code>.pdf,.jpg,.png</code></p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageDocumentSettings.MaxAttachmentsPerTransaction",
+      "label": "MaxAttachmentsPerTransaction",
+      "section": null,
+      "aliases": [
+        "loc:MaxAttachmentsPerTransaction",
+        "dom:DocumentSettings_MaxAttachmentsPerTransaction"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أكبر عدد من المرفقات في السجل الواحد.</p><p><strong>مثال.</strong> <code>5</code></p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageDocumentSettings.MaxFileSizePerAttachmentMB",
+      "label": "MaxFileSizePerAttachmentMB",
+      "section": null,
+      "aliases": [
+        "loc:MaxFileSizePerAttachmentMB",
+        "dom:DocumentSettings_MaxFileSizePerAttachmentMB"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أكبر حجم للمرفق، بالميغابايت.</p><p><strong>مثال.</strong> <code>10</code></p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageDocumentSettings.MaxStorageSizeMB",
+      "label": "MaxStorageSizeMB",
+      "section": null,
+      "aliases": [
+        "loc:MaxStorageSizeMB",
+        "dom:DocumentSettings_MaxStorageSizeMB"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموع مساحة التخزين المسموح بها، بالميغابايت.</p><p><strong>مثال.</strong> <code>5000</code></p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageDocumentSettings.StorageWarningThresholdMB",
+      "label": "StorageWarningThresholdMB",
+      "section": null,
+      "aliases": [
+        "loc:StorageWarningThresholdMB",
+        "dom:DocumentSettings_StorageWarningThresholdMB"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مساحة التخزين المستخدمة التي يُنبَّه عندها، بالميغابايت.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

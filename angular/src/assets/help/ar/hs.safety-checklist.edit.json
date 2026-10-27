@@ -1,0 +1,75 @@
+{
+  "helpId": "hs.safety-checklist.edit",
+  "lang": "ar",
+  "title": "قوائم فحص السلامة — إنشاء / تحرير",
+  "entity": "HCMv3.HealthAndSafetyManagement.SafetyChecklist",
+  "overviewHtml": "<p>فحص يُجرى على منطقة أو أصل سلامة. اترك الرمز فارغاً ليُعطى الرقم التالي.</p>",
+  "aliasIndex": {
+    "loc:Code": "SafetyChecklist.Code",
+    "dom:SafetyChecklist_Code": "SafetyChecklist.Code",
+    "loc:SafetyAreaAsset": "SafetyChecklist.SafetyAreaAssetId",
+    "dom:SafetyChecklist_SafetyAreaAssetId": "SafetyChecklist.SafetyAreaAssetId",
+    "loc:IsActive": "SafetyChecklist.IsActive",
+    "dom:SafetyChecklist_IsActive": "SafetyChecklist.IsActive",
+    "loc:Description": "SafetyChecklist.Description",
+    "dom:SafetyChecklist_Description": "SafetyChecklist.Description"
+  },
+  "fields": [
+    {
+      "id": "SafetyChecklist.Code",
+      "label": "Code",
+      "section": "SafetyChecklists",
+      "aliases": [
+        "loc:Code",
+        "dom:SafetyChecklist_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SafetyChecklist.SafetyAreaAssetId",
+      "label": "SafetyAreaAsset",
+      "section": "SafetyChecklists",
+      "aliases": [
+        "loc:SafetyAreaAsset",
+        "dom:SafetyChecklist_SafetyAreaAssetId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أصول مناطق السلامة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المنطقة أو الأصل الذي يُفحص.</p><p><strong>مثال.</strong> طفايات الحريق</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SafetyChecklist.IsActive",
+      "label": "IsActive",
+      "section": "SafetyChecklists",
+      "aliases": [
+        "loc:IsActive",
+        "dom:SafetyChecklist_IsActive"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الفحص لا يزال مستخدماً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SafetyChecklist.Description",
+      "label": "Description",
+      "section": "SafetyChecklists",
+      "aliases": [
+        "loc:Description",
+        "dom:SafetyChecklist_Description"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما الذي يُفحص.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

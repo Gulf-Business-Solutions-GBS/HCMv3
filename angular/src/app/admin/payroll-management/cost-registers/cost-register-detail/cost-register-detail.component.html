@@ -1,0 +1,79 @@
+<div [@routerTransition]>
+    <sub-header [title]="title()" [description]="'PayrollManagement' | localize">
+        <div role="actions">
+            @if (canEdit && register()) {
+                <button type="button" class="btn btn-primary float-end ms-2" (click)="edit()">
+                    <i class="fa fa-edit btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'Edit' | localize }}
+                    </span>
+                </button>
+            }
+            <button type="button" class="btn btn-light-primary float-end" (click)="goBack()">
+                <i class="fa fa-arrow-left btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">
+                    {{ 'Back' | localize }}
+                </span>
+            </button>
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom mb-5" [busyIf]="loading()">
+            <div class="card-body">
+                @if (register(); as register) {
+                    <div class="row">
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label">{{ 'EmployeeId' | localize }}</label>
+                            <div class="form-control-plaintext fw-bold">{{ register.employeeCode }}</div>
+                        </div>
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label">{{ 'Period' | localize }}</label>
+                            <div class="form-control-plaintext fw-bold">{{ register.period | luxonFormat: 'DD' }}</div>
+                        </div>
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label">{{ 'PayrollRunType' | localize }}</label>
+                            <div class="form-control-plaintext fw-bold">
+                                {{ register.payrollRunType === 0 ? ('Regular' | localize) : ('OffCycle' | localize) }}
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        @if (registerId(); as id) {
+            @if (tabs.length > 0) {
+                <div class="card card-custom">
+                    <div class="card-body">
+                        <ul class="nav at-detail-tabs mb-5" role="tablist">
+                            @for (tab of tabs; track tab.id) {
+                                <li class="nav-item" role="presentation">
+                                    <button
+                                        type="button"
+                                        role="tab"
+                                        class="at-detail-tab"
+                                        [class.at-detail-tab-active]="activeTabId() === tab.id"
+                                        [attr.aria-selected]="activeTabId() === tab.id"
+                                        (click)="selectTab(tab)">
+                                        {{ tab.labelKey | localize }}
+                                    </button>
+                                </li>
+                            }
+                        </ul>
+
+                        <div role="tabpanel">
+                            @switch (activeTabId()) {
+                                @case ('details') {
+                                    <costRegisterDetailsTab [costRegisterId]="id" />
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <createOrEditCostRegisterModal #editModal (modalSave)="reload()" />
+</div>

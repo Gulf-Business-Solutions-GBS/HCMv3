@@ -1,0 +1,190 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'LateEarlyLogCustom023Report' | localize"
+        [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [(fromDate)]="fromDate"
+                    [(toDate)]="toDate"
+                    [(employeeCode)]="employeeCode"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <!-- Legacy cmbPayrollArea, projected into the shared panel rather than forking it. -->
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'PayrollArea' | localize }}</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="payrollAreaCode"
+                            [ngModel]="payrollAreaCode()"
+                            (ngModelChange)="payrollAreaCode.set($event)"
+                            (keydown.enter)="reloadPage()" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '220rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 120px" pSortableColumn="employeeCode">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="employeeCode" />
+                                    </th>
+                                    <th style="min-width: 220px" pSortableColumn="employeeName">
+                                        {{ 'Employee' | localize }}
+                                        <p-sortIcon field="employeeName" />
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="accessId">
+                                        {{ 'AccessId' | localize }}
+                                        <p-sortIcon field="accessId" />
+                                    </th>
+                                    @if (orgLevels.isShown(1)) {
+                                        <th style="min-width: 160px">{{ orgLevels.caption(1) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(2)) {
+                                        <th style="min-width: 160px">{{ orgLevels.caption(2) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(3)) {
+                                        <th style="min-width: 160px">{{ orgLevels.caption(3) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(4)) {
+                                        <th style="min-width: 160px">{{ orgLevels.caption(4) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(5)) {
+                                        <th style="min-width: 160px">{{ orgLevels.caption(5) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(6)) {
+                                        <th style="min-width: 160px">{{ orgLevels.caption(6) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(7)) {
+                                        <th style="min-width: 160px">{{ orgLevels.caption(7) }}</th>
+                                    }
+                                    <th style="min-width: 140px" pSortableColumn="date">
+                                        {{ 'Date' | localize }}
+                                        <p-sortIcon field="date" />
+                                    </th>
+                                    <th style="min-width: 130px">{{ 'WeekDay' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'ShiftStart' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'ShiftEnd' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'SignIn' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'SignOut' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'EarlyIn' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'EarlyOut' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'LateIn' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'LateOut' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'TotalHours' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'PlannedHours' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'OvertimeHours' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'AbsenceHours' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'Status' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'LeaveType' | localize }}</th>
+                                    <th style="min-width: 170px">{{ 'PartialLeaveHours' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'PunchInAccessUnit' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'PunchOutAccessUnit' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'TimePolicy' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'WorkLocation' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'Country' | localize }}</th>
+                                    <th style="min-width: 170px">{{ 'PunchInLocation' | localize }}</th>
+                                    <th style="min-width: 170px">{{ 'PunchOutLocation' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.employeeCode }}" class="hide-overflown">
+                                            {{ record.employeeCode }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 220px">{{ record.employeeName }}</td>
+                                    <td style="min-width: 120px">{{ record.accessId }}</td>
+                                    @if (orgLevels.isShown(1)) {
+                                        <td style="min-width: 160px">{{ record.orgLevel1 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(2)) {
+                                        <td style="min-width: 160px">{{ record.orgLevel2 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(3)) {
+                                        <td style="min-width: 160px">{{ record.orgLevel3 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(4)) {
+                                        <td style="min-width: 160px">{{ record.orgLevel4 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(5)) {
+                                        <td style="min-width: 160px">{{ record.orgLevel5 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(6)) {
+                                        <td style="min-width: 160px">{{ record.orgLevel6 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(7)) {
+                                        <td style="min-width: 160px">{{ record.orgLevel7 }}</td>
+                                    }
+                                    <td style="min-width: 140px">{{ record.date | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 130px">{{ record.weekDay }}</td>
+                                    <td style="min-width: 120px">{{ formatDuration(record.shiftStart) }}</td>
+                                    <td style="min-width: 120px">{{ formatDuration(record.shiftEnd) }}</td>
+                                    <td style="min-width: 120px">{{ formatDuration(record.signIn) }}</td>
+                                    <td style="min-width: 120px">{{ formatDuration(record.signOut) }}</td>
+                                    <td style="min-width: 120px">{{ formatDuration(record.earlyIn) }}</td>
+                                    <td style="min-width: 120px">{{ formatDuration(record.earlyOut) }}</td>
+                                    <td style="min-width: 120px">{{ formatDuration(record.lateIn) }}</td>
+                                    <td style="min-width: 120px">{{ formatDuration(record.lateOut) }}</td>
+                                    <td style="min-width: 130px">{{ formatDuration(record.totalHours) }}</td>
+                                    <td style="min-width: 140px">{{ formatDuration(record.plannedHours) }}</td>
+                                    <td style="min-width: 150px">{{ formatDuration(record.overtimeHours) }}</td>
+                                    <td style="min-width: 140px">{{ formatDuration(record.absenceHours) }}</td>
+                                    <td style="min-width: 140px">{{ record.status }}</td>
+                                    <td style="min-width: 150px">{{ record.leaveType }}</td>
+                                    <td style="min-width: 170px">{{ formatDuration(record.partialLeaveHours) }}</td>
+                                    <td style="min-width: 180px">{{ record.punchInAccessUnit }}</td>
+                                    <td style="min-width: 180px">{{ record.punchOutAccessUnit }}</td>
+                                    <td style="min-width: 160px">{{ record.timePolicyName }}</td>
+                                    <td style="min-width: 160px">{{ record.workLocationName }}</td>
+                                    <td style="min-width: 140px">{{ record.countryName }}</td>
+                                    <td style="min-width: 170px">{{ record.punchInLocation }}</td>
+                                    <td style="min-width: 170px">{{ record.punchOutLocation }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

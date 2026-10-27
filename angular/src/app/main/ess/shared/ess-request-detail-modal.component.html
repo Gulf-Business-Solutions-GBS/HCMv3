@@ -1,0 +1,354 @@
+<div
+    appBsModal
+    #essRequestDetailModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="essRequestDetailModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }">
+    <!-- Near full width, deliberately. The approver is shown the requester's real form, and that
+         form lays its five fields across one row at the xl breakpoint -- which it can only do with the
+         page width the create screen gives it. Inside a modal-xl the form column came out around 900px
+         and every field truncated: "2362 - Shehata Kam", "25-Sep-2". Matching the create screen's width
+         is the point of showing the same form at all. -->
+    <div class="modal-dialog ess-detail__dialog">
+        <div class="modal-content">
+            @if (active()) {
+                <div class="modal-header">
+                    <!-- "Exit Permit (17)". One run of text, no pill: the status that used to sit beside it
+                         never did agree with the title's baseline, and it was saying something the newest
+                         entry in the conversation already says. -->
+                    <h4 class="modal-title">{{ headerTitle() }}</h4>
+                    <!-- btn-close, not close: the theme bundle is Bootstrap 5 and defines only the former.
+                         The old markup used BS4's .close with a Metronic ki icon inside, neither of which
+                         this build styles, so the cross rendered as bare glyph that did not match. -->
+                    <button type="button" class="btn-close" (click)="close()" [attr.aria-label]="'Close' | localize"></button>
+                </div>
+
+                <div class="modal-body">
+                    @if (outcomeBanner(); as outcome) {
+                        <!-- Settled requests say so outright. Placed above the question, because when both
+                             could show, "this is already decided" is the more useful sentence. -->
+                        <div class="alert ess-detail__outcome" [ngClass]="'alert-' + outcome.kind">
+                            {{ outcome.text }}
+                        </div>
+                    }
+
+                    @if (isApproverMode()) {
+                        <!-- The question first, exactly as the reference screen asks it. An approver opens
+                             this to decide, so the page says what it is for before anything else. -->
+                        <h3 class="ess-detail__question">{{ 'DoYouApproveThisRequest' | localize }}</h3>
+                    } @else if (isFeedbackMode()) {
+                        <!-- A different question, because a different thing is being asked. Somebody here
+                             by invitation must not be left to work out whether they are expected to
+                             approve -- the answer is no, and saying so is cheaper than letting them
+                             wonder. -->
+                        <h3 class="ess-detail__question">{{ 'YourFeedback' | localize }}</h3>
+
+                        <div class="alert alert-light-primary">
+                            @if (config()?.feedbackRequestedByName; as asker) {
+                                <div class="fw-bold">{{ 'FeedbackRequestedBy' | localize: asker }}</div>
+                            }
+                            <div>{{ 'YouWereAskedForFeedbackNotApproval' | localize }}</div>
+
+                            @if (config()?.feedbackNote; as note) {
+                                <div class="mt-2 fst-italic">&ldquo;{{ note }}&rdquo;</div>
+                            }
+                        </div>
+                    }
+
+                    @if (initiatedByParts(); as initiated) {
+                        <div class="ess-detail__subtitle text-muted">
+                            <span class="fw-bold">{{ typeName() }}</span>
+                            <span class="mx-2">&middot;</span>
+                            <!-- The name is a link into the same profile card the conversation and the
+                                 approvers list open, so a person is named the same way and reached the same
+                                 way wherever they appear. Only a link when we know WHICH person: before the
+                                 server's detail arrives there is a name but no id to look up. -->
+                            <span>{{ initiated.before }}</span>
+                            @if (requesterEmployeeId(); as employeeId) {
+                                <button
+                                    type="button"
+                                    class="ess-detail__person-link"
+                                    (click)="openRequesterProfile(employeeId)">
+                                    {{ initiated.name }}
+                                </button>
+                            } @else {
+                                <span>{{ initiated.name }}</span>
+                            }
+                            <span>{{ initiated.after }}</span>
+                        </div>
+                    }
+
+                    <div class="row g-5">
+                        <div [class]="isWideMode() ? 'col-12 col-lg-7' : 'col-12'">
+                            @if (requestForm(); as form) {
+                                <!-- THE request's own form, read-only: the same component, the same cards
+                                     and the same column widths the requester filled in, with its inputs
+                                     disabled. Not a rendering OF the form -- the form. -->
+                                <ng-container
+                                    *ngComponentOutlet="form.component; inputs: form.inputs"></ng-container>
+                            } @else {
+                                <!-- The fallback, for the transaction types whose form has not been adapted
+                                     yet: every field the type's handler publishes, as label/value rows. Less
+                                     than the real form, far more than the one-line summary an approver used
+                                     to decide on. -->
+                                <div class="card card-custom gutter-b mb-5">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ 'RequestInformation' | localize }}</h5>
+
+                                        @if (loadingDetail() && !fields().length) {
+                                            <div class="text-muted"><i class="fa fa-spinner fa-spin"></i></div>
+                                        } @else {
+                                            <div class="ess-detail__fields">
+                                                @for (field of fields(); track field.label) {
+                                                    <div class="ess-detail__field">
+                                                        <div class="ess-detail__field-label">{{ field.label }}</div>
+                                                        <div class="ess-detail__field-value">{{ field.value || '-' }}</div>
+                                                    </div>
+                                                } @empty {
+                                                    <div class="text-muted">-</div>
+                                                }
+                                            </div>
+
+                                            @if (showingFallbackOnly()) {
+                                                <!-- Honest rather than silently thin: this type has not
+                                                     projected its own fields yet, and saying so is better
+                                                     than implying it only has three. -->
+                                                <div class="text-muted small mt-4">
+                                                    {{ 'ThisRequestTypeHasNoDetailedView' | localize }}
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                            @if (config()?.relatedRequests?.length) {
+                                <!-- Everything raised against the same record -- a leave's application and
+                                     each amendment, cancellation or return after it -- so the one being read
+                                     is seen in its place. Each opens in this same dialog. -->
+                                <div class="card card-custom gutter-b mb-5" data-help-loc="RelatedRequests">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ config()?.relatedTitle }}</h5>
+                                        <div class="table-responsive">
+                                            <table class="table align-middle mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>{{ 'RequestLineNumber' | localize }}</th>
+                                                        <th>{{ 'RequestType' | localize }}</th>
+                                                        <th>{{ 'AskedFor' | localize }}</th>
+                                                        <th>{{ 'Status' | localize }}</th>
+                                                        <th>{{ 'DecidedBy' | localize }}</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @for (related of config()?.relatedRequests; track related.workflowRequestId) {
+                                                        <tr [class.fw-bold]="related.workflowRequestId === config()?.workflowRequestId">
+                                                            <td>{{ related.requestNumber }}</td>
+                                                            <td>{{ related.typeLabel }}</td>
+                                                            <td>{{ related.askedFor }}</td>
+                                                            <td><span class="badge" [ngClass]="related.statusClass">{{ related.statusLabel }}</span></td>
+                                                            <td class="text-muted">{{ related.decidedBy }}</td>
+                                                            <td class="text-end">
+                                                                @if (related.workflowRequestId !== config()?.workflowRequestId) {
+                                                                    <button type="button" class="btn btn-light-primary btn-sm" (click)="openRelated(related)">
+                                                                        {{ 'Details' | localize }}
+                                                                    </button>
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (isFeedbackMode()) {
+                                <!-- One box and one button. No Approve, no Reject, no Send back: this
+                                     person was asked what they think, and the decision stays with the
+                                     approver who asked. -->
+                                <div class="card card-custom gutter-b mb-5 ess-detail__decision">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            {{ 'YourFeedback' | localize }}
+                                            <span class="text-danger" aria-hidden="true">*</span>
+                                        </h5>
+
+                                        <textarea
+                                            class="form-control mb-4"
+                                            data-help-loc="Feedback"
+                                            rows="3"
+                                            [(ngModel)]="feedbackComment"></textarea>
+
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary"
+                                            data-help-loc="SubmitFeedback"
+                                            [disabled]="submittingFeedback()"
+                                            (click)="submitFeedback()">
+                                            {{ 'SubmitFeedback' | localize }}
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (availableActions().length) {
+                                <!-- Card 2: the decision, INSIDE the dialog. It used to be a bar docked to
+                                     the bottom of the window, floating under a dialog it had nothing to do
+                                     with, because this component had no approver mode to hold it. -->
+                                <div class="card card-custom gutter-b mb-5 ess-detail__decision">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            {{ 'Comments' | localize }}
+                                            @if (isCommentRequired()) {
+                                                <!-- Marked before the decision, not enforced after it. The
+                                                     step is configured to refuse a blank comment and the
+                                                     engine will; being refused having already decided is
+                                                     the worst moment to learn a field was mandatory. -->
+                                                <span class="text-danger" aria-hidden="true">*</span>
+                                            }
+                                        </h5>
+
+                                        <textarea
+                                            class="form-control mb-4"
+                                            data-help-loc="Comment"
+                                            rows="2"
+                                            [attr.required]="isCommentRequired() ? '' : null"
+                                            [placeholder]="(isCommentRequired() ? 'CommentIsRequiredForThisStep' : 'ApproverComment') | localize"
+                                            [(ngModel)]="decisionComment"></textarea>
+
+                                        <div class="ess-detail__decision-buttons">
+                                            <!-- Secondary and set apart, because it is not a decision.
+                                                 Asking a colleague leaves the request exactly where it is
+                                                 and leaves this approver holding it. -->
+                                            <button
+                                                type="button"
+                                                class="btn btn-light-primary ess-detail__ask"
+                                                data-help-loc="GetFeedback"
+                                                [disabled]="acting()"
+                                                (click)="askForFeedback()">
+                                                <i class="fa fa-comments me-1"></i>{{ 'GetFeedback' | localize }}
+                                            </button>
+
+                                            @for (action of availableActions(); track action) {
+                                                @switch (action) {
+                                                    @case ('approve') {
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-success"
+                                                            data-help-loc="Approve"
+                                                            [disabled]="acting()"
+                                                            (click)="decide('approve')">
+                                                            {{ 'Approve' | localize }}
+                                                        </button>
+                                                    }
+                                                    @case ('reject') {
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-danger"
+                                                            data-help-loc="Reject"
+                                                            [disabled]="acting()"
+                                                            (click)="decide('reject')">
+                                                            {{ 'Reject' | localize }}
+                                                        </button>
+                                                    }
+                                                    @case ('sendBack') {
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-warning"
+                                                            data-help-loc="SendBack"
+                                                            [disabled]="acting()"
+                                                            (click)="decide('sendBack')">
+                                                            {{ 'SendBack' | localize }}
+                                                        </button>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+
+                        <!-- The conversation lives beside the request, not beneath it: an approver reads the
+                             thread while looking at the fields they are deciding on, rather than scrolling
+                             past them. Newest first, because the thing that just happened is the thing you
+                             came to see.
+
+                             No composer here. There is exactly one comment box on this screen -- the one in
+                             the Comments card, next to the buttons -- because a comment an approver types
+                             IS their decision's comment. Two boxes asked them to choose which kind of
+                             remark they were making, a distinction nobody wanted to draw. -->
+                        <!-- Sticky, with its own scrollbar. The request and its history are read together
+                             -- that is why this is a column and not a section underneath -- but a form with
+                             twenty fields is taller than this rail, and a rail that simply flowed with the
+                             page scrolled out of sight exactly when the fields it explains came into view. -->
+                        <div [class]="isWideMode() ? 'col-12 col-lg-5 ess-detail__rail' : 'col-12'">
+                            <div class="card card-custom ess-detail__conversation">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ 'Conversation' | localize }}</h5>
+
+                                    @if (config()?.workflowRequestId; as workflowRequestId) {
+                                        <workflow-activity-rail
+                                            [workflowRequestId]="workflowRequestId"
+                                            [flush]="true"
+                                            [showHeader]="false"
+                                            [newestFirst]="true"
+                                            [readOnly]="true"
+                                            [leadComment]="detail()?.submissionComment ?? config()?.comments"
+                                            [leadAuthorName]="requesterName()"
+                                            [leadAuthorPhotoUrl]="requesterPhotoUrl()"
+                                            (personClicked)="profileCard.show(workflowRequestId, $event)"></workflow-activity-rail>
+                                    } @else if (config()?.comments) {
+                                        <div class="text-muted">{{ config()?.comments }}</div>
+                                    } @else {
+                                        <div class="text-muted">{{ 'NoCommentsYet' | localize }}</div>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Below the conversation, in the same column, because this is the rest of the
+                                 same story: the thread says what happened, this says who is entitled to act
+                                 and who has looked. It belongs beside the fields the approver is reading,
+                                 not under the form they came here to review.
+
+                                 A card of its own with a quiet title. It is reference material an approver
+                                 consults, so it must not compete with the decision buttons on the left. -->
+                            @if (config()?.workflowRequestId; as workflowRequestId) {
+                                <div class="card card-custom mt-5 ess-detail__participants">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ 'WorkflowActionsAndInformation' | localize }}</h5>
+
+                                        <workflow-participants-panel
+                                            [workflowRequestId]="workflowRequestId"></workflow-participants-panel>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                        {{ 'Close' | localize }}
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- One card for the whole dialog, opened from a name in the conversation. The participants panel keeps its
+     own for the names in its lists; both are plain overlays rather than nested dialogs, so neither can leave
+     a backdrop over a page that has nothing left to dismiss it. -->
+<workflowParticipantProfileModal #profileCard></workflowParticipantProfileModal>
+
+<!-- Hosted here rather than inside the dialog: a bs-modal nested in another bs-modal leaves a backdrop
+     over a page with nothing left to dismiss it, which froze this screen once already. -->
+<essGetFeedbackModal #feedbackModal></essGetFeedbackModal>

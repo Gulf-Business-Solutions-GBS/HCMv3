@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.employee-sub-group-gratuity.edit",
+  "lang": "ar",
+  "title": "مكافأة نهاية الخدمة للمجموعة الفرعية للموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupGratuity",
+  "overviewHtml": "<p>سلّم مكافأة نهاية الخدمة للمجموعة الفرعية: كم يوماً من الراتب تكسبه كل سنة خدمة، في شرائح بحسب سنوات الخدمة.</p><p>وتُوزَّع مدة الخدمة على الشرائح بترتيب <strong>تغيير السنة</strong>. فقانون الكويت مثلاً شريحتان: 15 يوماً عن كل سنة حتى السنة الخامسة، و30 يوماً عن كل سنة بعدها.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeSubGroupGratuity.StartDate",
+    "dom:EmployeeSubGroupGratuity_StartDate": "EmployeeSubGroupGratuity.StartDate",
+    "loc:EndDate": "EmployeeSubGroupGratuity.EndDate",
+    "dom:EmployeeSubGroupGratuity_EndDate": "EmployeeSubGroupGratuity.EndDate",
+    "loc:ChangeYear": "EmployeeSubGroupGratuity.ChangeYear",
+    "dom:EmployeeSubGroupGratuity_ChangeYear": "EmployeeSubGroupGratuity.ChangeYear",
+    "loc:GratuityDays": "EmployeeSubGroupGratuity.GratuityDays",
+    "dom:EmployeeSubGroupGratuity_GratuityDays": "EmployeeSubGroupGratuity.GratuityDays",
+    "loc:BasisDays": "EmployeeSubGroupGratuity.BasisDays",
+    "dom:EmployeeSubGroupGratuity_BasisDays": "EmployeeSubGroupGratuity.BasisDays",
+    "loc:ImpactFromDateOfJoining": "EmployeeSubGroupGratuity.ImpactFromDateOfJoining",
+    "dom:EmployeeSubGroupGratuity_ImpactFromDateOfJoining": "EmployeeSubGroupGratuity.ImpactFromDateOfJoining"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupGratuity.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSubGroupGratuities",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSubGroupGratuity_StartDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupGratuity.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSubGroupGratuities",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSubGroupGratuity_EndDate"
+      ],
+      "rules": "اختياري. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupGratuity.ChangeYear",
+      "label": "ChangeYear",
+      "section": "EmployeeSubGroupGratuities",
+      "aliases": [
+        "loc:ChangeYear",
+        "dom:EmployeeSubGroupGratuity_ChangeYear"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سنة الخدمة التي تنتهي عندها هذه الشريحة.</p><p><strong>مثال.</strong> <code>5</code> للشريحة الأولى، و<code>99</code> للأخيرة.</p>",
+      "adminHtml": "<p>مع ثلاث شرائح أو أكثر، تحقق من النتيجة على موظف طويل الخدمة: فالشريحة الوسطى تُحتسب بكامل تغيير السنة فيها سنواتٍ، وتُخفَّض الشريحة الأخيرة تعويضاً، ولا يكون ذلك دقيقاً إلا إذا كانت كل الشرائح بعد الأولى تكسب الأيام نفسها. وهذا مطابق للنظام السابق وقد أُبقي عليه عمداً.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupGratuity.GratuityDays",
+      "label": "GratuityDays",
+      "section": "EmployeeSubGroupGratuities",
+      "aliases": [
+        "loc:GratuityDays",
+        "dom:EmployeeSubGroupGratuity_GratuityDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيام الراتب المكتسبة عن كل سنة خدمة في هذه الشريحة.</p><p><strong>مثال.</strong> <code>15</code></p><p><strong>لماذا يهم.</strong> أيام المكافأة للشريحة هي هذه الأيام مقسومة على 365، مضروبة في الأيام التي قُضيت فيها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupGratuity.BasisDays",
+      "label": "BasisDays",
+      "section": "EmployeeSubGroupGratuities",
+      "aliases": [
+        "loc:BasisDays",
+        "dom:EmployeeSubGroupGratuity_BasisDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأيام الذي يُقسم عليه راتب الشهر لتقييم يوم المكافأة الواحد في هذه الشريحة.</p><p><strong>مثال.</strong> <code>26</code></p><p><strong>لماذا يهم.</strong> القيمة 0 تستخدم <strong>الأيام الثابتة</strong> لنوع الأجر <code>1010</code>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupGratuity.ImpactFromDateOfJoining",
+      "label": "ImpactFromDateOfJoining",
+      "section": "EmployeeSubGroupGratuities",
+      "aliases": [
+        "loc:ImpactFromDateOfJoining",
+        "dom:EmployeeSubGroupGratuity_ImpactFromDateOfJoining"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت هذه الشريحة تُقاس على مدة الخدمة كاملة من تاريخ الالتحاق.</p><p><strong>لماذا يهم.</strong> يُستخدم عند اختيار الشريحة التي تُقيّم <strong>أيام الأساس</strong> فيها أجر المكافأة: إذا أُشِّر عليه تُقارن مدة خدمة الموظف كاملة بهذه الشريحة وما بعدها، لا المدة المتبقية بعد الشرائح السابقة فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+<div class="input-group">
+    <p-datepicker
+        dateFormat="dd/mm/yy"
+        inputId="dateRangePicker"
+        name="dateRangePicker"
+        dateRangePickerLuxonModifier
+        selectionMode="range"
+        [dateRange]="selectedDateRange"
+        (dateRangeChange)="selectedDateRange = $event; onChange()"
+        [showIcon]="true"
+        [iconDisplay]="'input'"
+        appendTo="body"
+        [baseZIndex]="10000"
+        [readonlyInput]="true"
+        styleClass="w-100" />
+</div>

@@ -1,0 +1,150 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #absenceViolationRuleDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (absenceViolationRuleDetail().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'AbsenceViolationRuleDetails' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'AbsenceViolationRuleDetails' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label required" for="AbsenceViolationRuleDetail_AbsenceViolationRuleId">{{ 'AbsenceViolationRules' | localize }}</label>
+                                <select
+                                    id="AbsenceViolationRuleDetail_AbsenceViolationRuleId"
+                                    #absenceViolationRuleIdInput="ngModel"
+                                    class="form-select"
+                                    name="AbsenceViolationRuleId"
+                                    [ngModel]="absenceViolationRuleDetail().absenceViolationRuleId"
+                                    (ngModelChange)="updateField('absenceViolationRuleId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (rule of absenceViolationRules(); track rule.id) {
+                                        <option [ngValue]="rule.id">{{ rule.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="absenceViolationRuleIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="AbsenceViolationRuleDetail_Step">{{ 'Step' | localize }}</label>
+                                <input
+                                    id="AbsenceViolationRuleDetail_Step"
+                                    class="form-control"
+                                    type="number"
+                                    name="Step"
+                                    [ngModel]="absenceViolationRuleDetail().step"
+                                    (ngModelChange)="updateField('step', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="AbsenceViolationRuleDetail_DayInterval">{{ 'DayInterval' | localize }}</label>
+                                <input
+                                    id="AbsenceViolationRuleDetail_DayInterval"
+                                    class="form-control"
+                                    type="number"
+                                    name="DayInterval"
+                                    [ngModel]="absenceViolationRuleDetail().dayInterval"
+                                    (ngModelChange)="updateField('dayInterval', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="AbsenceViolationRuleDetail_Action">{{ 'Action' | localize }}</label>
+                                <select
+                                    id="AbsenceViolationRuleDetail_Action"
+                                    class="form-select"
+                                    name="Action"
+                                    [ngModel]="absenceViolationRuleDetail().action"
+                                    (ngModelChange)="updateField('action', $event)">
+                                    @for (action of actions; track action.value) {
+                                        <option [ngValue]="action.value">{{ action.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="AbsenceViolationRuleDetail_ActionTypeId">{{ 'ActionType' | localize }}</label>
+                                <input
+                                    id="AbsenceViolationRuleDetail_ActionTypeId"
+                                    class="form-control"
+                                    type="number"
+                                    name="ActionTypeId"
+                                    [ngModel]="absenceViolationRuleDetail().actionTypeId"
+                                    (ngModelChange)="updateField('actionTypeId', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="AbsenceViolationRuleDetail_NotificationConfigId">{{ 'NotificationConfig' | localize }}</label>
+                                <select
+                                    id="AbsenceViolationRuleDetail_NotificationConfigId"
+                                    class="form-select"
+                                    name="NotificationConfigId"
+                                    [ngModel]="absenceViolationRuleDetail().notificationConfigId"
+                                    (ngModelChange)="updateField('notificationConfigId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (config of notificationConfigs(); track config.id) {
+                                        <option [ngValue]="config.id">{{ config.name }}</option>
+                                    }
+                                </select>
+                                <span class="form-text text-muted">{{ 'NotificationConfigStepHint' | localize }}</span>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label d-block">{{ 'HoldTillPunchFound' | localize }}</label>
+                                <div class="form-check form-switch form-check-custom form-check-solid">
+                                    <input
+                                        id="AbsenceViolationRuleDetail_HoldTillPunchFound"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="HoldTillPunchFound"
+                                        [ngModel]="absenceViolationRuleDetail().holdTillPunchFound"
+                                        (ngModelChange)="updateField('holdTillPunchFound', $event)" />
+                                    <label class="form-check-label" for="AbsenceViolationRuleDetail_HoldTillPunchFound">
+                                        {{ 'HoldTillPunchFoundHint' | localize }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!absenceViolationRuleDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

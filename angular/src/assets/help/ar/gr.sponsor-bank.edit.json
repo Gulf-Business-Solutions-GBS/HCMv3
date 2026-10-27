@@ -1,0 +1,107 @@
+{
+  "helpId": "gr.sponsor-bank.edit",
+  "lang": "ar",
+  "title": "بنوك الكفلاء — إنشاء / تحرير",
+  "entity": "HCMv3.GovtRelationsManagement.SponsorBank",
+  "overviewHtml": "<p>حساب بنكي يدفع منه الكفيل الرواتب. لا يمكن أن يكون تاريخ الانتهاء قبل تاريخ البدء. ويمكن اختيار كل حساب له بنك دفع عند إنشاء ملف البنك.</p>",
+  "aliasIndex": {
+    "loc:EmployeeBankId": "SponsorBank.EmployeeBankId",
+    "dom:SponsorBank_EmployeeBankId": "SponsorBank.EmployeeBankId",
+    "loc:PaymentBankId": "SponsorBank.PaymentBankId",
+    "dom:SponsorBank_PaymentBankId": "SponsorBank.PaymentBankId",
+    "loc:AccountNumber": "SponsorBank.AccountNumber",
+    "dom:SponsorBank_AccountNumber": "SponsorBank.AccountNumber",
+    "loc:Iban": "SponsorBank.IBAN",
+    "dom:SponsorBank_Iban": "SponsorBank.IBAN",
+    "loc:StartDate": "SponsorBank.StartDate",
+    "dom:SponsorBank_StartDate": "SponsorBank.StartDate",
+    "loc:EndDate": "SponsorBank.EndDate",
+    "dom:SponsorBank_EndDate": "SponsorBank.EndDate"
+  },
+  "fields": [
+    {
+      "id": "SponsorBank.EmployeeBankId",
+      "label": "EmployeeBankId",
+      "section": "SponsorBanks",
+      "aliases": [
+        "loc:EmployeeBankId",
+        "dom:SponsorBank_EmployeeBankId"
+      ],
+      "rules": "اختياري. يُختار من قائمة البنوك.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البنك الذي يتعامل معه الموظفون.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorBank.PaymentBankId",
+      "label": "PaymentBankId",
+      "section": "SponsorBanks",
+      "aliases": [
+        "loc:PaymentBankId",
+        "dom:SponsorBank_PaymentBankId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة البنوك.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البنك الذي فيه الحساب.</p><p><strong>مثال.</strong> NBK</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorBank.AccountNumber",
+      "label": "AccountNumber",
+      "section": "SponsorBanks",
+      "aliases": [
+        "loc:AccountNumber",
+        "dom:SponsorBank_AccountNumber"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الحساب.</p><p><strong>لماذا يهم.</strong> يُكتب في ترويسة ملف البنك للصيغ التي تتضمن حساب الدفع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorBank.IBAN",
+      "label": "Iban",
+      "section": "SponsorBanks",
+      "aliases": [
+        "loc:Iban",
+        "dom:SponsorBank_Iban"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الآيبان للحساب.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorBank.StartDate",
+      "label": "StartDate",
+      "section": "SponsorBanks",
+      "aliases": [
+        "loc:StartDate",
+        "dom:SponsorBank_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorBank.EndDate",
+      "label": "EndDate",
+      "section": "SponsorBanks",
+      "aliases": [
+        "loc:EndDate",
+        "dom:SponsorBank_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

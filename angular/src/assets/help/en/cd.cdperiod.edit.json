@@ -1,0 +1,43 @@
+{
+  "helpId": "cd.cdperiod.edit",
+  "lang": "en",
+  "title": "CD Periods — Create / Edit",
+  "entity": "HCMv3.CompetencyDevelopment.CDPeriod",
+  "overviewHtml": "<p>A review cycle, usually a year, that employees' CD forms belong to.</p>",
+  "aliasIndex": {
+    "loc:Name": "CDPeriod.Name",
+    "dom:CDPeriod_Name": "CDPeriod.Name",
+    "loc:Closed": "CDPeriod.Closed",
+    "dom:CDPeriod_Closed": "CDPeriod.Closed"
+  },
+  "fields": [
+    {
+      "id": "CDPeriod.Name",
+      "label": "Name",
+      "section": "CDPeriods",
+      "aliases": [
+        "loc:Name",
+        "dom:CDPeriod_Name"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The period's name. It must be unique.</p><p><strong>Example.</strong> 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDPeriod.Closed",
+      "label": "Closed",
+      "section": "CDPeriods",
+      "aliases": [
+        "loc:Closed",
+        "dom:CDPeriod_Closed"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the period is finished.</p><p><strong>Why it matters.</strong> Shown in the list only: forms in a closed period can still be added and changed.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

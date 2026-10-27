@@ -1,0 +1,75 @@
+{
+  "helpId": "gmi.access-unit.edit",
+  "lang": "ar",
+  "title": "وحدات الوصول — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.AccessUnit",
+  "overviewHtml": "<p>وحدة الوصول هي جهاز واحد من أجهزة الحضور أو التحكم في الدخول. وكل بصمة تُستورد من الأجهزة تُسجِّل وحدة الوصول التي جاءت منها، ويُطابَق ذلك بعنوان الجهاز على الشبكة.</p><p>وإذا وردت بصمات من عنوان لا تحمله أي وحدة وصول، تُنشأ وحدة جديدة تلقائياً باسم الجهاز — أو باسم عنوانه إن كان الاسم مستخدماً لوحدة ذات عنوان مختلف. وهكذا تنمو القائمة من تلقاء نفسها كلما أُضيفت أجهزة.</p>",
+  "aliasIndex": {
+    "loc:Code": "AccessUnit.Code",
+    "dom:AccessUnit_Code": "AccessUnit.Code",
+    "loc:NameEn": "AccessUnit.NameEn",
+    "dom:AccessUnit_NameEn": "AccessUnit.NameEn",
+    "loc:NameAr": "AccessUnit.NameAr",
+    "dom:AccessUnit_NameAr": "AccessUnit.NameAr",
+    "loc:IPAddress": "AccessUnit.IPAddress",
+    "dom:AccessUnit_IPAddress": "AccessUnit.IPAddress"
+  },
+  "fields": [
+    {
+      "id": "AccessUnit.Code",
+      "label": "Code",
+      "section": "AccessUnits",
+      "aliases": [
+        "loc:Code",
+        "dom:AccessUnit_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccessUnit.NameEn",
+      "label": "NameEn",
+      "section": "AccessUnits",
+      "aliases": [
+        "loc:NameEn",
+        "dom:AccessUnit_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccessUnit.NameAr",
+      "label": "NameAr",
+      "section": "AccessUnits",
+      "aliases": [
+        "loc:NameAr",
+        "dom:AccessUnit_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccessUnit.IPAddress",
+      "label": "IPAddress",
+      "section": "AccessUnits",
+      "aliases": [
+        "loc:IPAddress",
+        "dom:AccessUnit_IPAddress"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنوان الجهاز على الشبكة، كما يراه استيراد الحضور.</p><p><strong>مثال.</strong> <code>192.168.1.50</code></p><p><strong>لماذا يهم.</strong> به تُطابَق البصمات المستوردة مع هذه الوحدة. فإذا تغيّر عنوان الجهاز، فغيّره هنا أيضاً — وإلا أنشأ الاستيراد التالي وحدة ثانية للعنوان الجديد.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

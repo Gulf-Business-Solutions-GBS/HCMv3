@@ -1,0 +1,43 @@
+{
+  "helpId": "rpt.print-report-permission-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل صلاحيات طباعة التقارير — إنشاء / تحرير",
+  "entity": "HCMv3.ReportManagement.PrintReportPermissionDetail",
+  "overviewHtml": "<p>تقرير واحد ممنوح لدور. ولا يُضاف التقرير نفسه إلا مرة واحدة لكل دور.</p>",
+  "aliasIndex": {
+    "loc:PrintReportPermission": "PrintReportPermissionDetail.PrintReportPermissionId",
+    "dom:PrintReportPermissionDetail_PrintReportPermissionId": "PrintReportPermissionDetail.PrintReportPermissionId",
+    "loc:PrintReport": "PrintReportPermissionDetail.PrintReportId",
+    "dom:PrintReportPermissionDetail_PrintReportId": "PrintReportPermissionDetail.PrintReportId"
+  },
+  "fields": [
+    {
+      "id": "PrintReportPermissionDetail.PrintReportPermissionId",
+      "label": "PrintReportPermission",
+      "section": "PrintReportPermissionDetails",
+      "aliases": [
+        "loc:PrintReportPermission",
+        "dom:PrintReportPermissionDetail_PrintReportPermissionId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة صلاحيات طباعة التقارير.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> منحة التقارير الخاصة بالدور التي ينتمي إليها هذا.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PrintReportPermissionDetail.PrintReportId",
+      "label": "PrintReport",
+      "section": "PrintReportPermissionDetails",
+      "aliases": [
+        "loc:PrintReport",
+        "dom:PrintReportPermissionDetail_PrintReportId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة طباعة التقارير.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التقرير الممنوح.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

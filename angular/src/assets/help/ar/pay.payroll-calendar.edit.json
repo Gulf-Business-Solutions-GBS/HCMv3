@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.payroll-calendar.edit",
+  "lang": "ar",
+  "title": "تقاويم الرواتب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.PayrollCalendar",
+  "overviewHtml": "<p>شهر رواتب واحد لمنطقة رواتب، مع تاريخي بدايته ونهايته.</p><p>ويُرفض تشغيل الرواتب إذا لم يوجد في التقويم سطر لشهر وسنة تاريخ الدفع. ويستخدم تقرير مكافأة نهاية الخدمة تاريخ نهاية السطر فترةً للتقرير.</p>",
+  "aliasIndex": {
+    "loc:PayrollAreaId": "PayrollCalendar.PayrollAreaId",
+    "dom:PayrollCalendar_PayrollAreaId": "PayrollCalendar.PayrollAreaId",
+    "loc:PayrollMonth": "PayrollCalendar.PayrollMonth",
+    "dom:PayrollCalendar_PayrollMonth": "PayrollCalendar.PayrollMonth",
+    "loc:PayrollYear": "PayrollCalendar.PayrollYear",
+    "dom:PayrollCalendar_PayrollYear": "PayrollCalendar.PayrollYear",
+    "loc:StartDate": "PayrollCalendar.StartDate",
+    "dom:PayrollCalendar_StartDate": "PayrollCalendar.StartDate",
+    "loc:EndDate": "PayrollCalendar.EndDate",
+    "dom:PayrollCalendar_EndDate": "PayrollCalendar.EndDate"
+  },
+  "fields": [
+    {
+      "id": "PayrollCalendar.PayrollAreaId",
+      "label": "PayrollAreaId",
+      "section": "PayrollCalendars",
+      "aliases": [
+        "loc:PayrollAreaId",
+        "dom:PayrollCalendar_PayrollAreaId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة مناطق الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> منطقة الرواتب التي يتبعها هذا الشهر من التقويم.</p><p><strong>مثال.</strong> Kuwait Monthly</p>",
+      "adminHtml": "<p>يبحث تشغيل الرواتب عن السطر بالشهر والسنة فقط، ولا يتحقق من أنه يتبع المنطقة الجاري تشغيلها، فأي سطر لأي منطقة يسمح ببدء التشغيل. وهذا مطابق للنظام السابق وقد أُبقي عليه عمداً.</p>",
+      "stub": false
+    },
+    {
+      "id": "PayrollCalendar.PayrollMonth",
+      "label": "PayrollMonth",
+      "section": "PayrollCalendars",
+      "aliases": [
+        "loc:PayrollMonth",
+        "dom:PayrollCalendar_PayrollMonth"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الشهر الذي يغطيه هذا السطر، من 1 إلى 12.</p><p><strong>مثال.</strong> <code>4</code></p><p><strong>لماذا يهم.</strong> يطابقه تشغيل الرواتب مع الشهر الميلادي لتاريخ الدفع.</p>",
+      "adminHtml": "<p>هذا هو الشهر الميلادي، لا الشهر المالي المستخدم في سجل ضبط الرواتب. ويتطابق الاثنان في المنطقة التي سنتها يناير–ديسمبر، ويختلفان في أي سنة مالية أخرى.</p>",
+      "stub": false
+    },
+    {
+      "id": "PayrollCalendar.PayrollYear",
+      "label": "PayrollYear",
+      "section": "PayrollCalendars",
+      "aliases": [
+        "loc:PayrollYear",
+        "dom:PayrollCalendar_PayrollYear"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السنة التي يغطيها هذا السطر.</p><p><strong>مثال.</strong> <code>2026</code></p><p><strong>لماذا يهم.</strong> يطابقها تشغيل الرواتب مع السنة الميلادية لتاريخ الدفع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollCalendar.StartDate",
+      "label": "StartDate",
+      "section": "PayrollCalendars",
+      "aliases": [
+        "loc:StartDate",
+        "dom:PayrollCalendar_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollCalendar.EndDate",
+      "label": "EndDate",
+      "section": "PayrollCalendars",
+      "aliases": [
+        "loc:EndDate",
+        "dom:PayrollCalendar_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

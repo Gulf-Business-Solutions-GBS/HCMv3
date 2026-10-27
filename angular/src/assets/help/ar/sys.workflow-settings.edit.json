@@ -1,0 +1,139 @@
+{
+  "helpId": "sys.workflow-settings.edit",
+  "lang": "ar",
+  "title": "Workflow settings",
+  "entity": "HCMv3.SystemSettings.ManageWorkflowSettings",
+  "overviewHtml": "<p>إعدادات سير عمل الموافقات.</p><p>لا يُقرأ حالياً إلا <strong>تفعيل مجموعة سير العمل</strong>، أما البقية فلا أثر لها.</p><p>لكل شركة سجل إعدادات واحد، ولا يمكن حذفه.</p>",
+  "aliasIndex": {
+    "loc:EnableWorkflowGroup": "ManageWorkflowSettings.EnableWorkflowGroup",
+    "dom:WorkflowSettings_EnableWorkflowGroup": "ManageWorkflowSettings.EnableWorkflowGroup",
+    "loc:EnableOrgUnitTypeInWorkflow": "ManageWorkflowSettings.EnableOrgUnitTypeInWorkflow",
+    "dom:WorkflowSettings_EnableOrgUnitTypeInWorkflow": "ManageWorkflowSettings.EnableOrgUnitTypeInWorkflow",
+    "loc:HideLeavePayDetailsInWorkflow": "ManageWorkflowSettings.HideLeavePayDetailsInWorkflow",
+    "dom:WorkflowSettings_HideLeavePayDetailsInWorkflow": "ManageWorkflowSettings.HideLeavePayDetailsInWorkflow",
+    "loc:DynamicWorkflowSteps": "ManageWorkflowSettings.DynamicWorkflowSteps",
+    "dom:WorkflowSettings_DynamicWorkflowSteps": "ManageWorkflowSettings.DynamicWorkflowSteps",
+    "loc:SendBackToCreator": "ManageWorkflowSettings.SendBackToCreator",
+    "dom:WorkflowSettings_SendBackToCreator": "ManageWorkflowSettings.SendBackToCreator",
+    "loc:DelegateEmployeeListByOrganizationUnitTypeId": "ManageWorkflowSettings.DelegateEmployeeListByOrganizationUnitTypeId",
+    "dom:WorkflowSettings_DelegateEmployeeListByOrganizationUnitTypeId": "ManageWorkflowSettings.DelegateEmployeeListByOrganizationUnitTypeId",
+    "loc:EnableTravelCostOnWorkflowstep": "ManageWorkflowSettings.EnableTravelCostOnWorkflowstep",
+    "dom:WorkflowSettings_EnableTravelCostOnWorkflowstep": "ManageWorkflowSettings.EnableTravelCostOnWorkflowstep",
+    "loc:OvertimeRequestModificationStep": "ManageWorkflowSettings.OvertimeRequestModificationStep",
+    "dom:WorkflowSettings_OvertimeRequestModificationStep": "ManageWorkflowSettings.OvertimeRequestModificationStep"
+  },
+  "fields": [
+    {
+      "id": "ManageWorkflowSettings.EnableWorkflowGroup",
+      "label": "EnableWorkflowGroup",
+      "section": null,
+      "aliases": [
+        "loc:EnableWorkflowGroup",
+        "dom:WorkflowSettings_EnableWorkflowGroup"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت سلاسل الموافقة تعتمد على مجموعة سير العمل للموظف.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُبحث عن إعداد الموافقة للطلب في مجموعة سير العمل في التعيين التنظيمي الحالي للموظف، مع الرجوع إلى المجموعة الافتراضية. وإلا فيحصل كل الموظفين على سلسلة الموافقة نفسها لنوع الطلب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageWorkflowSettings.EnableOrgUnitTypeInWorkflow",
+      "label": "EnableOrgUnitTypeInWorkflow",
+      "section": null,
+      "aliases": [
+        "loc:EnableOrgUnitTypeInWorkflow",
+        "dom:WorkflowSettings_EnableOrgUnitTypeInWorkflow"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان سير العمل يستخدم أنواع الوحدات التنظيمية.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageWorkflowSettings.HideLeavePayDetailsInWorkflow",
+      "label": "HideLeavePayDetailsInWorkflow",
+      "section": null,
+      "aliases": [
+        "loc:HideLeavePayDetailsInWorkflow",
+        "dom:WorkflowSettings_HideLeavePayDetailsInWorkflow"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت تفاصيل أجر الإجازة مخفية عن المعتمدين.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageWorkflowSettings.DynamicWorkflowSteps",
+      "label": "DynamicWorkflowSteps",
+      "section": null,
+      "aliases": [
+        "loc:DynamicWorkflowSteps",
+        "dom:WorkflowSettings_DynamicWorkflowSteps"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت خطوات الموافقة تُبنى ديناميكياً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageWorkflowSettings.SendBackToCreator",
+      "label": "SendBackToCreator",
+      "section": null,
+      "aliases": [
+        "loc:SendBackToCreator",
+        "dom:WorkflowSettings_SendBackToCreator"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يمكن إعادة الطلب إلى منشئه.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageWorkflowSettings.DelegateEmployeeListByOrganizationUnitTypeId",
+      "label": "DelegateEmployeeListByOrganizationUnitTypeId",
+      "section": null,
+      "aliases": [
+        "loc:DelegateEmployeeListByOrganizationUnitTypeId",
+        "dom:WorkflowSettings_DelegateEmployeeListByOrganizationUnitTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الوحدة التنظيمية الذي يحدد من يمكن التفويض إليه.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageWorkflowSettings.EnableTravelCostOnWorkflowstep",
+      "label": "EnableTravelCostOnWorkflowstep",
+      "section": null,
+      "aliases": [
+        "loc:EnableTravelCostOnWorkflowstep",
+        "dom:WorkflowSettings_EnableTravelCostOnWorkflowstep"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت تكلفة السفر تُعرض في خطوات سير العمل.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageWorkflowSettings.OvertimeRequestModificationStep",
+      "label": "OvertimeRequestModificationStep",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeRequestModificationStep",
+        "dom:WorkflowSettings_OvertimeRequestModificationStep"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> خطوة سير العمل التي يمكن فيها تعديل طلب العمل الإضافي.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "helpId": "pay.temp-employee-benefit.edit",
+  "lang": "ar",
+  "title": "مزايا الموظف المؤقتة — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.TempEmployeeBenefit",
+  "overviewHtml": "<p>الدرجة التي يتبعها الموظف في المزايا. ولا يكون للموظف إلا درجة واحدة.</p><p>لا يُقرأ حالياً: فهو يربط الموظف بورقة الدرجة المرجعية، ولا يستخدمه نظام الرواتب.</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "TempEmployeeBenefit.EmployeeId",
+    "dom:TempEmployeeBenefit_EmployeeId": "TempEmployeeBenefit.EmployeeId",
+    "loc:TempBenefitTypeId": "TempEmployeeBenefit.TempBenefitTypeId",
+    "dom:TempEmployeeBenefit_TempBenefitTypeId": "TempEmployeeBenefit.TempBenefitTypeId"
+  },
+  "fields": [
+    {
+      "id": "TempEmployeeBenefit.EmployeeId",
+      "label": "EmployeeId",
+      "section": "TempEmployeeBenefits",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:TempEmployeeBenefit_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempEmployeeBenefit.TempBenefitTypeId",
+      "label": "TempBenefitTypeId",
+      "section": "TempEmployeeBenefits",
+      "aliases": [
+        "loc:TempBenefitTypeId",
+        "dom:TempEmployeeBenefit_TempBenefitTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع المزايا المؤقتة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> درجة المزايا.</p><p><strong>مثال.</strong> الدرجة 5</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

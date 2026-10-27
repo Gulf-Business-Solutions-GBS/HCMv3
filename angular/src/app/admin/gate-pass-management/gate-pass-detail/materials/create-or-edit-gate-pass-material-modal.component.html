@@ -1,0 +1,106 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'GatePassMaterials' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="GatePassMaterial_ItemCode">{{ 'ItemCode' | localize }}</label>
+                                <input
+                                    id="GatePassMaterial_ItemCode"
+                                    #itemCodeInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="ItemCode"
+                                    [ngModel]="record().itemCode"
+                                    (ngModelChange)="updateField('itemCode', $event)"
+                                    required
+                                    maxlength="64" />
+                                <validation-messages [formCtrl]="itemCodeInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="GatePassMaterial_ItemName">{{ 'ItemName' | localize }}</label>
+                                <input
+                                    id="GatePassMaterial_ItemName"
+                                    #itemNameInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="ItemName"
+                                    [ngModel]="record().itemName"
+                                    (ngModelChange)="updateField('itemName', $event)"
+                                    required
+                                    maxlength="256" />
+                                <validation-messages [formCtrl]="itemNameInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="GatePassMaterial_Quantity">{{ 'Quantity' | localize }}</label>
+                                <input
+                                    id="GatePassMaterial_Quantity"
+                                    #quantityInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="Quantity"
+                                    [ngModel]="record().quantity"
+                                    (ngModelChange)="updateField('quantity', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="quantityInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="GatePassMaterial_ExpectedReturnDate">{{ 'ExpectedReturnDate' | localize }}</label>
+                                <input
+                                    id="GatePassMaterial_ExpectedReturnDate"
+                                    #expectedReturnDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="ExpectedReturnDate"
+                                    [ngModel]="record().expectedReturnDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('expectedReturnDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="expectedReturnDateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="GatePassMaterial_ReturnedQuantity">{{ 'ReturnedQuantity' | localize }}</label>
+                                <input
+                                    id="GatePassMaterial_ReturnedQuantity"
+                                    #returnedQuantityInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="ReturnedQuantity"
+                                    [ngModel]="record().returnedQuantity"
+                                    (ngModelChange)="updateField('returnedQuantity', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="returnedQuantityInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

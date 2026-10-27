@@ -1,0 +1,20 @@
+@if (steps().length) {
+    <nav class="rb" [attr.aria-label]="'Breadcrumb' | localize">
+        @for (step of steps(); track $index) {
+            @if (!$first) {
+                <span class="rb-sep" aria-hidden="true">›</span>
+            }
+            @if (step.route) {
+                <a class="rb-step" [routerLink]="[step.route]">
+                    {{ step.isKey ? (step.label | localize) : step.label }}
+                </a>
+            } @else {
+                <!-- No route: this is the page you are on. A link that reloads the same page is a small
+                     lie about what clicking it does. -->
+                <span class="rb-step rb-current" aria-current="page">
+                    {{ step.isKey ? (step.label | localize) : step.label }}
+                </span>
+            }
+        }
+    </nav>
+}

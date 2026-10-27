@@ -1,0 +1,89 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'GatePassVendors' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="GatePassVendor_Code">{{ 'Code' | localize }}</label>
+                                <input
+                                    id="GatePassVendor_Code"
+                                    class="form-control"
+                                    type="text"
+                                    name="Code"
+                                    [ngModel]="record().code"
+                                    (ngModelChange)="updateField('code', $event)"
+                                    maxlength="64" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="GatePassVendor_NameEn">{{ 'NameEn' | localize }}</label>
+                                <input
+                                    id="GatePassVendor_NameEn"
+                                    #nameEnInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="NameEn"
+                                    [ngModel]="record().nameEn"
+                                    (ngModelChange)="updateField('nameEn', $event)"
+                                    required
+                                    maxlength="256" />
+                                <validation-messages [formCtrl]="nameEnInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="GatePassVendor_NameAr">{{ 'NameAr' | localize }}</label>
+                                <input
+                                    id="GatePassVendor_NameAr"
+                                    #nameArInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="NameAr"
+                                    [ngModel]="record().nameAr"
+                                    (ngModelChange)="updateField('nameAr', $event)"
+                                    required
+                                    maxlength="256" />
+                                <validation-messages [formCtrl]="nameArInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="GatePassVendor_VendorAddress">{{ 'VendorAddress' | localize }}</label>
+                                <textarea
+                                    id="GatePassVendor_VendorAddress"
+                                    class="form-control"
+                                    name="VendorAddress"
+                                    rows="3"
+                                    [ngModel]="record().vendorAddress"
+                                    (ngModelChange)="updateField('vendorAddress', $event)">
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

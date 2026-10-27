@@ -1,0 +1,135 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EmployeePaymentReport' | localize" [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [(fromDate)]="fromDate"
+                    [(toDate)]="toDate"
+                    [(employeeCode)]="employeeCode"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'WageType' | localize }}</label>
+                        <p-select
+                            [options]="wageTypeOptions()"
+                            [ngModel]="wageTypeCode()"
+                            (ngModelChange)="wageTypeCode.set($event)"
+                            [showClear]="true"
+                            optionLabel="label"
+                            optionValue="value"
+                            styleClass="w-100"
+                            [placeholder]="'WageType' | localize" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '190rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 120px" pSortableColumn="employeeCode">{{ 'Code' | localize }}</th>
+                                    <th style="min-width: 180px" pSortableColumn="employeeName">{{ 'Employee' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'JobTitle' | localize }}</th>
+                                    @if (orgLevels.isShown(1)) {
+                                        <th style="min-width: 130px">{{ orgLevels.caption(1) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(2)) {
+                                        <th style="min-width: 130px">{{ orgLevels.caption(2) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(3)) {
+                                        <th style="min-width: 130px">{{ orgLevels.caption(3) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(4)) {
+                                        <th style="min-width: 130px">{{ orgLevels.caption(4) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(5)) {
+                                        <th style="min-width: 130px">{{ orgLevels.caption(5) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(6)) {
+                                        <th style="min-width: 130px">{{ orgLevels.caption(6) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(7)) {
+                                        <th style="min-width: 130px">{{ orgLevels.caption(7) }}</th>
+                                    }
+                                    <th style="min-width: 140px">{{ 'WageType' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'PaymentDate' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'UnitType' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'Number' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'Currency' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'CostCenter' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'ExpectedAmount' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.employeeCode }}" class="hide-overflown">{{ record.employeeCode }}</span>
+                                    </td>
+                                    <td style="min-width: 180px">{{ record.employeeName }}</td>
+                                    <td style="min-width: 140px">{{ record.jobTitleName }}</td>
+                                    @if (orgLevels.isShown(1)) {
+                                        <td style="min-width: 130px">{{ record.orgLevel1 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(2)) {
+                                        <td style="min-width: 130px">{{ record.orgLevel2 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(3)) {
+                                        <td style="min-width: 130px">{{ record.orgLevel3 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(4)) {
+                                        <td style="min-width: 130px">{{ record.orgLevel4 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(5)) {
+                                        <td style="min-width: 130px">{{ record.orgLevel5 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(6)) {
+                                        <td style="min-width: 130px">{{ record.orgLevel6 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(7)) {
+                                        <td style="min-width: 130px">{{ record.orgLevel7 }}</td>
+                                    }
+                                    <td style="min-width: 140px">{{ record.wageTypeName }}</td>
+                                    <td style="min-width: 140px">{{ record.paymentDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 120px">{{ record.unitType }}</td>
+                                    <td style="min-width: 120px">{{ record.number }}</td>
+                                    <td style="min-width: 120px">{{ record.currencyShortForm }}</td>
+                                    <td style="min-width: 140px">{{ record.costCenterName }}</td>
+                                    <td style="min-width: 150px">{{ record.expectedAmount }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

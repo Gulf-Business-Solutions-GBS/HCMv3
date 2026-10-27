@@ -1,0 +1,260 @@
+<div [@routerTransition]>
+    <sub-header [title]="'ApiDictionary' | localize" [description]="'ApiDictionaryIntro' | localize" />
+
+    <div [class]="containerClass">
+        <div [busyIf]="isLoading()">
+            <!-- The stability warning first, above anything a reader might copy. -->
+            <div class="alert alert-warning d-flex align-items-start gap-3">
+                <i class="fa fa-exclamation-triangle mt-1" aria-hidden="true"></i>
+                <span>{{ 'ApiDictionaryMayChange' | localize }}</span>
+            </div>
+
+            <!--begin::Record type-->
+            <div class="card card-custom mb-5">
+                <div class="card-body d-flex flex-wrap align-items-center gap-4">
+                    <label class="form-label fw-bold mb-0" for="ApiEntity">{{ 'ApiEntity' | localize }}</label>
+                    <select
+                        id="ApiEntity"
+                        class="form-select api-entity-select"
+                        [ngModel]="selectedName()"
+                        (ngModelChange)="selectEntity($event)">
+                        @for (item of entities(); track item.name) {
+                            <option [value]="item.name">{{ item.displayName }}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <!--end::Record type-->
+
+            @if (entity()) {
+                <!--begin::Connecting-->
+                <div class="card card-custom mb-5">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ 'ApiConnecting' | localize }}</h3>
+                    </div>
+                    <div class="card-body">
+                        <ol class="api-steps mb-0">
+                            <li>{{ 'ApiAuthSignIn' | localize: signInUrl() }}</li>
+                            <li>{{ 'ApiAuthBearer' | localize }}</li>
+                            <li>{{ 'ApiAuthTenant' | localize }}</li>
+                            <li>{{ 'ApiResponseWrapper' | localize }}</li>
+                        </ol>
+                    </div>
+                </div>
+                <!--end::Connecting-->
+
+                <!--begin::Operations-->
+                <div class="card card-custom mb-5">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ 'SupportedOperations' | localize }}</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-row-bordered align-middle api-table">
+                                <thead>
+                                    <tr class="fw-bold">
+                                        <th>{{ 'ApiOperation' | localize }}</th>
+                                        <th>{{ 'Method' | localize }}</th>
+                                        <th>{{ 'ApiUrl' | localize }}</th>
+                                        <th>{{ 'RequiredPermission' | localize }}</th>
+                                        <th>{{ 'ApiRequestFields' | localize }}</th>
+                                        <th>{{ 'ApiResponse' | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (row of operationRows(); track row.name) {
+                                        <tr>
+                                            <td class="fw-semibold text-nowrap">
+                                                {{ operationLabel(row.name) }}
+                                                @if (row.name === 'Upsert' && row.operation) {
+                                                    <div class="text-muted fs-7 fw-normal api-hint">
+                                                        {{ 'ApiUpsertHint' | localize }}
+                                                    </div>
+                                                }
+                                            </td>
+                                            @if (row.operation; as op) {
+                                                <td>
+                                                    <span class="badge" [class]="methodClass(op)">{{ op.httpMethod }}</span>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <!-- LTR even in Arabic: a URL read right to left is a wrong URL. -->
+                                                        <code class="api-url" dir="ltr">{{ op.url }}</code>
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-icon btn-sm btn-light"
+                                                            [title]="'Copy' | localize"
+                                                            [attr.aria-label]="'Copy' | localize"
+                                                            (click)="copy(op.url)">
+                                                            <i class="fa fa-copy" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    @for (permission of op.permissions; track permission) {
+                                                        <div class="api-mono" dir="ltr">{{ permission }}</div>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <span class="api-mono" dir="ltr">{{ op.requestFields.join(', ') }}</span>
+                                                </td>
+                                                <td>
+                                                    <code class="api-mono" dir="ltr">{{ op.response }}</code>
+                                                </td>
+                                            } @else {
+                                                <td colspan="5" class="text-muted">
+                                                    {{ 'ApiOperationNotSupported' | localize }}
+                                                </td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Operations-->
+
+                <!--begin::Fields-->
+                <div class="card card-custom">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ 'ApiFields' | localize }}</h3>
+                    </div>
+                    <div class="card-body">
+                        <!--begin::Filter-->
+                        <div class="d-flex flex-wrap align-items-center gap-4 mb-4">
+                            <input
+                                type="text"
+                                class="form-control api-filter"
+                                [placeholder]="'ApiFilterFields' | localize"
+                                [attr.aria-label]="'ApiFilterFields' | localize"
+                                [ngModel]="filterText()"
+                                (ngModelChange)="filterText.set($event)" />
+
+                            <label class="form-check form-check-custom form-check-solid">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    [ngModel]="onlyRequired()"
+                                    (ngModelChange)="onlyRequired.set($event)" />
+                                <span class="form-check-label">{{ 'ApiOnlyRequired' | localize }}</span>
+                            </label>
+
+                            <label class="form-check form-check-custom form-check-solid">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    [ngModel]="onlySensitive()"
+                                    (ngModelChange)="onlySensitive.set($event)" />
+                                <span class="form-check-label">{{ 'ApiOnlySensitive' | localize }}</span>
+                            </label>
+
+                            <label class="form-check form-check-custom form-check-solid">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    [ngModel]="onlyWritable()"
+                                    (ngModelChange)="onlyWritable.set($event)" />
+                                <span class="form-check-label">{{ 'ApiOnlyWritable' | localize }}</span>
+                            </label>
+
+                            <button type="button" class="btn btn-sm btn-light" (click)="clearFilters()">
+                                {{ 'Clear' | localize }}
+                            </button>
+
+                            <span class="text-muted ms-auto">
+                                {{ 'ApiShowingFields' | localize: visibleFields().length : allFields().length }}
+                            </span>
+                        </div>
+                        <!--end::Filter-->
+
+                        <div class="table-responsive api-fields-scroll">
+                            <table class="table table-row-bordered table-hover align-middle api-table">
+                                <thead>
+                                    <tr class="fw-bold">
+                                        <th>{{ 'PropertyName' | localize }}</th>
+                                        <th>{{ 'ApiLabel' | localize }}</th>
+                                        <th>{{ 'Type' | localize }}</th>
+                                        <th class="text-center">{{ 'Key' | localize }}</th>
+                                        <th class="text-center">{{ 'Required' | localize }}</th>
+                                        <th class="text-center">{{ 'ApiMaxLength' | localize }}</th>
+                                        <th class="text-center">{{ 'ApiNullable' | localize }}</th>
+                                        <th class="text-center">{{ 'ApiInQueryResults' | localize }}</th>
+                                        <th class="text-center">{{ 'ApiInReadResult' | localize }}</th>
+                                        <th class="text-center">{{ 'ApiCreatable' | localize }}</th>
+                                        <th class="text-center">{{ 'ApiUpdatable' | localize }}</th>
+                                        <th>{{ 'ApiLinksTo' | localize }}</th>
+                                        <th>{{ 'ApiSensitive' | localize }}</th>
+                                        <th>{{ 'ApiNote' | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (field of visibleFields(); track field.propertyName) {
+                                        <tr>
+                                            <td><code class="api-mono" dir="ltr">{{ field.propertyName }}</code></td>
+                                            <td>{{ field.label }}</td>
+                                            <td class="text-nowrap">
+                                                <span class="api-mono" dir="ltr">{{ field.type }}</span>
+                                                @if (field.enumValues?.length) {
+                                                    <div class="text-muted fs-7 api-mono" dir="ltr">
+                                                        {{ field.enumValues.join(', ') }}
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td class="text-center">
+                                                <ng-container *ngTemplateOutlet="flag; context: { $implicit: field.isKey }" />
+                                            </td>
+                                            <td class="text-center">
+                                                <ng-container *ngTemplateOutlet="flag; context: { $implicit: field.isRequired }" />
+                                            </td>
+                                            <td class="text-center">{{ field.maxLength ?? '' }}</td>
+                                            <td class="text-center">
+                                                <ng-container *ngTemplateOutlet="flag; context: { $implicit: field.isNullable }" />
+                                            </td>
+                                            <td class="text-center">
+                                                <ng-container *ngTemplateOutlet="flag; context: { $implicit: field.inQueryResults }" />
+                                            </td>
+                                            <td class="text-center">
+                                                <ng-container *ngTemplateOutlet="flag; context: { $implicit: field.inReadResult }" />
+                                            </td>
+                                            <td class="text-center">
+                                                <ng-container *ngTemplateOutlet="flag; context: { $implicit: field.isCreatable }" />
+                                            </td>
+                                            <td class="text-center">
+                                                <ng-container *ngTemplateOutlet="flag; context: { $implicit: field.isUpdatable }" />
+                                            </td>
+                                            <td>
+                                                @if (field.linksTo) {
+                                                    <span class="api-mono" dir="ltr">{{ field.linksTo }}</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (field.sensitiveCategory) {
+                                                    <span class="badge badge-light-danger">
+                                                        {{ 'ApiSensitive' + field.sensitiveCategory | localize }}
+                                                    </span>
+                                                }
+                                            </td>
+                                            <td class="text-muted fs-7">{{ field.note ?? '' }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Fields-->
+            }
+        </div>
+    </div>
+</div>
+
+<!-- A tick for true and nothing for false: a column of "false" is noise, and blank reads as "no" at a glance. -->
+<ng-template #flag let-value>
+    @if (value) {
+        <i class="fa fa-check text-success" aria-hidden="true"></i>
+        <span class="visually-hidden">{{ 'Yes' | localize }}</span>
+    } @else {
+        <span class="visually-hidden">{{ 'No' | localize }}</span>
+    }
+</ng-template>

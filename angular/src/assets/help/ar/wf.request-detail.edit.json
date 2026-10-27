@@ -1,0 +1,459 @@
+{
+  "helpId": "wf.request-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل الطلبات — إنشاء / تحرير",
+  "entity": "HCMv3.Workflow.RequestDetail",
+  "overviewHtml": "<p>خطوة واحدة من سلسلة موافقات: من يوافق عليها، وهل يكفي واحد منهم أم يجب أن يوافقوا جميعاً، وما المسموح لهم، ومتى يُذكَّر بالطلب أو يُصعَّد. تُرقّم الخطوات من 1 وينتقل الطلب خطوة واحدة عند كل موافقة، والموافقة على الخطوة الأخيرة هي موافقة على الطلب. ويجب أن تكون أيام التذكير أقل من أيام التصعيد.</p>",
+  "aliasIndex": {
+    "loc:RequestMaster": "RequestDetail.RequestMasterId",
+    "dom:RequestDetail_RequestMasterName": "RequestDetail.RequestMasterId",
+    "loc:Step": "RequestDetail.Step",
+    "dom:RequestDetail_Step": "RequestDetail.Step",
+    "loc:WorkflowRole": "RequestDetail.WorkflowRoleId",
+    "dom:RequestDetail_WorkflowRoleId": "RequestDetail.WorkflowRoleId",
+    "loc:ApprovalRequire": "RequestDetail.ApprovalRequire",
+    "dom:RequestDetail_ApprovalRequire": "RequestDetail.ApprovalRequire",
+    "loc:WorkflowRoleGroup": "RequestDetail.WorkflowRoleGroup",
+    "dom:RequestDetail_WorkflowRoleGroup": "RequestDetail.WorkflowRoleGroup",
+    "loc:OrgLevel": "RequestDetail.WorkflowRoleOrgId",
+    "dom:RequestDetail_WorkflowRoleOrgId": "RequestDetail.WorkflowRoleOrgId",
+    "loc:Person": "RequestDetail.Person",
+    "dom:RequestDetail_Person": "RequestDetail.Person",
+    "loc:ApproverPerson": "RequestDetail.ApproverPerson",
+    "dom:RequestDetail_ApproverPerson": "RequestDetail.ApproverPerson",
+    "loc:EscalateAfterDays": "RequestDetail.EscalateAfterDays",
+    "dom:RequestDetail_EscalateAfterDays": "RequestDetail.EscalateAfterDays",
+    "loc:EscalateWorkflowRole": "RequestDetail.EscalateWorkflowRoleId",
+    "dom:RequestDetail_EscalateWorkflowRoleId": "RequestDetail.EscalateWorkflowRoleId",
+    "loc:EscalateWorkflowRoleGroup": "RequestDetail.EscalateWorkflowRoleGroup",
+    "dom:RequestDetail_EscalateWorkflowRoleGroup": "RequestDetail.EscalateWorkflowRoleGroup",
+    "loc:EscalateWorkflowRoleOrg": "RequestDetail.EscalateWorkflowRoleOrgId",
+    "dom:RequestDetail_EscalateWorkflowRoleOrgId": "RequestDetail.EscalateWorkflowRoleOrgId",
+    "loc:ReminderDays": "RequestDetail.ReminderDays",
+    "dom:RequestDetail_ReminderDays": "RequestDetail.ReminderDays",
+    "loc:OnSubmit": "RequestDetail.SubmitNotificationConfigId",
+    "dom:RequestDetail_SubmitNotificationConfigId": "RequestDetail.SubmitNotificationConfigId",
+    "loc:OnApprove": "RequestDetail.NotificationConfigId",
+    "dom:RequestDetail_NotificationConfigId": "RequestDetail.NotificationConfigId",
+    "loc:OnReject": "RequestDetail.RejectNotificationConfigId",
+    "dom:RequestDetail_RejectNotificationConfigId": "RequestDetail.RejectNotificationConfigId",
+    "loc:OnSendBack": "RequestDetail.SendBackNotificationConfigId",
+    "dom:RequestDetail_SendBackNotificationConfigId": "RequestDetail.SendBackNotificationConfigId",
+    "loc:OnRemark": "RequestDetail.RemarksNotificationConfigId",
+    "dom:RequestDetail_RemarksNotificationConfigId": "RequestDetail.RemarksNotificationConfigId",
+    "loc:OnReassign": "RequestDetail.AssignNotificationConfigId",
+    "dom:RequestDetail_AssignNotificationConfigId": "RequestDetail.AssignNotificationConfigId",
+    "loc:OnReminder": "RequestDetail.ReminderNotificationConfigId",
+    "dom:RequestDetail_ReminderNotificationConfigId": "RequestDetail.ReminderNotificationConfigId",
+    "loc:ShowPayment": "RequestDetail.ShowPayment",
+    "dom:RequestDetail_ShowPayment": "RequestDetail.ShowPayment",
+    "loc:CanSendBack": "RequestDetail.CanSendBack",
+    "dom:RequestDetail_CanSendBack": "RequestDetail.CanSendBack",
+    "loc:CanReject": "RequestDetail.CanReject",
+    "dom:RequestDetail_CanReject": "RequestDetail.CanReject",
+    "loc:ShouldEscalate": "RequestDetail.ShouldEscalate",
+    "dom:RequestDetail_ShouldEscalate": "RequestDetail.ShouldEscalate",
+    "loc:EscalateNextLevel": "RequestDetail.EscalateNextLevel",
+    "dom:RequestDetail_EscalateNextLevel": "RequestDetail.EscalateNextLevel",
+    "loc:EnableReadLog": "RequestDetail.EnableReadLog",
+    "dom:RequestDetail_EnableReadLog": "RequestDetail.EnableReadLog",
+    "loc:IsCommentRequire": "RequestDetail.IsCommentRequire",
+    "dom:RequestDetail_IsCommentRequire": "RequestDetail.IsCommentRequire",
+    "loc:SignatoryStep": "RequestDetail.SignatoryStep",
+    "dom:RequestDetail_SignatoryStep": "RequestDetail.SignatoryStep"
+  },
+  "fields": [
+    {
+      "id": "RequestDetail.RequestMasterId",
+      "label": "RequestMaster",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:RequestMaster",
+        "dom:RequestDetail_RequestMasterName"
+      ],
+      "rules": "اختياري. يُختار من قائمة الطلبات الأساسية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سلسلة الموافقات التي تنتمي إليها هذه الخطوة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.Step",
+      "label": "Step",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:Step",
+        "dom:RequestDetail_Step"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موقع الخطوة في السلسلة، بدءاً من 1.</p><p><strong>مثال.</strong> 2</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.WorkflowRoleId",
+      "label": "WorkflowRole",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:WorkflowRole",
+        "dom:RequestDetail_WorkflowRoleId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أدوار سير العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دور سير العمل الذي يوافق شاغلوه على هذه الخطوة.</p><p><strong>مثال.</strong> مسؤول الرواتب</p><p><strong>لماذا يهم.</strong> يُستخدم فقط عندما يكون الشخص المعتمد \"شخص\": يصبح كل موظف يشغل الدور معتمداً، مع التضييق حسب مجموعة دور سير العمل. ولا يُستخدم مع خيارات المديرين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.ApprovalRequire",
+      "label": "ApprovalRequire",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:ApprovalRequire",
+        "dom:RequestDetail_ApprovalRequire"
+      ],
+      "rules": "إلزامي. إحدى القيم: Single، Parallel.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان معتمد واحد يكفي أم يجب أن يوافق الجميع.</p><p><strong>لماذا يهم.</strong> فردي: أول معتمد يوافق يُكمل الخطوة. متوازٍ: لا تكتمل الخطوة إلا عندما يوافق كل المعتمدين عليها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.WorkflowRoleGroup",
+      "label": "WorkflowRoleGroup",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:WorkflowRoleGroup",
+        "dom:RequestDetail_WorkflowRoleGroup"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، الشركة، الإدارة، الفرع، مركز التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يحصر شاغلي الدور في جزء المنظمة الخاص بمقدّم الطلب.</p><p><strong>لماذا يهم.</strong> القسم يُبقي الشاغلين في الوحدة التنظيمية الحالية لمقدّم الطلب، والفرع من هم في موقع العمل نفسه، ومركز التكلفة من هم على مركز التكلفة نفسه. ولا شيء والشركة يُبقيان الجميع. وإذا لم يطابق أحد، يُبقى جميع الشاغلين بدلاً من لا أحد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.WorkflowRoleOrgId",
+      "label": "OrgLevel",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OrgLevel",
+        "dom:RequestDetail_WorkflowRoleOrgId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع وحدات الشركة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مستوى وحدة تنظيمية للدور.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.Person",
+      "label": "Person",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:Person",
+        "dom:RequestDetail_Person"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، Themselves، الإدارة، SelfSubordinates.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طلب من تنطبق عليه الخطوة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.ApproverPerson",
+      "label": "ApproverPerson",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:ApproverPerson",
+        "dom:RequestDetail_ApproverPerson"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، الشخص، PersonManager، ManagerLevel2، ManagerLevel3، ManagerLevel4، ManagerLevel5، ManagerLevel6، ManagerLevel7.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يوافق: شاغلو الدور، أو مدير أعلى من مقدّم الطلب.</p><p><strong>مثال.</strong> مدير الشخص</p><p><strong>لماذا يهم.</strong> \"شخص\" يستخدم دور سير العمل. و\"مدير الشخص\" هو المدير المباشر لمقدّم الطلب، ومستوى المدير 2 إلى 7 يصعد ذلك العدد من المستويات في خط الإبلاغ. وإذا انتهى الخط قبل ذلك المستوى، أو كان الخيار \"لا شيء\"، يُستخدم المعتمد الافتراضي للسلسلة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.EscalateAfterDays",
+      "label": "EscalateAfterDays",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:EscalateAfterDays",
+        "dom:RequestDetail_EscalateAfterDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأيام دون إجراء قبل تصعيد الطلب.</p><p><strong>مثال.</strong> 5</p><p><strong>لماذا يهم.</strong> تُحسب من آخر إجراء مسجّل على الطلب. ولا يُستخدم إلا عند تحديد \"يجب التصعيد\"، والقيمة 0 توقف التصعيد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.EscalateWorkflowRoleId",
+      "label": "EscalateWorkflowRole",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:EscalateWorkflowRole",
+        "dom:RequestDetail_EscalateWorkflowRoleId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أدوار سير العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دور سير العمل الذي يُسلَّم إليه الطلب المتوقف.</p><p><strong>لماذا يهم.</strong> يُستخدم عندما لا يُحدَّد \"التصعيد للمستوى التالي\": يبقى الطلب في الخطوة نفسها ويُستبدل معتمدوه بشاغلي هذا الدور، مع استبعاد من كان عليه أصلاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.EscalateWorkflowRoleGroup",
+      "label": "EscalateWorkflowRoleGroup",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:EscalateWorkflowRoleGroup",
+        "dom:RequestDetail_EscalateWorkflowRoleGroup"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، الشركة، الإدارة، الفرع، مركز التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يحصر شاغلي دور التصعيد في جزء المنظمة الخاص بمقدّم الطلب.</p><p><strong>لماذا يهم.</strong> يعمل بالطريقة نفسها التي تعمل بها مجموعة دور سير العمل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.EscalateWorkflowRoleOrgId",
+      "label": "EscalateWorkflowRoleOrg",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:EscalateWorkflowRoleOrg",
+        "dom:RequestDetail_EscalateWorkflowRoleOrgId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع وحدات الشركة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مستوى وحدة تنظيمية لدور التصعيد.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.ReminderDays",
+      "label": "ReminderDays",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:ReminderDays",
+        "dom:RequestDetail_ReminderDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأيام بين كل تذكير للمعتمدين الذين لم يتخذوا إجراءً.</p><p><strong>مثال.</strong> 2 — تذكيرات في الأيام 2 و4 و6</p><p><strong>لماذا يهم.</strong> يُرسل تذكير إلى المعتمدين الذين لم يتخذوا إجراءً في كل مرة تبلغ فيها الأيام منذ آخر إجراء مضاعفاً لهذا العدد. والقيمة 0 لا ترسل تذكيرات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.SubmitNotificationConfigId",
+      "label": "OnSubmit",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnSubmit",
+        "dom:RequestDetail_SubmitNotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند وصول الطلب إلى هذه الخطوة.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.NotificationConfigId",
+      "label": "OnApprove",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnApprove",
+        "dom:RequestDetail_NotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند اعتماد هذه الخطوة.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.RejectNotificationConfigId",
+      "label": "OnReject",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnReject",
+        "dom:RequestDetail_RejectNotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند رفض هذه الخطوة.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.SendBackNotificationConfigId",
+      "label": "OnSendBack",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnSendBack",
+        "dom:RequestDetail_SendBackNotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند إعادة الطلب من هذه الخطوة.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.RemarksNotificationConfigId",
+      "label": "OnRemark",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnRemark",
+        "dom:RequestDetail_RemarksNotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند إضافة تعليق على الطلب.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.AssignNotificationConfigId",
+      "label": "OnReassign",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnReassign",
+        "dom:RequestDetail_AssignNotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند إعادة إسناد الطلب.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.ReminderNotificationConfigId",
+      "label": "OnReminder",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnReminder",
+        "dom:RequestDetail_ReminderNotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند بقاء الطلب بانتظار الإجراء.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.ShowPayment",
+      "label": "ShowPayment",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:ShowPayment",
+        "dom:RequestDetail_ShowPayment"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المعتمد يرى تفاصيل الدفع.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.CanSendBack",
+      "label": "CanSendBack",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:CanSendBack",
+        "dom:RequestDetail_CanSendBack"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز للمعتمدين في هذه الخطوة إعادة الطلب.</p><p><strong>لماذا يهم.</strong> الإعادة تُرجع الطلب إلى منشئه كمسودة في الخطوة 1، حيث يمكن تعديله وتقديمه من جديد. وعند عدم التحديد يُخفى الخيار ويُرفض.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.CanReject",
+      "label": "CanReject",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:CanReject",
+        "dom:RequestDetail_CanReject"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز للمعتمدين في هذه الخطوة رفض الطلب.</p><p><strong>لماذا يهم.</strong> الرفض يُنهي الطلب. وعند عدم التحديد يُخفى الخيار ويُرفض.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.ShouldEscalate",
+      "label": "ShouldEscalate",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:ShouldEscalate",
+        "dom:RequestDetail_ShouldEscalate"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الطلب المتوقف في هذه الخطوة يُصعَّد.</p><p><strong>لماذا يهم.</strong> يتطلب أن تكون أيام التصعيد أكبر من 0.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.EscalateNextLevel",
+      "label": "EscalateNextLevel",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:EscalateNextLevel",
+        "dom:RequestDetail_EscalateNextLevel"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان التصعيد ينقل الطلب إلى الخطوة التالية.</p><p><strong>لماذا يهم.</strong> عند التحديد، ينتقل الطلب المتوقف إلى الخطوة التالية كأنه وُوفق عليه، لكن المعاملة نفسها لا تُطبَّق — فذلك لا يحدث إلا بموافقة شخص على الخطوة الأخيرة. ويُترك الطلب الذي في خطوته الأخيرة مكانه. وعند عدم التحديد، يتولى دور التصعيد الخطوة نفسها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.EnableReadLog",
+      "label": "EnableReadLog",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:EnableReadLog",
+        "dom:RequestDetail_EnableReadLog"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان فتح الطلب في هذه الخطوة يُسجَّل.</p><p><strong>لماذا يهم.</strong> في أول مرة يفتحه فيها كل شخص في هذه الخطوة، يُضاف قيد قراءة إلى سجل القراءة وإلى سجل النشاط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.IsCommentRequire",
+      "label": "IsCommentRequire",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:IsCommentRequire",
+        "dom:RequestDetail_IsCommentRequire"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان على المعتمدين كتابة تعليق للموافقة.</p><p><strong>لماذا يهم.</strong> تُرفض الموافقة دون تعليق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.SignatoryStep",
+      "label": "SignatoryStep",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:SignatoryStep",
+        "dom:RequestDetail_SignatoryStep"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت هذه خطوة توقيع تحتاج شخصاً لم يوقّع من قبل.</p><p><strong>لماذا يهم.</strong> يُستبعد هنا كل من وافق على خطوة توقيع سابقة من الطلب نفسه، حتى لا يوقّع شخص واحد مرتين. وإذا لم يبقَ أحد، يُستخدم المعتمد الافتراضي للسلسلة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

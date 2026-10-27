@@ -1,0 +1,85 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #holidayPeriodForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (holidayPeriod().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'HolidayPeriod' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'HolidayPeriod' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label required" for="HolidayPeriod_HolidayId">{{ 'Holiday' | localize }}</label>
+                            <select
+                                id="HolidayPeriod_HolidayId"
+                                #holidayIdInput="ngModel"
+                                class="form-select"
+                                name="HolidayId"
+                                [ngModel]="holidayPeriod().holidayId"
+                                (ngModelChange)="updateField('holidayId', $event)"
+                                required>
+                                <option [ngValue]="undefined"></option>
+                                @for (holiday of holidays(); track holiday.id) {
+                                    <option [ngValue]="holiday.id">{{ holiday.nameEn }}</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="holidayIdInput" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label required" for="HolidayPeriod_HolidayDate">{{ 'HolidayDate' | localize }}</label>
+                            <input
+                                id="HolidayPeriod_HolidayDate"
+                                #holidayDateInput="ngModel"
+                                type="date"
+                                class="form-control"
+                                name="HolidayDate"
+                                [ngModel]="holidayPeriod().holidayDate?.toISODate()"
+                                (ngModelChange)="updateDateField('holidayDate', $event)"
+                                required />
+                            <validation-messages [formCtrl]="holidayDateInput" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!holidayPeriodForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

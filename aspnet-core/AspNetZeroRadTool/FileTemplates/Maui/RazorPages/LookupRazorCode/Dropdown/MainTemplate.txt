@@ -1,0 +1,80 @@
+﻿using Abp.Application.Services.Dto;
+using {{Namespace_Here}}.Authorization;
+using {{Namespace_Here}}.Maui.Core.Components;
+using {{Namespace_Here}}.Maui.Core.Threading;
+using {{Namespace_Here}}.Maui.Models.{{Namespace_Relative_Full_Here}};
+using {{Namespace_Here}}.Maui.Services.Navigation;
+using {{Namespace_Here}}.Maui.Services.UI;
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}};
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web.Virtualization;
+
+namespace {{Namespace_Here}}.Maui.Pages.{{Namespace_Relative_Full_Here}};
+
+public partial class {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}Lookup : {{Project_Name_Here}}MainLayoutPageComponentBase
+{
+    private const int BlockSize = 95;
+        
+    private readonly GetAllForLookupTableInput _filter = new();
+    
+    [Parameter]
+    public {{Primary_Key_Here}}{{Nullable_Primary_Key_Tag_Here}} {{Entity_Name_Here}}Id { get; set; }
+    
+    private I{{Entity_Name_Plural_Here}}AppService {{Entity_Name_Plural_Here}}AppService { get; }
+    
+    private Virtualize<{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupListModel> {{NP_Foreign_Entity_Name_Here}}ListContainer { get; set; }
+    
+    public {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}Lookup()
+    {
+        {{Entity_Name_Plural_Here}}AppService = Resolve<I{{Entity_Name_Plural_Here}}AppService>();
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var title = L("Select{{NP_Foreign_Entity_Name_Here}}");
+        await SetPageHeader(title);
+    }
+
+    private async Task RefreshList()
+    {
+        await {{NP_Foreign_Entity_Name_Here}}ListContainer.RefreshDataAsync();
+        StateHasChanged();
+    }
+    
+    private async ValueTask<ItemsProviderResult<{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupListModel>> Load{{NP_Foreign_Entity_Name_Plural_Here}}(ItemsProviderRequest request)
+    {
+        _filter.MaxResultCount = request.Count;
+        _filter.SkipCount = request.StartIndex;
+
+        await UserDialogsService.Block();
+
+        ItemsProviderResult<{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupListModel> {{nP_Foreign_Entity_Name_Plural_Here}} = new();
+
+        await WebRequestExecuter.Execute(
+            async () => await {{Entity_Name_Plural_Here}}AppService.GetAll{{NP_Foreign_Entity_Name_Here}}ForTableDropdown(),
+                async (result) =>
+                {
+                    if (result == null)
+                    {
+                        await UserDialogsService.UnBlock();
+                        return;
+                    }
+        
+                    var {{nP_Foreign_Entity_Name_Here}}List = ObjectMapper.Map<List<{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupListModel>>(result);
+        
+                    {{nP_Foreign_Entity_Name_Plural_Here}} = new ItemsProviderResult<{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupListModel>({{nP_Foreign_Entity_Name_Here}}List, result.Count);
+        
+                    await UserDialogsService.UnBlock();
+                }
+        );
+
+        return {{nP_Foreign_Entity_Name_Plural_Here}};
+    }
+    
+    private void OnSelect{{NP_Foreign_Entity_Name_Here}}({{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupListModel {{NP_Foreign_Entity_Name_Here}})
+    {
+        var {{entity_Name_Here}}IdValue = {{Entity_Name_Here}}Id{{Entity_Id_Has_Value_If_Here}} ? $"/{{{Entity_Name_Here}}Id{{Entity_Id_Value_Here}}}" : "";
+        NavigationService.NavigateTo(NavigationUrlConsts.{{Entity_Name_Plural_Here}}_Create_Or_Edit + {{entity_Name_Here}}IdValue +$"/{{NP_Foreign_Entity_Name_Here}}/{{{NP_Foreign_Entity_Name_Here}}.Id}/{{{NP_Foreign_Entity_Name_Here}}.DisplayName}");
+    }
+}

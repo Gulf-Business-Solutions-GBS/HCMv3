@@ -1,0 +1,14 @@
+@using HCMv3.Maui.Core.Helpers
+@using HCMv3.Workflow
+
+<span class="badge @EssText.StatusCss(Status, IsDraft)">@EssText.StatusLabel(Status, IsDraft)</span>
+
+@code {
+    /// <summary>The workflow status; null for a row HR entered directly, shown as "Recorded".</summary>
+    [Parameter]
+    public RequestStatus? Status { get; set; }
+
+    /// <summary>Saved but not sent. Takes precedence over the status, as on the Angular screens.</summary>
+    [Parameter]
+    public bool IsDraft { get; set; }
+}

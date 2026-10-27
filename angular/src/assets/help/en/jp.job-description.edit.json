@@ -1,0 +1,123 @@
+{
+  "helpId": "jp.job-description.edit",
+  "lang": "en",
+  "title": "Job Descriptions — Create / Edit",
+  "entity": "HCMv3.JobProfileManagement.JobDescription",
+  "overviewHtml": "<p>The description of a job title: a short summary, the full text, and lists of the responsibilities, skills, competencies, degrees, certificates and interview questions that go with it. Both short descriptions must be unique. Kept for reference: vacancies carry their own description text and do not use this one.</p>",
+  "aliasIndex": {
+    "loc:JobTitle": "JobDescription.JobTitleId",
+    "dom:JobDescription_JobTitleId": "JobDescription.JobTitleId",
+    "loc:Version": "JobDescription.Version",
+    "dom:JobDescription_Version": "JobDescription.Version",
+    "loc:VersionChangedOn": "JobDescription.VersionChangedOn",
+    "dom:JobDescription_VersionChangedOn": "JobDescription.VersionChangedOn",
+    "loc:ShortDescriptionEn": "JobDescription.ShortDescriptionEn",
+    "dom:JobDescription_ShortDescriptionEn": "JobDescription.ShortDescriptionEn",
+    "loc:ShortDescriptionAr": "JobDescription.ShortDescriptionAr",
+    "dom:JobDescription_ShortDescriptionAr": "JobDescription.ShortDescriptionAr",
+    "loc:LongDescriptionEn": "JobDescription.LongDescriptionEn",
+    "dom:JobDescription_LongDescriptionEn": "JobDescription.LongDescriptionEn",
+    "loc:LongDescriptionAr": "JobDescription.LongDescriptionAr",
+    "dom:JobDescription_LongDescriptionAr": "JobDescription.LongDescriptionAr"
+  },
+  "fields": [
+    {
+      "id": "JobDescription.JobTitleId",
+      "label": "JobTitle",
+      "section": "JobDescriptions",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:JobDescription_JobTitleId"
+      ],
+      "rules": "Required. Chosen from Job Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job title described.</p><p><strong>Example.</strong> HR Officer</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescription.Version",
+      "label": "Version",
+      "section": "JobDescriptions",
+      "aliases": [
+        "loc:Version",
+        "dom:JobDescription_Version"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The version of the description.</p><p><strong>Example.</strong> 2.0</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescription.VersionChangedOn",
+      "label": "VersionChangedOn",
+      "section": "JobDescriptions",
+      "aliases": [
+        "loc:VersionChangedOn",
+        "dom:JobDescription_VersionChangedOn"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When this version took effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescription.ShortDescriptionEn",
+      "label": "ShortDescriptionEn",
+      "section": "JobDescriptions",
+      "aliases": [
+        "loc:ShortDescriptionEn",
+        "dom:JobDescription_ShortDescriptionEn"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A one-line summary in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescription.ShortDescriptionAr",
+      "label": "ShortDescriptionAr",
+      "section": "JobDescriptions",
+      "aliases": [
+        "loc:ShortDescriptionAr",
+        "dom:JobDescription_ShortDescriptionAr"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A one-line summary in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescription.LongDescriptionEn",
+      "label": "LongDescriptionEn",
+      "section": "JobDescriptions",
+      "aliases": [
+        "loc:LongDescriptionEn",
+        "dom:JobDescription_LongDescriptionEn"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The full description in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescription.LongDescriptionAr",
+      "label": "LongDescriptionAr",
+      "section": "JobDescriptions",
+      "aliases": [
+        "loc:LongDescriptionAr",
+        "dom:JobDescription_LongDescriptionAr"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The full description in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

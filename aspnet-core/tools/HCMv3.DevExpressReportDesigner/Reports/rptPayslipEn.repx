@@ -1,0 +1,949 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="17.2.5.0" Ref="1" ControlType="HCM10.Module.Reports.Payroll.rptPayslipEn, HCM10.Module, Version=5.3.9686.28569, Culture=neutral, PublicKeyToken=null" Margins="5, 6, 0, 10" PaperKind="A4" PageWidth="827" PageHeight="1169" Version="17.2" EventsInfo=",ParametersRequestBeforeShow,MyXtraReport_ParametersRequestBeforeShow;,DataSourceDemanded,MyXtraReport_DataSourceDemanded;,BeforePrint,MyXtraReport_BeforePrint,rptPayslipEn_1_BeforePrint;,AfterPrint,rptPayslipEn_1_AfterPrint" DataMember="PayslipOrgV2Query" DataSource="#Ref-0">
+  <Parameters>
+    <Item1 Ref="4" Description="Payroll Area" LookUpSettings="#Ref-2" Name="PrmPayrollArea" />
+    <Item2 Ref="5" Description="Employee Code" Name="PrmEmpCode" />
+    <Item3 Ref="8" Description="Month" LookUpSettings="#Ref-6" ValueInfo="7" Name="PrmMonth" Type="#Ref-7" />
+    <Item4 Ref="9" Description="Year" ValueInfo="2026" Name="PrmYear" Type="#Ref-7" />
+    <Item5 Ref="11" Description="Run Type" LookUpSettings="#Ref-10" ValueInfo="0" Name="PrmPayrollRunType" Type="#Ref-7" />
+    <Item6 Ref="13" Description="Send Email" ValueInfo="False" Name="PrmSendMail" Type="#Ref-12" />
+    <Item7 Ref="14" Visible="false" Description="Is Encashment Print" ValueInfo="False" Name="PrmEncashment" Type="#Ref-12" />
+    <Item8 Ref="16" Description="Employee Status" LookUpSettings="#Ref-15" ValueInfo="1" Name="PrmEmpStatus" Type="#Ref-7" />
+  </Parameters>
+  <CalculatedFields>
+    <Item1 Ref="17" Name="CalcDateTime" Expression="LocalDateTimeNow()" DataMember="PayslipOrgV2Query" />
+    <Item2 Ref="18" Name="CalcNetPay" Expression="Round([Net Pay],3)" DataMember="PayslipOrgV2Query" />
+  </CalculatedFields>
+  <Bands>
+    <Item1 Ref="19" ControlType="DetailBand" Name="Detail" PageBreak="AfterBandExceptLastEntry" HeightF="1075.539" KeepTogether="true" TextAlignment="TopLeft" Padding="0,0,0,0,100">
+      <Controls>
+        <Item1 Ref="20" ControlType="XRLabel" Name="xrLabel13" Text="Salary Profile" TextAlignment="MiddleLeft" SizeF="116.25,25.00002" LocationFloat="6.420425, 209.6799" Font="Tahoma, 9pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <StylePriority Ref="21" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="22" ControlType="XRLabel" Name="xrLabel14" CanGrow="false" TextAlignment="MiddleLeft" SizeF="278.8974,25.00002" LocationFloat="122.6704, 209.6798" Font="Tahoma, 9pt" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <ExpressionBindings>
+            <Item1 Ref="23" Expression="[Salary Profile]" PropertyName="Text" EventName="BeforePrint" />
+          </ExpressionBindings>
+          <StylePriority Ref="24" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="25" ControlType="XRLabel" Name="xrLabel2" Text="Remarks :" SizeF="100,23.00006" LocationFloat="6.420425, 971.85" Font="Tahoma, 9.75pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+          <StylePriority Ref="26" UseFont="false" />
+        </Item3>
+        <Item4 Ref="27" ControlType="XRSubreport" Name="srptPaySlipOvertimeHoursEn" SizeF="399.9991,23.66409" LocationFloat="6.420423, 579.851" Visible="false">
+          <ParameterBindings>
+            <Item1 Ref="28" ParameterName="empcode" DataMember="PayslipOrgV2Query.Employee Code" />
+            <Item2 Ref="29" ParameterName="ForPeriod" DataMember="PayslipOrgV2Query.InPeriod" />
+          </ParameterBindings>
+          <ReportSource Ref="31" ControlType="HCM10.Module.Reports.Payroll.srptPaySlipOvertimeHoursEn, HCM10.Module, Version=5.3.9686.28569, Culture=neutral, PublicKeyToken=null" Margins="1, 0, 0, 0" PaperKind="PrcEnvelopeNumber1Rotated" PageWidth="650" PageHeight="402" Version="17.2" EventsInfo=",ParametersRequestBeforeShow,MyXtraReport_ParametersRequestBeforeShow;,DataSourceDemanded,MyXtraReport_DataSourceDemanded;,BeforePrint,MyXtraReport_BeforePrint" FilterString="[Code] In (?empcode) And [EndOfMonth] = ?ForPeriod" DataMember="OvertimeQuery" DataSource="#Ref-30">
+            <Parameters>
+              <Item1 Ref="32" Description="empcode" Name="empcode" />
+              <Item2 Ref="34" Description="ForPeriod" ValueInfo="2017-01-31" Name="ForPeriod" Type="#Ref-33" />
+            </Parameters>
+            <CalculatedFields>
+              <Item1 Ref="35" Name="CalcAmount" Expression="[Amount]" DataMember="Query" />
+            </CalculatedFields>
+            <Bands>
+              <Item1 Ref="36" ControlType="DetailBand" Name="Detail" HeightF="23" KeepTogether="true" TextAlignment="TopLeft" Padding="0,0,0,0,100">
+                <Controls>
+                  <Item1 Ref="37" ControlType="XRLabel" Name="LoggedUserNme" TextAlignment="MiddleLeft" SizeF="286.1896,23" LocationFloat="0, 0" Font="Tahoma, 8.75pt" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="38" Expression="[Type]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="39" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item1>
+                  <Item2 Ref="40" ControlType="XRLabel" Name="xrLabel2" TextFormatString="{0:#0.000}" TextAlignment="MiddleRight" SizeF="103.8104,23" LocationFloat="286.1896, 0" Font="Tahoma, 8.75pt" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="41" Expression="[ActualHrs]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="42" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item2>
+                </Controls>
+              </Item1>
+              <Item2 Ref="43" ControlType="TopMarginBand" Name="TopMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item3 Ref="44" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item4 Ref="45" ControlType="GroupHeaderBand" Name="GroupHeader1" HeightF="48.00003">
+                <Controls>
+                  <Item1 Ref="46" ControlType="XRTable" Name="xrTable1" SizeF="390,25" LocationFloat="0, 23.00003" StyleName="EngData" BorderColor="LightGray" Borders="All">
+                    <Rows>
+                      <Item1 Ref="47" ControlType="XRTableRow" Name="xrTableRow1" Weight="1">
+                        <Cells>
+                          <Item1 Ref="48" ControlType="XRTableCell" Name="xrTableCell1" Weight="4.1977564753733851" Text=" TYPE" TextAlignment="MiddleCenter" StyleName="EngData" ForeColor="Gray" Padding="5,0,0,0,100">
+                            <StylePriority Ref="49" UseForeColor="false" UsePadding="false" UseTextAlignment="false" />
+                          </Item1>
+                          <Item2 Ref="50" ControlType="XRTableCell" Name="xrTableCell3" Weight="1.5226650619681843" Text="HOURS" TextAlignment="MiddleCenter" StyleName="EngData" ForeColor="Gray" Padding="0,5,0,0,100">
+                            <StylePriority Ref="51" UseForeColor="false" UsePadding="false" UseTextAlignment="false" />
+                          </Item2>
+                        </Cells>
+                      </Item1>
+                    </Rows>
+                    <StylePriority Ref="52" UseBorderColor="false" UseBorders="false" />
+                  </Item1>
+                  <Item2 Ref="53" ControlType="XRLabel" Name="xrLabel12" Text="OVERTIME HOURS" TextAlignment="MiddleCenter" SizeF="390,23.00003" LocationFloat="0, 0" Font="Tahoma, 9pt, style=Bold" ForeColor="White" BackColor="255,15,100,160" Padding="2,2,0,0,100">
+                    <StylePriority Ref="54" UseFont="false" UseForeColor="false" UseBackColor="false" UseTextAlignment="false" />
+                  </Item2>
+                </Controls>
+              </Item4>
+              <Item5 Ref="55" ControlType="GroupFooterBand" Name="GroupFooter2" Level="1" HeightF="25.00001">
+                <Controls>
+                  <Item1 Ref="56" ControlType="XRLabel" Name="xrLabel3" TextFormatString="{0:#0.000}" TextAlignment="MiddleRight" SizeF="103.8104,25" LocationFloat="286.1896, 0" Font="Tahoma, 8.25pt, style=Bold" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <Summary Ref="57" Running="Group" />
+                    <ExpressionBindings>
+                      <Item1 Ref="58" Expression="sumSum([ActualHrs])" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="59" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item1>
+                  <Item2 Ref="60" ControlType="XRLabel" Name="xrLabel4" Text="TOTAL" TextAlignment="MiddleLeft" SizeF="286.1896,25.00001" LocationFloat="0, 0" Font="Tahoma, 8.25pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+                    <StylePriority Ref="61" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item2>
+                </Controls>
+              </Item5>
+            </Bands>
+            <StyleSheet>
+              <Item1 Ref="62" Name="EngDataRgt" BorderStyle="Inset" Padding="0,0,0,0,100" Font="Tahoma, 8.25pt, charSet=0" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+              <Item2 Ref="63" Name="EngData" BorderStyle="Inset" Padding="0,0,0,0,100" Font="Tahoma, 8.25pt, style=Bold, charSet=0" StringFormat="Near;Near;0;None;Character;Default" />
+            </StyleSheet>
+            <ComponentStorage>
+              <Item1 Ref="30" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v17.2" Name="sqlDataSource2" Base64="PFNxbERhdGFTb3VyY2U+PE5hbWU+c3FsRGF0YVNvdXJjZTI8L05hbWU+PENvbm5lY3Rpb24gTmFtZT0iSENNMTBDb25uZWN0aW9uU3RyaW5nIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJDdXN0b21TcWxRdWVyeSIgTmFtZT0iT3ZlcnRpbWVRdWVyeSI+PFBhcmFtZXRlciBOYW1lPSJlbXBjb2RlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5TdHJpbmcsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuZW1wY29kZV0pPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJGb3JQZXJpb2QiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkRhdGVUaW1lLCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkpKFtQYXJhbWV0ZXJzLkZvclBlcmlvZF0pPC9QYXJhbWV0ZXI+PFNxbD4tLURFQ0xBUkUgQGVtcGNvZGUJTlZBUkNIQVIoMTAwKSA9ICc1MDU5Jw0KLS1ERUNMQVJFIEBGb3JQZXJpb2QJRGF0ZVRpbWUgPSAnMjAyMy0wOS0zMCcNCg0Kc2VsZWN0IEVNUC5Db2RlDQosRU1QLkZ1bGxOYW1lRW4NCixPVFQuTmFtZUVuIGFzIFR5cGUNCixTVU0oRU9ULkFwcHJvdmVkT3ZlcnRpbWVIb3VycykgYXMgQWN0dWFsSHJzIA0KLEVPTW9udGgoRU9ULkVmZmVjdGl2ZURhdGUpIEVuZE9mTW9udGgNCmZyb20gRW1wbG95ZWVPdmVydGltZSBFT1QNCmxlZnQgam9pbiBPdmVydGltZVR5cGUgT1RUIG9uIE9UVC5PSUQgPSBFT1QuT3ZlcnRpbWVUeXBlDQpsZWZ0IGpvaW4gRW1wbG95ZWUgRU1QIG9uIEVNUC5PSUQgPSBFT1QuRW1wbG95ZWUNCg0KV0hFUkUgRU1QLkNvZGUgPSBAZW1wY29kZQ0KQU5EIEVPTW9udGgoRU9ULkVmZmVjdGl2ZURhdGUpID0gQEZvclBlcmlvZA0KDQpHUk9VUCBCWSBFTVAuQ29kZQ0KLEVNUC5GdWxsTmFtZUVuDQosT1RULk5hbWVFbg0KLEVPTW9udGgoRU9ULkVmZmVjdGl2ZURhdGUpDQo8L1NxbD48L1F1ZXJ5PjxSZXN1bHRTY2hlbWE+PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTIiPjxWaWV3IE5hbWU9Ik92ZXJ0aW1lUXVlcnkiPjxGaWVsZCBOYW1lPSJDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkZ1bGxOYW1lRW4iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVHlwZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJBY3R1YWxIcnMiIFR5cGU9IkRvdWJsZSIgLz48RmllbGQgTmFtZT0iRW5kT2ZNb250aCIgVHlwZT0iRGF0ZVRpbWUiIC8+PC9WaWV3PjwvRGF0YVNldD48L1Jlc3VsdFNjaGVtYT48Q29ubmVjdGlvbk9wdGlvbnMgQ2xvc2VDb25uZWN0aW9uPSJ0cnVlIiAvPjwvU3FsRGF0YVNvdXJjZT4=" />
+            </ComponentStorage>
+          </ReportSource>
+        </Item4>
+        <Item5 Ref="64" ControlType="XRLabel" Name="xrLabel35" CanGrow="false" TextAlignment="MiddleLeft" SizeF="687.3299,25.00003" LocationFloat="122.6704, 284.6802" Font="Tahoma, 9pt" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <ExpressionBindings>
+            <Item1 Ref="65" Expression="[Bank IBAN]" PropertyName="Text" EventName="BeforePrint" />
+          </ExpressionBindings>
+          <StylePriority Ref="66" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item5>
+        <Item6 Ref="67" ControlType="XRPanel" Name="PanelSignature" SizeF="803.9303,39.16669" LocationFloat="6.07, 888.18" Visible="false">
+          <Controls>
+            <Item1 Ref="68" ControlType="XRLabel" Name="xrLabel7" Text="Reviewed By:" TextAlignment="MiddleCenter" SizeF="100,23" LocationFloat="449.99, 10" Font="Tahoma, 9pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="69" UseFont="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="70" ControlType="XRLabel" Name="xrLabel6" Text="Approved By:" TextAlignment="MiddleLeft" SizeF="104.1667,23" LocationFloat="0.3504248, 10" Font="Tahoma, 9pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="71" UseFont="false" UseTextAlignment="false" />
+            </Item2>
+          </Controls>
+        </Item6>
+        <Item7 Ref="72" ControlType="XRSubreport" Name="srptPaySlipBasicPayEn" SizeF="400,23.66409" LocationFloat="6.420423, 603.5151" Visible="false">
+          <ParameterBindings>
+            <Item1 Ref="73" ParameterName="empcode" DataMember="PayslipOrgV2Query.Employee Code" />
+            <Item2 Ref="74" ParameterName="ForPeriod" DataMember="PayslipOrgV2Query.ForPeriod" />
+          </ParameterBindings>
+          <ReportSource Ref="76" ControlType="HCM10.Module.Reports.Payroll.srptPaySlipBasicPayEn, HCM10.Module, Version=5.3.9686.28569, Culture=neutral, PublicKeyToken=null" Margins="1, 0, 0, 0" PaperKind="PrcEnvelopeNumber1Rotated" PageWidth="650" PageHeight="402" Version="17.2" EventsInfo=",ParametersRequestBeforeShow,MyXtraReport_ParametersRequestBeforeShow;,DataSourceDemanded,MyXtraReport_DataSourceDemanded;,BeforePrint,MyXtraReport_BeforePrint" DataMember="BasicPayQuery" DataSource="#Ref-75">
+            <Parameters>
+              <Item1 Ref="77" Description="empcode" Name="empcode" />
+              <Item2 Ref="78" Description="ForPeriod" ValueInfo="2017-01-31" Name="ForPeriod" Type="#Ref-33" />
+            </Parameters>
+            <CalculatedFields>
+              <Item1 Ref="79" Name="CalcAmount" Expression="[Amount]" DataMember="Query" />
+            </CalculatedFields>
+            <Bands>
+              <Item1 Ref="80" ControlType="DetailBand" Name="Detail" HeightF="23.00001" KeepTogether="true" TextAlignment="TopLeft" Padding="0,0,0,0,100">
+                <Controls>
+                  <Item1 Ref="81" ControlType="XRLabel" Name="LoggedUserNme" TextAlignment="MiddleLeft" SizeF="287.6065,23.00001" LocationFloat="0, 0" Font="Tahoma, 8.75pt" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="82" Expression="[WageType]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="83" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item1>
+                  <Item2 Ref="84" ControlType="XRLabel" Name="xrLabel1" TextFormatString="{0:#0.000}" TextAlignment="MiddleRight" SizeF="102.3936,23.00001" LocationFloat="287.6065, 0" Font="Tahoma, 8.75pt" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="85" Expression="[Amount]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="86" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item2>
+                </Controls>
+              </Item1>
+              <Item2 Ref="87" ControlType="TopMarginBand" Name="TopMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item3 Ref="88" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item4 Ref="89" ControlType="GroupHeaderBand" Name="GroupHeader1" HeightF="46.00004">
+                <Controls>
+                  <Item1 Ref="90" ControlType="XRLabel" Name="xrLabel6" Text=" TYPE" TextAlignment="MiddleCenter" SizeF="287.6065,23" LocationFloat="0, 23.00003" Font="Tahoma, 8.25pt, style=Bold" ForeColor="Gray" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <StylePriority Ref="91" UseFont="false" UseForeColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item1>
+                  <Item2 Ref="92" ControlType="XRLabel" Name="xrLabel2" Text="AMOUNT" TextAlignment="MiddleCenter" SizeF="102.3935,23.00001" LocationFloat="287.6065, 23.00003" Font="Tahoma, 8.25pt, style=Bold" ForeColor="Gray" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <StylePriority Ref="93" UseFont="false" UseForeColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item2>
+                  <Item3 Ref="94" ControlType="XRLabel" Name="xrLabel12" Text="WAGE DETAIL" TextAlignment="MiddleCenter" SizeF="390,23.00003" LocationFloat="0, 0" Font="Tahoma, 9pt, style=Bold" ForeColor="White" BackColor="255,15,100,160" Padding="2,2,0,0,100">
+                    <StylePriority Ref="95" UseFont="false" UseForeColor="false" UseBackColor="false" UseTextAlignment="false" />
+                  </Item3>
+                </Controls>
+              </Item4>
+              <Item5 Ref="96" ControlType="GroupFooterBand" Name="GroupFooter2" Level="1" HeightF="25">
+                <Controls>
+                  <Item1 Ref="97" ControlType="XRLabel" Name="xrLabel5" TextAlignment="MiddleCenter" SizeF="84.62943,25" LocationFloat="202.9771, 0" Font="Tahoma, 8.25pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="98" Expression="[Currency]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="99" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item1>
+                  <Item2 Ref="100" ControlType="XRLabel" Name="xrLabel3" TextFormatString="{0:#0.000}" TextAlignment="MiddleRight" SizeF="102.3936,25" LocationFloat="287.6065, 0" Font="Tahoma, 8.25pt, style=Bold" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <Summary Ref="101" Running="Group" />
+                    <ExpressionBindings>
+                      <Item1 Ref="102" Expression="sumSum([Amount])" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="103" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item2>
+                  <Item3 Ref="104" ControlType="XRLabel" Name="xrLabel4" Text="TOTAL" TextAlignment="MiddleLeft" SizeF="202.9771,25" LocationFloat="0, 0" Font="Tahoma, 8.25pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+                    <StylePriority Ref="105" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item3>
+                </Controls>
+              </Item5>
+            </Bands>
+            <StyleSheet>
+              <Item1 Ref="106" Name="EngDataRgt" BorderStyle="Inset" Padding="0,0,0,0,100" Font="Tahoma, 8.25pt, charSet=0" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+              <Item2 Ref="107" Name="EngData" BorderStyle="Inset" Padding="0,0,0,0,100" Font="Tahoma, 8.25pt, style=Bold, charSet=0" StringFormat="Near;Near;0;None;Character;Default" />
+            </StyleSheet>
+            <ComponentStorage>
+              <Item1 Ref="75" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v17.2" Name="sqlDataSource2" Base64="PFNxbERhdGFTb3VyY2U+PE5hbWU+c3FsRGF0YVNvdXJjZTI8L05hbWU+PENvbm5lY3Rpb24gTmFtZT0iSENNMTBDb25uZWN0aW9uU3RyaW5nIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJDdXN0b21TcWxRdWVyeSIgTmFtZT0iQmFzaWNQYXlRdWVyeSI+PFBhcmFtZXRlciBOYW1lPSJlbXBjb2RlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5TdHJpbmcsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuZW1wY29kZV0pPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJGb3JQZXJpb2QiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkRhdGVUaW1lLCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkpKFtQYXJhbWV0ZXJzLkZvclBlcmlvZF0pPC9QYXJhbWV0ZXI+PFNxbD4tLURFQ0xBUkUgQGVtcGNvZGUJTlZBUkNIQVIoMTAwKSA9ICc1MDU5Jw0KLS1ERUNMQVJFIEBGb3JQZXJpb2QJRGF0ZVRpbWUgPSAnMjAyMy0wOS0zMCcNCg0KDQpzZWxlY3QgDQplbXAuQ29kZQ0KLGVtcC5GdWxsTmFtZUVuDQosd2FnZXR5cGUuTmFtZUVuIGFzIFdhZ2VUeXBlDQosRW1wbG95ZWVCYXNpY1BheURldGFpbC5BbW91bnQgDQosRW1wbG95ZWVCYXNpY1BheS5TdGFydERhdGUNCixFbXBsb3llZUJhc2ljUGF5LkVuZERhdGUNCixDdXJyZW5jeS5DdXJyZW5jeVNob3J0Rm9ybUVuIGFzIEN1cnJlbmN5IA0KZnJvbSBFbXBsb3llZUJhc2ljUGF5DQpMZWZ0IGpvaW4gRW1wbG95ZWVCYXNpY1BheURldGFpbCBvbiBFbXBsb3llZUJhc2ljUGF5RGV0YWlsLkVtcGxveWVlQmFzaWNQYXkgPSBFbXBsb3llZUJhc2ljUGF5Lk9JRA0KbGVmdCBqb2luIFdhZ2VUeXBlIHdhZ2V0eXBlIG9uIHdhZ2V0eXBlLk9JRCA9IEVtcGxveWVlQmFzaWNQYXlEZXRhaWwuV2FnZVR5cGUNCmxlZnQgam9pbiBFbXBsb3llZSBlbXAgb24gRU1QLk9JRCA9IEVtcGxveWVlQmFzaWNQYXkuRW1wbG95ZWUNCkxlZnQgam9pbiBDdXJyZW5jeSBvbiBFbXBsb3llZUJhc2ljUGF5RGV0YWlsLkN1cnJlbmN5ID0gQ3VycmVuY3kuT0lEDQpXSEVSRSAxID0gIDENCkFORCAgZW1wLkNvZGUgPSBAZW1wY29kZQ0KQW5kIEVtcGxveWVlQmFzaWNQYXkuU3RhcnREYXRlICZsdDs9IEBGb3JQZXJpb2QNCkFuZCBFbXBsb3llZUJhc2ljUGF5LkVuZERhdGUgJmd0Oz0gQEZvclBlcmlvZA0KDQo8L1NxbD48L1F1ZXJ5PjxSZXN1bHRTY2hlbWE+PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTIiPjxWaWV3IE5hbWU9IkJhc2ljUGF5UXVlcnkiPjxGaWVsZCBOYW1lPSJDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkZ1bGxOYW1lRW4iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iV2FnZVR5cGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQW1vdW50IiBUeXBlPSJEb3VibGUiIC8+PEZpZWxkIE5hbWU9IlN0YXJ0RGF0ZSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkVuZERhdGUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJDdXJyZW5jeSIgVHlwZT0iU3RyaW5nIiAvPjwvVmlldz48L0RhdGFTZXQ+PC9SZXN1bHRTY2hlbWE+PENvbm5lY3Rpb25PcHRpb25zIENsb3NlQ29ubmVjdGlvbj0idHJ1ZSIgLz48L1NxbERhdGFTb3VyY2U+" />
+            </ComponentStorage>
+          </ReportSource>
+        </Item7>
+        <Item8 Ref="108" ControlType="XRLabel" Name="xrLabel32" Text="Passport Exp Date" TextAlignment="MiddleLeft" SizeF="147.2503,24.99997" LocationFloat="401.5734, 259.6802" Font="Tahoma, 9pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <StylePriority Ref="109" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item8>
+        <Item9 Ref="110" ControlType="XRLabel" Name="xrLabel33" TextFormatString="{0:dd-MM-yyyy}" CanGrow="false" TextAlignment="MiddleLeft" SizeF="261.1715,25" LocationFloat="548.8281, 259.6802" Font="Tahoma, 9pt" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <ExpressionBindings>
+            <Item1 Ref="111" Expression="[PassportExpiryDate]" PropertyName="Text" EventName="BeforePrint" />
+          </ExpressionBindings>
+          <StylePriority Ref="112" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item9>
+        <Item10 Ref="113" ControlType="XRLabel" Name="xrLabel23" CanGrow="false" TextAlignment="MiddleLeft" SizeF="261.1772,25.00002" LocationFloat="548.8231, 209.6799" Font="Tahoma, 9pt" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <ExpressionBindings>
+            <Item1 Ref="114" Expression="[Jobtitle]" PropertyName="Text" EventName="BeforePrint" />
+          </ExpressionBindings>
+          <StylePriority Ref="115" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item10>
+        <Item11 Ref="116" ControlType="XRLabel" Name="xrLabel24" Text="Designation" TextAlignment="MiddleLeft" SizeF="147.255,25.00002" LocationFloat="401.5683, 209.68" Font="Tahoma, 9pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <StylePriority Ref="117" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item11>
+        <Item12 Ref="118" ControlType="XRLabel" Name="xrLabel25" Text="Indemnity Start Date" TextAlignment="MiddleLeft" SizeF="147.255,25.00003" LocationFloat="401.5681, 234.68" Font="Tahoma, 9pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <StylePriority Ref="119" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item12>
+        <Item13 Ref="120" ControlType="XRLabel" Name="xrLabel26" TextFormatString="{0:dd-MM-yyyy}" CanGrow="false" TextAlignment="MiddleLeft" SizeF="261.1772,25.00003" LocationFloat="548.8231, 234.68" Font="Tahoma, 9pt" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <ExpressionBindings>
+            <Item1 Ref="121" Expression="[Joining Date]" PropertyName="Text" EventName="BeforePrint" />
+          </ExpressionBindings>
+          <StylePriority Ref="122" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item13>
+        <Item14 Ref="123" ControlType="XRLabel" Name="xrLabel21" CanGrow="false" TextAlignment="MiddleLeft" SizeF="261.1772,25" LocationFloat="548.8231, 184.68" Font="Tahoma, 9pt" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <ExpressionBindings>
+            <Item1 Ref="124" Expression="[Grade]" PropertyName="Text" EventName="BeforePrint" />
+          </ExpressionBindings>
+          <StylePriority Ref="125" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item14>
+        <Item15 Ref="126" ControlType="XRLabel" Name="xrLabel22" Multiline="true" Text="Grade" TextAlignment="MiddleLeft" SizeF="147.2549,24.99998" LocationFloat="401.5683, 184.68" Font="Tahoma, 9pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <StylePriority Ref="127" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item15>
+        <Item16 Ref="128" ControlType="XRLabel" Name="xrLabel17" CanGrow="false" TextAlignment="MiddleLeft" SizeF="278.8979,25" LocationFloat="122.6704, 259.6801" Font="Tahoma, 9pt" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <ExpressionBindings>
+            <Item1 Ref="129" Expression="[Bank Name]" PropertyName="Text" EventName="BeforePrint" />
+          </ExpressionBindings>
+          <StylePriority Ref="130" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item16>
+        <Item17 Ref="131" ControlType="XRLabel" Name="xrLabel18" Text="Bank Name" TextAlignment="MiddleLeft" SizeF="116.25,25" LocationFloat="6.420423, 259.6801" Font="Tahoma, 9pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <StylePriority Ref="132" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item17>
+        <Item18 Ref="133" ControlType="XRLabel" Name="xrLabel19" Text="Bank Account" TextAlignment="MiddleLeft" SizeF="116.25,24.99997" LocationFloat="6.420423, 284.6801" Font="Tahoma, 9pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <StylePriority Ref="134" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item18>
+        <Item19 Ref="135" ControlType="XRLabel" Name="xrLabel15" Text="Joining Date" TextAlignment="MiddleLeft" SizeF="116.25,25.00003" LocationFloat="6.419994, 234.68" Font="Tahoma, 9pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <StylePriority Ref="136" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item19>
+        <Item20 Ref="137" ControlType="XRLabel" Name="xrLabel16" TextFormatString="{0:dd-MM-yyyy}" CanGrow="false" Text="Period" TextAlignment="MiddleLeft" SizeF="278.8977,25.00002" LocationFloat="122.6701, 234.6799" Font="Tahoma, 9pt" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <ExpressionBindings>
+            <Item1 Ref="138" Expression="[Joining Date]" PropertyName="Text" EventName="BeforePrint" />
+          </ExpressionBindings>
+          <StylePriority Ref="139" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item20>
+        <Item21 Ref="140" ControlType="XRLabel" Name="xrLabel11" CanGrow="false" TextAlignment="MiddleLeft" SizeF="278.8983,25.00002" LocationFloat="122.67, 184.6799" Font="Tahoma, 9pt" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <ExpressionBindings>
+            <Item1 Ref="141" Expression="[Employee Name]" PropertyName="Text" EventName="BeforePrint" />
+          </ExpressionBindings>
+          <StylePriority Ref="142" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item21>
+        <Item22 Ref="143" ControlType="XRLabel" Name="xrLabel12" Text="Employee Name" TextAlignment="MiddleLeft" SizeF="116.25,25.00002" LocationFloat="6.42, 184.68" Font="Tahoma, 9pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <StylePriority Ref="144" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item22>
+        <Item23 Ref="145" ControlType="XRLabel" Name="xrLabel9" Text="OrgUnit" TextAlignment="MiddleLeft" SizeF="147.255,25.00002" LocationFloat="401.5683, 159.68" Font="Tahoma, 9pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <StylePriority Ref="146" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item23>
+        <Item24 Ref="147" ControlType="XRLabel" Name="xrLabel10" CanGrow="false" TextAlignment="MiddleLeft" SizeF="261.1726,25.00002" LocationFloat="548.8277, 159.68" Font="Tahoma, 9pt" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <ExpressionBindings>
+            <Item1 Ref="148" Expression="[OrgUnit]" PropertyName="Text" EventName="BeforePrint" />
+          </ExpressionBindings>
+          <StylePriority Ref="149" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item24>
+        <Item25 Ref="150" ControlType="XRLabel" Name="xrLabel1" Text="Employee Code" TextAlignment="MiddleLeft" SizeF="116.25,24.99998" LocationFloat="6.42, 159.68" Font="Tahoma, 9pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <StylePriority Ref="151" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item25>
+        <Item26 Ref="152" ControlType="XRLabel" Name="xrLabel8" CanGrow="false" TextAlignment="MiddleLeft" SizeF="278.8983,24.99998" LocationFloat="122.67, 159.68" Font="Tahoma, 9pt" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+          <ExpressionBindings>
+            <Item1 Ref="153" Expression="[Employee Code]" PropertyName="Text" EventName="BeforePrint" />
+          </ExpressionBindings>
+          <StylePriority Ref="154" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item26>
+        <Item27 Ref="155" ControlType="XRSubreport" Name="srptPayslipLeaveEncashment" SizeF="399.9991,22.38617" LocationFloat="6.420423, 557.4648" Visible="false">
+          <ParameterBindings>
+            <Item1 Ref="156" ParameterName="PrmEmpCode" DataMember="PayslipOrgV2Query.Employee Code" />
+            <Item2 Ref="158" ParameterName="PrmMonth" Parameter="#Ref-8" />
+            <Item3 Ref="159" ParameterName="PrmYear" Parameter="#Ref-9" />
+            <Item4 Ref="160" ParameterName="PrmPayrollRunType" Parameter="#Ref-11" />
+          </ParameterBindings>
+          <ReportSource Ref="162" ControlType="HCM10.Module.Reports.srptPaySlipLeaveEncashmentEn, HCM10.Module, Version=5.3.9686.28569, Culture=neutral, PublicKeyToken=null" Margins="1, 0, 0, 0" PaperKind="PrcEnvelopeNumber1Rotated" PageWidth="650" PageHeight="402" Version="17.2" EventsInfo=",ParametersRequestBeforeShow,MyXtraReport_ParametersRequestBeforeShow;,DataSourceDemanded,MyXtraReport_DataSourceDemanded;,BeforePrint,MyXtraReport_BeforePrint" DataMember="LeaveEncashQuery" DataSource="#Ref-161">
+            <Parameters>
+              <Item1 Ref="163" Description="Employee Code" Name="PrmEmpCode" />
+              <Item2 Ref="165" Description="Month" ValueInfo="0" Name="PrmMonth" Type="#Ref-164" />
+              <Item3 Ref="166" Description="Year" ValueInfo="0" Name="PrmYear" Type="#Ref-164" />
+              <Item4 Ref="168" Description="Payroll RunType" LookUpSettings="#Ref-167" ValueInfo="0" Name="PrmPayrollRunType" Type="#Ref-7" />
+            </Parameters>
+            <CalculatedFields>
+              <Item1 Ref="169" Name="CalcAmount" Expression="[Amount]" DataMember="Query" />
+            </CalculatedFields>
+            <Bands>
+              <Item1 Ref="170" ControlType="DetailBand" Name="Detail" HeightF="23.00002" KeepTogether="true" TextAlignment="TopLeft" Padding="0,0,0,0,100">
+                <Controls>
+                  <Item1 Ref="171" ControlType="XRTable" Name="xrTable2" SizeF="381,23" LocationFloat="0, 0" Font="Tahoma, 8pt" BorderColor="DarkGray" Borders="All">
+                    <Rows>
+                      <Item1 Ref="172" ControlType="XRTableRow" Name="xrTableRow2" Weight="1">
+                        <Cells>
+                          <Item1 Ref="173" ControlType="XRTableCell" Name="xrTableCell4" Weight="2.5933747368403512" TextAlignment="MiddleLeft" Font="Tahoma, 8.25pt, style=Bold, charSet=0" Padding="10,0,0,0,100">
+                            <ExpressionBindings>
+                              <Item1 Ref="174" Expression="[Wage Type]" PropertyName="Text" EventName="BeforePrint" />
+                            </ExpressionBindings>
+                            <StylePriority Ref="175" UseFont="false" UsePadding="false" UseTextAlignment="false" />
+                          </Item1>
+                          <Item2 Ref="176" ControlType="XRTableCell" Name="xrTableCell9" Weight="0.7969970719363717" TextFormatString="{0:#0.000}" TextAlignment="MiddleRight" Font="Tahoma, 9pt, charSet=0" Padding="0,5,0,0,100">
+                            <ExpressionBindings>
+                              <Item1 Ref="177" Expression="[Number]" PropertyName="Text" EventName="BeforePrint" />
+                            </ExpressionBindings>
+                            <StylePriority Ref="178" UseFont="false" UsePadding="false" UseTextAlignment="false" />
+                          </Item2>
+                          <Item3 Ref="179" ControlType="XRTableCell" Name="xrTableCell6" Weight="0.60680628311272655" TextAlignment="MiddleRight" Font="Tahoma, 9pt, charSet=0" Padding="0,5,0,0,100">
+                            <ExpressionBindings>
+                              <Item1 Ref="180" Expression="[Rate]" PropertyName="Text" EventName="BeforePrint" />
+                            </ExpressionBindings>
+                            <StylePriority Ref="181" UseFont="false" UsePadding="false" UseTextAlignment="false" />
+                          </Item3>
+                          <Item4 Ref="182" ControlType="XRTableCell" Name="xrTableCell5" Weight="0.985728427907896" TextFormatString="{0:#0.000}" TextAlignment="MiddleRight" Font="Tahoma, 9pt, charSet=0" Padding="0,5,0,0,100">
+                            <ExpressionBindings>
+                              <Item1 Ref="183" Expression="[CalcAmount]" PropertyName="Text" EventName="BeforePrint" />
+                            </ExpressionBindings>
+                            <StylePriority Ref="184" UseFont="false" UsePadding="false" UseTextAlignment="false" />
+                          </Item4>
+                        </Cells>
+                      </Item1>
+                    </Rows>
+                    <StylePriority Ref="185" UseFont="false" UseBorderColor="false" UseBorders="false" />
+                  </Item1>
+                </Controls>
+              </Item1>
+              <Item2 Ref="186" ControlType="TopMarginBand" Name="TopMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item3 Ref="187" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item4 Ref="188" ControlType="GroupHeaderBand" Name="GroupHeader1" HeightF="48.00003">
+                <Controls>
+                  <Item1 Ref="189" ControlType="XRTable" Name="xrTable1" SizeF="381,25" LocationFloat="0, 23.00003" StyleName="EngData" BorderColor="DarkGray" Borders="All">
+                    <Rows>
+                      <Item1 Ref="190" ControlType="XRTableRow" Name="xrTableRow1" Weight="1">
+                        <Cells>
+                          <Item1 Ref="191" ControlType="XRTableCell" Name="xrTableCell1" Weight="2.9772175186694603" Text=" TYPE" TextAlignment="MiddleCenter" StyleName="EngData" ForeColor="Gray" Padding="5,0,0,0,100">
+                            <StylePriority Ref="192" UseForeColor="false" UsePadding="false" UseTextAlignment="false" />
+                          </Item1>
+                          <Item2 Ref="193" ControlType="XRTableCell" Name="xrTableCell8" Weight="0.9149603158703723" Text="No." TextAlignment="MiddleCenter" ForeColor="Gray" Padding="0,0,0,0,100">
+                            <StylePriority Ref="194" UseForeColor="false" UsePadding="false" UseTextAlignment="false" />
+                          </Item2>
+                          <Item3 Ref="195" ControlType="XRTableCell" Name="xrTableCell2" Weight="0.69661909196173988" Text="RATE" TextAlignment="MiddleCenter" StyleName="EngData" ForeColor="Gray" Padding="0,5,0,0,100">
+                            <StylePriority Ref="196" UseForeColor="false" UsePadding="false" UseTextAlignment="false" />
+                          </Item3>
+                          <Item4 Ref="197" ControlType="XRTableCell" Name="xrTableCell3" Weight="1.1316246495561562" Text="AMOUNT" TextAlignment="MiddleCenter" StyleName="EngData" ForeColor="Gray" Padding="0,5,0,0,100">
+                            <StylePriority Ref="198" UseForeColor="false" UsePadding="false" UseTextAlignment="false" />
+                          </Item4>
+                        </Cells>
+                      </Item1>
+                    </Rows>
+                    <StylePriority Ref="199" UseBorderColor="false" UseBorders="false" />
+                  </Item1>
+                  <Item2 Ref="200" ControlType="XRLabel" Name="xrLabel12" Text="Leave Encashment" TextAlignment="MiddleCenter" SizeF="381,23.00003" LocationFloat="0, 0" Font="Tahoma, 9pt, style=Bold" ForeColor="White" BackColor="255,15,100,160" Padding="2,2,0,0,100">
+                    <StylePriority Ref="201" UseFont="false" UseForeColor="false" UseBackColor="false" UseTextAlignment="false" />
+                  </Item2>
+                </Controls>
+              </Item4>
+              <Item5 Ref="202" ControlType="GroupFooterBand" Name="GroupFooter2" Level="1" HeightF="2.083333" />
+            </Bands>
+            <StyleSheet>
+              <Item1 Ref="203" Name="EngDataRgt" BorderStyle="Inset" Padding="0,0,0,0,100" Font="Tahoma, 8.25pt, charSet=0" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+              <Item2 Ref="204" Name="EngData" BorderStyle="Inset" Padding="0,0,0,0,100" Font="Tahoma, 8.25pt, style=Bold, charSet=0" StringFormat="Near;Near;0;None;Character;Default" />
+            </StyleSheet>
+            <ComponentStorage>
+              <Item1 Ref="161" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v17.2" Name="sqlDataSource2" Base64="PFNxbERhdGFTb3VyY2U+PE5hbWU+c3FsRGF0YVNvdXJjZTI8L05hbWU+PENvbm5lY3Rpb24gTmFtZT0iSENNMTBDb25uZWN0aW9uU3RyaW5nIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJDdXN0b21TcWxRdWVyeSIgTmFtZT0iTGVhdmVFbmNhc2hRdWVyeSI+PFBhcmFtZXRlciBOYW1lPSJQcm1FbXBDb2RlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5TdHJpbmcsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuUHJtRW1wQ29kZV0pPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJQcm1Nb250aCIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uSW50MTYsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuUHJtTW9udGhdKTwvUGFyYW1ldGVyPjxQYXJhbWV0ZXIgTmFtZT0iUHJtWWVhciIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uSW50MTYsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuUHJtWWVhcl0pPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJQcm1QYXlyb2xsUnVuVHlwZSIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uSW50MzIsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuUHJtUGF5cm9sbFJ1blR5cGVdKTwvUGFyYW1ldGVyPjxTcWw+U0VMRUNUDQpFbXBsb3llZS5Db2RlIGFzICJFbXBsb3llZSBDb2RlIiwNCkVtcGxveWVlLkZ1bGxOYW1lRW4gYXMgIkVtcGxveWVlIE5hbWUiLA0KU2FsYXJ5UmVnaXN0ZXIuRm9yUGVyaW9kLA0KU2FsYXJ5UmVnaXN0ZXIuSW5QZXJpb2QsDQpTYWxhcnlSZWdpc3Rlci5QYXlyb2xsUnVuVHlwZSwNClNhbGFyeVJlZ2lzdGVyRGV0YWlsLkFtb3VudCwNClNhbGFyeVJlZ2lzdGVyRGV0YWlsLk51bWJlciwNClNhbGFyeVJlZ2lzdGVyRGV0YWlsLlJhdGUsDQp3YWdldHlwZS5OYW1lRW4gYXMgIldhZ2UgVHlwZSIsDQp3YWdldHlwZS5CaWxsaW5nVHlwZSAsDQooU0VMRUNUIEN1cnJlbmN5U2hvcnRGb3JtRW4gRlJPTSBDdXJyZW5jeSBXSEVSRSBPSUQgPSBFbXBsb3llZUJhc2ljUGF5LkN1cnJlbmN5KSBDdXJyZW5jeSANCkZST00gRW1wbG95ZWUNCklOTkVSIEpPSU4gU2FsYXJ5UmVnaXN0ZXIgb24gU2FsYXJ5UmVnaXN0ZXIuRW1wbG95ZWUgPSBFbXBsb3llZS5PSUQNCklOTkVSIEpPSU4gU2FsYXJ5UmVnaXN0ZXJEZXRhaWwgb24gU2FsYXJ5UmVnaXN0ZXJEZXRhaWwuU2FsYXJ5UmVnaXN0ZXIgPSBTYWxhcnlSZWdpc3Rlci5PSUQgYW5kIFNhbGFyeVJlZ2lzdGVyRGV0YWlsLkFtb3VudCAmbHQ7Jmd0OyAwDQpJTk5FUiBKT0lOIFdhZ2VUeXBlIG9uIHdhZ2V0eXBlLk9JRCA9IFNhbGFyeVJlZ2lzdGVyRGV0YWlsLldhZ2VUeXBlIGFuZCB3YWdldHlwZS5CaWxsaW5nVHlwZSA9IDAgYW5kIHdhZ2V0eXBlLmNvZGUgJmx0OyZndDsgOTAwMA0KTEVGVCBKT0lOIChTZWxlY3QgUm93X051bWJlcigpIE9WRVIgKFBBUlRJVElPTiBCWSBBLkVtcGxveWVlIG9yZGVyIGJ5IEEuU3RhcnREYXRlIGRlc2MpIFJvd19OdW0sDQogICAgICAgICAgIEEuRW1wbG95ZWUsQS5TdGFydERhdGUsQi5DdXJyZW5jeQ0KICAgICAgICAgICBGcm9tIGRiby5FbXBsb3llZUJhc2ljUGF5IEEgam9pbiBkYm8uRW1wbG95ZWVCYXNpY1BheURldGFpbCBCIG9uIEEuT0lEID0gQi5FbXBsb3llZUJhc2ljUGF5DQogICAgICAgICAgIHdoZXJlIEIuV2FnZVR5cGUgPSAxKUVtcGxveWVlQmFzaWNQYXkgb24gRW1wbG95ZWUuT0lEID0gRW1wbG95ZWVCYXNpY1BheS5FbXBsb3llZSBhbmQgUm93X051bSA9IDEgDQpXSEVSRSBFbXBsb3llZS5Db2RlID0gQFBybUVtcENvZGUNCkFORCBTYWxhcnlSZWdpc3Rlci5JblBlcmlvZCA9IFNhbGFyeVJlZ2lzdGVyLkZvclBlcmlvZA0KQU5EIERhdGVQYXJ0KE1vbnRoLCBTYWxhcnlSZWdpc3Rlci5JblBlcmlvZCkgPSBAUHJtTW9udGgNCkFORCBEYXRlUGFydChZZWFyLCBTYWxhcnlSZWdpc3Rlci5JblBlcmlvZCkgPSBAUHJtWWVhcg0KQU5EIFNhbGFyeVJlZ2lzdGVyLlBheXJvbGxSdW5UeXBlID0gQFBybVBheXJvbGxSdW5UeXBlDQpBTkQgV2FnZVR5cGUuQ29kZSBJTiAoJzEwNTInKTwvU3FsPjwvUXVlcnk+PFJlc3VsdFNjaGVtYT48RGF0YVNldCBOYW1lPSJzcWxEYXRhU291cmNlMiI+PFZpZXcgTmFtZT0iTGVhdmVFbmNhc2hRdWVyeSI+PEZpZWxkIE5hbWU9IkVtcGxveWVlIENvZGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRW1wbG95ZWUgTmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJGb3JQZXJpb2QiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJJblBlcmlvZCIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IlBheXJvbGxSdW5UeXBlIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iQW1vdW50IiBUeXBlPSJEb3VibGUiIC8+PEZpZWxkIE5hbWU9Ik51bWJlciIgVHlwZT0iRG91YmxlIiAvPjxGaWVsZCBOYW1lPSJSYXRlIiBUeXBlPSJEb3VibGUiIC8+PEZpZWxkIE5hbWU9IldhZ2UgVHlwZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJCaWxsaW5nVHlwZSIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IkN1cnJlbmN5IiBUeXBlPSJTdHJpbmciIC8+PC9WaWV3PjwvRGF0YVNldD48L1Jlc3VsdFNjaGVtYT48Q29ubmVjdGlvbk9wdGlvbnMgQ2xvc2VDb25uZWN0aW9uPSJ0cnVlIiAvPjwvU3FsRGF0YVNvdXJjZT4=" />
+            </ComponentStorage>
+          </ReportSource>
+        </Item27>
+        <Item28 Ref="205" ControlType="XRSubreport" Name="srptPayslipLeaveInfo" SizeF="399.89,22.38617" LocationFloat="6.420423, 627.1792" Visible="false">
+          <ParameterBindings>
+            <Item1 Ref="206" ParameterName="PrmEmpCode" DataMember="PayslipOrgV2Query.Employee Code" />
+            <Item2 Ref="207" ParameterName="PrmMonth" Parameter="#Ref-8" />
+            <Item3 Ref="208" ParameterName="PrmYear" Parameter="#Ref-9" />
+            <Item4 Ref="209" ParameterName="PrmPayrollRunType" Parameter="#Ref-11" />
+          </ParameterBindings>
+          <ReportSource Ref="211" ControlType="HCM10.Module.Reports.srptPaySlipLeaveInfoEn, HCM10.Module, Version=5.3.9686.28569, Culture=neutral, PublicKeyToken=null" Margins="1, 267, 0, 0" PaperKind="PrcEnvelopeNumber1Rotated" PageWidth="650" PageHeight="402" Version="17.2" EventsInfo=",ParametersRequestBeforeShow,MyXtraReport_ParametersRequestBeforeShow;,DataSourceDemanded,MyXtraReport_DataSourceDemanded;,BeforePrint,MyXtraReport_BeforePrint" DataMember="LeaveInfoQuery" DataSource="#Ref-210">
+            <Parameters>
+              <Item1 Ref="212" Description="Employee Code" Name="PrmEmpCode" />
+              <Item2 Ref="213" Description="Month" ValueInfo="0" Name="PrmMonth" Type="#Ref-164" />
+              <Item3 Ref="214" Description="Year" ValueInfo="0" Name="PrmYear" Type="#Ref-164" />
+              <Item4 Ref="216" Description="Payroll RunType" LookUpSettings="#Ref-215" ValueInfo="0" Name="PrmPayrollRunType" Type="#Ref-7" />
+            </Parameters>
+            <CalculatedFields>
+              <Item1 Ref="217" Name="CalcAmount" Expression="[Amount]" DataMember="Query" />
+            </CalculatedFields>
+            <Bands>
+              <Item1 Ref="218" ControlType="DetailBand" Name="Detail" HeightF="23.00002" KeepTogether="true" TextAlignment="TopLeft" Padding="0,0,0,0,100">
+                <Controls>
+                  <Item1 Ref="219" ControlType="XRTable" Name="xrTable2" SizeF="381,23" LocationFloat="0, 0" Font="Tahoma, 8pt" BorderColor="DarkGray" Borders="All">
+                    <Rows>
+                      <Item1 Ref="220" ControlType="XRTableRow" Name="xrTableRow2" Weight="1">
+                        <Cells>
+                          <Item1 Ref="221" ControlType="XRTableCell" Name="xrTableCell4" Weight="2.5933747368403512" TextAlignment="MiddleLeft" Font="Tahoma, 8.25pt, style=Bold, charSet=0" Padding="10,0,0,0,100">
+                            <ExpressionBindings>
+                              <Item1 Ref="222" Expression="[AbsenceTypeEn]" PropertyName="Text" EventName="BeforePrint" />
+                            </ExpressionBindings>
+                            <StylePriority Ref="223" UseFont="false" UsePadding="false" UseTextAlignment="false" />
+                          </Item1>
+                          <Item2 Ref="224" ControlType="XRTableCell" Name="xrTableCell6" Weight="1.3997004571535427" TextFormatString="{0:dd\/MM\/yyyy}" TextAlignment="MiddleCenter" Font="Tahoma, 9pt, charSet=0" Padding="0,5,0,0,100">
+                            <ExpressionBindings>
+                              <Item1 Ref="225" Expression="[StartDate]" PropertyName="Text" EventName="BeforePrint" />
+                            </ExpressionBindings>
+                            <StylePriority Ref="226" UseFont="false" UsePadding="false" UseTextAlignment="false" />
+                          </Item2>
+                          <Item3 Ref="227" ControlType="XRTableCell" Name="xrTableCell7" Weight="1.4377903287221432" TextFormatString="{0:dd\/MM\/yyyy}" TextAlignment="MiddleCenter" Font="Tahoma, 9pt, charSet=0" Padding="0,5,0,0,100">
+                            <ExpressionBindings>
+                              <Item1 Ref="228" Expression="[EndDate]" PropertyName="Text" EventName="BeforePrint" />
+                            </ExpressionBindings>
+                            <StylePriority Ref="229" UseFont="false" UsePadding="false" UseTextAlignment="false" />
+                          </Item3>
+                        </Cells>
+                      </Item1>
+                    </Rows>
+                    <StylePriority Ref="230" UseFont="false" UseBorderColor="false" UseBorders="false" />
+                  </Item1>
+                </Controls>
+              </Item1>
+              <Item2 Ref="231" ControlType="TopMarginBand" Name="TopMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item3 Ref="232" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item4 Ref="233" ControlType="GroupHeaderBand" Name="GroupHeader1" HeightF="48.00003">
+                <Controls>
+                  <Item1 Ref="234" ControlType="XRTable" Name="xrTable1" SizeF="381,25" LocationFloat="0, 23.00003" StyleName="EngData" BorderColor="DarkGray" Borders="All">
+                    <Rows>
+                      <Item1 Ref="235" ControlType="XRTableRow" Name="xrTableRow1" Weight="1">
+                        <Cells>
+                          <Item1 Ref="236" ControlType="XRTableCell" Name="xrTableCell1" Weight="4.0893461877917963" Text="LEAVE TYPE" TextAlignment="MiddleCenter" StyleName="EngData" ForeColor="Gray" Padding="5,0,0,0,100">
+                            <StylePriority Ref="237" UseForeColor="false" UsePadding="false" UseTextAlignment="false" />
+                          </Item1>
+                          <Item2 Ref="238" ControlType="XRTableCell" Name="xrTableCell8" Weight="2.2071081034629572" Text="START DATE" TextAlignment="MiddleCenter" ForeColor="Gray" Padding="5,0,0,0,100">
+                            <StylePriority Ref="239" UseForeColor="false" UsePadding="false" UseTextAlignment="false" />
+                          </Item2>
+                          <Item3 Ref="240" ControlType="XRTableCell" Name="xrTableCell2" Weight="2.2671704013003575" Text="END DATE" TextAlignment="MiddleCenter" StyleName="EngData" ForeColor="Gray" Padding="0,5,0,0,100">
+                            <StylePriority Ref="241" UseForeColor="false" UsePadding="false" UseTextAlignment="false" />
+                          </Item3>
+                        </Cells>
+                      </Item1>
+                    </Rows>
+                    <StylePriority Ref="242" UseBorderColor="false" UseBorders="false" />
+                  </Item1>
+                  <Item2 Ref="243" ControlType="XRLabel" Name="xrLabel12" Text="LEAVE DETAIL" TextAlignment="MiddleCenter" SizeF="381,23.00003" LocationFloat="0, 0" Font="Tahoma, 9pt, style=Bold" ForeColor="White" BackColor="255,15,100,160" Padding="2,2,0,0,100">
+                    <StylePriority Ref="244" UseFont="false" UseForeColor="false" UseBackColor="false" UseTextAlignment="false" />
+                  </Item2>
+                </Controls>
+              </Item4>
+              <Item5 Ref="245" ControlType="GroupFooterBand" Name="GroupFooter2" Level="1" HeightF="2.083333" />
+            </Bands>
+            <StyleSheet>
+              <Item1 Ref="246" Name="EngDataRgt" BorderStyle="Inset" Padding="0,0,0,0,100" Font="Tahoma, 8.25pt, charSet=0" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+              <Item2 Ref="247" Name="EngData" BorderStyle="Inset" Padding="0,0,0,0,100" Font="Tahoma, 8.25pt, style=Bold, charSet=0" StringFormat="Near;Near;0;None;Character;Default" />
+            </StyleSheet>
+            <ComponentStorage>
+              <Item1 Ref="210" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v17.2" Name="sqlDataSource2" Base64="PFNxbERhdGFTb3VyY2U+PE5hbWU+c3FsRGF0YVNvdXJjZTI8L05hbWU+PENvbm5lY3Rpb24gTmFtZT0iSENNMTBDb25uZWN0aW9uU3RyaW5nIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJDdXN0b21TcWxRdWVyeSIgTmFtZT0iTGVhdmVJbmZvUXVlcnkiPjxQYXJhbWV0ZXIgTmFtZT0iUHJtRW1wQ29kZSIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uU3RyaW5nLCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkpKFtQYXJhbWV0ZXJzLlBybUVtcENvZGVdKTwvUGFyYW1ldGVyPjxQYXJhbWV0ZXIgTmFtZT0iUHJtTW9udGgiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkludDE2LCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkpKFtQYXJhbWV0ZXJzLlBybU1vbnRoXSk8L1BhcmFtZXRlcj48UGFyYW1ldGVyIE5hbWU9IlBybVllYXIiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkludDE2LCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkpKFtQYXJhbWV0ZXJzLlBybVllYXJdKTwvUGFyYW1ldGVyPjxQYXJhbWV0ZXIgTmFtZT0iUHJtUGF5cm9sbFJ1blR5cGUiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkludDMyLCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkpKFtQYXJhbWV0ZXJzLlBybVBheXJvbGxSdW5UeXBlXSk8L1BhcmFtZXRlcj48U3FsPlNFTEVDVCANCkVtcGxveWVlLkNvZGUNCixFbXBsb3llZS5GdWxsTmFtZUVuDQosRW1wbG95ZWUuRnVsbE5hbWVBcg0KLEFic2VuY2VUeXBlLk5hbWVFbiBBUyBBYnNlbmNlVHlwZUVuDQosQWJzZW5jZVR5cGUuTmFtZUFyIEFTIEFic2VuY2VUeXBlQXINCixFbXBsb3llZUFic2VuY2UuU3RhcnREYXRlDQosRW1wbG95ZWVBYnNlbmNlLkVuZERhdGUNCixFbXBsb3llZUFic2VuY2UuU3RhcnRUaW1lDQosRW1wbG95ZWVBYnNlbmNlLkVuZFRpbWUNCixFbXBsb3llZUFic2VuY2UuQWJzZW5jZUhvdXJzDQosRW1wbG95ZWVBYnNlbmNlLlRvdGFsTGVhdmVEYXlzDQosRW1wbG95ZWVBYnNlbmNlLkNhbGVuZGFyRGF5cw0KLEVtcGxveWVlQWJzZW5jZS5QYXltZW50RGF0ZQ0KLEVtcGxveWVlQWJzZW5jZS5SZXR1cm5EYXRlDQosQ0FTRSBXSEVOIEVtcGxveWVlQWJzZW5jZS5MZWF2ZVBheW1lbnRUeXBlID0gMCB0aGVuICdQYXkgV2l0aCBQYXlyb2xsJw0KCSAgV0hFTiBFbXBsb3llZUFic2VuY2UuTGVhdmVQYXltZW50VHlwZSA9IDEgdGhlbiAnUGF5IEluIEFkdmFuY2UnDQoJICBFTFNFICcnDQoJICBFbmQgTGVhdmVQYXltZW50VHlwZQ0KZnJvbSBFbXBsb3llZUFic2VuY2UNCkxFRlQgSk9JTiBFbXBsb3llZSBPTiBFbXBsb3llZUFic2VuY2UuRW1wbG95ZWUgPSBFbXBsb3llZS5PSUQNCkxFRlQgSk9JTiBBYnNlbmNlVHlwZSBPTiBFbXBsb3llZUFic2VuY2UuQWJzZW5jZVR5cGUgPSBBYnNlbmNlVHlwZS5PSUQNCldIRVJFICAxID0gMQ0KQU5EIEVtcGxveWVlQWJzZW5jZS5MZWF2ZVBheW1lbnRUeXBlID0gMg0KQU5EIEVtcGxveWVlLkNvZGUgPSBAUHJtRW1wQ29kZQ0KQU5EIEVtcGxveWVlQWJzZW5jZS5QYXltZW50RGF0ZSAmZ3Q7PSBDT05WRVJUKERBVEVUSU1FLCBDb252ZXJ0KFZhcmNoYXIoNCksQFBybVllYXIpICsgJy0nICsgQ29udmVydChWYXJjaGFyKDIpLCBAUHJtTW9udGgpICsgJy0nICsgJzAxJykNCkFORCBFbXBsb3llZUFic2VuY2UuUGF5bWVudERhdGUgJmx0Oz0gRU9NT05USChDT05WRVJUKERBVEVUSU1FLCBDb252ZXJ0KFZhcmNoYXIoNCksQFBybVllYXIpICsgJy0nICsgQ29udmVydChWYXJjaGFyKDIpLCBAUHJtTW9udGgpICsgJy0nICsgJzAxJykpDQpBTkQgQFBybVBheXJvbGxSdW5UeXBlID0gMQ0KPC9TcWw+PC9RdWVyeT48UmVzdWx0U2NoZW1hPjxEYXRhU2V0IE5hbWU9InNxbERhdGFTb3VyY2UyIj48VmlldyBOYW1lPSJMZWF2ZUluZm9RdWVyeSI+PEZpZWxkIE5hbWU9IkNvZGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRnVsbE5hbWVFbiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJGdWxsTmFtZUFyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkFic2VuY2VUeXBlRW4iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQWJzZW5jZVR5cGVBciIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTdGFydERhdGUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJFbmREYXRlIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iU3RhcnRUaW1lIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iRW5kVGltZSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkFic2VuY2VIb3VycyIgVHlwZT0iRG91YmxlIiAvPjxGaWVsZCBOYW1lPSJUb3RhbExlYXZlRGF5cyIgVHlwZT0iRG91YmxlIiAvPjxGaWVsZCBOYW1lPSJDYWxlbmRhckRheXMiIFR5cGU9IkRvdWJsZSIgLz48RmllbGQgTmFtZT0iUGF5bWVudERhdGUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJSZXR1cm5EYXRlIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iTGVhdmVQYXltZW50VHlwZSIgVHlwZT0iU3RyaW5nIiAvPjwvVmlldz48L0RhdGFTZXQ+PC9SZXN1bHRTY2hlbWE+PENvbm5lY3Rpb25PcHRpb25zIENsb3NlQ29ubmVjdGlvbj0idHJ1ZSIgLz48L1NxbERhdGFTb3VyY2U+" />
+            </ComponentStorage>
+          </ReportSource>
+        </Item28>
+        <Item29 Ref="248" ControlType="XRSubreport" Name="srptPayslipIndemnityDaysSummaryEn" SizeF="290,140.5" LocationFloat="268, 692.14">
+          <ParameterBindings>
+            <Item1 Ref="249" ParameterName="empcode" DataMember="PayslipOrgV2Query.Employee Code" />
+            <Item2 Ref="250" ParameterName="ForPeriod" DataMember="PayslipOrgV2Query.ForPeriod" />
+            <Item3 Ref="251" ParameterName="InPeriod" DataMember="PayslipOrgV2Query.InPeriod" />
+            <Item4 Ref="252" ParameterName="RunType" DataMember="PayslipOrgV2Query.PayrollRunType" />
+          </ParameterBindings>
+          <ReportSource Ref="254" ControlType="HCM10.Module.Reports.srptPayslipIndemnityDaysSummaryEn, HCM10.Module, Version=5.3.9686.28569, Culture=neutral, PublicKeyToken=null" Margins="0, 585, 0, 0" PageWidth="850" PageHeight="1100" Version="17.2" EventsInfo=",ParametersRequestBeforeShow,MyXtraReport_ParametersRequestBeforeShow;,DataSourceDemanded,MyXtraReport_DataSourceDemanded;,BeforePrint,MyXtraReport_BeforePrint" DataMember="PayslipIndemnityQuery" DataSource="#Ref-253">
+            <Parameters>
+              <Item1 Ref="255" Description="empcode" Name="empcode" />
+              <Item2 Ref="256" Description="ForPeriod" ValueInfo="2017-01-31" Name="ForPeriod" Type="#Ref-33" />
+              <Item3 Ref="257" Description="InPeriod" ValueInfo="2017-01-31" Name="InPeriod" Type="#Ref-33" />
+              <Item4 Ref="259" Description="Run Type" LookUpSettings="#Ref-258" ValueInfo="0" Name="RunType" Type="#Ref-7" />
+            </Parameters>
+            <Bands>
+              <Item1 Ref="260" ControlType="DetailBand" Name="Detail" HeightF="23" TextAlignment="TopLeft" Padding="0,0,0,0,100">
+                <Controls>
+                  <Item1 Ref="261" ControlType="XRLabel" Name="xrLabel3" TextAlignment="MiddleLeft" SizeF="172.2215,23" LocationFloat="0, 0" Font="Tahoma, 8.75pt" Padding="2,2,0,0,100" BorderColor="LightGray" Borders="All">
+                    <DataBindings>
+                      <Item1 Ref="262" PropertyName="Text" DataMember="PayslipIndemnityQuery.Wage Type" />
+                    </DataBindings>
+                    <StylePriority Ref="263" UseFont="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item1>
+                  <Item2 Ref="264" ControlType="XRLabel" Name="xrLabel2" TextFormatString="{0:#0.000}" TextAlignment="MiddleRight" SizeF="92.77853,23" LocationFloat="172.2215, 0" Font="Tahoma, 8.75pt" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <DataBindings>
+                      <Item1 Ref="265" PropertyName="Text" DataMember="PayslipIndemnityQuery.Number" />
+                    </DataBindings>
+                    <ExpressionBindings>
+                      <Item1 Ref="266" Expression="[Number]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="267" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item2>
+                </Controls>
+              </Item1>
+              <Item2 Ref="268" ControlType="TopMarginBand" Name="TopMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item3 Ref="269" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item4 Ref="270" ControlType="GroupHeaderBand" Name="GroupHeader1" HeightF="22.99999">
+                <Controls>
+                  <Item1 Ref="271" ControlType="XRLabel" Name="xrLabel1" Text="INDEMNITY DAYS SUMMARY" TextAlignment="MiddleCenter" SizeF="265,22.99999" LocationFloat="0, 0" Font="Tahoma, 9.75pt, style=Bold, charSet=0" ForeColor="White" BackColor="255,15,100,160" Padding="2,2,0,0,100">
+                    <StylePriority Ref="272" UseFont="false" UseForeColor="false" UseBackColor="false" UseTextAlignment="false" />
+                  </Item1>
+                </Controls>
+              </Item4>
+            </Bands>
+            <ComponentStorage>
+              <Item1 Ref="253" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v17.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2U+PE5hbWU+c3FsRGF0YVNvdXJjZTE8L05hbWU+PENvbm5lY3Rpb24gTmFtZT0iSENNMTBDb25uZWN0aW9uU3RyaW5nIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJDdXN0b21TcWxRdWVyeSIgTmFtZT0iUGF5c2xpcEluZGVtbml0eVF1ZXJ5Ij48UGFyYW1ldGVyIE5hbWU9ImVtcGNvZGUiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLlN0cmluZywgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5KShbUGFyYW1ldGVycy5lbXBjb2RlXSk8L1BhcmFtZXRlcj48UGFyYW1ldGVyIE5hbWU9IkZvclBlcmlvZCIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uRGF0ZVRpbWUsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuRm9yUGVyaW9kXSk8L1BhcmFtZXRlcj48UGFyYW1ldGVyIE5hbWU9IkluUGVyaW9kIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5EYXRlVGltZSwgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5KShbUGFyYW1ldGVycy5JblBlcmlvZF0pPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJSdW5UeXBlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5JbnQzMiwgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5KShbUGFyYW1ldGVycy5SdW5UeXBlXSk8L1BhcmFtZXRlcj48U3FsPi0tREVDTEFSRSBAZW1wY29kZQlOVkFSQ0hBUigxMDApID0gJzUwNTknDQotLURFQ0xBUkUgQEZvclBlcmlvZAlEYXRlVGltZSA9ICcyMDIzLTA5LTMwJw0KLS1ERUNMQVJFIEBJblBlcmlvZAlEYXRlVGltZSA9ICcyMDIzLTA5LTMwJw0KLS1ERUNMQVJFIEBSdW5UeXBlCUlOVCA9IDANCg0KU2VsZWN0DQplbXAuQ29kZSBhcyAiRW1wbG95ZWUgQ29kZSIsDQpzYWxyZWcuRm9yUGVyaW9kLA0Kc2FscmVnLkluUGVyaW9kLA0Kc2FscmVnLlBheXJvbGxSdW5UeXBlLA0KU1JkZXRhaWwuTnVtYmVyLA0Kd2FnZXR5cGUuTmFtZUVuIGFzICJXYWdlIFR5cGUiLA0Kd2FnZXR5cGUuT0lEDQoNCkZST00gRW1wbG95ZWUgZW1wDQpJTk5FUiBKT0lOIFNhbGFyeVJlZ2lzdGVyIHNhbHJlZyBvbiBzYWxyZWcuRW1wbG95ZWUgPSBlbXAuT0lEDQpJTk5FUiBKT0lOIFNhbGFyeVJlZ2lzdGVyRGV0YWlsIFNSZGV0YWlsIG9uIFNSZGV0YWlsLlNhbGFyeVJlZ2lzdGVyID0gc2FscmVnLk9JRA0KSU5ORVIgSk9JTiBXYWdlVHlwZSB3YWdldHlwZSBvbiB3YWdldHlwZS5PSUQgPSBTUmRldGFpbC5XYWdlVHlwZSANCg0KV0hFUkUgd2FnZXR5cGUuQ29kZSBJTiAoNDAwNCwgNDAwNSwgNDAwNiwgNDAxNywgNDAxOCkNCkFORCBlbXAuQ29kZSA9IEBlbXBjb2RlDQpBTkQgW0ZvclBlcmlvZF0gPSBARm9yUGVyaW9kDQpBTkQgW0luUGVyaW9kXSA9IEBJblBlcmlvZA0KQU5EIFtQYXlyb2xsUnVuVHlwZV0gPSBAUnVuVHlwZTwvU3FsPjwvUXVlcnk+PFJlc3VsdFNjaGVtYT48RGF0YVNldCBOYW1lPSJzcWxEYXRhU291cmNlMSI+PFZpZXcgTmFtZT0iUGF5c2xpcEluZGVtbml0eVF1ZXJ5Ij48RmllbGQgTmFtZT0iRW1wbG95ZWUgQ29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJGb3JQZXJpb2QiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJJblBlcmlvZCIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IlBheXJvbGxSdW5UeXBlIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iTnVtYmVyIiBUeXBlPSJEb3VibGUiIC8+PEZpZWxkIE5hbWU9IldhZ2UgVHlwZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPSUQiIFR5cGU9IkludDMyIiAvPjwvVmlldz48L0RhdGFTZXQ+PC9SZXN1bHRTY2hlbWE+PENvbm5lY3Rpb25PcHRpb25zIENsb3NlQ29ubmVjdGlvbj0idHJ1ZSIgLz48L1NxbERhdGFTb3VyY2U+" />
+            </ComponentStorage>
+          </ReportSource>
+        </Item29>
+        <Item30 Ref="273" ControlType="XRSubreport" Name="srptPayslipWorkingDaysSummary" SizeF="250.94,140.5" LocationFloat="559.0603, 692.14">
+          <ParameterBindings>
+            <Item1 Ref="274" ParameterName="empcode" DataMember="PayslipOrgV2Query.Employee Code" />
+            <Item2 Ref="275" ParameterName="ForPeriod" DataMember="PayslipOrgV2Query.ForPeriod" />
+            <Item3 Ref="276" ParameterName="InPeriod" DataMember="PayslipOrgV2Query.InPeriod" />
+            <Item4 Ref="277" ParameterName="RunType" DataMember="PayslipOrgV2Query.PayrollRunType" />
+          </ParameterBindings>
+          <ReportSource Ref="279" ControlType="HCM10.Module.Reports.srptPayslipWorkingDaysSummaryEn, HCM10.Module, Version=5.3.9686.28569, Culture=neutral, PublicKeyToken=null" Margins="0, 596, 0, 0" PageWidth="850" PageHeight="1100" Version="17.2" EventsInfo=",ParametersRequestBeforeShow,MyXtraReport_ParametersRequestBeforeShow;,DataSourceDemanded,MyXtraReport_DataSourceDemanded;,BeforePrint,MyXtraReport_BeforePrint" DataMember="PayslipWorkingDayQuery" DataSource="#Ref-278">
+            <Parameters>
+              <Item1 Ref="280" Description="empcode" Name="empcode" />
+              <Item2 Ref="281" Description="ForPeriod" ValueInfo="2017-01-30" Name="ForPeriod" Type="#Ref-33" />
+              <Item3 Ref="282" Description="InPeriod" ValueInfo="2017-01-31" Name="InPeriod" Type="#Ref-33" />
+              <Item4 Ref="284" Description="Run Type" LookUpSettings="#Ref-283" ValueInfo="0" Name="RunType" Type="#Ref-7" />
+            </Parameters>
+            <Bands>
+              <Item1 Ref="285" ControlType="DetailBand" Name="Detail" HeightF="23" TextAlignment="TopLeft" Padding="0,0,0,0,100">
+                <Controls>
+                  <Item1 Ref="286" ControlType="XRLabel" Name="xrLabel3" TextAlignment="MiddleLeft" SizeF="196.1798,23" LocationFloat="0, 0" Font="Tahoma, 8.75pt" Padding="2,2,0,0,100" BorderColor="LightGray" Borders="All">
+                    <DataBindings>
+                      <Item1 Ref="287" PropertyName="Text" DataMember="PayslipWorkingDayQuery.Wage Type" />
+                    </DataBindings>
+                    <StylePriority Ref="288" UseFont="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item1>
+                  <Item2 Ref="289" ControlType="XRLabel" Name="xrLabel2" TextFormatString="{0:#.0}" TextAlignment="MiddleRight" SizeF="57.82016,23" LocationFloat="196.1798, 0" Font="Tahoma, 8.75pt" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <DataBindings>
+                      <Item1 Ref="290" PropertyName="Text" DataMember="PayslipWorkingDayQuery.Number" />
+                    </DataBindings>
+                    <ExpressionBindings>
+                      <Item1 Ref="291" Expression="[Number]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="292" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item2>
+                </Controls>
+              </Item1>
+              <Item2 Ref="293" ControlType="TopMarginBand" Name="TopMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item3 Ref="294" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item4 Ref="295" ControlType="PageHeaderBand" Name="PageHeader" HeightF="22.99999">
+                <Controls>
+                  <Item1 Ref="296" ControlType="XRLabel" Name="xrLabel1" Text="WORKING DAYS SUMMARY" TextAlignment="MiddleCenter" SizeF="254,22.99999" LocationFloat="0, 0" Font="Tahoma, 9pt, style=Bold, charSet=0" ForeColor="White" BackColor="255,15,100,160" Padding="2,2,0,0,100">
+                    <StylePriority Ref="297" UseFont="false" UseForeColor="false" UseBackColor="false" UseTextAlignment="false" />
+                  </Item1>
+                </Controls>
+              </Item4>
+            </Bands>
+            <ComponentStorage>
+              <Item1 Ref="278" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v17.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2U+PE5hbWU+c3FsRGF0YVNvdXJjZTE8L05hbWU+PENvbm5lY3Rpb24gTmFtZT0iSENNMTBDb25uZWN0aW9uU3RyaW5nIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJDdXN0b21TcWxRdWVyeSIgTmFtZT0iUGF5c2xpcFdvcmtpbmdEYXlRdWVyeSI+PFBhcmFtZXRlciBOYW1lPSJlbXBjb2RlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5TdHJpbmcsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuZW1wY29kZV0pPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJGb3JQZXJpb2QiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkRhdGVUaW1lLCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkpKFtQYXJhbWV0ZXJzLkZvclBlcmlvZF0pPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJJblBlcmlvZCIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uRGF0ZVRpbWUsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuSW5QZXJpb2RdKTwvUGFyYW1ldGVyPjxQYXJhbWV0ZXIgTmFtZT0iUnVuVHlwZSIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uSW50MzIsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuUnVuVHlwZV0pPC9QYXJhbWV0ZXI+PFNxbD4tLURFQ0xBUkUgQGVtcGNvZGUJTlZBUkNIQVIoMTAwKSA9ICc1MDU5Jw0KLS1ERUNMQVJFIEBGb3JQZXJpb2QJRGF0ZVRpbWUgPSAnMjAyMy0wOS0zMCcNCi0tREVDTEFSRSBASW5QZXJpb2QJRGF0ZVRpbWUgPSAnMjAyMy0wOS0zMCcNCi0tREVDTEFSRSBAUnVuVHlwZQlJTlQgPSAwDQoNClNlbGVjdA0KDQplbXAuQ29kZSBhcyAiRW1wbG95ZWUgQ29kZSIsDQpzYWxyZWcuRm9yUGVyaW9kLA0Kc2FscmVnLkluUGVyaW9kLA0Kc2FscmVnLlBheXJvbGxSdW5UeXBlLA0KU1JkZXRhaWwuTnVtYmVyLA0Kd2FnZXR5cGUuTmFtZUVuIGFzICJXYWdlIFR5cGUiDQoNCkZST00gRW1wbG95ZWUgZW1wDQpJTk5FUiBKT0lOIFNhbGFyeVJlZ2lzdGVyIHNhbHJlZyBvbiBzYWxyZWcuRW1wbG95ZWUgPSBlbXAuT0lEDQpJTk5FUiBKT0lOIFNhbGFyeVJlZ2lzdGVyRGV0YWlsIFNSZGV0YWlsIG9uIFNSZGV0YWlsLlNhbGFyeVJlZ2lzdGVyID0gc2FscmVnLk9JRA0KSU5ORVIgSk9JTiBXYWdlVHlwZSB3YWdldHlwZSBvbiB3YWdldHlwZS5PSUQgPSBTUmRldGFpbC5XYWdlVHlwZSANCldIRVJFIHdhZ2V0eXBlLkNvZGUgSU4gKDQwMDcsIDQwMDgsIDQwMDksIDQwMTEsIDQwMTQpDQpBTkQgZW1wLkNvZGUgPSBAZW1wY29kZQ0KQU5EIFtGb3JQZXJpb2RdID0gQEZvclBlcmlvZA0KQU5EIFtJblBlcmlvZF0gPSBASW5QZXJpb2QNCkFORCBbUGF5cm9sbFJ1blR5cGVdID0gQFJ1blR5cGU8L1NxbD48L1F1ZXJ5PjxSZXN1bHRTY2hlbWE+PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IlBheXNsaXBXb3JraW5nRGF5UXVlcnkiPjxGaWVsZCBOYW1lPSJFbXBsb3llZSBDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkZvclBlcmlvZCIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkluUGVyaW9kIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iUGF5cm9sbFJ1blR5cGUiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJOdW1iZXIiIFR5cGU9IkRvdWJsZSIgLz48RmllbGQgTmFtZT0iV2FnZSBUeXBlIiBUeXBlPSJTdHJpbmciIC8+PC9WaWV3PjwvRGF0YVNldD48L1Jlc3VsdFNjaGVtYT48Q29ubmVjdGlvbk9wdGlvbnMgQ2xvc2VDb25uZWN0aW9uPSJ0cnVlIiAvPjwvU3FsRGF0YVNvdXJjZT4=" />
+            </ComponentStorage>
+          </ReportSource>
+        </Item30>
+        <Item31 Ref="298" ControlType="XRSubreport" Name="srptPayslipAttendenceSummaryEn" SizeF="256.73,140.5" LocationFloat="6.07, 692.14">
+          <ParameterBindings>
+            <Item1 Ref="299" ParameterName="EmpCode" DataMember="PayslipOrgV2Query.Employee Code" />
+            <Item2 Ref="300" ParameterName="ForPeriod" DataMember="PayslipOrgV2Query.ForPeriod" />
+            <Item3 Ref="301" ParameterName="InPeriod" DataMember="PayslipOrgV2Query.InPeriod" />
+            <Item4 Ref="302" ParameterName="RunType" DataMember="PayslipOrgV2Query.PayrollRunType" />
+          </ParameterBindings>
+          <ReportSource Ref="304" ControlType="HCM10.Module.Reports.srptPayslipAttendenceSummaryEn, HCM10.Module, Version=5.3.9686.28569, Culture=neutral, PublicKeyToken=null" Margins="0, 594, 0, 0" PageWidth="850" PageHeight="1100" Version="17.2" EventsInfo=",ParametersRequestBeforeShow,MyXtraReport_ParametersRequestBeforeShow;,DataSourceDemanded,MyXtraReport_DataSourceDemanded;,BeforePrint,MyXtraReport_BeforePrint" DataMember="PayslipAttendanceQuery" DataSource="#Ref-303">
+            <Parameters>
+              <Item1 Ref="305" Description="EmpCode" Name="EmpCode" />
+              <Item2 Ref="306" Description="ForPeriod" ValueInfo="2017-01-31" Name="ForPeriod" Type="#Ref-33" />
+              <Item3 Ref="307" Description="InPeriod" ValueInfo="2017-01-31" Name="InPeriod" Type="#Ref-33" />
+              <Item4 Ref="309" Description="Run Type" LookUpSettings="#Ref-308" ValueInfo="0" Name="RunType" Type="#Ref-7" />
+            </Parameters>
+            <Bands>
+              <Item1 Ref="310" ControlType="DetailBand" Name="Detail" HeightF="23" TextAlignment="TopLeft" Padding="0,0,0,0,100">
+                <Controls>
+                  <Item1 Ref="311" ControlType="XRLabel" Name="xrLabel1" TextFormatString="{0:#0.000}" TextAlignment="MiddleRight" SizeF="83.77849,23" LocationFloat="172.2215, 0" Font="Tahoma, 8.75pt" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="312" Expression="[Number]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="313" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item1>
+                  <Item2 Ref="314" ControlType="XRLabel" Name="LoggedUserNme" TextAlignment="MiddleLeft" SizeF="172.2215,22.99999" LocationFloat="0, 0" Font="Tahoma, 8.75pt" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="315" Expression="[Wage Type]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="316" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item2>
+                </Controls>
+              </Item1>
+              <Item2 Ref="317" ControlType="TopMarginBand" Name="TopMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item3 Ref="318" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item4 Ref="319" ControlType="GroupHeaderBand" Name="GroupHeader1" HeightF="22.99999">
+                <Controls>
+                  <Item1 Ref="320" ControlType="XRLabel" Name="xrLabel3" Text="LEAVE SUMMARY" TextAlignment="MiddleCenter" SizeF="256,22.99999" LocationFloat="0, 0" Font="Tahoma, 9.75pt, style=Bold, charSet=0" ForeColor="White" BackColor="255,15,100,160" Padding="2,2,0,0,100">
+                    <StylePriority Ref="321" UseFont="false" UseForeColor="false" UseBackColor="false" UseTextAlignment="false" />
+                  </Item1>
+                </Controls>
+              </Item4>
+            </Bands>
+            <ComponentStorage>
+              <Item1 Ref="303" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v17.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2U+PE5hbWU+c3FsRGF0YVNvdXJjZTE8L05hbWU+PENvbm5lY3Rpb24gTmFtZT0iSENNMTBDb25uZWN0aW9uU3RyaW5nIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJDdXN0b21TcWxRdWVyeSIgTmFtZT0iUGF5c2xpcEF0dGVuZGFuY2VRdWVyeSI+PFBhcmFtZXRlciBOYW1lPSJlbXBjb2RlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5TdHJpbmcsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuRW1wQ29kZV0pPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJGb3JQZXJpb2QiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkRhdGVUaW1lLCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkpKFtQYXJhbWV0ZXJzLkZvclBlcmlvZF0pPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJJblBlcmlvZCIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uRGF0ZVRpbWUsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuSW5QZXJpb2RdKTwvUGFyYW1ldGVyPjxQYXJhbWV0ZXIgTmFtZT0iUnVuVHlwZSIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uSW50MzIsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuUnVuVHlwZV0pPC9QYXJhbWV0ZXI+PFNxbD4tLURFQ0xBUkUgQGVtcGNvZGUJTlZBUkNIQVIoMTAwKSA9ICc1MDU5Jw0KLS1ERUNMQVJFIEBGb3JQZXJpb2QJRGF0ZVRpbWUgPSAnMjAyMy0wOS0zMCcNCi0tREVDTEFSRSBASW5QZXJpb2QJRGF0ZVRpbWUgPSAnMjAyMy0wOS0zMCcNCi0tREVDTEFSRSBAUnVuVHlwZQlJTlQgPSAwDQoNClNlbGVjdA0KDQplbXAuQ29kZSBhcyAiRW1wbG95ZWUgQ29kZSIsDQpzYWxyZWcuRm9yUGVyaW9kLA0Kc2FscmVnLkluUGVyaW9kLA0Kc2FscmVnLlBheXJvbGxSdW5UeXBlLA0KU1JkZXRhaWwuTnVtYmVyLA0Kd2FnZXR5cGUuTmFtZUVuIGFzICJXYWdlIFR5cGUiLA0Kd2FnZXR5cGUub2lkLA0Kd2FnZXR5cGUuQ29kZQ0KDQpGUk9NIFNhbGFyeVJlZ2lzdGVyIHNhbHJlZw0KSU5ORVIgSk9JTiBFbXBsb3llZSBlbXAgb24gZW1wLk9JRCA9IHNhbHJlZy5FbXBsb3llZQ0KSU5ORVIgSk9JTiBTYWxhcnlSZWdpc3RlckRldGFpbCBTUmRldGFpbCBvbiBTUmRldGFpbC5TYWxhcnlSZWdpc3RlciA9IHNhbHJlZy5PSUQNCklOTkVSIEpPSU4gV2FnZVR5cGUgd2FnZXR5cGUgb24gd2FnZXR5cGUuT0lEID0gU1JkZXRhaWwuV2FnZVR5cGUgDQpXSEVSRSB3YWdldHlwZS5Db2RlIElOICg0MDIxLCA0MDIyLCA0MDAwLCA0MDAyLCA0MDIyKQ0KLS13YWdldHlwZS5Db2RlID0gNDAyMSBvciB3YWdldHlwZS5Db2RlID0gNDAyMiBvciB3YWdldHlwZS5Db2RlID0gNDAwMCBvciB3YWdldHlwZS5Db2RlID0gNDAwMiBvciB3YWdldHlwZS5Db2RlID0gNDAyMg0KQU5EIGVtcC5Db2RlID0gQGVtcGNvZGUNCkFORCBbRm9yUGVyaW9kXSA9IEBGb3JQZXJpb2QNCkFORCBbSW5QZXJpb2RdID0gQEluUGVyaW9kDQpBTkQgW1BheXJvbGxSdW5UeXBlXSA9IEBSdW5UeXBlPC9TcWw+PC9RdWVyeT48UmVzdWx0U2NoZW1hPjxEYXRhU2V0IE5hbWU9InNxbERhdGFTb3VyY2UxIj48VmlldyBOYW1lPSJQYXlzbGlwQXR0ZW5kYW5jZVF1ZXJ5Ij48RmllbGQgTmFtZT0iRW1wbG95ZWUgQ29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJGb3JQZXJpb2QiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJJblBlcmlvZCIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IlBheXJvbGxSdW5UeXBlIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iTnVtYmVyIiBUeXBlPSJEb3VibGUiIC8+PEZpZWxkIE5hbWU9IldhZ2UgVHlwZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJvaWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJDb2RlIiBUeXBlPSJTdHJpbmciIC8+PC9WaWV3PjwvRGF0YVNldD48L1Jlc3VsdFNjaGVtYT48Q29ubmVjdGlvbk9wdGlvbnMgQ2xvc2VDb25uZWN0aW9uPSJ0cnVlIiAvPjwvU3FsRGF0YVNvdXJjZT4=" />
+            </ComponentStorage>
+          </ReportSource>
+        </Item31>
+        <Item32 Ref="322" ControlType="XRLabel" Name="lblHeader" TextAlignment="MiddleCenter" SizeF="803.9296,29.66" LocationFloat="6.07, 115" Font="Tahoma, 11.25pt, style=Bold, charSet=0" ForeColor="White" BackColor="255,15,100,160" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="323" Expression="[HeaderText]" PropertyName="Text" EventName="BeforePrint" />
+          </ExpressionBindings>
+          <StylePriority Ref="324" UseFont="false" UseForeColor="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item32>
+        <Item33 Ref="325" ControlType="XRSubreport" Name="srptPayslipEarning" SizeF="395.1488,221.986" LocationFloat="6.419525, 325.3">
+          <ParameterBindings>
+            <Item1 Ref="326" ParameterName="empcode" DataMember="PayslipOrgV2Query.Employee Code" />
+            <Item2 Ref="327" ParameterName="ForPeriod" DataMember="PayslipOrgV2Query.ForPeriod" />
+            <Item3 Ref="328" ParameterName="InPeriod" DataMember="PayslipOrgV2Query.InPeriod" />
+            <Item4 Ref="329" ParameterName="RunType" DataMember="PayslipOrgV2Query.PayrollRunType" />
+          </ParameterBindings>
+          <ReportSource Ref="331" ControlType="HCM10.Module.Reports.srptPaySlipEarningEn, HCM10.Module, Version=5.3.9686.28569, Culture=neutral, PublicKeyToken=null" Margins="1, 0, 0, 0" PaperKind="PrcEnvelopeNumber1Rotated" PageWidth="650" PageHeight="402" Version="17.2" EventsInfo=",ParametersRequestBeforeShow,MyXtraReport_ParametersRequestBeforeShow;,DataSourceDemanded,MyXtraReport_DataSourceDemanded;,BeforePrint,MyXtraReport_BeforePrint" DataMember="PayslipEarningQuery" DataSource="#Ref-330">
+            <Parameters>
+              <Item1 Ref="332" Description="empcode" Name="empcode" />
+              <Item2 Ref="333" Description="ForPeriod" ValueInfo="2017-01-31" Name="ForPeriod" Type="#Ref-33" />
+              <Item3 Ref="334" Description="InPeriod" ValueInfo="2017-01-31" Name="InPeriod" Type="#Ref-33" />
+              <Item4 Ref="336" Description="Run Type" LookUpSettings="#Ref-335" ValueInfo="0" Name="RunType" Type="#Ref-7" />
+            </Parameters>
+            <CalculatedFields>
+              <Item1 Ref="337" Name="CalcAmount" Expression="[Amount]" DataMember="Query" />
+            </CalculatedFields>
+            <Bands>
+              <Item1 Ref="338" ControlType="DetailBand" Name="Detail" HeightF="23" KeepTogether="true" TextAlignment="TopLeft" Padding="0,0,0,0,100">
+                <Controls>
+                  <Item1 Ref="339" ControlType="XRLabel" Name="xrLabel6" TextAlignment="MiddleRight" SizeF="48.55685,23" LocationFloat="268.484, 0" Font="Tahoma, 8.75pt" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="340" Expression="[Rate]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="341" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item1>
+                  <Item2 Ref="342" ControlType="XRLabel" Name="xrLabel5" TextFormatString="{0:#0.000}" TextAlignment="MiddleRight" SizeF="65.50388,23" LocationFloat="202.9801, 0" Font="Tahoma, 8.75pt" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="343" Expression="[Number]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="344" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item2>
+                  <Item3 Ref="345" ControlType="XRLabel" Name="LoggedUserNme" TextAlignment="MiddleLeft" SizeF="202.98,23" LocationFloat="0, 0" Font="Tahoma, 8.75pt" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="346" Expression="[WageType]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="347" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item3>
+                  <Item4 Ref="348" ControlType="XRLabel" Name="xrLabel1" TextFormatString="{0:#0.000}" TextAlignment="MiddleRight" SizeF="73.95926,23" LocationFloat="317.0408, 0" Font="Tahoma, 8.75pt" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="349" Expression="[Amount]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="350" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item4>
+                </Controls>
+              </Item1>
+              <Item2 Ref="351" ControlType="TopMarginBand" Name="TopMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item3 Ref="352" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item4 Ref="353" ControlType="GroupHeaderBand" Name="GroupHeader1" HeightF="46.00003">
+                <Controls>
+                  <Item1 Ref="354" ControlType="XRLabel" Name="xrLabel8" Text=" TYPE" TextAlignment="MiddleCenter" SizeF="202.98,23" LocationFloat="0, 23.00003" Font="Tahoma, 8.25pt, style=Bold" ForeColor="Gray" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <StylePriority Ref="355" UseFont="false" UseForeColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item1>
+                  <Item2 Ref="356" ControlType="XRLabel" Name="xrLabel7" Text="AMOUNT" TextAlignment="MiddleCenter" SizeF="73.95926,23" LocationFloat="317.0408, 23.00003" Font="Tahoma, 8.25pt, style=Bold" ForeColor="Gray" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <StylePriority Ref="357" UseFont="false" UseForeColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item2>
+                  <Item3 Ref="358" ControlType="XRLabel" Name="xrLabel9" Text="No." TextAlignment="MiddleCenter" SizeF="65.50394,23" LocationFloat="202.9801, 23.00003" Font="Tahoma, 8.25pt, style=Bold" ForeColor="Gray" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <StylePriority Ref="359" UseFont="false" UseForeColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item3>
+                  <Item4 Ref="360" ControlType="XRLabel" Name="xrLabel10" Text="RATE" TextAlignment="MiddleCenter" SizeF="48.55685,23" LocationFloat="268.484, 23.00003" Font="Tahoma, 8.25pt, style=Bold" ForeColor="Gray" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <StylePriority Ref="361" UseFont="false" UseForeColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item4>
+                  <Item5 Ref="362" ControlType="XRLabel" Name="xrLabel12" Text="EARNINGS" TextAlignment="MiddleCenter" SizeF="391,23.00003" LocationFloat="0, 0" Font="Tahoma, 9pt, style=Bold" ForeColor="White" BackColor="255,15,100,160" Padding="2,2,0,0,100">
+                    <StylePriority Ref="363" UseFont="false" UseForeColor="false" UseBackColor="false" UseTextAlignment="false" />
+                  </Item5>
+                </Controls>
+              </Item4>
+              <Item5 Ref="364" ControlType="GroupFooterBand" Name="GroupFooter2" Level="1" HeightF="25">
+                <Controls>
+                  <Item1 Ref="365" ControlType="XRLabel" Name="xrLabel2" TextFormatString="{0:#0.000}" TextAlignment="MiddleRight" SizeF="122.5161,25" LocationFloat="268.484, 0" Font="Tahoma, 8.25pt, style=Bold" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <Summary Ref="366" Running="Group" />
+                    <ExpressionBindings>
+                      <Item1 Ref="367" Expression="sumSum([Amount])" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="368" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item1>
+                  <Item2 Ref="369" ControlType="XRLabel" Name="xrLabel3" TextAlignment="MiddleCenter" SizeF="65.50394,25" LocationFloat="202.9801, 0" Font="Tahoma, 8.25pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="370" Expression="[Currency]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="371" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item2>
+                  <Item3 Ref="372" ControlType="XRLabel" Name="xrLabel4" Text="TOTAL EARNINGS" TextAlignment="MiddleLeft" SizeF="202.98,25" LocationFloat="0, 0" Font="Tahoma, 8.25pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+                    <StylePriority Ref="373" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item3>
+                </Controls>
+              </Item5>
+            </Bands>
+            <StyleSheet>
+              <Item1 Ref="374" Name="EngDataRgt" BorderStyle="Inset" Padding="0,0,0,0,100" Font="Tahoma, 8.25pt, charSet=0" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+              <Item2 Ref="375" Name="EngData" BorderStyle="Inset" Padding="0,0,0,0,100" Font="Tahoma, 8.25pt, style=Bold, charSet=0" StringFormat="Near;Near;0;None;Character;Default" />
+            </StyleSheet>
+            <ComponentStorage>
+              <Item1 Ref="330" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v17.2" Name="sqlDataSource2" Base64="PFNxbERhdGFTb3VyY2U+PE5hbWU+c3FsRGF0YVNvdXJjZTI8L05hbWU+PENvbm5lY3Rpb24gTmFtZT0iSENNMTBDb25uZWN0aW9uU3RyaW5nIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJDdXN0b21TcWxRdWVyeSIgTmFtZT0iUGF5c2xpcEVhcm5pbmdRdWVyeSI+PFBhcmFtZXRlciBOYW1lPSJlbXBjb2RlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5TdHJpbmcsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuZW1wY29kZV0pPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJGb3JQZXJpb2QiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkRhdGVUaW1lLCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkpKFtQYXJhbWV0ZXJzLkZvclBlcmlvZF0pPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJJblBlcmlvZCIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uRGF0ZVRpbWUsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuSW5QZXJpb2RdKTwvUGFyYW1ldGVyPjxQYXJhbWV0ZXIgTmFtZT0iUnVuVHlwZSIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uSW50MzIsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuUnVuVHlwZV0pPC9QYXJhbWV0ZXI+PFNxbD4tLURFQ0xBUkUgQGVtcGNvZGUJTlZBUkNIQVIoMTAwKSA9ICc1MDU5Jw0KLS1ERUNMQVJFIEBGb3JQZXJpb2QJRGF0ZVRpbWUgPSAnMjAyMy0wOS0zMCcNCi0tREVDTEFSRSBASW5QZXJpb2QJRGF0ZVRpbWUgPSAnMjAyMy0wOS0zMCcNCi0tREVDTEFSRSBAUnVuVHlwZQlJTlQgPSAwDQoNClNlbGVjdA0KZW1wLkNvZGUsDQplbXAuRnVsbE5hbWVFbiwNCnNhbHJlZy5Gb3JQZXJpb2QsDQpzYWxyZWcuSW5QZXJpb2QsDQpzYWxyZWcuUGF5cm9sbFJ1blR5cGUsDQpTUmRldGFpbC5BbW91bnQsDQpST1VORChTUmRldGFpbC5OdW1iZXIsIDMpIEFTIE51bWJlciwNClJPVU5EKFNSZGV0YWlsLlJhdGUsIDMpIEFTIFJhdGUsDQp3YWdldHlwZS5OYW1lRW4gYXMgV2FnZVR5cGUsDQp3YWdldHlwZS5CaWxsaW5nVHlwZSAsDQooc2VsZWN0IEN1cnJlbmN5U2hvcnRGb3JtRW4gZnJvbSBDdXJyZW5jeSB3aGVyZSBPSUQgPSBFbXBsb3llZUJhc2ljUGF5LkN1cnJlbmN5KSBDdXJyZW5jeSANCmZyb20gRW1wbG95ZWUgZW1wDQpJTk5FUiBKT0lOIFNhbGFyeVJlZ2lzdGVyIHNhbHJlZyBvbiBzYWxyZWcuRW1wbG95ZWUgPSBlbXAuT0lEDQpJTk5FUiBKT0lOIFNhbGFyeVJlZ2lzdGVyRGV0YWlsIFNSZGV0YWlsIG9uIFNSZGV0YWlsLlNhbGFyeVJlZ2lzdGVyID0gc2FscmVnLk9JRCBhbmQgU1JkZXRhaWwuQW1vdW50ICZsdDsmZ3Q7IDANCklOTkVSIEpPSU4gV2FnZVR5cGUgd2FnZXR5cGUgb24gd2FnZXR5cGUuT0lEID0gU1JkZXRhaWwuV2FnZVR5cGUgYW5kIHdhZ2V0eXBlLkJpbGxpbmdUeXBlID0gMCBhbmQgSVNOVUxMKHdhZ2V0eXBlLkRvbnRJbXBhY3ROZXRQYXksIDApID0gMCBhbmQgd2FnZXR5cGUuY29kZSAmbHQ7Jmd0OyA5MDAwDQpMRUZUIEpPSU4gKFNlbGVjdCBSb3dfTnVtYmVyKCkgT1ZFUiAoUEFSVElUSU9OIEJZIEEuRW1wbG95ZWUgb3JkZXIgYnkgQS5TdGFydERhdGUgZGVzYykgUm93X051bSwNCiAgICAgICAgICAgQS5FbXBsb3llZSxBLlN0YXJ0RGF0ZSxCLkN1cnJlbmN5DQogICAgICAgICAgIEZyb20gZGJvLkVtcGxveWVlQmFzaWNQYXkgQSBqb2luIGRiby5FbXBsb3llZUJhc2ljUGF5RGV0YWlsIEIgb24gQS5PSUQgPSBCLkVtcGxveWVlQmFzaWNQYXkNCiAgICAgICAgICAgd2hlcmUgQi5XYWdlVHlwZSA9IDEpRW1wbG95ZWVCYXNpY1BheSBvbiBlbXAuT0lEID0gRW1wbG95ZWVCYXNpY1BheS5FbXBsb3llZSBhbmQgUm93X051bSA9IDEgDQpXSEVSRSBlbXAuQ29kZSA9IEBlbXBjb2RlDQpBbmQgW0ZvclBlcmlvZF0gPSBARm9yUGVyaW9kDQpBbmQgW0luUGVyaW9kXSA9IEBJblBlcmlvZA0KQW5kIFtQYXlyb2xsUnVuVHlwZV0gPSBAUnVuVHlwZQ0KPC9TcWw+PC9RdWVyeT48UmVzdWx0U2NoZW1hPjxEYXRhU2V0IE5hbWU9InNxbERhdGFTb3VyY2UyIj48VmlldyBOYW1lPSJQYXlzbGlwRWFybmluZ1F1ZXJ5Ij48RmllbGQgTmFtZT0iQ29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJGdWxsTmFtZUVuIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkZvclBlcmlvZCIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkluUGVyaW9kIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iUGF5cm9sbFJ1blR5cGUiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJBbW91bnQiIFR5cGU9IkRvdWJsZSIgLz48RmllbGQgTmFtZT0iTnVtYmVyIiBUeXBlPSJEb3VibGUiIC8+PEZpZWxkIE5hbWU9IlJhdGUiIFR5cGU9IkRvdWJsZSIgLz48RmllbGQgTmFtZT0iV2FnZVR5cGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQmlsbGluZ1R5cGUiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJDdXJyZW5jeSIgVHlwZT0iU3RyaW5nIiAvPjwvVmlldz48L0RhdGFTZXQ+PC9SZXN1bHRTY2hlbWE+PENvbm5lY3Rpb25PcHRpb25zIENsb3NlQ29ubmVjdGlvbj0idHJ1ZSIgLz48L1NxbERhdGFTb3VyY2U+" />
+            </ComponentStorage>
+          </ReportSource>
+        </Item33>
+        <Item34 Ref="376" ControlType="XRSubreport" Name="srptPayslipDeduction" SizeF="395.15,220" LocationFloat="414.8503, 325.3">
+          <ParameterBindings>
+            <Item1 Ref="377" ParameterName="EmpCode" DataMember="PayslipOrgV2Query.Employee Code" />
+            <Item2 Ref="378" ParameterName="ForPeriod" DataMember="PayslipOrgV2Query.ForPeriod" />
+            <Item3 Ref="379" ParameterName="InPeriod" DataMember="PayslipOrgV2Query.InPeriod" />
+            <Item4 Ref="380" ParameterName="RunType" DataMember="PayslipOrgV2Query.PayrollRunType" />
+          </ParameterBindings>
+          <ReportSource Ref="382" ControlType="HCM10.Module.Reports.srptPaySlipDeductionEn, HCM10.Module, Version=5.3.9686.28569, Culture=neutral, PublicKeyToken=null" Margins="1, 267, 0, 0" PaperKind="PrcEnvelopeNumber1Rotated" PageWidth="650" PageHeight="402" Version="17.2" EventsInfo=",ParametersRequestBeforeShow,MyXtraReport_ParametersRequestBeforeShow;,DataSourceDemanded,MyXtraReport_DataSourceDemanded;,BeforePrint,MyXtraReport_BeforePrint" DataMember="PayslipDeductionQuery" DataSource="#Ref-381">
+            <Parameters>
+              <Item1 Ref="383" Description="EmpCode" ValueInfo="1" Name="EmpCode" />
+              <Item2 Ref="384" Description="ForPeriod" ValueInfo="2017-01-31" Name="ForPeriod" Type="#Ref-33" />
+              <Item3 Ref="385" Description="InPeriod" ValueInfo="2017-01-31" Name="InPeriod" Type="#Ref-33" />
+              <Item4 Ref="387" Description="Run Type" LookUpSettings="#Ref-386" ValueInfo="0" Name="RunType" Type="#Ref-7" />
+            </Parameters>
+            <CalculatedFields>
+              <Item1 Ref="388" Name="calcAmount" Expression="Round([Amount],3)" DataMember="Query" />
+            </CalculatedFields>
+            <Bands>
+              <Item1 Ref="389" ControlType="DetailBand" Name="Detail" HeightF="23" TextAlignment="TopLeft" Padding="0,0,0,0,100">
+                <Controls>
+                  <Item1 Ref="390" ControlType="XRLabel" Name="xrLabel1" TextAlignment="MiddleRight" SizeF="65.50401,23" LocationFloat="192.1467, 0" Font="Tahoma, 8.75pt" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="391" Expression="[Number]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="392" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item1>
+                  <Item2 Ref="393" ControlType="XRLabel" Name="xrLabel6" TextAlignment="MiddleRight" SizeF="48.55688,23" LocationFloat="257.6507, 0" Font="Tahoma, 8.75pt" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="394" Expression="[Rate]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="395" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item2>
+                  <Item3 Ref="396" ControlType="XRLabel" Name="xrLabel2" TextFormatString="{0:#0.000}" TextAlignment="MiddleRight" SizeF="73.95917,23" LocationFloat="306.2076, 0" Font="Tahoma, 8.75pt" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="397" Expression="[Amount]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="398" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item3>
+                  <Item4 Ref="399" ControlType="XRLabel" Name="LoggedUserNme" TextAlignment="MiddleLeft" SizeF="192.1466,23" LocationFloat="6.357829E-05, 0" Font="Tahoma, 8.75pt" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="400" Expression="[WageType]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="401" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item4>
+                </Controls>
+              </Item1>
+              <Item2 Ref="402" ControlType="TopMarginBand" Name="TopMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item3 Ref="403" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+              <Item4 Ref="404" ControlType="GroupHeaderBand" Name="GroupHeader1" HeightF="46">
+                <Controls>
+                  <Item1 Ref="405" ControlType="XRLabel" Name="xrLabel10" Text="RATE" TextAlignment="MiddleCenter" SizeF="48.55688,23" LocationFloat="257.6506, 23" Font="Tahoma, 8.25pt, style=Bold" ForeColor="Gray" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <StylePriority Ref="406" UseFont="false" UseForeColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item1>
+                  <Item2 Ref="407" ControlType="XRLabel" Name="xrLabel9" Text="No." TextAlignment="MiddleCenter" SizeF="65.50394,23" LocationFloat="192.1467, 23" Font="Tahoma, 8.25pt, style=Bold" ForeColor="Gray" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <StylePriority Ref="408" UseFont="false" UseForeColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item2>
+                  <Item3 Ref="409" ControlType="XRLabel" Name="xrLabel7" Text="AMOUNT" TextAlignment="MiddleCenter" SizeF="73.95923,23" LocationFloat="306.2076, 23" Font="Tahoma, 8.25pt, style=Bold" ForeColor="Gray" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <StylePriority Ref="410" UseFont="false" UseForeColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item3>
+                  <Item4 Ref="411" ControlType="XRLabel" Name="xrLabel8" Text=" TYPE" TextAlignment="MiddleCenter" SizeF="192.1467,23" LocationFloat="0, 23.00001" Font="Tahoma, 8.25pt, style=Bold" ForeColor="Gray" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <StylePriority Ref="412" UseFont="false" UseForeColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item4>
+                  <Item5 Ref="413" ControlType="XRLabel" Name="xrLabel14" Text="DEDUCTIONS" TextAlignment="MiddleCenter" SizeF="380.1667,23" LocationFloat="9.155273E-05, 0" Font="Tahoma, 9pt, style=Bold" ForeColor="White" BackColor="255,15,100,160" Padding="2,2,0,0,100">
+                    <StylePriority Ref="414" UseFont="false" UseForeColor="false" UseBackColor="false" UseTextAlignment="false" />
+                  </Item5>
+                </Controls>
+              </Item4>
+              <Item5 Ref="415" ControlType="GroupFooterBand" Name="GroupFooter2" Level="1" HeightF="25">
+                <Controls>
+                  <Item1 Ref="416" ControlType="XRLabel" Name="xrLabel11" TextFormatString="{0:#0.000}" TextAlignment="MiddleRight" SizeF="122.5161,25" LocationFloat="257.6507, 0" Font="Tahoma, 8.25pt, style=Bold" Padding="5,5,0,0,100" BorderColor="LightGray" Borders="All">
+                    <Summary Ref="417" Running="Group" />
+                    <ExpressionBindings>
+                      <Item1 Ref="418" Expression="sumSum([Amount])" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="419" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item1>
+                  <Item2 Ref="420" ControlType="XRLabel" Name="xrLabel3" TextAlignment="MiddleCenter" SizeF="65.50404,25" LocationFloat="192.1467, 0" Font="Tahoma, 8.25pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+                    <ExpressionBindings>
+                      <Item1 Ref="421" Expression="[Currency]" PropertyName="Text" EventName="BeforePrint" />
+                    </ExpressionBindings>
+                    <StylePriority Ref="422" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item2>
+                  <Item3 Ref="423" ControlType="XRLabel" Name="xrLabel4" Text="TOTAL DEDUCTIONS" TextAlignment="MiddleLeft" SizeF="192.1467,25" LocationFloat="0, 0" Font="Tahoma, 8.25pt, style=Bold" Padding="5,2,0,0,100" BorderColor="LightGray" Borders="All">
+                    <StylePriority Ref="424" UseFont="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  </Item3>
+                </Controls>
+              </Item5>
+            </Bands>
+            <StyleSheet>
+              <Item1 Ref="425" Name="EngDataRgt" BorderStyle="Inset" Padding="0,0,0,0,100" Font="Tahoma, 8.25pt, charSet=0" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+              <Item2 Ref="426" Name="EngData" BorderStyle="Inset" Padding="0,0,0,0,100" Font="Tahoma, 8.25pt, style=Bold, charSet=0" StringFormat="Near;Near;0;None;Character;Default" />
+            </StyleSheet>
+            <ComponentStorage>
+              <Item1 Ref="381" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v17.2" Name="sqlDataSource2" Base64="PFNxbERhdGFTb3VyY2U+PE5hbWU+c3FsRGF0YVNvdXJjZTI8L05hbWU+PENvbm5lY3Rpb24gTmFtZT0iSENNMTBDb25uZWN0aW9uU3RyaW5nIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJDdXN0b21TcWxRdWVyeSIgTmFtZT0iUGF5c2xpcERlZHVjdGlvblF1ZXJ5Ij48UGFyYW1ldGVyIE5hbWU9ImVtcGNvZGUiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLlN0cmluZywgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5KShbUGFyYW1ldGVycy5FbXBDb2RlXSk8L1BhcmFtZXRlcj48UGFyYW1ldGVyIE5hbWU9IkZvclBlcmlvZCIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uRGF0ZVRpbWUsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuRm9yUGVyaW9kXSk8L1BhcmFtZXRlcj48UGFyYW1ldGVyIE5hbWU9IkluUGVyaW9kIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5EYXRlVGltZSwgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5KShbUGFyYW1ldGVycy5JblBlcmlvZF0pPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJSdW5UeXBlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5JbnQzMiwgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5KShbUGFyYW1ldGVycy5SdW5UeXBlXSk8L1BhcmFtZXRlcj48U3FsPi0tREVDTEFSRSBAZW1wY29kZQlOVkFSQ0hBUigxMDApID0gJzUwNTknDQotLURFQ0xBUkUgQEZvclBlcmlvZAlEYXRlVGltZSA9ICcyMDIzLTA5LTMwJw0KLS1ERUNMQVJFIEBJblBlcmlvZAlEYXRlVGltZSA9ICcyMDIzLTA5LTMwJw0KLS1ERUNMQVJFIEBSdW5UeXBlCUlOVCA9IDANCg0KU2VsZWN0DQplbXAuQ29kZSwNCmVtcC5GdWxsTmFtZUVuLA0Kc2FscmVnLkZvclBlcmlvZCwNCnNhbHJlZy5JblBlcmlvZCwNCnNhbHJlZy5QYXlyb2xsUnVuVHlwZSwNClNSZGV0YWlsLkFtb3VudCwNClJPVU5EKFNSZGV0YWlsLk51bWJlciwgMykgQVMgTnVtYmVyLA0KUk9VTkQoU1JkZXRhaWwuUmF0ZSwgMykgQVMgUmF0ZSwNCndhZ2V0eXBlLk5hbWVFbiBhcyBXYWdlVHlwZSwNCndhZ2V0eXBlLkJpbGxpbmdUeXBlLA0KKHNlbGVjdCBDdXJyZW5jeVNob3J0Rm9ybUVuIGZyb20gQ3VycmVuY3kgd2hlcmUgT0lEID0gRW1wbG95ZWVCYXNpY1BheS5DdXJyZW5jeSkgQ3VycmVuY3kgDQoNCmZyb20gRW1wbG95ZWUgZW1wDQpJTk5FUiBKT0lOIFNhbGFyeVJlZ2lzdGVyIHNhbHJlZyBvbiBzYWxyZWcuRW1wbG95ZWUgPSBlbXAuT0lEDQpJTk5FUiBKT0lOIFNhbGFyeVJlZ2lzdGVyRGV0YWlsIFNSZGV0YWlsIG9uIFNSZGV0YWlsLlNhbGFyeVJlZ2lzdGVyID0gc2FscmVnLk9JRCBhbmQgU1JkZXRhaWwuQW1vdW50ICZsdDsmZ3Q7IDAgYW5kIFNSZGV0YWlsLldhZ2VUeXBlICZsdDsmZ3Q7IDY1DQpJTk5FUiBKT0lOIFdhZ2VUeXBlIHdhZ2V0eXBlIG9uIHdhZ2V0eXBlLk9JRCA9IFNSZGV0YWlsLldhZ2VUeXBlIGFuZCB3YWdldHlwZS5CaWxsaW5nVHlwZSA9IDEgYW5kIElzTnVsbCh3YWdldHlwZS5Eb250SW1wYWN0TmV0UGF5LDApPTANCkxFRlQgSk9JTiAoU2VsZWN0IFJvd19OdW1iZXIoKSBPVkVSIChQQVJUSVRJT04gQlkgQS5FbXBsb3llZSBvcmRlciBieSBBLlN0YXJ0RGF0ZSBkZXNjKSBSb3dfTnVtLA0KICAgICAgICAgICBBLkVtcGxveWVlLEEuU3RhcnREYXRlLEIuQ3VycmVuY3kNCiAgICAgICAgICAgRnJvbSBkYm8uRW1wbG95ZWVCYXNpY1BheSBBIGpvaW4gZGJvLkVtcGxveWVlQmFzaWNQYXlEZXRhaWwgQiBvbiBBLk9JRCA9IEIuRW1wbG95ZWVCYXNpY1BheQ0KICAgICAgICAgICB3aGVyZSBCLldhZ2VUeXBlID0gMSlFbXBsb3llZUJhc2ljUGF5IG9uIGVtcC5PSUQgPSBFbXBsb3llZUJhc2ljUGF5LkVtcGxveWVlIGFuZCBSb3dfTnVtID0gMSANCg0KV0hFUkUgZW1wLkNvZGUgPSBAZW1wY29kZQ0KQW5kIFtGb3JQZXJpb2RdID0gQEZvclBlcmlvZA0KQW5kIFtJblBlcmlvZF0gPSBASW5QZXJpb2QNCkFuZCBbUGF5cm9sbFJ1blR5cGVdID0gQFJ1blR5cGUNCjwvU3FsPjwvUXVlcnk+PFJlc3VsdFNjaGVtYT48RGF0YVNldCBOYW1lPSJzcWxEYXRhU291cmNlMiI+PFZpZXcgTmFtZT0iUGF5c2xpcERlZHVjdGlvblF1ZXJ5Ij48RmllbGQgTmFtZT0iQ29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJGdWxsTmFtZUVuIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkZvclBlcmlvZCIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkluUGVyaW9kIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iUGF5cm9sbFJ1blR5cGUiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJBbW91bnQiIFR5cGU9IkRvdWJsZSIgLz48RmllbGQgTmFtZT0iTnVtYmVyIiBUeXBlPSJEb3VibGUiIC8+PEZpZWxkIE5hbWU9IlJhdGUiIFR5cGU9IkRvdWJsZSIgLz48RmllbGQgTmFtZT0iV2FnZVR5cGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQmlsbGluZ1R5cGUiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJDdXJyZW5jeSIgVHlwZT0iU3RyaW5nIiAvPjwvVmlldz48L0RhdGFTZXQ+PC9SZXN1bHRTY2hlbWE+PENvbm5lY3Rpb25PcHRpb25zIENsb3NlQ29ubmVjdGlvbj0idHJ1ZSIgLz48L1NxbERhdGFTb3VyY2U+" />
+            </ComponentStorage>
+          </ReportSource>
+        </Item34>
+        <Item35 Ref="427" ControlType="XRLabel" Name="xrLabel4" TextFormatString=" {0}" TextAlignment="MiddleRight" SizeF="184.0987,22.99994" LocationFloat="625.9016, 614.89" StyleName="ENGDataStyle" Font="Tahoma, 9pt, style=Bold, charSet=0" Padding="0,0,0,5,100" Borders="Bottom" BorderWidth="2" BorderDashStyle="Double">
+          <Summary Ref="428" IgnoreNullValues="true" />
+          <ExpressionBindings>
+            <Item1 Ref="429" Expression="[Currency]+' '+ [CalcNetPay]" PropertyName="Text" EventName="BeforePrint" />
+          </ExpressionBindings>
+          <StylePriority Ref="430" UseFont="false" UsePadding="false" UseBorders="false" UseBorderWidth="false" UseBorderDashStyle="false" UseTextAlignment="false" />
+        </Item35>
+        <Item36 Ref="431" ControlType="XRLabel" Name="xrLabel31" Text="NET AMOUNT PAID :" TextAlignment="MiddleCenter" SizeF="156.7107,22.99997" LocationFloat="456.06, 614.89" StyleName="EngMainDataStyle" Padding="0,0,0,5,100" Borders="Bottom" BorderWidth="2" BorderDashStyle="Double">
+          <StylePriority Ref="432" UsePadding="false" UseBorders="false" UseBorderWidth="false" UseBorderDashStyle="false" UseTextAlignment="false" />
+        </Item36>
+        <Item37 Ref="433" ControlType="XRPictureBox" Name="xrPictureBox1" Sizing="StretchImage" SizeF="204.3078,94.37504" LocationFloat="297.52, 10">
+          <ExpressionBindings>
+            <Item1 Ref="434" Expression="[CompanyLogo]" PropertyName="Image" EventName="BeforePrint" />
+          </ExpressionBindings>
+        </Item37>
+      </Controls>
+    </Item1>
+    <Item2 Ref="435" ControlType="TopMarginBand" Name="TopMargin" HeightF="0" TextAlignment="TopLeft" Padding="0,0,0,0,100" Visible="false" />
+    <Item3 Ref="436" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="10" TextAlignment="TopLeft" Padding="0,0,0,0,100" />
+    <Item4 Ref="437" ControlType="ReportHeaderBand" Name="ReportHeader" HeightF="1.666673" KeepTogether="true" />
+    <Item5 Ref="438" ControlType="PageFooterBand" Name="PageFooter" HeightF="100">
+      <Controls>
+        <Item1 Ref="439" ControlType="XRLabel" Name="xrLabel5" Text="User :" TextAlignment="MiddleLeft" SizeF="46.79168,23" LocationFloat="12.08, 67" Font="Tahoma, 9.75pt, charSet=0" Padding="2,2,0,0,100">
+          <StylePriority Ref="440" UseFont="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="441" ControlType="XRLabel" Name="LoggedUserNme" Text="RepxExportUser" TextAlignment="MiddleLeft" SizeF="138.7661,23.00001" LocationFloat="58.87168, 66.99999" Font="Tahoma, 9.75pt, charSet=0" Padding="2,2,0,0,100">
+          <StylePriority Ref="442" UseFont="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="443" ControlType="XRLabel" Name="xrLabel3" TextFormatString="{0:dddd, dd\/MMMM\/yyyy hh:mm tt}" Text="xrLabel3" TextAlignment="MiddleRight" SizeF="322.0595,23" LocationFloat="487.9401, 66.99999" Font="Tahoma, 9.75pt, charSet=0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="444" Expression="[CalcDateTime]" PropertyName="Text" EventName="BeforePrint" />
+          </ExpressionBindings>
+          <StylePriority Ref="445" UseFont="false" UseTextAlignment="false" />
+        </Item3>
+      </Controls>
+    </Item5>
+  </Bands>
+  <Scripts Ref="446" OnBeforePrint="rptPayslipEn_1_BeforePrint" />
+  <StyleSheet>
+    <Item1 Ref="447" Name="EngMainDataStyle" BorderStyle="Inset" Padding="0,0,0,0,100" Font="Tahoma, 9pt, style=Bold, charSet=0" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" />
+    <Item2 Ref="448" Name="ENGDataStyle" BorderStyle="Inset" Padding="0,0,0,0,100" Font="Tahoma, 9pt, charSet=0" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" />
+  </StyleSheet>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v17.2" Name="PayslipDS" Base64="PFNxbERhdGFTb3VyY2U+PE5hbWU+UGF5c2xpcERTPC9OYW1lPjxDb25uZWN0aW9uIE5hbWU9IkhDTTEwQ29ubmVjdGlvblN0cmluZyIgRnJvbUFwcENvbmZpZz0idHJ1ZSIgLz48UXVlcnkgVHlwZT0iU2VsZWN0UXVlcnkiIE5hbWU9IlBheXJvbGxBcmVhIj48VGFibGVzPjxUYWJsZSBOYW1lPSJQYXlyb2xsQXJlYSIgLz48L1RhYmxlcz48Q29sdW1ucz48Q29sdW1uIFRhYmxlPSJQYXlyb2xsQXJlYSIgTmFtZT0iQ29kZSIgLz48Q29sdW1uIFRhYmxlPSJQYXlyb2xsQXJlYSIgTmFtZT0iTmFtZSIgLz48L0NvbHVtbnM+PC9RdWVyeT48UXVlcnkgVHlwZT0iQ3VzdG9tU3FsUXVlcnkiIE5hbWU9IlBheXNsaXBPcmdWMlF1ZXJ5Ij48UGFyYW1ldGVyIE5hbWU9IlBybUVtcENvZGUiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLlN0cmluZywgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5KShbUGFyYW1ldGVycy5Qcm1FbXBDb2RlXSk8L1BhcmFtZXRlcj48UGFyYW1ldGVyIE5hbWU9IlBybU1vbnRoIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5JbnQzMiwgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5KShbUGFyYW1ldGVycy5Qcm1Nb250aF0pPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJQcm1ZZWFyIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5JbnQzMiwgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5KShbUGFyYW1ldGVycy5Qcm1ZZWFyXSk8L1BhcmFtZXRlcj48UGFyYW1ldGVyIE5hbWU9IlBybVBheXJvbGxSdW5UeXBlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5JbnQzMiwgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5KShbUGFyYW1ldGVycy5Qcm1QYXlyb2xsUnVuVHlwZV0pPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJQcm1QYXlyb2xsQXJlYSIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uU3RyaW5nLCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkpKFtQYXJhbWV0ZXJzLlBybVBheXJvbGxBcmVhXSk8L1BhcmFtZXRlcj48UGFyYW1ldGVyIE5hbWU9IlBybUVuY2FzaG1lbnQiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkJvb2xlYW4sIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuUHJtRW5jYXNobWVudF0pPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJQcm1FbXBsb3llZVN0YXR1cyIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uSW50MzIsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSkoW1BhcmFtZXRlcnMuUHJtRW1wU3RhdHVzXSk8L1BhcmFtZXRlcj48U3FsPi0tRGVjbGFyZSBAUHJtRW1wQ29kZQkJCQlWQVJDSEFSKDEwMCkgPSAnJw0KLS1EZWNsYXJlIEBQcm1QYXlyb2xsQXJlYQkJCVZBUkNIQVIoMTAwKSA9ICdLQVpFTUkgU0hJUFBJTkcnDQotLURlY2xhcmUgQFBybU1vbnRoCQkJCUlOVCA9IDgNCi0tRGVjbGFyZSBAUHJtWWVhcgkJCQlJTlQgPSAyMDIzDQotLURlY2xhcmUgQFBybVBheXJvbGxSdW5UeXBlCQlJTlQgPSAwDQotLURlY2xhcmUgQFBybUVuY2FzaG1lbnQJCQlCSVQgPSAwDQotLURlY2xhcmUgQFBybUVtcGxveWVlU3RhdHVzICAgICAgSU5UID0gLTENCg0KU0VMRUNUIA0KRW1wbG95ZWUuQ29kZSBBUyBbRW1wbG95ZWUgQ29kZV0NCiwgRW1wbG95ZWUuU3RhdHVzDQosIEVtcGxveWVlLkNpdmlsSUQNCiwgRW1wbG95ZWUuTW9iaWxlDQosIEJhbmsuTmFtZUVuIEFTIFtCYW5rIE5hbWVdDQosIEJhbmsuTmFtZUVuIEFTIEJhbmtDb2RlDQosIEVtcGxveWVlQmFuay5TdGFydERhdGUNCiwgRW1wbG95ZWVCYW5rLklCQU4gQVMgW0JhbmsgSUJBTl0NCiwgRW1wbG95ZWVCYW5rLkFjY291bnROdW0NCiwgQ2FzZSBXSEVOIE9yZ2FuaXphdGlvblVuaXRfMS5PSUQgSXMgTm90IE51bGwgVGhlbiBPcmdhbml6YXRpb25Vbml0XzEuTmFtZUVuDQoJICAgV0hFTiBPcmdhbml6YXRpb25Vbml0XzIuT0lEIElzIE5vdCBOdWxsIFRoZW4gT3JnYW5pemF0aW9uVW5pdF8yLk5hbWVFbg0KCSAgIFdIRU4gT3JnYW5pemF0aW9uVW5pdF8zLk9JRCBJcyBOb3QgTnVsbCBUaGVuIE9yZ2FuaXphdGlvblVuaXRfMy5OYW1lRW4NCgkgICBXSEVOIE9yZ2FuaXphdGlvblVuaXRfNC5PSUQgSXMgTm90IE51bGwgVGhlbiBPcmdhbml6YXRpb25Vbml0XzQuTmFtZUVuDQoJICAgV0hFTiBPcmdhbml6YXRpb25Vbml0XzUuT0lEIElzIE5vdCBOdWxsIFRoZW4gT3JnYW5pemF0aW9uVW5pdF81Lk5hbWVFbg0KCSAgIFdIRU4gT3JnYW5pemF0aW9uVW5pdF82Lk9JRCBJcyBOb3QgTnVsbCBUaGVuIE9yZ2FuaXphdGlvblVuaXRfNi5OYW1lRW4NCgkgICBXSEVOIE9yZ2FuaXphdGlvblVuaXRfNy5PSUQgSXMgTm90IE51bGwgVGhlbiBPcmdhbml6YXRpb25Vbml0XzcuTmFtZUVuDQoJRW5kIEFTIE9yZ1VuaXQNCiwgRW1wbG95ZWUuRnVsbE5hbWVFbiBBUyBbRW1wbG95ZWUgTmFtZV0NCiwgRW1wbG95ZWVTdWJHcm91cC5OYW1lRW4gQVMgR3JhZGUNCiwgRW1wbG95ZWVHcm91cC5OYW1lRW4gQVMgW1NhbGFyeSBQcm9maWxlXQ0KLCBqb2J0aXRsZS5OYW1lRW4gQVMgSm9idGl0bGUNCiwgRW1wbG95ZWUuSm9pbmluZ0RhdGUgQVMgW0pvaW5pbmcgRGF0ZV0NCi0tLCBFbXBsb3llZVZpc2FJbmZvLlBhc3Nwb3J0RXhwaXJ5RGF0ZQ0KLCBTYWxhcnlSZWdpc3Rlci5Gb3JQZXJpb2QNCiwgU2FsYXJ5UmVnaXN0ZXIuSW5QZXJpb2QNCiwgU2FsYXJ5UmVnaXN0ZXIuUGF5cm9sbFJ1blR5cGUNCiwgU2FsYXJ5UmVnaXN0ZXJkZXRhaWwuQW1vdW50IEFTIFtOZXQgUGF5XQ0KLCBQYXlyb2xsQXJlYS5OYW1lIEFTIFtQYXlyb2xsIEFyZWFdDQosIFBheXJvbGxBcmVhLkNvZGUgQVMgW1BheXJvbGwgQXJlYSBDb2RlXQ0KLChzZWxlY3QgQ3VycmVuY3lTaG9ydEZvcm1FbiBmcm9tIEN1cnJlbmN5IHdoZXJlIE9JRCA9IEVtcGxveWVlQmFzaWNQYXkuQ3VycmVuY3kpIEN1cnJlbmN5IA0KLENhc2UgV0hFTiBDb21wYW55XzEuT0lEIElzIE5vdCBOdWxsIFRoZW4gQ29tcGFueV8xLmxvZ28NCgkgIFdIRU4gQ29tcGFueV8yLk9JRCBJcyBOb3QgTnVsbCBUaGVuIENvbXBhbnlfMi5sb2dvDQoJICBXSEVOIENvbXBhbnlfMy5PSUQgSXMgTm90IE51bGwgVGhlbiBDb21wYW55XzMubG9nbw0KCSAgV0hFTiBDb21wYW55XzQuT0lEIElzIE5vdCBOdWxsIFRoZW4gQ29tcGFueV80LmxvZ28NCgkgIFdIRU4gQ29tcGFueV81Lk9JRCBJcyBOb3QgTnVsbCBUaGVuIENvbXBhbnlfNS5sb2dvDQoJICBXSEVOIENvbXBhbnlfNi5PSUQgSXMgTm90IE51bGwgVGhlbiBDb21wYW55XzYubG9nbw0KCSAgV0hFTiBDb21wYW55XzcuT0lEIElzIE5vdCBOdWxsIFRoZW4gQ29tcGFueV83LmxvZ28NCkVuZCBBcyBDb21wYW55TG9nbw0KLFVQUEVSKENhc2UgV0hFTiBTYWxhcnlSZWdpc3Rlci5QYXlyb2xsUnVuVHlwZSA9IDAgDQogICAgICBUSEVOIChDQVNFIFdIRU4gQFBybUVuY2FzaG1lbnQgPSAxIFRIRU4gJ0xFQVZFIEVOQ0FTSE1FTlQgUEFZU0xJUCBGT1IgVEhFIE1PTlRIIDogJyArIERBVEVOQU1FKE1vbnRoLCBTYWxhcnlSZWdpc3Rlci5Gb3JQZXJpb2QpICsnLScrIENPTlZFUlQoVkFSQ0hBUigxMCksQFBybVllYXIpDQoJCQkJIEVMU0UgJ1JFR1VMQVIgUEFZU0xJUCBGT1IgVEhFIE1PTlRIIDogJyArIERBVEVOQU1FKE1vbnRoLCBTYWxhcnlSZWdpc3Rlci5Gb3JQZXJpb2QpICsnLScrIENPTlZFUlQoVkFSQ0hBUigxMCksQFBybVllYXIpDQoJCQkJIEVORCkNCgkgIFdIRU4gU2FsYXJ5UmVnaXN0ZXIuUGF5cm9sbFJ1blR5cGUgPSAxIA0KCSAgVEhFTiAoQ0FTRSBXSEVOIElTTlVMTChQYXlyb2xsUmVhc29uVHlwZS5OYW1lRW4sICcnKSA9ICdBZHZhbmNlIExlYXZlJyBUSEVOICdMRUFWRSBTQUxBUlkgUEFZU0xJUCcgLS0nVkFDQVRJT04gSU4gQURWQU5DRSBTRVRUTEVNRU5UJw0KCQkJCSBXSEVOIElTTlVMTChQYXlyb2xsUmVhc29uVHlwZS5OYW1lRW4sICcnKSA9ICdFbmQgT2YgU2VydmljZScgVEhFTiAnRU5EIE9GIFNFUlZJQ0UgU0VUVExFTUVOVCcNCgkJCQkgRU5EKQ0KIEVORCkgQVMgSGVhZGVyVGV4dA0KLENhc2UgV0hFTiBTYWxhcnlSZWdpc3Rlci5QYXlyb2xsUnVuVHlwZSA9IDEgQU5EIElTTlVMTChQYXlyb2xsUmVhc29uVHlwZS5OYW1lRW4sICcnKSA9ICdFbmQgT2YgU2VydmljZScgDQoJICBUSEVOIEVtcGxveWVlU2VwYXJhdGlvbi5MYXN0RGF5SW5TZXJ2aWNlIEVMU0UgTlVMTCANCgkgIEVORCBBcyBMYXN0RGF5SW5TZXJ2aWNlDQoNCixFbXBEb2N1bWVudFBhc3Nwb3J0LkRvY3VtZW50TnVtIEFzIFBhc3Nwb3J0Tm8NCixFbXBEb2N1bWVudFBhc3Nwb3J0LkV4cGlyeURhdGUgQXMgUGFzc3BvcnRFeHBpcnlEYXRlDQoNCi0tLEVtcERvY3VtZW50Q2l2aWxJZC5Eb2N1bWVudE51bSBBcyBDaXZpbElkTm8NCixFbXBEb2N1bWVudENpdmlsSWQuRXhwaXJ5RGF0ZSBBcyBDaXZpbElkRXhwaXJ5RGF0ZQ0KLFNwb25zb3IuTmFtZUVuIEFzIFNwb25zb3JFbg0KDQpGUk9NIChTZWxlY3QgRGF0ZWFkZChkLC0xLCBEYXRlQWRkKE0sMSwgbHRyaW0ocnRyaW0oc3RyKEBQcm1ZZWFyKSkpICsgJy0nICsgbHRyaW0ocnRyaW0oc3RyKEBQcm1Nb250aCkpKSsgJy0wMScpKSBBcyBQYXlTbGlwRGF0ZSwqIGZyb20gIEVtcGxveWVlKSBhcyBFbXBsb3llZQ0KTEVGVCBKT0lOIEVtcGxveWVlT3JnQXNzaWdubWVudCBPTiBFbXBsb3llZU9yZ0Fzc2lnbm1lbnQuRW1wbG95ZWUgPSBFbXBsb3llZS5PSUQgDQoJCQkJCQkJCUFORCBFbXBsb3llZS5QYXlTbGlwRGF0ZSBiZXR3ZWVuIEVtcGxveWVlT3JnQXNzaWdubWVudC5TdGFydERhdGUgQU5EIEVtcGxveWVlT3JnQXNzaWdubWVudC5FbmREYXRlDQpMRUZUIEpPSU4gSm9iVGl0bGUgT04gSm9iVGl0bGUuT0lEID0gRW1wbG95ZWVPcmdBc3NpZ25tZW50LkpvYlRpdGxlIA0KTEVGVCBKT0lOIFBheXJvbGxBcmVhIE9OIFBheXJvbGxBcmVhLkNvZGUgPSBFbXBsb3llZU9yZ0Fzc2lnbm1lbnQuUGF5cm9sbEFyZWENCkxFRlQgSk9JTiBFbXBsb3llZUdyb3VwIE9OIEVtcGxveWVlR3JvdXAuT0lEID0gRW1wbG95ZWVPcmdBc3NpZ25tZW50LkVtcGxveWVlR3JvdXAgDQpMRUZUIEpPSU4gRW1wbG95ZWVTdWJHcm91cCBPTiBFbXBsb3llZVN1Ykdyb3VwLk9JRCA9IEVtcGxveWVlT3JnQXNzaWdubWVudC5FbXBsb3llZVN1Ykdyb3VwIA0KTEVGVCBKT0lOIEVtcGxveWVlU3BvbnNvciBPTiBFbXBsb3llZVNwb25zb3IuRW1wbG95ZWUgPSBFbXBsb3llZS5PSUQgDQoJCQkJCQkgIEFORCBFbXBsb3llZS5QYXlTbGlwRGF0ZSBiZXR3ZWVuIEVtcGxveWVlU3BvbnNvci5TdGFydERhdGUgIEFORCBFbXBsb3llZVNwb25zb3IuRW5kRGF0ZQ0KTEVGVCBKT0lOIFNwb25zb3IgT04gU3BvbnNvci5PSUQgPSBFbXBsb3llZVNwb25zb3IuU3BvbnNvcg0KDQpMRUZUIEpPSU4gRW1wbG95ZWVEb2N1bWVudCBBUyBFbXBEb2N1bWVudFBhc3Nwb3J0IE9OICBFbXBEb2N1bWVudFBhc3Nwb3J0Lk9JRCBJTiAoU2VsZWN0IFRPUCAxIE9JRCBGUk9NIEVtcGxveWVlRG9jdW1lbnQgDQoJCQkJCQkJCQkJCQkJCQkJCQkJCSAgV0hFUkUgRW1wbG95ZWUgPSBFbXBsb3llZS5PSUQgQU5EIERvY3VtZW50VHlwZSBJTiAoU2VsZWN0IFRPUCAxIE9JRCBGUk9NIERvY3VtZW50VHlwZSBXSEVSRSBOYW1lRW4gbGlrZSAnJXBhc3Nwb3J0JScpIA0KCQkJCQkJCQkJCQkJCQkJCQkJCQkgIE9SREVSIEJZIEV4cGlyeURhdGUgRGVzYykNCkxFRlQgSk9JTiBFbXBsb3llZURvY3VtZW50IEFTIEVtcERvY3VtZW50Q2l2aWxJZCBPTiAgRW1wRG9jdW1lbnRDaXZpbElkLk9JRCBJTiAoU2VsZWN0IFRPUCAxIE9JRCBGUk9NIEVtcGxveWVlRG9jdW1lbnQgDQoJCQkJCQkJCQkJCQkJCQkJCQkJCSAgV0hFUkUgRW1wbG95ZWUgPSBFbXBsb3llZS5PSUQgQU5EIERvY3VtZW50VHlwZSBJTiAoU2VsZWN0IFRPUCAxIE9JRCBGUk9NIERvY3VtZW50VHlwZSBXSEVSRSBDb2RlID0gJzInKSANCgkJCQkJCQkJCQkJCQkJCQkJCQkJICBPUkRFUiBCWSBFeHBpcnlEYXRlIERlc2MpDQoNCkxFRlQgSk9JTiBPcmdhbml6YXRpb25Vbml0IEFzIENvbXBhbnlfMSBPTiBDb21wYW55XzEuT0lEID0gRW1wbG95ZWVPcmdBc3NpZ25tZW50Lk9yZ0xldmVsMSBBTkQgQ29tcGFueV8xLk9yZ2FuaXphdGlvblVuaXRUeXBlIElOIChTZWxlY3QgT0lEIEZyb20gT3JnYW5pemF0aW9uVW5pdFR5cGUgV0hFUkUgTmFtZUVuID0gJ0NvbXBhbnknKQ0KTEVGVCBKT0lOIE9yZ2FuaXphdGlvblVuaXQgQXMgQ29tcGFueV8yIE9OIENvbXBhbnlfMi5PSUQgPSBFbXBsb3llZU9yZ0Fzc2lnbm1lbnQuT3JnTGV2ZWwyIEFORCBDb21wYW55XzIuT3JnYW5pemF0aW9uVW5pdFR5cGUgSU4gKFNlbGVjdCBPSUQgRnJvbSBPcmdhbml6YXRpb25Vbml0VHlwZSBXSEVSRSBOYW1lRW4gPSAnQ29tcGFueScpDQpMRUZUIEpPSU4gT3JnYW5pemF0aW9uVW5pdCBBcyBDb21wYW55XzMgT04gQ29tcGFueV8zLk9JRCA9IEVtcGxveWVlT3JnQXNzaWdubWVudC5PcmdMZXZlbDMgQU5EIENvbXBhbnlfMy5Pcmdhbml6YXRpb25Vbml0VHlwZSBJTiAoU2VsZWN0IE9JRCBGcm9tIE9yZ2FuaXphdGlvblVuaXRUeXBlIFdIRVJFIE5hbWVFbiA9ICdDb21wYW55JykNCkxFRlQgSk9JTiBPcmdhbml6YXRpb25Vbml0IEFzIENvbXBhbnlfNCBPTiBDb21wYW55XzQuT0lEID0gRW1wbG95ZWVPcmdBc3NpZ25tZW50Lk9yZ0xldmVsNCBBTkQgQ29tcGFueV80Lk9yZ2FuaXphdGlvblVuaXRUeXBlIElOIChTZWxlY3QgT0lEIEZyb20gT3JnYW5pemF0aW9uVW5pdFR5cGUgV0hFUkUgTmFtZUVuID0gJ0NvbXBhbnknKQ0KTEVGVCBKT0lOIE9yZ2FuaXphdGlvblVuaXQgQXMgQ29tcGFueV81IE9OIENvbXBhbnlfNS5PSUQgPSBFbXBsb3llZU9yZ0Fzc2lnbm1lbnQuT3JnTGV2ZWw1IEFORCBDb21wYW55XzUuT3JnYW5pemF0aW9uVW5pdFR5cGUgSU4gKFNlbGVjdCBPSUQgRnJvbSBPcmdhbml6YXRpb25Vbml0VHlwZSBXSEVSRSBOYW1lRW4gPSAnQ29tcGFueScpDQpMRUZUIEpPSU4gT3JnYW5pemF0aW9uVW5pdCBBcyBDb21wYW55XzYgT04gQ29tcGFueV82Lk9JRCA9IEVtcGxveWVlT3JnQXNzaWdubWVudC5PcmdMZXZlbDYgQU5EIENvbXBhbnlfNi5Pcmdhbml6YXRpb25Vbml0VHlwZSBJTiAoU2VsZWN0IE9JRCBGcm9tIE9yZ2FuaXphdGlvblVuaXRUeXBlIFdIRVJFIE5hbWVFbiA9ICdDb21wYW55JykNCkxFRlQgSk9JTiBPcmdhbml6YXRpb25Vbml0IEFzIENvbXBhbnlfNyBPTiBDb21wYW55XzcuT0lEID0gRW1wbG95ZWVPcmdBc3NpZ25tZW50Lk9yZ0xldmVsNyBBTkQgQ29tcGFueV83Lk9yZ2FuaXphdGlvblVuaXRUeXBlIElOIChTZWxlY3QgT0lEIEZyb20gT3JnYW5pemF0aW9uVW5pdFR5cGUgV0hFUkUgTmFtZUVuID0gJ0NvbXBhbnknKQ0KDQpMRUZUIEpPSU4gT3JnYW5pemF0aW9uVW5pdCBBcyBPcmdhbml6YXRpb25Vbml0XzEgT04gT3JnYW5pemF0aW9uVW5pdF8xLk9JRCA9IEVtcGxveWVlT3JnQXNzaWdubWVudC5PcmdMZXZlbDEgQU5EIE9yZ2FuaXphdGlvblVuaXRfMS5Pcmdhbml6YXRpb25Vbml0VHlwZSBJTiAoU2VsZWN0IE9JRCBGcm9tIE9yZ2FuaXphdGlvblVuaXRUeXBlIFdIRVJFIE5hbWVFbiA9ICdEZXBhcnRtZW50JykNCkxFRlQgSk9JTiBPcmdhbml6YXRpb25Vbml0IEFzIE9yZ2FuaXphdGlvblVuaXRfMiBPTiBPcmdhbml6YXRpb25Vbml0XzIuT0lEID0gRW1wbG95ZWVPcmdBc3NpZ25tZW50Lk9yZ0xldmVsMiBBTkQgT3JnYW5pemF0aW9uVW5pdF8yLk9yZ2FuaXphdGlvblVuaXRUeXBlIElOIChTZWxlY3QgT0lEIEZyb20gT3JnYW5pemF0aW9uVW5pdFR5cGUgV0hFUkUgTmFtZUVuID0gJ0RlcGFydG1lbnQnKQ0KTEVGVCBKT0lOIE9yZ2FuaXphdGlvblVuaXQgQXMgT3JnYW5pemF0aW9uVW5pdF8zIE9OIE9yZ2FuaXphdGlvblVuaXRfMy5PSUQgPSBFbXBsb3llZU9yZ0Fzc2lnbm1lbnQuT3JnTGV2ZWwzIEFORCBPcmdhbml6YXRpb25Vbml0XzMuT3JnYW5pemF0aW9uVW5pdFR5cGUgSU4gKFNlbGVjdCBPSUQgRnJvbSBPcmdhbml6YXRpb25Vbml0VHlwZSBXSEVSRSBOYW1lRW4gPSAnRGVwYXJ0bWVudCcpDQpMRUZUIEpPSU4gT3JnYW5pemF0aW9uVW5pdCBBcyBPcmdhbml6YXRpb25Vbml0XzQgT04gT3JnYW5pemF0aW9uVW5pdF80Lk9JRCA9IEVtcGxveWVlT3JnQXNzaWdubWVudC5PcmdMZXZlbDQgQU5EIE9yZ2FuaXphdGlvblVuaXRfNC5Pcmdhbml6YXRpb25Vbml0VHlwZSBJTiAoU2VsZWN0IE9JRCBGcm9tIE9yZ2FuaXphdGlvblVuaXRUeXBlIFdIRVJFIE5hbWVFbiA9ICdEZXBhcnRtZW50JykNCkxFRlQgSk9JTiBPcmdhbml6YXRpb25Vbml0IEFzIE9yZ2FuaXphdGlvblVuaXRfNSBPTiBPcmdhbml6YXRpb25Vbml0XzUuT0lEID0gRW1wbG95ZWVPcmdBc3NpZ25tZW50Lk9yZ0xldmVsNSBBTkQgT3JnYW5pemF0aW9uVW5pdF81Lk9yZ2FuaXphdGlvblVuaXRUeXBlIElOIChTZWxlY3QgT0lEIEZyb20gT3JnYW5pemF0aW9uVW5pdFR5cGUgV0hFUkUgTmFtZUVuID0gJ0RlcGFydG1lbnQnKQ0KTEVGVCBKT0lOIE9yZ2FuaXphdGlvblVuaXQgQXMgT3JnYW5pemF0aW9uVW5pdF82IE9OIE9yZ2FuaXphdGlvblVuaXRfNi5PSUQgPSBFbXBsb3llZU9yZ0Fzc2lnbm1lbnQuT3JnTGV2ZWw2IEFORCBPcmdhbml6YXRpb25Vbml0XzYuT3JnYW5pemF0aW9uVW5pdFR5cGUgSU4gKFNlbGVjdCBPSUQgRnJvbSBPcmdhbml6YXRpb25Vbml0VHlwZSBXSEVSRSBOYW1lRW4gPSAnRGVwYXJ0bWVudCcpDQpMRUZUIEpPSU4gT3JnYW5pemF0aW9uVW5pdCBBcyBPcmdhbml6YXRpb25Vbml0XzcgT04gT3JnYW5pemF0aW9uVW5pdF83Lk9JRCA9IEVtcGxveWVlT3JnQXNzaWdubWVudC5PcmdMZXZlbDcgQU5EIE9yZ2FuaXphdGlvblVuaXRfNy5Pcmdhbml6YXRpb25Vbml0VHlwZSBJTiAoU2VsZWN0IE9JRCBGcm9tIE9yZ2FuaXphdGlvblVuaXRUeXBlIFdIRVJFIE5hbWVFbiA9ICdEZXBhcnRtZW50JykNCg0KTEVGVCBKT0lOIEVtcGxveWVlVmlzYUluZm8gT04gRW1wbG95ZWVWaXNhSW5mby5FbXBsb3llZSA9IEVtcGxveWVlLk9JRCANCkxFRlQgSk9JTiBFbXBsb3llZUdyYXR1aXR5IE9OIEVtcGxveWVlR3JhdHVpdHkuRW1wbG95ZWUgPSBFbXBsb3llZS5PSUQgDQpMRUZUIEpPSU4gRW1wbG95ZWVCYW5rIE9OIEVtcGxveWVlQmFuay5FbXBsb3llZSA9IEVtcGxveWVlLk9JRCANCgkJCQkJICAgQW5kIEVtcGxveWVlLlBheVNsaXBEYXRlIGJldHdlZW4gRW1wbG95ZWVCYW5rLlN0YXJ0RGF0ZSBhbmQgRW1wbG95ZWVCYW5rLkVuZERhdGUNCkxFRlQgSk9JTiBCYW5rIE9OIEJhbmsuT0lEID0gRW1wbG95ZWVCYW5rLkJhbmsgDQpJTk5FUiBKT0lOIFNhbGFyeVJlZ2lzdGVyIE9OIFNhbGFyeVJlZ2lzdGVyLkVtcGxveWVlID0gRW1wbG95ZWUuT0lEIA0KSU5ORVIgSk9JTiBTYWxhcnlSZWdpc3RlckRldGFpbCBPTiBTYWxhcnlSZWdpc3RlckRldGFpbC5TYWxhcnlSZWdpc3RlciA9IFNhbGFyeVJlZ2lzdGVyLk9JRCBBTkQgV2FnZVR5cGUgSU4gKFNlbGVjdCBPSUQgRnJvbSBXYWdlVHlwZSBXSEVSRSBDb2RlID0gOTAwMCkNCkxFRlQgSk9JTiAoU0VMRUNUIA0KCQkJCVJPV19OVU1CRVIoKSBPVkVSIChQQVJUSVRJT04gQlkgRW1wbG95ZWVCYXNpY1BheS5FbXBsb3llZSBPUkRFUiBCWSBFbXBsb3llZUJhc2ljUGF5LlN0YXJ0RGF0ZSBkZXNjKSBSb3dfTnVtDQoJCQkJLEVtcGxveWVlQmFzaWNQYXkuRW1wbG95ZWUNCgkJCQksRW1wbG95ZWVCYXNpY1BheS5TdGFydERhdGUNCgkJCQksRW1wbG95ZWVCYXNpY1BheURldGFpbC5DdXJyZW5jeQ0KICAgICAgICAgICAgICAgIEZyb20gZGJvLkVtcGxveWVlQmFzaWNQYXkNCgkJICAgICAgICBKT0lOIGRiby5FbXBsb3llZUJhc2ljUGF5RGV0YWlsIG9uIEVtcGxveWVlQmFzaWNQYXkuT0lEID0gRW1wbG95ZWVCYXNpY1BheURldGFpbC5FbXBsb3llZUJhc2ljUGF5DQogICAgICAgICAgICAgICAgV0hFUkUgRW1wbG95ZWVCYXNpY1BheURldGFpbC5XYWdlVHlwZSA9IDENCgkJICAgKUVtcGxveWVlQmFzaWNQYXkgb24gRW1wbG95ZWUuT0lEID0gRW1wbG95ZWVCYXNpY1BheS5FbXBsb3llZSBhbmQgUm93X051bSA9IDENCkxFRlQgSk9JTiBQYXlyb2xsUmVhc29uVHlwZSBPTiBQYXlyb2xsUmVhc29uVHlwZS5PSUQgPSBTYWxhcnlSZWdpc3Rlci5QYXlyb2xsUmVhc29uVHlwZQ0KTEVGVCBKT0lOIChTRUxFQ1QgUk9XX05VTUJFUigpIE9WRVIgKFBBUlRJVElPTiBCWSBFbXBsb3llZVNlcGFyYXRpb24uRW1wbG95ZWUgT1JERVIgQlkgRW1wbG95ZWVTZXBhcmF0aW9uLkxhc3REYXlJblNlcnZpY2UgZGVzYykgUm93X051bQ0KCQkJCSxFbXBsb3llZVNlcGFyYXRpb24uRW1wbG95ZWUNCgkJCQksRW1wbG95ZWVTZXBhcmF0aW9uLkxhc3REYXlJblNlcnZpY2UNCiAgICAgICAgICAgICAgICBGcm9tIGRiby5FbXBsb3llZVNlcGFyYXRpb24NCgkJICAgKUVtcGxveWVlU2VwYXJhdGlvbiBvbiBFbXBsb3llZS5PSUQgPSBFbXBsb3llZVNlcGFyYXRpb24uRW1wbG95ZWUgYW5kIEVtcGxveWVlU2VwYXJhdGlvbi5Sb3dfTnVtID0gMQ0KV0hFUkUgMSA9IDEgDQpBTkQgKChAUHJtRW1wbG95ZWVTdGF0dXMgIT0gLTEgQU5EIEVtcGxveWVlLlN0YXR1cyA9IEBQcm1FbXBsb3llZVN0YXR1cykgT1IgKEBQcm1FbXBsb3llZVN0YXR1cyA9IC0xIEFORCAxID0gMSkpDQpBTkQgU2FsYXJ5UmVnaXN0ZXIuSW5QZXJpb2QgPSBTYWxhcnlSZWdpc3Rlci5Gb3JQZXJpb2QNCkFORCBEYXRlUGFydChNb250aCwgU2FsYXJ5UmVnaXN0ZXIuSW5QZXJpb2QpID0gQFBybU1vbnRoDQpBTkQgRGF0ZVBhcnQoWWVhciwgU2FsYXJ5UmVnaXN0ZXIuSW5QZXJpb2QpID0gQFBybVllYXINCkFORCBTYWxhcnlSZWdpc3Rlci5QYXlyb2xsUnVuVHlwZSA9IEBQcm1QYXlyb2xsUnVuVHlwZQ0KQU5EICgNCgkoSVNOVUxMKEBQcm1FbXBDb2RlLCcnKSAhPSAnJyBBTkQgRW1wbG95ZWUuQ29kZSA9IEBQcm1FbXBDb2RlKQ0KT1IgIChJU05VTEwoQFBybUVtcENvZGUsJycpID0gJycgQU5EIElTTlVMTChAUHJtUGF5cm9sbEFyZWEsICcnKSAhPSAnJyBBTkQgUGF5cm9sbEFyZWEuTmFtZSA9IEBQcm1QYXlyb2xsQXJlYSkNCk9SICAoSVNOVUxMKEBQcm1FbXBDb2RlLCcnKSA9ICcnIEFORCBJU05VTEwoQFBybVBheXJvbGxBcmVhLCAnJykgPSAnJyBBTkQgIDEgPSAyKQ0KCSkNCk9SREVSIEJZIC0tQ29kZQ0KQ2FzZSBXaGVuIElzTnVtZXJpYyhFbXBsb3llZS5Db2RlKSA9IDEgdGhlbiBSaWdodChSZXBsaWNhdGUoJzAnLCAyMSkgKyBFbXBsb3llZS5Db2RlLCAyMCkNCiAgICAgV2hlbiBJc051bWVyaWMoRW1wbG95ZWUuQ29kZSkgPSAwIHRoZW4gTGVmdChFbXBsb3llZS5Db2RlICsgUmVwbGljYXRlKCcnLDIxKSwgMjApDQogICAgIEVsc2UgRW1wbG95ZWUuQ29kZQ0KRW5kDQoNCg0KDQo8L1NxbD48L1F1ZXJ5PjxSZXN1bHRTY2hlbWE+PERhdGFTZXQgTmFtZT0iUGF5c2xpcERTIj48VmlldyBOYW1lPSJQYXlyb2xsQXJlYSI+PEZpZWxkIE5hbWU9IkNvZGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iTmFtZSIgVHlwZT0iU3RyaW5nIiAvPjwvVmlldz48VmlldyBOYW1lPSJQYXlzbGlwT3JnVjJRdWVyeSI+PEZpZWxkIE5hbWU9IkVtcGxveWVlIENvZGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU3RhdHVzIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iQ2l2aWxJRCIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9Ik1vYmlsZSIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9IkJhbmsgTmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJCYW5rQ29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTdGFydERhdGUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJCYW5rIElCQU4iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQWNjb3VudE51bSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPcmdVbml0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkVtcGxveWVlIE5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iR3JhZGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU2FsYXJ5IFByb2ZpbGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSm9idGl0bGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSm9pbmluZyBEYXRlIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iRm9yUGVyaW9kIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iSW5QZXJpb2QiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJQYXlyb2xsUnVuVHlwZSIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9Ik5ldCBQYXkiIFR5cGU9IkRvdWJsZSIgLz48RmllbGQgTmFtZT0iUGF5cm9sbCBBcmVhIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlBheXJvbGwgQXJlYSBDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkN1cnJlbmN5IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkNvbXBhbnlMb2dvIiBUeXBlPSJCeXRlQXJyYXkiIC8+PEZpZWxkIE5hbWU9IkhlYWRlclRleHQiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iTGFzdERheUluU2VydmljZSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IlBhc3Nwb3J0Tm8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iUGFzc3BvcnRFeHBpcnlEYXRlIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iQ2l2aWxJZEV4cGlyeURhdGUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJTcG9uc29yRW4iIFR5cGU9IlN0cmluZyIgLz48L1ZpZXc+PC9EYXRhU2V0PjwvUmVzdWx0U2NoZW1hPjxDb25uZWN0aW9uT3B0aW9ucyBDbG9zZUNvbm5lY3Rpb249InRydWUiIERiQ29tbWFuZFRpbWVvdXQ9IjAiIC8+PC9TcWxEYXRhU291cmNlPg==" />
+  </ComponentStorage>
+  <ObjectStorage>
+    <Item1 Ref="2" ObjectType="DevExpress.XtraReports.Parameters.DynamicListLookUpSettings, DevExpress.Printing.v17.2.Core" DataSource="#Ref-0" DataMember="PayrollArea" ValueMember="Name" DisplayMember="Name" />
+    <Item2 Ref="6" ObjectType="DevExpress.XtraReports.Parameters.StaticListLookUpSettings, DevExpress.Printing.v17.2.Core">
+      <LookUpValues>
+        <Item1 Ref="450" Value="#Ref-449" Description="January" />
+        <Item2 Ref="452" Value="#Ref-451" Description="February" />
+        <Item3 Ref="454" Value="#Ref-453" Description="March" />
+        <Item4 Ref="456" Value="#Ref-455" Description="April" />
+        <Item5 Ref="458" Value="#Ref-457" Description="May" />
+        <Item6 Ref="460" Value="#Ref-459" Description="June" />
+        <Item7 Ref="462" Value="#Ref-461" Description="July" />
+        <Item8 Ref="464" Value="#Ref-463" Description="August" />
+        <Item9 Ref="466" Value="#Ref-465" Description="September" />
+        <Item10 Ref="468" Value="#Ref-467" Description="October" />
+        <Item11 Ref="470" Value="#Ref-469" Description="November" />
+        <Item12 Ref="472" Value="#Ref-471" Description="December" />
+      </LookUpValues>
+    </Item2>
+    <Item3 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="7" Content="System.Int32" Type="System.Type" />
+    <Item4 Ref="10" ObjectType="DevExpress.XtraReports.Parameters.StaticListLookUpSettings, DevExpress.Printing.v17.2.Core">
+      <LookUpValues>
+        <Item1 Ref="474" Value="#Ref-473" Description="Regular" />
+        <Item2 Ref="475" Value="#Ref-449" Description="Off-Cycle" />
+      </LookUpValues>
+    </Item4>
+    <Item5 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="12" Content="System.Boolean" Type="System.Type" />
+    <Item6 Ref="15" ObjectType="DevExpress.XtraReports.Parameters.StaticListLookUpSettings, DevExpress.Printing.v17.2.Core">
+      <LookUpValues>
+        <Item1 Ref="477" Value="#Ref-476" Description="ALL" />
+        <Item2 Ref="478" Value="#Ref-473" Description="Inactive" />
+        <Item3 Ref="479" Value="#Ref-449" Description="Active" />
+      </LookUpValues>
+    </Item6>
+    <Item7 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="33" Content="System.DateTime" Type="System.Type" />
+    <Item8 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="164" Content="System.Int16" Type="System.Type" />
+    <Item9 Ref="167" ObjectType="DevExpress.XtraReports.Parameters.StaticListLookUpSettings, DevExpress.Printing.v17.2.Core">
+      <LookUpValues>
+        <Item1 Ref="480" Value="#Ref-473" Description="Regular " />
+        <Item2 Ref="481" Value="#Ref-449" Description="OffCycle " />
+      </LookUpValues>
+    </Item9>
+    <Item10 Ref="215" ObjectType="DevExpress.XtraReports.Parameters.StaticListLookUpSettings, DevExpress.Printing.v17.2.Core">
+      <LookUpValues>
+        <Item1 Ref="482" Value="#Ref-473" Description="Regular " />
+        <Item2 Ref="483" Value="#Ref-449" Description="OffCycle " />
+      </LookUpValues>
+    </Item10>
+    <Item11 Ref="258" ObjectType="DevExpress.XtraReports.Parameters.StaticListLookUpSettings, DevExpress.Printing.v17.2.Core">
+      <LookUpValues>
+        <Item1 Ref="484" Value="#Ref-473" Description="Regular " />
+        <Item2 Ref="485" Value="#Ref-449" Description="OffCycle " />
+      </LookUpValues>
+    </Item11>
+    <Item12 Ref="283" ObjectType="DevExpress.XtraReports.Parameters.StaticListLookUpSettings, DevExpress.Printing.v17.2.Core">
+      <LookUpValues>
+        <Item1 Ref="486" Value="#Ref-473" Description="Regular" />
+        <Item2 Ref="487" Value="#Ref-449" Description="OffCycle " />
+      </LookUpValues>
+    </Item12>
+    <Item13 Ref="308" ObjectType="DevExpress.XtraReports.Parameters.StaticListLookUpSettings, DevExpress.Printing.v17.2.Core">
+      <LookUpValues>
+        <Item1 Ref="488" Value="#Ref-473" Description="Regular " />
+        <Item2 Ref="489" Value="#Ref-449" Description="OffCycle " />
+      </LookUpValues>
+    </Item13>
+    <Item14 Ref="335" ObjectType="DevExpress.XtraReports.Parameters.StaticListLookUpSettings, DevExpress.Printing.v17.2.Core">
+      <LookUpValues>
+        <Item1 Ref="490" Value="#Ref-473" Description="Regular " />
+        <Item2 Ref="491" Value="#Ref-449" Description="OffCycle " />
+      </LookUpValues>
+    </Item14>
+    <Item15 Ref="386" ObjectType="DevExpress.XtraReports.Parameters.StaticListLookUpSettings, DevExpress.Printing.v17.2.Core">
+      <LookUpValues>
+        <Item1 Ref="492" Value="#Ref-473" Description="Regular " />
+        <Item2 Ref="493" Value="#Ref-449" Description="OffCycle " />
+      </LookUpValues>
+    </Item15>
+    <Item16 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="449" Content="1" Type="System.Int32" />
+    <Item17 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="451" Content="2" Type="System.Int32" />
+    <Item18 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="453" Content="3" Type="System.Int32" />
+    <Item19 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="455" Content="4" Type="System.Int32" />
+    <Item20 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="457" Content="5" Type="System.Int32" />
+    <Item21 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="459" Content="6" Type="System.Int32" />
+    <Item22 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="461" Content="7" Type="System.Int32" />
+    <Item23 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="463" Content="8" Type="System.Int32" />
+    <Item24 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="465" Content="9" Type="System.Int32" />
+    <Item25 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="467" Content="10" Type="System.Int32" />
+    <Item26 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="469" Content="11" Type="System.Int32" />
+    <Item27 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="471" Content="12" Type="System.Int32" />
+    <Item28 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="473" Content="0" Type="System.Int32" />
+    <Item29 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v17.2" Ref="476" Content="-1" Type="System.Int32" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

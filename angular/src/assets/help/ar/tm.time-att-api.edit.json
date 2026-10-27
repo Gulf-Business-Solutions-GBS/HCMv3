@@ -1,0 +1,203 @@
+{
+  "helpId": "tm.time-att-api.edit",
+  "lang": "ar",
+  "title": "واجهات ربط أجهزة البصمة — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.TimeAttAPI",
+  "overviewHtml": "<p>الاتصال بنظام الحضور والانصراف (BioTime) الذي تُستورد منه البصمات. وتظهر الإعدادات نفسها في <strong>مركز التكامل ← BioTime</strong>، الذي يمكنه أيضاً اختبار الاتصال.</p>",
+  "aliasIndex": {
+    "loc:TokenUrl": "TimeAttAPI.TokenUrl",
+    "dom:TimeAttAPI_TokenUrl": "TimeAttAPI.TokenUrl",
+    "loc:TransactionsUrl": "TimeAttAPI.TransactionsUrl",
+    "dom:TimeAttAPI_TransactionsUrl": "TimeAttAPI.TransactionsUrl",
+    "loc:DevicesUrl": "TimeAttAPI.DevicesUrl",
+    "dom:TimeAttAPI_DevicesUrl": "TimeAttAPI.DevicesUrl",
+    "loc:Username": "TimeAttAPI.Username",
+    "dom:TimeAttAPI_Username": "TimeAttAPI.Username",
+    "loc:Password": "TimeAttAPI.Password",
+    "dom:TimeAttAPI_Password": "TimeAttAPI.Password",
+    "loc:NoOfRecords": "TimeAttAPI.NoOfRecords",
+    "dom:TimeAttAPI_NoOfRecords": "TimeAttAPI.NoOfRecords",
+    "loc:Email": "TimeAttAPI.Email",
+    "dom:TimeAttAPI_Email": "TimeAttAPI.Email",
+    "loc:Company": "TimeAttAPI.Company",
+    "dom:TimeAttAPI_Company": "TimeAttAPI.Company",
+    "loc:PunchInCode": "TimeAttAPI.PunchInCode",
+    "dom:TimeAttAPI_PunchInCode": "TimeAttAPI.PunchInCode",
+    "loc:PunchOutCode": "TimeAttAPI.PunchOutCode",
+    "dom:TimeAttAPI_PunchOutCode": "TimeAttAPI.PunchOutCode",
+    "loc:BreakOutCode": "TimeAttAPI.BreakOutCode",
+    "dom:TimeAttAPI_BreakOutCode": "TimeAttAPI.BreakOutCode",
+    "loc:BreakInCode": "TimeAttAPI.BreakInCode",
+    "dom:TimeAttAPI_BreakInCode": "TimeAttAPI.BreakInCode"
+  },
+  "fields": [
+    {
+      "id": "TimeAttAPI.TokenUrl",
+      "label": "TokenUrl",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:TokenUrl",
+        "dom:TimeAttAPI_TokenUrl"
+      ],
+      "rules": "إلزامي. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> العنوان المستخدم لتسجيل الدخول إلى نظام الحضور.</p><p><strong>مثال.</strong> <code>https://biotime.example.com/jwt-api-token-auth/</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeAttAPI.TransactionsUrl",
+      "label": "TransactionsUrl",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:TransactionsUrl",
+        "dom:TimeAttAPI_TransactionsUrl"
+      ],
+      "rules": "إلزامي. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> العنوان الذي تُقرأ منه البصمات.</p><p><strong>مثال.</strong> <code>https://biotime.example.com/iclock/api/transactions/</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeAttAPI.DevicesUrl",
+      "label": "DevicesUrl",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:DevicesUrl",
+        "dom:TimeAttAPI_DevicesUrl"
+      ],
+      "rules": "إلزامي. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> العنوان الذي تُقرأ منه قائمة الأجهزة.</p><p><strong>مثال.</strong> <code>https://biotime.example.com/iclock/api/terminals/</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeAttAPI.Username",
+      "label": "Username",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:Username",
+        "dom:TimeAttAPI_Username"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحساب المستخدم لتسجيل الدخول إلى نظام الحضور.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeAttAPI.Password",
+      "label": "Password",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:Password",
+        "dom:TimeAttAPI_Password"
+      ],
+      "rules": "إلزامي عند إنشاء السجل. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كلمة المرور لذلك الحساب. عند التعديل يظهر الحقل فارغاً لأن كلمة المرور المحفوظة لا تُعرض أبداً؛ اتركه فارغاً للإبقاء عليها، أو أدخل كلمة مرور جديدة لاستبدالها.</p>",
+      "adminHtml": "<p>تُخزَّن كلمة المرور مشفّرة سواء حُفظت من هذا النموذج أو من مركز التكامل. وتبقى كلمة المرور المحفوظة قبل تطبيق التشفير صالحة، وتُشفَّر عند الحفظ التالي للسجل.</p>",
+      "stub": false
+    },
+    {
+      "id": "TimeAttAPI.NoOfRecords",
+      "label": "NoOfRecords",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:NoOfRecords",
+        "dom:TimeAttAPI_NoOfRecords"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد البصمات المقروءة في كل طلب.</p><p><strong>مثال.</strong> <code>500</code></p><p><strong>لماذا يهم.</strong> يواصل الاستيراد طلب صفحات بهذا الحجم إلى أن تعود صفحة أقصر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeAttAPI.Email",
+      "label": "Email",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:Email",
+        "dom:TimeAttAPI_Email"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بريد إلكتروني للتواصل بشأن الاتصال.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeAttAPI.Company",
+      "label": "Company",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:Company",
+        "dom:TimeAttAPI_Company"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم الشركة في نظام الحضور.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeAttAPI.PunchInCode",
+      "label": "PunchInCode",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:PunchInCode",
+        "dom:TimeAttAPI_PunchInCode"
+      ],
+      "rules": "اختياري. الحد الأقصى 50 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حالات البصمة في نظام الحضور التي تعني الدخول، مفصولة بفواصل.</p><p><strong>مثال.</strong> <code>0</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeAttAPI.PunchOutCode",
+      "label": "PunchOutCode",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:PunchOutCode",
+        "dom:TimeAttAPI_PunchOutCode"
+      ],
+      "rules": "اختياري. الحد الأقصى 50 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حالات البصمة التي تعني الخروج.</p><p><strong>مثال.</strong> <code>1</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeAttAPI.BreakOutCode",
+      "label": "BreakOutCode",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:BreakOutCode",
+        "dom:TimeAttAPI_BreakOutCode"
+      ],
+      "rules": "اختياري. الحد الأقصى 50 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حالات البصمة التي تعني الخروج للاستراحة.</p><p><strong>مثال.</strong> <code>2</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeAttAPI.BreakInCode",
+      "label": "BreakInCode",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:BreakInCode",
+        "dom:TimeAttAPI_BreakInCode"
+      ],
+      "rules": "اختياري. الحد الأقصى 50 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حالات البصمة التي تعني العودة من الاستراحة.</p><p><strong>مثال.</strong> <code>3</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

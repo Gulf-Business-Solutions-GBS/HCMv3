@@ -1,0 +1,123 @@
+{
+  "helpId": "gp.employee-pool-car.edit",
+  "lang": "en",
+  "title": "Employee Pool Cars — Create / Edit",
+  "entity": "HCMv3.GatePassManagement.EmployeePoolCar",
+  "overviewHtml": "<p>A pool car given to an employee who drives it, and when. The end cannot be before the start. Nothing stops the same car being given to two drivers at once.</p>",
+  "aliasIndex": {
+    "loc:DriverEmployee": "EmployeePoolCar.DriverEmployeeId",
+    "dom:EmployeePoolCar_DriverEmployeeId": "EmployeePoolCar.DriverEmployeeId",
+    "loc:PoolCar": "EmployeePoolCar.PoolCarId",
+    "dom:EmployeePoolCar_PoolCarId": "EmployeePoolCar.PoolCarId",
+    "loc:StartDate": "EmployeePoolCar.StartDate",
+    "dom:EmployeePoolCar_StartDate": "EmployeePoolCar.StartDate",
+    "loc:StartTime": "EmployeePoolCar.StartTime",
+    "dom:EmployeePoolCar_StartTime": "EmployeePoolCar.StartTime",
+    "loc:EndDate": "EmployeePoolCar.EndDate",
+    "dom:EmployeePoolCar_EndDate": "EmployeePoolCar.EndDate",
+    "loc:EndTime": "EmployeePoolCar.EndTime",
+    "dom:EmployeePoolCar_EndTime": "EmployeePoolCar.EndTime",
+    "loc:IsReturned": "EmployeePoolCar.IsReturned",
+    "dom:EmployeePoolCar_IsReturned": "EmployeePoolCar.IsReturned"
+  },
+  "fields": [
+    {
+      "id": "EmployeePoolCar.DriverEmployeeId",
+      "label": "DriverEmployee",
+      "section": "EmployeePoolCars",
+      "aliases": [
+        "loc:DriverEmployee",
+        "dom:EmployeePoolCar_DriverEmployeeId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee driving.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePoolCar.PoolCarId",
+      "label": "PoolCar",
+      "section": "EmployeePoolCars",
+      "aliases": [
+        "loc:PoolCar",
+        "dom:EmployeePoolCar_PoolCarId"
+      ],
+      "rules": "Required. Chosen from Pool Car master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The car.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePoolCar.StartDate",
+      "label": "StartDate",
+      "section": "EmployeePoolCars",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeePoolCar_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePoolCar.StartTime",
+      "label": "StartTime",
+      "section": "EmployeePoolCars",
+      "aliases": [
+        "loc:StartTime",
+        "dom:EmployeePoolCar_StartTime"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the car was taken.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePoolCar.EndDate",
+      "label": "EndDate",
+      "section": "EmployeePoolCars",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeePoolCar_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePoolCar.EndTime",
+      "label": "EndTime",
+      "section": "EmployeePoolCars",
+      "aliases": [
+        "loc:EndTime",
+        "dom:EmployeePoolCar_EndTime"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When it is due back.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePoolCar.IsReturned",
+      "label": "IsReturned",
+      "section": "EmployeePoolCars",
+      "aliases": [
+        "loc:IsReturned",
+        "dom:EmployeePoolCar_IsReturned"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the car has been returned.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "helpId": "jp.job-description.edit",
+  "lang": "ar",
+  "title": "الأوصاف الوظيفية — إنشاء / تحرير",
+  "entity": "HCMv3.JobProfileManagement.JobDescription",
+  "overviewHtml": "<p>وصف مسمى وظيفي: ملخص قصير، والنص الكامل، وقوائم بالمسؤوليات والمهارات والكفاءات والدرجات العلمية والشهادات وأسئلة المقابلة المرتبطة به. ويجب أن يكون الوصفان القصيران فريدين. يُحفظ للرجوع إليه: للوظائف الشاغرة نص وصف خاص بها ولا تستخدم هذا الوصف.</p>",
+  "aliasIndex": {
+    "loc:JobTitle": "JobDescription.JobTitleId",
+    "dom:JobDescription_JobTitleId": "JobDescription.JobTitleId",
+    "loc:Version": "JobDescription.Version",
+    "dom:JobDescription_Version": "JobDescription.Version",
+    "loc:VersionChangedOn": "JobDescription.VersionChangedOn",
+    "dom:JobDescription_VersionChangedOn": "JobDescription.VersionChangedOn",
+    "loc:ShortDescriptionEn": "JobDescription.ShortDescriptionEn",
+    "dom:JobDescription_ShortDescriptionEn": "JobDescription.ShortDescriptionEn",
+    "loc:ShortDescriptionAr": "JobDescription.ShortDescriptionAr",
+    "dom:JobDescription_ShortDescriptionAr": "JobDescription.ShortDescriptionAr",
+    "loc:LongDescriptionEn": "JobDescription.LongDescriptionEn",
+    "dom:JobDescription_LongDescriptionEn": "JobDescription.LongDescriptionEn",
+    "loc:LongDescriptionAr": "JobDescription.LongDescriptionAr",
+    "dom:JobDescription_LongDescriptionAr": "JobDescription.LongDescriptionAr"
+  },
+  "fields": [
+    {
+      "id": "JobDescription.JobTitleId",
+      "label": "JobTitle",
+      "section": "JobDescriptions",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:JobDescription_JobTitleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المسميات الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي الموصوف.</p><p><strong>مثال.</strong> مسؤول موارد بشرية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescription.Version",
+      "label": "Version",
+      "section": "JobDescriptions",
+      "aliases": [
+        "loc:Version",
+        "dom:JobDescription_Version"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إصدار الوصف.</p><p><strong>مثال.</strong> 2.0</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescription.VersionChangedOn",
+      "label": "VersionChangedOn",
+      "section": "JobDescriptions",
+      "aliases": [
+        "loc:VersionChangedOn",
+        "dom:JobDescription_VersionChangedOn"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى أصبح هذا الإصدار سارياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescription.ShortDescriptionEn",
+      "label": "ShortDescriptionEn",
+      "section": "JobDescriptions",
+      "aliases": [
+        "loc:ShortDescriptionEn",
+        "dom:JobDescription_ShortDescriptionEn"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملخص في سطر واحد بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescription.ShortDescriptionAr",
+      "label": "ShortDescriptionAr",
+      "section": "JobDescriptions",
+      "aliases": [
+        "loc:ShortDescriptionAr",
+        "dom:JobDescription_ShortDescriptionAr"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملخص في سطر واحد بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescription.LongDescriptionEn",
+      "label": "LongDescriptionEn",
+      "section": "JobDescriptions",
+      "aliases": [
+        "loc:LongDescriptionEn",
+        "dom:JobDescription_LongDescriptionEn"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوصف الكامل بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescription.LongDescriptionAr",
+      "label": "LongDescriptionAr",
+      "section": "JobDescriptions",
+      "aliases": [
+        "loc:LongDescriptionAr",
+        "dom:JobDescription_LongDescriptionAr"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوصف الكامل بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

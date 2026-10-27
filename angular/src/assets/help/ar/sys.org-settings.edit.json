@@ -1,0 +1,75 @@
+{
+  "helpId": "sys.org-settings.edit",
+  "lang": "ar",
+  "title": "Organization settings",
+  "entity": "HCMv3.SystemSettings.ManageOrgSettings",
+  "overviewHtml": "<p>ميزات إدارة التنظيم المفعّلة.</p><p>لا يُقرأ أي من هذه الإعدادات حالياً: فالميزات التي تتحكم فيها لم تُنقل من النظام السابق، لذا لا أثر لتغييرها.</p><p>لكل شركة سجل إعدادات واحد، ولا يمكن حذفه.</p>",
+  "aliasIndex": {
+    "loc:EnablePostingGroup": "ManageOrgSettings.EnablePostingGroup",
+    "dom:OrgSettings_EnablePostingGroup": "ManageOrgSettings.EnablePostingGroup",
+    "loc:EnableBudgetingGroup": "ManageOrgSettings.EnableBudgetingGroup",
+    "dom:OrgSettings_EnableBudgetingGroup": "ManageOrgSettings.EnableBudgetingGroup",
+    "loc:EnablePosition": "ManageOrgSettings.EnablePosition",
+    "dom:OrgSettings_EnablePosition": "ManageOrgSettings.EnablePosition",
+    "loc:EnableOrgChart3Levels": "ManageOrgSettings.EnableOrgChart3Levels",
+    "dom:OrgSettings_EnableOrgChart3Levels": "ManageOrgSettings.EnableOrgChart3Levels"
+  },
+  "fields": [
+    {
+      "id": "ManageOrgSettings.EnablePostingGroup",
+      "label": "EnablePostingGroup",
+      "section": null,
+      "aliases": [
+        "loc:EnablePostingGroup",
+        "dom:OrgSettings_EnablePostingGroup"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت مجموعات الترحيل مستخدمة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageOrgSettings.EnableBudgetingGroup",
+      "label": "EnableBudgetingGroup",
+      "section": null,
+      "aliases": [
+        "loc:EnableBudgetingGroup",
+        "dom:OrgSettings_EnableBudgetingGroup"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت مجموعات الموازنة مستخدمة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageOrgSettings.EnablePosition",
+      "label": "EnablePosition",
+      "section": null,
+      "aliases": [
+        "loc:EnablePosition",
+        "dom:OrgSettings_EnablePosition"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الوظائف مستخدمة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageOrgSettings.EnableOrgChart3Levels",
+      "label": "EnableOrgChart3Levels",
+      "section": null,
+      "aliases": [
+        "loc:EnableOrgChart3Levels",
+        "dom:OrgSettings_EnableOrgChart3Levels"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الهيكل التنظيمي يعرض ثلاثة مستويات.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

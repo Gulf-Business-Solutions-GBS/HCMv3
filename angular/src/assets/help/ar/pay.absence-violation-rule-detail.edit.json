@@ -1,0 +1,123 @@
+{
+  "helpId": "pay.absence-violation-rule-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل قواعد مخالفات الغياب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.AbsenceViolationRuleDetail",
+  "overviewHtml": "<p>خطوة واحدة من قاعدة مخالفة الغياب: بعد كم يوماً، وما الإجراء — إشعار أو مخالفة تأديبية أو إجازة.</p><p>لا يُشغَّل حالياً: لا توجد عملية تصعّد حالات الغياب باستخدام هذه القواعد. فهي تُحفظ للرجوع إليها، ولا يحدث شيء عندما يتغيب الموظف.</p>",
+  "aliasIndex": {
+    "loc:AbsenceViolationRules": "AbsenceViolationRuleDetail.AbsenceViolationRuleId",
+    "dom:AbsenceViolationRuleDetail_AbsenceViolationRuleId": "AbsenceViolationRuleDetail.AbsenceViolationRuleId",
+    "loc:Step": "AbsenceViolationRuleDetail.Step",
+    "dom:AbsenceViolationRuleDetail_Step": "AbsenceViolationRuleDetail.Step",
+    "loc:DayInterval": "AbsenceViolationRuleDetail.DayInterval",
+    "dom:AbsenceViolationRuleDetail_DayInterval": "AbsenceViolationRuleDetail.DayInterval",
+    "loc:Action": "AbsenceViolationRuleDetail.Action",
+    "dom:AbsenceViolationRuleDetail_Action": "AbsenceViolationRuleDetail.Action",
+    "loc:ActionType": "AbsenceViolationRuleDetail.ActionTypeId",
+    "dom:AbsenceViolationRuleDetail_ActionTypeId": "AbsenceViolationRuleDetail.ActionTypeId",
+    "loc:NotificationConfig": "AbsenceViolationRuleDetail.NotificationConfigId",
+    "dom:AbsenceViolationRuleDetail_NotificationConfigId": "AbsenceViolationRuleDetail.NotificationConfigId",
+    "loc:HoldTillPunchFoundHint": "AbsenceViolationRuleDetail.HoldTillPunchFound",
+    "dom:AbsenceViolationRuleDetail_HoldTillPunchFound": "AbsenceViolationRuleDetail.HoldTillPunchFound"
+  },
+  "fields": [
+    {
+      "id": "AbsenceViolationRuleDetail.AbsenceViolationRuleId",
+      "label": "AbsenceViolationRules",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:AbsenceViolationRules",
+        "dom:AbsenceViolationRuleDetail_AbsenceViolationRuleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة قواعد مخالفات الغياب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القاعدة التي تتبعها هذه الخطوة.</p><p><strong>مثال.</strong> الغياب دون إذن</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.Step",
+      "label": "Step",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:Step",
+        "dom:AbsenceViolationRuleDetail_Step"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موقع الخطوة في التصعيد.</p><p><strong>مثال.</strong> <code>2</code></p><p><strong>لماذا يهم.</strong> يجب أن يكون أكبر من صفر، ولا يُستخدم رقم الخطوة إلا مرة واحدة في القاعدة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.DayInterval",
+      "label": "DayInterval",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:DayInterval",
+        "dom:AbsenceViolationRuleDetail_DayInterval"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيام الغياب التي تُطبَّق هذه الخطوة بعدها.</p><p><strong>مثال.</strong> <code>3</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.Action",
+      "label": "Action",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:Action",
+        "dom:AbsenceViolationRuleDetail_Action"
+      ],
+      "rules": "إلزامي. إحدى القيم: إشعار، المخالفة، الإجازة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما تفعله الخطوة: إرسال إشعار، أو تسجيل مخالفة تأديبية، أو تسجيل إجازة.</p><p><strong>مثال.</strong> مخالفة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.ActionTypeId",
+      "label": "ActionType",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:ActionType",
+        "dom:AbsenceViolationRuleDetail_ActionTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة أو نوع المخالفة التأديبية الذي يستخدمه الإجراء، بحسب الإجراء.</p><p><strong>مثال.</strong> إجازة غير مدفوعة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:AbsenceViolationRuleDetail_NotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إعداد الإخطار المستخدم لإبلاغ المعنيين عند الوصول إلى هذه الخطوة.</p><p><strong>مثال.</strong> تصعيد الغياب – إبلاغ الموارد البشرية والمدير المباشر</p><p><strong>لماذا يهم.</strong> يتلقى مستلموه إشعاراً داخل النظام، وبريداً إلكترونياً إذا كان للإعداد قالب. وإذا تُرك فارغاً تُنفَّذ الخطوة دون إشعار أحد. ولا يُلغى إجراء الخطوة إذا تعذّر الإشعار.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.HoldTillPunchFound",
+      "label": "HoldTillPunchFoundHint",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:HoldTillPunchFoundHint",
+        "dom:AbsenceViolationRuleDetail_HoldTillPunchFound"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت هذه الخطوة تنتظر حتى يسجّل الموظف حضوره مرة أخرى.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه، لا يُطبَّق إجراء الخطوة — إجازة خصم أو سجل مخالفة — إلا بعد عودة الموظف ووجود تسجيل حضور معتمد له، فلا يُعاقب من لا يزال غائباً قبل الأوان.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

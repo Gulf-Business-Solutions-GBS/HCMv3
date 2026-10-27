@@ -1,0 +1,137 @@
+{
+  "helpId": "ess.punch",
+  "lang": "ar",
+  "title": "بصماتي",
+  "entity": null,
+  "overviewHtml": "<p>اطلب إضافة بصمة مفقودة: لم يقرأ الجهاز بصمتك، أو كنت لدى عميل، أو كان القارئ معطّلاً.</p><p>وهذا طلب لا بصمة. فهو يذهب للاعتماد، ولا يحتسبه محرّك الوقت ويكتمل يومك إلا بعد اعتماده. أما البصمات المسجّلة من شاشة البصمة بالموقع فلا تظهر هنا، لأنها بصمات فعلية لا تحتاج إلى اعتماد.</p>",
+  "aliasIndex": {
+    "loc:PunchType": "ess.punch.punch-type",
+    "loc:PunchDate": "ess.punch.punch-date",
+    "loc:PunchTime": "ess.punch.punch-time",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:RequestMissingPunch": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:Withdraw": "ess.common.withdraw"
+  },
+  "fields": [
+    {
+      "id": "ess.punch.punch-type",
+      "label": "PunchType",
+      "section": null,
+      "aliases": [
+        "loc:PunchType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البصمة التي فاتتك: تسجيل حضور، أو تسجيل انصراف، أو إحدى بصمات العمل الإضافي.</p><p><strong>مثال.</strong> تسجيل انصراف — غادرت مباشرةً من اجتماع.</p><p><strong>لماذا يهمّ.</strong> يحتاج اليوم إلى بصمة حضوره وبصمة انصرافه ليُحتسب يوم عمل. وطلب النوع الخطأ يترك اليوم ناقصاً، وسيُطلب منك تقديم طلب ثانٍ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.punch.punch-date",
+      "label": "PunchDate",
+      "section": null,
+      "aliases": [
+        "loc:PunchDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اليوم الذي فاتت فيه البصمة.</p><p><strong>مثال.</strong> 8 يونيو 2026.</p><p><strong>لماذا يهمّ.</strong> يجب أن يكون يوم دوام لك. وهو أيضاً ما يحدّد دورة الرواتب التي يقع فيها التصحيح، فالطلب عن فترة صُرفت فعلاً يُصحَّح في الدورة التالية لا في الفترة التي فاتتك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.punch.punch-time",
+      "label": "PunchTime",
+      "section": null,
+      "aliases": [
+        "loc:PunchTime"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت البصمة المفقودة. اختياري: إن تركته فارغاً استُخدم وقت بداية دوامك أو نهايته.</p><p><strong>مثال.</strong> 17:42 — أو فارغاً، فيؤخذ وقت انتهاء ورديتك.</p><p><strong>لماذا يهمّ.</strong> تركه فارغاً هو الجواب الصحيح حين تكون قد عملت ورديتك فعلاً وأخفق القارئ لا غير. وضع وقتاً حين يكون الوقت الحقيقي مهمّاً: تأخّر تريد تسجيله، أو انصراف مبكر مُتَّفق عليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل ما طلبته من هذه الشاشة، والأحدث أولاً، مع ما آل إليه كل طلب.</p><p><strong>مثال.</strong> ثلاثة طلبات تذاكر: واحد اعتُمد الشهر الماضي، وواحد قيد الانتظار، وواحد سحبته.</p><p><strong>لماذا يهمّ.</strong> هذه هي السجلّ. والطلب غير الموجود في هذه القائمة لم يُقدَّم أصلاً، فإن عبّأت النموذج ولم تضغط <strong>حفظ</strong> فلم يُرسل شيء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنبيه بأن الحساب الذي سجّلت الدخول به غير مرتبط بموظف، فلا يوجد من يكون الطلب عنه.</p><p><strong>مثال.</strong> مستخدم أُنشئ حديثاً، أو حساب مسؤول تُرك عمداً بلا موظف.</p><p><strong>لماذا يهمّ.</strong> لا يعمل شيء في شاشات الخدمة الذاتية قبل أن تربط الموارد البشرية الحساب بسجلّ موظفك، ولا يفعل ذلك سواها. وكثيراً ما تُترك حسابات المسؤولين غير مرتبطة عن قصد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما آل إليه الطلب. <strong>مسودة</strong> يعني أنه لم يُقدَّم، و<strong>قيد الانتظار</strong> يعني أنه لدى أحدهم، و<strong>معتمد</strong> يعني أنه أُقرّ ونُفّذ، و<strong>مرفوض</strong> يعني أنه رُفض، و<strong>مسحوب</strong> يعني أنك استرجعته بنفسك.</p><p><strong>مثال.</strong> قيد الانتظار — لدى مديرك المباشر.</p><p><strong>لماذا يهمّ.</strong> لا يغيّر شيئاً إلا الطلب المعتمد: رصيدك أو راتبك أو سجلّك. أما الطلب قيد الانتظار فلم يفعل شيئاً بعد، مهما جاء في النموذج عند تعبئته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestMissingPunch",
+      "section": null,
+      "aliases": [
+        "loc:RequestMissingPunch"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزرّ في أعلى الشاشة الذي يفتح النموذج. وتعبئته ثم الضغط على <strong>حفظ</strong> يقدّم الطلب، ولا يُرسل شيء قبل ذلك.</p><p><strong>مثال.</strong> <strong>طلب إجازة</strong>، <strong>طلب تذكرة</strong>، <strong>طلب سلفة</strong> — وتتبع الصياغة الشاشة.</p><p><strong>لماذا يهمّ.</strong> بعد التقديم يذهب الطلب إلى من يعتمد هذا النوع من الطلبات في شركتك، ولا يمكنك تعديله في مكانه. ولتغيير شيء فيه اسحبه وقدّم طلباً جديداً، أو استخدم <strong>التعديل</strong> في الشاشات التي توفّره.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من وصل إليه الطلب، وما فعله كل شخص به ومتى، مع أي ملاحظة تركها.</p><p><strong>مثال.</strong> قُدّم 09:12 ← اعتمده المدير المباشر 11:40 («تم ترتيب البديل») ← لدى الموارد البشرية.</p><p><strong>لماذا يهمّ.</strong> يجيب عن سؤال «لدى من الطلب الآن؟» دون سؤال أحد. وإذا بقي الطلب عند شخص أياماً فهو يخبرك بمن هو، وهو من تراجعه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "Withdraw",
+      "section": null,
+      "aliases": [
+        "loc:Withdraw"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يسترجع الطلب. ولا يظهر إلا ما دام الاسترجاع ممكناً، فإذا اعتُمد الطلب ونُفّذ اختفى الزرّ.</p><p><strong>مثال.</strong> طلبت إجازة الأسبوع القادم ثم تغيّرت خططك، فتسحب الطلب قبل أن يصل إليه مديرك.</p><p><strong>لماذا يهمّ.</strong> لا يُحذف الطلب المسحوب، بل يبقى في القائمة بحالة <strong>مسحوب</strong> ليبيّن السجلّ ما جرى. ويحرّر السحب ما كان الطلب يحجزه، كرصيد إجازة محجوز مقابله.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

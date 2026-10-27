@@ -1,0 +1,62 @@
+<div class="attachments">
+    <div class="d-flex align-items-center justify-content-between mb-2">
+        <label class="form-label mb-0">
+            <i class="fa fa-paperclip"></i> {{ 'Attachments' | localize }}
+        </label>
+        @if (canEdit()) {
+            <label class="btn btn-sm btn-light mb-0" [class.disabled]="uploading()">
+                @if (uploading()) {
+                    <i class="fa fa-spinner fa-spin"></i> {{ 'Uploading' | localize }}
+                } @else {
+                    <i class="fa fa-upload"></i> {{ 'AttachFile' | localize }}
+                }
+                <input type="file" multiple hidden [attr.accept]="acceptList" [disabled]="uploading()" (change)="onFilesChosen($event)" />
+            </label>
+        }
+    </div>
+
+    @if (canEdit() && limitsHint && showLimitsHint()) {
+        <small class="form-text text-muted d-block mb-2">{{ limitsHint }}</small>
+    }
+
+    @if (loading()) {
+        <div class="text-muted"><i class="fa fa-spinner fa-spin"></i></div>
+    } @else if (isPendingMode) {
+        @if (pending().length) {
+            <ul class="list-unstyled mb-1">
+                @for (file of pending(); track file) {
+                    <li class="d-flex align-items-center py-1">
+                        <i class="fa fa-file text-muted me-2"></i>
+                        <span class="flex-grow-1 text-truncate">{{ file.name }}</span>
+                        <small class="text-muted mx-2">{{ formatSize(file.size) }}</small>
+                        <button type="button" class="btn btn-sm btn-link text-danger p-0" (click)="removePending(file)">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </li>
+                }
+            </ul>
+            <small class="text-muted">{{ 'AttachmentsPendingHint' | localize }}</small>
+        } @else {
+            <div class="text-muted">{{ 'NoAttachments' | localize }}</div>
+        }
+    } @else {
+        @for (item of items(); track item.id) {
+            <div class="d-flex align-items-center py-1 border-bottom">
+                <i class="fa fa-file text-muted me-2"></i>
+                <a href="javascript:;" class="flex-grow-1 text-truncate" (click)="download(item)">{{ item.fileName }}</a>
+                <small class="text-muted mx-2">{{ formatSize(item.size) }}</small>
+                <small class="text-muted mx-2">{{ item.creationTime | luxonFormat: 'yyyy-MM-dd' }}</small>
+                <button type="button" class="btn btn-sm btn-link p-0 mx-1" [title]="'Download' | localize" (click)="download(item)">
+                    <i class="fa fa-download"></i>
+                </button>
+                @if (item.canDelete && canEdit()) {
+                    <button type="button" class="btn btn-sm btn-link text-danger p-0" [title]="'Delete' | localize" (click)="remove(item)">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                }
+            </div>
+        } @empty {
+            <div class="text-muted">{{ 'NoAttachments' | localize }}</div>
+        }
+    }
+</div>

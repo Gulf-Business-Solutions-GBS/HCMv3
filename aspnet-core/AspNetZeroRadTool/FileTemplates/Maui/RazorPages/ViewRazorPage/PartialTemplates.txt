@@ -1,0 +1,66 @@
+{
+	"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"type" : "default",
+					"content" : "
+						<div class=\"row mb-3\">
+							<div class=\"col-auto\">
+								<label class=\"form-label fw-semibold mb-0\" style=\"min-width: 100px;\">
+									@L(\"{{Property_Name_Here}}\"):
+								</label>
+							</div>
+							<div class=\"col d-flex align-items-center\">
+								@View{{Entity_Name_Here}}Model.{{Entity_Name_Here}}.{{Property_Name_Here}}
+							</div>
+						</div>
+								"
+					},
+					{
+					"type" : "file",
+					"content" : "
+						<div class=\"row mb-3\">
+							<div class=\"col-auto\">
+								<label class=\"form-label fw-semibold mb-0\" style=\"min-width: 100px;\">
+									@L(\"{{Property_Name_Here}}\"):
+								</label>
+							</div>
+							<div class=\"col d-flex align-items-center\">
+								@View{{Entity_Name_Here}}Model.{{Entity_Name_Here}}.{{Property_Name_Here}}FileName
+							</div>
+						</div>
+								"
+					},
+				]
+		}
+	],
+	"navigationPropertyTemplates":[
+			{
+				"placeholder" : "{{NP_Looped_Template_Here}}",
+				"templates" : [
+						{
+						"relation" : "single",
+						"content" : "
+							<div class=\"row mb-3\">
+								<div class=\"col-auto\">
+									<label class=\"form-label fw-semibold mb-0\" style=\"min-width: 100px;\">
+										@L(\"{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}\"):
+									</label>
+								</div>
+								<div class=\"col d-flex align-items-center\">
+									@View{{Entity_Name_Here}}Model.{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}
+								</div>
+							</div>
+						"
+						}
+					]
+		},
+	],
+	"enumTemplates":[
+
+	],
+	"conditionalTemplates":[
+	]
+}

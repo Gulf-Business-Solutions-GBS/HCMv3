@@ -1,0 +1,43 @@
+<div [@routerTransition]>
+    <sub-header [title]="'PAForms' | localize" [description]="'PerformanceManagement' | localize" />
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-header align-items-center border-0">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="fw-bolder text-gray-900">
+                        @if (paForm()) {
+                            <span>{{ paForm().moderatedScore }}</span>
+                        }
+                    </span>
+                </h3>
+            </div>
+            <div class="card-body">
+                @if (paFormId()) {
+                    <tabset class="tab-container">
+                        <tab heading="{{ 'PAPlans' | localize }}" [active]="true">
+                            <pa-plans [paFormId]="paFormId()" />
+                        </tab>
+                        <tab heading="{{ 'PAQuarter1Reviews' | localize }}">
+                            <pa-quarter1-reviews [paFormId]="paFormId()" />
+                        </tab>
+                        <tab heading="{{ 'PAMidYearReviews' | localize }}">
+                            <pa-mid-year-reviews [paFormId]="paFormId()" />
+                        </tab>
+                        <tab heading="{{ 'PAQuarter3Reviews' | localize }}">
+                            <pa-quarter3-reviews [paFormId]="paFormId()" />
+                        </tab>
+                        <tab heading="{{ 'PAAnnualYearReviews' | localize }}">
+                            <pa-annual-year-reviews [paFormId]="paFormId()" />
+                        </tab>
+                        <tab heading="{{ 'PAGoals' | localize }}">
+                            <pa-goals [paFormId]="paFormId()" />
+                        </tab>
+                        <tab heading="{{ 'PAPeerReviews' | localize }}">
+                            <pa-peer-reviews [paFormId]="paFormId()" />
+                        </tab>
+                    </tabset>
+                }
+            </div>
+        </div>
+    </div>
+</div>

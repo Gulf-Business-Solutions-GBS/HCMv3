@@ -1,0 +1,43 @@
+{
+  "helpId": "prj.project-register.edit",
+  "lang": "en",
+  "title": "Project Registers — Create / Edit",
+  "entity": "HCMv3.ProjectManagement.ProjectRegister",
+  "overviewHtml": "<p>An employee's salary costs for one period, split by project. The Project Cost Engine builds it from the period's salary register; it runs only for a regular payroll whose control record is locked and current, and running it again replaces the figures. Written by the Project Cost Engine; there is normally no reason to add or change entries by hand.</p>",
+  "aliasIndex": {
+    "loc:Employee": "ProjectRegister.EmployeeId",
+    "dom:ProjectRegister_EmployeeId": "ProjectRegister.EmployeeId",
+    "loc:Period": "ProjectRegister.Period",
+    "dom:ProjectRegister_Period": "ProjectRegister.Period"
+  },
+  "fields": [
+    {
+      "id": "ProjectRegister.EmployeeId",
+      "label": "Employee",
+      "section": "ProjectRegisters",
+      "aliases": [
+        "loc:Employee",
+        "dom:ProjectRegister_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectRegister.Period",
+      "label": "Period",
+      "section": "ProjectRegisters",
+      "aliases": [
+        "loc:Period",
+        "dom:ProjectRegister_Period"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The payroll period.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

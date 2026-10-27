@@ -1,0 +1,203 @@
+{
+  "helpId": "gmi.personal-action.edit",
+  "lang": "en",
+  "title": "Personal Actions — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.PersonalAction",
+  "overviewHtml": "<p>The kinds of personal action recorded against employees — hiring, transfer, promotion, separation and so on. Each employee action names one.</p><p>The requirement flags on this form are stored but not enforced at present: saving an employee action does not check them.</p>",
+  "aliasIndex": {
+    "loc:Code": "PersonalAction.Code",
+    "dom:PersonalAction_Code": "PersonalAction.Code",
+    "loc:NameEn": "PersonalAction.NameEn",
+    "dom:PersonalAction_NameEn": "PersonalAction.NameEn",
+    "loc:NameAr": "PersonalAction.NameAr",
+    "dom:PersonalAction_NameAr": "PersonalAction.NameAr",
+    "loc:ReqOrgAssignment": "PersonalAction.ReqOrgAssignment",
+    "dom:PersonalAction_ReqOrgAssignment": "PersonalAction.ReqOrgAssignment",
+    "loc:ReqBasicPay": "PersonalAction.ReqBasicPay",
+    "dom:PersonalAction_ReqBasicPay": "PersonalAction.ReqBasicPay",
+    "loc:ReqContract": "PersonalAction.ReqContract",
+    "dom:PersonalAction_ReqContract": "PersonalAction.ReqContract",
+    "loc:ReqManager": "PersonalAction.ReqManager",
+    "dom:PersonalAction_ReqManager": "PersonalAction.ReqManager",
+    "loc:ReqOnHold": "PersonalAction.ReqOnHold",
+    "dom:PersonalAction_ReqOnHold": "PersonalAction.ReqOnHold",
+    "loc:ReqSeparation": "PersonalAction.ReqSeparation",
+    "dom:PersonalAction_ReqSeparation": "PersonalAction.ReqSeparation",
+    "loc:ReqFnFPayment": "PersonalAction.ReqFnFPayment",
+    "dom:PersonalAction_ReqFnFPayment": "PersonalAction.ReqFnFPayment",
+    "loc:IncludeInWorkflow": "PersonalAction.IncludeInWorkflow",
+    "dom:PersonalAction_IncludeInWorkflow": "PersonalAction.IncludeInWorkflow",
+    "loc:IsAttachmentRequired": "PersonalAction.IsAttachmentRequired",
+    "dom:PersonalAction_IsAttachmentRequired": "PersonalAction.IsAttachmentRequired"
+  },
+  "fields": [
+    {
+      "id": "PersonalAction.Code",
+      "label": "Code",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:Code",
+        "dom:PersonalAction_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.NameEn",
+      "label": "NameEn",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:NameEn",
+        "dom:PersonalAction_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.NameAr",
+      "label": "NameAr",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:NameAr",
+        "dom:PersonalAction_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.ReqOrgAssignment",
+      "label": "ReqOrgAssignment",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:ReqOrgAssignment",
+        "dom:PersonalAction_ReqOrgAssignment"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Meant to require a new organisation assignment with the action.</p><p><strong>Why it matters.</strong> Not enforced at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.ReqBasicPay",
+      "label": "ReqBasicPay",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:ReqBasicPay",
+        "dom:PersonalAction_ReqBasicPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Meant to require a new basic pay record with the action.</p><p><strong>Why it matters.</strong> Not enforced at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.ReqContract",
+      "label": "ReqContract",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:ReqContract",
+        "dom:PersonalAction_ReqContract"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Meant to require a new contract with the action.</p><p><strong>Why it matters.</strong> Not enforced at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.ReqManager",
+      "label": "ReqManager",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:ReqManager",
+        "dom:PersonalAction_ReqManager"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Meant to require a new manager assignment with the action.</p><p><strong>Why it matters.</strong> Not enforced at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.ReqOnHold",
+      "label": "ReqOnHold",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:ReqOnHold",
+        "dom:PersonalAction_ReqOnHold"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Meant to require an on-hold record with the action.</p><p><strong>Why it matters.</strong> Not enforced at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.ReqSeparation",
+      "label": "ReqSeparation",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:ReqSeparation",
+        "dom:PersonalAction_ReqSeparation"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Meant to require a separation record with the action.</p><p><strong>Why it matters.</strong> Not enforced at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.ReqFnFPayment",
+      "label": "ReqFnFPayment",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:ReqFnFPayment",
+        "dom:PersonalAction_ReqFnFPayment"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Meant to require a final settlement (full and final) payment with the action.</p><p><strong>Why it matters.</strong> Not enforced at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.IncludeInWorkflow",
+      "label": "IncludeInWorkflow",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:IncludeInWorkflow",
+        "dom:PersonalAction_IncludeInWorkflow"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Meant to send actions of this type for approval.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.IsAttachmentRequired",
+      "label": "IsAttachmentRequired",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:IsAttachmentRequired",
+        "dom:PersonalAction_IsAttachmentRequired"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Meant to require an attachment with the action.</p><p><strong>Why it matters.</strong> Not enforced at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "helpId": "wf.workflow-group-field-access.edit",
+  "lang": "ar",
+  "title": "صلاحيات حقول مجموعات سير العمل — إنشاء / تحرير",
+  "entity": "HCMv3.Workflow.WorkflowGroupFieldAccess",
+  "overviewHtml": "<p>ما إذا كان حقل في نموذج الطلب ظاهراً أو قابلاً للتعديل أو إلزامياً في خطوة معينة. يجب أن تكون الخطوة موجودة في السلسلة، ولا يُدرج الحقل إلا مرة واحدة لكل خطوة. لا يُقرأ حالياً: لا تطبّق نماذج الطلبات هذه السجلات.</p>",
+  "aliasIndex": {
+    "loc:Step": "WorkflowGroupFieldAccess.Step",
+    "dom:WorkflowGroupFieldAccess_Step": "WorkflowGroupFieldAccess.Step",
+    "loc:Field": "WorkflowGroupFieldAccess.Field",
+    "dom:WorkflowGroupFieldAccess_Field": "WorkflowGroupFieldAccess.Field",
+    "loc:IsVisible": "WorkflowGroupFieldAccess.IsVisible",
+    "dom:WorkflowGroupFieldAccess_IsVisible": "WorkflowGroupFieldAccess.IsVisible",
+    "loc:IsEditable": "WorkflowGroupFieldAccess.IsEditable",
+    "dom:WorkflowGroupFieldAccess_IsEditable": "WorkflowGroupFieldAccess.IsEditable",
+    "loc:IsRequired": "WorkflowGroupFieldAccess.IsRequired",
+    "dom:WorkflowGroupFieldAccess_IsRequired": "WorkflowGroupFieldAccess.IsRequired"
+  },
+  "fields": [
+    {
+      "id": "WorkflowGroupFieldAccess.Step",
+      "label": "Step",
+      "section": "WorkflowGroupFieldAccesses",
+      "aliases": [
+        "loc:Step",
+        "dom:WorkflowGroupFieldAccess_Step"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الخطوة التي تنطبق فيها القاعدة.</p><p><strong>مثال.</strong> 2</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroupFieldAccess.Field",
+      "label": "Field",
+      "section": "WorkflowGroupFieldAccesses",
+      "aliases": [
+        "loc:Field",
+        "dom:WorkflowGroupFieldAccess_Field"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حقل النموذج.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroupFieldAccess.IsVisible",
+      "label": "IsVisible",
+      "section": "WorkflowGroupFieldAccesses",
+      "aliases": [
+        "loc:IsVisible",
+        "dom:WorkflowGroupFieldAccess_IsVisible"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الحقل ظاهراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroupFieldAccess.IsEditable",
+      "label": "IsEditable",
+      "section": "WorkflowGroupFieldAccesses",
+      "aliases": [
+        "loc:IsEditable",
+        "dom:WorkflowGroupFieldAccess_IsEditable"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يمكن تغيير الحقل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroupFieldAccess.IsRequired",
+      "label": "IsRequired",
+      "section": "WorkflowGroupFieldAccesses",
+      "aliases": [
+        "loc:IsRequired",
+        "dom:WorkflowGroupFieldAccess_IsRequired"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب ملء الحقل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

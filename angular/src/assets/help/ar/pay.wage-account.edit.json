@@ -1,0 +1,219 @@
+{
+  "helpId": "pay.wage-account.edit",
+  "lang": "ar",
+  "title": "حسابات الأجور — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.WageAccount",
+  "overviewHtml": "<p>ربط على مستوى الشركة بين نوع أجر وحساب في دفتر الأستاذ، اعتباراً من تاريخ معيّن، مع حسابه المقابل وعناصر التكلفة.</p><p>لا يُقرأ حالياً: يأخذ محرك التكلفة وقيد اليومية الحسابات من <strong>حسابات الأجور</strong> الخاصة بكل موظف (في سجل الموظف)، ولا يقرأ شيءٌ هذه القائمة. ونوع الأجر الذي ليس له حساب أجور للموظف في الفترة يوقف احتساب التكلفة لذلك الموظف، مهما كان المضبوط هنا.</p>",
+  "aliasIndex": {
+    "loc:WageTypeId": "WageAccount.WageTypeId",
+    "dom:WageAccount_WageTypeId": "WageAccount.WageTypeId",
+    "loc:StartDate": "WageAccount.StartDate",
+    "dom:WageAccount_StartDate": "WageAccount.StartDate",
+    "loc:EndDate": "WageAccount.EndDate",
+    "dom:WageAccount_EndDate": "WageAccount.EndDate",
+    "loc:AccountInfoId": "WageAccount.AccountInfoId",
+    "dom:WageAccount_AccountInfoId": "WageAccount.AccountInfoId",
+    "loc:OffsetAccountInfoId": "WageAccount.OffsetAccountInfoId",
+    "dom:WageAccount_OffsetAccountInfoId": "WageAccount.OffsetAccountInfoId",
+    "loc:CostPercentage": "WageAccount.CostPercentage",
+    "dom:WageAccount_CostPercentage": "WageAccount.CostPercentage",
+    "loc:CostElement1Id": "WageAccount.CostElement1Id",
+    "dom:WageAccount_costElement1Id": "WageAccount.CostElement1Id",
+    "loc:CostElement2Id": "WageAccount.CostElement2Id",
+    "dom:WageAccount_costElement2Id": "WageAccount.CostElement2Id",
+    "loc:CostElement3Id": "WageAccount.CostElement3Id",
+    "dom:WageAccount_costElement3Id": "WageAccount.CostElement3Id",
+    "loc:CostElement4Id": "WageAccount.CostElement4Id",
+    "dom:WageAccount_costElement4Id": "WageAccount.CostElement4Id",
+    "loc:CostElement5Id": "WageAccount.CostElement5Id",
+    "dom:WageAccount_costElement5Id": "WageAccount.CostElement5Id",
+    "loc:CostElement6Id": "WageAccount.CostElement6Id",
+    "dom:WageAccount_costElement6Id": "WageAccount.CostElement6Id",
+    "loc:CostElement7Id": "WageAccount.CostElement7Id",
+    "dom:WageAccount_costElement7Id": "WageAccount.CostElement7Id"
+  },
+  "fields": [
+    {
+      "id": "WageAccount.WageTypeId",
+      "label": "WageTypeId",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:WageAccount_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الأجر الذي يخصه هذا الربط.</p><p><strong>مثال.</strong> بدل السكن</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.StartDate",
+      "label": "StartDate",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:StartDate",
+        "dom:WageAccount_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.EndDate",
+      "label": "EndDate",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:EndDate",
+        "dom:WageAccount_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.AccountInfoId",
+      "label": "AccountInfoId",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:AccountInfoId",
+        "dom:WageAccount_AccountInfoId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة بيانات الحسابات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحساب الذي يُرحَّل إليه نوع الأجر.</p><p><strong>مثال.</strong> 510100 — الرواتب والأجور</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.OffsetAccountInfoId",
+      "label": "OffsetAccountInfoId",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:OffsetAccountInfoId",
+        "dom:WageAccount_OffsetAccountInfoId"
+      ],
+      "rules": "اختياري. يُختار من قائمة بيانات الحسابات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحساب المقابل للقيد.</p><p><strong>مثال.</strong> 210500 — رواتب مستحقة الدفع</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.CostPercentage",
+      "label": "CostPercentage",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostPercentage",
+        "dom:WageAccount_CostPercentage"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حصة مبلغ نوع الأجر التي يحملها هذا الربط.</p><p><strong>مثال.</strong> <code>100</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.CostElement1Id",
+      "label": "CostElement1Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement1Id",
+        "dom:WageAccount_costElement1Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 1 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.CostElement2Id",
+      "label": "CostElement2Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement2Id",
+        "dom:WageAccount_costElement2Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 2 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.CostElement3Id",
+      "label": "CostElement3Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement3Id",
+        "dom:WageAccount_costElement3Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 3 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.CostElement4Id",
+      "label": "CostElement4Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement4Id",
+        "dom:WageAccount_costElement4Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 4 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.CostElement5Id",
+      "label": "CostElement5Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement5Id",
+        "dom:WageAccount_costElement5Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 5 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.CostElement6Id",
+      "label": "CostElement6Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement6Id",
+        "dom:WageAccount_costElement6Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 6 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.CostElement7Id",
+      "label": "CostElement7Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement7Id",
+        "dom:WageAccount_costElement7Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 7 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

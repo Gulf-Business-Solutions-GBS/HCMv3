@@ -1,0 +1,23 @@
+﻿using Abp.BackgroundJobs;
+using Microsoft.AspNetCore.Authorization;
+using {{Namespace_Here}}.Storage;
+{{File_Validator_Manager_Import_Here}}
+
+namespace {{Namespace_Here}}.Web.Controllers;
+
+[Authorize]
+public class {{Entity_Name_Plural_Here}}Controller : {{Entity_Name_Plural_Here}}ControllerBase
+{
+    {{File_Validator_Manager_Property_Here}}
+    {{File_Prop_Definitions_Here}}
+
+    public {{Entity_Name_Plural_Here}}Controller(ITempFileCacheManager tempFileCacheManager{{ExcelImportBase_Prop_Cons_Here}}{{File_Validator_Manager_Constructor_Inject_Here}})
+        : base(tempFileCacheManager{{ExcelImportBase_Prop_Cons_Inject_Here}})
+    {
+        {{File_Validator_Manager_Constructor_Set_Here}}
+    }
+
+    {{Get_File_Upload_Accepted_Types_Foreach_Here}}
+    // Write your custom code here. 
+    // ASP.NET Zero Power Tools will not overwrite this class when you regenerate the related entity.
+}

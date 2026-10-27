@@ -1,0 +1,43 @@
+{
+  "helpId": "rec.onb-group.edit",
+  "lang": "en",
+  "title": "Onboarding Groups — Create / Edit",
+  "entity": "HCMv3.Recruitment.OnbGroup",
+  "overviewHtml": "<p>A named bundle of onboarding tasks, usually per job title.</p>",
+  "aliasIndex": {
+    "loc:NameEn": "OnbGroup.NameEn",
+    "dom:OnbGroup_NameEn": "OnbGroup.NameEn",
+    "loc:NameAr": "OnbGroup.NameAr",
+    "dom:OnbGroup_NameAr": "OnbGroup.NameAr"
+  },
+  "fields": [
+    {
+      "id": "OnbGroup.NameEn",
+      "label": "NameEn",
+      "section": "OnbGroups",
+      "aliases": [
+        "loc:NameEn",
+        "dom:OnbGroup_NameEn"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbGroup.NameAr",
+      "label": "NameAr",
+      "section": "OnbGroups",
+      "aliases": [
+        "loc:NameAr",
+        "dom:OnbGroup_NameAr"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

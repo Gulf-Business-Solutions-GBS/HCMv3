@@ -1,0 +1,31 @@
+﻿using System.Threading.Tasks;
+using Abp.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Models.{{Entity_Name_Plural_Here}};
+using {{Namespace_Here}}.Web.Controllers;
+using {{Namespace_Here}}.Authorization;
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}};
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos;
+using Abp.Application.Services.Dto;
+using Abp.Extensions;
+using Abp.BackgroundJobs;
+{{File_Props_Usings_Here}}
+using {{Namespace_Here}}.Storage;
+{{File_Validator_Manager_Import_Here}}
+
+namespace {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Controllers;
+
+public class {{Entity_Name_Plural_Here}}Controller : {{Entity_Name_Plural_Here}}ControllerBase
+{
+    {{File_Validator_Manager_Property_Here}}
+    {{File_Prop_Definitions_Here}}
+
+    public {{Entity_Name_Plural_Here}}Controller(I{{Entity_Name_Plural_Here}}AppService {{entity_Name_Plural_Here}}AppService{{TempFileCacheManager_Prop_Cons_Here}}{{ExcelImportBase_Prop_Cons_Here}}{{File_Validator_Manager_Constructor_Inject_Here}})
+        : base({{entity_Name_Plural_Here}}AppService{{TempFileCacheManager_Prop_Cons_Here}}{{ExcelImportBase_Prop_Cons_Inject_Here}})
+    {
+            {{File_Validator_Manager_Constructor_Set_Here}}
+    }
+
+    // Write your custom code here. 
+    // ASP.NET Zero Power Tools will not overwrite this class when you regenerate the related entity.
+}

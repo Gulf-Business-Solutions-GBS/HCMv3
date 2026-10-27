@@ -1,0 +1,91 @@
+{
+  "helpId": "cd.cdplan.edit",
+  "lang": "en",
+  "title": "CD Plans — Create / Edit",
+  "entity": "HCMv3.CompetencyDevelopment.CDPlan",
+  "overviewHtml": "<p>One competency in the employee's plan for the period. A competency can be listed once in this part of the form. Weights are recorded as entered; they are not totalled or checked here.</p>",
+  "aliasIndex": {
+    "loc:Competency": "CDPlan.CompetencyId",
+    "dom:CDPlan_CompetencyId": "CDPlan.CompetencyId",
+    "loc:Weight": "CDPlan.Weight",
+    "dom:CDPlan_Weight": "CDPlan.Weight",
+    "loc:Target": "CDPlan.Target",
+    "dom:CDPlan_Target": "CDPlan.Target",
+    "loc:EmployeeComments": "CDPlan.EmployeeComments",
+    "dom:CDPlan_EmployeeComments": "CDPlan.EmployeeComments",
+    "loc:ManagerComments": "CDPlan.ManagerComments",
+    "dom:CDPlan_ManagerComments": "CDPlan.ManagerComments"
+  },
+  "fields": [
+    {
+      "id": "CDPlan.CompetencyId",
+      "label": "Competency",
+      "section": "CDPlans",
+      "aliases": [
+        "loc:Competency",
+        "dom:CDPlan_CompetencyId"
+      ],
+      "rules": "Optional. Chosen from Competency master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The competency.</p><p><strong>Example.</strong> Teamwork</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDPlan.Weight",
+      "label": "Weight",
+      "section": "CDPlans",
+      "aliases": [
+        "loc:Weight",
+        "dom:CDPlan_Weight"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How much the competency counts, as a percentage.</p><p><strong>Example.</strong> 20</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDPlan.Target",
+      "label": "Target",
+      "section": "CDPlans",
+      "aliases": [
+        "loc:Target",
+        "dom:CDPlan_Target"
+      ],
+      "rules": "Optional. Maximum 512 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What the employee is expected to achieve.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDPlan.EmployeeComments",
+      "label": "EmployeeComments",
+      "section": "CDPlans",
+      "aliases": [
+        "loc:EmployeeComments",
+        "dom:CDPlan_EmployeeComments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's comments.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDPlan.ManagerComments",
+      "label": "ManagerComments",
+      "section": "CDPlans",
+      "aliases": [
+        "loc:ManagerComments",
+        "dom:CDPlan_ManagerComments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The manager's comments.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "helpId": "gmi.loan-type-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل أنواع القروض — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.LoanTypeDetail",
+  "overviewHtml": "<p>نسب مرتبطة بنوع قرض. لا تُستخدم حالياً: فهي تخص الاسترداد المتغير للقرض، الذي لا يدعمه احتساب الرواتب بعدُ.</p>",
+  "aliasIndex": {
+    "loc:LoanType": "LoanTypeDetail.LoanTypeId",
+    "dom:LoanTypeDetail_LoanTypeId": "LoanTypeDetail.LoanTypeId",
+    "loc:WageType": "LoanTypeDetail.WageTypeId",
+    "dom:LoanTypeDetail_WageTypeId": "LoanTypeDetail.WageTypeId",
+    "loc:Percent": "LoanTypeDetail.Percent",
+    "dom:LoanTypeDetail_Percent": "LoanTypeDetail.Percent"
+  },
+  "fields": [
+    {
+      "id": "LoanTypeDetail.LoanTypeId",
+      "label": "LoanType",
+      "section": "LoanTypeDetails",
+      "aliases": [
+        "loc:LoanType",
+        "dom:LoanTypeDetail_LoanTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع القروض.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع القرض الذي تنتمي إليه النسبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanTypeDetail.WageTypeId",
+      "label": "WageType",
+      "section": "LoanTypeDetails",
+      "aliases": [
+        "loc:WageType",
+        "dom:LoanTypeDetail_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بند الأجر الذي تُحتسب منه النسبة في هذا السطر، للقروض التي نوع خصمها «متغير».</p><p><strong>مثال.</strong> 1001 - الراتب الأساسي، بنسبة 25</p><p><strong>لماذا يهم.</strong> في القرض المتغير، يساوي القسط الشهري مجموع مبلغ نوع الأجر هذا في كشف راتب الموظف مضروباً في نسبة السطر، لجميع الأسطر، على ألا يتجاوز الرصيد المتبقي. ونوع الأجر الذي لا يُصرف للموظف في ذلك الشهر لا يضيف شيئاً. ولا يُدرج نوع الأجر إلا مرة واحدة لكل نوع قرض، ويجب أن تكون النسبة أكبر من 0 ولا تزيد على 100.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanTypeDetail.Percent",
+      "label": "Percent",
+      "section": "LoanTypeDetails",
+      "aliases": [
+        "loc:Percent",
+        "dom:LoanTypeDetail_Percent"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النسبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

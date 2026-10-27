@@ -1,0 +1,91 @@
+{
+  "helpId": "sec.email-token.edit",
+  "lang": "ar",
+  "title": "رموز البريد الإلكتروني — إنشاء / تحرير",
+  "entity": "HCMv3.SystemSecurity.EmailToken",
+  "overviewHtml": "<p>عنصر نائب في نموذج البريد، ومصدر قيمته. ويُستبدل <code>$#TokenName#$</code> في النموذج بالقيمة، والرمز الذي ليس له قيمة يُستبدل بلا شيء. ويجب ألا تتكرر أسماء الرموز.</p>",
+  "aliasIndex": {
+    "loc:TokenName": "EmailToken.TokenName",
+    "dom:EmailToken_TokenName": "EmailToken.TokenName",
+    "loc:TokenValue": "EmailToken.TokenValue",
+    "dom:EmailToken_TokenValue": "EmailToken.TokenValue",
+    "loc:EmailTemplate": "EmailToken.EmailTemplateId",
+    "dom:EmailToken_EmailTemplateId": "EmailToken.EmailTemplateId",
+    "loc:IsDateTimeType": "EmailToken.IsDateTimeType",
+    "dom:EmailToken_IsDateTimeType": "EmailToken.IsDateTimeType",
+    "loc:ObjectKey": "EmailToken.ObjectKey",
+    "dom:EmailToken_ObjectKey": "EmailToken.ObjectKey"
+  },
+  "fields": [
+    {
+      "id": "EmailToken.TokenName",
+      "label": "TokenName",
+      "section": "EmailTokens",
+      "aliases": [
+        "loc:TokenName",
+        "dom:EmailToken_TokenName"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم العنصر النائب كما يُكتب بين <code>$#</code> و<code>#$</code>.</p><p><strong>مثال.</strong> <code>EmployeeName</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailToken.TokenValue",
+      "label": "TokenValue",
+      "section": "EmailTokens",
+      "aliases": [
+        "loc:TokenValue",
+        "dom:EmailToken_TokenValue"
+      ],
+      "rules": "اختياري. الحد الأقصى 1000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مصدر القيمة.</p><p><strong>مثال.</strong> <code>Employee.FullNameEn</code></p><p><strong>لماذا يهم.</strong> خاصية من السجل الذي تخصه الرسالة (مثل <code>Employee.FullNameEn</code>)، أو — مع التأشير على <strong>مفتاح الكائن</strong> — اسم قيمة تقدمها الميزة المرسِلة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailToken.EmailTemplateId",
+      "label": "EmailTemplate",
+      "section": "EmailTokens",
+      "aliases": [
+        "loc:EmailTemplate",
+        "dom:EmailToken_EmailTemplateId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة قوالب البريد الإلكتروني.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النموذج الذي يتبعه الرمز.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailToken.IsDateTimeType",
+      "label": "IsDateTimeType",
+      "section": "EmailTokens",
+      "aliases": [
+        "loc:IsDateTimeType",
+        "dom:EmailToken_IsDateTimeType"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت القيمة تاريخاً أو وقتاً.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه تُنسَّق القيمة بتنسيق التاريخ في الإعدادات العامة — أو بتنسيق الوقت إذا احتوى اسم الرمز على \"Time\".</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailToken.ObjectKey",
+      "label": "ObjectKey",
+      "section": "EmailTokens",
+      "aliases": [
+        "loc:ObjectKey",
+        "dom:EmailToken_ObjectKey"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت القيمة تقدمها الميزة المرسِلة بدلاً من قراءتها من السجل.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُبحث عن <strong>قيمة الرمز</strong> بين القيم التي تمررها الميزة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

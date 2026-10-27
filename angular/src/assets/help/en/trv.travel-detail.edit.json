@@ -1,0 +1,219 @@
+{
+  "helpId": "trv.travel-detail.edit",
+  "lang": "en",
+  "title": "Travel Details — Create / Edit",
+  "entity": "HCMv3.TravelManagement.TravelDetail",
+  "overviewHtml": "<p>One leg of a trip: from where to where, when, and where the employee stays. A leg cannot be deleted while it still has costs. The form can work out the expected per diem for the leg from the per-diem rates: choose the salary profile and grade, and it multiplies the nights by the rate for this route.</p>",
+  "aliasIndex": {
+    "loc:Travel": "TravelDetail.TravelId",
+    "dom:TravelDetail_TravelId": "TravelDetail.TravelId",
+    "loc:Departure": "TravelDetail.DepartureId",
+    "dom:TravelDetail_DepartureId": "TravelDetail.DepartureId",
+    "loc:Arrival": "TravelDetail.ArrivalId",
+    "dom:TravelDetail_ArrivalId": "TravelDetail.ArrivalId",
+    "loc:DepartureDate": "TravelDetail.DepartureDate",
+    "dom:TravelDetail_DepartureDate": "TravelDetail.DepartureDate",
+    "loc:DepartureTime": "TravelDetail.DepartureTime",
+    "dom:TravelDetail_DepartureTime": "TravelDetail.DepartureTime",
+    "loc:ArrivalDate": "TravelDetail.ArrivalDate",
+    "dom:TravelDetail_ArrivalDate": "TravelDetail.ArrivalDate",
+    "loc:ArrivalTime": "TravelDetail.ArrivalTime",
+    "dom:TravelDetail_ArrivalTime": "TravelDetail.ArrivalTime",
+    "loc:Hotel": "TravelDetail.HotelId",
+    "dom:TravelDetail_HotelId": "TravelDetail.HotelId",
+    "loc:TravelAirlines": "TravelDetail.TravelAirlineId",
+    "dom:TravelDetail_TravelAirlineId": "TravelDetail.TravelAirlineId",
+    "loc:TotalNights": "TravelDetail.TotalNights",
+    "dom:TravelDetail_TotalNights": "TravelDetail.TotalNights",
+    "loc:PerDiemPayPercentage": "TravelDetail.PerDiemPayPercentage",
+    "dom:TravelDetail_PerDiemPayPercentage": "TravelDetail.PerDiemPayPercentage",
+    "loc:NightStay": "TravelDetail.NightStay",
+    "dom:TravelDetail_NightStay": "TravelDetail.NightStay",
+    "loc:Comments": "TravelDetail.Comments",
+    "dom:TravelDetail_Comments": "TravelDetail.Comments"
+  },
+  "fields": [
+    {
+      "id": "TravelDetail.TravelId",
+      "label": "Travel",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:Travel",
+        "dom:TravelDetail_TravelId"
+      ],
+      "rules": "Required. Chosen from Travel master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The trip.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.DepartureId",
+      "label": "Departure",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:Departure",
+        "dom:TravelDetail_DepartureId"
+      ],
+      "rules": "Required. Chosen from Travel Destination master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the leg starts.</p><p><strong>Example.</strong> Kuwait</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.ArrivalId",
+      "label": "Arrival",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:Arrival",
+        "dom:TravelDetail_ArrivalId"
+      ],
+      "rules": "Required. Chosen from Travel Destination master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the leg ends.</p><p><strong>Example.</strong> Dubai</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.DepartureDate",
+      "label": "DepartureDate",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:DepartureDate",
+        "dom:TravelDetail_DepartureDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The departure date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.DepartureTime",
+      "label": "DepartureTime",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:DepartureTime",
+        "dom:TravelDetail_DepartureTime"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The departure time.</p><p><strong>Example.</strong> 09:45</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.ArrivalDate",
+      "label": "ArrivalDate",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:ArrivalDate",
+        "dom:TravelDetail_ArrivalDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The arrival date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.ArrivalTime",
+      "label": "ArrivalTime",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:ArrivalTime",
+        "dom:TravelDetail_ArrivalTime"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The arrival time.</p><p><strong>Example.</strong> 09:45</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.HotelId",
+      "label": "Hotel",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:Hotel",
+        "dom:TravelDetail_HotelId"
+      ],
+      "rules": "Optional. Chosen from Hotel master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The hotel, if any.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.TravelAirlineId",
+      "label": "TravelAirlines",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:TravelAirlines",
+        "dom:TravelDetail_TravelAirlineId"
+      ],
+      "rules": "Optional. Chosen from Travel Airline master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The airline, if any.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.TotalNights",
+      "label": "TotalNights",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:TotalNights",
+        "dom:TravelDetail_TotalNights"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many nights are spent at the destination. Used for the expected per diem.</p><p><strong>Example.</strong> 3</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.PerDiemPayPercentage",
+      "label": "PerDiemPayPercentage",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:PerDiemPayPercentage",
+        "dom:TravelDetail_PerDiemPayPercentage"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The share of this leg's per diem that is to be paid, as a percentage. New legs start at 100.</p><p><strong>Example.</strong> <code>50</code> — half the per diem, for a leg where meals are provided.</p><p><strong>Why it matters.</strong> It does not change the per diem itself, which is the nights times the rate. The expected per diem panel shows both the per diem and the amount to be paid at this percentage. Values below 0 or above 100 are refused. Payroll does not pay travel per diem yet, so nothing is paid from it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.NightStay",
+      "label": "NightStay",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:NightStay",
+        "dom:TravelDetail_NightStay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the leg includes an overnight stay.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.Comments",
+      "label": "Comments",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:Comments",
+        "dom:TravelDetail_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

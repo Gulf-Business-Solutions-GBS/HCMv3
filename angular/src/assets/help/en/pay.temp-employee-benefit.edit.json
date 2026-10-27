@@ -1,0 +1,43 @@
+{
+  "helpId": "pay.temp-employee-benefit.edit",
+  "lang": "en",
+  "title": "Temp Employee Benefits — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.TempEmployeeBenefit",
+  "overviewHtml": "<p>Which benefit grade an employee is on. Each employee can be on one grade only.</p><p>Not read at present: it links the employee to the grade's reference sheet, and payroll does not use it.</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "TempEmployeeBenefit.EmployeeId",
+    "dom:TempEmployeeBenefit_EmployeeId": "TempEmployeeBenefit.EmployeeId",
+    "loc:TempBenefitTypeId": "TempEmployeeBenefit.TempBenefitTypeId",
+    "dom:TempEmployeeBenefit_TempBenefitTypeId": "TempEmployeeBenefit.TempBenefitTypeId"
+  },
+  "fields": [
+    {
+      "id": "TempEmployeeBenefit.EmployeeId",
+      "label": "EmployeeId",
+      "section": "TempEmployeeBenefits",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:TempEmployeeBenefit_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempEmployeeBenefit.TempBenefitTypeId",
+      "label": "TempBenefitTypeId",
+      "section": "TempEmployeeBenefits",
+      "aliases": [
+        "loc:TempBenefitTypeId",
+        "dom:TempEmployeeBenefit_TempBenefitTypeId"
+      ],
+      "rules": "Required. Chosen from Temp Benefit Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The benefit grade.</p><p><strong>Example.</strong> Grade 5</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

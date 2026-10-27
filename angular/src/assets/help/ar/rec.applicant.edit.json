@@ -1,0 +1,651 @@
+{
+  "helpId": "rec.applicant.edit",
+  "lang": "ar",
+  "title": "المتقدمون — إنشاء / تحرير",
+  "entity": "HCMv3.Recruitment.Applicant",
+  "overviewHtml": "<p>مرشح لوظيفة. ينشئ المرشحون أنفسهم عادةً بالتسجيل في موقع الوظائف وتعبئة ملفاتهم، ويمكن للموارد البشرية أيضاً إدخالهم هنا.</p><p>وعندما يُضبط أحد طلباتهم على <em>التحق</em>، يُنسخ المتقدم إلى سجل موظف جديد — الأسماء وتاريخ الميلاد والجنس والجنسية والديانة والحالة الاجتماعية والمؤهل وبيانات الاتصال والرقم المدني وتاريخا الالتحاق ونهاية التجربة — ما لم يوجد موظف بالأسماء الإنجليزية وتاريخ الميلاد نفسها.</p><p>ويجب أن يكون تاريخ الميلاد في الماضي، وتاريخ الالتحاق بعد تاريخ الميلاد، ونهاية التجربة بعد الالتحاق. ولا يكون البريد الإلكتروني إلا لمتقدم واحد.</p>",
+  "aliasIndex": {
+    "loc:Code": "Applicant.Code",
+    "dom:Applicant_Code": "Applicant.Code",
+    "loc:Title": "Applicant.TitleId",
+    "dom:Applicant_TitleId": "Applicant.TitleId",
+    "loc:FirstNameEn": "Applicant.FirstNameEn",
+    "dom:Applicant_FirstNameEn": "Applicant.FirstNameEn",
+    "loc:SecondNameEn": "Applicant.SecondNameEn",
+    "dom:Applicant_SecondNameEn": "Applicant.SecondNameEn",
+    "loc:ThirdNameEn": "Applicant.ThirdNameEn",
+    "dom:Applicant_ThirdNameEn": "Applicant.ThirdNameEn",
+    "loc:LastNameEn": "Applicant.LastNameEn",
+    "dom:Applicant_LastNameEn": "Applicant.LastNameEn",
+    "loc:FirstNameAr": "Applicant.FirstNameAr",
+    "dom:Applicant_FirstNameAr": "Applicant.FirstNameAr",
+    "loc:SecondNameAr": "Applicant.SecondNameAr",
+    "dom:Applicant_SecondNameAr": "Applicant.SecondNameAr",
+    "loc:ThirdNameAr": "Applicant.ThirdNameAr",
+    "dom:Applicant_ThirdNameAr": "Applicant.ThirdNameAr",
+    "loc:LastNameAr": "Applicant.LastNameAr",
+    "dom:Applicant_LastNameAr": "Applicant.LastNameAr",
+    "loc:BirthDate": "Applicant.BirthDate",
+    "dom:Applicant_BirthDate": "Applicant.BirthDate",
+    "loc:Gender": "Applicant.Gender",
+    "dom:Applicant_Gender": "Applicant.Gender",
+    "loc:MaritalStatus": "Applicant.MaritalStatusId",
+    "dom:Applicant_MaritalStatusId": "Applicant.MaritalStatusId",
+    "loc:Nationality": "Applicant.NationalityId",
+    "dom:Applicant_NationalityId": "Applicant.NationalityId",
+    "loc:Religion": "Applicant.ReligionId",
+    "dom:Applicant_ReligionId": "Applicant.ReligionId",
+    "loc:Qualification": "Applicant.QualificationId",
+    "dom:Applicant_QualificationId": "Applicant.QualificationId",
+    "loc:JobTitle": "Applicant.JobTitleId",
+    "dom:Applicant_JobTitleId": "Applicant.JobTitleId",
+    "loc:BloodGroup": "Applicant.BloodGroup",
+    "dom:Applicant_BloodGroup": "Applicant.BloodGroup",
+    "loc:CivilID": "Applicant.CivilID",
+    "dom:Applicant_CivilID": "Applicant.CivilID",
+    "loc:Country": "Applicant.CountryId",
+    "dom:Applicant_CountryId": "Applicant.CountryId",
+    "loc:PassportNum": "Applicant.PassportNum",
+    "dom:Applicant_PassportNum": "Applicant.PassportNum",
+    "loc:PlaceOfBirth": "Applicant.PlaceOfBirth",
+    "dom:Applicant_PlaceOfBirth": "Applicant.PlaceOfBirth",
+    "loc:DrivingLicense": "Applicant.DrivingLicense",
+    "dom:Applicant_DrivingLicense": "Applicant.DrivingLicense",
+    "loc:Photo": "Applicant.PhotoPath",
+    "dom:Applicant_Photo": "Applicant.PhotoPath",
+    "loc:CurrentAddress": "Applicant.CurrentAddress",
+    "dom:Applicant_CurrentAddress": "Applicant.CurrentAddress",
+    "loc:PermanentAddress": "Applicant.PermanentAddress",
+    "dom:Applicant_PermanentAddress": "Applicant.PermanentAddress",
+    "loc:Address1": "Applicant.Address1",
+    "dom:Applicant_Address1": "Applicant.Address1",
+    "loc:Address2": "Applicant.Address2",
+    "dom:Applicant_Address2": "Applicant.Address2",
+    "loc:Telephone": "Applicant.Telephone",
+    "dom:Applicant_Telephone": "Applicant.Telephone",
+    "loc:Mobile": "Applicant.Mobile",
+    "dom:Applicant_Mobile": "Applicant.Mobile",
+    "loc:Email": "Applicant.Email",
+    "dom:Applicant_Email": "Applicant.Email",
+    "loc:JoiningDate": "Applicant.JoiningDate",
+    "dom:Applicant_JoiningDate": "Applicant.JoiningDate",
+    "loc:ProbationEndDate": "Applicant.ProbationEndDate",
+    "dom:Applicant_ProbationEndDate": "Applicant.ProbationEndDate",
+    "loc:IsAgency": "Applicant.IsAgency",
+    "dom:Applicant_IsAgency": "Applicant.IsAgency",
+    "loc:Comments": "Applicant.Comments",
+    "dom:Applicant_Comments": "Applicant.Comments",
+    "loc:CompletionPoints": "Applicant.CompletionPoints",
+    "dom:Applicant_CompletionPoints": "Applicant.CompletionPoints",
+    "loc:IsOnbdStarted": "Applicant.IsOnbdStarted",
+    "dom:Applicant_IsOnbdStarted": "Applicant.IsOnbdStarted",
+    "loc:IsOnbdInit": "Applicant.IsOnbdInit",
+    "dom:Applicant_IsOnbdInit": "Applicant.IsOnbdInit",
+    "loc:OnbCoordinator": "Applicant.OnbCoordinatorId",
+    "dom:Applicant_OnbCoordinatorId": "Applicant.OnbCoordinatorId",
+    "loc:OnbBuddy": "Applicant.OnbBuddyId",
+    "dom:Applicant_OnbBuddyId": "Applicant.OnbBuddyId"
+  },
+  "fields": [
+    {
+      "id": "Applicant.Code",
+      "label": "Code",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Code",
+        "dom:Applicant_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.TitleId",
+      "label": "Title",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Title",
+        "dom:Applicant_TitleId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الألقاب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> لقب المتقدم.</p><p><strong>مثال.</strong> السيد</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.FirstNameEn",
+      "label": "FirstNameEn",
+      "section": "Applicants",
+      "aliases": [
+        "loc:FirstNameEn",
+        "dom:Applicant_FirstNameEn"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء الأول بالإنجليزية من اسم المتقدم.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.SecondNameEn",
+      "label": "SecondNameEn",
+      "section": "Applicants",
+      "aliases": [
+        "loc:SecondNameEn",
+        "dom:Applicant_SecondNameEn"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء الثاني بالإنجليزية من اسم المتقدم.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.ThirdNameEn",
+      "label": "ThirdNameEn",
+      "section": "Applicants",
+      "aliases": [
+        "loc:ThirdNameEn",
+        "dom:Applicant_ThirdNameEn"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء الثالث بالإنجليزية من اسم المتقدم.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.LastNameEn",
+      "label": "LastNameEn",
+      "section": "Applicants",
+      "aliases": [
+        "loc:LastNameEn",
+        "dom:Applicant_LastNameEn"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم العائلة بالإنجليزية من اسم المتقدم.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.FirstNameAr",
+      "label": "FirstNameAr",
+      "section": "Applicants",
+      "aliases": [
+        "loc:FirstNameAr",
+        "dom:Applicant_FirstNameAr"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء الأول بالعربية من اسم المتقدم.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.SecondNameAr",
+      "label": "SecondNameAr",
+      "section": "Applicants",
+      "aliases": [
+        "loc:SecondNameAr",
+        "dom:Applicant_SecondNameAr"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء الثاني بالعربية من اسم المتقدم.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.ThirdNameAr",
+      "label": "ThirdNameAr",
+      "section": "Applicants",
+      "aliases": [
+        "loc:ThirdNameAr",
+        "dom:Applicant_ThirdNameAr"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء الثالث بالعربية من اسم المتقدم.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.LastNameAr",
+      "label": "LastNameAr",
+      "section": "Applicants",
+      "aliases": [
+        "loc:LastNameAr",
+        "dom:Applicant_LastNameAr"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم العائلة بالعربية من اسم المتقدم.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.BirthDate",
+      "label": "BirthDate",
+      "section": "Applicants",
+      "aliases": [
+        "loc:BirthDate",
+        "dom:Applicant_BirthDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ الميلاد.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم. يُحتسب ضمن قوة الملف التي تُعرض للمرشح في موقع الوظائف. ويعرض تقرير البحث عن المتقدمين العمر منه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.Gender",
+      "label": "Gender",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Gender",
+        "dom:Applicant_Gender"
+      ],
+      "rules": "إلزامي. إحدى القيم: ذكر، أنثى.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ذكر أو أنثى.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم. ويمكن لتقرير البحث عن المتقدمين التصفية به.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.MaritalStatusId",
+      "label": "MaritalStatus",
+      "section": "Applicants",
+      "aliases": [
+        "loc:MaritalStatus",
+        "dom:Applicant_MaritalStatusId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الحالات الاجتماعية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحالة الاجتماعية.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم. ويمكن لتقرير البحث عن المتقدمين التصفية به.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.NationalityId",
+      "label": "Nationality",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Nationality",
+        "dom:Applicant_NationalityId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الجنسيات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجنسية.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم. يُحتسب ضمن قوة الملف التي تُعرض للمرشح في موقع الوظائف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.ReligionId",
+      "label": "Religion",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Religion",
+        "dom:Applicant_ReligionId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الديانات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الديانة.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.QualificationId",
+      "label": "Qualification",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Qualification",
+        "dom:Applicant_QualificationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة المؤهلات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أعلى مؤهل.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.JobTitleId",
+      "label": "JobTitle",
+      "section": "Applicants",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:Applicant_JobTitleId"
+      ],
+      "rules": "اختياري. يُختار من قائمة المسميات الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي الذي يبحث عنه المتقدم.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.BloodGroup",
+      "label": "BloodGroup",
+      "section": "Applicants",
+      "aliases": [
+        "loc:BloodGroup",
+        "dom:Applicant_BloodGroup"
+      ],
+      "rules": "اختياري. الحد الأقصى 50 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فصيلة الدم.</p><p><strong>مثال.</strong> <code>O+</code></p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.CivilID",
+      "label": "CivilID",
+      "section": "Applicants",
+      "aliases": [
+        "loc:CivilID",
+        "dom:Applicant_CivilID"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الرقم المدني الكويتي.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم. يُحتسب ضمن قوة الملف التي تُعرض للمرشح في موقع الوظائف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.CountryId",
+      "label": "Country",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Country",
+        "dom:Applicant_CountryId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدول.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بلد الإقامة.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.PassportNum",
+      "label": "PassportNum",
+      "section": "Applicants",
+      "aliases": [
+        "loc:PassportNum",
+        "dom:Applicant_PassportNum"
+      ],
+      "rules": "اختياري. الحد الأقصى 100 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم جواز السفر.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.PlaceOfBirth",
+      "label": "PlaceOfBirth",
+      "section": "Applicants",
+      "aliases": [
+        "loc:PlaceOfBirth",
+        "dom:Applicant_PlaceOfBirth"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان الميلاد.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.DrivingLicense",
+      "label": "DrivingLicense",
+      "section": "Applicants",
+      "aliases": [
+        "loc:DrivingLicense",
+        "dom:Applicant_DrivingLicense"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم رخصة القيادة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.PhotoPath",
+      "label": "Photo",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Photo",
+        "dom:Applicant_Photo"
+      ],
+      "rules": "اختياري. الحد الأقصى 512 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> صورة المتقدم.</p><p><strong>لماذا يهم.</strong> يُحتسب ضمن قوة الملف التي تُعرض للمرشح في موقع الوظائف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.CurrentAddress",
+      "label": "CurrentAddress",
+      "section": "Applicants",
+      "aliases": [
+        "loc:CurrentAddress",
+        "dom:Applicant_CurrentAddress"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> العنوان الحالي.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.PermanentAddress",
+      "label": "PermanentAddress",
+      "section": "Applicants",
+      "aliases": [
+        "loc:PermanentAddress",
+        "dom:Applicant_PermanentAddress"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> العنوان الدائم.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم. يُحتسب ضمن قوة الملف التي تُعرض للمرشح في موقع الوظائف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.Address1",
+      "label": "Address1",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Address1",
+        "dom:Applicant_Address1"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سطر عنوان.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.Address2",
+      "label": "Address2",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Address2",
+        "dom:Applicant_Address2"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سطر عنوان.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.Telephone",
+      "label": "Telephone",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Telephone",
+        "dom:Applicant_Telephone"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم هاتف أرضي.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.Mobile",
+      "label": "Mobile",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Mobile",
+        "dom:Applicant_Mobile"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الهاتف النقال.</p><p><strong>مثال.</strong> <code>96590001234</code></p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم. يُحتسب ضمن قوة الملف التي تُعرض للمرشح في موقع الوظائف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.Email",
+      "label": "Email",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Email",
+        "dom:Applicant_Email"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البريد الإلكتروني.</p><p><strong>لماذا يهم.</strong> يُنسخ إلى الموظف الجديد عند التحاق المتقدم. يُحتسب ضمن قوة الملف التي تُعرض للمرشح في موقع الوظائف. ولا يكون البريد إلا لمتقدم واحد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.JoiningDate",
+      "label": "JoiningDate",
+      "section": "Applicants",
+      "aliases": [
+        "loc:JoiningDate",
+        "dom:Applicant_JoiningDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ التحاق المتقدم بعد تعيينه.</p><p><strong>لماذا يهم.</strong> يجب ملؤه قبل ضبط الطلب على <em>التحق</em>، ويصبح تاريخ التحاق الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.ProbationEndDate",
+      "label": "ProbationEndDate",
+      "section": "Applicants",
+      "aliases": [
+        "loc:ProbationEndDate",
+        "dom:Applicant_ProbationEndDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نهاية فترة التجربة بعد التعيين.</p><p><strong>لماذا يهم.</strong> يجب ملؤه قبل ضبط الطلب على <em>التحق</em>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.IsAgency",
+      "label": "IsAgency",
+      "section": "Applicants",
+      "aliases": [
+        "loc:IsAgency",
+        "dom:Applicant_IsAgency"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المتقدم قد جاء عن طريق وكالة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.Comments",
+      "label": "Comments",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Comments",
+        "dom:Applicant_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.CompletionPoints",
+      "label": "CompletionPoints",
+      "section": "Applicants",
+      "aliases": [
+        "loc:CompletionPoints",
+        "dom:Applicant_CompletionPoints"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدى اكتمال ملف المرشح في بوابة التوظيف، من 60 نقطة. تُحتسب ولا تُدخل يدوياً.</p><p><strong>مثال.</strong> 35</p><p><strong>لماذا يهم.</strong> 5 نقاط لكل من الصورة والبطاقة المدنية والجنسية والعنوان الدائم وتاريخ الميلاد والبريد الإلكتروني والهاتف المحمول، و25 نقطة لوجود سيرة ذاتية واحدة على الأقل. تُحفظ عندما يحفظ المرشح ملفه؛ وهي للعلم فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.IsOnbdStarted",
+      "label": "IsOnbdStarted",
+      "section": "Applicants",
+      "aliases": [
+        "loc:IsOnbdStarted",
+        "dom:Applicant_IsOnbdStarted"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز بدء التهيئة الوظيفية لهذا المتقدم.</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط. ولا يقرؤه شيء حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.IsOnbdInit",
+      "label": "IsOnbdInit",
+      "section": "Applicants",
+      "aliases": [
+        "loc:IsOnbdInit",
+        "dom:Applicant_IsOnbdInit"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت التهيئة الوظيفية قد جُهِّزت لهذا المتقدم.</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط. ولا يقرؤه شيء حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.OnbCoordinatorId",
+      "label": "OnbCoordinator",
+      "section": "Applicants",
+      "aliases": [
+        "loc:OnbCoordinator",
+        "dom:Applicant_OnbCoordinatorId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي ينسّق التهيئة الوظيفية لهذا المتقدم.</p><p><strong>مثال.</strong> فاطمة الصباح (الموارد البشرية)</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط. ولا يقرؤه شيء حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.OnbBuddyId",
+      "label": "OnbBuddy",
+      "section": "Applicants",
+      "aliases": [
+        "loc:OnbBuddy",
+        "dom:Applicant_OnbBuddyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يرافق الموظف الجديد أثناء التهيئة الوظيفية.</p><p><strong>مثال.</strong> أحمد خان</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط. ولا يقرؤه شيء حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

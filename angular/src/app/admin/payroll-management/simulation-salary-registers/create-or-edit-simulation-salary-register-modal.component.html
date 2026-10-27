@@ -1,0 +1,138 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #simulationSalaryRegisterForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (simulationSalaryRegister().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'SimulationSalaryRegisters' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'SimulationSalaryRegisters' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="SimulationSalaryRegister_EmployeeId">{{ 'EmployeeId' | localize }}</label>
+                                <input
+                                    id="SimulationSalaryRegister_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="EmployeeId"
+                                    [ngModel]="simulationSalaryRegister().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="SimulationSalaryRegister_ForPeriod">{{ 'ForPeriod' | localize }}</label>
+                                <input
+                                    id="SimulationSalaryRegister_ForPeriod"
+                                    #forPeriodInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="ForPeriod"
+                                    [ngModel]="simulationSalaryRegister().forPeriod?.toISODate()"
+                                    (ngModelChange)="updateDateField('forPeriod', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="forPeriodInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="SimulationSalaryRegister_InPeriod">{{ 'InPeriod' | localize }}</label>
+                                <input
+                                    id="SimulationSalaryRegister_InPeriod"
+                                    #inPeriodInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="InPeriod"
+                                    [ngModel]="simulationSalaryRegister().inPeriod?.toISODate()"
+                                    (ngModelChange)="updateDateField('inPeriod', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="inPeriodInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="SimulationSalaryRegister_PayrollRunType">{{ 'PayrollRunType' | localize }}</label>
+                                <select
+                                    id="SimulationSalaryRegister_PayrollRunType"
+                                    class="form-select"
+                                    name="PayrollRunType"
+                                    [ngModel]="simulationSalaryRegister().payrollRunType"
+                                    (ngModelChange)="updateField('payrollRunType', $event)">
+                                    @for (item of payrollRunTypes; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="SimulationSalaryRegister_PayrollResultType">{{ 'PayrollResultType' | localize }}</label>
+                                <select
+                                    id="SimulationSalaryRegister_PayrollResultType"
+                                    class="form-select"
+                                    name="PayrollResultType"
+                                    [ngModel]="simulationSalaryRegister().payrollResultType"
+                                    (ngModelChange)="updateField('payrollResultType', $event)">
+                                    @for (item of payrollResultTypes; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="SimulationSalaryRegister_PayrollReasonTypeId">{{
+                                    'PayrollReasonTypeId' | localize
+                                }}</label>
+                                <select
+                                    id="SimulationSalaryRegister_PayrollReasonTypeId"
+                                    #payrollReasonTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="PayrollReasonTypeId"
+                                    [ngModel]="simulationSalaryRegister().payrollReasonTypeId"
+                                    (ngModelChange)="updateField('payrollReasonTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (reason of payrollReasonTypes(); track reason.id) {
+                                        <option [ngValue]="reason.id">{{ reason.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="payrollReasonTypeIdInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!simulationSalaryRegisterForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

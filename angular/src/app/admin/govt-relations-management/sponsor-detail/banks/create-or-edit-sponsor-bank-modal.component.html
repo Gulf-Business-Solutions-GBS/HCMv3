@@ -1,0 +1,130 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="SponsorBank_EmployeeBankId">{{ 'EmployeeBankId' | localize }}</label>
+                                <select
+                                    id="SponsorBank_EmployeeBankId"
+                                    class="form-select"
+                                    name="EmployeeBankId"
+                                    [ngModel]="record().employeeBankId"
+                                    (ngModelChange)="updateField('employeeBankId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (bank of banks(); track bank.id) {
+                                        <option [ngValue]="bank.id">{{ bank.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SponsorBank_PaymentBankId">{{ 'PaymentBankId' | localize }}</label>
+                                <select
+                                    id="SponsorBank_PaymentBankId"
+                                    #paymentBankIdInput="ngModel"
+                                    class="form-select"
+                                    name="PaymentBankId"
+                                    [ngModel]="record().paymentBankId"
+                                    (ngModelChange)="updateField('paymentBankId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (bank of banks(); track bank.id) {
+                                        <option [ngValue]="bank.id">{{ bank.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="paymentBankIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="SponsorBank_AccountNumber">{{ 'AccountNumber' | localize }}</label>
+                                <input
+                                    id="SponsorBank_AccountNumber"
+                                    class="form-control"
+                                    type="text"
+                                    name="AccountNumber"
+                                    [ngModel]="record().accountNumber"
+                                    (ngModelChange)="updateField('accountNumber', $event)"
+                                    maxlength="256" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="SponsorBank_Iban">{{ 'Iban' | localize }}</label>
+                                <input
+                                    id="SponsorBank_Iban"
+                                    class="form-control"
+                                    type="text"
+                                    name="Iban"
+                                    [ngModel]="record().iban"
+                                    (ngModelChange)="updateField('iban', $event)"
+                                    maxlength="256" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SponsorBank_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="SponsorBank_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SponsorBank_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="SponsorBank_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

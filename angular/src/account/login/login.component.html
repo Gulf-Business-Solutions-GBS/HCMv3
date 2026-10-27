@@ -1,0 +1,157 @@
+<!--begin::Signin-->
+<div class="login-form" [@routerTransition]>
+    <div class="pb-13 pt-lg-0 pt-5">
+        <h3 class="fw-bolder text-gray-900 fs-3 fs-lg-1">{{ 'LogIn' | localize }}</h3>
+    </div>
+    <!--begin::Form-->
+    <form #loginForm="ngForm" class="login-form form" method="post" (ngSubmit)="login()">
+        <div class="mb-5">
+            <input
+                #userNameOrEmailAddressInput="ngModel"
+                [(ngModel)]="loginService.authenticateModel.userNameOrEmailAddress"
+                autoFocus
+                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-5"
+                type="text"
+                autocomplete="new-password"
+                placeholder="{{ 'UserNameOrEmail' | localize }} *"
+                name="userNameOrEmailAddress"
+                required />
+            @if (!userNameOrEmailAddressInput.touched) {
+                <validation-messages [formCtrl]="userNameOrEmailAddressInput" />
+            }
+        </div>
+
+        <div class="mb-5" data-kt-password-meter="true">
+            <div class="position-relative mb-3">
+                <input
+                    #passwordInput="ngModel"
+                    [(ngModel)]="loginService.authenticateModel.password"
+                    class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-5"
+                    type="password"
+                    autocomplete="new-password"
+                    placeholder="{{ 'Password' | localize }} *"
+                    name="password"
+                    required
+                    maxlength="32"
+                    (keydown)="checkCapsLock($event)"
+                    (keyup)="checkCapsLock($event)"
+                    (focus)="passwordFocused.set(true)"
+                    (blur)="passwordFocused.set(false)" />
+
+                <div class="position-absolute top-50 end-0 translate-middle-y d-flex align-items-center gap-1 pe-3">
+                    @if (capsLockOn() && passwordFocused()) {
+                        <span
+                            class="d-flex align-items-center justify-content-center"
+                            style="width: 1.75rem; height: 1.75rem">
+                            <i class="fas fa-arrow-up fs-5 text-muted"></i>
+                        </span>
+                    }
+                    <!--begin::Visibility toggle-->
+                    <span
+                        class="d-flex align-items-center justify-content-center"
+                        style="width: 1.75rem; height: 1.75rem; cursor: pointer"
+                        data-kt-password-meter-control="visibility"
+                        (mousedown)="$event.preventDefault()">
+                        <i class="fas fa-eye-slash fs-5 text-muted">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                            <span class="path4"></span>
+                        </i>
+                        <i class="fas fa-eye d-none fs-5 text-muted">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                        </i>
+                    </span>
+                    <!--end::Visibility toggle-->
+                </div>
+            </div>
+            @if (!passwordInput.touched) {
+                <validation-messages [formCtrl]="passwordInput" />
+            }
+        </div>
+
+        <div class="mb-5 d-flex justify-content-between mt-4">
+            <label class="form-check form-check-custom form-check-solid">
+                <input
+                    type="checkbox"
+                    name="rememberMe"
+                    class="form-check-input"
+                    value="true"
+                    [(ngModel)]="loginService.rememberMe" />
+                <span class="form-check-label">
+                    {{ 'RememberMe' | localize }}
+                </span>
+            </label>
+            <a
+                routerLink="/account/forgot-password"
+                id="forget-password"
+                class="text-primary fs-5 fw-bolder text-hover-primary">
+                {{ 'ForgotPassword' | localize }}
+            </a>
+        </div>
+
+        <!--begin::Action-->
+        <div class="pb-lg-0 pb-5 position-relative">
+            <button
+                type="submit"
+                [disabled]="!loginForm.form.valid"
+                class="btn w-100 btn-primary fw-bolder fs-5 px-8 py-4 my-3 me-3">
+                {{ 'LogIn' | localize }}
+            </button>
+
+            <!--
+                The release this server is running, from the code's own release list -- the same number a tenant's
+                installed version is compared against. Inside the panel, under the button, where somebody reporting
+                a problem can read it off without signing in.
+            -->
+            @if (productVersion) {
+                <div class="login__version text-center text-muted small">HCM v{{ productVersion }}</div>
+            }
+        </div>
+
+        <!--end::Action-->
+    </form>
+
+    <!--end::Form-->
+
+    <!--begin::Options-->
+    @if ((multiTenancySideIsTenant || !isMultiTenancyEnabled) && loginService.externalLoginProviders.length > 0) {
+        <div class="mt-10 mb-2">
+            <div class="divider">
+                <span>{{ 'LoginWith' | localize }}</span>
+            </div>
+        </div>
+    }
+
+    @if ((multiTenancySideIsTenant || !isMultiTenancyEnabled) && loginService.externalLoginProviders.length > 0) {
+        <div class="pb-lg-0 pb-5 login__options">
+            @for (provider of loginService.externalLoginProviders; track provider) {
+                <a
+                    class="btn btn-sm btn-light-primary fw-bolder py-2 mb-2 ml-0 me-2"
+                    (click)="externalLogin(provider)"
+                    title="{{ provider.name }}">
+                    <i class="fab fa-{{ provider.icon }}"></i>
+                    {{ provider.name }}
+                </a>
+            }
+        </div>
+    }
+    <!--end::Options-->
+</div>
+
+<div class="mt-5">
+    @if (isPasswordlessLoginEnabled) {
+        <div class="mb-2">
+            <span>{{ 'PasswordlessLogin_Description' | localize }}</span>
+            <a href="/account/passwordless-login" id="passwordless-btn">{{ 'ClickHere' | localize }}</a>
+        </div>
+    }
+
+    <!-- Self-registration, new tenant and email activation are gone from this page.
+         They are ASP.NET Zero's SaaS sign-up flow, and this is an internal HR system: nobody creates
+         their own employee account, HR does. Offering it invited a dead end, because a self-registered
+         user is not linked to an employee record and can see nothing. The routes still exist for a host
+         administrator who needs them; they are simply not advertised on the login screen. -->
+</div>

@@ -1,0 +1,111 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'CompetencyByJobTitleDetails' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'CompetencyByJobTitleDetails' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="CompetencyByJobTitleDetail_CompetencyByJobTitleId">{{ 'CompetencyByJobTitle' | localize }}</label>
+                                <select
+                                    id="CompetencyByJobTitleDetail_CompetencyByJobTitleId"
+                                    #competencyByJobTitleIdInput="ngModel"
+                                    class="form-select"
+                                    name="CompetencyByJobTitleId"
+                                    [ngModel]="record().competencyByJobTitleId"
+                                    (ngModelChange)="updateField('competencyByJobTitleId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of competencyByJobTitles(); track item.id) {
+                                        <option [ngValue]="item.id">{{ competencyByJobTitleLabel(item) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="competencyByJobTitleIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="CompetencyByJobTitleDetail_CompetencyId">{{ 'Competency' | localize }}</label>
+                                <select
+                                    id="CompetencyByJobTitleDetail_CompetencyId"
+                                    #competencyIdInput="ngModel"
+                                    class="form-select"
+                                    name="CompetencyId"
+                                    [ngModel]="record().competencyId"
+                                    (ngModelChange)="updateField('competencyId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (competency of competencies(); track competency.id) {
+                                        <option [ngValue]="competency.id">{{ competency.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="competencyIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="CompetencyByJobTitleDetail_Weight">{{ 'Weight' | localize }}</label>
+                                <input
+                                    id="CompetencyByJobTitleDetail_Weight"
+                                    #weightInput="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="Weight"
+                                    [ngModel]="record().weight"
+                                    (ngModelChange)="updateField('weight', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="weightInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="CompetencyByJobTitleDetail_Target">{{ 'Target' | localize }}</label>
+                                <input
+                                    id="CompetencyByJobTitleDetail_Target"
+                                    type="text"
+                                    class="form-control"
+                                    name="Target"
+                                    [ngModel]="record().target"
+                                    (ngModelChange)="updateField('target', $event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

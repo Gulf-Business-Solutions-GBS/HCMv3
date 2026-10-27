@@ -1,0 +1,202 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EssMyRequests' | localize" [description]="'EssMyRequestsDescription' | localize">
+        <div role="actions">
+            <button class="btn btn-light" (click)="clearFilters()">
+                <i class="fa fa-undo btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">{{ 'ClearFilters' | localize }}</span>
+            </button>
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <!-- Status chips. The user asked for exactly this: one place, filtered by draft, awaiting
+                     approval, approved and so on. Chips rather than a dropdown because the counts are the
+                     point -- "3 awaiting approval" is the answer most people came for, before they filter
+                     anything. -->
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <button
+                        type="button"
+                        class="btn btn-sm"
+                        [ngClass]="selectedStatus() === null ? 'btn-primary' : 'btn-outline-primary'"
+                        (click)="selectStatus(null)">
+                        {{ 'All' | localize }}
+                        <span class="badge bg-light text-dark ms-1">{{ totalCount() }}</span>
+                    </button>
+                    @for (status of statusChips; track status) {
+                        <button
+                            type="button"
+                            class="btn btn-sm"
+                            [ngClass]="selectedStatus() === status ? 'btn-primary' : 'btn-outline-primary'"
+                            (click)="selectStatus(status)">
+                            {{ statusLabel(status) }}
+                            <span class="badge bg-light text-dark ms-1">{{ statusCount(status) }}</span>
+                        </button>
+                    }
+                </div>
+
+                <div class="form">
+                    <div class="row align-items-end g-3 mb-4">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">{{ 'Search' | localize }}</label>
+                            <div class="input-group">
+                                <input
+                                    [ngModel]="filterText()"
+                                    (ngModelChange)="filterText.set($event)"
+                                    name="filterText"
+                                    autoFocus
+                                    class="form-control"
+                                    [placeholder]="l('SearchWithThreeDot')"
+                                    type="text"
+                                    (keydown.enter)="applyFilters()" />
+                                <button class="btn btn-primary" (click)="applyFilters()">
+                                    <i class="flaticon-search-1" aria-label="Search"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-3">
+                            <label class="form-label">{{ 'RequestType' | localize }}</label>
+                            <!-- Only the types this employee has actually raised. A dropdown listing twenty
+                                 types for someone who has only ever taken leave is a worse filter than one
+                                 listing two. -->
+                            <select
+                                class="form-select"
+                                [ngModel]="selectedType()"
+                                (ngModelChange)="selectedType.set($event); applyFilters()"
+                                name="requestType">
+                                <option value="">{{ 'All' | localize }}</option>
+                                @for (type of types(); track type.requestType) {
+                                    <option [value]="type.requestType">{{ typeFilterName(type) }} ({{ type.count }})</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-6 col-md-2">
+                            <label class="form-label">{{ 'FromDate' | localize }}</label>
+                            <input
+                                type="date"
+                                class="form-control"
+                                name="fromDate"
+                                [ngModel]="fromDate()"
+                                (ngModelChange)="fromDate.set($event); applyFilters()" />
+                        </div>
+
+                        <div class="col-6 col-md-2">
+                            <label class="form-label">{{ 'ToDate' | localize }}</label>
+                            <input
+                                type="date"
+                                class="form-control"
+                                name="toDate"
+                                [ngModel]="toDate()"
+                                (ngModelChange)="toDate.set($event); applyFilters()" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getMyRequests($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '50rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 120px">{{ 'Actions' | localize }}</th>
+                                    <th style="min-width: 150px" pSortableColumn="requestNumber">
+                                        {{ 'RequestNumber' | localize }}
+                                        <p-sortIcon field="requestNumber" />
+                                    </th>
+                                    <th style="min-width: 170px" pSortableColumn="requestType">
+                                        {{ 'RequestType' | localize }}
+                                        <p-sortIcon field="requestType" />
+                                    </th>
+                                    <th style="min-width: 280px">{{ 'Summary' | localize }}</th>
+                                    <th style="min-width: 160px" pSortableColumn="requestStatus">
+                                        {{ 'Status' | localize }}
+                                        <p-sortIcon field="requestStatus" />
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="creationTime">
+                                        {{ 'SubmittedOn' | localize }}
+                                        <p-sortIcon field="creationTime" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td class="text-nowrap" style="width: 120px">
+                                        <button type="button" class="btn btn-sm btn-link" (click)="openDetail(record)">
+                                            {{ 'Details' | localize }}
+                                        </button>
+                                        @if (hasOwnScreen(record)) {
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-link"
+                                                [pTooltip]="l('OpenRequestScreen')"
+                                                (click)="openOwnScreen(record)">
+                                                <i class="fa fa-external-link"></i>
+                                            </button>
+                                        }
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        <span pTooltip="{{ record.requestNumber }}" class="hide-overflown">{{ record.requestNumber }}</span>
+                                    </td>
+                                    <td style="min-width: 170px">
+                                        @if (record.iconClass) {
+                                            <i [ngClass]="record.iconClass" class="me-2"></i>
+                                        }
+                                        <span pTooltip="{{ typeName(record) }}" class="hide-overflown">{{ typeName(record) }}</span>
+                                    </td>
+                                    <td style="min-width: 280px">
+                                        <span pTooltip="{{ summary(record) }}" class="hide-overflown">{{ summary(record) }}</span>
+                                        @if (record.isAmendment) {
+                                            <!-- Marked, because "Annual Leave, 5 days" reads very differently
+                                                 as a change to something already approved. -->
+                                            <span class="badge badge-light ms-2">{{ 'Amendment' | localize }}</span>
+                                        }
+                                    </td>
+                                    <td style="min-width: 160px">
+                                        <span class="badge" [ngClass]="statusClass(record.requestStatus)">
+                                            {{ statusLabel(record.requestStatus) }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        {{ record.creationTime | luxonFormat: 'yyyy-MM-dd' }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getMyRequests($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<essRequestDetailModal #detail />

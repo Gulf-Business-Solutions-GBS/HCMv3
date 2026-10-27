@@ -1,0 +1,107 @@
+{
+  "helpId": "cd.competency.edit",
+  "lang": "en",
+  "title": "Competencies — Create / Edit",
+  "entity": "HCMv3.CompetencyDevelopment.Competency",
+  "overviewHtml": "<p>A skill or behaviour employees are assessed against.</p>",
+  "aliasIndex": {
+    "loc:Code": "Competency.Code",
+    "dom:Competency_Code": "Competency.Code",
+    "loc:NameEn": "Competency.NameEn",
+    "dom:Competency_NameEn": "Competency.NameEn",
+    "loc:NameAr": "Competency.NameAr",
+    "dom:Competency_NameAr": "Competency.NameAr",
+    "loc:CompetencyType": "Competency.CompetencyTypeId",
+    "dom:Competency_CompetencyTypeId": "Competency.CompetencyTypeId",
+    "loc:Active": "Competency.Active",
+    "dom:Competency_Active": "Competency.Active",
+    "loc:Comments": "Competency.Comments",
+    "dom:Competency_Comments": "Competency.Comments"
+  },
+  "fields": [
+    {
+      "id": "Competency.Code",
+      "label": "Code",
+      "section": "Competencies",
+      "aliases": [
+        "loc:Code",
+        "dom:Competency_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Competency.NameEn",
+      "label": "NameEn",
+      "section": "Competencies",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Competency_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Competency.NameAr",
+      "label": "NameAr",
+      "section": "Competencies",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Competency_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Competency.CompetencyTypeId",
+      "label": "CompetencyType",
+      "section": "Competencies",
+      "aliases": [
+        "loc:CompetencyType",
+        "dom:Competency_CompetencyTypeId"
+      ],
+      "rules": "Required. Chosen from Competency Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The group the competency belongs to.</p><p><strong>Example.</strong> Core</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Competency.Active",
+      "label": "Active",
+      "section": "Competencies",
+      "aliases": [
+        "loc:Active",
+        "dom:Competency_Active"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the competency is in use.</p><p><strong>Why it matters.</strong> Not read at present: inactive competencies can still be chosen.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Competency.Comments",
+      "label": "Comments",
+      "section": "Competencies",
+      "aliases": [
+        "loc:Comments",
+        "dom:Competency_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

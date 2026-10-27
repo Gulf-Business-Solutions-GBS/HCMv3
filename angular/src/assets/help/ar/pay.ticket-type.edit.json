@@ -1,0 +1,203 @@
+{
+  "helpId": "pay.ticket-type.edit",
+  "lang": "ar",
+  "title": "أنواع التذاكر — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.TicketType",
+  "overviewHtml": "<p>نوع من تذاكر الطيران — تذكرة الموظف نفسه، أو تذكرة لنوع من العائلين — وطريقة تراكم استحقاقها وسقوطه. نوع التذكرة <code>1</code> هو تذكرة الموظف نفسه، والبقية تذاكر العائلين. أما عدد التذاكر وقيمتها فتُحدَّد لكل مجموعة فرعية.</p>",
+  "aliasIndex": {
+    "loc:Code": "TicketType.Code",
+    "dom:TicketType_Code": "TicketType.Code",
+    "loc:NameEn": "TicketType.NameEn",
+    "dom:TicketType_NameEn": "TicketType.NameEn",
+    "loc:NameAr": "TicketType.NameAr",
+    "dom:TicketType_NameAr": "TicketType.NameAr",
+    "loc:TicketBasisPeriod": "TicketType.TicketBasisPeriod",
+    "dom:TicketType_TicketBasisPeriod": "TicketType.TicketBasisPeriod",
+    "loc:TicketBasisFixedDays": "TicketType.TicketBasisFixedDays",
+    "dom:TicketType_TicketBasisFixedDays": "TicketType.TicketBasisFixedDays",
+    "loc:Lapse": "TicketType.Lapse",
+    "dom:TicketType_Lapse": "TicketType.Lapse",
+    "loc:LapseAfter": "TicketType.LapseAfter",
+    "dom:TicketType_LapseAfter": "TicketType.LapseAfter",
+    "loc:StopDependantAccrualAfter": "TicketType.StopDependantAccrualAfter",
+    "dom:TicketType_StopDependantAccrualAfter": "TicketType.StopDependantAccrualAfter",
+    "loc:MinCompensation": "TicketType.MinCompensation",
+    "dom:TicketType_MinCompensation": "TicketType.MinCompensation",
+    "loc:DeductionPeriod": "TicketType.DeductionPeriod",
+    "dom:TicketType_DeductionPeriod": "TicketType.DeductionPeriod",
+    "loc:QuotaEntitlement": "TicketType.QuotaEntitlement",
+    "dom:TicketType_QuotaEntitlement": "TicketType.QuotaEntitlement",
+    "loc:WageTypeId": "TicketType.WageTypeId",
+    "dom:TicketType_WageTypeId": "TicketType.WageTypeId"
+  },
+  "fields": [
+    {
+      "id": "TicketType.Code",
+      "label": "Code",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:TicketType_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketType.NameEn",
+      "label": "NameEn",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:TicketType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketType.NameAr",
+      "label": "NameAr",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:TicketType_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketType.TicketBasisPeriod",
+      "label": "TicketBasisPeriod",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:TicketBasisPeriod",
+        "dom:TicketType_TicketBasisPeriod"
+      ],
+      "rules": "إلزامي. إحدى القيم: أيام التقويم، أيام ثابتة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت قيمة التذكرة على أساس أيام التقويم أو عدد ثابت من الأيام.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketType.TicketBasisFixedDays",
+      "label": "TicketBasisFixedDays",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:TicketBasisFixedDays",
+        "dom:TicketType_TicketBasisFixedDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> العدد الثابت من الأيام، لأساس الأيام الثابتة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketType.Lapse",
+      "label": "Lapse",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:Lapse",
+        "dom:TicketType_Lapse"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان استحقاق التذاكر غير المستخدم يسقط.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يسري استحقاق التذاكر في دورات مدة كل منها <strong>السقوط بعد</strong> سنة من بداية فترة الاستحقاق، ويبدأ من جديد في كل دورة. وإلا فلا تنتهي الدورة الأولى أبداً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketType.LapseAfter",
+      "label": "LapseAfter",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:LapseAfter",
+        "dom:TicketType_LapseAfter"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد السنوات التي تستمر فيها كل دورة تذاكر قبل أن يسقط الاستحقاق غير المستخدم.</p><p><strong>مثال.</strong> <code>2</code></p>",
+      "adminHtml": "<p>إذا أُشِّر على <strong>السقوط</strong> فاجعل هذه القيمة 1 على الأقل. فالنموذج يقبل 0، لكن 0 يجعل احتساب التذاكر لا ينتهي أبداً، مما يوقف محرك الوقت للموظفين الذين لهم نوع التذكرة هذا.</p>",
+      "stub": false
+    },
+    {
+      "id": "TicketType.StopDependantAccrualAfter",
+      "label": "StopDependantAccrualAfter",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:StopDependantAccrualAfter",
+        "dom:TicketType_StopDependantAccrualAfter"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى يتوقف تراكم تذاكر العائلين.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketType.MinCompensation",
+      "label": "MinCompensation",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:MinCompensation",
+        "dom:TicketType_MinCompensation"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أقل ما يُصرف عند تعويض التذكرة نقداً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketType.DeductionPeriod",
+      "label": "DeductionPeriod",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:DeductionPeriod",
+        "dom:TicketType_DeductionPeriod"
+      ],
+      "rules": "إلزامي. إحدى القيم: بعد الاستحقاق، مطابق للاستحقاق.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت التذكرة المستخدمة تُخصم من الاستحقاق الحالي أو التالي.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketType.QuotaEntitlement",
+      "label": "QuotaEntitlement",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:QuotaEntitlement",
+        "dom:TicketType_QuotaEntitlement"
+      ],
+      "rules": "إلزامي. إحدى القيم: فترة، فوري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت التذاكر تتراكم خلال الفترة أو تتاح فوراً.</p><p><strong>مثال.</strong> فترة</p><p><strong>لماذا يهم.</strong> <em>فترة</em> تجعل محرك الوقت يراكم الاستحقاق قليلاً كل يوم. و<em>فوري</em> لا يراكم شيئاً يوماً بيوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketType.WageTypeId",
+      "label": "WageTypeId",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:TicketType_WageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الأجر لنوع التذكرة هذا.</p><p><strong>مثال.</strong> تذكرة طيران</p><p><strong>لماذا يهم.</strong> يجب ملؤه للحفظ، لكن لا شيء يقرؤه حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

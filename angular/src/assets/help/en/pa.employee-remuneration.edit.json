@@ -1,0 +1,91 @@
+{
+  "helpId": "pa.employee-remuneration.edit",
+  "lang": "en",
+  "title": "Employee Remunerations — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeRemuneration",
+  "overviewHtml": "<p>Days or hours to be paid for the employee on a date, for employees paid by the day or hour.</p><p>When the employee's basic pay interval is Daily or Hourly, payroll adds up the days or hours recorded here in the month and pays them at the basic pay rate.</p>",
+  "aliasIndex": {
+    "loc:WageTypeId": "EmployeeRemuneration.WageTypeId",
+    "dom:EmployeeRemuneration_WageTypeId": "EmployeeRemuneration.WageTypeId",
+    "loc:PaymentDate": "EmployeeRemuneration.PaymentDate",
+    "dom:EmployeeRemuneration_PaymentDate": "EmployeeRemuneration.PaymentDate",
+    "loc:PaymentNumber": "EmployeeRemuneration.PaymentNumber",
+    "dom:EmployeeRemuneration_PaymentNumber": "EmployeeRemuneration.PaymentNumber",
+    "loc:PaymentUnit": "EmployeeRemuneration.PaymentUnit",
+    "dom:EmployeeRemuneration_PaymentUnit": "EmployeeRemuneration.PaymentUnit",
+    "loc:Comments": "EmployeeRemuneration.Comments",
+    "dom:EmployeeRemuneration_Comments": "EmployeeRemuneration.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeRemuneration.WageTypeId",
+      "label": "WageTypeId",
+      "section": "EmployeeRemunerations",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:EmployeeRemuneration_WageTypeId"
+      ],
+      "rules": "Optional. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A wagetype recorded with the entry.</p><p><strong>Example.</strong> Basic Salary</p><p><strong>Why it matters.</strong> The daily and hourly calculation counts every entry in the month, whatever its wagetype.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRemuneration.PaymentDate",
+      "label": "PaymentDate",
+      "section": "EmployeeRemunerations",
+      "aliases": [
+        "loc:PaymentDate",
+        "dom:EmployeeRemuneration_PaymentDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the days or hours belong to.</p><p><strong>Example.</strong> 15 Sep 2026</p><p><strong>Why it matters.</strong> Entries dated in the payroll month are counted.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRemuneration.PaymentNumber",
+      "label": "PaymentNumber",
+      "section": "EmployeeRemunerations",
+      "aliases": [
+        "loc:PaymentNumber",
+        "dom:EmployeeRemuneration_PaymentNumber"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The number of days or hours.</p><p><strong>Example.</strong> 22</p><p><strong>Why it matters.</strong> Cannot be zero. Hours are converted to days using the employee's hours for the day.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRemuneration.PaymentUnit",
+      "label": "PaymentUnit",
+      "section": "EmployeeRemunerations",
+      "aliases": [
+        "loc:PaymentUnit",
+        "dom:EmployeeRemuneration_PaymentUnit"
+      ],
+      "rules": "Required. One of: Days, Hours.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the number is days or hours.</p><p><strong>Example.</strong> Days</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRemuneration.Comments",
+      "label": "Comments",
+      "section": "EmployeeRemunerations",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeRemuneration_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

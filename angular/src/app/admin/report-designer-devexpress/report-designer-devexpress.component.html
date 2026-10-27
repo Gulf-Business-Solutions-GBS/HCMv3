@@ -1,0 +1,17 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'ReportDesignerDevExpress' | localize"
+        [description]="'ReportDesignerDevExpressDescription' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body p-0">
+                <dx-report-designer [reportUrl]="reportUrl" [height]="'80vh'">
+                    <dxrd-request-options
+                        [host]="host"
+                        [getDesignerModelAction]="getDesignerModelAction"></dxrd-request-options>
+                </dx-report-designer>
+            </div>
+        </div>
+    </div>
+</div>

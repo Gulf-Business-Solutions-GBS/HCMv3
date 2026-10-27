@@ -1,0 +1,167 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EssAiAgent' | localize" [description]="'AiAgentDisclaimer' | localize">
+        <div role="actions">
+            <button class="btn btn-light-primary d-lg-none me-2" (click)="showConversationsOnMobile.set(!showConversationsOnMobile())">
+                <i class="flaticon-list"></i> {{ 'AiAgentConversations' | localize }}
+            </button>
+            <button class="btn btn-primary" (click)="newConversation()" [disabled]="sending()">
+                <i class="fa fa-plus"></i> {{ 'AiAgentNewConversation' | localize }}
+            </button>
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom ai-assistant">
+            <div class="ai-layout">
+                <!-- Conversation list. On a narrow screen it opens over the chat instead of beside it. -->
+                <aside class="ai-conversations" [class.open]="showConversationsOnMobile()">
+                    <div class="ai-conversations-title">{{ 'AiAgentConversations' | localize }}</div>
+
+                    @for (conversation of conversations(); track conversation.id) {
+                        <div
+                            class="ai-conversation"
+                            [class.active]="conversation.id === activeConversationId()"
+                            role="button"
+                            tabindex="0"
+                            (click)="openConversation(conversation)"
+                            (keydown.enter)="openConversation(conversation)"
+                        >
+                            <div class="ai-conversation-text">
+                                <div class="ai-conversation-title" dir="auto">{{ conversation.title }}</div>
+                                <div class="ai-conversation-time">{{ conversation.lastMessageTime | luxonFormat: 'dd MMM, HH:mm' }}</div>
+                            </div>
+                            <button
+                                class="btn btn-icon btn-sm btn-active-light-danger ai-conversation-delete"
+                                [attr.aria-label]="'Delete' | localize"
+                                (click)="deleteConversation(conversation, $event)"
+                            >
+                                <i class="fa fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    } @empty {
+                        <div class="text-muted small px-3 py-2">{{ 'AiAgentNoConversations' | localize }}</div>
+                    }
+                </aside>
+
+                <section class="ai-chat">
+                    <div class="ai-messages" #messagesPane>
+                        @if (startup() && !startup()!.isLinkedToEmployee && isEmpty()) {
+                            <div class="alert alert-light-warning mx-auto ai-notice">
+                                {{ 'AiAgentNotLinkedNotice' | localize }}
+                            </div>
+                        }
+
+                        @if (loadingConversation()) {
+                            <div class="text-center text-muted py-10"><i class="fa fa-spinner fa-spin"></i></div>
+                        }
+
+                        @if (isEmpty()) {
+                            <div class="ai-welcome">
+                                <div class="ai-avatar ai-avatar-lg"><i class="flaticon-chat-2"></i></div>
+                                <h2 class="ai-welcome-title">{{ greeting() }}</h2>
+
+                                <div class="ai-suggestions">
+                                    @for (suggestion of suggestions(); track suggestion) {
+                                        <button class="btn btn-light ai-suggestion" dir="auto" (click)="useSuggestion(suggestion)">
+                                            {{ suggestion }}
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        }
+
+                        @for (line of lines(); track $index) {
+                            @if (line.message.role === Role.User) {
+                                <div class="ai-row ai-row-user">
+                                    <div class="ai-bubble ai-bubble-user" [class.failed]="line.failed" dir="auto">{{ line.message.content }}</div>
+                                </div>
+                                @if (line.failed) {
+                                    <div class="ai-row ai-row-user">
+                                        <button class="btn btn-link btn-sm text-danger p-0" (click)="retry(line)">
+                                            <i class="fa fa-redo text-danger"></i> {{ 'AiAgentRetry' | localize }}
+                                        </button>
+                                    </div>
+                                }
+                            } @else {
+                                <div class="ai-row ai-row-assistant">
+                                    <div class="ai-avatar"><i class="flaticon-chat-2"></i></div>
+                                    <div class="ai-assistant-column">
+                                        <!-- Plain text only, never innerHTML: see the component's note. -->
+                                        <div class="ai-bubble ai-bubble-assistant" dir="auto">{{ line.message.content }}</div>
+
+                                        @if (line.message.pendingAction; as action) {
+                                            <div class="ai-action" [class.done]="action.status !== Status.Pending">
+                                                <div class="ai-action-header">
+                                                    <span class="ai-action-title">{{ action.title }}</span>
+                                                    <span class="badge {{ statusClass(action) }}">{{ statusLabel(action) }}</span>
+                                                </div>
+
+                                                <dl class="ai-action-details">
+                                                    @for (detail of action.details; track $index) {
+                                                        <dt>{{ detail.label }}</dt>
+                                                        <dd dir="auto">{{ detail.value }}</dd>
+                                                    }
+                                                </dl>
+
+                                                @if (action.resultMessage && action.status !== Status.Pending) {
+                                                    <div class="ai-action-result small" dir="auto">{{ action.resultMessage }}</div>
+                                                }
+
+                                                @if (action.status === Status.Pending) {
+                                                    <div class="ai-action-buttons">
+                                                        <button class="btn btn-light btn-sm" [disabled]="isInFlight(action)" (click)="cancelAction(action)">
+                                                            {{ 'Cancel' | localize }}
+                                                        </button>
+                                                        <button class="btn btn-primary btn-sm" [disabled]="isInFlight(action)" (click)="confirmAction(action)">
+                                                            @if (isInFlight(action)) {
+                                                                <i class="fa fa-spinner fa-spin"></i>
+                                                            }
+                                                            {{ 'AiAgentConfirm' | localize }}
+                                                        </button>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                        @if (sending()) {
+                            <div class="ai-row ai-row-assistant">
+                                <div class="ai-avatar"><i class="flaticon-chat-2"></i></div>
+                                <div class="ai-bubble ai-bubble-assistant ai-thinking">
+                                    <span class="ai-dots"><span></span><span></span><span></span></span>
+                                    <span class="text-muted small ms-2">{{ 'AiAgentThinking' | localize }} {{ waitingSeconds() }}s</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="ai-composer">
+                        <textarea
+                            #composer
+                            class="form-control"
+                            rows="1"
+                            dir="auto"
+                            maxlength="2000"
+                            [(ngModel)]="draft"
+                            [placeholder]="'AiAgentPlaceholder' | localize"
+                            [disabled]="sending()"
+                            (keydown)="onComposerKeydown($event)"
+                        ></textarea>
+                        <button
+                            class="btn btn-primary btn-icon ai-send"
+                            [disabled]="sending() || !draft.trim()"
+                            [attr.aria-label]="'AiAgentSend' | localize"
+                            (click)="send()"
+                        >
+                            <i class="fa fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="ai-footnote">{{ 'AiAgentDisclaimer' | localize }}</div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

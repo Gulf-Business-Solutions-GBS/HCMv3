@@ -1,0 +1,157 @@
+<div [@routerTransition]>
+    <sub-header [title]="'WebhookEventDetail' | localize" />
+
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            @if (webhookEvent) {
+                <div class="card-body">
+                    <div class="mb-5 row">
+                        <label class="col-2 col-form-label">{{ 'WebhookEvent' | localize }}</label>
+                        <div class="col-10">
+                            {{ webhookEvent.webhookName }}
+                        </div>
+                    </div>
+                    <div class="mb-5 row">
+                        <label class="col-2 col-form-label">{{ 'CreationTime' | localize }}</label>
+                        <div class="col-10">
+                            {{ webhookEvent.creationTime | luxonFormat: 'F' }}
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <label class="col-2 col-form-label">{{ 'Data' | localize }}</label>
+                        @if (webhookEvent.data.length <= maxDataLength) {
+                            <div class="col-10 text-break">
+                                {{ webhookEvent.data }}
+                            </div>
+                        }
+                        @if (webhookEvent.data.length > maxDataLength) {
+                            <div class="col-10 text-break">
+                                <p>
+                                    <span id="dataDots">{{ webhookEvent.data.slice(0, maxDataLength) }}. . .</span>
+                                    <span id="dataMore" class="d-none">
+                                        {{ webhookEvent.data }}
+                                    </span>
+                                </p>
+                                <button
+                                    class="btn btn-outline-primary btn-sm"
+                                    id="dataShowMoreBtn"
+                                    (click)="showMoreData()">
+                                    {{ 'ShowData' | localize }}
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="card card-custom gutter-b">
+            <div class="card-header align-items-center border-0 mt-4">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="fw-bolder text-gray-900">{{ 'WebhookSendAttempts' | localize }}</span>
+                </h3>
+                <div class="card-toolbar">
+                    <button (click)="getSendAttempts()" class="btn btn-outline-brand btn-sm btn-icon btn-icon-md">
+                        <i class="flaticon2-refresh"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu
+                        #sendAttemptActionsMenu
+                        [model]="activeSendAttemptMenuItems()"
+                        [popup]="true"
+                        appendTo="body" />
+                    <div class="col primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            (onLazyLoad)="getSendAttempts($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [tableStyle]="{ 'min-width': '50rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 100px">{{ 'Actions' | localize }}</th>
+                                    <th style="width: 320px">{{ 'WebhookSubscriptionId' | localize }}</th>
+                                    <th>{{ 'WebhookEndpoint' | localize }}</th>
+                                    <th style="width: 180px">{{ 'CreationTime' | localize }}</th>
+                                    <th style="width: 130px">{{ 'HttpStatusCode' | localize }}</th>
+                                    <th>{{ 'Response' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td>
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showSendAttemptMenu($event, record, sendAttemptActionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        {{ record.webhookSubscriptionId }}
+                                    </td>
+                                    <td>
+                                        {{ record.webhookUri }}
+                                    </td>
+                                    <td>
+                                        {{ record.creationTime | luxonFormat: 'yyyy-LL-dd HH:mm:ss' }}
+                                    </td>
+                                    <td>
+                                        {{ record.responseStatusCode }}
+                                    </td>
+                                    <td>
+                                        @if (record?.response?.length <= listMaxResponseLength) {
+                                            <span>
+                                                {{ record.response }}
+                                            </span>
+                                        }
+                                        @if (record?.response?.length > listMaxResponseLength) {
+                                            <span>
+                                                <button
+                                                    class="btn btn-outline-primary btn-sm"
+                                                    (click)="showDetailModal(record.response)">
+                                                    {{ 'ShowResponse' | localize }}
+                                                </button>
+                                            </span>
+                                        }
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+        <create-or-edit-webhook-subscription #createOrEditWebhookSubscriptionModal (modalSave)="getDetail()" />
+
+        <div
+            bsModal
+            #detailModal="bs-modal"
+            id="detailModal"
+            class="modal fade"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="detailModal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        {{ detailModalText }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

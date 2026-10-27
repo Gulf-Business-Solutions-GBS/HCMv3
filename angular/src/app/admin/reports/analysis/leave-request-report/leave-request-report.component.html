@@ -1,0 +1,140 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'LeaveRequestAnalysisReport' | localize"
+        [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [(fromDate)]="fromDate"
+                    [(toDate)]="toDate"
+                    [(employeeCode)]="employeeCode"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-3">
+                        <label class="form-label">{{ 'RequestStatus' | localize }}</label>
+                        <p-select
+                            [options]="requestStatusOptions"
+                            [(ngModel)]="requestStatus"
+                            optionLabel="label"
+                            optionValue="value"
+                            [showClear]="true"
+                            styleClass="w-100"
+                            [placeholder]="'All' | localize" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">{{ 'Approver' | localize }}</label>
+                        <input type="text" class="form-control" [(ngModel)]="approverCode" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '60rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 140px" pSortableColumn="requestNumber">
+                                        {{ 'RequestNumber' | localize }}
+                                        <p-sortIcon field="requestNumber" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="createdDate">
+                                        {{ 'CreatedDate' | localize }}
+                                        <p-sortIcon field="createdDate" />
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="employeeCode">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="employeeCode" />
+                                    </th>
+                                    <th style="min-width: 220px" pSortableColumn="employeeName">
+                                        {{ 'Employee' | localize }}
+                                        <p-sortIcon field="employeeName" />
+                                    </th>
+                                    <th style="min-width: 220px">
+                                        {{ 'Approver' | localize }}
+                                    </th>
+                                    <th style="min-width: 160px" pSortableColumn="requestType">
+                                        {{ 'RequestType' | localize }}
+                                        <p-sortIcon field="requestType" />
+                                    </th>
+                                    <th style="min-width: 140px">
+                                        {{ 'ActionType' | localize }}
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="requestStatus">
+                                        {{ 'RequestStatus' | localize }}
+                                        <p-sortIcon field="requestStatus" />
+                                    </th>
+                                    <th style="min-width: 130px" pSortableColumn="workflowStep">
+                                        {{ 'WorkflowStep' | localize }}
+                                        <p-sortIcon field="workflowStep" />
+                                    </th>
+                                    <th style="min-width: 130px" pSortableColumn="stalledDays">
+                                        {{ 'StalledDays' | localize }}
+                                        <p-sortIcon field="stalledDays" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 140px">{{ record.requestNumber }}</td>
+                                    <td style="min-width: 140px">
+                                        {{ record.createdDate | luxonFormat: 'dd/MM/yyyy' }}
+                                    </td>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.employeeCode }}" class="hide-overflown">
+                                            {{ record.employeeCode }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 220px">{{ record.employeeName }}</td>
+                                    <td style="min-width: 220px">
+                                        <span pTooltip="{{ record.approverNames }}" class="hide-overflown">
+                                            {{ record.approverNames }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 160px">{{ record.requestType }}</td>
+                                    <td style="min-width: 140px">{{ record.actionType }}</td>
+                                    <td style="min-width: 140px">{{ record.requestStatus }}</td>
+                                    <td style="min-width: 130px">{{ record.workflowStep }}</td>
+                                    <td style="min-width: 130px">{{ record.stalledDays }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

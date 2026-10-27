@@ -1,0 +1,151 @@
+{
+  "helpId": "ess.asset",
+  "lang": "en",
+  "title": "My Assets",
+  "entity": null,
+  "overviewHtml": "<p>Ask for a company asset — a laptop, a phone, a vehicle, a SIM — and see what is already signed out to you.</p><p>An approved request puts the asset on your name. It stays there until it is handed back and returned in the system, and anything still on your name at the end of your employment turns up on your clearance, so the list here is worth keeping true.</p>",
+  "aliasIndex": {
+    "loc:Asset": "ess.asset.asset",
+    "loc:StartDate": "ess.asset.start-date",
+    "loc:EndDate": "ess.asset.end-date",
+    "loc:Comments": "ess.common.comments",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:RequestAsset": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:Withdraw": "ess.common.withdraw"
+  },
+  "fields": [
+    {
+      "id": "ess.asset.asset",
+      "label": "Asset",
+      "section": null,
+      "aliases": [
+        "loc:Asset"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item you are asking for, from what your company has on its register and free to give out.</p><p><strong>Example.</strong> Laptop — Dell Latitude, tag IT-00432.</p><p><strong>Why it matters.</strong> You are asking for that particular item, not for one of its kind. If the one you want is not in the list it is already out with somebody or not registered, and that is a question for whoever keeps the register.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.asset.start-date",
+      "label": "StartDate",
+      "section": null,
+      "aliases": [
+        "loc:StartDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When you need it from.</p><p><strong>Example.</strong> 1 September 2026.</p><p><strong>Why it matters.</strong> It is the date the asset is booked to you, so it decides whether anybody else can have it in the meantime — and a start date earlier than today does not backdate the handover, it only makes the record wrong.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.asset.end-date",
+      "label": "EndDate",
+      "section": null,
+      "aliases": [
+        "loc:EndDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When you expect to hand it back. Leave it blank for something you hold for as long as you are here.</p><p><strong>Example.</strong> 30 September 2026 for a projector borrowed for a month; blank for your own laptop.</p><p><strong>Why it matters.</strong> A date that has passed does not return the asset on its own — somebody still has to take it back and record it. What the date does is tell them when to expect it, and put the item back into circulation for planning.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Anything you want the people approving this to read. Free text, and optional.</p><p><strong>Example.</strong> \"Flying on the 14th, back on the 28th — cover agreed with Ahmed.\"</p><p><strong>Why it matters.</strong> It is the only place you can explain a request that needs explaining, and it stays with the request for good: approvers see it, and so does anyone who looks the request up afterwards. A request that surprises somebody is a request that comes back to you.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Everything you have asked for on this screen, newest first, with where each one has got to.</p><p><strong>Example.</strong> Three ticket requests: one approved last month, one waiting, one you withdrew.</p><p><strong>Why it matters.</strong> This is the record. A request that is not in this list was never submitted — if you filled the form in and did not press <strong>Save</strong>, nothing was sent.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A warning that the account you signed in with is not attached to an employee, so there is nobody for a request to be about.</p><p><strong>Example.</strong> A newly created user, or an administrator account that is deliberately not an employee.</p><p><strong>Why it matters.</strong> Nothing on the self-service screens works until HR links the account to your employee record, and only HR can do it. Administrator accounts are often left unlinked on purpose.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where a request has got to. <strong>Draft</strong> is not submitted, <strong>Pending</strong> is waiting for somebody, <strong>Approved</strong> has been agreed and acted on, <strong>Rejected</strong> was turned down, and <strong>Withdrawn</strong> is one you took back yourself.</p><p><strong>Example.</strong> Pending — sitting with your line manager.</p><p><strong>Why it matters.</strong> Only an approved request changes anything: your balance, your pay or your record. A pending one has done nothing yet, whatever the form said when you filled it in.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestAsset",
+      "section": null,
+      "aliases": [
+        "loc:RequestAsset"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The button at the top right of the screen that opens the form. Filling it in and pressing <strong>Save</strong> submits the request; nothing is sent until you do.</p><p><strong>Example.</strong> <strong>Request Leave</strong>, <strong>Request Ticket</strong>, <strong>Request Loan</strong> — the wording follows the screen.</p><p><strong>Why it matters.</strong> Once submitted the request goes to whoever approves that kind of request in your company, and you cannot edit it in place. To change something, withdraw it and make a new one, or use <strong>Amend</strong> where the screen offers it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who a request has reached, what each person did with it and when, including any comment they left.</p><p><strong>Example.</strong> Submitted 09:12 → Line manager approved 11:40 (\"cover arranged\") → with HR.</p><p><strong>Why it matters.</strong> It answers \"who is it with?\" without asking anybody. If a request has sat with one person for days, this tells you which person, which is who to chase.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "Withdraw",
+      "section": null,
+      "aliases": [
+        "loc:Withdraw"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Takes a request back. Offered only while it can still be taken back — once it is approved and acted on, the button is gone.</p><p><strong>Example.</strong> You asked for leave next week, your plans changed, you withdraw it before your manager gets to it.</p><p><strong>Why it matters.</strong> A withdrawn request is not deleted: it stays in the list marked <strong>Withdrawn</strong>, so the record shows what happened. Withdrawing frees anything the request was holding, such as a leave balance reserved against it.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

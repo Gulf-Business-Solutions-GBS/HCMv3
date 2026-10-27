@@ -1,0 +1,141 @@
+import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+import { AppComponentBase } from '@shared/common/app-component-base';
+import { WageTypeDto, WageTypesServiceProxy, GetAllWageTypesInput } from '@shared/service-proxies/service-proxies';
+import { Table, TableModule } from 'primeng/table';
+import { Paginator, PaginatorModule } from 'primeng/paginator';
+import { LazyLoadEvent } from 'primeng/api';
+import { TieredMenu } from 'primeng/tieredmenu';
+import { MenuItem } from 'primeng/api';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { finalize } from 'rxjs/operators';
+import { CreateOrEditWageTypeModalComponent } from './create-or-edit-wage-type-modal.component';
+import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
+import { BusyIfDirective } from '../../../../shared/utils/busy-if.directive';
+import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
+
+@Component({
+    templateUrl: './wage-types.component.html',
+    animations: [appModuleAnimation()],
+    imports: [
+        SubHeaderComponent,
+        BusyIfDirective,
+        FormsModule,
+        RouterLink,
+        TableModule,
+        PaginatorModule,
+        TieredMenu,
+        CreateOrEditWageTypeModalComponent,
+        LocalizePipe,
+        PermissionPipe,
+    ],
+})
+export class WageTypesComponent extends AppComponentBase implements OnInit {
+    private _wageTypesService = inject(WageTypesServiceProxy);
+    private _router = inject(Router);
+
+    readonly createOrEditModal = viewChild<CreateOrEditWageTypeModalComponent>('createOrEditModal');
+    readonly dataTable = viewChild<Table>('dataTable');
+    readonly paginator = viewChild<Paginator>('paginator');
+
+    readonly filterText = signal<string>('');
+    readonly activeMenuItems = signal<MenuItem[]>([]);
+
+    ngOnInit(): void {
+        // Intentionally empty: the PrimeNG table's (onLazyLoad) triggers the first getWageTypes().
+    }
+
+    getWageTypes(event?: LazyLoadEvent): void {
+        if (this.primengTableHelper.shouldResetPaging(event)) {
+            this.paginator().changePage(0);
+            return;
+        }
+
+        this.primengTableHelper.showLoadingIndicator();
+
+        this._wageTypesService
+            .getAll(
+                new GetAllWageTypesInput({
+                    filter: this.filterText(),
+                    sorting: this.primengTableHelper.getSorting(this.dataTable()),
+                    maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),
+                    skipCount: this.primengTableHelper.getSkipCount(this.paginator(), event),
+                })
+            )
+            .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))
+            .subscribe((result) => {
+                this.primengTableHelper.totalRecordsCount.set(result.totalCount);
+                this.primengTableHelper.records.set(result.items);
+                this.primengTableHelper.hideLoadingIndicator();
+            });
+    }
+
+    reloadPage(): void {
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getWageTypes({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
+    }
+
+    createWageType(): void {
+        this.createOrEditModal().show();
+    }
+
+    /** Opens the record read-only. */
+    viewDetails(record: WageTypeDto): void {
+        this._router.navigate(['/app/admin/wagetypes', record.id]);
+    }
+
+    /** Opens the same page with its fields already unlocked. */
+    openWageType(record: WageTypeDto): void {
+        this._router.navigate(['/app/admin/wagetypes', record.id], { queryParams: { edit: true } });
+    }
+
+    showMenu(event: Event, record: WageTypeDto, menu: any): void {
+        this.activeMenuItems.set(this.getMenuItems(record));
+        menu.toggle(event);
+    }
+
+    getMenuItems(record: WageTypeDto): MenuItem[] {
+        const items: MenuItem[] = [];
+
+        items.push({
+            label: this.l('Details'),
+            icon: 'pi pi-eye',
+            command: () => this.viewDetails(record),
+        });
+
+        if (this.permission.isGranted('Pages.PayrollManagement.WageTypes.Edit')) {
+            items.push({
+                label: this.l('Edit'),
+                icon: 'pi pi-pencil',
+                command: () => this.openWageType(record),
+            });
+        }
+
+        if (this.permission.isGranted('Pages.PayrollManagement.WageTypes.Delete')) {
+            items.push({
+                label: this.l('Delete'),
+                icon: 'pi pi-trash',
+                command: () => this.deleteWageType(record),
+            });
+        }
+
+        return items;
+    }
+
+    deleteWageType(record: WageTypeDto): void {
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.nameEn),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._wageTypesService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
+            }
+        );
+    }
+}

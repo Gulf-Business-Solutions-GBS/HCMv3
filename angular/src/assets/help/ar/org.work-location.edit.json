@@ -1,0 +1,171 @@
+{
+  "helpId": "org.work-location.edit",
+  "lang": "ar",
+  "title": "أماكن العمل — إنشاء / تحرير",
+  "entity": "HCMv3.OrganizationManagement.WorkLocation",
+  "overviewHtml": "<p>مكان يعمل فيه الموظفون، مثل مكتب أو موقع. يوضع الموظفون في أحدها في تعيينهم التنظيمي. وعند تحديد الموقع الجغرافي والنطاق، يكون المكان الذي تتحقق البصمة الجغرافية في الخدمة الذاتية من وجود الموظف فيه.</p>",
+  "aliasIndex": {
+    "loc:Code": "WorkLocation.Code",
+    "dom:WorkLocation_Code": "WorkLocation.Code",
+    "loc:NameEn": "WorkLocation.NameEn",
+    "dom:WorkLocation_NameEn": "WorkLocation.NameEn",
+    "loc:NameAr": "WorkLocation.NameAr",
+    "dom:WorkLocation_NameAr": "WorkLocation.NameAr",
+    "loc:Latitude": "WorkLocation.Latitude",
+    "dom:WorkLocation_Latitude": "WorkLocation.Latitude",
+    "loc:Longitude": "WorkLocation.Longitude",
+    "dom:WorkLocation_Longitude": "WorkLocation.Longitude",
+    "loc:GeoRange": "WorkLocation.GeoRange",
+    "dom:WorkLocation_GeoRange": "WorkLocation.GeoRange",
+    "loc:Address": "WorkLocation.Address",
+    "dom:WorkLocation_Address": "WorkLocation.Address",
+    "loc:GeoFenceCoordinates": "WorkLocation.GeoFenceCoordinates",
+    "dom:WorkLocation_GeoFenceCoordinates": "WorkLocation.GeoFenceCoordinates",
+    "loc:Sponsor": "WorkLocation.SponsorId",
+    "dom:WorkLocation_SponsorId": "WorkLocation.SponsorId",
+    "loc:IsActive": "WorkLocation.IsActive",
+    "dom:WorkLocation_IsActive": "WorkLocation.IsActive"
+  },
+  "fields": [
+    {
+      "id": "WorkLocation.Code",
+      "label": "Code",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:Code",
+        "dom:WorkLocation_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.NameEn",
+      "label": "NameEn",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:NameEn",
+        "dom:WorkLocation_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.NameAr",
+      "label": "NameAr",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:NameAr",
+        "dom:WorkLocation_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.Latitude",
+      "label": "Latitude",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:Latitude",
+        "dom:WorkLocation_Latitude"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> خط عرض الموقع.</p><p><strong>مثال.</strong> 29.3759</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.Longitude",
+      "label": "Longitude",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:Longitude",
+        "dom:WorkLocation_Longitude"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> خط طول الموقع.</p><p><strong>مثال.</strong> 47.9774</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.GeoRange",
+      "label": "GeoRange",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:GeoRange",
+        "dom:WorkLocation_GeoRange"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسافة بالأمتار من النقطة التي تُعدّ فيها البصمة الجغرافية داخل الموقع.</p><p><strong>مثال.</strong> 200</p><p><strong>لماذا يهم.</strong> يقيس الخادم المسافة بين هاتف الموظف والنقطة. داخل النطاق تُقبل البصمة، وخارجه لا تمر إلا عند تفعيل إعداد الخدمة الذاتية AllowPunchOutsideRange.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.Address",
+      "label": "Address",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:Address",
+        "dom:WorkLocation_Address"
+      ],
+      "rules": "اختياري. الحد الأقصى 1000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> العنوان.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.GeoFenceCoordinates",
+      "label": "GeoFenceCoordinates",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:GeoFenceCoordinates",
+        "dom:WorkLocation_GeoFenceCoordinates"
+      ],
+      "rules": "اختياري. الحد الأقصى 2000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حدود مرسومة حول الموقع.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.SponsorId",
+      "label": "Sponsor",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:Sponsor",
+        "dom:WorkLocation_SponsorId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الكفلاء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الكفيل — صاحب الترخيص — الذي يتبعه هذا الموقع.</p><p><strong>مثال.</strong> شركة المطوع التجارية</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يستخدمه شيء آخر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.IsActive",
+      "label": "IsActive",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:IsActive",
+        "dom:WorkLocation_IsActive"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الموقع مستخدماً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً: يمكن اختيار المواقع غير النشطة والبصمة فيها.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

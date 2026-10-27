@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.ticket-pax-type.edit",
+  "lang": "ar",
+  "title": "أنواع ركاب التذاكر — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.TicketPaxType",
+  "overviewHtml": "<p>نوع مسافر بحسب العمر — بالغ أو طفل أو رضيع — يُستخدم لاختيار أجرة المسافر. ويحدد عمر العائل في ذلك اليوم أي أجرة لنوع مسافر تُستخدم.</p>",
+  "aliasIndex": {
+    "loc:Code": "TicketPaxType.Code",
+    "dom:TicketPaxType_Code": "TicketPaxType.Code",
+    "loc:NameEn": "TicketPaxType.NameEn",
+    "dom:TicketPaxType_NameEn": "TicketPaxType.NameEn",
+    "loc:NameAr": "TicketPaxType.NameAr",
+    "dom:TicketPaxType_NameAr": "TicketPaxType.NameAr",
+    "loc:AgeFrom": "TicketPaxType.AgeFrom",
+    "dom:TicketPaxType_AgeFrom": "TicketPaxType.AgeFrom",
+    "loc:AgeTo": "TicketPaxType.AgeTo",
+    "dom:TicketPaxType_AgeTo": "TicketPaxType.AgeTo"
+  },
+  "fields": [
+    {
+      "id": "TicketPaxType.Code",
+      "label": "Code",
+      "section": "TicketPaxTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:TicketPaxType_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketPaxType.NameEn",
+      "label": "NameEn",
+      "section": "TicketPaxTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:TicketPaxType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketPaxType.NameAr",
+      "label": "NameAr",
+      "section": "TicketPaxTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:TicketPaxType_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketPaxType.AgeFrom",
+      "label": "AgeFrom",
+      "section": "TicketPaxTypes",
+      "aliases": [
+        "loc:AgeFrom",
+        "dom:TicketPaxType_AgeFrom"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أصغر عمر في نوع المسافر هذا.</p><p><strong>مثال.</strong> <code>2</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketPaxType.AgeTo",
+      "label": "AgeTo",
+      "section": "TicketPaxTypes",
+      "aliases": [
+        "loc:AgeTo",
+        "dom:TicketPaxType_AgeTo"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أكبر عمر في نوع المسافر هذا.</p><p><strong>مثال.</strong> <code>11</code></p><p><strong>لماذا يهم.</strong> اجعل نطاقات أعمار أنواع المسافرين غير متداخلة، وإلا طُبِّق أول تطابق.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

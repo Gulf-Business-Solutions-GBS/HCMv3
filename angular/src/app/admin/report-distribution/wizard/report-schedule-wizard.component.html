@@ -1,0 +1,556 @@
+<sub-header
+    [title]="schedule.name || ('NewSchedule' | localize)"
+    [description]="'ReportDistributionDescription' | localize">
+    <div role="actions">
+        <button class="btn btn-secondary" type="button" (click)="cancel()">{{ 'Cancel' | localize }}</button>
+    </div>
+</sub-header>
+
+<div [class]="containerClass">
+    <div class="card card-custom" [busyIf]="isLoading()">
+        <div class="card-body">
+            <ul class="nav nav-tabs mb-5">
+                @for (title of stepTitles; track title; let idx = $index) {
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            [class.active]="currentStep() === idx + 1"
+                            href="javascript:;"
+                            (click)="goToStep(idx + 1)">
+                            <span class="me-2">{{ idx + 1 }}.</span>{{ title | localize }}
+                        </a>
+                    </li>
+                }
+            </ul>
+
+            <!-- ============ STEP 1: DEFINITION ============ -->
+            @if (currentStep() === 1) {
+                <div>
+                    <h4 class="mb-4">1. {{ 'ScheduleDefinition' | localize }}</h4>
+
+                    <div class="mb-3">
+                        <label class="form-label required">{{ 'ScheduleName' | localize }}</label>
+                        <input [(ngModel)]="schedule.name" name="name" class="form-control" type="text" required />
+                    </div>
+
+                    <div class="row">
+                        <!-- No "report family" selector: the family is a property OF the chosen
+                             report, not a separate choice. Offering it as one let somebody pick a
+                             family with no reports behind it and meet an empty list with no
+                             explanation. onReportChanged() takes it from the report itself, so a
+                             family gained later needs no change here. -->
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label required">{{ 'Report' | localize }}</label>
+                            <select
+                                [(ngModel)]="schedule.reportKey"
+                                name="reportKey"
+                                class="form-select"
+                                required
+                                (ngModelChange)="onReportChanged()">
+                                <option [ngValue]="undefined">{{ 'PleaseSelect' | localize }}</option>
+                                @for (group of reportsByCategory(); track group.category) {
+                                    <optgroup [label]="group.category">
+                                        @for (report of group.reports; track report.reportKey) {
+                                            <option [ngValue]="report.reportKey">{{ report.displayName }}</option>
+                                        }
+                                    </optgroup>
+                                }
+                            </select>
+                            <small class="form-text text-muted">{{ 'ReportListHint' | localize }}</small>
+                        </div>
+                        <!-- Excel only, and shown as a fact rather than a choice. The renderer
+                             invokes each report's own Get*ToExcel and returns those bytes; PDF and
+                             CSV were selectable but silently ignored, which is worse than absent
+                             because the schedule then claims a format it never produces. -->
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">{{ 'ReportFormat' | localize }}</label>
+                            <input class="form-control" type="text" value="EXCEL" readonly disabled />
+                            <small class="form-text text-muted">{{ 'ExcelOnlyHint' | localize }}</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ 'SendNotificationsTo' | localize }}</label>
+                        <textarea
+                            [(ngModel)]="schedule.notificationEmails"
+                            name="notificationEmails"
+                            class="form-control"
+                            rows="3"
+                            placeholder="abc@companyDomain.com, xyz@companyDomain.com"></textarea>
+                        <small class="form-text text-muted">{{ 'NotificationEmailsHint' | localize }}</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ 'SendNotificationOn' | localize }}</label>
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="notifyStart"
+                                [(ngModel)]="schedule.notifyOnStart"
+                                name="notifyOnStart" />
+                            <label class="form-check-label" for="notifyStart">{{ 'ScheduleStart' | localize }}</label>
+                        </div>
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="notifyDone"
+                                [(ngModel)]="schedule.notifyOnCompletion"
+                                name="notifyOnCompletion" />
+                            <label class="form-check-label" for="notifyDone">
+                                {{ 'ScheduleCompletion' | localize }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- ============ STEP 2: FILTER + BURST ============ -->
+            @if (currentStep() === 2) {
+                <div>
+                    <h4 class="mb-4">2. {{ 'Filter' | localize }}</h4>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ 'BurstBy' | localize }}</label>
+                            <select [(ngModel)]="schedule.burstDimension" name="burstDimension" class="form-select">
+                                <option [ngValue]="Burst.None">{{ 'NoBursting' | localize }}</option>
+                                <option [ngValue]="Burst.OrganizationUnit">
+                                    {{ 'OrganizationUnit' | localize }}
+                                </option>
+                                <option [ngValue]="Burst.Manager">{{ 'Manager' | localize }}</option>
+                                <option [ngValue]="Burst.Sponsor">{{ 'Sponsor' | localize }}</option>
+                                <option [ngValue]="Burst.PayrollArea">{{ 'PayrollArea' | localize }}</option>
+                            </select>
+                            <small class="form-text text-muted">{{ 'BurstByHint' | localize }}</small>
+                        </div>
+
+                        @if (schedule.burstDimension === Burst.OrganizationUnit) {
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required">{{ 'OrganizationLevel' | localize }}</label>
+                                <input
+                                    [(ngModel)]="schedule.burstOrganizationUnitTypeId"
+                                    name="burstOrgUnitTypeId"
+                                    class="form-control"
+                                    type="number" />
+                                <small class="form-text text-muted">{{ 'OrganizationLevelHint' | localize }}</small>
+                            </div>
+                        }
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">{{ 'ReportParameters' | localize }}</h5>
+                        <button class="btn btn-sm btn-light-primary" type="button" (click)="resetFiltersFromReport()">
+                            <i class="fa fa-sync"></i> {{ 'ReloadReportParameters' | localize }}
+                        </button>
+                    </div>
+
+                    @if (schedule.filters.length) {
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'ParameterName' | localize }}</th>
+                                    <th>{{ 'Value' | localize }}</th>
+                                    <th>{{ 'RelativeDate' | localize }}</th>
+                                    <th style="width: 60px"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (f of schedule.filters; track $index) {
+                                    <tr>
+                                        <td>
+                                            <input
+                                                [(ngModel)]="f.parameterName"
+                                                [name]="'pName' + $index"
+                                                class="form-control"
+                                                readonly />
+                                        </td>
+                                        <td>
+                                            <!-- The control follows the parameter's DECLARED type, read off
+                                                 the report's own input DTO. An enum becomes a dropdown of its
+                                                 real values rather than a box somebody has to guess into. -->
+                                            @if (parameterFor(f)?.allowedValues?.length) {
+                                                <select
+                                                    [(ngModel)]="f.parameterValue"
+                                                    [name]="'pValue' + $index"
+                                                    class="form-select">
+                                                    <option [ngValue]="undefined">{{ 'PleaseSelect' | localize }}</option>
+                                                    @for (value of parameterFor(f).allowedValues; track value) {
+                                                        <option [ngValue]="value">{{ value }}</option>
+                                                    }
+                                                </select>
+                                            } @else {
+                                                <input
+                                                    [(ngModel)]="f.parameterValue"
+                                                    [name]="'pValue' + $index"
+                                                    class="form-control"
+                                                    [type]="parameterFor(f)?.type === 'int' ? 'number' : 'text'"
+                                                    [placeholder]="parameterFor(f)?.type ?? ''" />
+                                            }
+                                        </td>
+                                        <td>
+                                            <input
+                                                [(ngModel)]="f.relativeDateToken"
+                                                [name]="'pRel' + $index"
+                                                class="form-control"
+                                                placeholder="PreviousMonth" />
+                                        </td>
+                                        <td>
+                                            <button
+                                                class="btn btn-sm btn-light-danger"
+                                                type="button"
+                                                (click)="removeFilter($index)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    } @else {
+                        <div class="alert alert-light-info">{{ 'RelativeDateHint' | localize }}</div>
+                    }
+                </div>
+            }
+
+            <!-- ============ STEP 3: DESTINATION + RECIPIENTS ============ -->
+            @if (currentStep() === 3) {
+                <div>
+                    <h4 class="mb-4">3. {{ 'Destination' | localize }}</h4>
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">{{ 'Recipients' | localize }}</h5>
+                        <button class="btn btn-sm btn-light-primary" type="button" (click)="addRecipient()">
+                            <i class="fa fa-plus"></i> {{ 'AddRecipient' | localize }}
+                        </button>
+                    </div>
+
+                    @if (hasScopeBypass()) {
+                        <div class="alert alert-light-warning">
+                            <i class="fa fa-exclamation-triangle me-2"></i>
+                            {{ 'ScopeBypassWarning' | localize }}
+                        </div>
+                    }
+
+                    @if (schedule.recipients.length) {
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'RecipientRule' | localize }}</th>
+                                    <th>{{ 'Role' | localize }}</th>
+                                    <th>{{ 'ScopeToThisUnit' | localize }}</th>
+                                    <th>{{ 'EmailAddress' | localize }}</th>
+                                    <th>{{ 'BypassScope' | localize }}</th>
+                                    <th style="width: 60px"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (r of schedule.recipients; track $index) {
+                                    <tr>
+                                        <td>
+                                            <select
+                                                [(ngModel)]="r.rule"
+                                                [name]="'rRule' + $index"
+                                                class="form-select"
+                                                (ngModelChange)="onRecipientRuleChanged(r)">
+                                                <option [ngValue]="Rule.RoleScoped">{{ 'RoleTeam' | localize }}</option>
+                                                <option [ngValue]="Rule.OrgUnitHead">
+                                                    {{ 'OrgUnitHead' | localize }}
+                                                </option>
+                                                <option [ngValue]="Rule.Manager">{{ 'LineManager' | localize }}</option>
+                                                <option [ngValue]="Rule.Explicit">
+                                                    {{ 'ExplicitEmail' | localize }}
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            @if (r.rule === Rule.RoleScoped) {
+                                                <input
+                                                    [(ngModel)]="r.roleId"
+                                                    [name]="'rRole' + $index"
+                                                    class="form-control"
+                                                    type="number" />
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            @if (r.rule === Rule.RoleScoped) {
+                                                <input
+                                                    class="form-check-input"
+                                                    type="checkbox"
+                                                    [(ngModel)]="r.scopeToBurstUnit"
+                                                    [name]="'rScope' + $index" />
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (r.rule === Rule.Explicit) {
+                                                <input
+                                                    [(ngModel)]="r.emailAddress"
+                                                    [name]="'rEmail' + $index"
+                                                    class="form-control"
+                                                    type="email" />
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            @if (
+                                                canBypassScope(r) &&
+                                                ('Pages.Reports.Distribution.BypassRecipientScope' | permission)
+                                            ) {
+                                                <input
+                                                    class="form-check-input"
+                                                    type="checkbox"
+                                                    [(ngModel)]="r.bypassRecipientScope"
+                                                    [name]="'rBypass' + $index" />
+                                            }
+                                        </td>
+                                        <td>
+                                            <button
+                                                class="btn btn-sm btn-light-danger"
+                                                type="button"
+                                                (click)="removeRecipient($index)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    } @else {
+                        <div class="alert alert-light-info">{{ 'RecipientRulesHint' | localize }}</div>
+                    }
+
+                    <hr class="my-4" />
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">{{ 'DeliveryMethod' | localize }}</h5>
+                        <button class="btn btn-sm btn-light-primary" type="button" (click)="addDestination()">
+                            <i class="fa fa-plus"></i> {{ 'AddDestination' | localize }}
+                        </button>
+                    </div>
+
+                    @for (d of schedule.destinations; track $index) {
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label required">{{ 'Method' | localize }}</label>
+                                        <select
+                                            [(ngModel)]="d.method"
+                                            [name]="'dMethod' + $index"
+                                            class="form-select">
+                                            <option [ngValue]="Destination.Email">{{ 'Email' | localize }}</option>
+                                            <!-- FTP is disabled rather than removed: the schema and
+                                                 its config panel below already model it, so it stays
+                                                 visible as planned work. Selectable, it produced a
+                                                 schedule that failed at delivery time with "no
+                                                 delivery channel registered" -- long after the person
+                                                 who configured it had gone. -->
+                                            <option [ngValue]="Destination.Ftp" disabled>
+                                                File Transfer Protocol (FTP) &mdash; {{ 'NotAvailableYet' | localize }}
+                                            </option>
+                                            <option [ngValue]="Destination.Offline">{{ 'Offline' | localize }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-8 text-end">
+                                        <button
+                                            class="btn btn-sm btn-light-danger mt-4"
+                                            type="button"
+                                            (click)="removeDestination($index)">
+                                            <i class="fa fa-trash"></i> {{ 'Remove' | localize }}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                @if (d.method === Destination.Email) {
+                                    <div>
+                                        <div class="mb-3">
+                                            <label class="form-label">{{ 'EmailSubject' | localize }}</label>
+                                            <input
+                                                [(ngModel)]="d.emailSubjectTemplate"
+                                                [name]="'dSubject' + $index"
+                                                class="form-control" />
+                                            <small class="form-text text-muted">
+                                                {{ 'EmailTokensHint' | localize }}
+                                            </small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">{{ 'EmailBody' | localize }}</label>
+                                            <textarea
+                                                [(ngModel)]="d.emailBodyTemplate"
+                                                [name]="'dBody' + $index"
+                                                class="form-control"
+                                                rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (d.method === Destination.Ftp) {
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label required">
+                                                    {{ 'HostAddress' | localize }}
+                                                </label>
+                                                <input
+                                                    [(ngModel)]="d.hostAddress"
+                                                    [name]="'dHost' + $index"
+                                                    class="form-control" />
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <label class="form-label required">{{ 'FtpLogin' | localize }}</label>
+                                                <input
+                                                    [(ngModel)]="d.ftpLogin"
+                                                    [name]="'dLogin' + $index"
+                                                    class="form-control" />
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <label class="form-label">
+                                                    {{ 'FtpPasswordSettingName' | localize }}
+                                                </label>
+                                                <input
+                                                    [(ngModel)]="d.ftpPasswordSettingName"
+                                                    [name]="'dPwdSetting' + $index"
+                                                    class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="alert alert-light-info">
+                                            <i class="fa fa-info-circle me-2"></i>
+                                            {{ 'FtpPasswordNotStoredHint' | localize }}
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">{{ 'RemotePath' | localize }}</label>
+                                                <input
+                                                    [(ngModel)]="d.remotePath"
+                                                    [name]="'dPath' + $index"
+                                                    class="form-control" />
+                                            </div>
+                                            <div class="col-md-6 mb-3 mt-4">
+                                                <div class="form-check form-check-inline">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="checkbox"
+                                                        [(ngModel)]="d.useSftp"
+                                                        [name]="'dSftp' + $index" />
+                                                    <label class="form-check-label">SFTP</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="checkbox"
+                                                        [(ngModel)]="d.ftpPassiveMode"
+                                                        [name]="'dPassive' + $index" />
+                                                    <label class="form-check-label">
+                                                        {{ 'PassiveMode' | localize }}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (d.method === Destination.Offline) {
+                                    <div class="mb-3">
+                                        <label class="form-label">{{ 'StorageFolder' | localize }}</label>
+                                        <input
+                                            [(ngModel)]="d.storageFolder"
+                                            [name]="'dFolder' + $index"
+                                            class="form-control"
+                                            placeholder="attendance/monthly" />
+                                        <small class="form-text text-muted">{{ 'StorageFolderHint' | localize }}</small>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+            <!-- ============ STEP 4: OCCURRENCE ============ -->
+            @if (currentStep() === 4) {
+                <div>
+                    <h4 class="mb-4">4. {{ 'ScheduleOccurrence' | localize }}</h4>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label required">{{ 'Occurs' | localize }}</label>
+                            <select [(ngModel)]="schedule.occurrenceType" name="occurrenceType" class="form-select">
+                                <option [ngValue]="Occurrence.Once">{{ 'Once' | localize }}</option>
+                                <option [ngValue]="Occurrence.Recurring">{{ 'Recurring' | localize }}</option>
+                            </select>
+                        </div>
+
+                        @if (schedule.occurrenceType === Occurrence.Recurring) {
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required">{{ 'RecurringPattern' | localize }}</label>
+                                <select
+                                    [(ngModel)]="schedule.recurringPattern"
+                                    name="recurringPattern"
+                                    class="form-select">
+                                    <option [ngValue]="Pattern.Daily">{{ 'Daily' | localize }}</option>
+                                    <option [ngValue]="Pattern.Weekly">{{ 'Weekly' | localize }}</option>
+                                    <option [ngValue]="Pattern.Monthly">{{ 'Monthly' | localize }}</option>
+                                    <option [ngValue]="Pattern.Quarterly">{{ 'Quarterly' | localize }}</option>
+                                    <option [ngValue]="Pattern.Yearly">{{ 'Yearly' | localize }}</option>
+                                </select>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label required">{{ 'FirstOccurrence' | localize }}</label>
+                            <input
+                                [ngModel]="firstOccurrenceText()"
+                                (ngModelChange)="setFirstOccurrence($event)"
+                                name="firstOccurrence"
+                                class="form-control"
+                                type="datetime-local" />
+                        </div>
+
+                        @if (schedule.occurrenceType === Occurrence.Recurring) {
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ 'EndingOn' | localize }}</label>
+                                <input
+                                    [ngModel]="endingOnText()"
+                                    (ngModelChange)="setEndingOn($event)"
+                                    name="endingOn"
+                                    class="form-control"
+                                    type="date" />
+                            </div>
+                        }
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="isActive"
+                            [(ngModel)]="schedule.isActive"
+                            name="isActive" />
+                        <label class="form-check-label" for="isActive">{{ 'Active' | localize }}</label>
+                    </div>
+                </div>
+            }
+
+            <div class="d-flex justify-content-between mt-5">
+                <button class="btn btn-secondary" type="button" [disabled]="currentStep() === 1" (click)="previous()">
+                    {{ 'Previous' | localize }}
+                </button>
+
+                <div>
+                    @if (currentStep() < 4) {
+                        <button class="btn btn-primary me-2" type="button" (click)="next()">
+                            {{ 'Next' | localize }}
+                        </button>
+                    }
+                    @if ('Pages.Reports.Distribution.Create' | permission) {
+                        <button class="btn btn-success" type="button" (click)="save()">{{ 'Save' | localize }}</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

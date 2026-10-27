@@ -1,0 +1,171 @@
+{
+  "helpId": "perf.parating.edit",
+  "lang": "en",
+  "title": "PA Ratings — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.PARating",
+  "overviewHtml": "<p>A rating reviewers can give, with the score range it stands for.</p><p>Its <strong>Code</strong> is its value: the scorecard averages the codes of the ratings given, so codes should be numbers, with the best rating highest. The <strong>From</strong> and <strong>To</strong> range bands a final score into this rating on the scorecard and manager evaluation reports.</p>",
+  "aliasIndex": {
+    "loc:Code": "PARating.Code",
+    "dom:PARating_Code": "PARating.Code",
+    "loc:NameEn": "PARating.NameEn",
+    "dom:PARating_NameEn": "PARating.NameEn",
+    "loc:NameAr": "PARating.NameAr",
+    "dom:PARating_NameAr": "PARating.NameAr",
+    "loc:FromRange": "PARating.FromRange",
+    "dom:PARating_FromRange": "PARating.FromRange",
+    "loc:ToRange": "PARating.ToRange",
+    "dom:PARating_ToRange": "PARating.ToRange",
+    "loc:MaxLimit": "PARating.MaxLimit",
+    "dom:PARating_MaxLimit": "PARating.MaxLimit",
+    "loc:DescriptionEn": "PARating.DescriptionEn",
+    "dom:PARating_DescriptionEn": "PARating.DescriptionEn",
+    "loc:DescriptionAr": "PARating.DescriptionAr",
+    "dom:PARating_DescriptionAr": "PARating.DescriptionAr",
+    "loc:IsCommentRequired": "PARating.IsCommentRequired",
+    "dom:PARating_IsCommentRequired": "PARating.IsCommentRequired",
+    "loc:Status": "PARating.Status",
+    "dom:PARating_Status": "PARating.Status"
+  },
+  "fields": [
+    {
+      "id": "PARating.Code",
+      "label": "Code",
+      "section": "PARatings",
+      "aliases": [
+        "loc:Code",
+        "dom:PARating_Code"
+      ],
+      "rules": "Optional. Maximum 64 characters. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PARating.NameEn",
+      "label": "NameEn",
+      "section": "PARatings",
+      "aliases": [
+        "loc:NameEn",
+        "dom:PARating_NameEn"
+      ],
+      "rules": "Required. Maximum 256 characters. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PARating.NameAr",
+      "label": "NameAr",
+      "section": "PARatings",
+      "aliases": [
+        "loc:NameAr",
+        "dom:PARating_NameAr"
+      ],
+      "rules": "Required. Maximum 256 characters. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PARating.FromRange",
+      "label": "FromRange",
+      "section": "PARatings",
+      "aliases": [
+        "loc:FromRange",
+        "dom:PARating_FromRange"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The lowest final score that counts as this rating.</p><p><strong>Example.</strong> <code>70</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PARating.ToRange",
+      "label": "ToRange",
+      "section": "PARatings",
+      "aliases": [
+        "loc:ToRange",
+        "dom:PARating_ToRange"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The highest final score that counts as this rating.</p><p><strong>Example.</strong> <code>85</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PARating.MaxLimit",
+      "label": "MaxLimit",
+      "section": "PARatings",
+      "aliases": [
+        "loc:MaxLimit",
+        "dom:PARating_MaxLimit"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most times the rating may be given on one form.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PARating.DescriptionEn",
+      "label": "DescriptionEn",
+      "section": "PARatings",
+      "aliases": [
+        "loc:DescriptionEn",
+        "dom:PARating_DescriptionEn"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A description of the rating in English.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PARating.DescriptionAr",
+      "label": "DescriptionAr",
+      "section": "PARatings",
+      "aliases": [
+        "loc:DescriptionAr",
+        "dom:PARating_DescriptionAr"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A description of the rating in Arabic.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PARating.IsCommentRequired",
+      "label": "IsCommentRequired",
+      "section": "PARatings",
+      "aliases": [
+        "loc:IsCommentRequired",
+        "dom:PARating_IsCommentRequired"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether giving this rating needs a comment.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PARating.Status",
+      "label": "Status",
+      "section": "PARatings",
+      "aliases": [
+        "loc:Status",
+        "dom:PARating_Status"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the rating is active.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "helpId": "pay.employee-sub-group-payment.edit",
+  "lang": "en",
+  "title": "Employee Sub Group Payments — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupPayment",
+  "overviewHtml": "<p>A standing payment for everyone in the grade, paid through a wagetype.</p><p>Only two pay intervals are used. <em>Yearly</em> rows are paid once a year, in their <strong>Pay Month</strong>. <em>End Of Service</em> rows are paid in the employee's end-of-service run. Rows with any other interval are not paid.</p>",
+  "aliasIndex": {
+    "loc:WageType": "EmployeeSubGroupPayment.WageTypeId",
+    "dom:EmployeeSubGroupPayment_WageTypeId": "EmployeeSubGroupPayment.WageTypeId",
+    "loc:Amount": "EmployeeSubGroupPayment.Amount",
+    "dom:EmployeeSubGroupPayment_Amount": "EmployeeSubGroupPayment.Amount",
+    "loc:PayInterval": "EmployeeSubGroupPayment.PayInterval",
+    "dom:EmployeeSubGroupPayment_PayInterval": "EmployeeSubGroupPayment.PayInterval",
+    "loc:PayMonth": "EmployeeSubGroupPayment.PayMonth",
+    "dom:EmployeeSubGroupPayment_PayMonth": "EmployeeSubGroupPayment.PayMonth"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupPayment.WageTypeId",
+      "label": "WageType",
+      "section": "EmployeeSubGroupPayments",
+      "aliases": [
+        "loc:WageType",
+        "dom:EmployeeSubGroupPayment_WageTypeId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wagetype the payment is made under.</p><p><strong>Example.</strong> Annual Bonus</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupPayment.Amount",
+      "label": "Amount",
+      "section": "EmployeeSubGroupPayments",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeSubGroupPayment_Amount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount paid.</p><p><strong>Example.</strong> <code>300</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupPayment.PayInterval",
+      "label": "PayInterval",
+      "section": "EmployeeSubGroupPayments",
+      "aliases": [
+        "loc:PayInterval",
+        "dom:EmployeeSubGroupPayment_PayInterval"
+      ],
+      "rules": "Required. One of: Monthly, Daily, Hourly, End Of Service, Yearly.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the payment is made.</p><p><strong>Example.</strong> Yearly</p><p><strong>Why it matters.</strong> Only <em>Yearly</em> and <em>End Of Service</em> are paid.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupPayment.PayMonth",
+      "label": "PayMonth",
+      "section": "EmployeeSubGroupPayments",
+      "aliases": [
+        "loc:PayMonth",
+        "dom:EmployeeSubGroupPayment_PayMonth"
+      ],
+      "rules": "Required. One of: None, January, February, March, April, May, June, July, August, September, October, November, December.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The month a <em>Yearly</em> payment is made.</p><p><strong>Example.</strong> December</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

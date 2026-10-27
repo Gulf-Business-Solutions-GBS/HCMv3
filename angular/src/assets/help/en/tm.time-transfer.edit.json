@@ -1,0 +1,91 @@
+{
+  "helpId": "tm.time-transfer.edit",
+  "lang": "en",
+  "title": "Time Transfers — Create / Edit",
+  "entity": "HCMv3.TimeManagement.TimeTransfer",
+  "overviewHtml": "<p>A manual adjustment to one of an employee's time balances on a date. What it adjusts depends on its transfer type, which payroll and the time engine recognise by code:</p><ul><li><code>1</code> adds to the annual leave accrued on that date.</li><li><code>2</code> counts as sick leave already taken in the cycle.</li><li><code>5</code> counts as absence days taken off the service indemnity is counted on.</li><li><code>6</code> posts an opening amount to the employee's fund in that pay period.</li></ul>",
+  "aliasIndex": {
+    "loc:Employee": "TimeTransfer.EmployeeId",
+    "dom:TimeTransfer_EmployeeId": "TimeTransfer.EmployeeId",
+    "loc:TransferDate": "TimeTransfer.TransferDate",
+    "dom:TimeTransfer_TransferDate": "TimeTransfer.TransferDate",
+    "loc:TransferType": "TimeTransfer.TransferTypeId",
+    "dom:TimeTransfer_TransferTypeId": "TimeTransfer.TransferTypeId",
+    "loc:TransferCount": "TimeTransfer.TransferCount",
+    "dom:TimeTransfer_TransferCount": "TimeTransfer.TransferCount",
+    "loc:Comments": "TimeTransfer.Comments",
+    "dom:TimeTransfer_Comments": "TimeTransfer.Comments"
+  },
+  "fields": [
+    {
+      "id": "TimeTransfer.EmployeeId",
+      "label": "Employee",
+      "section": "TimeTransfers",
+      "aliases": [
+        "loc:Employee",
+        "dom:TimeTransfer_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee whose balance is adjusted.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeTransfer.TransferDate",
+      "label": "TransferDate",
+      "section": "TimeTransfers",
+      "aliases": [
+        "loc:TransferDate",
+        "dom:TimeTransfer_TransferDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the adjustment takes effect.</p><p><strong>Example.</strong> <code>2026-01-01</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeTransfer.TransferTypeId",
+      "label": "TransferType",
+      "section": "TimeTransfers",
+      "aliases": [
+        "loc:TransferType",
+        "dom:TimeTransfer_TransferTypeId"
+      ],
+      "rules": "Required. Chosen from Time Transfer Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which balance is adjusted.</p><p><strong>Example.</strong> Annual Leave Opening Balance</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeTransfer.TransferCount",
+      "label": "TransferCount",
+      "section": "TimeTransfers",
+      "aliases": [
+        "loc:TransferCount",
+        "dom:TimeTransfer_TransferCount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The days — or, for a fund transfer, the amount — of the adjustment.</p><p><strong>Example.</strong> <code>12.5</code></p><p><strong>Why it matters.</strong> Rounded to 3 decimal places when saved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeTransfer.Comments",
+      "label": "Comments",
+      "section": "TimeTransfers",
+      "aliases": [
+        "loc:Comments",
+        "dom:TimeTransfer_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

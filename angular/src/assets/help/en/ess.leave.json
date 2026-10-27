@@ -1,0 +1,305 @@
+{
+  "helpId": "ess.leave",
+  "lang": "en",
+  "title": "My Leave",
+  "entity": null,
+  "overviewHtml": "<p>Book leave, see what you have left, change leave already approved, and tell HR when you are back.</p><p>Your balances sit at the top, one card per leave type. Below them are the forms — applying, changing an approved leave, reporting your return — and then everything you have booked.</p><p>Leave you have asked for but that is not yet approved is already held against your balance. That is deliberate: it stops you booking the same days twice while the first request is with your manager.</p>",
+  "aliasIndex": {
+    "loc:AbsenceType": "ess.leave.absence-type",
+    "loc:StartDate": "ess.leave.start-date",
+    "loc:EndDate": "ess.leave.end-date",
+    "loc:ReasonForTheChange": "ess.leave.reason-for-the-change",
+    "loc:RejoiningDate": "ess.leave.rejoining-date",
+    "loc:ReturnReason": "ess.leave.return-reason",
+    "loc:PaidLeaveDates": "ess.leave.paid-leave-dates",
+    "loc:UnpaidLeaveDates": "ess.leave.unpaid-leave-dates",
+    "loc:Comments": "ess.common.comments",
+    "loc:LeavePaymentTypeLabel": "ess.leave.leave-payment-type-label",
+    "loc:PaymentDateLabel": "ess.leave.payment-date-label",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:Status": "ess.common.status",
+    "loc:ApplyForLeave": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:BookableBalance": "ess.leave.bookable-balance",
+    "loc:SickLeaveDeductionBreakdown": "ess.leave.sick-breakdown",
+    "loc:Days": "ess.leave.days",
+    "loc:RequestAChange": "ess.common.amend",
+    "loc:ReportMyReturn": "ess.leave.report-return",
+    "loc:RequestCancellation": "ess.leave.request-cancellation"
+  },
+  "fields": [
+    {
+      "id": "ess.leave.absence-type",
+      "label": "AbsenceType",
+      "section": null,
+      "aliases": [
+        "loc:AbsenceType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which kind of leave you are taking — annual, sick, unpaid, compassionate, maternity — from the types your company gives you.</p><p><strong>Example.</strong> Annual Leave.</p><p><strong>Why it matters.</strong> Each type has its own balance, its own rules about notice and documents, and its own effect on pay. Sick leave in particular is paid on a sliding scale rather than in full, which is what the deduction breakdown below explains.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.start-date",
+      "label": "StartDate",
+      "section": null,
+      "aliases": [
+        "loc:StartDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Your first day off.</p><p><strong>Example.</strong> 3 August 2026.</p><p><strong>Why it matters.</strong> It is the first day counted, so a start date on a weekend or a public holiday usually means you meant the next working day. Some leave types also have a notice rule — a request made too close to the date is refused.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.end-date",
+      "label": "EndDate",
+      "section": null,
+      "aliases": [
+        "loc:EndDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Your last day off. You return the day after it.</p><p><strong>Example.</strong> 14 August 2026, coming back on the 15th.</p><p><strong>Why it matters.</strong> It must be on or after the start date, and the days between the two are what comes off your balance — how weekends and holidays count is your company's rule, and the <strong>Days</strong> figure shows the result.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.reason-for-the-change",
+      "label": "ReasonForTheChange",
+      "section": null,
+      "aliases": [
+        "loc:ReasonForTheChange"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Why the approved leave needs changing. Required.</p><p><strong>Example.</strong> \"Client visit brought forward — coming back a week early.\"</p><p><strong>Why it matters.</strong> You are asking somebody to revisit a decision they already made, and they will want to know why. It is required for that reason, and it stays on the record with the amendment.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.rejoining-date",
+      "label": "RejoiningDate",
+      "section": null,
+      "aliases": [
+        "loc:RejoiningDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The day you actually came back to work.</p><p><strong>Example.</strong> 15 August 2026 as planned; or the 11th, four days early.</p><p><strong>Why it matters.</strong> It is what your attendance is counted from, and what decides whether days go back to your balance or extra ones come off. A date later than planned is a late return, and the days between are dealt with under your company's rule for that.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.return-reason",
+      "label": "ReturnReason",
+      "section": null,
+      "aliases": [
+        "loc:ReturnReason"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Why you came back on a different day from the one approved. Needed only when the return is early or late.</p><p><strong>Example.</strong> \"Flight cancelled, first seat available was Tuesday.\"</p><p><strong>Why it matters.</strong> A return that is not on the approved day has to be explained to whoever approves it, and a late one may be treated as absence without it. Saying what happened is what keeps the record straight.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.paid-leave-dates",
+      "label": "PaidLeaveDates",
+      "section": null,
+      "aliases": [
+        "loc:PaidLeaveDates"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> On a late return, which of the extra days are to be taken as paid leave — covered by a balance you still have.</p><p><strong>Example.</strong> Returned four days late, two of them taken as annual leave.</p><p><strong>Why it matters.</strong> It is how an overrun is settled honestly: days covered by a balance come off it, and the rest are dealt with as unpaid. Only days you actually have a balance for can go here.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.unpaid-leave-dates",
+      "label": "UnpaidLeaveDates",
+      "section": null,
+      "aliases": [
+        "loc:UnpaidLeaveDates"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> On a late return, which of the extra days are unpaid.</p><p><strong>Example.</strong> The other two of the four days.</p><p><strong>Why it matters.</strong> These days are deducted from your pay. Splitting an overrun honestly between paid and unpaid here is what stops the whole of it being treated as unauthorised absence, which is the worse outcome.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Anything you want the people approving this to read. Free text, and optional.</p><p><strong>Example.</strong> \"Flying on the 14th, back on the 28th — cover agreed with Ahmed.\"</p><p><strong>Why it matters.</strong> It is the only place you can explain a request that needs explaining, and it stays with the request for good: approvers see it, and so does anyone who looks the request up afterwards. A request that surprises somebody is a request that comes back to you.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.leave-payment-type-label",
+      "label": "LeavePaymentTypeLabel",
+      "section": null,
+      "aliases": [
+        "loc:LeavePaymentTypeLabel"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether you want the leave paid as usual, or your leave salary paid in advance before you go.</p><p><strong>Example.</strong> Paid in advance, for a month away.</p><p><strong>Why it matters.</strong> Advance payment brings money forward, it does not add any: the advance is settled against the pay you would have had while away. It also needs more notice, because it has to reach a payroll run before you leave.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.payment-date-label",
+      "label": "PaymentDateLabel",
+      "section": null,
+      "aliases": [
+        "loc:PaymentDateLabel"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When you want the advance paid, if you asked for one.</p><p><strong>Example.</strong> 28 July 2026, the payroll before you fly.</p><p><strong>Why it matters.</strong> It has to be a date a payroll run can still reach. Asking for an advance two days before you go, after the month's payroll has been processed, means it arrives after you have gone.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Everything you have asked for on this screen, newest first, with where each one has got to.</p><p><strong>Example.</strong> Three ticket requests: one approved last month, one waiting, one you withdrew.</p><p><strong>Why it matters.</strong> This is the record. A request that is not in this list was never submitted — if you filled the form in and did not press <strong>Save</strong>, nothing was sent.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where a request has got to. <strong>Draft</strong> is not submitted, <strong>Pending</strong> is waiting for somebody, <strong>Approved</strong> has been agreed and acted on, <strong>Rejected</strong> was turned down, and <strong>Withdrawn</strong> is one you took back yourself.</p><p><strong>Example.</strong> Pending — sitting with your line manager.</p><p><strong>Why it matters.</strong> Only an approved request changes anything: your balance, your pay or your record. A pending one has done nothing yet, whatever the form said when you filled it in.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "ApplyForLeave",
+      "section": null,
+      "aliases": [
+        "loc:ApplyForLeave"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The button at the top right of the screen that opens the form. Filling it in and pressing <strong>Save</strong> submits the request; nothing is sent until you do.</p><p><strong>Example.</strong> <strong>Request Leave</strong>, <strong>Request Ticket</strong>, <strong>Request Loan</strong> — the wording follows the screen.</p><p><strong>Why it matters.</strong> Once submitted the request goes to whoever approves that kind of request in your company, and you cannot edit it in place. To change something, withdraw it and make a new one, or use <strong>Amend</strong> where the screen offers it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who a request has reached, what each person did with it and when, including any comment they left.</p><p><strong>Example.</strong> Submitted 09:12 → Line manager approved 11:40 (\"cover arranged\") → with HR.</p><p><strong>Why it matters.</strong> It answers \"who is it with?\" without asking anybody. If a request has sat with one person for days, this tells you which person, which is who to chase.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.bookable-balance",
+      "label": "BookableBalance",
+      "section": null,
+      "aliases": [
+        "loc:BookableBalance"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many days you can still book, per leave type. <strong>Remaining</strong> is shown underneath it, and the two are different: remaining counts only leave already approved, while bookable also holds back what you have requested and not yet had approved.</p><p><strong>Example.</strong> Remaining 18, bookable 13 — because you have a five-day request waiting.</p><p><strong>Why it matters.</strong> <strong>Book against bookable, not remaining.</strong> The gap between them is leave you have already asked for; treating it as free is how a second request is rejected for a balance you thought you had.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.sick-breakdown",
+      "label": "SickLeaveDeductionBreakdown",
+      "section": null,
+      "aliases": [
+        "loc:SickLeaveDeductionBreakdown"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> For sick leave, how the days you asked for are paid: which are at full pay, which at part pay and which unpaid, worked out from your company's rule and the sick leave you have already taken this year.</p><p><strong>Example.</strong> Days 1–15 at full pay, 16–25 at three quarters, 26–35 at half.</p><p><strong>Why it matters.</strong> Sick leave is rarely paid in full throughout, and the steps depend on how much you have already had. This is shown before you submit precisely so that the deduction is not a surprise on the payslip.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.days",
+      "label": "Days",
+      "section": null,
+      "aliases": [
+        "loc:Days"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many days the leave actually costs you, from your dates and your company's calendar.</p><p><strong>Example.</strong> 3 to 14 August shows as 10 days, not 12, where the weekends do not count.</p><p><strong>Why it matters.</strong> This, not the span of dates, is what comes off your balance. If it is not the number you expected, the difference is weekends or public holidays inside your dates — which is worth knowing before you book the flights.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.amend",
+      "label": "RequestAChange",
+      "section": null,
+      "aliases": [
+        "loc:RequestAChange"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Changes a request that has already been approved, by raising a second request linked to the first. Offered only on the screens where a change is a real thing to ask for.</p><p><strong>Example.</strong> Your approved leave was ten days and you now need eight.</p><p><strong>Why it matters.</strong> An amendment goes through approval like any other request, so nothing changes until it is approved too. The original stays in the list — the pair is the record of what was asked for and what it became.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.report-return",
+      "label": "ReportMyReturn",
+      "section": null,
+      "aliases": [
+        "loc:ReportMyReturn"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Opens the form for telling HR you are back, once your leave has started.</p><p><strong>Example.</strong> Back on Sunday as planned; or back four days early.</p><p><strong>Why it matters.</strong> Until your return is recorded, the system still has you away — which affects attendance, payroll and anybody looking for you. Reporting a return early gives the unused days back to your balance.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.request-cancellation",
+      "label": "RequestCancellation",
+      "section": null,
+      "aliases": [
+        "loc:RequestCancellation"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Asks for approved leave to be cancelled outright, before it starts.</p><p><strong>Example.</strong> Approved leave next month that you no longer want.</p><p><strong>Why it matters.</strong> It is a request, not a cancellation: the leave stands until somebody approves it, and the days come back to your balance then, not now. Do not book anything over those days before you see it approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

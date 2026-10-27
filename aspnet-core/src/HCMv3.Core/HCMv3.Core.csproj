@@ -1,0 +1,77 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\common.props"></Import>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <AssemblyName>HCMv3.Core</AssemblyName>
+    <PackageId>HCMv3.Core</PackageId>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <UserSecretsId>MyCompanyName-HCMv3-894FDFC1-6482-4A56-926A-3C46C9FE0329</UserSecretsId>
+    <RootNamespace>HCMv3</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\HCMv3\*.xml;Net\Emailing\EmailTemplates\default.html;GoLiveSetup\ReferenceData\Packs\*.json" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.104.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.3" />
+    <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.5.0" />
+    <PackageReference Include="Azure.Identity" Version="1.18.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.3" />
+    <PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="4.1.0" />
+    <PackageReference Include="MySqlConnector" Version="2.4.0" />
+    <PackageReference Include="PayPalHttp" Version="1.0.1" />
+    <PackageReference Include="PayPalCheckoutSdk" Version="1.0.4" />
+    <PackageReference Include="QRCoder" Version="1.7.0" />
+    <PackageReference Include="Stripe.net" Version="50.4.1" />
+    <PackageReference Include="System.Data.OleDb" Version="9.0.0" />
+    <PackageReference Include="TimeZoneConverter" Version="7.2.0" />
+    <PackageReference Include="Abp.AspNetZeroCore" Version="5.1.0" />
+    <PackageReference Include="SkiaSharp" Version="3.119.2" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.2" />
+    <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="3.119.2" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="3.119.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Abp.ZeroCore.EntityFrameworkCore" Version="11.1.0" />
+    <PackageReference Include="Abp.Mapperly" Version="11.1.0" />
+    <PackageReference Include="Abp.MailKit" Version="11.1.0" />
+    <PackageReference Include="Abp.Zero.Ldap" Version="11.1.0" />
+    <PackageReference Include="Abp.ZeroCore.OpenIddict" Version="11.1.0" />
+    <PackageReference Include="Twilio" Version="7.14.3" />
+  </ItemGroup>
+  <!-- Security pins: lift vulnerable transitive packages to patched versions (NU1902/NU1903).
+       Drop each line once the package that brings it in (Abp.MailKit, ClosedXML, DevExpress) ships the fix. -->
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.16.0" />
+    <PackageReference Include="MimeKit" Version="4.16.0" />
+    <PackageReference Include="System.IO.Packaging" Version="8.0.1" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HCMv3.Core.Shared\HCMv3.Core.Shared.csproj" />
+  </ItemGroup>
+
+  <!--
+    The build's own version number and change log, read from git on every build and embedded (see
+    tools/release-log/build-release-log.ps1 and Releases/ReleaseLog.cs). Nobody types a version: the build number is
+    the commit count. If git or PowerShell is missing (e.g. a container build) the step is skipped and the last
+    generated file, if any, is embedded; with none, the app reports its base version and an empty log.
+  -->
+  <PropertyGroup>
+    <HCMv3BaseVersion>3.0</HCMv3BaseVersion>
+    <ReleaseLogFile>$(MSBuildProjectDirectory)\Releases\release-log.json</ReleaseLogFile>
+  </PropertyGroup>
+  <Target Name="GenerateReleaseLog" BeforeTargets="BeforeBuild">
+    <Exec Condition="'$(OS)' == 'Windows_NT'" ContinueOnError="true" StandardOutputImportance="low" Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\..\..\..\tools\release-log\build-release-log.ps1&quot; -RepoRoot &quot;$(MSBuildProjectDirectory)\..\..\..&quot; -OutFile &quot;$(ReleaseLogFile)&quot; -BaseVersion $(HCMv3BaseVersion)" />
+    <ItemGroup>
+      <EmbeddedResource Include="$(ReleaseLogFile)" LogicalName="HCMv3.Releases.release-log.json" Condition="Exists('$(ReleaseLogFile)')" />
+    </ItemGroup>
+  </Target>
+</Project>

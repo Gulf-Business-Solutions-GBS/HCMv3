@@ -1,0 +1,153 @@
+<div [@routerTransition]>
+    <sub-header [title]="'OvertimeTypes' | localize" [description]="'GeneralMasterInfo' | localize">
+        <div role="actions">
+            @if ('Pages.GeneralMasterInfo.OvertimeTypes.Create' | permission) {
+                <button (click)="createOvertimeType()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="form">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-xl-8 col-md-8">
+                            <div class="input-group">
+                                <input
+                                    [ngModel]="filterText()"
+                                    (ngModelChange)="filterText.set($event)"
+                                    name="filterText"
+                                    autoFocus
+                                    class="form-control"
+                                    [placeholder]="l('SearchWithThreeDot')"
+                                    type="text"
+                                    (keydown.enter)="getOvertimeTypes()" />
+                                <button class="btn btn-primary" (click)="getOvertimeTypes()">
+                                    <i class="flaticon-search-1" aria-label="Search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getOvertimeTypes($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '50rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.GeneralMasterInfo.OvertimeTypes.Edit',
+                                                    'Pages.GeneralMasterInfo.OvertimeTypes.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="code">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="code" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="nameEn">
+                                        {{ 'NameEn' | localize }}
+                                        <p-sortIcon field="nameEn" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="nameAr">
+                                        {{ 'NameAr' | localize }}
+                                        <p-sortIcon field="nameAr" />
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="overtimeRate">
+                                        {{ 'OvertimeRate' | localize }}
+                                        <p-sortIcon field="overtimeRate" />
+                                    </th>
+                                    <th style="min-width: 200px">{{ 'WageType' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.GeneralMasterInfo.OvertimeTypes.Edit',
+                                                    'Pages.GeneralMasterInfo.OvertimeTypes.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.code }}" class="hide-overflown">{{ record.code }}</span>
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        <span pTooltip="{{ record.nameEn }}" class="hide-overflown">{{ record.nameEn }}</span>
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        <span pTooltip="{{ record.nameAr }}" class="hide-overflown">{{ record.nameAr }}</span>
+                                    </td>
+                                    <td style="min-width: 120px">
+                                        {{ record.overtimeRate }}
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        @if (record.wageTypeId) {
+                                            {{ record.wageTypeCode }} - {{ record.wageTypeNameEn }}
+                                        }
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getOvertimeTypes($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditOvertimeTypeModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

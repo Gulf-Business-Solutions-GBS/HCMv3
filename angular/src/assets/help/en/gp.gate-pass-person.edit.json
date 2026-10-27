@@ -1,0 +1,107 @@
+{
+  "helpId": "gp.gate-pass-person.edit",
+  "lang": "en",
+  "title": "Gate Pass Persons — Create / Edit",
+  "entity": "HCMv3.GatePassManagement.GatePassPerson",
+  "overviewHtml": "<p>A person covered by a gate pass. As in the old system, an employee, a vendor and a full name are all required, even for a visitor. Each person type can be added once per pass.</p>",
+  "aliasIndex": {
+    "loc:PersonType": "GatePassPerson.PersonTypeId",
+    "dom:GatePassPerson_PersonTypeId": "GatePassPerson.PersonTypeId",
+    "loc:Employee": "GatePassPerson.EmployeeId",
+    "dom:GatePassPerson_EmployeeId": "GatePassPerson.EmployeeId",
+    "loc:PersonFullName": "GatePassPerson.PersonFullName",
+    "dom:GatePassPerson_PersonFullName": "GatePassPerson.PersonFullName",
+    "loc:GatePassVendor": "GatePassPerson.GatePassVendorId",
+    "dom:GatePassPerson_GatePassVendorId": "GatePassPerson.GatePassVendorId",
+    "loc:PersonCivildID": "GatePassPerson.PersonCivildID",
+    "dom:GatePassPerson_PersonCivildID": "GatePassPerson.PersonCivildID",
+    "loc:PersonPassportNumber": "GatePassPerson.PersonPassportNumber",
+    "dom:GatePassPerson_PersonPassportNumber": "GatePassPerson.PersonPassportNumber"
+  },
+  "fields": [
+    {
+      "id": "GatePassPerson.PersonTypeId",
+      "label": "PersonType",
+      "section": "GatePassPersons",
+      "aliases": [
+        "loc:PersonType",
+        "dom:GatePassPerson_PersonTypeId"
+      ],
+      "rules": "Required. Chosen from Person Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What kind of person.</p><p><strong>Example.</strong> Contractor</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassPerson.EmployeeId",
+      "label": "Employee",
+      "section": "GatePassPersons",
+      "aliases": [
+        "loc:Employee",
+        "dom:GatePassPerson_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee concerned.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassPerson.PersonFullName",
+      "label": "PersonFullName",
+      "section": "GatePassPersons",
+      "aliases": [
+        "loc:PersonFullName",
+        "dom:GatePassPerson_PersonFullName"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The person's full name.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassPerson.GatePassVendorId",
+      "label": "GatePassVendor",
+      "section": "GatePassPersons",
+      "aliases": [
+        "loc:GatePassVendor",
+        "dom:GatePassPerson_GatePassVendorId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The vendor the person comes from.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassPerson.PersonCivildID",
+      "label": "PersonCivildID",
+      "section": "GatePassPersons",
+      "aliases": [
+        "loc:PersonCivildID",
+        "dom:GatePassPerson_PersonCivildID"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The person's civil ID.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassPerson.PersonPassportNumber",
+      "label": "PersonPassportNumber",
+      "section": "GatePassPersons",
+      "aliases": [
+        "loc:PersonPassportNumber",
+        "dom:GatePassPerson_PersonPassportNumber"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The person's passport number.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

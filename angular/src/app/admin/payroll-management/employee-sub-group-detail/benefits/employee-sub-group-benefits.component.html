@@ -1,0 +1,91 @@
+<div class="row">
+    <div class="col-12 p-3">
+        @if ('Pages.PayrollManagement.EmployeeSubGroupBenefits.Create' | permission) {
+            <button (click)="createRecord()" class="btn btn-primary btn-sm float-end mb-3">
+                <i class="fa fa-plus"></i>
+                {{ 'CreateNew' | localize }}
+            </button>
+        }
+    </div>
+    <div class="col-12">
+        <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+            <p-table
+                #dataTable
+                sortMode="multiple"
+                (onLazyLoad)="getRecords($event)"
+                [value]="primengTableHelper.records()"
+                rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                [paginator]="false"
+                [lazy]="true"
+                [tableStyle]="{ 'min-width': '40rem' }">
+                <ng-template #header>
+                    <tr>
+                        <th
+                            style="width: 130px"
+                            [hidden]="
+                                !(
+                                    [
+                                        'Pages.PayrollManagement.EmployeeSubGroupBenefits.Edit',
+                                        'Pages.PayrollManagement.EmployeeSubGroupBenefits.Delete'
+                                    ] | permissionAny
+                                )
+                            ">
+                            {{ 'Actions' | localize }}
+                        </th>
+                        <th>{{ 'BenefitType' | localize }}</th>
+                        <th>{{ 'MaxAmount' | localize }}</th>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-record="$implicit">
+                    <tr [class.table-active]="selectedBenefit()?.id === record.id">
+                        <td
+                            [hidden]="
+                                !(
+                                    [
+                                        'Pages.PayrollManagement.EmployeeSubGroupBenefits.Edit',
+                                        'Pages.PayrollManagement.EmployeeSubGroupBenefits.Delete'
+                                    ] | permissionAny
+                                )
+                            ">
+                            <button
+                                type="button"
+                                class="btn btn-primary btn-sm dropdown-toggle"
+                                (click)="showMenu($event, record, actionsMenu)">
+                                <i class="fa fa-cog"></i>
+                                {{ 'Actions' | localize }}
+                            </button>
+                        </td>
+                        <td>
+                            <a href="javascript:;" (click)="manageDetails(record)">{{ record.benefitTypeName }}</a>
+                        </td>
+                        <td>{{ record.maxAmount }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            @if (primengTableHelper.totalRecordsCount() == 0) {
+                <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+            }
+            <div class="primeng-paging-container">
+                <p-paginator
+                    [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                    #paginator
+                    (onPageChange)="getRecords($event)"
+                    [totalRecords]="primengTableHelper.totalRecordsCount()"
+                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                    [showCurrentPageReport]="true"
+                    [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+            </div>
+        </div>
+    </div>
+
+    @if (selectedBenefit()) {
+        <div class="col-12 mt-4">
+            <hr />
+            <h5>{{ 'EmployeeSubGroupBenefitDetails' | localize }}: {{ selectedBenefit().benefitTypeName }}</h5>
+            <employee-sub-group-benefit-details [employeeSubGroupBenefitId]="selectedBenefit().id" />
+        </div>
+    }
+</div>
+
+<createOrEditEmployeeSubGroupBenefitModal #createOrEditModal (modalSave)="reloadPage()" />

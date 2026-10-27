@@ -1,0 +1,91 @@
+{
+  "helpId": "sv.survey.edit",
+  "lang": "ar",
+  "title": "الاستبيانات — إنشاء / تحرير",
+  "entity": "HCMv3.SurveyManagement.Survey",
+  "overviewHtml": "<p>استبيان للموظفين. لا يمكن الإجابة عنه في شاشة تعبئة الاستبيان إلا بين تاريخي بدئه وانتهائه. ولا يمكن أن يكون تاريخ الانتهاء قبل تاريخ البدء. وتظهر النتائج في تقريري استبيانات الموظفين وحالة الاستبيانات.</p>",
+  "aliasIndex": {
+    "loc:Code": "Survey.Code",
+    "dom:Survey_Code": "Survey.Code",
+    "loc:NameEn": "Survey.NameEn",
+    "dom:Survey_NameEn": "Survey.NameEn",
+    "loc:NameAr": "Survey.NameAr",
+    "dom:Survey_NameAr": "Survey.NameAr",
+    "loc:StartDate": "Survey.StartDate",
+    "dom:Survey_StartDate": "Survey.StartDate",
+    "loc:EndDate": "Survey.EndDate",
+    "dom:Survey_EndDate": "Survey.EndDate"
+  },
+  "fields": [
+    {
+      "id": "Survey.Code",
+      "label": "Code",
+      "section": "Surveys",
+      "aliases": [
+        "loc:Code",
+        "dom:Survey_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Survey.NameEn",
+      "label": "NameEn",
+      "section": "Surveys",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Survey_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Survey.NameAr",
+      "label": "NameAr",
+      "section": "Surveys",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Survey_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Survey.StartDate",
+      "label": "StartDate",
+      "section": "Surveys",
+      "aliases": [
+        "loc:StartDate",
+        "dom:Survey_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Survey.EndDate",
+      "label": "EndDate",
+      "section": "Surveys",
+      "aliases": [
+        "loc:EndDate",
+        "dom:Survey_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

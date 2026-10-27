@@ -1,0 +1,107 @@
+{
+  "helpId": "pa.emp-talent-matrix-data.edit",
+  "lang": "en",
+  "title": "Employee Talent Matrix Data — Create / Edit",
+  "entity": "HCMv3.SuccessionManagement.EmpTalentMatrixData",
+  "overviewHtml": "<p>The employee's position on the nine-box talent matrix for a period. Periods for the same employee cannot overlap.</p><p>It is recorded for reference; no calculation or report reads it at present.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmpTalentMatrixData.StartDate",
+    "dom:EmpTalentMatrixData_StartDate": "EmpTalentMatrixData.StartDate",
+    "loc:EndDate": "EmpTalentMatrixData.EndDate",
+    "dom:EmpTalentMatrixData_EndDate": "EmpTalentMatrixData.EndDate",
+    "loc:PerformanceRatingId": "EmpTalentMatrixData.PerformanceRatingId",
+    "dom:EmpTalentMatrixData_PerformanceRatingId": "EmpTalentMatrixData.PerformanceRatingId",
+    "loc:PotentialRatingId": "EmpTalentMatrixData.PotentialRatingId",
+    "dom:EmpTalentMatrixData_PotentialRatingId": "EmpTalentMatrixData.PotentialRatingId",
+    "loc:OverallRatingId": "EmpTalentMatrixData.OverallRatingId",
+    "dom:EmpTalentMatrixData_OverallRatingId": "EmpTalentMatrixData.OverallRatingId",
+    "loc:CalibratedRatingId": "EmpTalentMatrixData.CalibratedRatingId",
+    "dom:EmpTalentMatrixData_CalibratedRatingId": "EmpTalentMatrixData.CalibratedRatingId"
+  },
+  "fields": [
+    {
+      "id": "EmpTalentMatrixData.StartDate",
+      "label": "StartDate",
+      "section": "EmpTalentMatrixDatas",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmpTalentMatrixData_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpTalentMatrixData.EndDate",
+      "label": "EndDate",
+      "section": "EmpTalentMatrixDatas",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmpTalentMatrixData_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpTalentMatrixData.PerformanceRatingId",
+      "label": "PerformanceRatingId",
+      "section": "EmpTalentMatrixDatas",
+      "aliases": [
+        "loc:PerformanceRatingId",
+        "dom:EmpTalentMatrixData_PerformanceRatingId"
+      ],
+      "rules": "Required. Chosen from Nine Box Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The performance axis rating.</p><p><strong>Example.</strong> High</p>",
+      "adminHtml": "<p>Maintained under Succession Management.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmpTalentMatrixData.PotentialRatingId",
+      "label": "PotentialRatingId",
+      "section": "EmpTalentMatrixDatas",
+      "aliases": [
+        "loc:PotentialRatingId",
+        "dom:EmpTalentMatrixData_PotentialRatingId"
+      ],
+      "rules": "Required. Chosen from Nine Box Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The potential axis rating.</p><p><strong>Example.</strong> Medium</p>",
+      "adminHtml": "<p>Maintained under Succession Management.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmpTalentMatrixData.OverallRatingId",
+      "label": "OverallRatingId",
+      "section": "EmpTalentMatrixDatas",
+      "aliases": [
+        "loc:OverallRatingId",
+        "dom:EmpTalentMatrixData_OverallRatingId"
+      ],
+      "rules": "Required. Chosen from Nine Box Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The overall box the employee falls in.</p><p><strong>Example.</strong> High Performer</p>",
+      "adminHtml": "<p>Maintained under Succession Management.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmpTalentMatrixData.CalibratedRatingId",
+      "label": "CalibratedRatingId",
+      "section": "EmpTalentMatrixDatas",
+      "aliases": [
+        "loc:CalibratedRatingId",
+        "dom:EmpTalentMatrixData_CalibratedRatingId"
+      ],
+      "rules": "Required. Chosen from Nine Box Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The box after calibration review.</p><p><strong>Example.</strong> Star</p>",
+      "adminHtml": "<p>Maintained under Succession Management.</p>",
+      "stub": false
+    }
+  ]
+}

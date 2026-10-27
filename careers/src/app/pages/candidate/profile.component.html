@@ -1,0 +1,162 @@
+<div class="container page">
+    <careers-candidate-nav />
+
+    @if (loading()) {
+        <div class="loading-block">
+            <span class="spinner"></span>
+            <span>{{ 'CareersLoading' | localize }}</span>
+        </div>
+    } @else if (profile(); as p) {
+        <div class="profile__head section-title">
+            <div>
+                <h1>{{ 'CareersMyProfile' | localize }}</h1>
+                <p class="muted">{{ p.fullNameEn }}</p>
+            </div>
+
+            <div class="completion">
+                <span class="completion__label small muted">{{ 'CareersProfileCompletion' | localize }}</span>
+                <div class="completion__bar" role="progressbar" [attr.aria-valuenow]="p.profileCompletionPercent">
+                    <span class="completion__fill" [style.width.%]="p.profileCompletionPercent"></span>
+                </div>
+                <span class="completion__value">{{ p.profileCompletionPercent }}%</span>
+            </div>
+        </div>
+
+        <form #profileForm="ngForm" (ngSubmit)="save(profileForm)" novalidate>
+            <section class="card">
+                <h2>{{ 'CareersNameEnglish' | localize }}</h2>
+                <div class="grid-4">
+                    <div class="field">
+                        <label class="field__label" for="firstNameEn">{{ 'FirstNameEn' | localize }}</label>
+                        <input id="firstNameEn" name="firstNameEn" class="input" required maxlength="256"
+                            [ngModel]="model().firstNameEn" (ngModelChange)="patch({ firstNameEn: $event })" />
+                    </div>
+                    <div class="field">
+                        <label class="field__label" for="secondNameEn">{{ 'SecondNameEn' | localize }}</label>
+                        <input id="secondNameEn" name="secondNameEn" class="input" maxlength="256"
+                            [ngModel]="model().secondNameEn" (ngModelChange)="patch({ secondNameEn: $event })" />
+                    </div>
+                    <div class="field">
+                        <label class="field__label" for="thirdNameEn">{{ 'ThirdNameEn' | localize }}</label>
+                        <input id="thirdNameEn" name="thirdNameEn" class="input" maxlength="256"
+                            [ngModel]="model().thirdNameEn" (ngModelChange)="patch({ thirdNameEn: $event })" />
+                    </div>
+                    <div class="field">
+                        <label class="field__label" for="lastNameEn">{{ 'LastNameEn' | localize }}</label>
+                        <input id="lastNameEn" name="lastNameEn" class="input" required maxlength="256"
+                            [ngModel]="model().lastNameEn" (ngModelChange)="patch({ lastNameEn: $event })" />
+                    </div>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>{{ 'CareersNameArabic' | localize }}</h2>
+                <div class="grid-4">
+                    <div class="field">
+                        <label class="field__label" for="firstNameAr">{{ 'FirstNameAr' | localize }}</label>
+                        <input id="firstNameAr" name="firstNameAr" class="input" dir="rtl" required maxlength="256"
+                            [ngModel]="model().firstNameAr" (ngModelChange)="patch({ firstNameAr: $event })" />
+                    </div>
+                    <div class="field">
+                        <label class="field__label" for="secondNameAr">{{ 'SecondNameAr' | localize }}</label>
+                        <input id="secondNameAr" name="secondNameAr" class="input" dir="rtl" maxlength="256"
+                            [ngModel]="model().secondNameAr" (ngModelChange)="patch({ secondNameAr: $event })" />
+                    </div>
+                    <div class="field">
+                        <label class="field__label" for="thirdNameAr">{{ 'ThirdNameAr' | localize }}</label>
+                        <input id="thirdNameAr" name="thirdNameAr" class="input" dir="rtl" maxlength="256"
+                            [ngModel]="model().thirdNameAr" (ngModelChange)="patch({ thirdNameAr: $event })" />
+                    </div>
+                    <div class="field">
+                        <label class="field__label" for="lastNameAr">{{ 'LastNameAr' | localize }}</label>
+                        <input id="lastNameAr" name="lastNameAr" class="input" dir="rtl" required maxlength="256"
+                            [ngModel]="model().lastNameAr" (ngModelChange)="patch({ lastNameAr: $event })" />
+                    </div>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>{{ 'CareersPersonalDetails' | localize }}</h2>
+                <div class="grid-3">
+                    <div class="field">
+                        <label class="field__label" for="gender">{{ 'Gender' | localize }}</label>
+                        <select id="gender" name="gender" class="select"
+                            [ngModel]="model().gender" (ngModelChange)="patch({ gender: +$event })">
+                            @for (option of genderOptions; track option) {
+                                <option [value]="option">{{ genderLabels[option] | localize }}</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label class="field__label" for="birthDate">{{ 'BirthDate' | localize }}</label>
+                        <input id="birthDate" name="birthDate" type="date" class="input"
+                            [ngModel]="birthDateText()" (ngModelChange)="setBirthDate($event)" />
+                    </div>
+
+                    <div class="field">
+                        <label class="field__label" for="civilId">{{ 'CivilID' | localize }}</label>
+                        <input id="civilId" name="civilId" type="number" min="0" class="input"
+                            [ngModel]="model().civilID" (ngModelChange)="patch({ civilID: +$event || 0 })" />
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="field">
+                        <label class="field__label" for="nationality">{{ 'Nationality' | localize }}</label>
+                        <!-- READ-ONLY BY NECESSITY, NOT BY DESIGN: the careers API exposes no nationality
+                             lookup, and the admin NationalitiesAppService is behind
+                             Pages.GeneralMasterInfo.Nationalities, which the Candidate role does not hold.
+                             The stored value is echoed back unchanged on save. -->
+                        <input id="nationality" class="input" readonly
+                            [value]="p.nationalityName || ('CareersNotSpecified' | localize)" />
+                        <span class="field__hint">{{ 'CareersNationalityLookupUnavailable' | localize }}</span>
+                    </div>
+
+                    <div class="field">
+                        <label class="field__label" for="profileEmail">{{ 'EmailAddress' | localize }}</label>
+                        <input id="profileEmail" class="input" readonly [value]="p.email || ''" />
+                        <span class="field__hint">{{ 'CareersEmailReadOnlyHint' | localize }}</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>{{ 'CareersContactDetails' | localize }}</h2>
+                <div class="grid-2">
+                    <div class="field">
+                        <label class="field__label" for="mobile">{{ 'Mobile' | localize }}</label>
+                        <input id="mobile" name="mobile" type="number" min="0" class="input"
+                            [ngModel]="model().mobile" (ngModelChange)="patch({ mobile: +$event || 0 })" />
+                    </div>
+                    <div class="field">
+                        <label class="field__label" for="telephone">{{ 'Telephone' | localize }}</label>
+                        <input id="telephone" name="telephone" type="number" min="0" class="input"
+                            [ngModel]="model().telephone" (ngModelChange)="patch({ telephone: +$event || 0 })" />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="field__label" for="currentAddress">{{ 'CurrentAddress' | localize }}</label>
+                    <textarea id="currentAddress" name="currentAddress" class="textarea" maxlength="1024"
+                        [ngModel]="model().currentAddress" (ngModelChange)="patch({ currentAddress: $event })"></textarea>
+                </div>
+
+                <div class="field">
+                    <label class="field__label" for="permanentAddress">{{ 'PermanentAddress' | localize }}</label>
+                    <textarea id="permanentAddress" name="permanentAddress" class="textarea" maxlength="1024"
+                        [ngModel]="model().permanentAddress" (ngModelChange)="patch({ permanentAddress: $event })"></textarea>
+                </div>
+            </section>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn--primary btn--lg" [disabled]="profileForm.invalid || saving()">
+                    @if (saving()) {
+                        <span class="spinner"></span>
+                    }
+                    {{ 'Save' | localize }}
+                </button>
+            </div>
+        </form>
+    }
+</div>

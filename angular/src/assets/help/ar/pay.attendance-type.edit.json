@@ -1,0 +1,139 @@
+{
+  "helpId": "pay.attendance-type.edit",
+  "lang": "ar",
+  "title": "أنواع المواظبة — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.AttendanceType",
+  "overviewHtml": "<p>نوع من المواظبة خارج الروتين المعتاد — مهمة عمل أو تدريب أو عمل في الموقع — يُسجَّل مواظبةً للموظف. ويحدد ما إذا كانت تلك الأيام تُحتسب وقتاً مدفوعاً، وما إذا كانت تشمل عطلات نهاية الأسبوع والعطلات، وما إذا كانت تُكسب إجازة.</p>",
+  "aliasIndex": {
+    "loc:Code": "AttendanceType.Code",
+    "dom:AttendanceType_Code": "AttendanceType.Code",
+    "loc:NameEn": "AttendanceType.NameEn",
+    "dom:AttendanceType_NameEn": "AttendanceType.NameEn",
+    "loc:NameAr": "AttendanceType.NameAr",
+    "dom:AttendanceType_NameAr": "AttendanceType.NameAr",
+    "loc:WageType": "AttendanceType.WageTypeId",
+    "dom:AttendanceType_WageTypeId": "AttendanceType.WageTypeId",
+    "loc:AccrualPeriod": "AttendanceType.AccrualPeriod",
+    "dom:AttendanceType_AccrualPeriod": "AttendanceType.AccrualPeriod",
+    "loc:LinkLeaveQuota": "AttendanceType.LinkLeaveQuotaId",
+    "dom:AttendanceType_LinkLeaveQuotaId": "AttendanceType.LinkLeaveQuotaId",
+    "loc:IncludePublicHoliday": "AttendanceType.IncludePublicHoliday",
+    "dom:AttendanceType_IncludePublicHoliday": "AttendanceType.IncludePublicHoliday",
+    "loc:HaveQuotaAccrual": "AttendanceType.HaveQuotaAccrual",
+    "dom:AttendanceType_HaveQuotaAccrual": "AttendanceType.HaveQuotaAccrual"
+  },
+  "fields": [
+    {
+      "id": "AttendanceType.Code",
+      "label": "Code",
+      "section": "AttendanceTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:AttendanceType_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AttendanceType.NameEn",
+      "label": "NameEn",
+      "section": "AttendanceTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:AttendanceType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AttendanceType.NameAr",
+      "label": "NameAr",
+      "section": "AttendanceTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:AttendanceType_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AttendanceType.WageTypeId",
+      "label": "WageType",
+      "section": "AttendanceTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:AttendanceType_WageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الأجر الذي تُصرف تحته المواظبة من هذا النوع.</p><p><strong>مثال.</strong> بدل مهمة عمل</p><p><strong>لماذا يهم.</strong> الموظف الذي لديه مواظبة من هذا النوع في فترة الدفع يُحتسب له نوع الأجر هذا أجراً للحضور.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AttendanceType.AccrualPeriod",
+      "label": "AccrualPeriod",
+      "section": "AttendanceTypes",
+      "aliases": [
+        "loc:AccrualPeriod",
+        "dom:AttendanceType_AccrualPeriod"
+      ],
+      "rules": "إلزامي. إحدى القيم: بلا تراكم، السنة الميلادية، السنة المالية، سنة العمل، نصف سنوي، لكل فترة توظيف، مخصص.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة استحقاق لنوع المواظبة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AttendanceType.LinkLeaveQuotaId",
+      "label": "LinkLeaveQuota",
+      "section": "AttendanceTypes",
+      "aliases": [
+        "loc:LinkLeaveQuota",
+        "dom:AttendanceType_LinkLeaveQuotaId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الإجازات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإجازة التي تُضاف إليها أيام هذه المواظبة.</p><p><strong>مثال.</strong> الإجازة التعويضية</p><p><strong>لماذا يهم.</strong> يكون رصيد نوع الإجازة ذاك هو أيام المواظبة المسجلة على الأنواع المرتبطة به، ناقص ما أُخذ منه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AttendanceType.IncludePublicHoliday",
+      "label": "IncludePublicHoliday",
+      "section": "AttendanceTypes",
+      "aliases": [
+        "loc:IncludePublicHoliday",
+        "dom:AttendanceType_IncludePublicHoliday"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت المواظبة في العطلة الرسمية تُحتسب.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُحتسب اليوم مواظبةً ولا يعود يُعامل عطلةً في سجل الوقت. وإلا فلا تضيف المواظبة من هذا النوع في العطلة الرسمية أي وقت.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AttendanceType.HaveQuotaAccrual",
+      "label": "HaveQuotaAccrual",
+      "section": "AttendanceTypes",
+      "aliases": [
+        "loc:HaveQuotaAccrual",
+        "dom:AttendanceType_HaveQuotaAccrual"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت هذه المواظبة تُكسب إجازة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يجب ملء <strong>ربط حصة الإجازة</strong>. وتُكتسب الإجازة عبر الربط نفسه: فكل نوع مواظبة له إجازة مرتبطة يضيف إليها.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

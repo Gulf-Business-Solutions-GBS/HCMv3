@@ -1,0 +1,91 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #absencePaymentForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (absencePayment().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'AbsencePayments' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'AbsencePayments' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="AbsencePayment_AbsenceTypeId">{{ 'AbsenceTypes' | localize }}</label>
+                                <select
+                                    id="AbsencePayment_AbsenceTypeId"
+                                    #absenceTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="AbsenceTypeId"
+                                    [ngModel]="absencePayment().absenceTypeId"
+                                    (ngModelChange)="updateField('absenceTypeId', $event)"
+                                    [disabled]="!!presetAbsenceTypeId()"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (absenceType of absenceTypes(); track absenceType.id) {
+                                        <option [ngValue]="absenceType.id">{{ absenceType.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="absenceTypeIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="AbsencePayment_WageTypeId">{{ 'WageTypes' | localize }}</label>
+                                <select
+                                    id="AbsencePayment_WageTypeId"
+                                    #wageTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="WageTypeId"
+                                    [ngModel]="absencePayment().wageTypeId"
+                                    (ngModelChange)="updateField('wageTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (wageType of wageTypes(); track wageType.id) {
+                                        <option [ngValue]="wageType.id">{{ wageType.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="wageTypeIdInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!absencePaymentForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

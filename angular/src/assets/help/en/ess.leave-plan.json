@@ -1,0 +1,207 @@
+{
+  "helpId": "ess.leave-plan",
+  "lang": "en",
+  "title": "Leave Planner Request",
+  "entity": null,
+  "overviewHtml": "<p>Tell your manager when you mean to take leave, well before you apply for it, and see your team's plans and leave for the month.</p><p>A plan is information, not leave. Approving it books nothing: it does not reserve or charge your balance and does not create leave. What approval does is show your plan to HR and your manager as agreed rather than asked for. When the time comes, you still apply for the leave on <strong>Leave Requests</strong>, where the usual leave rules apply. Plans have no overlap rule, so a plan can cover days you already have another plan or leave for.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "ess.leave-plan.start-date",
+    "loc:EndDate": "ess.leave-plan.end-date",
+    "loc:PlannedDays": "ess.leave-plan.planned-days",
+    "loc:ProjectedLeaveBalance": "ess.leave-plan.projected-balance",
+    "loc:LeaveDays": "ess.leave-plan.leave-days",
+    "loc:RequestComment": "ess.common.comments",
+    "loc:Save": "ess.leave-plan.save",
+    "loc:Submit": "ess.leave-plan.submit",
+    "loc:NewLeavePlan": "ess.common.new-request",
+    "loc:LeaveScheduler": "ess.leave-plan.scheduler",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:Status": "ess.common.status",
+    "loc:Actions": "ess.leave-plan.actions",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked"
+  },
+  "fields": [
+    {
+      "id": "ess.leave-plan.start-date",
+      "label": "StartDate",
+      "section": null,
+      "aliases": [
+        "loc:StartDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day you plan to be away.</p><p><strong>Example.</strong> 3 August 2026</p><p><strong>Why it matters.</strong> The projected balance is worked out to this date, so moving it changes the figure on the right.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave-plan.end-date",
+      "label": "EndDate",
+      "section": null,
+      "aliases": [
+        "loc:EndDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day you plan to be away.</p><p><strong>Example.</strong> 20 August 2026</p><p><strong>Why it matters.</strong> It cannot be before the start date. Both dates are needed to submit; a draft can be saved without them.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave-plan.planned-days",
+      "label": "PlannedDays",
+      "section": null,
+      "aliases": [
+        "loc:PlannedDays"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Calendar days from the start date to the end date, both included. Weekends and public holidays count.</p><p><strong>Example.</strong> 3 to 20 August is 18 planned days.</p><p><strong>Why it matters.</strong> A plan names no leave type, so there are no leave rules to leave weekends out. For the days the leave itself would cost you, look at <strong>Leave days</strong> below.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave-plan.projected-balance",
+      "label": "ProjectedLeaveBalance",
+      "section": null,
+      "aliases": [
+        "loc:ProjectedLeaveBalance"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Your annual leave balance as it is expected to stand on the start date: including what you earn until then and counting only leave that is already approved. Shown in red when it is below zero.</p><p><strong>Example.</strong> 21.5</p><p><strong>Why it matters.</strong> It is the quickest way to see whether the leave will be covered when you apply for it. The figure is kept with the plan as it was when you saved and submitted it, so your approver sees what you saw. Blank when your company has no annual leave type set up.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave-plan.leave-days",
+      "label": "LeaveDays",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDays"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many days of annual leave these dates would actually cost: the planned days less the weekly days off and holidays that annual leave does not count. Shown only while you are filling in the form.</p><p><strong>Example.</strong> 18 planned days, 14 leave days.</p><p><strong>Why it matters.</strong> Compare this, not the planned days, with your projected balance. It is not saved with the plan.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.comments",
+      "label": "RequestComment",
+      "section": null,
+      "aliases": [
+        "loc:RequestComment"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Anything you want the people approving this to read. Free text, and optional.</p><p><strong>Example.</strong> \"Flying on the 14th, back on the 28th — cover agreed with Ahmed.\"</p><p><strong>Why it matters.</strong> It is the only place you can explain a request that needs explaining, and it stays with the request for good: approvers see it, and so does anyone who looks the request up afterwards. A request that surprises somebody is a request that comes back to you.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave-plan.save",
+      "label": "Save",
+      "section": null,
+      "aliases": [
+        "loc:Save"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Keeps the plan as a draft, without checking it and without sending it to anybody.</p><p><strong>Example.</strong> You know you want two weeks in August but not yet which ones.</p><p><strong>Why it matters.</strong> A draft is yours alone: it shows in your list as <strong>Draft</strong> and nobody else sees it, not even HR. Open it again with <strong>Edit</strong> when you are ready.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave-plan.submit",
+      "label": "Submit",
+      "section": null,
+      "aliases": [
+        "loc:Submit"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Checks the dates and sends the plan for approval.</p><p><strong>Why it matters.</strong> Once sent you cannot change it in place; withdraw it and plan again, or wait for it to be sent back. If your company has leave plans set up without approval, it is recorded straight away instead.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "NewLeavePlan",
+      "section": null,
+      "aliases": [
+        "loc:NewLeavePlan"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The button at the top right of the screen that opens the form. Filling it in and pressing <strong>Save</strong> submits the request; nothing is sent until you do.</p><p><strong>Example.</strong> <strong>Request Leave</strong>, <strong>Request Ticket</strong>, <strong>Request Loan</strong> — the wording follows the screen.</p><p><strong>Why it matters.</strong> Once submitted the request goes to whoever approves that kind of request in your company, and you cannot edit it in place. To change something, withdraw it and make a new one, or use <strong>Amend</strong> where the screen offers it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave-plan.scheduler",
+      "label": "LeaveScheduler",
+      "section": null,
+      "aliases": [
+        "loc:LeaveScheduler"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A month view of your own plans and leave, and those of the people who report directly to you. The arrows move a month back or forward; press the button again to hide it.</p><p><strong>Example.</strong> Before you plan the first half of August, you see that two of your team are already planned for that fortnight.</p><p><strong>Why it matters.</strong> Plans and leave are shown approved or still open; drafts and refused requests are not. Only one level is shown: the people who report to your direct reports are not included.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Everything you have asked for on this screen, newest first, with where each one has got to.</p><p><strong>Example.</strong> Three ticket requests: one approved last month, one waiting, one you withdrew.</p><p><strong>Why it matters.</strong> This is the record. A request that is not in this list was never submitted — if you filled the form in and did not press <strong>Save</strong>, nothing was sent.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where a request has got to. <strong>Draft</strong> is not submitted, <strong>Pending</strong> is waiting for somebody, <strong>Approved</strong> has been agreed and acted on, <strong>Rejected</strong> was turned down, and <strong>Withdrawn</strong> is one you took back yourself.</p><p><strong>Example.</strong> Pending — sitting with your line manager.</p><p><strong>Why it matters.</strong> Only an approved request changes anything: your balance, your pay or your record. A pending one has done nothing yet, whatever the form said when you filled it in.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave-plan.actions",
+      "label": "Actions",
+      "section": null,
+      "aliases": [
+        "loc:Actions"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What you can do with a plan in your list: <strong>Edit</strong> a draft or a plan sent back to you, open its <strong>Details</strong>, or take it back — <strong>Withdraw request</strong> while it is with an approver, <strong>Discard draft</strong> for one you never sent.</p><p><strong>Why it matters.</strong> A plan sent back reopens in the same form and goes back under the same request number when you submit it again.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A warning that the account you signed in with is not attached to an employee, so there is nobody for a request to be about.</p><p><strong>Example.</strong> A newly created user, or an administrator account that is deliberately not an employee.</p><p><strong>Why it matters.</strong> Nothing on the self-service screens works until HR links the account to your employee record, and only HR can do it. Administrator accounts are often left unlinked on purpose.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

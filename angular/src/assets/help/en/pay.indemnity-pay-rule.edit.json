@@ -1,0 +1,123 @@
+{
+  "helpId": "pay.indemnity-pay-rule.edit",
+  "lang": "en",
+  "title": "Indemnity Pay Rules — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.IndemnityPayRule",
+  "overviewHtml": "<p>A cap on end-of-service indemnity by reason for leaving and country.</p><p>Not used at present: every payroll and report calculation passes no indemnity pay rule, so the indemnity cap always comes from the employee's <strong>Salary Profile</strong>. These rules are saved and kept for reference.</p>",
+  "aliasIndex": {
+    "loc:SeparationType": "IndemnityPayRule.SeparationType",
+    "dom:IndemnityPayRule_SeparationType": "IndemnityPayRule.SeparationType",
+    "loc:CountryId": "IndemnityPayRule.CountryId",
+    "dom:IndemnityPayRule_CountryId": "IndemnityPayRule.CountryId",
+    "loc:StartDate": "IndemnityPayRule.StartDate",
+    "dom:IndemnityPayRule_StartDate": "IndemnityPayRule.StartDate",
+    "loc:EndDate": "IndemnityPayRule.EndDate",
+    "dom:IndemnityPayRule_EndDate": "IndemnityPayRule.EndDate",
+    "loc:MaxNumber": "IndemnityPayRule.MaxNumber",
+    "dom:IndemnityPayRule_MaxNumber": "IndemnityPayRule.MaxNumber",
+    "loc:MaxUnit": "IndemnityPayRule.MaxUnit",
+    "dom:IndemnityPayRule_MaxUnit": "IndemnityPayRule.MaxUnit",
+    "loc:MaxPayPercentage": "IndemnityPayRule.MaxPayPercentage",
+    "dom:IndemnityPayRule_MaxPayPercentage": "IndemnityPayRule.MaxPayPercentage"
+  },
+  "fields": [
+    {
+      "id": "IndemnityPayRule.SeparationType",
+      "label": "SeparationType",
+      "section": "IndemnityPayRules",
+      "aliases": [
+        "loc:SeparationType",
+        "dom:IndemnityPayRule_SeparationType"
+      ],
+      "rules": "Required. One of: Resignation, Termination.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The reason for leaving the rule is for.</p><p><strong>Example.</strong> Resignation</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRule.CountryId",
+      "label": "CountryId",
+      "section": "IndemnityPayRules",
+      "aliases": [
+        "loc:CountryId",
+        "dom:IndemnityPayRule_CountryId"
+      ],
+      "rules": "Optional. Chosen from Country master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The country the rule is for.</p><p><strong>Example.</strong> Kuwait</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRule.StartDate",
+      "label": "StartDate",
+      "section": "IndemnityPayRules",
+      "aliases": [
+        "loc:StartDate",
+        "dom:IndemnityPayRule_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRule.EndDate",
+      "label": "EndDate",
+      "section": "IndemnityPayRules",
+      "aliases": [
+        "loc:EndDate",
+        "dom:IndemnityPayRule_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRule.MaxNumber",
+      "label": "MaxNumber",
+      "section": "IndemnityPayRules",
+      "aliases": [
+        "loc:MaxNumber",
+        "dom:IndemnityPayRule_MaxNumber"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most pay the indemnity could reach, in the unit below.</p><p><strong>Example.</strong> <code>18</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRule.MaxUnit",
+      "label": "MaxUnit",
+      "section": "IndemnityPayRules",
+      "aliases": [
+        "loc:MaxUnit",
+        "dom:IndemnityPayRule_MaxUnit"
+      ],
+      "rules": "Required. One of: Day, Month.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the maximum is in months or days.</p><p><strong>Example.</strong> Month</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRule.MaxPayPercentage",
+      "label": "MaxPayPercentage",
+      "section": "IndemnityPayRules",
+      "aliases": [
+        "loc:MaxPayPercentage",
+        "dom:IndemnityPayRule_MaxPayPercentage"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The percentage of that maximum that could be paid.</p><p><strong>Example.</strong> <code>100</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

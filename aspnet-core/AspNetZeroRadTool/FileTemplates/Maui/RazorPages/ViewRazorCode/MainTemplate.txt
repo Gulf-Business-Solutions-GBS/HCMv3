@@ -1,0 +1,53 @@
+﻿using Abp.Application.Services.Dto;
+using {{Namespace_Here}}.Authorization;
+using {{Namespace_Here}}.Maui.Core.Components;
+using {{Namespace_Here}}.Maui.Core.Threading;
+using {{Namespace_Here}}.Maui.Models.{{Namespace_Relative_Full_Here}};
+using {{Namespace_Here}}.Maui.Services.Navigation;
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}};
+using Microsoft.AspNetCore.Components;
+using {{Namespace_Here}}.Maui.Services.Permission;
+
+namespace {{Namespace_Here}}.Maui.Pages.{{Namespace_Relative_Full_Here}};
+
+public partial class View{{Entity_Name_Here}} : {{Project_Name_Here}}MainLayoutPageComponentBase
+{
+    [Parameter] public {{Primary_Key_Here}}{{Nullable_Primary_Key_Tag_Here}} {{Entity_Name_Here}}Id { get; set; }
+        
+    private I{{Entity_Name_Plural_Here}}AppService {{Entity_Name_Plural_Here}}AppService { get; }
+
+    public View{{Entity_Name_Here}}Model View{{Entity_Name_Here}}Model { get; set; } = new(){
+        {{Property_Initializers_Here}}
+    };
+    
+    public View{{Entity_Name_Here}}()
+    {
+        {{Entity_Name_Plural_Here}}AppService = Resolve<I{{Entity_Name_Plural_Here}}AppService>();
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        if ({{Entity_Name_Here}}Id{{Entity_Id_Has_Value_If_Here}})
+        {
+            await SetBusyAsync(async () =>
+            {
+                await WebRequestExecuter.Execute(
+                    async () => await {{Entity_Name_Plural_Here}}AppService.Get{{Entity_Name_Here}}ForView(new EntityDto { Id = {{Entity_Name_Here}}Id{{Entity_Id_Value_Here}} }),
+                    async (get{{Entity_Name_Here}}ForViewOutput) =>
+                    {
+                        View{{Entity_Name_Here}}Model = ObjectMapper.Map<View{{Entity_Name_Here}}Model>(get{{Entity_Name_Here}}ForViewOutput);
+                        await Task.CompletedTask;
+                    }
+                );
+            });
+        }
+
+        var title = L("View{{Entity_Name_Here}}");
+        await SetPageHeader(title);
+    }
+
+    private void OpenEditPage(EntityDto<{{Primary_Key_Here}}> input)
+    {
+        NavigationService.NavigateTo(NavigationUrlConsts.{{Entity_Name_Plural_Here}}_Create_Or_Edit + $"/{input.Id}");
+    }
+}

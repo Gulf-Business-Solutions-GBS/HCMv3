@@ -1,0 +1,245 @@
+{
+"propertyTemplates":[
+	],
+"conditionalTemplates":[
+		{
+            "placeholder": "{{Overridable_Entity_Base_Here}}",
+            "condition": "{{Generate_Overridable_Entity_Here}} == true",
+            "content": "Base"
+        },		
+        {
+            "placeholder": "{{Controller_Base_Class_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true",
+            "content": "ExcelImportControllerBase{{Base_Dependency_Inject_Here}}"
+        },
+        {
+            "placeholder": "{{Controller_Base_Class_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == false",
+            "content": "{{Project_Name_Here}}ControllerBase"
+        },
+        {
+            "placeholder": "{{ExcelImportBase_Prop_Cons_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true",
+            "content": ", IBinaryObjectManager binaryObjectManager, IBackgroundJobManager backgroundJobManager"
+        },
+        {
+            "placeholder": "{{ExcelImportBase_Prop_Init_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true && {{Project_Version_Here}} < 140200",
+            "content": "
+                protected readonly IBinaryObjectManager _binaryObjectManager;
+                protected readonly IBackgroundJobManager _backgroundJobManager;
+            "
+        },
+         {
+            "placeholder": "{{Primary_Constructor_ExcelImportBase_Prop_Init_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true && {{Project_Version_Here}} >= 140200",
+            "content": "
+                IBinaryObjectManager binaryObjectManager,
+                IBackgroundJobManager backgroundJobManager,
+            "
+        },
+        {
+            "placeholder": "{{ExcelImportBase_Prop_Define_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true",
+            "content": "
+                        _binaryObjectManager = binaryObjectManager;
+                        _backgroundJobManager = backgroundJobManager;
+                        "
+        },
+        {
+            "placeholder": "{{Override_ImportExcelPermission_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true",
+            "content": "
+                        public override string ImportExcelPermission => AppPermissions.{{Permission_Name_Here}}_Create;
+                        "
+        },
+        {
+            "placeholder": "{{Override_EnqueueExcelImportJobAsync_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true",
+            "content": "
+                        public override async Task EnqueueExcelImportJobAsync(ImportFromExcelJobArgs args)
+                        {
+                            await BackgroundJobManager.EnqueueAsync<Import{{Entity_Name_Plural_Here}}ToExcelJob, ImportFromExcelJobArgs>(args);
+                        }
+                        "
+        },
+        {
+            "placeholder": "{{ExcelImport_Props_Usings_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true",
+            "content": "
+                        using Abp.BackgroundJobs;
+                        using {{Namespace_Here}}.DataImporting.Excel;
+                        using {{Namespace_Here}}.Web.Controllers;
+                        using {{Namespace_Here}}.Authorization;
+                        using System.Threading.Tasks;
+                        using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}};
+                        "
+        },
+        {
+            "placeholder": "{{File_Upload_Action_Here}}",
+            "condition": "{{Has_File_Type_Property}} == true",
+            "content": "
+					public FileUploadCacheOutput UploadFile()
+                    {
+                        try
+                        {
+                            //Check input
+                            if (Request.Form.Files.Count == 0)
+                            {
+                                throw new UserFriendlyException(L(\"NoFileFoundError\"));
+                            }
+               
+                            var file = Request.Form.Files.First();
+                            if (file.Length > MaxFileLength)
+                            {
+                                throw new UserFriendlyException(L(\"Warn_File_SizeLimit\", MaxFileLengthUserFriendlyValue));
+                            }
+               
+                            var fileType = Path.GetExtension(file.FileName).Substring(1);
+                            if (AllowedFileTypes != null && AllowedFileTypes.Length > 0 && !AllowedFileTypes.Contains(fileType))
+                            {
+                                throw new UserFriendlyException(L(\"FileNotInAllowedFileTypes\", AllowedFileTypes));
+                            }
+
+							{{File_Validator_Manager_Validation_Here}}
+               
+                            byte[] fileBytes;
+                            using (var stream = file.OpenReadStream())
+                            {
+                                fileBytes = stream.GetAllBytes();
+                            }
+               
+                            var fileToken = Guid.NewGuid().ToString(\"N\");
+                            _tempFileCacheManager.SetFile(fileToken, new TempFileInfo(file.FileName, fileType, fileBytes));
+                               
+                            return new FileUploadCacheOutput(fileToken);
+                        }
+                        catch (UserFriendlyException ex)
+                        {
+                            return new FileUploadCacheOutput(new ErrorInfo(ex.Message));
+                        }
+                    }
+				"
+        },
+
+        {
+            "placeholder": "{{File_Prop_Definitions_Here}}",
+            "condition": "{{Has_File_Type_Property}} == true",
+            "content": "
+					private const long MaxFileLength = 5242880; //5MB
+                    private const string MaxFileLengthUserFriendlyValue = \"5MB\"; //5MB
+                    private readonly string[] AllowedFileTypes = {\"jpeg\", \"jpg\", \"png\"};
+				"
+        },
+        {
+            "placeholder": "{{Initialize_Base_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true && {{Project_Version_Here}} < 140200",
+            "content": " : base({{Excel_Initialize_Base_Here}})"
+        },
+        {
+            "placeholder": "{{Excel_Initialize_Base_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true && {{Project_Version_Here}} < 140200",
+            "content": "binaryObjectManager, backgroundJobManager"
+        },
+        {
+            "placeholder": "{{Excel_Initialize_Base_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true && {{Project_Version_Here}} >= 140200",
+            "content": "binaryObjectManager, backgroundJobManager, fileValidatorManager"
+        },
+        {
+            "placeholder": "{{Overridable_Entity_Abstract_Here}}",
+            "condition": "{{Generate_Overridable_Entity_Here}} == true",
+            "content": " abstract"
+        },
+        {
+            "placeholder": "{{File_Validator_Manager_Import_Here}}",
+            "condition": "{{Has_File_Type_Property}} == true && {{Project_Version_Here}} >= 140200",
+            "content": "using {{Namespace_Here}}.Storage.FileValidator;"
+        },
+        {
+            "placeholder": "{{File_Validator_Manager_Import_Here}}",
+            "condition": "{{Has_File_Type_Property}} == false && {{Create_Excel_Import_Here}} == true && {{Project_Version_Here}} >= 140200",
+            "content": "using {{Namespace_Here}}.Storage.FileValidator;"
+        },
+		{
+            "placeholder": "{{File_Validator_Manager_Constructor_Inject_Here}}",
+            "condition": "{{Has_File_Type_Property}} == true && {{Project_Version_Here}} >= 140200",
+            "content": "IFileValidatorManager fileValidatorManager"
+        },
+        {
+            "placeholder": "{{File_Validator_Manager_Constructor_Inject_Here}}",
+            "condition": "{{Has_File_Type_Property}} == false && {{Create_Excel_Import_Here}} == true && {{Project_Version_Here}} >= 140200",
+            "content": "IFileValidatorManager fileValidatorManager"
+        },
+        {
+            "placeholder": "{{File_Validator_Manager_Property_Here}}",
+            "condition": "{{Has_File_Type_Property}} == true && {{Project_Version_Here}} >= 140200",
+            "content": "private readonly IFileValidatorManager _fileValidatorManager = fileValidatorManager;"
+        }, 
+		{
+            "placeholder": "{{File_Validator_Manager_Validation_Here}}",
+            "condition": "{{Has_File_Type_Property}} == true && {{Project_Version_Here}} >= 140200",
+            "content": "var validationResult = _fileValidatorManager.ValidateAll(new FileValidateInput(file));"
+        },
+        {
+            "placeholder": "{{Get_File_Upload_Accepted_Types_Foreach_Here}}",
+            "condition": "{{Has_File_Type_Property}} == true",
+            "content": "
+					public string[] GetFileAllowedTypes()
+                    {
+                        return AllowedFileTypes;
+                    }
+				"
+        },
+        {
+            "placeholder": "{{Primary_Constructor_Inject_Here}}",
+            "condition": "{{Project_Version_Here}} >= 140200",
+            "content": "(
+                    {{Dependency_Inject_Here}}
+                    {{Primary_Constructor_ExcelImportBase_Prop_Init_Here}}
+                    {{File_Validator_Manager_Constructor_Inject_Here}}
+                )
+            "
+        },
+        {
+            "placeholder": "{{Dependency_Inject_Here}}",
+            "condition": "{{Project_Version_Here}} >= 140200",
+            "content": "
+                ITempFileCacheManager tempFileCacheManager,
+            "
+        },
+        {
+            "placeholder": "{{Dependency_Field_Inject_Here}}",
+            "condition": "{{Project_Version_Here}} < 140200",
+            "content": "
+                private readonly ITempFileCacheManager _tempFileCacheManager;
+            "
+        },
+        {
+            "placeholder": "{{Dependency_Field_Inject_Here}}",
+            "condition": "{{Project_Version_Here}} >= 140200",
+            "content": "
+                private readonly ITempFileCacheManager _tempFileCacheManager = tempFileCacheManager;
+            "
+        },
+        {
+            "placeholder": "{{Constructor_Inject_Here}}",
+            "condition": "{{Project_Version_Here}} < 140200",
+            "content": "
+                public {{Entity_Name_Plural_Here}}Controller{{Overridable_Entity_Base_Here}}(ITempFileCacheManager tempFileCacheManager{{ExcelImportBase_Prop_Cons_Here}},{{File_Validator_Manager_Constructor_Inject_Here}}){{Initialize_Base_Here}}
+                {
+                    _tempFileCacheManager = tempFileCacheManager;
+                }
+            "
+        },
+        {
+            "placeholder": "{{Base_Dependency_Inject_Here}}",
+            "condition": "{{Project_Version_Here}} >= 140200",
+            "content": "
+                (binaryObjectManager, backgroundJobManager, fileValidatorManager)
+            "
+        },
+	]    
+}
+
+

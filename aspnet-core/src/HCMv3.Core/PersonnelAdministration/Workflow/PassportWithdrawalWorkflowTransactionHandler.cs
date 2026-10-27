@@ -1,0 +1,688 @@
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Abp.Domain.Repositories;
+using Abp.Domain.Uow;
+using Abp.Extensions;
+using Abp.Timing;
+using Abp.UI;
+using HCMv3.GeneralMasterInfo;
+using HCMv3.SystemSettings.Services;
+using HCMv3.Workflow;
+using HCMv3.Workflow.Services;
+using Microsoft.EntityFrameworkCore;
+
+namespace HCMv3.PersonnelAdministration.Workflow;
+
+/// <summary>
+/// Workflow handler for passport (and other document) withdrawals -- <see cref="EmployeeDocumentMvmt"/>.
+///
+/// <para>
+/// The clearest example in the codebase of what the single-row design buys. Legacy carried a whole
+/// <c>PassportWithdrawalRequest</c> table alongside the movement log: the request was approved in one table
+/// and then, at the final step, copied into <c>EmployeeDocumentMvmt</c> in the other -- with the copy
+/// deciding, by a lookup on "is there a row with no actual return date", whether to overwrite an existing
+/// movement or add a new one. Here the request IS the movement row; it is simply hidden by the
+/// <c>ApprovedOnly</c> filter until approved, so there is no copy step to get wrong and no window where the
+/// two tables disagree about who is holding whose passport.
+/// </para>
+///
+/// <para>
+/// The RETURN leg lives here too, as an amendment (<see cref="DocumentMvmtAmendment"/>). Legacy expressed it
+/// as a second <c>MovementType</c> on the same request object; here it is what it actually is -- a change to
+/// one field of a row that is already live and approved -- so it needs no entity, no table and no catalog row
+/// of its own, and it inherits the amendment rule that a REFUSED return leaves the movement exactly as it
+/// was.
+/// </para>
+/// </summary>
+public class PassportWithdrawalWorkflowTransactionHandler : WorkflowTransactionHandlerBase<EmployeeDocumentMvmt>
+{
+    /// <summary>Must match the <c>WorkflowTransactionType.Code</c> seeded for passport withdrawals.</summary>
+    public const string PassportWithdrawalRequestType = "EmployeeDocumentMvmt";
+
+    private readonly IRepository<EmployeeDocument> _documentRepository;
+    private readonly IRepository<DocumentType> _documentTypeRepository;
+    private readonly IRepository<WorkflowRequest> _requestRepository;
+    private readonly IRepository<RequestLog> _requestLogRepository;
+    private readonly IRepository<Employee> _employeeRepository;
+    private readonly ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly IUnitOfWorkManager _unitOfWorkManager;
+
+    public PassportWithdrawalWorkflowTransactionHandler(
+        IRepository<EmployeeDocumentMvmt> repository,
+        IRepository<EmployeeDocument> documentRepository,
+        IRepository<DocumentType> documentTypeRepository,
+        IRepository<WorkflowRequest> requestRepository,
+        IRepository<RequestLog> requestLogRepository,
+        IRepository<Employee> employeeRepository,
+        ISysSettingsAccessor sysSettingsAccessor,
+        IUnitOfWorkManager unitOfWorkManager)
+        : base(repository, unitOfWorkManager)
+    {
+        _requestLogRepository = requestLogRepository;
+        _employeeRepository = employeeRepository;
+        _documentRepository = documentRepository;
+        _documentTypeRepository = documentTypeRepository;
+        _requestRepository = requestRepository;
+        _sysSettingsAccessor = sysSettingsAccessor;
+        _unitOfWorkManager = unitOfWorkManager;
+    }
+
+    public override string RequestType => PassportWithdrawalRequestType;
+
+    /// <summary>
+    /// Three checks, all of them ported from the legacy controller's own validation block.
+    ///
+    /// <para>
+    /// Note what is deliberately NOT here: a rule refusing a withdrawal while the employee already has one
+    /// open. Legacy allowed it on purpose and treated the later request as an extension of the earlier one
+    /// (see <see cref="OnApprovedAsync"/>). Someone whose passport is already out and who needs it for
+    /// another week must be able to ask; blocking them would leave the only route as withdrawing the first
+    /// request and starting again, which loses its approval history.
+    /// </para>
+    /// </summary>
+    public override async Task ValidateBeforeSubmitAsync(WorkflowTransactionContext context)
+    {
+        var movement = await GetTargetAsync(context);
+        if (movement == null)
+        {
+            return;
+        }
+
+        // An amendment here is a RETURN, and none of the withdrawal checks below apply to it: the row still
+        // holds the values that were already approved, so re-running them would re-validate a decision
+        // nobody is asking about and could refuse a return because of a setting that changed since.
+        if (context.IsAmendment)
+        {
+            var proposedReturn = ReadAmendment(context);
+
+            ValidateReturn(movement, proposedReturn);
+
+            // Only at submit, never at approval. A return reports something that has happened, so a date
+            // still to come is refused when it is raised -- but a request already waiting when this rule
+            // arrived must still apply, and by the time it is approved its date is what it is.
+            if (proposedReturn.ActualReturnDate.Value.Date > Clock.Now.Date)
+            {
+                throw new UserFriendlyException(L("ActualReturnDateCannotBeInTheFuture"));
+            }
+
+            return;
+        }
+
+        // Legacy refused a blank withdraw or return date outright ("WithdrawDate cannot be blank").
+        if (movement.WithdrawDate == default)
+        {
+            throw new UserFriendlyException(L("WithdrawDateIsRequired"));
+        }
+
+        if (movement.ReturnDate == default)
+        {
+            throw new UserFriendlyException(L("ReturnDateIsRequired"));
+        }
+
+        if (movement.ReturnDate.Date < movement.WithdrawDate.Date)
+        {
+            throw new UserFriendlyException(L("ReturnDateCannotBeEarlierThanWithdrawDate"));
+        }
+
+        // The filter is disabled because the question is whether the document row exists at all, not
+        // whether it is currently approved. A document that is itself awaiting approval is a different
+        // problem, and reporting it as "no such document" would send the employee looking for a typo.
+        bool documentExists;
+        using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            documentExists = _documentRepository.GetAll().Any(d => d.Id == movement.EmployeeDocumentId);
+        }
+
+        if (!documentExists)
+        {
+            throw new UserFriendlyException(L("EmployeeDocumentNotFound"));
+        }
+
+        // Mandatory only where the tenant has asked for it. Legacy read the same flag from a JSON file on
+        // the ESS server; it is a tenant setting here. No settings row yet means a fresh tenant that has
+        // never opened the self-service screen -- treated as "not mandatory" rather than blocking every
+        // request until somebody saves the form.
+        if (movement.WithdrawalReason.IsNullOrWhiteSpace())
+        {
+            var settings = await _sysSettingsAccessor.GetSelfServiceSettingsAsync();
+
+            if (settings != null && settings.IsWithdrawalReasonMandatory)
+            {
+                throw new UserFriendlyException(L("WithdrawalReasonIsRequired"));
+            }
+        }
+    }
+
+    /// <summary>
+    /// The rules for a RETURN, applied to a set of values rather than to the row -- so the same checks serve
+    /// the submit (where the return is only proposed) and the approval (where it is about to be written).
+    ///
+    /// <para>
+    /// The already-returned check is the one legacy did not have. Legacy looked up the movement row with no
+    /// actual return date and, finding none, saved the request and silently stamped nothing -- so a document
+    /// returned twice produced an approved request that changed no data at all, and nobody could tell from
+    /// the screens which of the two returns was the real one. Refusing is louder and safer.
+    /// </para>
+    /// </summary>
+    private void ValidateReturn(EmployeeDocumentMvmt movement, DocumentMvmtAmendment proposed)
+    {
+        if (!proposed.ActualReturnDate.HasValue)
+        {
+            throw new UserFriendlyException(L("ActualReturnDateIsRequired"));
+        }
+
+        if (movement.ActualReturnDate != default)
+        {
+            throw new UserFriendlyException(L("ThisDocumentHasAlreadyBeenReturned"));
+        }
+
+        if (proposed.ActualReturnDate.Value.Date < movement.WithdrawDate.Date)
+        {
+            throw new UserFriendlyException(L("ActualReturnDateCannotBeEarlierThanWithdrawDate"));
+        }
+    }
+
+    /// <inheritdoc/>
+    public override bool SupportsAmendment => true;
+
+    /// <summary>
+    /// The only change to an approved withdrawal is the document coming back. It travels as an amendment,
+    /// which is why <see cref="SupportsAmendment"/> is on, but there is no "amend" or "cancel" to route.
+    /// </summary>
+    public override System.Collections.Generic.IReadOnlyCollection<WorkflowRequestAction> SupportedChangeActions { get; } =
+        new[] { WorkflowRequestAction.Return };
+
+    /// <summary>
+    /// Captures what the movement said before the return was asked for.
+    ///
+    /// <para>
+    /// It is a single field, and that is exactly the field the change is about: without it the record of
+    /// "what this movement looked like before" would be missing the whole point of the change. Stored as
+    /// null when the row carries <c>default(DateTime)</c>, so the snapshot says "the document was still out"
+    /// rather than "it came back in year one".
+    /// </para>
+    /// </summary>
+    public override async Task<string> BuildSnapshotAsync(WorkflowTransactionContext context)
+    {
+        var movement = await GetTargetAsync(context);
+        if (movement == null)
+        {
+            return null;
+        }
+
+        return JsonSerializer.Serialize(new DocumentMvmtAmendment
+        {
+            ActualReturnDate = movement.ActualReturnDate == default
+                ? (DateTime?)null
+                : movement.ActualReturnDate
+        });
+    }
+
+    /// <summary>
+    /// Stamps an approved return onto the live movement row.
+    ///
+    /// <para>
+    /// Re-validated here, not only at submit. Between raising the return and approving it somebody else may
+    /// have recorded the document as back -- an HR clerk taking it at the counter, say -- and stamping a
+    /// second date over the first would silently rewrite the custody record. Throwing rolls the approval
+    /// back with it.
+    /// </para>
+    /// </summary>
+    public override async Task ApplyAmendmentAsync(WorkflowTransactionContext context)
+    {
+        var movement = await GetRequiredTargetAsync(context);
+        var proposed = ReadAmendment(context);
+
+        ValidateReturn(movement, proposed);
+
+        movement.ActualReturnDate = proposed.ActualReturnDate.Value.Date;
+
+        // Null on a return raised before remarks existed. One raised under the old generic amendment label
+        // is read exactly the same way: what makes this a return is that it is an amendment of this type,
+        // not what the request was labelled.
+        if (!proposed.ReturnRemarks.IsNullOrWhiteSpace())
+        {
+            movement.ReturnRemarks = proposed.ReturnRemarks.Trim().Truncate(EmployeeDocumentMvmt.MaxReturnRemarksLength);
+        }
+
+        // The approver is the one who took the document back. Approvers are employees and the trail records
+        // users, so one with no login leaves the column empty rather than naming somebody else.
+        var receivedByUserId = _employeeRepository.GetAll()
+            .Where(e => e.Id == context.ActingEmployeeId)
+            .Select(e => e.UserId)
+            .FirstOrDefault();
+
+        if (receivedByUserId.HasValue)
+        {
+            movement.ReceivedByUserId = receivedByUserId;
+        }
+
+        // Status is untouched on purpose: the withdrawal was approved before the return and stays approved.
+        // The filter must not so much as blink, or the movement would vanish from the log mid-change and the
+        // document would read as never having been withdrawn at all.
+        using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            await Repository.UpdateAsync(movement);
+        }
+    }
+
+    private static DocumentMvmtAmendment ReadAmendment(WorkflowTransactionContext context)
+    {
+        if (context.AmendmentJson.IsNullOrWhiteSpace())
+        {
+            throw new UserFriendlyException("This amendment carries no proposed values.");
+        }
+
+        return JsonSerializer.Deserialize<DocumentMvmtAmendment>(context.AmendmentJson);
+    }
+
+    /// <summary>
+    /// The approver is deciding whether to hand over an original document and when they will get it back,
+    /// so the summary is exactly those three facts: which document, out when, back when.
+    /// </summary>
+    public override async Task<WorkflowSummary> BuildSummaryAsync(WorkflowTransactionContext context)
+    {
+        var movement = await GetTargetAsync(context);
+        if (movement == null)
+        {
+            return null;
+        }
+
+        string documentNum = null;
+        int? documentTypeId = null;
+
+        using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            var document = _documentRepository.GetAll()
+                .Where(d => d.Id == movement.EmployeeDocumentId)
+                .Select(d => new { d.DocumentNum, d.DocumentTypeId })
+                .FirstOrDefault();
+
+            if (document != null)
+            {
+                documentNum = document.DocumentNum;
+                documentTypeId = document.DocumentTypeId;
+            }
+        }
+
+        var documentType = documentTypeId.HasValue
+            ? _documentTypeRepository.GetAll()
+                .Where(t => t.Id == documentTypeId.Value)
+                .Select(t => new { t.NameEn, t.NameAr })
+                .FirstOrDefault()
+            : null;
+
+        var withdrawn = movement.WithdrawDate.ToString("dd MMM yyyy");
+        var returned = movement.ReturnDate.ToString("dd MMM yyyy");
+
+        var labelEn = documentNum.IsNullOrWhiteSpace()
+            ? documentType?.NameEn ?? "Document"
+            : (documentType?.NameEn ?? "Document") + " " + documentNum;
+
+        var labelAr = documentNum.IsNullOrWhiteSpace()
+            ? documentType?.NameAr ?? "مستند"
+            : (documentType?.NameAr ?? "مستند") + " " + documentNum;
+
+        if (context.IsAmendment)
+        {
+            // A return reads as a return, not as a generic change. "Change: ... to ..." is the right shape
+            // for an amendment that moves dates about, but here the approver is being asked to confirm that
+            // a physical document is back in the safe, and a summary that made them work that out from two
+            // dates would be a summary of the wrong decision.
+            var proposed = ReadAmendment(context);
+
+            var handedBack = proposed.ActualReturnDate.HasValue
+                ? proposed.ActualReturnDate.Value.ToString("dd MMM yyyy")
+                : "-";
+
+            return new WorkflowSummary(
+                $"{labelEn} returned {handedBack} (out {withdrawn})",
+                $"إرجاع {labelAr} بتاريخ {handedBack} (الاستلام {withdrawn})");
+        }
+
+        var summaryEn = $"{labelEn}, out {withdrawn}, back {returned}";
+        var summaryAr = $"{labelAr}، الاستلام {withdrawn}، الإرجاع {returned}";
+
+        // Nobody filled in a form for this one, so the line the approver reads says where it came from --
+        // in both languages, whichever the person who triggered it happened to be using.
+        var sourceLeaveNumber = SourceLeaveRequestNumber(movement);
+        if (sourceLeaveNumber != null)
+        {
+            summaryEn += " -- " + L(RaisedFromLeaveNoteKey, new CultureInfo("en"), sourceLeaveNumber);
+            summaryAr += " -- " + L(RaisedFromLeaveNoteKey, new CultureInfo("ar"), sourceLeaveNumber);
+        }
+
+        return new WorkflowSummary(summaryEn.Truncate(512), summaryAr.Truncate(512));
+    }
+
+    /// <summary>The note on a withdrawal raised from a leave; {0} is the leave's request number.</summary>
+    private const string RaisedFromLeaveNoteKey = "PassportWithdrawalRaisedAutomaticallyFromLeaveRequest";
+
+    /// <summary>
+    /// The request number of the leave this withdrawal was raised from, or null for one somebody asked for
+    /// themselves. Falls back to the leave's id when the leave was never routed and so never numbered.
+    /// </summary>
+    private string SourceLeaveRequestNumber(EmployeeDocumentMvmt movement)
+    {
+        if (movement?.SourceEmployeeAbsenceId == null)
+        {
+            return null;
+        }
+
+        var leaveId = movement.SourceEmployeeAbsenceId.Value;
+
+        var number = _requestRepository.GetAll()
+            .Where(r => r.RequestType == LeaveWorkflowTransactionHandler.LeaveRequestType
+                        && r.TargetEntityId == leaveId
+                        && !r.IsAmendment)
+            .OrderBy(r => r.Id)
+            .Select(r => r.RequestNumber)
+            .FirstOrDefault();
+
+        return number.IsNullOrWhiteSpace() ? "#" + leaveId : number;
+    }
+
+    /// <summary>
+    /// The withdrawal as its own form shows it, field by field, for the Details view and the approver.
+    ///
+    /// <para>
+    /// The names are the ones the Angular passport form binds by, so an approver reads the form the employee
+    /// filled in, read-only. Lookups are sent as the words the form would show -- the document type's name
+    /// and the people's code and name, in the reader's language -- not as ids.
+    /// </para>
+    ///
+    /// <para>
+    /// A RETURN is an amendment against a movement that is already approved, so its projection is the
+    /// movement it is against plus what the return proposes: the day the document came back and what was
+    /// noted. Those two are the PROPOSED values while the return is undecided -- that is what is being
+    /// approved -- and <c>RequestAction</c> says which of the two requests this is, as it does for leave.
+    /// Any amendment of this type is a return, whether it carries the <c>Return</c> label or the generic
+    /// one older returns were stored under.
+    /// </para>
+    ///
+    /// <para>
+    /// The custody facts -- handed over on, actually returned, return remarks -- appear only once there is
+    /// one to show. A withdrawal nobody has handed over yet has no hand-over date, and an empty row for it
+    /// on the approver's card would read as a field somebody forgot.
+    /// </para>
+    /// </summary>
+    public override async Task<WorkflowRequestDetail> BuildDetailAsync(WorkflowTransactionContext context)
+    {
+        var movement = await GetTargetAsync(context);
+        if (movement == null)
+        {
+            return await base.BuildDetailAsync(context);
+        }
+
+        var isReturn = context.IsAmendment;
+
+        var proposed = isReturn && !context.AmendmentJson.IsNullOrWhiteSpace()
+            ? ReadAmendment(context)
+            : null;
+
+        string documentNum = null;
+        int? documentTypeId = null;
+        DateTime? issueDate = null;
+        DateTime? expiryDate = null;
+
+        using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            var document = _documentRepository.GetAll()
+                .Where(d => d.Id == movement.EmployeeDocumentId)
+                .Select(d => new { d.DocumentNum, d.DocumentTypeId, d.IssueDate, d.ExpiryDate })
+                .FirstOrDefault();
+
+            if (document != null)
+            {
+                documentNum = document.DocumentNum;
+                documentTypeId = document.DocumentTypeId;
+                issueDate = document.IssueDate;
+                expiryDate = document.ExpiryDate;
+            }
+        }
+
+        var documentType = documentTypeId.HasValue
+            ? _documentTypeRepository.GetAll()
+                .Where(t => t.Id == documentTypeId.Value)
+                .Select(t => new { t.NameEn, t.NameAr })
+                .FirstOrDefault()
+            : null;
+
+        var actualReturnDate = proposed?.ActualReturnDate
+                               ?? (movement.ActualReturnDate == default ? (DateTime?)null : movement.ActualReturnDate);
+
+        var returnRemarks = proposed != null && !proposed.ReturnRemarks.IsNullOrWhiteSpace()
+            ? proposed.ReturnRemarks.Trim()
+            : movement.ReturnRemarks;
+
+        var detail = new WorkflowRequestDetail
+        {
+            // What the requester said about THIS request: the note on the withdrawal, or what they noted
+            // when handing the document back.
+            SubmissionComment = isReturn ? proposed?.ReturnRemarks : movement.Comments
+        };
+
+        detail
+            .Add(WorkflowDetailField.Text(WorkflowDetailFieldNames.RequestNumber, L("RequestNumber"), context.Request?.RequestNumber))
+            .Add(WorkflowDetailField.Text("RequestAction", L("RequestActionAppliesTo"), (isReturn ? WorkflowRequestAction.Return : WorkflowRequestAction.New).ToString()))
+            .Add(WorkflowDetailField.Text("Employee", L("Employee"), EmployeeDisplay(movement.EmployeeId)))
+            .Add(WorkflowDetailField.Text("DocumentType", L("DocumentType"), WorkflowDetailDisplay.Name(documentType?.NameEn, documentType?.NameAr)))
+            .Add(WorkflowDetailField.Text("DocumentNumber", L("DocumentNumber"), documentNum))
+            .Add(WorkflowDetailField.Date("IssueDate", L("IssueDate"), issueDate))
+            .Add(WorkflowDetailField.Date("ExpiryDate", L("ExpiryDate"), expiryDate))
+            .Add(WorkflowDetailField.Date("WithdrawDate", L("WithdrawDate"), movement.WithdrawDate))
+            .Add(WorkflowDetailField.Date("ReturnDate", L("ReturnDate"), movement.ReturnDate))
+            .Add(WorkflowDetailField.Text("Guarantor", L("Guarantor"), EmployeeDisplay(movement.GuarantorId)))
+            .Add(WorkflowDetailField.LongText("WithdrawalReason", L("WithdrawalReason"), movement.WithdrawalReason))
+            .Add(WorkflowDetailField.LongText("Comments", L("Comments"), movement.Comments));
+
+        // Only on a withdrawal raised from a leave, where it is the answer to "who asked for this?".
+        var sourceLeaveNumber = SourceLeaveRequestNumber(movement);
+        if (sourceLeaveNumber != null)
+        {
+            detail.Add(WorkflowDetailField.Text("SourceLeaveRequest", L("RaisedFromLeaveRequest"), sourceLeaveNumber));
+        }
+
+        if (movement.ActualWithdrawDate.HasValue)
+        {
+            detail.Add(WorkflowDetailField.Date("HandedOverOn", L("HandedOverOn"), movement.ActualWithdrawDate));
+        }
+
+        // Always on a return, where they are the whole of what is being asked; otherwise only once stamped.
+        if (isReturn || actualReturnDate.HasValue)
+        {
+            detail.Add(WorkflowDetailField.Date("ActualReturnDate", L("ActualReturnDate"), actualReturnDate));
+        }
+
+        if (isReturn || !returnRemarks.IsNullOrWhiteSpace())
+        {
+            detail.Add(WorkflowDetailField.LongText("ReturnRemarks", L("ReturnRemarks"), returnRemarks));
+        }
+
+        return detail;
+    }
+
+    /// <summary>"1042 - Ahmad Al Sayed" in the reader's language, or null when nobody was named.</summary>
+    private string EmployeeDisplay(int? employeeId)
+    {
+        if (!employeeId.HasValue)
+        {
+            return null;
+        }
+
+        var employee = _employeeRepository.GetAll()
+            .Where(e => e.Id == employeeId.Value)
+            .Select(e => new { e.Code, e.FullNameEn, e.FullNameAr })
+            .FirstOrDefault();
+
+        return employee == null
+            ? null
+            : WorkflowDetailDisplay.Employee(employee.Code, employee.FullNameEn, employee.FullNameAr);
+    }
+
+    /// <summary>
+    /// On approval, closes any other still-open withdrawal request the same employee has.
+    ///
+    /// <para>
+    /// This is the legacy "extension" mechanism, ported deliberately (legacy
+    /// <c>PassportWithdrawalRequestController</c>, final-step block). The employee whose passport is already
+    /// out and who needs it a week longer raises a second request rather than being blocked; when that one
+    /// is approved it SUPERSEDES the first, which is closed rather than left waiting in an approver's inbox
+    /// for a period that has been overtaken.
+    /// </para>
+    /// <para>
+    /// Only the workflow request is closed. The superseded transaction row keeps its in-flight status, so it
+    /// stays invisible to the movement log and the document-status calculation -- exactly where a never
+    /// approved withdrawal belongs. Stamping it <c>Closed</c> to match its request would be the tempting
+    /// symmetry and would be wrong: <c>Closed</c> counts as effective for the <c>ApprovedOnly</c> filter, so
+    /// the employee would end up with two live withdrawal periods for one document, one of which nobody ever
+    /// approved.
+    /// </para>
+    /// </summary>
+    public override async Task OnApprovedAsync(WorkflowTransactionContext context)
+    {
+        await base.OnApprovedAsync(context);
+
+        if (context.IsAmendment)
+        {
+            return;
+        }
+
+        var movement = await GetTargetAsync(context);
+
+        var employeeId = movement?.EmployeeId ?? context.EmployeeId;
+        if (!employeeId.HasValue)
+        {
+            return;
+        }
+
+        var thisRequestId = context.Request?.Id ?? 0;
+
+        var superseded = _requestRepository.GetAll()
+            .Where(r => r.RequestType == PassportWithdrawalRequestType
+                        && r.EmployeeId == employeeId.Value
+                        && r.RequestStatus == RequestStatus.Open
+                        // A return rides the same request type. Closing one here would cancel a pending
+                        // hand-back because somebody withdrew a different document -- legacy closed only
+                        // withdrawal requests.
+                        && !r.IsAmendment
+                        && r.Id != thisRequestId)
+            .ToList();
+
+        var extensionNumber = context.Request?.RequestNumber ?? string.Empty;
+        var now = Clock.Now;
+
+        foreach (var request in superseded)
+        {
+            request.RequestStatus = RequestStatus.Closed;
+            await _requestRepository.UpdateAsync(request);
+
+            // Legacy: "Closed due to extension. Extension request number : N". Written to the request's own
+            // log so its history says why it stopped, instead of showing a request that simply went quiet.
+            var requestId = request.Id;
+            var previousAction = _requestLogRepository.GetAll()
+                .Where(l => l.WorkflowRequestId == requestId)
+                .OrderByDescending(l => l.ActionDateTime)
+                .Select(l => (DateTime?)l.ActionDateTime)
+                .FirstOrDefault();
+
+            await _requestLogRepository.InsertAsync(new RequestLog
+            {
+                TenantId = request.TenantId,
+                WorkflowRequestId = request.Id,
+                ActionById = context.ActingEmployeeId,
+                RequestActionComment = L("ClosedDueToExtension", extensionNumber),
+                ActionDateTime = now,
+                ActionType = RequestActionType.Closed,
+                WorkflowStep = request.WorkflowStep,
+                ActionDays = previousAction.HasValue ? Math.Max(0, (now.Date - previousAction.Value.Date).Days) : 0
+            });
+        }
+
+        await SupersedeOpenMovementsAsync(movement);
+    }
+
+    /// <summary>
+    /// Leaves one open movement per document, as legacy did.
+    ///
+    /// <para>
+    /// Legacy's approval step looked for the document's still-open movement and overwrote its dates rather
+    /// than inserting a second one (<c>EmployeeDocMvmtRequest.OnSaving</c>), so an extension moved the
+    /// existing period instead of stacking another on top of it. Here the newly approved row already carries
+    /// the later dates, so the same end state is reached by removing the movement it replaces. Without this,
+    /// one document has two movements with no return date: it reads as out even after it is handed back, and
+    /// a return would then have two rows to choose between.
+    /// </para>
+    ///
+    /// <para>
+    /// What legacy lost by overwriting is kept here. The replaced row is soft-deleted, not rewritten, and the
+    /// new row points at it through <see cref="EmployeeDocumentMvmt.ExtendsMovementId"/>, so the earlier due
+    /// date stays readable. The custody facts move forward with the document: it never came back, so the
+    /// hand-over on file is still the original one. The dates do not -- legacy replaced both the withdraw and
+    /// the return date with the extension's, so the new row's own dates stand.
+    /// </para>
+    /// </summary>
+    private async Task SupersedeOpenMovementsAsync(EmployeeDocumentMvmt movement)
+    {
+        if (movement == null)
+        {
+            return;
+        }
+
+        // The ApprovedOnly filter is on here, so these are movements in effect: a pending or rejected row for
+        // the same document is not something the document is out on.
+        var replaced = Repository.GetAll()
+            .Where(m => m.EmployeeDocumentId == movement.EmployeeDocumentId
+                        && m.Id != movement.Id
+                        && m.ActualReturnDate == default)
+            .OrderByDescending(m => m.Id)
+            .ToList();
+
+        if (replaced.Count == 0)
+        {
+            return;
+        }
+
+        var extended = replaced[0];
+
+        movement.ExtendsMovementId = extended.Id;
+
+        if (extended.ActualWithdrawDate.HasValue)
+        {
+            movement.ActualWithdrawDate = extended.ActualWithdrawDate;
+            movement.HandedOverByUserId = extended.HandedOverByUserId;
+        }
+
+        var replacedIds = replaced.Select(m => m.Id).ToList();
+
+        // A return the employee raised against the replaced movement would otherwise be left pointing at a
+        // row that no longer exists, and could never be approved. It is the same document, still out, so the
+        // return follows it to the movement that now says so.
+        var pendingReturns = _requestRepository.GetAll()
+            .Where(r => r.RequestType == PassportWithdrawalRequestType
+                        && r.IsAmendment
+                        && r.TargetEntityId.HasValue
+                        && replacedIds.Contains(r.TargetEntityId.Value)
+                        && (r.RequestStatus == RequestStatus.Open || r.RequestStatus == RequestStatus.Draft))
+            .ToList();
+
+        foreach (var pendingReturn in pendingReturns)
+        {
+            pendingReturn.TargetEntityId = movement.Id;
+            await _requestRepository.UpdateAsync(pendingReturn);
+        }
+
+        foreach (var old in replaced)
+        {
+            await Repository.DeleteAsync(old);
+        }
+
+        using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            await Repository.UpdateAsync(movement);
+        }
+    }
+}

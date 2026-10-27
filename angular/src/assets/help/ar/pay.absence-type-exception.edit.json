@@ -1,0 +1,43 @@
+{
+  "helpId": "pay.absence-type-exception.edit",
+  "lang": "ar",
+  "title": "استثناءات أنواع الغياب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.AbsenceTypeException",
+  "overviewHtml": "<p>أزواج من أنواع الإجازات لا ينبغي الجمع بينها. لا يُتحقق منها حالياً: تُحفظ الأزواج، لكن لا شيء يمنع أخذ النوعين معاً.</p>",
+  "aliasIndex": {
+    "loc:AbsenceTypes": "AbsenceTypeException.AbsenceTypeId",
+    "dom:AbsenceTypeException_AbsenceTypeId": "AbsenceTypeException.AbsenceTypeId",
+    "loc:ExceptAbsenceType": "AbsenceTypeException.ExceptAbsenceTypeId",
+    "dom:AbsenceTypeException_ExceptAbsenceTypeId": "AbsenceTypeException.ExceptAbsenceTypeId"
+  },
+  "fields": [
+    {
+      "id": "AbsenceTypeException.AbsenceTypeId",
+      "label": "AbsenceTypes",
+      "section": "AbsenceTypeExceptions",
+      "aliases": [
+        "loc:AbsenceTypes",
+        "dom:AbsenceTypeException_AbsenceTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الإجازات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة.</p><p><strong>مثال.</strong> الإجازة السنوية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceTypeException.ExceptAbsenceTypeId",
+      "label": "ExceptAbsenceType",
+      "section": "AbsenceTypeExceptions",
+      "aliases": [
+        "loc:ExceptAbsenceType",
+        "dom:AbsenceTypeException_ExceptAbsenceTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الإجازات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة الذي لا ينبغي الجمع بينه وبينه. ولا يجوز أن يستثني النوع نفسه.</p><p><strong>مثال.</strong> الإجازة المرضية</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

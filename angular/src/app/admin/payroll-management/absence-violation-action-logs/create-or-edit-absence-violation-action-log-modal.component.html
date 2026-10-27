@@ -1,0 +1,118 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #absenceViolationActionLogForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (absenceViolationActionLog().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'AbsenceViolationActionLogs' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'AbsenceViolationActionLogs' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label required" for="AbsenceViolationActionLog_AbsenceViolationActionRecordId">{{ 'AbsenceViolationActionRecords' | localize }}</label>
+                                <select
+                                    id="AbsenceViolationActionLog_AbsenceViolationActionRecordId"
+                                    #absenceViolationActionRecordIdInput="ngModel"
+                                    class="form-select"
+                                    name="AbsenceViolationActionRecordId"
+                                    [ngModel]="absenceViolationActionLog().absenceViolationActionRecordId"
+                                    (ngModelChange)="updateField('absenceViolationActionRecordId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (record of absenceViolationActionRecords(); track record.id) {
+                                        <option [ngValue]="record.id">{{ recordLabel(record) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="absenceViolationActionRecordIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="AbsenceViolationActionLog_Step">{{ 'Step' | localize }}</label>
+                                <input
+                                    id="AbsenceViolationActionLog_Step"
+                                    class="form-control"
+                                    type="number"
+                                    name="Step"
+                                    [ngModel]="absenceViolationActionLog().step"
+                                    (ngModelChange)="updateField('step', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="AbsenceViolationActionLog_Action">{{ 'Action' | localize }}</label>
+                                <select
+                                    id="AbsenceViolationActionLog_Action"
+                                    class="form-select"
+                                    name="Action"
+                                    [ngModel]="absenceViolationActionLog().action"
+                                    (ngModelChange)="updateField('action', $event)">
+                                    @for (action of actions; track action.value) {
+                                        <option [ngValue]="action.value">{{ action.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="AbsenceViolationActionLog_ActionDate">{{ 'ActionDate' | localize }}</label>
+                                <input
+                                    id="AbsenceViolationActionLog_ActionDate"
+                                    type="date"
+                                    class="form-control"
+                                    name="ActionDate"
+                                    [ngModel]="absenceViolationActionLog().actionDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('actionDate', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="AbsenceViolationActionLog_ObjectOId">{{ 'ObjectOId' | localize }}</label>
+                                <input
+                                    id="AbsenceViolationActionLog_ObjectOId"
+                                    class="form-control"
+                                    type="number"
+                                    name="ObjectOId"
+                                    [ngModel]="absenceViolationActionLog().objectOId"
+                                    (ngModelChange)="updateField('objectOId', $event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!absenceViolationActionLogForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

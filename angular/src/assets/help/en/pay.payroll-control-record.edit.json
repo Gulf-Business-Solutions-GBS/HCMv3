@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.payroll-control-record.edit",
+  "lang": "en",
+  "title": "Payroll Control Records — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.PayrollControlRecord",
+  "overviewHtml": "<p>The current payroll period of a payroll area, and its state. Each payroll area has exactly one control record. When you save, the calendar start and end of the period are worked out from the payroll month, the payroll year and the area's fiscal year.</p><p>The state decides what may happen:</p><ul><li><strong>Open</strong> — not started. Master data can be changed; a regular payroll run is refused.</li><li><strong>Released for payroll</strong> — a regular run is allowed, for the month ending on the run's pay date. Changes to payroll-related records of employees in this area are refused (\"Payroll Area : 'X' is locked for payroll processing…\").</li><li><strong>Closed</strong> — the month is finished. Off-cycle runs are allowed; a regular run is refused.</li></ul><p>The state is normally moved from the list with <strong>Release for payroll</strong>, <strong>Release for correction</strong>, <strong>Close period</strong> and <strong>Reopen period</strong>, which also record who moved it and when. The two tick boxes on this form set the same state directly.</p>",
+  "aliasIndex": {
+    "loc:PayrollAreaId": "PayrollControlRecord.PayrollAreaId",
+    "dom:PayrollControlRecord_PayrollAreaId": "PayrollControlRecord.PayrollAreaId",
+    "loc:PayrollMonth": "PayrollControlRecord.PayrollMonth",
+    "dom:PayrollControlRecord_PayrollMonth": "PayrollControlRecord.PayrollMonth",
+    "loc:PayrollYear": "PayrollControlRecord.PayrollYear",
+    "dom:PayrollControlRecord_PayrollYear": "PayrollControlRecord.PayrollYear",
+    "loc:PeriodLocked": "PayrollControlRecord.PeriodLocked",
+    "dom:PayrollControlRecord_PeriodLocked": "PayrollControlRecord.PeriodLocked",
+    "loc:PeriodClosed": "PayrollControlRecord.PeriodClosed",
+    "dom:PayrollControlRecord_PeriodClosed": "PayrollControlRecord.PeriodClosed"
+  },
+  "fields": [
+    {
+      "id": "PayrollControlRecord.PayrollAreaId",
+      "label": "PayrollAreaId",
+      "section": "PayrollControlRecords",
+      "aliases": [
+        "loc:PayrollAreaId",
+        "dom:PayrollControlRecord_PayrollAreaId"
+      ],
+      "rules": "Required. Chosen from Payroll Area master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The payroll area this control record governs.</p><p><strong>Example.</strong> Kuwait Monthly</p><p><strong>Why it matters.</strong> An area can have only one control record; a second one is refused (\"Control record is unique for a Payroll Area.\").</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollControlRecord.PayrollMonth",
+      "label": "PayrollMonth",
+      "section": "PayrollControlRecords",
+      "aliases": [
+        "loc:PayrollMonth",
+        "dom:PayrollControlRecord_PayrollMonth"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The period being processed, as a month of the area's fiscal year, 1 to 12.</p><p><strong>Example.</strong> <code>1</code> — April, for an April–March area.</p><p><strong>Why it matters.</strong> Together with the payroll year and the area's fiscal year it gives the period's calendar start and end. A regular run is allowed only when that end is the run's pay date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollControlRecord.PayrollYear",
+      "label": "PayrollYear",
+      "section": "PayrollControlRecords",
+      "aliases": [
+        "loc:PayrollYear",
+        "dom:PayrollControlRecord_PayrollYear"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The fiscal year of the period being processed.</p><p><strong>Example.</strong> <code>2026</code></p><p><strong>Why it matters.</strong> For a fiscal year that does not start in January, the later months fall in the next calendar year: April–March month 10 of 2026 is January 2027.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollControlRecord.PeriodLocked",
+      "label": "PeriodLocked",
+      "section": "PayrollControlRecords",
+      "aliases": [
+        "loc:PeriodLocked",
+        "dom:PayrollControlRecord_PeriodLocked"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Ticked, the period is released for payroll.</p><p><strong>Why it matters.</strong> A regular payroll run needs it. While it is ticked, adding, changing or deleting payroll-related records of the employees currently in this area is refused. Only the area's latest period counts; an earlier period left locked does not block anything.</p>",
+      "adminHtml": "<p>Moving the state with <strong>Release for payroll</strong> also locks that month's off-cycle payslips, when the payroll setting <em>Lock Salary Register On Payroll Exit</em> is on. Ticking the box here sets the state without that step.</p>",
+      "stub": false
+    },
+    {
+      "id": "PayrollControlRecord.PeriodClosed",
+      "label": "PeriodClosed",
+      "section": "PayrollControlRecords",
+      "aliases": [
+        "loc:PeriodClosed",
+        "dom:PayrollControlRecord_PeriodClosed"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Ticked, the period is closed.</p><p><strong>Why it matters.</strong> Off-cycle runs need it: an off-cycle run is refused until the period is closed.</p>",
+      "adminHtml": "<p>Moving the state with <strong>Close period</strong> also locks that month's regular payslips, when <em>Lock Salary Register On Payroll Exit</em> is on; ticking the box here does not. When the payroll setting <em>Disable Retro Calculation</em> is on, changes dated before the period are refused: before its first day while it is open or released for payroll, and up to its last day once it is closed.</p>",
+      "stub": false
+    }
+  ]
+}

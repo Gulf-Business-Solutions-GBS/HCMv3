@@ -1,0 +1,171 @@
+{
+  "helpId": "sys.general-settings.edit",
+  "lang": "en",
+  "title": "General settings",
+  "entity": "HCMv3.SystemSettings.ManageGeneralSettings",
+  "overviewHtml": "<p>General display settings.</p><p>Only the date and time formats are read at present — for dates and times written into emails and generated messages. The rest has no effect.</p><p>There is one settings record per company; it cannot be deleted.</p>",
+  "aliasIndex": {
+    "loc:DateEditMask": "ManageGeneralSettings.DateEditMask",
+    "dom:GeneralSettings_DateEditMask": "ManageGeneralSettings.DateEditMask",
+    "loc:DateDisplayFormat": "ManageGeneralSettings.DateDisplayFormat",
+    "dom:GeneralSettings_DateDisplayFormat": "ManageGeneralSettings.DateDisplayFormat",
+    "loc:TimeEditMask": "ManageGeneralSettings.TimeEditMask",
+    "dom:GeneralSettings_TimeEditMask": "ManageGeneralSettings.TimeEditMask",
+    "loc:TimeDisplayFormat": "ManageGeneralSettings.TimeDisplayFormat",
+    "dom:GeneralSettings_TimeDisplayFormat": "ManageGeneralSettings.TimeDisplayFormat",
+    "loc:StartupDashboard": "ManageGeneralSettings.StartupDashboard",
+    "dom:GeneralSettings_StartupDashboard": "ManageGeneralSettings.StartupDashboard",
+    "loc:AutoFilterColumnCondition": "ManageGeneralSettings.AutoFilterColumnCondition",
+    "dom:GeneralSettings_AutoFilterColumnCondition": "ManageGeneralSettings.AutoFilterColumnCondition",
+    "loc:DisableAutoEmpcode": "ManageGeneralSettings.DisableAutoEmpcode",
+    "dom:GeneralSettings_DisableAutoEmpcode": "ManageGeneralSettings.DisableAutoEmpcode",
+    "loc:NoticePeriodDaysExcludingSubmissionDate": "ManageGeneralSettings.NoticePeriodDaysExcludingSubmissionDate",
+    "dom:GeneralSettings_NoticePeriodDaysExcludingSubmissionDate": "ManageGeneralSettings.NoticePeriodDaysExcludingSubmissionDate",
+    "loc:EnableGridDataAccessModeServer": "ManageGeneralSettings.EnableGridDataAccessModeServer",
+    "dom:GeneralSettings_EnableGridDataAccessModeServer": "ManageGeneralSettings.EnableGridDataAccessModeServer",
+    "loc:StartHangfire": "ManageGeneralSettings.StartHangfire",
+    "dom:GeneralSettings_StartHangfire": "ManageGeneralSettings.StartHangfire"
+  },
+  "fields": [
+    {
+      "id": "ManageGeneralSettings.DateEditMask",
+      "label": "DateEditMask",
+      "section": null,
+      "aliases": [
+        "loc:DateEditMask",
+        "dom:GeneralSettings_DateEditMask"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date format used in emails and generated messages.</p><p><strong>Example.</strong> <code>dd/MM/yyyy</code></p><p><strong>Why it matters.</strong> Left blank, <code>dd/MM/yyyy</code> is used. Screens use the user's own language format, not this.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.DateDisplayFormat",
+      "label": "DateDisplayFormat",
+      "section": null,
+      "aliases": [
+        "loc:DateDisplayFormat",
+        "dom:GeneralSettings_DateDisplayFormat"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A date display format.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.TimeEditMask",
+      "label": "TimeEditMask",
+      "section": null,
+      "aliases": [
+        "loc:TimeEditMask",
+        "dom:GeneralSettings_TimeEditMask"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time format used in emails and generated messages.</p><p><strong>Example.</strong> <code>HH:mm</code></p><p><strong>Why it matters.</strong> Left blank, <code>HH:mm</code> is used.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.TimeDisplayFormat",
+      "label": "TimeDisplayFormat",
+      "section": null,
+      "aliases": [
+        "loc:TimeDisplayFormat",
+        "dom:GeneralSettings_TimeDisplayFormat"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A time display format.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.StartupDashboard",
+      "label": "StartupDashboard",
+      "section": null,
+      "aliases": [
+        "loc:StartupDashboard",
+        "dom:GeneralSettings_StartupDashboard"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The dashboard shown after sign-in.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.AutoFilterColumnCondition",
+      "label": "AutoFilterColumnCondition",
+      "section": null,
+      "aliases": [
+        "loc:AutoFilterColumnCondition",
+        "dom:GeneralSettings_AutoFilterColumnCondition"
+      ],
+      "rules": "Required. One of: Begins With, Contains, Equals.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How list filters match text.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.DisableAutoEmpcode",
+      "label": "DisableAutoEmpcode",
+      "section": null,
+      "aliases": [
+        "loc:DisableAutoEmpcode",
+        "dom:GeneralSettings_DisableAutoEmpcode"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether employee codes are no longer assigned automatically.</p><p><strong>Why it matters.</strong> Not read at present: a blank employee code is still given the next number when the employee is saved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.NoticePeriodDaysExcludingSubmissionDate",
+      "label": "NoticePeriodDaysExcludingSubmissionDate",
+      "section": null,
+      "aliases": [
+        "loc:NoticePeriodDaysExcludingSubmissionDate",
+        "dom:GeneralSettings_NoticePeriodDaysExcludingSubmissionDate"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the notice period excludes the day notice is given.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.EnableGridDataAccessModeServer",
+      "label": "EnableGridDataAccessModeServer",
+      "section": null,
+      "aliases": [
+        "loc:EnableGridDataAccessModeServer",
+        "dom:GeneralSettings_EnableGridDataAccessModeServer"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether lists load their data page by page from the server.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.StartHangfire",
+      "label": "StartHangfire",
+      "section": null,
+      "aliases": [
+        "loc:StartHangfire",
+        "dom:GeneralSettings_StartHangfire"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the background job scheduler starts.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

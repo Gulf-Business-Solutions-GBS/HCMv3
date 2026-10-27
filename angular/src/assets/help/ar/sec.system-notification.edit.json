@@ -1,0 +1,75 @@
+{
+  "helpId": "sec.system-notification.edit",
+  "lang": "ar",
+  "title": "إشعارات النظام — إنشاء / تحرير",
+  "entity": "HCMv3.SystemSecurity.SystemNotification",
+  "overviewHtml": "<p>تذكير يرسله النظام وفق جدول، ويُتعرَّف عليه <strong>باسم الإشعار</strong>: <code>BIRTHDAY_NOTIFICATION</code> و<code>ANNIVERSARY_NOTIFICATION</code> و<code>AdvancePayment_NOTIFICATION</code> و<code>LEAVERESUMPTION_NOTIFICATION</code> و<code>PUNCHDURINGLEAVE_NOTIFICATION</code> و<code>ANNUALLEAVEMAXLIMITREACHED_NOTIFICATION</code>. والاسم الذي لا يتعرّف عليه النظام لا يفعل شيئاً.</p>",
+  "aliasIndex": {
+    "loc:NotificationName": "SystemNotification.NotificationName",
+    "dom:SystemNotification_NotificationName": "SystemNotification.NotificationName",
+    "loc:NotificationConfig": "SystemNotification.NotificationConfigId",
+    "dom:SystemNotification_NotificationConfigId": "SystemNotification.NotificationConfigId",
+    "loc:ReminderDays": "SystemNotification.ReminderDays",
+    "dom:SystemNotification_ReminderDays": "SystemNotification.ReminderDays",
+    "loc:IsActive": "SystemNotification.IsActive",
+    "dom:SystemNotification_IsActive": "SystemNotification.IsActive"
+  },
+  "fields": [
+    {
+      "id": "SystemNotification.NotificationName",
+      "label": "NotificationName",
+      "section": "SystemNotifications",
+      "aliases": [
+        "loc:NotificationName",
+        "dom:SystemNotification_NotificationName"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أي تذكير هذا، بالاسم الذي يستخدمه النظام.</p><p><strong>مثال.</strong> <code>LEAVERESUMPTION_NOTIFICATION</code></p><p><strong>لماذا يهم.</strong> يجب أن يطابق أحد الأسماء أعلاه تماماً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SystemNotification.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "SystemNotifications",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:SystemNotification_NotificationConfigId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إعداد الإشعار — النموذج والمستلمون — الذي يُرسل به التذكير.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SystemNotification.ReminderDays",
+      "label": "ReminderDays",
+      "section": "SystemNotifications",
+      "aliases": [
+        "loc:ReminderDays",
+        "dom:SystemNotification_ReminderDays"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> قبل كم يوماً يُرسل التذكير.</p><p><strong>مثال.</strong> <code>3</code></p><p><strong>لماذا يهم.</strong> يستخدمه تذكير الدفعة المقدمة: فيُرسل قبل هذا العدد من الأيام من بداية الإجازة أو تاريخ الدفع، بحسب إعدادات الإشعارات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SystemNotification.IsActive",
+      "label": "IsActive",
+      "section": "SystemNotifications",
+      "aliases": [
+        "loc:IsActive",
+        "dom:SystemNotification_IsActive"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان التذكير يُرسل.</p><p><strong>لماذا يهم.</strong> إذا لم يُؤشَّر عليه لا يُرسل التذكير.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+"propertyTemplates":[
+{
+			"placeholder" : "{{Handle_Property_Loop_Here}}",
+			"templates" : [
+					{
+					"type" : "default",
+					"content" : ""
+					},
+                    {
+                    "type" : "Guid",
+                    "content" : "        private string _{{property_Name_Here}}String;
+                        
+                                         public string {{Property_Name_Here}}String
+                                         {
+                                             get => _{{property_Name_Here}}String;
+                                             set
+                                             {
+                                                if (Guid.TryParse(value, out var guid))
+                                                {
+                                                    GuidTest = guid;
+                                                } else {
+                                                    GuidTest = Guid.Empty;
+                                                    _guidTestString = string.Empty;
+                                                }
+                                             }
+                                         }"
+                    },
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{Navigation_Property_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "		public string {{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} { get; set;}
+
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Navigation_Property_Table_Dropdown_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType": "Dropdown",	
+					"preventDuplicate":true,					
+					"content" : "public List<{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto> {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}List { get; set;}
+
+"
+					}
+				]
+		}
+	],
+"enumTemplates":[
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{IsEditMode_Value_Here}}",
+			"condition": "{{Primary_Key_Here}} == 'string'",
+			"content": "!Id.IsNullOrWhiteSpace();"
+		},
+		{
+			"placeholder": "{{IsEditMode_Value_Here}}",
+			"condition": "{{Primary_Key_Here}} != 'string'",
+			"content": "Id.HasValue;"
+		},
+		{
+			"placeholder": "{{Navigation_Property_Dropdown_Using}}",
+			"condition": "{{NP_Is_Dropdown_View}} == true",
+			"content": "using System.Collections.Generic;"
+		},
+	]
+}

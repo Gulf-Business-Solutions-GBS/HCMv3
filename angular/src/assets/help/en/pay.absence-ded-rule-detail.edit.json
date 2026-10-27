@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.absence-ded-rule-detail.edit",
+  "lang": "en",
+  "title": "Absence Deduction Rule Details — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.AbsenceDedRuleDetail",
+  "overviewHtml": "<p>One step of a sick leave deduction scale. Payroll counts the employee's sick days through the cycle; each day takes the first step whose <strong>Days Count</strong> reaches that day's number, and is paid at 100% less that step's deduction. Sick days beyond the last step are not paid at all, so make the last step reach as far as sick leave can run.</p>",
+  "aliasIndex": {
+    "loc:AbsenceDeductionRules": "AbsenceDedRuleDetail.AbsenceDeductionRuleId",
+    "dom:AbsenceDedRuleDetail_AbsenceDeductionRuleId": "AbsenceDedRuleDetail.AbsenceDeductionRuleId",
+    "loc:StartDate": "AbsenceDedRuleDetail.StartDate",
+    "dom:AbsenceDedRuleDetail_StartDate": "AbsenceDedRuleDetail.StartDate",
+    "loc:EndDate": "AbsenceDedRuleDetail.EndDate",
+    "dom:AbsenceDedRuleDetail_EndDate": "AbsenceDedRuleDetail.EndDate",
+    "loc:DaysCount": "AbsenceDedRuleDetail.DaysCount",
+    "dom:AbsenceDedRuleDetail_DaysCount": "AbsenceDedRuleDetail.DaysCount",
+    "loc:DeductionUnit": "AbsenceDedRuleDetail.DeductionUnit",
+    "dom:AbsenceDedRuleDetail_DeductionUnit": "AbsenceDedRuleDetail.DeductionUnit",
+    "loc:DeductionNumber": "AbsenceDedRuleDetail.DeductionNumber",
+    "dom:AbsenceDedRuleDetail_DeductionNumber": "AbsenceDedRuleDetail.DeductionNumber"
+  },
+  "fields": [
+    {
+      "id": "AbsenceDedRuleDetail.AbsenceDeductionRuleId",
+      "label": "AbsenceDeductionRules",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:AbsenceDeductionRules",
+        "dom:AbsenceDedRuleDetail_AbsenceDeductionRuleId"
+      ],
+      "rules": "Required. Chosen from Absence Deduction Rule master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The scale this step belongs to.</p><p><strong>Example.</strong> Kuwait Sick Leave Scale</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceDedRuleDetail.StartDate",
+      "label": "StartDate",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:StartDate",
+        "dom:AbsenceDedRuleDetail_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceDedRuleDetail.EndDate",
+      "label": "EndDate",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:EndDate",
+        "dom:AbsenceDedRuleDetail_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceDedRuleDetail.DaysCount",
+      "label": "DaysCount",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:DaysCount",
+        "dom:AbsenceDedRuleDetail_DaysCount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The sick day, counted through the cycle, up to which this step applies.</p><p><strong>Example.</strong> <code>25</code> — days 16 to 25, after a first step of <code>15</code>.</p><p><strong>Why it matters.</strong> Steps are read in order of this number.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceDedRuleDetail.DeductionUnit",
+      "label": "DeductionUnit",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:DeductionUnit",
+        "dom:AbsenceDedRuleDetail_DeductionUnit"
+      ],
+      "rules": "Required. One of: Fixed, Percentage.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the deduction is a percentage or a fixed amount.</p><p><strong>Why it matters.</strong> Not read at present: the deduction number is always treated as a percentage.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceDedRuleDetail.DeductionNumber",
+      "label": "DeductionNumber",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:DeductionNumber",
+        "dom:AbsenceDedRuleDetail_DeductionNumber"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The percentage of a day's pay taken off for sick days in this step.</p><p><strong>Example.</strong> <code>25</code> — each day paid at 75%.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

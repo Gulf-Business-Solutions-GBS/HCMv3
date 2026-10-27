@@ -1,0 +1,82 @@
+.org-chart-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.org-chart-toolbar__zoom {
+    min-width: 62px;
+    font-weight: 600;
+}
+
+.employee-org-chart__search-title {
+    color: var(--bs-gray-600, #7e8299);
+}
+
+.employee-org-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 8px 24px;
+}
+
+/* The manager and focus cards share one width so the stem between them lines up down the centre --
+   capped at the frame so a narrow phone gets a full-width card instead of horizontal overflow. */
+.employee-org-chart__node {
+    width: min(340px, 100%);
+}
+
+.employee-org-chart__connector {
+    width: 1px;
+    height: 28px;
+    background: var(--bs-gray-400, #b5b5c3);
+}
+
+/*
+ * Direct reports wrap into a grid rather than a single row: a general manager with 122 of them is
+ * unreadable as a 122-card strip, and this is the layout the reference design uses for the same reason.
+ * No surrounding container here, unlike the Company Structure chart -- people are shown as a plain grid.
+ */
+.employee-org-chart__reports {
+    display: grid;
+    /* min() inside minmax so the track never demands more width than the screen actually has. */
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 340px));
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 1120px;
+    padding-top: 4px;
+}
+
+.employee-org-chart__empty {
+    padding: 48px 0;
+    text-align: center;
+    color: var(--bs-gray-600, #7e8299);
+}
+
+/* Step one level up or down the hierarchy. The chart only ever draws three rows, so these are how you
+   move the window rather than expand it. */
+.employee-org-chart__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    margin: 4px 0;
+    padding: 0;
+    border: 1px solid var(--bs-border-color, #eff2f5);
+    border-radius: 50%;
+    background: var(--bs-card-bg, #ffffff);
+    color: var(--bs-gray-700, #5e6278);
+
+    &:hover {
+        border-color: var(--bs-primary, #009ef7);
+        color: var(--bs-primary, #009ef7);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--bs-primary, #009ef7);
+        outline-offset: 2px;
+    }
+}

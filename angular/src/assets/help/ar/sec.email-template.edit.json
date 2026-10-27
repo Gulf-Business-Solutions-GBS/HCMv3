@@ -1,0 +1,123 @@
+{
+  "helpId": "sec.email-template.edit",
+  "lang": "ar",
+  "title": "قوالب البريد الإلكتروني — إنشاء / تحرير",
+  "entity": "HCMv3.SystemSecurity.EmailTemplate",
+  "overviewHtml": "<p>نص رسالة بريد إلكتروني يرسلها النظام — الإشعارات والتذكيرات وكشوف الرواتب وكلمات المرور الجماعية. وتُستبدل العناصر النائبة المكتوبة بالشكل <code>$#TokenName#$</code> في الموضوع والنص باستخدام رموز البريد الخاصة بالنموذج.</p>",
+  "aliasIndex": {
+    "loc:Code": "EmailTemplate.Code",
+    "dom:EmailTemplate_Code": "EmailTemplate.Code",
+    "loc:NameEn": "EmailTemplate.NameEn",
+    "dom:EmailTemplate_NameEn": "EmailTemplate.NameEn",
+    "loc:NameAr": "EmailTemplate.NameAr",
+    "dom:EmailTemplate_NameAr": "EmailTemplate.NameAr",
+    "loc:SmtpProfile": "EmailTemplate.SmtpProfile",
+    "dom:EmailTemplate_SmtpProfile": "EmailTemplate.SmtpProfile",
+    "loc:Subject": "EmailTemplate.Subject",
+    "dom:EmailTemplate_Subject": "EmailTemplate.Subject",
+    "loc:EmailBodyHtml": "EmailTemplate.EmailBodyHtml",
+    "dom:EmailTemplate_EmailBodyHtml": "EmailTemplate.EmailBodyHtml",
+    "loc:EmailBodyText": "EmailTemplate.EmailBodyText",
+    "dom:EmailTemplate_EmailBodyText": "EmailTemplate.EmailBodyText"
+  },
+  "fields": [
+    {
+      "id": "EmailTemplate.Code",
+      "label": "Code",
+      "section": "EmailTemplates",
+      "aliases": [
+        "loc:Code",
+        "dom:EmailTemplate_Code"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailTemplate.NameEn",
+      "label": "NameEn",
+      "section": "EmailTemplates",
+      "aliases": [
+        "loc:NameEn",
+        "dom:EmailTemplate_NameEn"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailTemplate.NameAr",
+      "label": "NameAr",
+      "section": "EmailTemplates",
+      "aliases": [
+        "loc:NameAr",
+        "dom:EmailTemplate_NameAr"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailTemplate.SmtpProfile",
+      "label": "SmtpProfile",
+      "section": "EmailTemplates",
+      "aliases": [
+        "loc:SmtpProfile",
+        "dom:EmailTemplate_SmtpProfile"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملف خادم البريد الذي يُرسل منه.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailTemplate.Subject",
+      "label": "Subject",
+      "section": "EmailTemplates",
+      "aliases": [
+        "loc:Subject",
+        "dom:EmailTemplate_Subject"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موضوع الرسالة. وتُستبدل العناصر النائبة.</p><p><strong>مثال.</strong> تذكير بالعودة من الإجازة لـ $#EmployeeName#$</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailTemplate.EmailBodyHtml",
+      "label": "EmailBodyHtml",
+      "section": "EmailTemplates",
+      "aliases": [
+        "loc:EmailBodyHtml",
+        "dom:EmailTemplate_EmailBodyHtml"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نص الرسالة بصيغة HTML. وتُستبدل العناصر النائبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailTemplate.EmailBodyText",
+      "label": "EmailBodyText",
+      "section": "EmailTemplates",
+      "aliases": [
+        "loc:EmailBodyText",
+        "dom:EmailTemplate_EmailBodyText"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نسخة نصية عادية من نص الرسالة.</p><p><strong>لماذا يهم.</strong> إذا مُلئت تُستخدم بدلاً من نص HTML في الرسائل المرسلة مباشرة إلى عنوان، ويحتاجها بريد كلمات المرور الجماعية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

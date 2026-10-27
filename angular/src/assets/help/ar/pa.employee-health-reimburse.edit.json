@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-health-reimburse.edit",
+  "lang": "ar",
+  "title": "استردادات المصاريف الصحية للموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeHealthReimburse",
+  "overviewHtml": "<p>طلب تعويض مصاريف صحية للموظف. وتصرف الرواتب الطلبات التي يقع تاريخ دفعها في الشهر الذي تعالجه.</p><p>يُتحقق عند كل حفظ من الطلب مقابل استحقاق الموظف في التاريخ، سواء أُدخل هنا أو طُلب عبر الخدمة الذاتية: فيُرفض الطلب إذا لم يكن للموظف استحقاق، أو كان المبلغ صفراً، أو وُجد طلب آخر في التاريخ نفسه. وعند توجيه نوع الطلب للاعتماد، ينتظر الطلب المُدخل هنا الاعتماد أيضاً.</p>",
+  "aliasIndex": {
+    "loc:PaymentDate": "EmployeeHealthReimburse.PaymentDate",
+    "dom:EmployeeHealthReimburse_PaymentDate": "EmployeeHealthReimburse.PaymentDate",
+    "loc:Amount": "EmployeeHealthReimburse.Amount",
+    "dom:EmployeeHealthReimburse_Amount": "EmployeeHealthReimburse.Amount",
+    "loc:Comments": "EmployeeHealthReimburse.Comments",
+    "dom:EmployeeHealthReimburse_Comments": "EmployeeHealthReimburse.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeHealthReimburse.PaymentDate",
+      "label": "PaymentDate",
+      "section": "EmployeeHealthReimburses",
+      "aliases": [
+        "loc:PaymentDate",
+        "dom:EmployeeHealthReimburse_PaymentDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ دفع المصروف.</p><p><strong>مثال.</strong> 5 سبتمبر 2026</p><p><strong>لماذا يهم.</strong> طلب واحد لكل تاريخ. وتصرف الرواتب الطلب في شهر هذا التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeHealthReimburse.Amount",
+      "label": "Amount",
+      "section": "EmployeeHealthReimburses",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeHealthReimburse_Amount"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ المطلوب.</p><p><strong>مثال.</strong> 45.500</p><p><strong>لماذا يهم.</strong> لا يجوز أن يكون صفراً، ويُتحقق منه مقابل الاستحقاق المتبقي للموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeHealthReimburse.Comments",
+      "label": "Comments",
+      "section": "EmployeeHealthReimburses",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeHealthReimburse_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

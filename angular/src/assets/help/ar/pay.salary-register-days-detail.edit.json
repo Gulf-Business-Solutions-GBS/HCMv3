@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.salary-register-days-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل أيام سجلات الرواتب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.SalaryRegisterDaysDetail",
+  "overviewHtml": "<p>تفصيل سطر من كشف الراتب بحسب التاريخ — العمل الإضافي يوماً بيوم مثلاً، أو الإجازة المدفوعة عبر أشهر. ولا يمكن تعديل تفاصيل كشف الراتب المقفل.</p>",
+  "aliasIndex": {
+    "loc:SalaryRegisterDetailId": "SalaryRegisterDaysDetail.SalaryRegisterDetailId",
+    "dom:SalaryRegisterDaysDetail_SalaryRegisterDetailId": "SalaryRegisterDaysDetail.SalaryRegisterDetailId",
+    "loc:Period": "SalaryRegisterDaysDetail.Period",
+    "dom:SalaryRegisterDaysDetail_Period": "SalaryRegisterDaysDetail.Period",
+    "loc:Rate": "SalaryRegisterDaysDetail.Rate",
+    "dom:SalaryRegisterDaysDetail_Rate": "SalaryRegisterDaysDetail.Rate",
+    "loc:Number": "SalaryRegisterDaysDetail.Number",
+    "dom:SalaryRegisterDaysDetail_Number": "SalaryRegisterDaysDetail.Number",
+    "loc:Amount": "SalaryRegisterDaysDetail.Amount",
+    "dom:SalaryRegisterDaysDetail_Amount": "SalaryRegisterDaysDetail.Amount"
+  },
+  "fields": [
+    {
+      "id": "SalaryRegisterDaysDetail.SalaryRegisterDetailId",
+      "label": "SalaryRegisterDetailId",
+      "section": "SalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:SalaryRegisterDetailId",
+        "dom:SalaryRegisterDaysDetail_SalaryRegisterDetailId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة تفاصيل سجلات الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سطر كشف الراتب الذي يتبعه هذا التفصيل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegisterDaysDetail.Period",
+      "label": "Period",
+      "section": "SalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Period",
+        "dom:SalaryRegisterDaysDetail_Period"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي يخصه هذا الجزء من السطر.</p><p><strong>مثال.</strong> <code>2026-03-14</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegisterDaysDetail.Rate",
+      "label": "Rate",
+      "section": "SalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Rate",
+        "dom:SalaryRegisterDaysDetail_Rate"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأجر لذلك التاريخ.</p><p><strong>مثال.</strong> <code>800</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegisterDaysDetail.Number",
+      "label": "Number",
+      "section": "SalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Number",
+        "dom:SalaryRegisterDaysDetail_Number"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأيام أو الساعات أو الوحدات لذلك التاريخ.</p><p><strong>مثال.</strong> <code>2</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegisterDaysDetail.Amount",
+      "label": "Amount",
+      "section": "SalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:SalaryRegisterDaysDetail_Amount"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ لذلك التاريخ.</p><p><strong>مثال.</strong> <code>12.500</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "helpId": "pay.social-security-marital-allowance.edit",
+  "lang": "en",
+  "title": "Social Security Marital Allowances — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.SocialSecurityMaritalAllowance",
+  "overviewHtml": "<p>An amount added to the pay for social security by marital status, for employees whose education falls in a given branch.</p><p>Only rows for a branch of one of the employee's educations count. A male employee gets the row matching his marital status. A female employee who is not single gets every non-single row for her branches added together — legacy behaviour, kept on purpose.</p>",
+  "aliasIndex": {
+    "loc:SocialSecurityId": "SocialSecurityMaritalAllowance.SocialSecurityId",
+    "dom:SocialSecurityMaritalAllowance_SocialSecurityId": "SocialSecurityMaritalAllowance.SocialSecurityId",
+    "loc:EducationBranchId": "SocialSecurityMaritalAllowance.EducationBranchId",
+    "dom:SocialSecurityMaritalAllowance_EducationBranchId": "SocialSecurityMaritalAllowance.EducationBranchId",
+    "loc:MaritalStatusId": "SocialSecurityMaritalAllowance.MaritalStatusId",
+    "dom:SocialSecurityMaritalAllowance_MaritalStatusId": "SocialSecurityMaritalAllowance.MaritalStatusId",
+    "loc:Amount": "SocialSecurityMaritalAllowance.Amount",
+    "dom:SocialSecurityMaritalAllowance_Amount": "SocialSecurityMaritalAllowance.Amount"
+  },
+  "fields": [
+    {
+      "id": "SocialSecurityMaritalAllowance.SocialSecurityId",
+      "label": "SocialSecurityId",
+      "section": "SocialSecurityMaritalAllowances",
+      "aliases": [
+        "loc:SocialSecurityId",
+        "dom:SocialSecurityMaritalAllowance_SocialSecurityId"
+      ],
+      "rules": "Required. Chosen from Social Security master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The social security setup this allowance belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityMaritalAllowance.EducationBranchId",
+      "label": "EducationBranchId",
+      "section": "SocialSecurityMaritalAllowances",
+      "aliases": [
+        "loc:EducationBranchId",
+        "dom:SocialSecurityMaritalAllowance_EducationBranchId"
+      ],
+      "rules": "Required. Chosen from Education Branch master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The branch of study the allowance applies to.</p><p><strong>Example.</strong> Engineering</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityMaritalAllowance.MaritalStatusId",
+      "label": "MaritalStatusId",
+      "section": "SocialSecurityMaritalAllowances",
+      "aliases": [
+        "loc:MaritalStatusId",
+        "dom:SocialSecurityMaritalAllowance_MaritalStatusId"
+      ],
+      "rules": "Required. Chosen from Marital Status master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The marital status the amount is for.</p><p><strong>Example.</strong> Married</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityMaritalAllowance.Amount",
+      "label": "Amount",
+      "section": "SocialSecurityMaritalAllowances",
+      "aliases": [
+        "loc:Amount",
+        "dom:SocialSecurityMaritalAllowance_Amount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount added.</p><p><strong>Example.</strong> <code>50</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

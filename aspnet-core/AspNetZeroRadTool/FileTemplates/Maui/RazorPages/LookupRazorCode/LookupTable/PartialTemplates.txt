@@ -1,0 +1,30 @@
+{
+"propertyTemplates":[
+	],
+"navigationPropertyTemplates":[
+	],
+"enumTemplates":[
+	],
+"conditionalTemplates":[
+	    {
+            "placeholder": "{{Nullable_Primary_Key_Tag_Here}}",
+            "condition": "{{Primary_Key_Here}} != 'string'",
+            "content": "?"
+        },  
+        {
+            "placeholder": "{{Entity_Id_Has_Value_If_Here}}",
+            "condition": "{{Primary_Key_Here}} != 'string'",
+            "content": ".HasValue"
+        },
+        {
+            "placeholder": "{{Entity_Id_Has_Value_If_Here}}",
+            "condition": "{{Primary_Key_Here}} == 'string'",
+            "content": " != null"
+        },
+        {
+            "placeholder": "{{Entity_Id_Value_Here}}",
+            "condition": "{{Primary_Key_Here}} != 'string'",
+            "content": "!.Value"
+        }
+	]
+}

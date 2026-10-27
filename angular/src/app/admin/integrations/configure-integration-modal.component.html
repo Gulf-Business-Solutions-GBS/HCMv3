@@ -1,0 +1,118 @@
+<div
+    appBsModal
+    #configureModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active() && detail()) {
+                <form #configureForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            <span>{{ detail().tile.nameKey | localize }}</span>
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body" style="max-height: 75vh; overflow-y: auto">
+                        <p class="text-muted">{{ detail().tile.descriptionKey | localize }}</p>
+
+                        @for (field of detail().fields; track field.key) {
+                            <div class="mb-5">
+                                @if (field.type === fieldType.Boolean) {
+                                    <div class="form-check form-check-custom">
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            [id]="'IntegrationField_' + field.key"
+                                            [checked]="isChecked(field.key)"
+                                            (change)="setBoolean(field.key, $any($event.target).checked)"
+                                        />
+                                        <label class="form-check-label" [for]="'IntegrationField_' + field.key">
+                                            {{ field.labelKey | localize }}
+                                        </label>
+                                    </div>
+                                } @else {
+                                    <label class="form-label" [for]="'IntegrationField_' + field.key">
+                                        {{ field.labelKey | localize }}
+                                        @if (field.isRequired) {
+                                            <span class="text-danger">*</span>
+                                        }
+                                    </label>
+
+                                    <input
+                                        class="form-control"
+                                        [id]="'IntegrationField_' + field.key"
+                                        [name]="field.key"
+                                        [type]="inputType(field)"
+                                        [required]="field.isRequired && !field.isSecret"
+                                        [placeholder]="field.isSecret ? secretPlaceholder(field) : ''"
+                                        [ngModel]="values()[field.key]"
+                                        (ngModelChange)="setValue(field.key, $event)"
+                                        autocomplete="off"
+                                    />
+                                }
+
+                                @if (field.helpKey) {
+                                    <div class="form-text">{{ field.helpKey | localize }}</div>
+                                }
+
+                                @if (field.isSecret && field.hasStoredValue) {
+                                    <div class="form-text">{{ 'IntegrationSecretLeaveBlank' | localize }}</div>
+                                }
+                            </div>
+                        }
+
+                        @if (detail().recentAttempts && detail().recentAttempts.length > 0) {
+                            <fieldset>
+                                <legend>{{ 'IntegrationRecentAttempts' | localize }}</legend>
+                                <ul class="list-unstyled">
+                                    @for (attempt of detail().recentAttempts; track $index) {
+                                        <li class="mb-2">
+                                            @if (attempt.succeeded) {
+                                                <i class="fa fa-check text-success"></i>
+                                            } @else {
+                                                <i class="fa fa-times text-danger"></i>
+                                            }
+                                            <span class="text-muted">{{ attempt.time | luxonFormat: 'ff' }}</span>
+                                            <span>{{ attempt.message }}</span>
+                                        </li>
+                                    }
+                                </ul>
+                            </fieldset>
+                        }
+                    </div>
+
+                    <div class="modal-footer">
+                        @if (detail().tile.externalManageRoute) {
+                            <a class="me-auto" [routerLink]="detail().tile.externalManageRoute" (click)="close()">
+                                {{ 'IntegrationMoreSettings' | localize }}
+                            </a>
+                        }
+
+                        <button type="button" class="btn btn-light-primary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+
+                        @if ('Pages.Administration.IntegrationCenter.ManageSecrets' | permission) {
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                                [buttonBusy]="saving()"
+                                [busyText]="'SavingWithThreeDot' | localize"
+                                [disabled]="!configureForm.form.valid"
+                            >
+                                <i class="fa fa-save"></i>
+                                <span>{{ 'Save' | localize }}</span>
+                            </button>
+                        }
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

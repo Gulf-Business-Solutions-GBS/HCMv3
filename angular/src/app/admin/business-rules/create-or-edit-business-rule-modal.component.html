@@ -1,0 +1,598 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'BusinessRule' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'BusinessRule' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- Header: what the rule is, what it is written against, and when it applies. -->
+                        <div class="row">
+                            <div class="col-md-3 mb-4">
+                                <label class="form-label required" for="BusinessRule_Code">{{ 'Code' | localize }}</label>
+                                <input
+                                    id="BusinessRule_Code"
+                                    #codeInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="Code"
+                                    maxlength="100"
+                                    [ngModel]="record().code"
+                                    (ngModelChange)="updateField('code', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="codeInput" />
+                            </div>
+
+                            <div class="col-md-4 mb-4">
+                                <label class="form-label required" for="BusinessRule_NameEn">{{ 'Name' | localize }}</label>
+                                <input
+                                    id="BusinessRule_NameEn"
+                                    #nameInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameEn"
+                                    maxlength="250"
+                                    [ngModel]="record().nameEn"
+                                    (ngModelChange)="updateField('nameEn', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameInput" />
+                            </div>
+
+                            <div class="col-md-3 mb-4">
+                                <label class="form-label required">{{ 'BaseObject' | localize }}</label>
+                                <select
+                                    class="form-select"
+                                    name="BaseObject"
+                                    [disabled]="!!record().id"
+                                    [ngModel]="record().baseObject"
+                                    (ngModelChange)="updateField('baseObject', $event); onBaseObjectChanged()"
+                                    required>
+                                    @for (baseObject of baseObjects(); track baseObject.code) {
+                                        <option [value]="baseObject.code">{{ baseObject.displayName }}</option>
+                                    }
+                                </select>
+                                @if (record().id) {
+                                    <small class="text-muted">{{ 'BaseObjectCannotBeChanged' | localize }}</small>
+                                }
+                            </div>
+
+                            <div class="col-md-2 mb-4">
+                                <label class="form-label">{{ 'RulePurpose' | localize }}</label>
+                                <select
+                                    class="form-select"
+                                    name="Purpose"
+                                    [ngModel]="record().purpose"
+                                    (ngModelChange)="updateField('purpose', $event)">
+                                    @for (purpose of purposes; track purpose.value) {
+                                        <option [ngValue]="purpose.value">{{ purpose.key | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">{{ 'Description' | localize }}</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="Description"
+                                    maxlength="1000"
+                                    [ngModel]="record().description"
+                                    (ngModelChange)="updateField('description', $event)" />
+                            </div>
+
+                            <div class="col-md-2 mb-4">
+                                <label class="form-label">{{ 'EffectiveFrom' | localize }}</label>
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    name="EffectiveFrom"
+                                    [ngModel]="record().effectiveFrom?.toISODate()"
+                                    (ngModelChange)="setEffectiveFrom($event)" />
+                            </div>
+
+                            <div class="col-md-2 mb-4">
+                                <label class="form-label">{{ 'EffectiveTo' | localize }}</label>
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    name="EffectiveTo"
+                                    [ngModel]="record().effectiveTo?.toISODate()"
+                                    (ngModelChange)="setEffectiveTo($event)" />
+                            </div>
+
+                            <div class="col-md-2 mb-4 d-flex align-items-end">
+                                <div class="form-check form-switch">
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="IsActive"
+                                        id="BusinessRule_IsActive"
+                                        [ngModel]="record().isActive"
+                                        (ngModelChange)="updateField('isActive', $event)" />
+                                    <label class="form-check-label" for="BusinessRule_IsActive">
+                                        {{ 'Active' | localize }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ul class="nav nav-tabs mb-4">
+                            <li class="nav-item">
+                                <a
+                                    class="nav-link"
+                                    [class.active]="activeTab() === 'definition'"
+                                    href="javascript:;"
+                                    (click)="activeTab.set('definition')">
+                                    {{ 'RuleDefinition' | localize }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a
+                                    class="nav-link"
+                                    [class.active]="activeTab() === 'assignments'"
+                                    href="javascript:;"
+                                    (click)="activeTab.set('assignments')">
+                                    {{ 'RuleAssignments' | localize }}
+                                    <span class="badge badge-light-primary ms-1">{{ assignments().length }}</span>
+                                </a>
+                            </li>
+                            @if ('Pages.BusinessRules.Test' | permission) {
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link"
+                                        [class.active]="activeTab() === 'test'"
+                                        href="javascript:;"
+                                        (click)="activeTab.set('test')">
+                                        {{ 'TestingBusinessRule' | localize }}
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+
+                        <!-- ============================ DEFINITION ============================ -->
+                        @if (activeTab() === 'definition') {
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button
+                                        type="button"
+                                        class="btn"
+                                        [class.btn-primary]="editorMode() === 'formula'"
+                                        [class.btn-light]="editorMode() !== 'formula'"
+                                        (click)="setEditorMode('formula')">
+                                        <i class="fa fa-keyboard me-1"></i>{{ 'RuleEditorFormula' | localize }}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn"
+                                        [class.btn-primary]="editorMode() === 'visual'"
+                                        [class.btn-light]="editorMode() !== 'visual'"
+                                        (click)="setEditorMode('visual')">
+                                        <i class="fa fa-sitemap me-1"></i>{{ 'RuleEditorVisual' | localize }}
+                                    </button>
+                                </div>
+                                @if (hasFormulaErrors()) {
+                                    <span class="badge badge-light-danger">
+                                        <i class="fa fa-exclamation-circle me-1"></i>{{ 'FormulaHasErrors' | localize }}
+                                    </span>
+                                }
+                            </div>
+
+                            @for (block of definition().blocks; track $index) {
+                                <div class="rule-block">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="rule-block-label mb-0">
+                                            {{ 'RuleBlock' | localize }} {{ $index + 1 }}
+                                        </span>
+                                        <div class="d-flex gap-1">
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-light"
+                                                (click)="toggleCondition(block)">
+                                                {{ (block.if ? 'RuleMakeUnconditional' : 'RuleAddCondition') | localize }}
+                                            </button>
+                                            @if (definition().blocks.length > 1) {
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-sm btn-light-danger"
+                                                    (click)="removeBlock($index)">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    @if (block.if) {
+                                        <div class="rule-block-label">{{ 'RuleIf' | localize }}</div>
+                                        @if (editorMode() === 'formula') {
+                                            <rule-formula-input
+                                                [value]="conditionText(block)"
+                                                (valueChange)="onConditionText(block, $event)"
+                                                [baseObject]="selectedBaseObject()"
+                                                [functions]="functions()"
+                                                [variableNames]="variableNames()"
+                                                [required]="true"
+                                                [rows]="2"
+                                                [placeholder]="l('FormulaConditionPlaceholder')" />
+                                        } @else {
+                                            <rule-expression-editor
+                                                [expression]="block.if"
+                                                [baseObject]="selectedBaseObject()"
+                                                [functions]="functions()"
+                                                [isRoot]="true" />
+                                        }
+                                    } @else {
+                                        <div class="alert alert-light-primary py-2 mb-3">
+                                            {{ 'RuleRunsAlways' | localize }}
+                                        </div>
+                                    }
+
+                                    <div class="rule-block-label mt-3">{{ 'RuleThen' | localize }}</div>
+                                    @for (action of block.then; track $index) {
+                                        <div class="rule-action-row">
+                                            @if (action.kind === 'set') {
+                                                <span class="badge badge-light-success align-self-center">
+                                                    {{ 'RuleActionSet' | localize }}
+                                                </span>
+                                                <select
+                                                    class="form-select form-select-sm rule-field-select"
+                                                    [ngModel]="actionTargetKey(action)"
+                                                    (ngModelChange)="setActionTarget(action, $event)"
+                                                    [name]="'thenTarget' + $index">
+                                                    <option value="">{{ 'SelectAField' | localize }}</option>
+                                                    @for (option of writableFields(); track option.parameter + option.field) {
+                                                        <option [value]="option.parameter + '.' + option.field">
+                                                            {{ option.label }}
+                                                        </option>
+                                                    }
+                                                </select>
+                                                <span class="align-self-center">=</span>
+                                                <div class="flex-grow-1">
+                                                    @if (editorMode() === 'formula') {
+                                                        <rule-formula-input
+                                                            [value]="actionValueText(action)"
+                                                            (valueChange)="onActionValueText(action, $event)"
+                                                            [baseObject]="selectedBaseObject()"
+                                                            [functions]="functions()"
+                                                            [variableNames]="variableNames()"
+                                                            [required]="true"
+                                                            [rows]="1"
+                                                            [placeholder]="l('FormulaValuePlaceholder')" />
+                                                    } @else {
+                                                        <rule-expression-editor
+                                                            [expression]="action.value"
+                                                            [baseObject]="selectedBaseObject()"
+                                                            [functions]="functions()"
+                                                            [isRoot]="true" />
+                                                    }
+                                                </div>
+                                            } @else {
+                                                <span class="badge badge-light-danger align-self-center">
+                                                    {{ 'RuleActionRaiseError' | localize }}
+                                                </span>
+                                                <input
+                                                    class="form-control form-control-sm flex-grow-1"
+                                                    [ngModel]="action.messageKey"
+                                                    (ngModelChange)="action.messageKey = $event"
+                                                    [name]="'thenMessage' + $index"
+                                                    [placeholder]="l('LocalizationKey')" />
+                                            }
+
+                                            <button
+                                                type="button"
+                                                class="btn btn-icon btn-sm btn-light-danger align-self-center"
+                                                (click)="removeAction(block, 'then', $index)">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </div>
+                                    }
+
+                                    <div class="d-flex gap-2 mb-3">
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-light-primary"
+                                            [disabled]="writableFields().length === 0"
+                                            (click)="addSetAction(block, 'then')">
+                                            <i class="fa fa-plus me-1"></i>{{ 'RuleActionSet' | localize }}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-light-danger"
+                                            (click)="addErrorAction(block, 'then')">
+                                            <i class="fa fa-plus me-1"></i>{{ 'RuleActionRaiseError' | localize }}
+                                        </button>
+                                    </div>
+
+                                    @if (block.if) {
+                                        <div class="rule-block-label">{{ 'RuleElse' | localize }}</div>
+                                        @for (action of block.else; track $index) {
+                                            <div class="rule-action-row">
+                                                @if (action.kind === 'set') {
+                                                    <span class="badge badge-light-success align-self-center">
+                                                        {{ 'RuleActionSet' | localize }}
+                                                    </span>
+                                                    <select
+                                                        class="form-select form-select-sm rule-field-select"
+                                                        [ngModel]="actionTargetKey(action)"
+                                                        (ngModelChange)="setActionTarget(action, $event)"
+                                                        [name]="'elseTarget' + $index">
+                                                        <option value="">{{ 'SelectAField' | localize }}</option>
+                                                        @for (option of writableFields(); track option.parameter + option.field) {
+                                                            <option [value]="option.parameter + '.' + option.field">
+                                                                {{ option.label }}
+                                                            </option>
+                                                        }
+                                                    </select>
+                                                    <span class="align-self-center">=</span>
+                                                    <div class="flex-grow-1">
+                                                        @if (editorMode() === 'formula') {
+                                                            <rule-formula-input
+                                                                [value]="actionValueText(action)"
+                                                                (valueChange)="onActionValueText(action, $event)"
+                                                                [baseObject]="selectedBaseObject()"
+                                                                [functions]="functions()"
+                                                                [variableNames]="variableNames()"
+                                                                [required]="true"
+                                                                [rows]="1"
+                                                                [placeholder]="l('FormulaValuePlaceholder')" />
+                                                        } @else {
+                                                            <rule-expression-editor
+                                                                [expression]="action.value"
+                                                                [baseObject]="selectedBaseObject()"
+                                                                [functions]="functions()"
+                                                                [isRoot]="true" />
+                                                        }
+                                                    </div>
+                                                } @else {
+                                                    <span class="badge badge-light-danger align-self-center">
+                                                        {{ 'RuleActionRaiseError' | localize }}
+                                                    </span>
+                                                    <input
+                                                        class="form-control form-control-sm flex-grow-1"
+                                                        [ngModel]="action.messageKey"
+                                                        (ngModelChange)="action.messageKey = $event"
+                                                        [name]="'elseMessage' + $index"
+                                                        [placeholder]="l('LocalizationKey')" />
+                                                }
+
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-icon btn-sm btn-light-danger align-self-center"
+                                                    (click)="removeAction(block, 'else', $index)">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                        }
+
+                                        <div class="d-flex gap-2">
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-light"
+                                                [disabled]="writableFields().length === 0"
+                                                (click)="addSetAction(block, 'else')">
+                                                <i class="fa fa-plus me-1"></i>{{ 'RuleActionSet' | localize }}
+                                            </button>
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+                            <button type="button" class="btn btn-light-primary" (click)="addBlock()">
+                                <i class="fa fa-plus me-1"></i>{{ 'RuleAddBlock' | localize }}
+                            </button>
+
+                            <div class="alert alert-light-warning mt-3 py-2 mb-0">
+                                <i class="fa fa-info-circle me-1"></i>{{ 'RuleAllBlocksEvaluateHint' | localize }}
+                            </div>
+                        }
+
+                        <!-- ============================ ASSIGNMENTS ============================ -->
+                        @if (activeTab() === 'assignments') {
+                            <div class="alert alert-light-primary py-2">
+                                <i class="fa fa-info-circle me-1"></i>{{ 'RuleAssignmentHint' | localize }}
+                            </div>
+
+                            <table class="table table-row-bordered align-middle">
+                                <thead>
+                                    <tr class="fw-bold">
+                                        <th>{{ 'RuleEventType' | localize }}</th>
+                                        <th style="width: 8rem">{{ 'ExecutionOrder' | localize }}</th>
+                                        <th style="width: 7rem">{{ 'Active' | localize }}</th>
+                                        <th style="width: 11rem">{{ 'ContinueOnError' | localize }}</th>
+                                        <th style="width: 11rem">{{ 'TraceEveryExecution' | localize }}</th>
+                                        <th style="width: 9rem"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (assignment of assignments(); track $index) {
+                                        <tr>
+                                            <td>
+                                                <select
+                                                    class="form-select form-select-sm"
+                                                    [ngModel]="assignment.eventType"
+                                                    (ngModelChange)="assignment.eventType = $event"
+                                                    [name]="'event' + $index">
+                                                    @for (event of availableEvents(); track event) {
+                                                        <option [ngValue]="event">{{ eventLabel(event) }}</option>
+                                                    }
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="number"
+                                                    class="form-control form-control-sm"
+                                                    [ngModel]="assignment.executionOrder"
+                                                    (ngModelChange)="assignment.executionOrder = $event"
+                                                    [name]="'order' + $index" />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="checkbox"
+                                                    class="form-check-input"
+                                                    [ngModel]="assignment.isActive"
+                                                    (ngModelChange)="assignment.isActive = $event"
+                                                    [name]="'assignmentActive' + $index" />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="checkbox"
+                                                    class="form-check-input"
+                                                    [ngModel]="assignment.continueOnError"
+                                                    (ngModelChange)="assignment.continueOnError = $event"
+                                                    [name]="'continueOnError' + $index" />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="checkbox"
+                                                    class="form-check-input"
+                                                    [ngModel]="assignment.isTraced"
+                                                    (ngModelChange)="assignment.isTraced = $event"
+                                                    [name]="'isTraced' + $index" />
+                                            </td>
+                                            <td class="text-end">
+                                                @if ('Pages.BusinessRules.Assign' | permission) {
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-sm btn-light-primary me-1"
+                                                        (click)="saveAssignment(assignment)">
+                                                        <i class="fa fa-save"></i>
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-sm btn-light-danger"
+                                                        (click)="deleteAssignment(assignment)">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td colspan="6" class="text-muted">{{ 'RuleIsNotAssignedHint' | localize }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                            @if ('Pages.BusinessRules.Assign' | permission) {
+                                <button
+                                    type="button"
+                                    class="btn btn-light-primary"
+                                    [disabled]="availableEvents().length === 0"
+                                    (click)="addAssignment()">
+                                    <i class="fa fa-plus me-1"></i>{{ 'AssigningBusinessRule' | localize }}
+                                </button>
+                            }
+                        }
+
+                        <!-- ============================ TEST ============================ -->
+                        @if (activeTab() === 'test') {
+                            <div class="alert alert-light-primary py-2">
+                                <i class="fa fa-info-circle me-1"></i>{{ 'RuleTestHint' | localize }}
+                            </div>
+
+                            <div class="row">
+                                @for (field of testableFields(); track field.key) {
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">{{ field.label }}</label>
+                                        <input
+                                            type="text"
+                                            class="form-control form-control-sm"
+                                            [ngModel]="sampleValues()[field.key]"
+                                            (ngModelChange)="setSampleValue(field.key, $event)"
+                                            [name]="'sample_' + field.key" />
+                                    </div>
+                                }
+                            </div>
+
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                [buttonBusy]="testing()"
+                                [busyText]="l('ProcessingWithThreeDot')"
+                                (click)="runTest()">
+                                <i class="fa fa-play me-1"></i>{{ 'RunTest' | localize }}
+                            </button>
+
+                            @if (testResult(); as result) {
+                                <div class="mt-4">
+                                    @if (result.failures.length > 0) {
+                                        <div class="alert alert-danger">
+                                            <div class="fw-bold mb-2">{{ 'RuleTestFailed' | localize }}</div>
+                                            <ul class="mb-0">
+                                                @for (failure of result.failures; track $index) {
+                                                    <li>{{ failure }}</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    } @else {
+                                        <div class="alert alert-success py-2">
+                                            {{ (result.conditionMatched ? 'RuleConditionMatched' : 'RuleConditionDidNotMatch') | localize }}
+                                        </div>
+                                    }
+
+                                    @if (result.writes.length > 0) {
+                                        <div class="fw-bold mb-1">{{ 'RuleWouldSet' | localize }}</div>
+                                        <ul>
+                                            @for (write of result.writes; track $index) {
+                                                <li><code>{{ write }}</code></li>
+                                            }
+                                        </ul>
+                                    }
+
+                                    @if (result.errors.length > 0) {
+                                        <div class="alert alert-warning">
+                                            <div class="fw-bold mb-2">{{ 'RuleRaisedErrors' | localize }}</div>
+                                            <ul class="mb-0">
+                                                @for (error of result.errors; track $index) {
+                                                    <li>{{ error }}</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    }
+
+                                    @if (result.trace) {
+                                        <div class="fw-bold mb-1">{{ 'RuleTrace' | localize }}</div>
+                                        <div class="rule-trace text-muted">{{ result.trace }}</div>
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,121 @@
+<div [@routerTransition] [helpPage]="'ess.personal-data'">
+    <sub-header [title]="'EssMyProfile' | localize">
+        <div role="actions">
+            @if (!notLinked() && !showForm()) {
+                <button class="btn btn-primary" data-help-loc="RequestPersonalDataChange" (click)="openForm()">
+                    <i class="fa fa-pen"></i> {{ 'RequestPersonalDataChange' | localize }}
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        @if (notLinked()) {
+            <div class="card card-custom gutter-b mb-5">
+                <div class="card-body">
+                    <div class="alert alert-warning mb-0" data-help-loc="CurrentUserHasNoEmployeeRecord">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</div>
+                </div>
+            </div>
+        } @else {
+            @if (hasPendingRequest()) {
+                <div class="alert alert-info" data-help-loc="YouAlreadyHaveAPendingPersonalDataChange">{{ 'YouAlreadyHaveAPendingPersonalDataChange' | localize }}</div>
+            }
+
+            @if (currentLoading()) {
+                <div class="text-center p-4"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+            } @else {
+                <!-- One form for both jobs: the profile as it is on file, read-only, until Update is pressed;
+                     then the same cards with their inputs open, and Save, Submit and Cancel underneath. Its
+                     own component, as the exit permit's form is. -->
+                <personal-data-form
+                    #personalDataForm
+                    [mode]="showForm() ? 'create' : 'view'"
+                    [value]="form()"
+                    [lookups]="lookups()"
+                    [saving]="saving()"
+                    (saved)="save()"
+                    (submitted)="submit()"
+                    (cancelled)="closeForm()" />
+            }
+
+            <div class="card card-custom gutter-b mb-5">
+                <div class="card-body">
+                    <h5 class="card-title" data-help-loc="EssMyRequests">{{ 'EssMyRequests' | localize }}</h5>
+
+                    <!-- One menu for the whole table, filled for whichever row's Actions button is pressed. -->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+
+                    @if (loading()) {
+                        <div class="text-center p-4"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+                    } @else {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead [essListHead]="list" [exportTitle]="detailTitle()"></thead>
+                                <tbody>
+                                    @for (row of list.view(); track row.id) {
+                                        <tr>
+                                            <td>{{ row.requestNumber }}</td>
+                                            <td>
+                                                @for (change of proposedFields(row); track change.label) {
+                                                    <div>
+                                                        <span class="text-muted">{{ change.label }}:</span>
+                                                        {{ change.value || '-' }}
+                                                    </div>
+                                                } @empty {
+                                                    <span class="text-muted">{{ 'NoData' | localize }}</span>
+                                                }
+                                            </td>
+                                            <td>{{ row.comments }}</td>
+                                            <td>
+                                                <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
+                                            </td>
+                                            <td class="text-end text-nowrap">
+                                                <!-- Two controls per row, whatever its state: Details opens the
+                                                     request (a draft, or one sent back, opens for editing
+                                                     instead); Actions holds everything else. -->
+                                                @if (row.canEdit) {
+                                                    <button class="btn btn-primary btn-sm" (click)="continueDraft(row)" data-help-loc="ContinueDraft">
+                                                        {{ 'ContinueDraft' | localize }}
+                                                    </button>
+                                                } @else {
+                                                    <button class="btn btn-light-primary btn-sm" (click)="openDetail(row)" data-help-loc="Details">
+                                                        {{ 'Details' | localize }}
+                                                    </button>
+                                                }
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-light btn-sm dropdown-toggle ms-2"
+                                                    data-help-loc="Actions"
+                                                    (click)="showMenu($event, row, actionsMenu)">
+                                                    {{ 'Actions' | localize }}
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        @if (expandedId() === row.id) {
+                                            <tr>
+                                                <td colspan="5" class="bg-light">
+                                                    <app-attachments
+                                                        entityType="EmployeePersonalDataChange"
+                                                        [entityId]="row.id"
+                                                       
+                                                        [showLimitsHint]="false" />
+                                                </td>
+                                            </tr>
+                                        }
+                                    } @empty {
+                                        <tr>
+                                            <td colspan="5" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <ess-list-pager [list]="list" />
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<essRequestDetailModal #detail />

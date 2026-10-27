@@ -1,0 +1,27 @@
+{
+  "helpId": "jp.job-description-competency.edit",
+  "lang": "ar",
+  "title": "كفاءات الوصف الوظيفي — إنشاء / تحرير",
+  "entity": "HCMv3.JobProfileManagement.JobDescriptionCompetency",
+  "overviewHtml": "<p>بند (الكفاءة) يتطلبه الوصف الوظيفي. ولا يُدرج كل بند إلا مرة واحدة لكل وصف وظيفي.</p>",
+  "aliasIndex": {
+    "loc:Competency": "JobDescriptionCompetency.CompetencyId",
+    "dom:JobDescriptionCompetency_CompetencyId": "JobDescriptionCompetency.CompetencyId"
+  },
+  "fields": [
+    {
+      "id": "JobDescriptionCompetency.CompetencyId",
+      "label": "Competency",
+      "section": "JobDescriptionCompetencies",
+      "aliases": [
+        "loc:Competency",
+        "dom:JobDescriptionCompetency_CompetencyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الكفاءات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الكفاءة.</p><p><strong>مثال.</strong> العمل الجماعي</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

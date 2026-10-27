@@ -1,0 +1,91 @@
+{
+  "helpId": "gp.pool-car.edit",
+  "lang": "en",
+  "title": "Pool Cars — Create / Edit",
+  "entity": "HCMv3.GatePassManagement.PoolCar",
+  "overviewHtml": "<p>A company car that employees can be given for a time.</p>",
+  "aliasIndex": {
+    "loc:VehicleType": "PoolCar.VehicleTypeId",
+    "dom:PoolCar_VehicleTypeId": "PoolCar.VehicleTypeId",
+    "loc:VehiclePlateNumber": "PoolCar.VehiclePlateNumber",
+    "dom:PoolCar_VehiclePlateNumber": "PoolCar.VehiclePlateNumber",
+    "loc:VehicleBrand": "PoolCar.VehicleBrandId",
+    "dom:PoolCar_VehicleBrandId": "PoolCar.VehicleBrandId",
+    "loc:VehicleModel": "PoolCar.VehicleModelId",
+    "dom:PoolCar_VehicleModelId": "PoolCar.VehicleModelId",
+    "loc:VehicleDocExpiryDate": "PoolCar.VehicleDocExpiryDate",
+    "dom:PoolCar_VehicleDocExpiryDate": "PoolCar.VehicleDocExpiryDate"
+  },
+  "fields": [
+    {
+      "id": "PoolCar.VehicleTypeId",
+      "label": "VehicleType",
+      "section": "PoolCars",
+      "aliases": [
+        "loc:VehicleType",
+        "dom:PoolCar_VehicleTypeId"
+      ],
+      "rules": "Required. Chosen from Vehicle Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of vehicle.</p><p><strong>Example.</strong> Pickup</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PoolCar.VehiclePlateNumber",
+      "label": "VehiclePlateNumber",
+      "section": "PoolCars",
+      "aliases": [
+        "loc:VehiclePlateNumber",
+        "dom:PoolCar_VehiclePlateNumber"
+      ],
+      "rules": "Required. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The plate number.</p><p><strong>Example.</strong> 12/34567</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PoolCar.VehicleBrandId",
+      "label": "VehicleBrand",
+      "section": "PoolCars",
+      "aliases": [
+        "loc:VehicleBrand",
+        "dom:PoolCar_VehicleBrandId"
+      ],
+      "rules": "Required. Chosen from Vehicle Brand master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The make.</p><p><strong>Example.</strong> Toyota</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PoolCar.VehicleModelId",
+      "label": "VehicleModel",
+      "section": "PoolCars",
+      "aliases": [
+        "loc:VehicleModel",
+        "dom:PoolCar_VehicleModelId"
+      ],
+      "rules": "Required. Chosen from Vehicle Model master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The model.</p><p><strong>Example.</strong> Hilux</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PoolCar.VehicleDocExpiryDate",
+      "label": "VehicleDocExpiryDate",
+      "section": "PoolCars",
+      "aliases": [
+        "loc:VehicleDocExpiryDate",
+        "dom:PoolCar_VehicleDocExpiryDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the vehicle's registration expires.</p><p><strong>Why it matters.</strong> A record only: nothing warns when it passes.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

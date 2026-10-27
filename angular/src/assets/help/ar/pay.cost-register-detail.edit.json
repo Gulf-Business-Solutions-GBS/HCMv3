@@ -1,0 +1,203 @@
+{
+  "helpId": "pay.cost-register-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل سجلات التكلفة — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.CostRegisterDetail",
+  "overviewHtml": "<p>سطر تكلفة واحد: جزء من مبلغ نوع أجر يُرحَّل إلى حساب تحت مجموعة من عناصر التكلفة. ونوع الأجر الموزع على عدة حسابات أجور يعطي عدة أسطر، يحمل كل منها نسبة التكلفة من المبلغ.</p>",
+  "aliasIndex": {
+    "loc:CostRegisterId": "CostRegisterDetail.CostRegisterId",
+    "dom:CostRegisterDetail_CostRegisterId": "CostRegisterDetail.CostRegisterId",
+    "loc:WageTypeId": "CostRegisterDetail.WageTypeId",
+    "dom:CostRegisterDetail_WageTypeId": "CostRegisterDetail.WageTypeId",
+    "loc:AccountInfoId": "CostRegisterDetail.AccountInfoId",
+    "dom:CostRegisterDetail_AccountInfoId": "CostRegisterDetail.AccountInfoId",
+    "loc:Amount": "CostRegisterDetail.Amount",
+    "dom:CostRegisterDetail_Amount": "CostRegisterDetail.Amount",
+    "loc:CurrencyId": "CostRegisterDetail.CurrencyId",
+    "dom:CostRegisterDetail_CurrencyId": "CostRegisterDetail.CurrencyId",
+    "loc:CostElement1Id": "CostRegisterDetail.CostElement1Id",
+    "dom:CostRegisterDetail_costElement1Id": "CostRegisterDetail.CostElement1Id",
+    "loc:CostElement2Id": "CostRegisterDetail.CostElement2Id",
+    "dom:CostRegisterDetail_costElement2Id": "CostRegisterDetail.CostElement2Id",
+    "loc:CostElement3Id": "CostRegisterDetail.CostElement3Id",
+    "dom:CostRegisterDetail_costElement3Id": "CostRegisterDetail.CostElement3Id",
+    "loc:CostElement4Id": "CostRegisterDetail.CostElement4Id",
+    "dom:CostRegisterDetail_costElement4Id": "CostRegisterDetail.CostElement4Id",
+    "loc:CostElement5Id": "CostRegisterDetail.CostElement5Id",
+    "dom:CostRegisterDetail_costElement5Id": "CostRegisterDetail.CostElement5Id",
+    "loc:CostElement6Id": "CostRegisterDetail.CostElement6Id",
+    "dom:CostRegisterDetail_costElement6Id": "CostRegisterDetail.CostElement6Id",
+    "loc:CostElement7Id": "CostRegisterDetail.CostElement7Id",
+    "dom:CostRegisterDetail_costElement7Id": "CostRegisterDetail.CostElement7Id"
+  },
+  "fields": [
+    {
+      "id": "CostRegisterDetail.CostRegisterId",
+      "label": "CostRegisterId",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CostRegisterId",
+        "dom:CostRegisterDetail_CostRegisterId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة سجلات التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سجل التكلفة الذي يتبعه هذا السطر. ولا يظهر عند فتح النافذة من صفحة سجل التكلفة نفسه، إذ يُملأ تلقائياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostRegisterDetail.WageTypeId",
+      "label": "WageTypeId",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:CostRegisterDetail_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الأجر المحتسبة تكلفته. وتُحتسب تكلفة المتأخرات تحت نوع الأجر المصدر لها.</p><p><strong>مثال.</strong> الراتب الأساسي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostRegisterDetail.AccountInfoId",
+      "label": "AccountInfoId",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:AccountInfoId",
+        "dom:CostRegisterDetail_AccountInfoId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة بيانات الحسابات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحساب الذي يُرحَّل إليه المبلغ.</p><p><strong>مثال.</strong> 510100 — الرواتب والأجور</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostRegisterDetail.Amount",
+      "label": "Amount",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:CostRegisterDetail_Amount"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ المُرحَّل.</p><p><strong>مثال.</strong> <code>800.000</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostRegisterDetail.CurrencyId",
+      "label": "CurrencyId",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CurrencyId",
+        "dom:CostRegisterDetail_CurrencyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة العملات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عملة الراتب الأساسي للموظف.</p><p><strong>مثال.</strong> دينار كويتي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostRegisterDetail.CostElement1Id",
+      "label": "CostElement1Id",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CostElement1Id",
+        "dom:CostRegisterDetail_costElement1Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 1 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement1، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p>",
+      "adminHtml": "<p>تأتي تسميات الحقول من إدارة الهيكل التنظيمي ← أنواع عناصر التكلفة: أعطِ النوع الرمز CostElement1 إلى CostElement7 لتفعيل الحقل المقابل. والقيمة المحفوظة التي نُقل عنصر تكلفتها بعد ذلك إلى نوع آخر تبقى ظاهرة برقمها، فلا يمسحها فتح السجل.</p>",
+      "stub": false
+    },
+    {
+      "id": "CostRegisterDetail.CostElement2Id",
+      "label": "CostElement2Id",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CostElement2Id",
+        "dom:CostRegisterDetail_costElement2Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 2 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement2، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostRegisterDetail.CostElement3Id",
+      "label": "CostElement3Id",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CostElement3Id",
+        "dom:CostRegisterDetail_costElement3Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 3 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement3، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostRegisterDetail.CostElement4Id",
+      "label": "CostElement4Id",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CostElement4Id",
+        "dom:CostRegisterDetail_costElement4Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 4 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement4، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostRegisterDetail.CostElement5Id",
+      "label": "CostElement5Id",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CostElement5Id",
+        "dom:CostRegisterDetail_costElement5Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 5 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement5، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostRegisterDetail.CostElement6Id",
+      "label": "CostElement6Id",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CostElement6Id",
+        "dom:CostRegisterDetail_costElement6Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 6 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement6، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostRegisterDetail.CostElement7Id",
+      "label": "CostElement7Id",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CostElement7Id",
+        "dom:CostRegisterDetail_costElement7Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 7 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement7، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

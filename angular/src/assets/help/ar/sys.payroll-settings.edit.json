@@ -1,0 +1,747 @@
+{
+  "helpId": "sys.payroll-settings.edit",
+  "lang": "ar",
+  "title": "Payroll settings",
+  "entity": "HCMv3.SystemSettings.ManagePayrollSettings",
+  "overviewHtml": "<p>سلوك الرواتب على مستوى الشركة: التقريب، وساعات العمل، وطريقة الاحتساب التناسبي للأجر بالأيام الثابتة، وقواعد أجر الإجازة ومخصصها، ومعالجة عدم العودة من الإجازة، والتشغيل خارج الدورة، وملفات البنك.</p><p>ومعظمها يطابق مفاتيح في نظام الرواتب السابق ويُطبَّق كما كان. وبعضها لا يُقرأ حالياً، ومبيَّن ذلك أدناه.</p><p>ولكل شركة سجل إعدادات واحد، ولا يمكن حذفه.</p>",
+  "aliasIndex": {
+    "loc:ClientId": "ManagePayrollSettings.ClientId",
+    "dom:PayrollSettings_ClientId": "ManagePayrollSettings.ClientId",
+    "loc:DefaultWorkingHours": "ManagePayrollSettings.DefaultWorkingHours",
+    "dom:PayrollSettings_DefaultWorkingHours": "ManagePayrollSettings.DefaultWorkingHours",
+    "loc:DecimalInSalaryRegister": "ManagePayrollSettings.DecimalInSalaryRegister",
+    "dom:PayrollSettings_DecimalInSalaryRegister": "ManagePayrollSettings.DecimalInSalaryRegister",
+    "loc:Decimal6RoundingFrom": "ManagePayrollSettings.Decimal6RoundingFrom",
+    "dom:PayrollSettings_Decimal6RoundingFrom": "ManagePayrollSettings.Decimal6RoundingFrom",
+    "loc:PayslipSignature": "ManagePayrollSettings.PayslipSignature",
+    "dom:PayrollSettings_PayslipSignature": "ManagePayrollSettings.PayslipSignature",
+    "loc:RoundNetPay": "ManagePayrollSettings.RoundNetPay",
+    "dom:PayrollSettings_RoundNetPay": "ManagePayrollSettings.RoundNetPay",
+    "loc:EnablePayrollEngineAutorun": "ManagePayrollSettings.EnablePayrollEngineAutorun",
+    "dom:PayrollSettings_EnablePayrollEngineAutorun": "ManagePayrollSettings.EnablePayrollEngineAutorun",
+    "loc:AllowSimulationRun": "ManagePayrollSettings.AllowSimulationRun",
+    "dom:PayrollSettings_AllowSimulationRun": "ManagePayrollSettings.AllowSimulationRun",
+    "loc:DisableRetroCalculation": "ManagePayrollSettings.DisableRetroCalculation",
+    "dom:PayrollSettings_DisableRetroCalculation": "ManagePayrollSettings.DisableRetroCalculation",
+    "loc:LockSalaryRegisterOnPayrollExit": "ManagePayrollSettings.LockSalaryRegisterOnPayrollExit",
+    "dom:PayrollSettings_LockSalaryRegisterOnPayrollExit": "ManagePayrollSettings.LockSalaryRegisterOnPayrollExit",
+    "loc:DefaultLeavePaymentType": "ManagePayrollSettings.DefaultLeavePaymentType",
+    "dom:PayrollSettings_DefaultLeavePaymentType": "ManagePayrollSettings.DefaultLeavePaymentType",
+    "loc:LeaveAdvPaymentdateBefore15": "ManagePayrollSettings.LeaveAdvPaymentdateBefore15",
+    "dom:PayrollSettings_LeaveAdvPaymentdateBefore15": "ManagePayrollSettings.LeaveAdvPaymentdateBefore15",
+    "loc:LeaveAdvPaymentdateAfter15": "ManagePayrollSettings.LeaveAdvPaymentdateAfter15",
+    "dom:PayrollSettings_LeaveAdvPaymentdateAfter15": "ManagePayrollSettings.LeaveAdvPaymentdateAfter15",
+    "loc:LeaveProvisionAsPerCurrentSalary": "ManagePayrollSettings.LeaveProvisionAsPerCurrentSalary",
+    "dom:PayrollSettings_LeaveProvisionAsPerCurrentSalary": "ManagePayrollSettings.LeaveProvisionAsPerCurrentSalary",
+    "loc:EnableNotReturnFromLeaveLogic": "ManagePayrollSettings.EnableNotReturnFromLeaveLogic",
+    "dom:PayrollSettings_EnableNotReturnFromLeaveLogic": "ManagePayrollSettings.EnableNotReturnFromLeaveLogic",
+    "loc:GenerateRegisterOnNotReturnFromLeave": "ManagePayrollSettings.GenerateRegisterOnNotReturnFromLeave",
+    "dom:PayrollSettings_GenerateRegisterOnNotReturnFromLeave": "ManagePayrollSettings.GenerateRegisterOnNotReturnFromLeave",
+    "loc:ApplyAnnualleaveNoImpactLogic": "ManagePayrollSettings.ApplyAnnualleaveNoImpactLogic",
+    "dom:PayrollSettings_ApplyAnnualleaveNoImpactLogic": "ManagePayrollSettings.ApplyAnnualleaveNoImpactLogic",
+    "loc:FullMonthLeaveAdjForFixedDays": "ManagePayrollSettings.FullMonthLeaveAdjForFixedDays",
+    "dom:PayrollSettings_FullMonthLeaveAdjForFixedDays": "ManagePayrollSettings.FullMonthLeaveAdjForFixedDays",
+    "loc:PayLeaveAsPerCutoff": "ManagePayrollSettings.PayLeaveAsPerCutoff",
+    "dom:PayrollSettings_PayLeaveAsPerCutoff": "ManagePayrollSettings.PayLeaveAsPerCutoff",
+    "loc:RegularLeaveEncashOnBasicPayOnly": "ManagePayrollSettings.RegularLeaveEncashOnBasicPayOnly",
+    "dom:PayrollSettings_RegularLeaveEncashOnBasicPayOnly": "ManagePayrollSettings.RegularLeaveEncashOnBasicPayOnly",
+    "loc:FnFLeaveEncashOnBasicPayOnly": "ManagePayrollSettings.FnFLeaveEncashOnBasicPayOnly",
+    "dom:PayrollSettings_FnFLeaveEncashOnBasicPayOnly": "ManagePayrollSettings.FnFLeaveEncashOnBasicPayOnly",
+    "loc:EnableBasicpayMoreThenFixedDays": "ManagePayrollSettings.EnableBasicpayMoreThenFixedDays",
+    "dom:PayrollSettings_EnableBasicpayMoreThenFixedDays": "ManagePayrollSettings.EnableBasicpayMoreThenFixedDays",
+    "loc:EnableUnpaidDedSlabWise": "ManagePayrollSettings.EnableUnpaidDedSlabWise",
+    "dom:PayrollSettings_EnableUnpaidDedSlabWise": "ManagePayrollSettings.EnableUnpaidDedSlabWise",
+    "loc:EnableFixedDaysLogicChange": "ManagePayrollSettings.EnableFixedDaysLogicChange",
+    "dom:PayrollSettings_EnableFixedDaysLogicChange": "ManagePayrollSettings.EnableFixedDaysLogicChange",
+    "loc:ChangePartialPeriodFactoringInFixedDaysBilling": "ManagePayrollSettings.ChangePartialPeriodFactoringInFixedDaysBilling",
+    "dom:PayrollSettings_ChangePartialPeriodFactoringInFixedDaysBilling": "ManagePayrollSettings.ChangePartialPeriodFactoringInFixedDaysBilling",
+    "loc:FixedToActualWhenLeaveOverlapOnMonthStart": "ManagePayrollSettings.FixedToActualWhenLeaveOverlapOnMonthStart",
+    "dom:PayrollSettings_FixedToActualWhenLeaveOverlapOnMonthStart": "ManagePayrollSettings.FixedToActualWhenLeaveOverlapOnMonthStart",
+    "loc:FixedToActualWhenLeaveOverlapOnMonthEnd": "ManagePayrollSettings.FixedToActualWhenLeaveOverlapOnMonthEnd",
+    "dom:PayrollSettings_FixedToActualWhenLeaveOverlapOnMonthEnd": "ManagePayrollSettings.FixedToActualWhenLeaveOverlapOnMonthEnd",
+    "loc:FixedToActualWhenUpaidLeaveFound": "ManagePayrollSettings.FixedToActualWhenUpaidLeaveFound",
+    "dom:PayrollSettings_FixedToActualWhenUpaidLeaveFound": "ManagePayrollSettings.FixedToActualWhenUpaidLeaveFound",
+    "loc:FixedToActualWhenAbsentDayFound": "ManagePayrollSettings.FixedToActualWhenAbsentDayFound",
+    "dom:PayrollSettings_FixedToActualWhenAbsentDayFound": "ManagePayrollSettings.FixedToActualWhenAbsentDayFound",
+    "loc:PartialPeriodCutoffDayInFixedDaysBilling": "ManagePayrollSettings.PartialPeriodCutoffDayInFixedDaysBilling",
+    "dom:PayrollSettings_PartialPeriodCutoffDayInFixedDaysBilling": "ManagePayrollSettings.PartialPeriodCutoffDayInFixedDaysBilling",
+    "loc:OvertimeHoursBasis": "ManagePayrollSettings.OvertimeHoursBasis",
+    "dom:PayrollSettings_OvertimeHoursBasis": "ManagePayrollSettings.OvertimeHoursBasis",
+    "loc:SocialSecurityRateRule": "ManagePayrollSettings.SocialSecurityRateRule",
+    "dom:PayrollSettings_SocialSecurityRateRule": "ManagePayrollSettings.SocialSecurityRateRule",
+    "loc:CarryAllowanceOnSalaryImport": "ManagePayrollSettings.CarryAllowanceOnSalaryImport",
+    "dom:PayrollSettings_CarryAllowanceOnSalaryImport": "ManagePayrollSettings.CarryAllowanceOnSalaryImport",
+    "loc:AllowHealthReimburseBalCarryFwd": "ManagePayrollSettings.AllowHealthReimburseBalCarryFwd",
+    "dom:PayrollSettings_AllowHealthReimburseBalCarryFwd": "ManagePayrollSettings.AllowHealthReimburseBalCarryFwd",
+    "loc:OffcycleBankFileCutoff": "ManagePayrollSettings.OffcycleBankFileCutoff",
+    "dom:PayrollSettings_OffcycleBankFileCutoff": "ManagePayrollSettings.OffcycleBankFileCutoff",
+    "loc:BankFileMinAmount": "ManagePayrollSettings.BankFileMinAmount",
+    "dom:PayrollSettings_BankFileMinAmount": "ManagePayrollSettings.BankFileMinAmount",
+    "loc:PickOffcyclePayment": "ManagePayrollSettings.PickOffcyclePayment",
+    "dom:PayrollSettings_PickOffcyclePayment": "ManagePayrollSettings.PickOffcyclePayment",
+    "loc:RunOffCycleForFutureDate": "ManagePayrollSettings.RunOffCycleForFutureDate",
+    "dom:PayrollSettings_RunOffCycleForFutureDate": "ManagePayrollSettings.RunOffCycleForFutureDate",
+    "loc:AutoUpdateLoanRecoveryEndDate": "ManagePayrollSettings.AutoUpdateLoanRecoveryEndDate",
+    "dom:PayrollSettings_AutoUpdateLoanRecoveryEndDate": "ManagePayrollSettings.AutoUpdateLoanRecoveryEndDate",
+    "loc:EnableEffectiveDateInRecPayment": "ManagePayrollSettings.EnableEffectiveDateInRecPayment",
+    "dom:PayrollSettings_EnableEffectiveDateInRecPayment": "ManagePayrollSettings.EnableEffectiveDateInRecPayment",
+    "loc:AllowDeleteBackdatedSalaryRegister": "ManagePayrollSettings.AllowDeleteBackdatedSalaryRegister",
+    "dom:PayrollSettings_AllowDeleteBackdatedSalaryRegister": "ManagePayrollSettings.AllowDeleteBackdatedSalaryRegister",
+    "loc:AutoFillFnFCompensation": "ManagePayrollSettings.AutoFillFnFCompensation",
+    "dom:PayrollSettings_AutoFillFnFCompensation": "ManagePayrollSettings.AutoFillFnFCompensation",
+    "loc:EditableAutoFillFnFCompensation": "ManagePayrollSettings.EditableAutoFillFnFCompensation",
+    "dom:PayrollSettings_EditableAutoFillFnFCompensation": "ManagePayrollSettings.EditableAutoFillFnFCompensation",
+    "loc:ShowBillingTypeInPaymentScreen": "ManagePayrollSettings.ShowBillingTypeInPaymentScreen",
+    "dom:PayrollSettings_ShowBillingTypeInPaymentScreen": "ManagePayrollSettings.ShowBillingTypeInPaymentScreen",
+    "loc:IncludeSalaryIncProvDiffInSalReg": "ManagePayrollSettings.IncludeSalaryIncProvDiffInSalReg",
+    "dom:PayrollSettings_IncludeSalaryIncProvDiffInSalReg": "ManagePayrollSettings.IncludeSalaryIncProvDiffInSalReg",
+    "loc:IncludeSalaryIncProvDiffInSalRegEffDt": "ManagePayrollSettings.IncludeSalaryIncProvDiffInSalRegEffDt",
+    "dom:PayrollSettings_IncludeSalaryIncProvDiffInSalRegEffDt": "ManagePayrollSettings.IncludeSalaryIncProvDiffInSalRegEffDt"
+  },
+  "fields": [
+    {
+      "id": "ManagePayrollSettings.ClientId",
+      "label": "ClientId",
+      "section": null,
+      "aliases": [
+        "loc:ClientId",
+        "dom:PayrollSettings_ClientId"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز العميل في النظام السابق الذي كان يختار نسخ التقارير الخاصة بالعملاء.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.DefaultWorkingHours",
+      "label": "DefaultWorkingHours",
+      "section": null,
+      "aliases": [
+        "loc:DefaultWorkingHours",
+        "dom:PayrollSettings_DefaultWorkingHours"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ساعات العمل في اليوم العادي.</p><p><strong>مثال.</strong> <code>8</code></p><p><strong>لماذا يهم.</strong> يُستخدم لتحويل الساعات إلى أيام: أجر ساعة العمل الإضافي إذا كان <strong>أساس ساعات العمل الإضافي</strong> <em>ساعات ثابتة</em>، والدفعات المُدخلة بالساعات، وخصومات التأخير والانصراف المبكر بعد السماح الشهري، والإجازة بالساعات في دوام بلا أوقات محددة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.DecimalInSalaryRegister",
+      "label": "DecimalInSalaryRegister",
+      "section": null,
+      "aliases": [
+        "loc:DecimalInSalaryRegister",
+        "dom:PayrollSettings_DecimalInSalaryRegister"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المنازل العشرية التي تُقرَّب إليها مبالغ كشف الراتب.</p><p><strong>مثال.</strong> <code>3</code></p><p><strong>لماذا يهم.</strong> القيمة 0 تعني 3.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.Decimal6RoundingFrom",
+      "label": "Decimal6RoundingFrom",
+      "section": null,
+      "aliases": [
+        "loc:Decimal6RoundingFrom",
+        "dom:PayrollSettings_Decimal6RoundingFrom"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشهر الذي يسري منه التقريب الحالي.</p><p><strong>مثال.</strong> <code>2024-01-01</code></p><p><strong>لماذا يهم.</strong> تُقرَّب كشوف الرواتب للأشهر السابقة لهذا التاريخ بالطريقة القديمة، إلى المنازل العشرية للعملة. وإذا تُرك فارغاً يسري التقريب الحالي على كل الأشهر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.PayslipSignature",
+      "label": "PayslipSignature",
+      "section": null,
+      "aliases": [
+        "loc:PayslipSignature",
+        "dom:PayrollSettings_PayslipSignature"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان كشف الراتب يعرض خانة التوقيع.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.RoundNetPay",
+      "label": "RoundNetPay",
+      "section": null,
+      "aliases": [
+        "loc:RoundNetPay",
+        "dom:PayrollSettings_RoundNetPay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان صافي الراتب يُقرَّب إلى منزلتين عشريتين.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُقرَّب صافي الراتب إلى منزلتين. وإلا فيُقرَّب إلى منازل العملة العشرية (3 للدينار الكويتي).</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.EnablePayrollEngineAutorun",
+      "label": "EnablePayrollEngineAutorun",
+      "section": null,
+      "aliases": [
+        "loc:EnablePayrollEngineAutorun",
+        "dom:PayrollSettings_EnablePayrollEngineAutorun"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان محرك الرواتب يعمل تلقائياً وفق جدول.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.AllowSimulationRun",
+      "label": "AllowSimulationRun",
+      "section": null,
+      "aliases": [
+        "loc:AllowSimulationRun",
+        "dom:PayrollSettings_AllowSimulationRun"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان التشغيل التجريبي للرواتب مسموحاً.</p><p><strong>لماذا يهم.</strong> عند تفعيله تعرض شاشة محرك الرواتب خيار <strong>محاكاة</strong>، وهو تشغيل تجريبي لا يكتب إلا في <strong>سجلات الرواتب التجريبية</strong> ولا يمس بيانات الرواتب الفعلية. وعند إيقافه يُخفى الخيار ويُرفض التشغيل التجريبي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.DisableRetroCalculation",
+      "label": "DisableRetroCalculation",
+      "section": null,
+      "aliases": [
+        "loc:DisableRetroCalculation",
+        "dom:PayrollSettings_DisableRetroCalculation"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت التعديلات المؤرخة في فترة رواتب معالجة تُرفض.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُرفض إضافة السجلات المتعلقة بالرواتب أو تعديلها أو حذفها إذا كان تاريخها سابقاً للفترة الحالية — قبل بداية الفترة ما دامت مفتوحة أو مفتوحة للتشغيل، وحتى نهايتها بعد إقفالها. وإلا فيُسمح بهذه التعديلات ويحتسب نظام الرواتب الفرق بأثر رجعي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.LockSalaryRegisterOnPayrollExit",
+      "label": "LockSalaryRegisterOnPayrollExit",
+      "section": null,
+      "aliases": [
+        "loc:LockSalaryRegisterOnPayrollExit",
+        "dom:PayrollSettings_LockSalaryRegisterOnPayrollExit"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت كشوف الرواتب تُقفل عند انتقال الفترة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه فإن إقفال الفترة يُقفل كشوف الرواتب العادية لذلك الشهر، وفتحها لتشغيل الرواتب يُقفل كشوفه خارج الدورة، فلا يعود ممكناً تعديلها أو حذفها. كما يُقفل إنشاء ملف البنك كل سجل رواتب يختاره.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.DefaultLeavePaymentType",
+      "label": "DefaultLeavePaymentType",
+      "section": null,
+      "aliases": [
+        "loc:DefaultLeavePaymentType",
+        "dom:PayrollSettings_DefaultLeavePaymentType"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، الدفع مع الرواتب، الدفع مقدماً، الدفع كاملاً مع الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع سداد الإجازة المعروض افتراضياً في الإجازة الجديدة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.LeaveAdvPaymentdateBefore15",
+      "label": "LeaveAdvPaymentdateBefore15",
+      "section": null,
+      "aliases": [
+        "loc:LeaveAdvPaymentdateBefore15",
+        "dom:PayrollSettings_LeaveAdvPaymentdateBefore15"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ الدفعة المقدمة للإجازة التي تبدأ قبل يوم 15.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.LeaveAdvPaymentdateAfter15",
+      "label": "LeaveAdvPaymentdateAfter15",
+      "section": null,
+      "aliases": [
+        "loc:LeaveAdvPaymentdateAfter15",
+        "dom:PayrollSettings_LeaveAdvPaymentdateAfter15"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ الدفعة المقدمة للإجازة التي تبدأ بعد يوم 15.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.LeaveProvisionAsPerCurrentSalary",
+      "label": "LeaveProvisionAsPerCurrentSalary",
+      "section": null,
+      "aliases": [
+        "loc:LeaveProvisionAsPerCurrentSalary",
+        "dom:PayrollSettings_LeaveProvisionAsPerCurrentSalary"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان مخصص الإجازة السنوية يقيّم الرصيد كله بالراتب الحالي.</p><p><strong>لماذا يهم.</strong> رغم اسمه: إذا أُشِّر عليه يُحتسب المخصص فترةً بفترة على سجلات الراتب الأساسي السابقة للموظف. وإلا فيُقيَّم رصيد الإجازة كله بأجر الشهر الحالي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.EnableNotReturnFromLeaveLogic",
+      "label": "EnableNotReturnFromLeaveLogic",
+      "section": null,
+      "aliases": [
+        "loc:EnableNotReturnFromLeaveLogic",
+        "dom:PayrollSettings_EnableNotReturnFromLeaveLogic"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الموظفون الذين لم يعودوا من الإجازة يُعاملون معاملة خاصة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه، فالموظف الذي انتهت إجازته التي تتطلب تاريخ عودة دون تسجيل عودته لا يُصرف له راتب أساسي في التشغيل، ويحتسب محرك الوقت أيام راحته غياباً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.GenerateRegisterOnNotReturnFromLeave",
+      "label": "GenerateRegisterOnNotReturnFromLeave",
+      "section": null,
+      "aliases": [
+        "loc:GenerateRegisterOnNotReturnFromLeave",
+        "dom:PayrollSettings_GenerateRegisterOnNotReturnFromLeave"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان كشف الراتب يُنتج رغم ذلك للموظف الذي لم يعد من الإجازة.</p><p><strong>لماذا يهم.</strong> إذا لم يُؤشَّر عليه يتوقف التشغيل العادي عند هذا الموظف برسالة ولا يُنتج كشف راتب. ويتجاهل التشغيل خارج الدورة هذا الإعداد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.ApplyAnnualleaveNoImpactLogic",
+      "label": "ApplyAnnualleaveNoImpactLogic",
+      "section": null,
+      "aliases": [
+        "loc:ApplyAnnualleaveNoImpactLogic",
+        "dom:PayrollSettings_ApplyAnnualleaveNoImpactLogic"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت إجازة سنوية خاصة \"بلا أثر\" يُتعرَّف عليها في الأجر بالأيام الثابتة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه، عندما يُحتسب الشهر بالأيام الفعلية، تُعامل الإجازة من النوع المسمّى بالضبط \"Annual Leave (No impact indemnity)\" معاملة مختلفة عن غيرها. ويُتعرَّف على النوع باسمه الإنجليزي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.FullMonthLeaveAdjForFixedDays",
+      "label": "FullMonthLeaveAdjForFixedDays",
+      "section": null,
+      "aliases": [
+        "loc:FullMonthLeaveAdjForFixedDays",
+        "dom:PayrollSettings_FullMonthLeaveAdjForFixedDays"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الشهر الميلادي الكامل في الإجازة السنوية يُعدّ 26 يوم إجازة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه، ففي الإجازة السنوية التي تزيد على 27 يوماً يُعدّ كل شهر ميلادي كامل تشمله 26 يوم إجازة (ناقص العطلات الرسمية وأيام الراحة) بدلاً من عدّه يوماً بيوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.PayLeaveAsPerCutoff",
+      "label": "PayLeaveAsPerCutoff",
+      "section": null,
+      "aliases": [
+        "loc:PayLeaveAsPerCutoff",
+        "dom:PayrollSettings_PayLeaveAsPerCutoff"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الإجازة التي لم يُعد منها بعد تُصرف بحسب يوم الإقفال لمنطقة الرواتب.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه، ففي التشغيل العادي لا يُعالَج من هذه الإجازات في ذلك الشهر إلا ما بدأ في يوم الإقفال للمنطقة أو قبله.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.RegularLeaveEncashOnBasicPayOnly",
+      "label": "RegularLeaveEncashOnBasicPayOnly",
+      "section": null,
+      "aliases": [
+        "loc:RegularLeaveEncashOnBasicPayOnly",
+        "dom:PayrollSettings_RegularLeaveEncashOnBasicPayOnly"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان صرف الإجازة نقداً في التشغيل العادي والمقدم يُقيَّم على الراتب الأساسي فقط.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يستخدم الصرف النقدي نوع الأجر <code>1000</code> وحده بدلاً من كل أنواع الأجور المكوّنة لأجر الإجازة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.FnFLeaveEncashOnBasicPayOnly",
+      "label": "FnFLeaveEncashOnBasicPayOnly",
+      "section": null,
+      "aliases": [
+        "loc:FnFLeaveEncashOnBasicPayOnly",
+        "dom:PayrollSettings_FnFLeaveEncashOnBasicPayOnly"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان صرف الإجازة نقداً عند نهاية الخدمة يُقيَّم على الراتب الأساسي فقط.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه، ففي تشغيل نهاية الخدمة يستخدم الصرف النقدي نوع الأجر <code>1000</code> وحده.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.EnableBasicpayMoreThenFixedDays",
+      "label": "EnableBasicpayMoreThenFixedDays",
+      "section": null,
+      "aliases": [
+        "loc:EnableBasicpayMoreThenFixedDays",
+        "dom:PayrollSettings_EnableBasicpayMoreThenFixedDays"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الراتب الأساسي يُصرف رغم ذلك في شهر فيه 26 يوم إجازة أو أكثر.</p><p><strong>لماذا يهم.</strong> إذا لم يُؤشَّر عليه لا يصرف الشهر الذي فيه 26 يوم إجازة أو أكثر أي أيام عمل من الراتب الأساسي — إذ تغطي الإجازة الشهر. وإذا أُشِّر عليه تُعدّ أيام العمل رغم ذلك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.EnableUnpaidDedSlabWise",
+      "label": "EnableUnpaidDedSlabWise",
+      "section": null,
+      "aliases": [
+        "loc:EnableUnpaidDedSlabWise",
+        "dom:PayrollSettings_EnableUnpaidDedSlabWise"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الأيام غير المدفوعة تُخصم من مكافأة نهاية الخدمة شريحةً بشريحة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه تُخصم أيام الإجازة غير المدفوعة والغياب من الخدمة في كل شريحة مكافأة تقع فيها. وإلا فتُخصم من مجموع الخدمة قبل تقسيمها على الشرائح.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.EnableFixedDaysLogicChange",
+      "label": "EnableFixedDaysLogicChange",
+      "section": null,
+      "aliases": [
+        "loc:EnableFixedDaysLogicChange",
+        "dom:PayrollSettings_EnableFixedDaysLogicChange"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان منطق معدَّل للأيام الثابتة مستخدماً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.ChangePartialPeriodFactoringInFixedDaysBilling",
+      "label": "ChangePartialPeriodFactoringInFixedDaysBilling",
+      "section": null,
+      "aliases": [
+        "loc:ChangePartialPeriodFactoringInFixedDaysBilling",
+        "dom:PayrollSettings_ChangePartialPeriodFactoringInFixedDaysBilling"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الموظف الذي يلتحق في بداية الشهر يبقى على الأجر بالأيام الثابتة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه، ومع تحديد <strong>يوم إقفال الفترة الجزئية</strong>، يُصرف للموظف الذي يلتحق قبل ذلك اليوم بالأيام الثابتة ناقص أيام العمل قبل التحاقه، بدلاً من الأيام الفعلية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.FixedToActualWhenLeaveOverlapOnMonthStart",
+      "label": "FixedToActualWhenLeaveOverlapOnMonthStart",
+      "section": null,
+      "aliases": [
+        "loc:FixedToActualWhenLeaveOverlapOnMonthStart",
+        "dom:PayrollSettings_FixedToActualWhenLeaveOverlapOnMonthStart"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الشهر يُصرف على أساس أيام العمل الفعلية عندما تمتد إجازة عبر بداية الشهر.</p><p><strong>لماذا يهم.</strong> في الراتب الأساسي على <em>أيام ثابتة شهرياً</em> يُصرف الشهر عادةً بعدد الأيام الثابتة ناقص الغياب. وإذا أُشِّر عليه، يُحتسب الشهر الذي تمتد إجازة عبر بداية الشهر فيه على أساس أيام العمل الفعلية بدلاً من ذلك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.FixedToActualWhenLeaveOverlapOnMonthEnd",
+      "label": "FixedToActualWhenLeaveOverlapOnMonthEnd",
+      "section": null,
+      "aliases": [
+        "loc:FixedToActualWhenLeaveOverlapOnMonthEnd",
+        "dom:PayrollSettings_FixedToActualWhenLeaveOverlapOnMonthEnd"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الشهر يُصرف على أساس أيام العمل الفعلية عندما تمتد إجازة بعد نهاية الشهر.</p><p><strong>لماذا يهم.</strong> في الراتب الأساسي على <em>أيام ثابتة شهرياً</em> يُصرف الشهر عادةً بعدد الأيام الثابتة ناقص الغياب. وإذا أُشِّر عليه، يُحتسب الشهر الذي تمتد إجازة بعد نهاية الشهر فيه على أساس أيام العمل الفعلية بدلاً من ذلك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.FixedToActualWhenUpaidLeaveFound",
+      "label": "FixedToActualWhenUpaidLeaveFound",
+      "section": null,
+      "aliases": [
+        "loc:FixedToActualWhenUpaidLeaveFound",
+        "dom:PayrollSettings_FixedToActualWhenUpaidLeaveFound"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الشهر يُصرف على أساس أيام العمل الفعلية عندما يكون للموظف إجازة غير مدفوعة.</p><p><strong>لماذا يهم.</strong> في الراتب الأساسي على <em>أيام ثابتة شهرياً</em> يُصرف الشهر عادةً بعدد الأيام الثابتة ناقص الغياب. وإذا أُشِّر عليه، يُحتسب الشهر الذي يكون للموظف إجازة غير مدفوعة فيه على أساس أيام العمل الفعلية بدلاً من ذلك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.FixedToActualWhenAbsentDayFound",
+      "label": "FixedToActualWhenAbsentDayFound",
+      "section": null,
+      "aliases": [
+        "loc:FixedToActualWhenAbsentDayFound",
+        "dom:PayrollSettings_FixedToActualWhenAbsentDayFound"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الشهر يُصرف على أساس أيام العمل الفعلية عندما يكون للموظف أيام غياب.</p><p><strong>لماذا يهم.</strong> في الراتب الأساسي على <em>أيام ثابتة شهرياً</em> يُصرف الشهر عادةً بعدد الأيام الثابتة ناقص الغياب. وإذا أُشِّر عليه، يُحتسب الشهر الذي يكون للموظف أيام غياب فيه على أساس أيام العمل الفعلية بدلاً من ذلك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.PartialPeriodCutoffDayInFixedDaysBilling",
+      "label": "PartialPeriodCutoffDayInFixedDaysBilling",
+      "section": null,
+      "aliases": [
+        "loc:PartialPeriodCutoffDayInFixedDaysBilling",
+        "dom:PayrollSettings_PartialPeriodCutoffDayInFixedDaysBilling"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوم الشهر الذي يبقى الملتحق قبله على الأجر بالأيام الثابتة.</p><p><strong>مثال.</strong> <code>10</code></p><p><strong>لماذا يهم.</strong> يُستخدم مع <strong>تغيير الاحتساب التناسبي للفترة الجزئية</strong>. واليوم الذي يتجاوز طول الشهر يعني آخر يوم فيه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.OvertimeHoursBasis",
+      "label": "OvertimeHoursBasis",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeHoursBasis",
+        "dom:PayrollSettings_OvertimeHoursBasis"
+      ],
+      "rules": "إلزامي. إحدى القيم: ساعات ثابتة، ساعات الدوام.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الساعات التي تُقيَّم بها ساعة العمل الإضافي.</p><p><strong>مثال.</strong> ساعات ثابتة</p><p><strong>لماذا يهم.</strong> <em>ساعات ثابتة</em> تقسم أجر اليوم على <strong>ساعات العمل الافتراضية</strong>، و<em>ساعات الدوام</em> تستخدم ساعات دوام الموظف في ذلك اليوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.SocialSecurityRateRule",
+      "label": "SocialSecurityRateRule",
+      "section": null,
+      "aliases": [
+        "loc:SocialSecurityRateRule",
+        "dom:PayrollSettings_SocialSecurityRateRule"
+      ],
+      "rules": "إلزامي. إحدى القيم: الأجر والراتب، راتب العقد.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأجر الذي تُحتسب عليه التأمينات الاجتماعية.</p><p><strong>مثال.</strong> الأجر والراتب</p><p><strong>لماذا يهم.</strong> <em>الأجر والراتب</em> يستخدم أنواع الأجور المؤشَّر عليها <em>إدراج في التأمينات الاجتماعية</em>، و<em>راتب العقد</em> يستخدم راتب العقد في سجل الكفيل للموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.CarryAllowanceOnSalaryImport",
+      "label": "CarryAllowanceOnSalaryImport",
+      "section": null,
+      "aliases": [
+        "loc:CarryAllowanceOnSalaryImport",
+        "dom:PayrollSettings_CarryAllowanceOnSalaryImport"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت البدلات تُرحَّل عند استيراد الرواتب.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.AllowHealthReimburseBalCarryFwd",
+      "label": "AllowHealthReimburseBalCarryFwd",
+      "section": null,
+      "aliases": [
+        "loc:AllowHealthReimburseBalCarryFwd",
+        "dom:PayrollSettings_AllowHealthReimburseBalCarryFwd"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان رصيد استرداد المصاريف الصحية غير المستخدم يُرحَّل إلى سنة التأمين التالية.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُضاف الرصيد غير المستخدم إلى رصيد السنة التالية، مع بقاء حد الدرجة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.OffcycleBankFileCutoff",
+      "label": "OffcycleBankFileCutoff",
+      "section": null,
+      "aliases": [
+        "loc:OffcycleBankFileCutoff",
+        "dom:PayrollSettings_OffcycleBankFileCutoff"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوم الشهر المستخدم تاريخَ إقفال لملفات البنك خارج الدورة.</p><p><strong>مثال.</strong> <code>20</code></p><p><strong>لماذا يهم.</strong> القيمة 0 تعني اليوم الأول، واليوم الذي يتجاوز طول الشهر يعني آخر يوم فيه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.BankFileMinAmount",
+      "label": "BankFileMinAmount",
+      "section": null,
+      "aliases": [
+        "loc:BankFileMinAmount",
+        "dom:PayrollSettings_BankFileMinAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أقل صافي راتب يُدرج في ملف البنك.</p><p><strong>مثال.</strong> <code>1</code></p><p><strong>لماذا يهم.</strong> تُستبعد من الملف كشوف الرواتب التي صافيها أقل من هذا. والقيمة 0 تُدرج الكل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.PickOffcyclePayment",
+      "label": "PickOffcyclePayment",
+      "section": null,
+      "aliases": [
+        "loc:PickOffcyclePayment",
+        "dom:PayrollSettings_PickOffcyclePayment"
+      ],
+      "rules": "إلزامي. إحدى القيم: التاريخ الحالي، الشهر الحالي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إلى أي مدى يبحث التشغيل التلقائي خارج الدورة عن الدفعات المقدمة.</p><p><strong>مثال.</strong> التاريخ الحالي</p><p><strong>لماذا يهم.</strong> مع التشغيل التلقائي لمحرك الوقت، <em>التاريخ الحالي</em> يلتقط الإجازات والدفعات المقدمة المؤرخة حتى اليوم، و<em>الشهر الحالي</em> يلتقط كل شيء حتى تاريخ الدفع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.RunOffCycleForFutureDate",
+      "label": "RunOffCycleForFutureDate",
+      "section": null,
+      "aliases": [
+        "loc:RunOffCycleForFutureDate",
+        "dom:PayrollSettings_RunOffCycleForFutureDate"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان التشغيل خارج الدورة يمكن أن يلتقط بنوداً مؤرخة بعد اليوم.</p><p><strong>لماذا يهم.</strong> إذا لم يُؤشَّر عليه، لا يبحث التشغيل خارج الدورة للإجازة المقدمة إلا حتى اليوم، حتى لو كان تاريخ الدفع لاحقاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.AutoUpdateLoanRecoveryEndDate",
+      "label": "AutoUpdateLoanRecoveryEndDate",
+      "section": null,
+      "aliases": [
+        "loc:AutoUpdateLoanRecoveryEndDate",
+        "dom:PayrollSettings_AutoUpdateLoanRecoveryEndDate"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان تاريخ انتهاء استرداد القرض يتغير عند إيقاف الاسترداد.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه فإن إضافة إعفاء من القرض أو تعديله يعيد احتساب تاريخ انتهاء استرداد القرض.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.EnableEffectiveDateInRecPayment",
+      "label": "EnableEffectiveDateInRecPayment",
+      "section": null,
+      "aliases": [
+        "loc:EnableEffectiveDateInRecPayment",
+        "dom:PayrollSettings_EnableEffectiveDateInRecPayment"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل تحل الدفعة المتكررة الجديدة المفتوحة محل الدفعة الحالية بدلاً من رفضها بسبب التداخل.</p><p><strong>لماذا يهم.</strong> عند تفعيله، يؤدي حفظ دفعة متكررة للموظف بتاريخ نهاية 31/12/9999 إلى إغلاق دفعته المفتوحة من نوع الأجر نفسه في اليوم السابق لبداية الدفعة الجديدة. ويجب أن تكون الدفعة الحالية مفتوحة هي الأخرى وتبدأ قبلها، وألا يتداخل معها إلا دفعة واحدة، وإلا رُفض الحفظ. وعند تعطيله يُرفض أي تداخل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.AllowDeleteBackdatedSalaryRegister",
+      "label": "AllowDeleteBackdatedSalaryRegister",
+      "section": null,
+      "aliases": [
+        "loc:AllowDeleteBackdatedSalaryRegister",
+        "dom:PayrollSettings_AllowDeleteBackdatedSalaryRegister"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز حذف كشوف الرواتب ذات التاريخ السابق.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.AutoFillFnFCompensation",
+      "label": "AutoFillFnFCompensation",
+      "section": null,
+      "aliases": [
+        "loc:AutoFillFnFCompensation",
+        "dom:PayrollSettings_AutoFillFnFCompensation"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت التسوية النهائية تملأ أيام التعويض تلقائياً.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه تُملأ أيام الإجازة المطلوب تعويضها برصيد الإجازة المتبقي، وأيام المكافأة بأيام المكافأة المقترحة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.EditableAutoFillFnFCompensation",
+      "label": "EditableAutoFillFnFCompensation",
+      "section": null,
+      "aliases": [
+        "loc:EditableAutoFillFnFCompensation",
+        "dom:PayrollSettings_EditableAutoFillFnFCompensation"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يمكن تعديل أيام التعويض المملوءة تلقائياً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.ShowBillingTypeInPaymentScreen",
+      "label": "ShowBillingTypeInPaymentScreen",
+      "section": null,
+      "aliases": [
+        "loc:ShowBillingTypeInPaymentScreen",
+        "dom:PayrollSettings_ShowBillingTypeInPaymentScreen"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت شاشة الدفعات تعرض نوع الفوترة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.IncludeSalaryIncProvDiffInSalReg",
+      "label": "IncludeSalaryIncProvDiffInSalReg",
+      "section": null,
+      "aliases": [
+        "loc:IncludeSalaryIncProvDiffInSalReg",
+        "dom:PayrollSettings_IncludeSalaryIncProvDiffInSalReg"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان فرق المخصص الناتج عن زيادة الراتب يُكتب في كشف الراتب.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه، ابتداءً من التاريخ أدناه، يسجّل مخصصا الإجازة السنوية ومكافأة نهاية الخدمة الفرق يوماً بيوم الناتج عن تغيير الراتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePayrollSettings.IncludeSalaryIncProvDiffInSalRegEffDt",
+      "label": "IncludeSalaryIncProvDiffInSalRegEffDt",
+      "section": null,
+      "aliases": [
+        "loc:IncludeSalaryIncProvDiffInSalRegEffDt",
+        "dom:PayrollSettings_IncludeSalaryIncProvDiffInSalRegEffDt"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي يُسجَّل منه فرق المخصص الناتج عن زيادة الراتب.</p><p><strong>مثال.</strong> <code>2025-01-01</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

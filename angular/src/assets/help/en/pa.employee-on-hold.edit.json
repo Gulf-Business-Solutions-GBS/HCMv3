@@ -1,0 +1,219 @@
+{
+  "helpId": "pa.employee-on-hold.edit",
+  "lang": "en",
+  "title": "Employee On Holds — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeOnHold",
+  "overviewHtml": "<p>Holds some or all of the employee's pay for a period. Hold periods for the same employee cannot overlap.</p><p>Payroll applies the hold in force on the pay date. Holding everything sets every individual hold at once.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeOnHold.StartDate",
+    "dom:EmployeeOnHold_StartDate": "EmployeeOnHold.StartDate",
+    "loc:EndDate": "EmployeeOnHold.EndDate",
+    "dom:EmployeeOnHold_EndDate": "EmployeeOnHold.EndDate",
+    "loc:BankTransfer": "EmployeeOnHold.BankTransfer",
+    "dom:EmployeeOnHold_BankTransfer": "EmployeeOnHold.BankTransfer",
+    "loc:EmployeeActionId": "EmployeeOnHold.EmployeeActionId",
+    "dom:EmployeeOnHold_EmployeeActionId": "EmployeeOnHold.EmployeeActionId",
+    "loc:OnHold": "EmployeeOnHold.OnHold",
+    "dom:EmployeeOnHold_OnHold": "EmployeeOnHold.OnHold",
+    "loc:OnHoldBasicPay": "EmployeeOnHold.OnHoldBasicPay",
+    "dom:EmployeeOnHold_OnHoldBasicPay": "EmployeeOnHold.OnHoldBasicPay",
+    "loc:OnHoldLeavePay": "EmployeeOnHold.OnHoldLeavePay",
+    "dom:EmployeeOnHold_OnHoldLeavePay": "EmployeeOnHold.OnHoldLeavePay",
+    "loc:OnHoldIndemnityPay": "EmployeeOnHold.OnHoldIndemnityPay",
+    "dom:EmployeeOnHold_OnHoldIndemnityPay": "EmployeeOnHold.OnHoldIndemnityPay",
+    "loc:OnHoldAirTicketPay": "EmployeeOnHold.OnHoldAirTicketPay",
+    "dom:EmployeeOnHold_OnHoldAirTicketPay": "EmployeeOnHold.OnHoldAirTicketPay",
+    "loc:OnHoldLoanDeduction": "EmployeeOnHold.OnHoldLoanDeduction",
+    "dom:EmployeeOnHold_OnHoldLoanDeduction": "EmployeeOnHold.OnHoldLoanDeduction",
+    "loc:OnHoldAllEarnings": "EmployeeOnHold.OnHoldAllEarnings",
+    "dom:EmployeeOnHold_OnHoldAllEarnings": "EmployeeOnHold.OnHoldAllEarnings",
+    "loc:OnHoldAllDeductions": "EmployeeOnHold.OnHoldAllDeductions",
+    "dom:EmployeeOnHold_OnHoldAllDeductions": "EmployeeOnHold.OnHoldAllDeductions",
+    "loc:Comments": "EmployeeOnHold.Comments",
+    "dom:EmployeeOnHold_Comments": "EmployeeOnHold.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeOnHold.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeOnHold_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeOnHold_EndDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.BankTransfer",
+      "label": "BankTransfer",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:BankTransfer",
+        "dom:EmployeeOnHold_BankTransfer"
+      ],
+      "rules": "Required. One of: N/A, Hold, Unhold.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the employee's salary transfer is held.</p><p><strong>Example.</strong> Hold</p>",
+      "adminHtml": "<p>Of the bank file formats, only ABK leaves out employees whose transfer is held. The other formats do not check it at present.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.EmployeeActionId",
+      "label": "EmployeeActionId",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:EmployeeActionId",
+        "dom:EmployeeOnHold_EmployeeActionId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The personnel action this hold belongs to, if any.</p><p><strong>Why it matters.</strong> Recorded as a link only; payroll does not read it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.OnHold",
+      "label": "OnHold",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:OnHold",
+        "dom:EmployeeOnHold_OnHold"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Holds everything.</p><p><strong>Why it matters.</strong> Payroll treats every hold below as ticked, and the staff-not-in-payroll report lists the employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.OnHoldBasicPay",
+      "label": "OnHoldBasicPay",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:OnHoldBasicPay",
+        "dom:EmployeeOnHold_OnHoldBasicPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Holds basic pay.</p><p><strong>Why it matters.</strong> Payroll pays no basic pay while it is ticked.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.OnHoldLeavePay",
+      "label": "OnHoldLeavePay",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:OnHoldLeavePay",
+        "dom:EmployeeOnHold_OnHoldLeavePay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Holds leave pay.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.OnHoldIndemnityPay",
+      "label": "OnHoldIndemnityPay",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:OnHoldIndemnityPay",
+        "dom:EmployeeOnHold_OnHoldIndemnityPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Holds indemnity pay.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.OnHoldAirTicketPay",
+      "label": "OnHoldAirTicketPay",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:OnHoldAirTicketPay",
+        "dom:EmployeeOnHold_OnHoldAirTicketPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Holds air ticket pay.</p><p><strong>Why it matters.</strong> Recorded only; payroll does not currently check it when paying tickets.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.OnHoldLoanDeduction",
+      "label": "OnHoldLoanDeduction",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:OnHoldLoanDeduction",
+        "dom:EmployeeOnHold_OnHoldLoanDeduction"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Holds loan instalment deductions.</p><p><strong>Why it matters.</strong> Payroll does not recover loans while it is ticked.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.OnHoldAllEarnings",
+      "label": "OnHoldAllEarnings",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:OnHoldAllEarnings",
+        "dom:EmployeeOnHold_OnHoldAllEarnings"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Holds all earnings.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.OnHoldAllDeductions",
+      "label": "OnHoldAllDeductions",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:OnHoldAllDeductions",
+        "dom:EmployeeOnHold_OnHoldAllDeductions"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Holds all deductions.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.Comments",
+      "label": "Comments",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeOnHold_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

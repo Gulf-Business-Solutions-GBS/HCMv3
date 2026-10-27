@@ -1,0 +1,111 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'KpiByOrgUnitDetails' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'KpiByOrgUnitDetails' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="KpiByOrgUnitDetail_KpiByOrgUnitId">{{ 'KpiByOrgUnit' | localize }}</label>
+                                <select
+                                    id="KpiByOrgUnitDetail_KpiByOrgUnitId"
+                                    #kpiByOrgUnitIdInput="ngModel"
+                                    class="form-select"
+                                    name="KpiByOrgUnitId"
+                                    [ngModel]="record().kpiByOrgUnitId"
+                                    (ngModelChange)="updateField('kpiByOrgUnitId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of kpiByOrgUnits(); track item.id) {
+                                        <option [ngValue]="item.id">{{ kpiByOrgUnitLabel(item) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="kpiByOrgUnitIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="KpiByOrgUnitDetail_KpiInfoId">{{ 'KpiInfo' | localize }}</label>
+                                <select
+                                    id="KpiByOrgUnitDetail_KpiInfoId"
+                                    #kpiInfoIdInput="ngModel"
+                                    class="form-select"
+                                    name="KpiInfoId"
+                                    [ngModel]="record().kpiInfoId"
+                                    (ngModelChange)="updateField('kpiInfoId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (kpiInfo of kpiInfos(); track kpiInfo.id) {
+                                        <option [ngValue]="kpiInfo.id">{{ kpiInfo.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="kpiInfoIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="KpiByOrgUnitDetail_Weight">{{ 'Weight' | localize }}</label>
+                                <input
+                                    id="KpiByOrgUnitDetail_Weight"
+                                    #weightInput="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="Weight"
+                                    [ngModel]="record().weight"
+                                    (ngModelChange)="updateField('weight', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="weightInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="KpiByOrgUnitDetail_Target">{{ 'Target' | localize }}</label>
+                                <input
+                                    id="KpiByOrgUnitDetail_Target"
+                                    type="text"
+                                    class="form-control"
+                                    name="Target"
+                                    [ngModel]="record().target"
+                                    (ngModelChange)="updateField('target', $event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

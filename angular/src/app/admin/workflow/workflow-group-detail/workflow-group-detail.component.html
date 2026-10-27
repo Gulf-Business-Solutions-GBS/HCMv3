@@ -1,0 +1,28 @@
+<div [@routerTransition]>
+    <sub-header [title]="'WorkflowGroups' | localize" [description]="'Workflow' | localize" />
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-header align-items-center border-0">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="fw-bolder text-gray-900">
+                        @if (workflowGroup()) {
+                            <span>{{ workflowGroup().code }} - {{ workflowGroup().nameEn }}</span>
+                        }
+                    </span>
+                </h3>
+            </div>
+            <div class="card-body">
+                @if (workflowGroupId()) {
+                    <tabset class="tab-container">
+                        <tab heading="{{ 'WorkflowGroupDetails' | localize }}" [active]="true">
+                            <workflow-group-details [workflowGroupId]="workflowGroupId()" />
+                        </tab>
+                        <tab heading="{{ 'WorkflowGroupFieldAccesses' | localize }}">
+                            <workflow-group-field-accesses [workflowGroupId]="workflowGroupId()" />
+                        </tab>
+                    </tabset>
+                }
+            </div>
+        </div>
+    </div>
+</div>

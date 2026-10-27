@@ -1,0 +1,91 @@
+{
+  "helpId": "perf.form-type.edit",
+  "lang": "en",
+  "title": "Form Types — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.FormType",
+  "overviewHtml": "<p>A kind of appraisal form, with limits on how many reviewers an appraisal of this type may have. Every appraisal names its form type.</p>",
+  "aliasIndex": {
+    "loc:Code": "FormType.Code",
+    "dom:FormType_Code": "FormType.Code",
+    "loc:NameEn": "FormType.NameEn",
+    "dom:FormType_NameEn": "FormType.NameEn",
+    "loc:NameAr": "FormType.NameAr",
+    "dom:FormType_NameAr": "FormType.NameAr",
+    "loc:MinReviewerLimit": "FormType.MinReviewerLimit",
+    "dom:FormType_MinReviewerLimit": "FormType.MinReviewerLimit",
+    "loc:MaxReviewerLimit": "FormType.MaxReviewerLimit",
+    "dom:FormType_MaxReviewerLimit": "FormType.MaxReviewerLimit"
+  },
+  "fields": [
+    {
+      "id": "FormType.Code",
+      "label": "Code",
+      "section": "FormTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:FormType_Code"
+      ],
+      "rules": "Optional. Maximum 64 characters. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FormType.NameEn",
+      "label": "NameEn",
+      "section": "FormTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:FormType_NameEn"
+      ],
+      "rules": "Required. Maximum 256 characters. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FormType.NameAr",
+      "label": "NameAr",
+      "section": "FormTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:FormType_NameAr"
+      ],
+      "rules": "Required. Maximum 256 characters. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FormType.MinReviewerLimit",
+      "label": "MinReviewerLimit",
+      "section": "FormTypes",
+      "aliases": [
+        "loc:MinReviewerLimit",
+        "dom:FormType_MinReviewerLimit"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The fewest reviewers an appraisal should have.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FormType.MaxReviewerLimit",
+      "label": "MaxReviewerLimit",
+      "section": "FormTypes",
+      "aliases": [
+        "loc:MaxReviewerLimit",
+        "dom:FormType_MaxReviewerLimit"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most reviewers an appraisal of this type may have.</p><p><strong>Example.</strong> <code>5</code></p><p><strong>Why it matters.</strong> Adding a reviewer beyond it is refused. 0 means no limit.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

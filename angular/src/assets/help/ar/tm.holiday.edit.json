@@ -1,0 +1,91 @@
+{
+  "helpId": "tm.holiday.edit",
+  "lang": "ar",
+  "title": "العطلات — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.Holiday",
+  "overviewHtml": "<p>عطلة رسمية مسمّاة في تقويم العطلات — عيد الفطر أو العيد الوطني. وتُدخل تواريخها الفعلية كل سنة على شكل فترات عطلة.</p>",
+  "aliasIndex": {
+    "loc:Code": "Holiday.Code",
+    "dom:Holiday_Code": "Holiday.Code",
+    "loc:NameEn": "Holiday.NameEn",
+    "dom:Holiday_NameEn": "Holiday.NameEn",
+    "loc:NameAr": "Holiday.NameAr",
+    "dom:Holiday_NameAr": "Holiday.NameAr",
+    "loc:HolidayCalendar": "Holiday.HolidayCalendarId",
+    "dom:Holiday_HolidayCalendarId": "Holiday.HolidayCalendarId",
+    "loc:OvertimeType": "Holiday.OvertimeTypeId",
+    "dom:Holiday_OvertimeTypeId": "Holiday.OvertimeTypeId"
+  },
+  "fields": [
+    {
+      "id": "Holiday.Code",
+      "label": "Code",
+      "section": "Holidays",
+      "aliases": [
+        "loc:Code",
+        "dom:Holiday_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Holiday.NameEn",
+      "label": "NameEn",
+      "section": "Holidays",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Holiday_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Holiday.NameAr",
+      "label": "NameAr",
+      "section": "Holidays",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Holiday_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Holiday.HolidayCalendarId",
+      "label": "HolidayCalendar",
+      "section": "Holidays",
+      "aliases": [
+        "loc:HolidayCalendar",
+        "dom:Holiday_HolidayCalendarId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة تقاويم العطلات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التقويم الذي تتبعه العطلة.</p><p><strong>مثال.</strong> العطلات الرسمية في الكويت</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Holiday.OvertimeTypeId",
+      "label": "OvertimeType",
+      "section": "Holidays",
+      "aliases": [
+        "loc:OvertimeType",
+        "dom:Holiday_OvertimeTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع العمل الإضافي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع العمل الإضافي للعمل في هذه العطلة.</p><p><strong>مثال.</strong> عمل إضافي في العطلات</p><p><strong>لماذا يهم.</strong> في يوم العطلة يُسجَّل العمل الإضافي تحت هذا النوع بدلاً من نوع الدوام.</p>",
+      "adminHtml": "<p>يُبحث عن العطلة بالتاريخ فقط، لا عبر تقويم العطلات الخاص بالموظف. فإذا اشتركت عطلتان في تقويمين في التاريخ نفسه يُستخدم نوع عمل إضافي واحد منهما للجميع — فأعطهما نوع العمل الإضافي نفسه. وهذا سلوك النظام السابق وقد أُبقي عليه عمداً.</p>",
+      "stub": false
+    }
+  ]
+}

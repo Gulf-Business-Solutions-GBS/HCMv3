@@ -1,0 +1,123 @@
+{
+  "helpId": "pay.leave-accrual-summary.edit",
+  "lang": "ar",
+  "title": "ملخصات تراكم الإجازات — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.LeaveAccrualSummary",
+  "overviewHtml": "<p>لقطة شهرية لرصيد إجازة الموظف لنوع إجازة واحد.</p><p>لا تُكتب حالياً: لا توجد عملية تملأ هذه الملخصات، ولا شيء يقرؤها. فالأرصدة تُحتسب عند الحاجة إليها من سجل الوقت وسجلات الموظف.</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "LeaveAccrualSummary.EmployeeId",
+    "dom:LeaveAccrualSummary_EmployeeId": "LeaveAccrualSummary.EmployeeId",
+    "loc:AbsenceTypeId": "LeaveAccrualSummary.AbsenceTypeId",
+    "dom:LeaveAccrualSummary_AbsenceTypeId": "LeaveAccrualSummary.AbsenceTypeId",
+    "loc:Year": "LeaveAccrualSummary.Year",
+    "dom:LeaveAccrualSummary_Year": "LeaveAccrualSummary.Year",
+    "loc:Month": "LeaveAccrualSummary.Month",
+    "dom:LeaveAccrualSummary_Month": "LeaveAccrualSummary.Month",
+    "loc:AccrualDays": "LeaveAccrualSummary.AccrualDays",
+    "dom:LeaveAccrualSummary_AccrualDays": "LeaveAccrualSummary.AccrualDays",
+    "loc:UsedDays": "LeaveAccrualSummary.UsedDays",
+    "dom:LeaveAccrualSummary_UsedDays": "LeaveAccrualSummary.UsedDays",
+    "loc:CumulativeAccruedDays": "LeaveAccrualSummary.CumulativeAccruedDays",
+    "dom:LeaveAccrualSummary_CumulativeAccruedDays": "LeaveAccrualSummary.CumulativeAccruedDays"
+  },
+  "fields": [
+    {
+      "id": "LeaveAccrualSummary.EmployeeId",
+      "label": "EmployeeId",
+      "section": "LeaveAccrualSummaries",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:LeaveAccrualSummary_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LeaveAccrualSummary.AbsenceTypeId",
+      "label": "AbsenceTypeId",
+      "section": "LeaveAccrualSummaries",
+      "aliases": [
+        "loc:AbsenceTypeId",
+        "dom:LeaveAccrualSummary_AbsenceTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الإجازات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة.</p><p><strong>مثال.</strong> الإجازة السنوية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LeaveAccrualSummary.Year",
+      "label": "Year",
+      "section": "LeaveAccrualSummaries",
+      "aliases": [
+        "loc:Year",
+        "dom:LeaveAccrualSummary_Year"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سنة اللقطة.</p><p><strong>مثال.</strong> <code>2026</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LeaveAccrualSummary.Month",
+      "label": "Month",
+      "section": "LeaveAccrualSummaries",
+      "aliases": [
+        "loc:Month",
+        "dom:LeaveAccrualSummary_Month"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> شهر اللقطة.</p><p><strong>مثال.</strong> <code>4</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LeaveAccrualSummary.AccrualDays",
+      "label": "AccrualDays",
+      "section": "LeaveAccrualSummaries",
+      "aliases": [
+        "loc:AccrualDays",
+        "dom:LeaveAccrualSummary_AccrualDays"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيام الإجازة المستحقة في الشهر.</p><p><strong>مثال.</strong> <code>2.5</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LeaveAccrualSummary.UsedDays",
+      "label": "UsedDays",
+      "section": "LeaveAccrualSummaries",
+      "aliases": [
+        "loc:UsedDays",
+        "dom:LeaveAccrualSummary_UsedDays"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيام الإجازة المأخوذة في الشهر.</p><p><strong>مثال.</strong> <code>3</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LeaveAccrualSummary.CumulativeAccruedDays",
+      "label": "CumulativeAccruedDays",
+      "section": "LeaveAccrualSummaries",
+      "aliases": [
+        "loc:CumulativeAccruedDays",
+        "dom:LeaveAccrualSummary_CumulativeAccruedDays"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيام الإجازة المستحقة حتى تاريخه.</p><p><strong>مثال.</strong> <code>22.5</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

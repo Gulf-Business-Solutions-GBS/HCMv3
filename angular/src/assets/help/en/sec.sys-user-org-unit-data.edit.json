@@ -1,0 +1,91 @@
+{
+  "helpId": "sec.sys-user-org-unit-data.edit",
+  "lang": "en",
+  "title": "User Org Unit Data — Create / Edit",
+  "entity": "HCMv3.SystemSecurity.SysUserOrgUnitData",
+  "overviewHtml": "<p>Row-level security scope: which part of the organisation the users in a role may see. A user sees employees in the organisation units given to any of their roles, and everything below those units. A row at the top organisation level lets the role see everyone.</p><p>Applied only when <em>EnableRowLevelSecurity</em> is ticked in Security Settings.</p>",
+  "aliasIndex": {
+    "loc:Employee": "SysUserOrgUnitData.EmployeeId",
+    "dom:SysUserOrgUnitData_EmployeeId": "SysUserOrgUnitData.EmployeeId",
+    "loc:Role": "SysUserOrgUnitData.RoleId",
+    "dom:SysUserOrgUnitData_RoleId": "SysUserOrgUnitData.RoleId",
+    "loc:OrgLevel": "SysUserOrgUnitData.OrgLevelId",
+    "dom:SysUserOrgUnitData_OrgLevelId": "SysUserOrgUnitData.OrgLevelId",
+    "loc:OrgUnit": "SysUserOrgUnitData.OrganizationUnitId",
+    "dom:SysUserOrgUnitData_OrganizationUnitId": "SysUserOrgUnitData.OrganizationUnitId",
+    "loc:ShowUnlocked": "SysUserOrgUnitData.ShowUnlocked",
+    "dom:SysUserOrgUnitData_ShowUnlocked": "SysUserOrgUnitData.ShowUnlocked"
+  },
+  "fields": [
+    {
+      "id": "SysUserOrgUnitData.EmployeeId",
+      "label": "Employee",
+      "section": "SysUserOrgUnitDatas",
+      "aliases": [
+        "loc:Employee",
+        "dom:SysUserOrgUnitData_EmployeeId"
+      ],
+      "rules": "Optional. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> An employee the scope is for.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysUserOrgUnitData.RoleId",
+      "label": "Role",
+      "section": "SysUserOrgUnitDatas",
+      "aliases": [
+        "loc:Role",
+        "dom:SysUserOrgUnitData_RoleId"
+      ],
+      "rules": "Required. Chosen from Role master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The role the scope applies to.</p><p><strong>Example.</strong> HR Officer - Kuwait</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysUserOrgUnitData.OrgLevelId",
+      "label": "OrgLevel",
+      "section": "SysUserOrgUnitDatas",
+      "aliases": [
+        "loc:OrgLevel",
+        "dom:SysUserOrgUnitData_OrgLevelId"
+      ],
+      "rules": "Required. Chosen from Organization Unit Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The organisation level of the unit.</p><p><strong>Why it matters.</strong> The top level (level 0) grants the role every employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysUserOrgUnitData.OrganizationUnitId",
+      "label": "OrgUnit",
+      "section": "SysUserOrgUnitDatas",
+      "aliases": [
+        "loc:OrgUnit",
+        "dom:SysUserOrgUnitData_OrganizationUnitId"
+      ],
+      "rules": "Required. Chosen from Organization Unit master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The organisation unit the role may see.</p><p><strong>Example.</strong> Kuwait Branch</p><p><strong>Why it matters.</strong> The role sees employees in this unit and every unit below it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysUserOrgUnitData.ShowUnlocked",
+      "label": "ShowUnlocked",
+      "section": "SysUserOrgUnitDatas",
+      "aliases": [
+        "loc:ShowUnlocked",
+        "dom:SysUserOrgUnitData_ShowUnlocked"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether unlocked records are shown.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

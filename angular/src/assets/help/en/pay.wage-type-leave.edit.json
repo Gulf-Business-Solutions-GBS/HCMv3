@@ -1,0 +1,43 @@
+{
+  "helpId": "pay.wage-type-leave.edit",
+  "lang": "en",
+  "title": "Wagetype Leaves — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.WageTypeLeave",
+  "overviewHtml": "<p>Which wagetypes make up the pay for a type of leave. Leave pay, the value of accrued leave and the annual leave provision all add up the monthly amounts of the wagetypes listed here for that leave type.</p>",
+  "aliasIndex": {
+    "loc:WageTypeId": "WageTypeLeave.WageTypeId",
+    "dom:WageTypeLeave_WageTypeId": "WageTypeLeave.WageTypeId",
+    "loc:AbsenceTypeId": "WageTypeLeave.AbsenceTypeId",
+    "dom:WageTypeLeave_AbsenceTypeId": "WageTypeLeave.AbsenceTypeId"
+  },
+  "fields": [
+    {
+      "id": "WageTypeLeave.WageTypeId",
+      "label": "WageTypeId",
+      "section": "WageTypeLeaves",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:WageTypeLeave_WageTypeId"
+      ],
+      "rules": "Required. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A wagetype included in the pay for this leave.</p><p><strong>Example.</strong> Housing Allowance</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageTypeLeave.AbsenceTypeId",
+      "label": "AbsenceTypeId",
+      "section": "WageTypeLeaves",
+      "aliases": [
+        "loc:AbsenceTypeId",
+        "dom:WageTypeLeave_AbsenceTypeId"
+      ],
+      "rules": "Required. Chosen from Leave Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The type of leave.</p><p><strong>Example.</strong> Annual Leave</p><p><strong>Why it matters.</strong> Each wagetype can be listed only once for a leave type.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

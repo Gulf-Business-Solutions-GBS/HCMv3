@@ -1,0 +1,97 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #notificationGroupForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (notificationGroup().id) {
+                                <span>{{ 'EditingNotificationGroup' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreatingNewNotificationGroup' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label" for="NotificationGroup_NotificationConfigId">{{ 'NotificationConfig' | localize }}</label>
+                            <select
+                                id="NotificationGroup_NotificationConfigId"
+                                class="form-select"
+                                name="NotificationConfigId"
+                                [ngModel]="notificationGroup().notificationConfigId"
+                                (ngModelChange)="updateField('notificationConfigId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (notificationConfig of notificationConfigs(); track notificationConfig.id) {
+                                    <option [ngValue]="notificationConfig.id">{{ notificationConfig.name }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="NotificationGroup_WorkflowRoleId">{{ 'NotifyRoleHolders' | localize }}</label>
+                            <select
+                                id="NotificationGroup_WorkflowRoleId"
+                                class="form-select"
+                                name="WorkflowRoleId"
+                                [ngModel]="notificationGroup().workflowRoleId"
+                                (ngModelChange)="updateField('workflowRoleId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (role of workflowRoles(); track role.id) {
+                                    <option [ngValue]="role.id">{{ role.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="NotificationGroup_WorkflowRoleGroup">{{ 'NarrowToRequesterOrgScope' | localize }}</label>
+                            <select
+                                id="NotificationGroup_WorkflowRoleGroup"
+                                class="form-select"
+                                name="WorkflowRoleGroup"
+                                [ngModel]="notificationGroup().workflowRoleGroup"
+                                (ngModelChange)="updateField('workflowRoleGroup', $event)">
+                                @for (group of workflowRoleGroups; track group.value) {
+                                    <option [ngValue]="group.value">{{ group.key | localize }}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!notificationGroupForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

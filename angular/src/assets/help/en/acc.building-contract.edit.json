@@ -1,0 +1,75 @@
+{
+  "helpId": "acc.building-contract.edit",
+  "lang": "en",
+  "title": "Building Contracts — Create / Edit",
+  "entity": "HCMv3.AccommodationManagement.BuildingContract",
+  "overviewHtml": "<p>A lease or contract period for a building. The end date cannot be before the start date. Kept as a record; nothing warns when a contract ends.</p>",
+  "aliasIndex": {
+    "loc:Building": "BuildingContract.BuildingId",
+    "dom:BuildingContract_BuildingId": "BuildingContract.BuildingId",
+    "loc:StartDate": "BuildingContract.StartDate",
+    "dom:BuildingContract_StartDate": "BuildingContract.StartDate",
+    "loc:EndDate": "BuildingContract.EndDate",
+    "dom:BuildingContract_EndDate": "BuildingContract.EndDate",
+    "loc:Comments": "BuildingContract.Comments",
+    "dom:BuildingContract_Comments": "BuildingContract.Comments"
+  },
+  "fields": [
+    {
+      "id": "BuildingContract.BuildingId",
+      "label": "Building",
+      "section": "BuildingContracts",
+      "aliases": [
+        "loc:Building",
+        "dom:BuildingContract_BuildingId"
+      ],
+      "rules": "Required. Chosen from Building master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The building the contract is for.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BuildingContract.StartDate",
+      "label": "StartDate",
+      "section": "BuildingContracts",
+      "aliases": [
+        "loc:StartDate",
+        "dom:BuildingContract_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BuildingContract.EndDate",
+      "label": "EndDate",
+      "section": "BuildingContracts",
+      "aliases": [
+        "loc:EndDate",
+        "dom:BuildingContract_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BuildingContract.Comments",
+      "label": "Comments",
+      "section": "BuildingContracts",
+      "aliases": [
+        "loc:Comments",
+        "dom:BuildingContract_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

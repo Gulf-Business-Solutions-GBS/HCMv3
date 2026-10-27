@@ -1,0 +1,62 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditOnbTemplate' : 'CreateNewOnbTemplate') | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label required" for="OnbTemplate_TemplateTitle">{{ 'TemplateTitle' | localize }}</label>
+                            <input
+                                id="OnbTemplate_TemplateTitle"
+                                #templateTitleInput="ngModel"
+                                type="text"
+                                class="form-control"
+                                name="TemplateTitle"
+                                [ngModel]="record().templateTitle"
+                                (ngModelChange)="updateField('templateTitle', $event)"
+                                maxlength="200" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required" for="OnbTemplate_TemplateId">{{ 'TemplateId' | localize }}</label>
+                            <input
+                                id="OnbTemplate_TemplateId"
+                                #templateIdInput="ngModel"
+                                type="number"
+                                class="form-control"
+                                name="TemplateId"
+                                [ngModel]="record().templateId"
+                                (ngModelChange)="updateField('templateId', $event)"
+                                required />
+                            <validation-messages [formCtrl]="templateIdInput" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            [buttonBusy]="saving()"
+                            [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

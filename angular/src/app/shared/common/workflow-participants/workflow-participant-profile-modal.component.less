@@ -1,0 +1,115 @@
+// The colleague directory card. Colours are --bs-* tokens so it follows the theme and dark mode; spacing
+// uses logical properties so it mirrors in Arabic.
+.wf-profile__dialog {
+    max-width: 26rem;
+}
+
+.wf-profile__head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.wf-profile__identity {
+    min-width: 0;
+}
+
+.wf-profile__name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.wf-profile__title {
+    margin-top: 0.15rem;
+    font-size: 0.85rem;
+    color: var(--bs-secondary-color, var(--bs-gray-600));
+    overflow-wrap: anywhere;
+}
+
+// Label/value pairs as a two-column grid, so the values line up however long the labels get in Arabic.
+.wf-profile__facts {
+    display: grid;
+    grid-template-columns: minmax(6rem, auto) minmax(0, 1fr);
+    gap: 0.5rem 1rem;
+    margin: 0;
+
+    dt {
+        font-weight: 400;
+        font-size: 0.85rem;
+        color: var(--bs-secondary-color, var(--bs-gray-600));
+    }
+
+    dd {
+        margin: 0;
+        font-weight: 600;
+        font-size: 0.88rem;
+        min-width: 0;
+    }
+}
+
+.wf-profile__wrap {
+    overflow-wrap: anywhere;
+}
+
+.wf-profile__empty {
+    padding: 1rem 0;
+    text-align: center;
+    color: var(--bs-secondary-color, var(--bs-gray-600));
+}
+
+// A scoped overlay rather than a bs-modal, because this card opens from inside the request dialog and a
+// nested bs-modal could leave the page covered by a backdrop nobody could dismiss. Positioned fixed so it
+// still centres over the viewport, and given a z-index above the theme's modal (1055) so it sits on top of
+// the dialog that opened it.
+.wf-profile__overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1090;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.wf-profile__card {
+    width: 100%;
+    max-width: 420px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border-radius: 0.475rem;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.15);
+}
+
+.wf-profile__card-header,
+.wf-profile__card-footer {
+    display: flex;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+}
+
+.wf-profile__card-header {
+    justify-content: space-between;
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.wf-profile__card-footer {
+    justify-content: flex-end;
+    border-top: 1px solid var(--bs-border-color);
+}
+
+.wf-profile__card-title {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.wf-profile__card-body {
+    padding: 1.5rem;
+}

@@ -1,0 +1,94 @@
+{
+  "helpId": "pay.payroll-retro-review",
+  "lang": "en",
+  "title": "Payroll Retro Dates",
+  "entity": null,
+  "overviewHtml": "<p>Opened with <strong>Show Retro (n)</strong> on the Payroll Engine. It lists the employees of the payroll area with the date from which the next payroll run will recalculate their pay (retro), so you can check it before running, and move or remove it.</p><p>The employees are the area's active employees, plus inactive ones whose separation has not been revoked or followed by a rejoin and whose final settlement is not yet done or falls in the current period. The period is the one on the area's control record (with no control record, the current month).</p><p>Anyone with the Payroll Engine screen can look; changing dates needs the right to run the payroll engine. Changes are kept in the dialog until you press <strong>Save</strong>, which asks you to confirm and then saves them all together, or none. Each saved change is written to the Retro Reason Log with its reason. As in the old system, the date is not checked against the period, the joining date or the earliest retro accounting date, so check it yourself.</p>",
+  "aliasIndex": {
+    "dom:RetroEditorDate": "pay.payroll-retro-review.retro-date",
+    "dom:RetroEditorReason": "pay.payroll-retro-review.reason"
+  },
+  "fields": [
+    {
+      "id": "pay.payroll-retro-review.tabs",
+      "label": "Status",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> <strong>Retro</strong> when the employee's retro from date is before the current period's start, otherwise <strong>No Retro</strong>. The tabs <strong>All</strong>, <strong>Retro</strong>, <strong>No Retro</strong> and <strong>Changed</strong> show each group with a count; <strong>Changed</strong> holds the rows you have edited but not saved yet. A search box finds employees by code or name.</p><p><strong>Example.</strong> \"Retro (4)\": four employees will be recalculated back into earlier months.</p><p><strong>Why it matters.</strong> The number on <strong>Show Retro (n)</strong> is the Retro count.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.payroll-retro-review.from-date",
+      "label": "PayrollRetroFromDate",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date from which the next run recalculates the employee, set when data with an earlier effect date is changed. Blank when none is set.</p><p><strong>Example.</strong> 01/02/2026, after a salary increase back-dated to February.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.payroll-retro-review.months",
+      "label": "PayrollRetroMonths",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many months back the recalculation goes: the months from the retro from date to the period's payroll date. 0 for an employee with no retro.</p><p><strong>Example.</strong> 2 (February and March, recalculated in the April run)</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.payroll-retro-review.update-selected",
+      "label": "PayrollRetroUpdateSelected",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Opens the update panel for every ticked employee, to give them all one retro date and reason. The pencil on a row does the same for that employee alone, starting from the date shown.</p><p><strong>Example.</strong> Tick five employees and set 01/03/2026 for all of them.</p><p><strong>Why it matters.</strong> <strong>Apply To Selected</strong> (or <strong>Apply</strong> for one row) changes the rows in the dialog only and moves them to <strong>Changed</strong>; nothing is saved yet. Setting a date back to the saved one is no longer a change. <strong>Total Selected</strong> at the bottom counts the ticked rows.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.payroll-retro-review.retro-date",
+      "label": "RetroDate",
+      "section": null,
+      "aliases": [
+        "dom:RetroEditorDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The new retro from date.</p><p><strong>Example.</strong> 01/03/2026</p><p><strong>Why it matters.</strong> Clear it to remove the retro for the employee: the next run then does not go back at all.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.payroll-retro-review.reason",
+      "label": "Reason",
+      "section": null,
+      "aliases": [
+        "dom:RetroEditorReason"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Why the retro date is changed, up to 500 characters.</p><p><strong>Example.</strong> Housing allowance correction approved by HR on 10/04/2026.</p><p><strong>Why it matters.</strong> Required: neither Apply nor Save works without it. It is kept in the Retro Reason Log, and the last reason is shown in the list.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.payroll-retro-review.save",
+      "label": "Save",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Saves every change in <strong>Changed</strong>, after a confirmation that says how many employees are affected.</p><p><strong>Example.</strong> \"Retro date changes for 5 employee(s) will be saved.\"</p><p><strong>Why it matters.</strong> Only rows whose date really differs from the saved one are written; with none, the save is refused with \"No retro date changes found.\" The count on <strong>Show Retro (n)</strong> is refreshed afterwards.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

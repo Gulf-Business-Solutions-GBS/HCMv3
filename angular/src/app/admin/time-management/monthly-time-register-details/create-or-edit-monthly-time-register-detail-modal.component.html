@@ -1,0 +1,103 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #monthlyTimeRegisterDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (monthlyTimeRegisterDetail().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'MonthlyTimeRegisterDetail' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'MonthlyTimeRegisterDetail' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="MonthlyTimeRegisterDetail_MonthlyTimeRegisterId">{{ 'MonthlyTimeRegister' | localize }}</label>
+                                <select
+                                    id="MonthlyTimeRegisterDetail_MonthlyTimeRegisterId"
+                                    #monthlyTimeRegisterIdInput="ngModel"
+                                    class="form-select"
+                                    name="MonthlyTimeRegisterId"
+                                    [ngModel]="monthlyTimeRegisterDetail().monthlyTimeRegisterId"
+                                    (ngModelChange)="updateField('monthlyTimeRegisterId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (record of monthlyTimeRegisters(); track record.id) {
+                                        <option [ngValue]="record.id">{{ monthlyTimeRegisterLabel(record) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="monthlyTimeRegisterIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="MonthlyTimeRegisterDetail_TimeTypeId">{{ 'TimeType' | localize }}</label>
+                                <select
+                                    id="MonthlyTimeRegisterDetail_TimeTypeId"
+                                    #timeTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="TimeTypeId"
+                                    [ngModel]="monthlyTimeRegisterDetail().timeTypeId"
+                                    (ngModelChange)="updateField('timeTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (timeType of timeTypes(); track timeType.id) {
+                                        <option [ngValue]="timeType.id">{{ timeType.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="timeTypeIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegisterDetail_TimeValue">{{ 'TimeValue' | localize }}</label>
+                                <input
+                                    id="MonthlyTimeRegisterDetail_TimeValue"
+                                    class="form-control"
+                                    type="text"
+                                    name="TimeValue"
+                                    [ngModel]="monthlyTimeRegisterDetail().timeValue"
+                                    (ngModelChange)="updateField('timeValue', $event)"
+                                    maxlength="200" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!monthlyTimeRegisterDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

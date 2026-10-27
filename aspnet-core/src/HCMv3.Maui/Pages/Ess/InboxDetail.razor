@@ -1,0 +1,488 @@
+@using HCMv3.Maui.Services.Navigation
+@using HCMv3.Maui.Core.Helpers
+@using HCMv3.Workflow
+@using HCMv3.Workflow.Dto
+@inherits HCMv3MainLayoutPageComponentBase
+@attribute [Route("/" + NavigationUrlConsts.InboxDetail + "/{WorkflowRequestId:int}")]
+
+@if (_loaded)
+{
+    <button class="btn btn-sm btn-light mb-4" @onclick="BackToInbox">
+        <i class="fa-solid fa-arrow-left me-2"></i>@L("Back")
+    </button>
+
+    @if (_detail == null)
+    {
+        <div class="card mb-5">
+            <div class="card-body text-center text-muted">@L("NoData")</div>
+        </div>
+    }
+    else
+    {
+        @if (OutcomeBanner is { } outcome)
+        {
+            <div class="alert @outcome.Css mb-4">@outcome.Text</div>
+        }
+
+        @* The question first: an approver opens this to decide, somebody asked for a view to give one. *@
+        @if (IsFeedbackMode)
+        {
+            <h3 class="fs-4 fw-bold mb-3">@L("YourFeedback")</h3>
+            <div class="alert alert-primary mb-4">
+                @if (!string.IsNullOrWhiteSpace(FeedbackAskedByName))
+                {
+                    <div class="fw-bold">@L("FeedbackRequestedBy", FeedbackAskedByName)</div>
+                }
+                <div>@L("YouWereAskedForFeedbackNotApproval")</div>
+                @if (!string.IsNullOrWhiteSpace(_feedbackRow?.FeedbackNote))
+                {
+                    <div class="mt-2 fst-italic">&ldquo;@_feedbackRow.FeedbackNote&rdquo;</div>
+                }
+            </div>
+        }
+        else if (HasActions)
+        {
+            <h3 class="fs-4 fw-bold mb-3">@L("DoYouApproveThisRequest")</h3>
+        }
+
+        @* Header: what the request is, which one, where it stands. *@
+        <div class="card shadow-xs mb-4">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div class="min-w-0 me-2">
+                        <div class="fw-bold text-gray-800 fs-5">@HeaderTitle</div>
+                    </div>
+                    <EssStatusBadge Status="_detail.RequestStatus" />
+                </div>
+                <div class="fs-7 text-muted">
+                    @if (_detail.WorkflowStep > 0)
+                    {
+                        <span>@L("WorkflowStep") @_detail.WorkflowStep</span>
+                        <span class="mx-1">&middot;</span>
+                    }
+                    <span>@L("RequestNumber"): @(string.IsNullOrWhiteSpace(_detail.RequestNumber) ? "-" : _detail.RequestNumber)</span>
+                </div>
+                @if (!string.IsNullOrWhiteSpace(RequesterName))
+                {
+                    <div class="fs-7 text-muted mt-1">@InitiatedByText</div>
+                }
+            </div>
+        </div>
+
+        @* Requester. *@
+        @if (!string.IsNullOrWhiteSpace(RequesterName))
+        {
+            <div class="card shadow-xs mb-4">
+                <div class="card-body p-4 d-flex align-items-center">
+                    <div class="symbol symbol-40px me-3">
+                        <span class="symbol-label bg-light-primary text-primary">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="fw-bold text-gray-800">@RequesterName</div>
+                        @if (!string.IsNullOrWhiteSpace(RequesterJobTitle))
+                        {
+                            <div class="fs-7 text-muted">@RequesterJobTitle</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+
+        @* Every field the request type's handler projects, read-only. *@
+        <div class="card shadow-xs mb-4">
+            <div class="card-header min-h-50px">
+                <h3 class="card-title fs-5">@L("RequestInformation")</h3>
+            </div>
+            <div class="card-body p-4">
+                @if (Fields.Count == 0)
+                {
+                    <div class="text-muted">-</div>
+                }
+                else
+                {
+                    @foreach (var field in Fields)
+                    {
+                        @if (field.Kind == WorkflowDetailFieldKind.LongText)
+                        {
+                            <div class="py-2 border-bottom border-gray-200">
+                                <div class="fs-7 text-muted">@field.Label</div>
+                                <div class="text-gray-800" style="white-space: pre-wrap;">@FormatValue(field)</div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex justify-content-between py-2 border-bottom border-gray-200">
+                                <span class="fs-7 text-muted me-3">@field.Label</span>
+                                <span class="fw-semibold text-gray-800 text-end">@FormatValue(field)</span>
+                            </div>
+                        }
+                    }
+                }
+
+                @if (_detail.IsDefaultProjection)
+                {
+                    <div class="text-muted fs-7 mt-3">@L("ThisRequestTypeHasNoDetailedView")</div>
+                }
+            </div>
+        </div>
+
+        @* Feedback mode: one box and one button. The decision stays with the approver who asked. *@
+        @if (IsFeedbackMode)
+        {
+            <div class="card shadow-xs mb-4 border border-info">
+                <div class="card-body p-4">
+                    <label class="form-label required">@L("YourFeedback")</label>
+                    <textarea class="form-control mb-4" rows="4" maxlength="4000" @bind="_feedbackComment"></textarea>
+                    <button class="btn btn-info btn-lg w-100" @onclick="SubmitFeedbackAsync">
+                        <i class="fa-solid fa-comment me-2"></i>@L("SubmitFeedback")
+                    </button>
+                </div>
+            </div>
+        }
+
+        @* The decision, only for the approver the request is waiting on and only with the actions the step permits. *@
+        @if (HasActions)
+        {
+            <div class="card shadow-xs mb-4 border border-primary">
+                <div class="card-body p-4">
+                    <label class="form-label @(IsCommentRequired ? "required" : "")">@L("Comments")</label>
+                    <textarea class="form-control mb-4" rows="3" maxlength="4000"
+                              placeholder="@L(IsCommentRequired ? "CommentIsRequiredForThisStep" : "ApproverComment")"
+                              @bind="_decisionComment"></textarea>
+
+                    <div class="d-grid gap-2">
+                        @if (CanApprove)
+                        {
+                            <button class="btn btn-success btn-lg" @onclick="ApproveAsync">
+                                <i class="fa-solid fa-check me-2"></i>@L("Approve")
+                            </button>
+                        }
+                        @if (CanReject || CanSendBack)
+                        {
+                            <div class="d-flex gap-2">
+                                @if (CanReject)
+                                {
+                                    <button class="btn btn-danger flex-grow-1" @onclick="RejectAsync">
+                                        <i class="fa-solid fa-xmark me-2"></i>@L("Reject")
+                                    </button>
+                                }
+                                @if (CanSendBack)
+                                {
+                                    <button class="btn btn-warning flex-grow-1" @onclick="SendBackAsync">
+                                        <i class="fa-solid fa-reply me-2"></i>@L("SendBack")
+                                    </button>
+                                }
+                            </div>
+                        }
+                        @* Not a decision: asking a colleague leaves the request where it is. *@
+                        @if (!_showFeedbackPicker)
+                        {
+                            <button class="btn btn-light-primary" @onclick="OpenFeedbackPickerAsync">
+                                <i class="fa-solid fa-comments me-2"></i>@L("GetFeedback")
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            @if (_showFeedbackPicker)
+            {
+                <div class="card shadow-xs mb-4 border border-primary">
+                    <div class="card-header min-h-50px">
+                        <h3 class="card-title fs-5">@L("AskColleaguesForFeedback")</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="alert alert-primary fs-7 mb-4">@L("YouWereAskedForFeedbackNotApproval")</div>
+
+                        @if (SelectedCandidates.Any())
+                        {
+                            <label class="form-label fw-bold">@L("Selected") (@_selected.Count)</label>
+                            <div class="d-flex flex-wrap gap-2 mb-4">
+                                @foreach (var person in SelectedCandidates)
+                                {
+                                    <span class="badge badge-light-primary fs-7 py-2 px-3">
+                                        @CandidateName(person)
+                                        <a class="ms-2 text-primary" title="@L("RemoveFromSelection")" @onclick="() => RemoveSelected(person)">&times;</a>
+                                    </span>
+                                }
+                            </div>
+                        }
+
+                        <label class="form-label fw-bold">@L("WhoShouldLookAtThis")</label>
+                        <input type="text" class="form-control mb-3" placeholder="@L("SearchWithThreeDot")"
+                               @bind="_candidateFilter" @bind:event="oninput" />
+
+                        <div class="border rounded mb-4" style="max-height: 320px; overflow-y: auto;">
+                            @if (!VisibleCandidates.Any())
+                            {
+                                <div class="text-muted p-3">@L("NoData")</div>
+                            }
+                            @foreach (var candidate in VisibleCandidates)
+                            {
+                                var isSelected = _selected.Contains(candidate.EmployeeId);
+                                <div class="d-flex align-items-center px-3 py-2 border-bottom border-gray-200 @(candidate.AlreadyAsked ? "opacity-50" : "")"
+                                     @onclick="() => ToggleCandidateAsync(candidate)">
+                                    <i class="fa-regular @(isSelected || candidate.AlreadyAsked ? "fa-square-check text-primary" : "fa-square") fs-4 me-3"></i>
+                                    <div class="min-w-0 flex-grow-1">
+                                        <div class="text-gray-800">@CandidateName(candidate)</div>
+                                        @if (!string.IsNullOrWhiteSpace(CandidateJobTitle(candidate)))
+                                        {
+                                            <div class="fs-8 text-muted">@CandidateJobTitle(candidate)</div>
+                                        }
+                                    </div>
+                                    @if (candidate.AlreadyAsked)
+                                    {
+                                        <span class="badge badge-light fs-8">@L("AlreadyAsked")</span>
+                                    }
+                                    else if (candidate.IsAlreadyApprover)
+                                    {
+                                        <span class="badge badge-light-warning fs-8">@L("AlreadyAnApprover")</span>
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                        <label class="form-label">@L("WhatWouldYouLikeThemToLookAt")</label>
+                        <textarea class="form-control mb-4" rows="2" maxlength="2000" @bind="_feedbackNote"></textarea>
+
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-light flex-grow-1" @onclick="CloseFeedbackPicker">@L("Cancel")</button>
+                            <button class="btn btn-primary flex-grow-1" disabled="@(_selected.Count == 0)" @onclick="SendFeedbackRequestAsync">
+                                @L("SendRequest")@(_selected.Count > 0 ? $" ({_selected.Count})" : "")
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @* Who has already been asked. An outstanding ask can be withdrawn; an answered one cannot. *@
+            @if (_feedbackRequests.Count > 0)
+            {
+                <div class="card shadow-xs mb-4">
+                    <div class="card-header min-h-50px">
+                        <h3 class="card-title fs-5">@L("AlreadyAsked") (@_feedbackRequests.Count)</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        @foreach (var ask in _feedbackRequests)
+                        {
+                            <div class="d-flex align-items-start py-2 border-bottom border-gray-200">
+                                <div class="min-w-0 flex-grow-1">
+                                    <div class="text-gray-800">@FeedbackRequestName(ask)</div>
+                                    @if (!string.IsNullOrWhiteSpace(ask.Note))
+                                    {
+                                        <div class="fs-7 fst-italic text-muted">&ldquo;@ask.Note&rdquo;</div>
+                                    }
+                                    <div class="fs-8 text-muted">@EssText.DateTimeText(ask.RequestedAt)</div>
+                                </div>
+                                @if (ask.RespondedAt.HasValue)
+                                {
+                                    <span class="badge badge-light-success fs-8">@L("Responded")</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-light-primary fs-8 me-2">@L("Pending")</span>
+                                    <button class="btn btn-sm btn-icon btn-light-danger" title="@L("WithdrawFeedbackRequest")"
+                                            @onclick="() => WithdrawAsync(ask.EmployeeId)">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+
+        @* The conversation, newest first. Read-only here, as in the web's detail dialog. *@
+        <div class="card shadow-xs mb-4">
+            <div class="card-header min-h-50px">
+                <h3 class="card-title fs-5">@L("Conversation")</h3>
+            </div>
+            <div class="card-body p-4">
+                @if (FeedEntries.Count == 0)
+                {
+                    <div class="text-muted">@L("NoCommentsYet")</div>
+                }
+                @foreach (var entry in FeedEntries)
+                {
+                    @if (entry.IsSystem)
+                    {
+                        <div class="fs-7 text-muted py-2 border-bottom border-gray-200">
+                            <span class="fw-semibold text-gray-700">@entry.AuthorName</span>
+                            <span class="ms-1">@entry.ActionLabel</span>
+                            <div class="fs-8">@EssText.DateTimeText(entry.OccurredAt)</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="py-2 border-bottom border-gray-200">
+                            <div class="d-flex flex-wrap align-items-center gap-1 mb-1">
+                                <span class="fw-bold text-gray-800">@entry.AuthorName</span>
+                                @if (!string.IsNullOrWhiteSpace(entry.ActionLabel))
+                                {
+                                    <span class="badge badge-light-primary fs-8">@entry.ActionLabel</span>
+                                }
+                                @if (entry.IsInternal)
+                                {
+                                    <span class="badge badge-light-warning fs-8">@L("InternalComment")</span>
+                                }
+                                @if (entry.IsEdited)
+                                {
+                                    <span class="fs-8 text-muted">@L("Edited")</span>
+                                }
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(entry.Body))
+                            {
+                                <div class="bg-light rounded p-3 text-gray-800" style="white-space: pre-wrap;">@entry.Body</div>
+                            }
+                            <div class="fs-8 text-muted mt-1">@EssText.DateTimeText(entry.OccurredAt)</div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        @* Who may act, who has looked, who stands in for whom, and the action log. *@
+        @if (_participants != null)
+        {
+            <div class="card shadow-xs mb-5">
+                <div class="card-header min-h-50px">
+                    <h3 class="card-title fs-5">@L("WorkflowActionsAndInformation")</h3>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between fs-7 py-1">
+                        <span class="text-muted">@L("RequestNumber")</span>
+                        <span class="fw-semibold">@(string.IsNullOrWhiteSpace(_participants.RequestNumber) ? "-" : _participants.RequestNumber)</span>
+                    </div>
+                    <div class="d-flex justify-content-between fs-7 py-1">
+                        <span class="text-muted">@L("WorkflowStep")</span>
+                        <span class="fw-semibold">@_participants.WorkflowStep</span>
+                    </div>
+                    <div class="d-flex justify-content-between fs-7 py-1">
+                        <span class="text-muted">@L("RequestStatus")</span>
+                        <span class="fw-semibold">@ParticipantsStatus</span>
+                    </div>
+                    <div class="d-flex justify-content-between fs-7 py-1 mb-3">
+                        <span class="text-muted">@L("CurrentWorkflowRole")</span>
+                        <span class="fw-semibold text-end">@(string.IsNullOrWhiteSpace(CurrentWorkflowRole) ? "-" : CurrentWorkflowRole)</span>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <button class="btn btn-sm @(_participantsTab == "approvers" ? "btn-primary" : "btn-light")" @onclick='() => SelectParticipantsTabAsync("approvers")'>
+                            @L("Approvers") (@Approvers.Count)
+                        </button>
+                        <button class="btn btn-sm @(_participantsTab == "readLog" ? "btn-primary" : "btn-light")" @onclick='() => SelectParticipantsTabAsync("readLog")'>
+                            @L("ReadLog") (@ReadLog.Count)
+                        </button>
+                        <button class="btn btn-sm @(_participantsTab == "delegates" ? "btn-primary" : "btn-light")" @onclick='() => SelectParticipantsTabAsync("delegates")'>
+                            @L("Delegates") (@Delegates.Count)
+                        </button>
+                        <button class="btn btn-sm @(_participantsTab == "log" ? "btn-primary" : "btn-light")" @onclick='() => SelectParticipantsTabAsync("log")'>
+                            @L("LogView")
+                        </button>
+                    </div>
+
+                    @if (_participantsTab == "approvers")
+                    {
+                            @if (!Approvers.Any())
+                            {
+                                <div class="text-muted fs-7">@L("NoApproversRecorded")</div>
+                            }
+                            @foreach (var step in ApproverSteps)
+                            {
+                                <div class="mb-3">
+                                    <div class="fw-bold fs-7 text-gray-700 border-bottom border-gray-300 pb-1 mb-1">@L("Step") @step.Key</div>
+                                    @if (!string.IsNullOrWhiteSpace(StepRule(step)))
+                                    {
+                                        <div class="fs-8 text-muted mb-1">@StepRule(step)</div>
+                                    }
+                                    @foreach (var entry in step)
+                                    {
+                                        <div class="d-flex align-items-center py-1">
+                                            <div class="min-w-0 flex-grow-1">
+                                                <div class="fs-7 text-gray-800">@(string.IsNullOrWhiteSpace(PersonDisplay(entry.Person)) ? "-" : PersonDisplay(entry.Person))</div>
+                                                @if (!string.IsNullOrWhiteSpace(PersonJobTitle(entry.Person)))
+                                                {
+                                                    <div class="fs-8 text-muted">@PersonJobTitle(entry.Person)</div>
+                                                }
+                                            </div>
+                                            @if (!string.IsNullOrWhiteSpace(ApproverStatusLabel(entry)))
+                                            {
+                                                <span class="badge @ApproverStatusCss(entry) fs-8">@ApproverStatusLabel(entry)</span>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            @if (HasReconstructedApprovers)
+                            {
+                                <div class="fs-8 text-muted">@L("ApproverListMayBeIncompleteForPastSteps")</div>
+                            }
+                    }
+                    else if (_participantsTab == "readLog")
+                    {
+                            @if (!ReadLog.Any())
+                            {
+                                <div class="text-muted fs-7">@L("NobodyHasOpenedThisRequestYet")</div>
+                            }
+                            @foreach (var read in ReadLog)
+                            {
+                                <div class="d-flex justify-content-between align-items-center py-1 border-bottom border-gray-200">
+                                    <div class="min-w-0 me-2">
+                                        <div class="fs-7 text-gray-800">@ReadLogWho(read)</div>
+                                        @if (!string.IsNullOrWhiteSpace(PersonJobTitle(read.Person)))
+                                        {
+                                            <div class="fs-8 text-muted">@PersonJobTitle(read.Person)</div>
+                                        }
+                                    </div>
+                                    <span class="fs-8 text-muted text-nowrap">@EssText.DateTimeText(read.ReadAt)</span>
+                                </div>
+                            }
+                    }
+                    else if (_participantsTab == "delegates")
+                    {
+                            @if (!Delegates.Any())
+                            {
+                                <div class="text-muted fs-7">@L("NoDelegatesForThisRequest")</div>
+                            }
+                            @foreach (var delegation in Delegates)
+                            {
+                                <div class="py-1 border-bottom border-gray-200">
+                                    <div class="fs-7 text-gray-800">@(string.IsNullOrWhiteSpace(PersonDisplay(delegation.Person)) ? "-" : PersonDisplay(delegation.Person))</div>
+                                    <div class="fs-8 text-muted">@DelegationLabel(delegation)</div>
+                                    <div class="fs-8 text-muted">@EssText.Date(delegation.StartDate) &ndash; @EssText.Date(delegation.EndDate)</div>
+                                </div>
+                            }
+                    }
+                    else
+                    {
+                            @if (_logEntries == null || _logEntries.Count == 0)
+                            {
+                                <div class="text-muted fs-7">@L("NoData")</div>
+                            }
+                            else
+                            {
+                                @foreach (var log in _logEntries)
+                                {
+                                    <div class="py-2 border-bottom border-gray-200">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="fs-7 fw-semibold text-gray-800">@(string.IsNullOrWhiteSpace(LogActorName(log)) ? "-" : LogActorName(log))</span>
+                                            <span class="badge badge-light fs-8">@LogActionLabel(log)</span>
+                                        </div>
+                                        <div class="fs-8 text-muted">
+                                            @L("ActionDate"): @EssText.DateTimeText(log.ActionDateTime)
+                                            &middot; @L("WorkflowStep"): @log.WorkflowStep
+                                            &middot; @L("ActionDays"): @log.ActionDays
+                                            &middot; @L("Platform"): @PlatformLabel(log)
+                                        </div>
+                                    </div>
+                                }
+                            }
+                    }
+                </div>
+            </div>
+        }
+    }
+}

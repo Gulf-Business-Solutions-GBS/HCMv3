@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.social-security.edit",
+  "lang": "en",
+  "title": "Social Securities — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.SocialSecurity",
+  "overviewHtml": "<p>The social security setup for one nationality, from a given date: the contribution slabs and the allowances that are added to the pay it is worked out on.</p><p>Social security applies to an employee only when they have a social security record with <em>Social Security Contribution</em> ticked for the month, and there is a social security setup for their nationality in force on the pay date.</p><p>The employee's pay for social security is set by the payroll setting <em>Social Security Rate Rule</em>: the monthly total of wagetypes marked <em>Include In Social Security</em> (<em>Wage Salary</em>), or the contract salary on the employee's sponsor record (<em>Contract Salary</em>). The marital, education and child allowances are added to it, the slab it falls in gives the percentages, and the employee's and employer's shares are paid on wagetypes <code>1</code> and <code>3</code>.</p>",
+  "aliasIndex": {
+    "loc:NationalityId": "SocialSecurity.NationalityId",
+    "dom:SocialSecurity_NationalityId": "SocialSecurity.NationalityId",
+    "loc:EarningsCap": "SocialSecurity.EarningsCap",
+    "dom:SocialSecurity_EarningsCap": "SocialSecurity.EarningsCap",
+    "loc:StartDate": "SocialSecurity.StartDate",
+    "dom:SocialSecurity_StartDate": "SocialSecurity.StartDate",
+    "loc:EndDate": "SocialSecurity.EndDate",
+    "dom:SocialSecurity_EndDate": "SocialSecurity.EndDate",
+    "loc:ChildAllowance": "SocialSecurity.ChildAllowance",
+    "dom:SocialSecurity_ChildAllowance": "SocialSecurity.ChildAllowance",
+    "loc:SpecialNeedChildAllowance": "SocialSecurity.SpecialNeedChildAllowance",
+    "dom:SocialSecurity_SpecialNeedChildAllowance": "SocialSecurity.SpecialNeedChildAllowance"
+  },
+  "fields": [
+    {
+      "id": "SocialSecurity.NationalityId",
+      "label": "NationalityId",
+      "section": "SocialSecurities",
+      "aliases": [
+        "loc:NationalityId",
+        "dom:SocialSecurity_NationalityId"
+      ],
+      "rules": "Required. Chosen from Nationality master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The nationality this setup is for.</p><p><strong>Example.</strong> Kuwaiti</p><p><strong>Why it matters.</strong> Employees of other nationalities are not covered by it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurity.EarningsCap",
+      "label": "EarningsCap",
+      "section": "SocialSecurities",
+      "aliases": [
+        "loc:EarningsCap",
+        "dom:SocialSecurity_EarningsCap"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most social security that can be deducted in a month.</p><p><strong>Example.</strong> <code>450</code></p><p><strong>Why it matters.</strong> Despite its name it caps the deduction, not the earnings: a deduction worked out above this amount is reduced to it. 0 means no cap.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurity.StartDate",
+      "label": "StartDate",
+      "section": "SocialSecurities",
+      "aliases": [
+        "loc:StartDate",
+        "dom:SocialSecurity_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurity.EndDate",
+      "label": "EndDate",
+      "section": "SocialSecurities",
+      "aliases": [
+        "loc:EndDate",
+        "dom:SocialSecurity_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurity.ChildAllowance",
+      "label": "ChildAllowance",
+      "section": "SocialSecurities",
+      "aliases": [
+        "loc:ChildAllowance",
+        "dom:SocialSecurity_ChildAllowance"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount added to the pay for each child.</p><p><strong>Example.</strong> <code>50</code></p><p><strong>Why it matters.</strong> Counted for male employees only, for each dependant marked <em>Include In Social Security</em> who is not a special-needs child.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurity.SpecialNeedChildAllowance",
+      "label": "SpecialNeedChildAllowance",
+      "section": "SocialSecurities",
+      "aliases": [
+        "loc:SpecialNeedChildAllowance",
+        "dom:SocialSecurity_SpecialNeedChildAllowance"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount added to the pay for each special-needs child.</p><p><strong>Example.</strong> <code>75</code></p><p><strong>Why it matters.</strong> Counted for male employees only, for each dependant marked <em>Include In Social Security</em> and <em>Special Need</em>.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

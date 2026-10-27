@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-loan-installment.edit",
+  "lang": "ar",
+  "title": "أقساط القرض — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeLoanInstallment",
+  "overviewHtml": "<p>سطر واحد من جدول أقساط القرض: المبلغ الذي تستردّه الرواتب كل شهر اعتباراً من شهر معيّن. يُفتح من خيار <strong>الأقساط والاستردادات والإعفاءات</strong> في قائمة صف القرض ضمن قسم القروض في سجل الموظف، ويكون القرض معبّأً مسبقاً.</p><p>يسري كل سطر حتى اليوم السابق لشهر السطر التالي، ويسري السطر الأخير دون تاريخ انتهاء، فتُقرأ القائمة سجلّاً لتغيّرات القسط: لتعديل القسط اعتباراً من شهر معيّن، أضف سطراً لذلك الشهر بدلاً من تعديل السطر الذي يسبقه. وتعتمد الرواتب السطر الساري في شهر الرواتب. أما القرض الذي لا أسطر له فيُستردّ بمبلغه الثابت، كما هو الحال في القروض المسجّلة قبل استحداث الأقساط.</p><p>يحصل القرض على سطره الأول تلقائياً عند سريانه إذا كان له مبلغ ثابت: المبلغ الثابت اعتباراً من شهر بدء الاسترداد. وعند إعادة تعيين موظف برمز جديد مع ترحيل رصيد قرضه، تُكتب أسطر القرض المدمج تلقائياً كذلك، مع الملاحظة \"Carried forward on employee rejoin\".</p><p>إذا كان خيار <strong>التحديث التلقائي لتاريخ نهاية استرداد القرض</strong> مفعّلاً في إعدادات الرواتب، فإن إضافة أي سطر أو تعديله أو حذفه يعيد احتساب تاريخ نهاية استرداد القرض: شهراً بعد شهر من بدء الاسترداد، مع تخطّي الأشهر المُعفاة، حتى يُستردّ المبلغ المستحق. كما يُنبّه أي تغيير تشغيلَ الرواتب التالي إلى إعادة احتساب رواتب الموظف اعتباراً من ذلك الشهر.</p>",
+  "aliasIndex": {
+    "loc:EffectiveDate": "EmployeeLoanInstallment.StartDate",
+    "dom:EmployeeLoanInstallment_StartDate": "EmployeeLoanInstallment.StartDate",
+    "loc:InstallmentAmount": "EmployeeLoanInstallment.Amount",
+    "dom:EmployeeLoanInstallment_Amount": "EmployeeLoanInstallment.Amount",
+    "loc:Remark": "EmployeeLoanInstallment.Remark",
+    "dom:EmployeeLoanInstallment_Remark": "EmployeeLoanInstallment.Remark"
+  },
+  "fields": [
+    {
+      "id": "EmployeeLoanInstallment.StartDate",
+      "label": "EffectiveDate",
+      "section": "LoanInstallments",
+      "aliases": [
+        "loc:EffectiveDate",
+        "dom:EmployeeLoanInstallment_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشهر الذي يبدأ منه استرداد هذا المبلغ.</p><p><strong>مثال.</strong> يناير 2027</p><p><strong>لماذا يهم.</strong> يسري المبلغ من اليوم الأول من هذا الشهر حتى بداية شهر السطر التالي. ولا يجوز أن يسبق شهرَ تاريخ بدء استرداد القرض، ولا يجوز أن يكون للقرض أكثر من سطر واحد في الشهر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoanInstallment.Amount",
+      "label": "InstallmentAmount",
+      "section": "LoanInstallments",
+      "aliases": [
+        "loc:InstallmentAmount",
+        "dom:EmployeeLoanInstallment_Amount"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ الذي تقتطعه الرواتب كل شهر ما دام هذا السطر سارياً.</p><p><strong>مثال.</strong> 150.000</p><p><strong>لماذا يهم.</strong> لا تقتطع الرواتب أكثر من الرصيد المتبقي المستحق، فقد يكون الاقتطاع الأخير أصغر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoanInstallment.Remark",
+      "label": "Remark",
+      "section": "LoanInstallments",
+      "aliases": [
+        "loc:Remark",
+        "dom:EmployeeLoanInstallment_Remark"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظة تبيّن سبب تغيير القسط.</p><p><strong>مثال.</strong> خُفِّض بناءً على طلب الموظف اعتباراً من يناير</p><p><strong>لماذا يهم.</strong> تظهر في قائمة أقساط القرض، ولا تعتمد عليها الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

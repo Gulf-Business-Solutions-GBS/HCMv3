@@ -1,0 +1,92 @@
+<div [@routerTransition]>
+    <sub-header [title]="title()" [description]="'ClearanceRequestFields' | localize">
+        <div role="actions">
+            @if (canEdit && field()) {
+                <button type="button" class="btn btn-primary float-end ms-2" (click)="edit()">
+                    <i class="fa fa-edit btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'Edit' | localize }}
+                    </span>
+                </button>
+            }
+            <button type="button" class="btn btn-light-primary float-end" (click)="goBack()">
+                <i class="fa fa-arrow-left btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">
+                    {{ 'Back' | localize }}
+                </span>
+            </button>
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom mb-5" [busyIf]="loading()">
+            <div class="card-body">
+                @if (field(); as field) {
+                    <div class="row">
+                        <div class="col-md-3 mb-5">
+                            <label class="form-label">{{ 'Code' | localize }}</label>
+                            <div class="form-control-plaintext fw-bold">{{ field.code }}</div>
+                        </div>
+                        <div class="col-md-3 mb-5">
+                            <label class="form-label">{{ 'NameEn' | localize }}</label>
+                            <div class="form-control-plaintext fw-bold">{{ field.nameEn }}</div>
+                        </div>
+                        <div class="col-md-3 mb-5">
+                            <label class="form-label">{{ 'NameAr' | localize }}</label>
+                            <div class="form-control-plaintext fw-bold" dir="rtl">{{ field.nameAr }}</div>
+                        </div>
+                        <div class="col-md-3 mb-5">
+                            <label class="form-label">{{ 'ClearanceRequestType' | localize }}</label>
+                            <div class="form-control-plaintext fw-bold">{{ field.clearanceRequestTypeName }}</div>
+                        </div>
+                        <div class="col-md-3 mb-5">
+                            <label class="form-label">{{ 'IsActive' | localize }}</label>
+                            <div class="form-control-plaintext">
+                                <i
+                                    class="fa"
+                                    [class.fa-check]="field.isActive"
+                                    [class.text-success]="field.isActive"
+                                    [class.fa-times]="!field.isActive"
+                                    [class.text-danger]="!field.isActive"></i>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        @if (fieldId(); as id) {
+            @if (tabs.length > 0) {
+                <div class="card card-custom">
+                    <div class="card-body">
+                        <ul class="nav at-detail-tabs mb-5" role="tablist">
+                            @for (tab of tabs; track tab.id) {
+                                <li class="nav-item" role="presentation">
+                                    <button
+                                        type="button"
+                                        role="tab"
+                                        class="at-detail-tab"
+                                        [class.at-detail-tab-active]="activeTabId() === tab.id"
+                                        [attr.aria-selected]="activeTabId() === tab.id"
+                                        (click)="selectTab(tab)">
+                                        {{ tab.labelKey | localize }}
+                                    </button>
+                                </li>
+                            }
+                        </ul>
+
+                        <div role="tabpanel">
+                            @switch (activeTabId()) {
+                                @case ('details') {
+                                    <clearanceRequestFieldDetailsTab [clearanceRequestFieldId]="id" />
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <createOrEditClearanceRequestFieldModal #editModal (modalSave)="reload()" />
+</div>

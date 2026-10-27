@@ -1,0 +1,6 @@
+{
+	"path" : "{{Namespace_Here}}.Maui\\Pages\\{{Namespace_Relative_Full_Reverse_Slash_Here}}\\{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}Lookup.razor.cs",
+	"condition": "{{Generate_Maui_Code}} == true",
+	"viewType": "LookupTable",
+	"foreach": "navigationProperty"
+}

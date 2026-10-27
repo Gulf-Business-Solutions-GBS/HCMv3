@@ -1,0 +1,86 @@
+<div
+    appBsModal
+    #sentLogModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="sentLogModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    {{ 'NotificationSentHistory' | localize }}
+                    @if (title()) {
+                        <span>: {{ title() }}</span>
+                    }
+                </h4>
+                <button type="button" class="btn-close" (click)="close()" [attr.aria-label]="l('Close')"></button>
+            </div>
+            <div class="modal-body">
+                @if (active()) {
+                    <div class="primeng-datatable-container" [class.opacity-50]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '50rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 120px" pSortableColumn="sentDate">
+                                        {{ 'NotificationSentDate' | localize }}
+                                        <p-sortIcon field="sentDate" />
+                                    </th>
+                                    <th style="min-width: 220px">{{ 'NotificationType' | localize }}</th>
+                                    <th style="min-width: 120px" pSortableColumn="recordId">
+                                        {{ 'NotificationRecordId' | localize }}
+                                        <p-sortIcon field="recordId" />
+                                    </th>
+                                    <th style="min-width: 110px">{{ 'NotificationRecipientCount' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'Status' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 120px">{{ record.sentDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                    <td style="min-width: 220px">{{ record.notificationDisplayName }}</td>
+                                    <td style="min-width: 120px">{{ record.sourceCode }} #{{ record.recordId }}</td>
+                                    <td style="min-width: 110px">{{ record.recipientCount }}</td>
+                                    <td style="min-width: 120px">
+                                        <span class="badge" [ngClass]="record.wasSent ? 'badge-success' : 'badge-secondary'">
+                                            {{ (record.wasSent ? 'NotificationWasSent' : 'NotificationMarkedOnly') | localize }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">{{ 'Close' | localize }}</button>
+            </div>
+        </div>
+    </div>
+</div>

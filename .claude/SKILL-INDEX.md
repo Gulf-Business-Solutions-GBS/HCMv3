@@ -1,0 +1,22 @@
+# Skill Index
+
+- .claude/skills/angular-component-patterns/SKILL.md
+- .claude/skills/angular-modal-patterns/SKILL.md
+- .claude/skills/angular-permission-patterns/SKILL.md
+- .claude/skills/angular-primeng-table-patterns/SKILL.md
+- .claude/skills/angular-service-proxy-patterns/SKILL.md
+- .claude/skills/api-design-patterns/SKILL.md
+- .claude/skills/aspnetzero-appservice-patterns/SKILL.md
+- .claude/skills/aspnetzero-dto-patterns/SKILL.md
+- .claude/skills/aspnetzero-entity-patterns/SKILL.md
+- .claude/skills/aspnetzero-localization-patterns/SKILL.md
+- .claude/skills/aspnetzero-multitenancy-patterns/SKILL.md
+- .claude/skills/aspnetzero-permission-patterns/SKILL.md
+- .claude/skills/clean-code-dotnet/SKILL.md
+- .claude/skills/efcore-patterns/SKILL.md
+- .claude/skills/error-handling-patterns/SKILL.md
+- .claude/skills/mapperly-patterns/SKILL.md
+- .claude/skills/react-component-patterns/SKILL.md
+- .claude/skills/react-permission-patterns/SKILL.md
+- .claude/skills/react-state-patterns/SKILL.md
+- .claude/skills/xunit-testing-patterns/SKILL.md

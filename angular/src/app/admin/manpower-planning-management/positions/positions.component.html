@@ -1,0 +1,177 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Positions' | localize" [description]="'ManpowerPlanningManagement' | localize">
+        <div role="actions">
+            @if ('Pages.ManpowerPlanningManagement.Positions.Create' | permission) {
+                <button (click)="createPosition()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-4 mb-4">
+                        <input
+                            type="text"
+                            class="form-control"
+                            [placeholder]="'SearchWithThreeDot' | localize"
+                            [ngModel]="filterText()"
+                            (ngModelChange)="filterText.set($event)" />
+                    </div>
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getPositions($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '150rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.ManpowerPlanningManagement.Positions.Edit',
+                                                    'Pages.ManpowerPlanningManagement.Positions.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 100px" pSortableColumn="code">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="code" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="nameEn">
+                                        {{ 'NameEn' | localize }}
+                                        <p-sortIcon field="nameEn" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="nameAr">
+                                        {{ 'NameAr' | localize }}
+                                        <p-sortIcon field="nameAr" />
+                                    </th>
+                                    <th style="min-width: 180px">
+                                        {{ 'JobTitle' | localize }}
+                                    </th>
+                                    <th style="min-width: 180px">
+                                        {{ 'OrganizationUnit' | localize }}
+                                    </th>
+                                    <th style="min-width: 130px" pSortableColumn="startDate">
+                                        {{ 'StartDate' | localize }}
+                                        <p-sortIcon field="startDate" />
+                                    </th>
+                                    <th style="min-width: 130px" pSortableColumn="endDate">
+                                        {{ 'EndDate' | localize }}
+                                        <p-sortIcon field="endDate" />
+                                    </th>
+                                    <th style="min-width: 100px" pSortableColumn="vacant">
+                                        {{ 'Vacant' | localize }}
+                                        <p-sortIcon field="vacant" />
+                                    </th>
+                                    <th style="min-width: 100px" pSortableColumn="active">
+                                        {{ 'Active' | localize }}
+                                        <p-sortIcon field="active" />
+                                    </th>
+                                    <th style="min-width: 110px" pSortableColumn="minSalary">
+                                        {{ 'MinSalary' | localize }}
+                                        <p-sortIcon field="minSalary" />
+                                    </th>
+                                    <th style="min-width: 110px" pSortableColumn="midSalary">
+                                        {{ 'MidSalary' | localize }}
+                                        <p-sortIcon field="midSalary" />
+                                    </th>
+                                    <th style="min-width: 110px" pSortableColumn="maxSalary">
+                                        {{ 'MaxSalary' | localize }}
+                                        <p-sortIcon field="maxSalary" />
+                                    </th>
+                                    <th style="min-width: 110px" pSortableColumn="fteLimit">
+                                        {{ 'FTELimit' | localize }}
+                                        <p-sortIcon field="fteLimit" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.ManpowerPlanningManagement.Positions.Edit',
+                                                    'Pages.ManpowerPlanningManagement.Positions.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 100px">{{ record.code }}</td>
+                                    <td style="min-width: 200px">
+                                        <span pTooltip="{{ record.nameEn }}" class="hide-overflown">{{ record.nameEn }}</span>
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        <span pTooltip="{{ record.nameAr }}" class="hide-overflown">{{ record.nameAr }}</span>
+                                    </td>
+                                    <td style="min-width: 180px">{{ record.jobTitleNameEn }}</td>
+                                    <td style="min-width: 180px">{{ record.organizationUnitDisplayName }}</td>
+                                    <td style="min-width: 130px">{{ record.startDate | luxonFormat:'yyyy-MM-dd' }}</td>
+                                    <td style="min-width: 130px">{{ record.endDate | luxonFormat:'yyyy-MM-dd' }}</td>
+                                    <td style="min-width: 100px">
+                                        <i class="fa" [class.fa-check]="record.vacant" [class.fa-times]="!record.vacant"></i>
+                                    </td>
+                                    <td style="min-width: 100px">
+                                        <i class="fa" [class.fa-check]="record.active" [class.fa-times]="!record.active"></i>
+                                    </td>
+                                    <td style="min-width: 110px">{{ record.minSalary }}</td>
+                                    <td style="min-width: 110px">{{ record.midSalary }}</td>
+                                    <td style="min-width: 110px">{{ record.maxSalary }}</td>
+                                    <td style="min-width: 110px">{{ record.fteLimit }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getPositions($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditPositionModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

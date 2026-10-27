@@ -1,0 +1,91 @@
+{
+  "helpId": "tm.holiday.edit",
+  "lang": "en",
+  "title": "Holidays — Create / Edit",
+  "entity": "HCMv3.TimeManagement.Holiday",
+  "overviewHtml": "<p>A named public holiday in a holiday calendar — Eid al-Fitr, National Day. Its actual dates each year are entered as holiday periods.</p>",
+  "aliasIndex": {
+    "loc:Code": "Holiday.Code",
+    "dom:Holiday_Code": "Holiday.Code",
+    "loc:NameEn": "Holiday.NameEn",
+    "dom:Holiday_NameEn": "Holiday.NameEn",
+    "loc:NameAr": "Holiday.NameAr",
+    "dom:Holiday_NameAr": "Holiday.NameAr",
+    "loc:HolidayCalendar": "Holiday.HolidayCalendarId",
+    "dom:Holiday_HolidayCalendarId": "Holiday.HolidayCalendarId",
+    "loc:OvertimeType": "Holiday.OvertimeTypeId",
+    "dom:Holiday_OvertimeTypeId": "Holiday.OvertimeTypeId"
+  },
+  "fields": [
+    {
+      "id": "Holiday.Code",
+      "label": "Code",
+      "section": "Holidays",
+      "aliases": [
+        "loc:Code",
+        "dom:Holiday_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Holiday.NameEn",
+      "label": "NameEn",
+      "section": "Holidays",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Holiday_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Holiday.NameAr",
+      "label": "NameAr",
+      "section": "Holidays",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Holiday_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Holiday.HolidayCalendarId",
+      "label": "HolidayCalendar",
+      "section": "Holidays",
+      "aliases": [
+        "loc:HolidayCalendar",
+        "dom:Holiday_HolidayCalendarId"
+      ],
+      "rules": "Required. Chosen from Holiday Calendar master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The calendar the holiday belongs to.</p><p><strong>Example.</strong> Kuwait Public Holidays</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Holiday.OvertimeTypeId",
+      "label": "OvertimeType",
+      "section": "Holidays",
+      "aliases": [
+        "loc:OvertimeType",
+        "dom:Holiday_OvertimeTypeId"
+      ],
+      "rules": "Optional. Chosen from Overtime Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The overtime type for work done on this holiday.</p><p><strong>Example.</strong> Holiday Overtime</p><p><strong>Why it matters.</strong> On the holiday, overtime is recorded under this type instead of the duty's.</p>",
+      "adminHtml": "<p>The holiday is found by date only, not through the employee's own holiday calendar. If holidays in two calendars share a date, one of their overtime types is used for everyone — give them the same overtime type. Legacy behaviour, kept on purpose.</p>",
+      "stub": false
+    }
+  ]
+}

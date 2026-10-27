@@ -1,0 +1,155 @@
+{
+  "helpId": "wf.request-master.edit",
+  "lang": "ar",
+  "title": "الطلبات الأساسية — إنشاء / تحرير",
+  "entity": "HCMv3.Workflow.RequestMaster",
+  "overviewHtml": "<p>سلسلة موافقات: تسلسل الخطوات المسمّى الذي يمر به الطلب. وتُعدّ كل خطوة في تفاصيل الطلب الخاصة بالسلسلة. ويجد الطلب سلسلته بهذا الترتيب: قاعدة عمل تسمّي سلسلة برمزها، ثم مجموعة سير العمل الخاصة بالموظف (عند تفعيل إعداد سير العمل EnableWorkflowGroup)، ثم السلسلة الافتراضية لنوع المعاملة. وإن لم يُعطِ أيٌّ منها سلسلة، لا يمكن تقديم الطلب ويظهر سبب ذلك.</p>",
+  "aliasIndex": {
+    "loc:Code": "RequestMaster.Code",
+    "dom:RequestMaster_Code": "RequestMaster.Code",
+    "loc:SecurityLevel": "RequestMaster.SecurityLevel",
+    "dom:RequestMaster_SecurityLevel": "RequestMaster.SecurityLevel",
+    "loc:NameEn": "RequestMaster.NameEn",
+    "dom:RequestMaster_NameEn": "RequestMaster.NameEn",
+    "loc:NameAr": "RequestMaster.NameAr",
+    "dom:RequestMaster_NameAr": "RequestMaster.NameAr",
+    "loc:DefaultApprover": "RequestMaster.DefaultApproverId",
+    "dom:RequestMaster_DefaultApproverId": "RequestMaster.DefaultApproverId",
+    "loc:AutoCloseInDays": "RequestMaster.AutoCloseInDays",
+    "dom:RequestMaster_AutoCloseInDays": "RequestMaster.AutoCloseInDays",
+    "loc:DueInDays": "RequestMaster.DueInDays",
+    "dom:RequestMaster_DueInDays": "RequestMaster.DueInDays",
+    "loc:AutoClose": "RequestMaster.AutoClose",
+    "dom:RequestMaster_AutoClose": "RequestMaster.AutoClose",
+    "loc:IsCommentRequired": "RequestMaster.IsCommentRequire",
+    "dom:RequestMaster_IsCommentRequire": "RequestMaster.IsCommentRequire"
+  },
+  "fields": [
+    {
+      "id": "RequestMaster.Code",
+      "label": "Code",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:Code",
+        "dom:RequestMaster_Code"
+      ],
+      "rules": "إلزامي. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestMaster.SecurityLevel",
+      "label": "SecurityLevel",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:SecurityLevel",
+        "dom:RequestMaster_SecurityLevel"
+      ],
+      "rules": "إلزامي. إحدى القيم: EmployeeOnly، مدير الموظف، EmployeeDepartment، الجميع.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يمكنه رؤية الطلبات على هذه السلسلة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestMaster.NameEn",
+      "label": "NameEn",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:NameEn",
+        "dom:RequestMaster_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestMaster.NameAr",
+      "label": "NameAr",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:NameAr",
+        "dom:RequestMaster_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestMaster.DefaultApproverId",
+      "label": "DefaultApprover",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:DefaultApprover",
+        "dom:RequestMaster_DefaultApproverId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يوافق عندما لا تجد الخطوة أحداً.</p><p><strong>مثال.</strong> مدير الموارد البشرية</p><p><strong>لماذا يهم.</strong> يُستخدم كملاذ أخير في أي خطوة: عندما لا يوجد من يشغل دور الخطوة، أو تنتهي سلسلة المديرين، أو يكون كل المرشحين قد وقّعوا خطوة توقيع سابقة. وإذا فوّض هذا الموظف موافقاته، يذهب الطلب إلى من ينوب عنه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestMaster.AutoCloseInDays",
+      "label": "AutoCloseInDays",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:AutoCloseInDays",
+        "dom:RequestMaster_AutoCloseInDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأيام بعد الموافقة التي يُغلق بعدها الطلب تلقائياً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestMaster.DueInDays",
+      "label": "DueInDays",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:DueInDays",
+        "dom:RequestMaster_DueInDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأيام المتاحة لإنجاز الطلب.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestMaster.AutoClose",
+      "label": "AutoClose",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:AutoClose",
+        "dom:RequestMaster_AutoClose"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الطلبات الموافق عليها تُغلق تلقائياً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestMaster.IsCommentRequire",
+      "label": "IsCommentRequired",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:IsCommentRequired",
+        "dom:RequestMaster_IsCommentRequire"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان على المعتمدين كتابة تعليق.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً. الخانة نفسها في كل خطوة هي التي تُطبَّق.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

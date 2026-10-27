@@ -1,0 +1,221 @@
+{
+  "helpId": "dash.overtime",
+  "lang": "ar",
+  "title": "لوحة معلومات العمل الإضافي",
+  "entity": null,
+  "overviewHtml": "<p>حجم العمل الإضافي خلال فترة، وتكلفته، وأين صُرف: الساعات المعتمدة مقابل الساعات المطلوبة، والتكلفة التي صرفتها الرواتب، والتوزيع حسب الشهر ونوع العمل الإضافي والإدارة والموظف. وتُفتح اللوحة على الفترة من بداية السنة حتى تاريخه.</p><p><strong>الساعات</strong> مأخوذة من سجلات العمل الإضافي المعتمدة التي يقع شهرها ضمن الفترة. والسجل الذي ما زال بانتظار الموافقة لا يُحتسب في الساعات، ويظهر فقط في <strong>بانتظار الموافقة</strong>. أما <strong>التكلفة</strong> فمأخوذة من الرواتب لا من الساعات: وهي ما صرفته رواتب كل شهر تحت نوع الأجر المحدد لكل نوع من أنواع العمل الإضافي، لذا فالشهر الذي لم تُشغَّل له الرواتب بعد تظهر له ساعات دون تكلفة.</p><p>انقر على نوع العمل الإضافي لعرض جميع المربعات لهذا النوع فقط، وعلى الشهر لعرض سجلاته، وعلى الإدارة لعرض الوحدات التابعة لها، وعلى الاسم لعرض هذا الموظف فقط. ويظهر كل اختيار كشارة في شريط الأدوات؛ احذف الشارة للرجوع. وتُقصَّر الفترة التي تتجاوز خمس سنوات إلى آخر خمس سنوات.</p>",
+  "aliasIndex": {
+    "loc:Dashboard_Showing": "dash.common.showing",
+    "loc:Filter": "dash.common.filter",
+    "loc:Download": "dash.common.download",
+    "loc:OvertimeDashboard_ApprovedHours": "dash.overtime.approved-hours",
+    "loc:OvertimeDashboard_ApprovedOfClaimed": "dash.overtime.approved-of-claimed",
+    "loc:OvertimeDashboard_Employees": "dash.overtime.employees",
+    "loc:OvertimeDashboard_AveragePerEmployee": "dash.overtime.average",
+    "loc:OvertimeDashboard_Cost": "dash.overtime.cost",
+    "loc:OvertimeDashboard_Pending": "dash.overtime.pending",
+    "loc:OvertimeDashboard_ByMonth": "dash.overtime.trend",
+    "loc:OvertimeDashboard_ByType": "dash.overtime.by-type",
+    "loc:OvertimeDashboard_CostByMonth": "dash.overtime.cost-trend",
+    "loc:OvertimeDashboard_ByDepartment": "dash.overtime.by-department",
+    "loc:OvertimeDashboard_TopEmployees": "dash.overtime.top-employees",
+    "loc:OvertimeDashboard_Entries": "dash.overtime.entries"
+  },
+  "fields": [
+    {
+      "id": "dash.common.showing",
+      "label": "Dashboard_Showing",
+      "section": null,
+      "aliases": [
+        "loc:Dashboard_Showing"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السطر في شريط الأدوات الذي يبيّن بيانات من بُنيت عليها اللوحة، وعدد هؤلاء الموظفين. ولا تختاره أنت: فهو يتحدد بحسب هويتك.</p><p><strong>كيف يُحدَّد.</strong> الموظفون الذين تراهم هم:</p><ul><li>جميع الموظفين، إذا كان لديك دور <strong>Admin</strong> (مسؤول النظام)؛</li><li>وإلا فالموظفون في الوحدات التنظيمية المخصصة لأدوارك في أمان مستوى السجلات، بما في ذلك كل وحدة تتبعها، <strong>مضافاً إليهم</strong> فريقك — أنت وكل من يتبعك في التسلسل الإداري، على جميع المستويات؛</li><li>ولا أحد، إذا لم ينتج عن أيٍّ مما سبق أي موظف. وعندئذٍ لا تعرض اللوحة شيئاً، ولا تعرض الجميع أبداً.</li></ul><p><strong>مثال.</strong> \"المعروض: المالية + الرواتب + فريقك (123 موظف)\" — أنت موظف موارد بشرية مسؤول عن المالية والرواتب، ولديك فريق تديره أيضاً.</p><p><strong>لماذا يهمّ.</strong> قد يفتح شخصان اللوحة نفسها فيريان أرقاماً مختلفة، وكلاهما صحيح. فكل رقم ورسم بياني وقائمة وملف تحميل في الصفحة يقتصر على هؤلاء الموظفين — ويمكن لعوامل التصفية أن تضيّق النطاق، لكنها لا توسّعه أبداً.</p>",
+      "adminHtml": "<p>يحدده <code>IDashboardScopeService</code> لكل لوحات المعلومات. ولا يُعتدّ عمداً بمفتاح تشغيل أمان مستوى السجلات في إعدادات الأمان: فمن لم يُخصَّص له شيء لا يرى شيئاً، أياً كانت حالة المفتاح. وتُطابَق قاعدة المسؤول مع اسم الدور الثابت <code>Admin</code> في الجهة.</p>",
+      "stub": false
+    },
+    {
+      "id": "dash.common.filter",
+      "label": "Filter",
+      "section": null,
+      "aliases": [
+        "loc:Filter"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النافذة التي تفتح من زر <strong>تصفية</strong>: الفترة ووحدة الشركة. ولا يتغير شيء حتى تضغط <strong>تطبيق</strong>؛ ويعيد زر <strong>مسح</strong> القيم الافتراضية.</p><p><strong>كيف تعمل الفترة.</strong></p><ul><li><strong>من بداية السنة حتى اليوم</strong> (الافتراضي): من 1 يناير من السنة الحالية حتى اليوم.</li><li><strong>هذه السنة</strong> و<strong>السنة الماضية</strong>: من 1 يناير إلى 31 ديسمبر.</li><li><strong>هذا الشهر</strong>: من أول يوم في الشهر الحالي إلى آخر يوم فيه.</li><li><strong>مخصص</strong>: أي تاريخي بداية ونهاية تختارهما. وتُقصَّر الفترة التي تتجاوز خمس سنوات إلى آخر خمس سنوات.</li></ul><p><strong>مثال.</strong> اختر <strong>السنة الماضية</strong> لعرض سنة 2025 عندما تكون بيانات السنة الحالية قليلة.</p><p><strong>لماذا يهمّ.</strong> الأرقام المحسوبة \"حتى اليوم\" (من في إجازة اليوم، وعدد الموظفين) لا تتأثر بالفترة؛ أما الأرقام المحسوبة \"خلال الفترة\" (أيام الإجازة، والمعينون الجدد، والمنتهية خدماتهم، ومعدل الدوران) فتتأثر بها. واختيار وحدة الشركة يشمل كل وحدة تتبعها. والنقر على عمود أو شريحة في الرسم البياني يضيف عامل تصفية آخر يظهر بجانب <strong>المعروض</strong> — احذفه بعلامة <strong>×</strong> الخاصة به، أو احذفها جميعاً بـ<strong>مسح عوامل التصفية</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.common.download",
+      "label": "Download",
+      "section": null,
+      "aliases": [
+        "loc:Download"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيقونة التحميل في شريط الأدوات وفي كل مربع. وعند النقر عليها تظهر ثلاث صيغ.</p><p><strong>ما تحتويه كل صيغة.</strong></p><ul><li><strong>PDF</strong> و<strong>JPEG</strong>: صورة للمربع كما يظهر على الشاشة تماماً، بما في ذلك الرسوم البيانية. ومن شريط الأدوات: صورة للوحة كاملة.</li><li><strong>XLSX</strong>: البيانات التي يقوم عليها المربع، بعوامل التصفية نفسها. ومن شريط الأدوات: ملف يضم ورقة <strong>الملخص</strong> (بيانات من، والفترة، والأرقام الرئيسية) وورقة لكل مربع.</li></ul><p><strong>مثال.</strong> أرسل رسم <strong>الإجازات حسب النوع</strong> بصيغة JPEG في بريد إلكتروني؛ وسلّم قسم الرواتب قائمة <strong>لم يباشروا العمل بعد الإجازة</strong> بصيغة XLSX.</p><p><strong>لماذا يهمّ.</strong> كل ما تحمّله لا يحتوي إلا ما يُسمح لك برؤيته، ويطابق تماماً ما تعرضه الشاشة بعوامل التصفية التي طبّقتها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.approved-hours",
+      "label": "OvertimeDashboard_ApprovedHours",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_ApprovedHours"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ساعات العمل الإضافي المعتمدة للفترة، ويبيّن السطر أسفلها الساعات المطلوبة. انقر عليها لعرض قائمة السجلات.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع الساعات المعتمدة في السجلات المعتمدة المؤرخة ضمن الفترة</code>؛ و<strong>المطلوب</strong> = <code>مجموع الساعات المطلوبة في السجلات نفسها</code>.</p><ul><li>تُقرَّب إلى منزلة عشرية واحدة.</li></ul><p><strong>مثال.</strong> 1,284.5 ساعة معتمدة · من أصل 1,410 ساعة مطلوبة.</p><p><strong>أهميته.</strong> هو الحجم الذي تصرفه الرواتب، ونقطة البداية لكل رقم آخر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.approved-of-claimed",
+      "label": "OvertimeDashboard_ApprovedOfClaimed",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_ApprovedOfClaimed"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نسبة الساعات المطلوبة التي اعتُمدت.</p><p><strong>طريقة الاحتساب.</strong> <code>الساعات المعتمدة ÷ الساعات المطلوبة × 100</code></p><ul><li>تُقرَّب إلى منزلة عشرية واحدة. وتظهر \"—\" إذا لم تُطلب أي ساعات.</li></ul><p><strong>مثال.</strong> 91.1% — 1,284.5 من أصل 1,410 ساعة.</p><p><strong>أهميته.</strong> انخفاض النسبة يعني أن الطلبات تُخفَّض بصورة متكررة، وهو أمر يستحق مراجعته مع المدراء المعنيين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.employees",
+      "label": "OvertimeDashboard_Employees",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_Employees"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الموظفين المختلفين الذين اعتُمد لهم عمل إضافي.</p><p><strong>طريقة الاحتساب.</strong> <code>عدد الموظفين المختلفين الذين لديهم ساعات معتمدة &gt; 0</code></p><ul><li>الموظف الذي له عشرة سجلات يُحتسب مرة واحدة. والسجل المعتمد بصفر ساعات لا يُحتسب.</li></ul><p><strong>مثال.</strong> 146 موظفاً.</p><p><strong>أهميته.</strong> كثرة الساعات عند عدد قليل من الموظفين تدل على مشكلة في عبء العمل، أما توزّعها على كثيرين فغالباً ما يكون موسمياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.average",
+      "label": "OvertimeDashboard_AveragePerEmployee",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_AveragePerEmployee"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متوسط الساعات المعتمدة لكل موظف لديه عمل إضافي.</p><p><strong>طريقة الاحتساب.</strong> <code>الساعات المعتمدة ÷ عدد الموظفين ذوي العمل الإضافي</code></p><ul><li>لا يُحتسب إلا من لديهم عمل إضافي، فلا يتأثر المتوسط بمن ليس لديهم. ويظهر \"—\" إذا لم يكن لدى أحد عمل إضافي.</li></ul><p><strong>مثال.</strong> 8.8 ساعة لكل موظف.</p><p><strong>أهميته.</strong> قارنه بمربع <strong>الأكثر عملاً إضافياً</strong> لمعرفة ما إذا كان بعض الموظفين أعلى من المتوسط بكثير.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.cost",
+      "label": "OvertimeDashboard_Cost",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_Cost"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما صرفته الرواتب للعمل الإضافي خلال الفترة.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع مبالغ الرواتب تحت نوع الأجر لكل نوع عمل إضافي، من نتيجة الرواتب الاعتيادية لكل شهر</code></p><ul><li>لا تُستخدم إلا النتيجة المحتسبة في شهرها نفسه (فترة الاحتساب تساوي فترة الاستحقاق). وإعادة الاحتساب بأثر رجعي لشهر سابق لا تُضاف مرة أخرى، فلا يُحتسب أي شهر مرتين.</li><li>نوع الأجر هو المحدد على كل نوع من أنواع العمل الإضافي، ولا شيء ثابت في النظام.</li><li>تُعرض بثلاث منازل عشرية.</li></ul><p><strong>مثال.</strong> 18,452.750.</p><p><strong>أهميته.</strong> هي المبالغ الفعلية، بما فيها اختلاف الأجر بين الموظفين وبين الأنواع، وهو ما لا تُظهره الساعات وحدها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.pending",
+      "label": "OvertimeDashboard_Pending",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_Pending"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طلبات العمل الإضافي التي ما زالت بانتظار الموافقة، والساعات المطلوبة فيها. انقر عليها لعرض القائمة.</p><p><strong>طريقة الاحتساب.</strong> <code>السجلات التي حالة موافقتها مفتوحة</code>؛ و<strong>الساعات</strong> = <code>مجموع الساعات المطلوبة</code>.</p><ul><li>تُحتسب أياً كان الشهر الذي يخصه الطلب، لا ضمن الفترة فقط، لأن الطلب المتأخر في الموافقة متأخر أياً كان تاريخ تقديمه.</li></ul><p><strong>مثال.</strong> 12 طلباً · 47 ساعة مطلوبة.</p><p><strong>أهميته.</strong> لن تُصرف هذه الساعات حتى يعتمدها أحد؛ فيُستحسن إنهاؤها قبل تشغيل الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.trend",
+      "label": "OvertimeDashboard_ByMonth",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_ByMonth"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الساعات المعتمدة في كل شهر من الفترة، مقسّمة حسب نوع العمل الإضافي. انقر على الشهر لعرض سجلاته.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع الساعات المعتمدة لكل شهر ولكل نوع عمل إضافي</code></p><ul><li>تُعرض جميع أشهر الفترة، بما فيها الأشهر التي لا عمل إضافي فيها.</li><li>يحتفظ كل نوع باللون نفسه هنا وفي <strong>العمل الإضافي حسب النوع</strong>.</li></ul><p><strong>مثال.</strong> مارس: 180 ساعة في أيام العمل العادية و64 ساعة في عطلة نهاية الأسبوع.</p><p><strong>أهميته.</strong> يُظهر ذروات المواسم، وما إذا كان العمل الإضافي في العطل — وهو الأعلى تكلفة — في ازدياد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.by-type",
+      "label": "OvertimeDashboard_ByType",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_ByType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> توزيع الساعات المعتمدة على أنواع العمل الإضافي. انقر على النوع لعرض جميع المربعات لهذا النوع فقط.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع الساعات المعتمدة لكل نوع</code>، من الأكبر إلى الأصغر؛ وتكلفة كل نوع مأخوذة من نوع الأجر الخاص به.</p><p><strong>مثال.</strong> أيام العمل العادية 72%، وعطلة نهاية الأسبوع 21%، والعطل الرسمية 7%.</p><p><strong>أهميته.</strong> تختلف أجور الأنواع، فتوزيع الأنواع يؤثر في التكلفة بقدر ما تؤثر فيها الساعات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.cost-trend",
+      "label": "OvertimeDashboard_CostByMonth",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_CostByMonth"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما صرفته الرواتب للعمل الإضافي في كل شهر.</p><p><strong>طريقة الاحتساب.</strong> قاعدة <strong>تكلفة العمل الإضافي</strong> نفسها لكل شهر: <code>مجموع مبالغ أنواع أجر العمل الإضافي في نتيجة الرواتب الاعتيادية لذلك الشهر</code></p><ul><li>الشهر الذي لا تكلفة له غالباً ما يكون شهراً لم تُشغَّل له الرواتب بعد. وإذا لم يكن لأي شهر تكلفة، يبيّن المربع ذلك.</li></ul><p><strong>مثال.</strong> فبراير: 2,310.500.</p><p><strong>أهميته.</strong> قارنه برسم الساعات: ارتفاع التكلفة أسرع من الساعات يعني أنواع عمل إضافي أعلى تكلفة أو موظفين برواتب أعلى.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.by-department",
+      "label": "OvertimeDashboard_ByDepartment",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_ByDepartment"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الساعات المعتمدة وعدد الموظفين والتكلفة لكل إدارة في المستوى الذي يلي الوحدة المعروضة. انقر على الإدارة لعرض الوحدات التابعة لها.</p><p><strong>طريقة الاحتساب.</strong> لكل إدارة: <code>مجموع الساعات المعتمدة</code> و<code>عدد الموظفين المختلفين ذوي العمل الإضافي</code> و<code>تكلفة العمل الإضافي</code> للموظفين في تلك الإدارة أو في أي وحدة تابعة لها.</p><ul><li>يُنسب الموظف إلى الإدارة التي كان فيها في آخر يوم من الفترة.</li><li>الموظفون التابعون مباشرة للوحدة المعروضة، لا لوحدة تحتها، يظهرون في سطر مستقل.</li></ul><p><strong>مثال.</strong> العمليات: 610 ساعات · 58 موظفاً · 8,904.000.</p><p><strong>أهميته.</strong> يُظهر الإدارات التي تعتمد على العمل الإضافي، ويتيح تتبّعه حتى مستوى الفريق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.top-employees",
+      "label": "OvertimeDashboard_TopEmployees",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_TopEmployees"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظفون العشرة الأكثر ساعات عمل إضافي معتمدة خلال الفترة. انقر على الاسم لعرض جميع المربعات لهذا الموظف فقط.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع الساعات المعتمدة لكل موظف</code>، من الأكبر إلى الأصغر؛ مع تكلفة العمل الإضافي لكل منهم.</p><p><strong>مثال.</strong> 96 ساعة · 1,520.000.</p><p><strong>أهميته.</strong> العمل الإضافي المرتفع جداً لموظف واحد يمثل خطراً من حيث الإرهاق والتكلفة، وكثيراً ما يدل على حاجة الوظيفة إلى موظف آخر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.overtime.entries",
+      "label": "OvertimeDashboard_Entries",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeDashboard_Entries"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القائمة التي يقوم عليها الرقم أو الشهر الذي نقرت عليه: كل سجل بشهره وموظفه وإدارته ونوعه والساعات المطلوبة والمعتمدة. انقر على السطر لفتح ملف الموظف.</p><p><strong>طريقة الاحتساب.</strong> القاعدة نفسها للرقم الذي نقرت عليه: <strong>ساعات العمل الإضافي المعتمدة</strong> تعرض السجلات المعتمدة للفترة، والشهر الذي نقرت عليه يعرض السجلات المعتمدة لذلك الشهر، و<strong>بانتظار الموافقة</strong> يعرض الطلبات المفتوحة.</p><p><strong>مثال.</strong> انقر على <strong>بانتظار الموافقة</strong>: 12 سطراً، في كل منها الساعات المطلوبة.</p><p><strong>أهميته.</strong> هي الدليل الذي تقوم عليه الأرقام، ويمكن تنزيلها بصيغة XLSX بالفلاتر نفسها.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "helpId": "pay.org-unit-wage-acc-group.edit",
+  "lang": "en",
+  "title": "Organization Unit Wage Account Groups — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.OrgUnitWageAccGroup",
+  "overviewHtml": "<p>Which wage account group an organisation unit uses, from a given date.</p><p>Not read at present: the cost engine and the journal voucher take their accounts from each employee's own wage accounts, and nothing reads this assignment. It is kept for reference and for future use.</p>",
+  "aliasIndex": {
+    "loc:OrganizationUnitId": "OrgUnitWageAccGroup.OrganizationUnitId",
+    "dom:OrgUnitWageAccGroup_OrganizationUnitId": "OrgUnitWageAccGroup.OrganizationUnitId",
+    "loc:WageAccGroupId": "OrgUnitWageAccGroup.WageAccGroupId",
+    "dom:OrgUnitWageAccGroup_WageAccGroupId": "OrgUnitWageAccGroup.WageAccGroupId",
+    "loc:StartDate": "OrgUnitWageAccGroup.StartDate",
+    "dom:OrgUnitWageAccGroup_StartDate": "OrgUnitWageAccGroup.StartDate"
+  },
+  "fields": [
+    {
+      "id": "OrgUnitWageAccGroup.OrganizationUnitId",
+      "label": "OrganizationUnitId",
+      "section": "OrgUnitWageAccGroups",
+      "aliases": [
+        "loc:OrganizationUnitId",
+        "dom:OrgUnitWageAccGroup_OrganizationUnitId"
+      ],
+      "rules": "Required. Chosen from Organization Unit master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The organisation unit.</p><p><strong>Example.</strong> Finance Department</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrgUnitWageAccGroup.WageAccGroupId",
+      "label": "WageAccGroupId",
+      "section": "OrgUnitWageAccGroups",
+      "aliases": [
+        "loc:WageAccGroupId",
+        "dom:OrgUnitWageAccGroup_WageAccGroupId"
+      ],
+      "rules": "Required. Chosen from Wage Acc Group master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wage account group the unit uses from the start date.</p><p><strong>Example.</strong> Head Office Accounts</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrgUnitWageAccGroup.StartDate",
+      "label": "StartDate",
+      "section": "OrgUnitWageAccGroups",
+      "aliases": [
+        "loc:StartDate",
+        "dom:OrgUnitWageAccGroup_StartDate"
+      ],
+      "rules": "Required. Date value. Saving closes the previous record for the same organization unit on the day before this date; the latest record stays open.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'WorkFlowApprovers' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'WorkFlowApprovers' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="WorkFlowApprover_WorkflowRequestId">{{ 'WorkflowRequests' | localize }}</label>
+                                <select
+                                    id="WorkFlowApprover_WorkflowRequestId"
+                                    #workflowRequestIdInput="ngModel"
+                                    class="form-select"
+                                    name="WorkflowRequestId"
+                                    [ngModel]="record().workflowRequestId"
+                                    (ngModelChange)="updateField('workflowRequestId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (wr of workflowRequests(); track wr.id) {
+                                        <option [ngValue]="wr.id">{{ wr.requestNumber }} - {{ wr.requestType }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="workflowRequestIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="WorkFlowApprover_ApproverId">{{ 'Approver' | localize }}</label>
+                                <select
+                                    id="WorkFlowApprover_ApproverId"
+                                    class="form-select"
+                                    name="ApproverId"
+                                    [ngModel]="record().approverId"
+                                    (ngModelChange)="updateField('approverId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="WorkFlowApprover_IsApproved"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="IsApproved"
+                                        [ngModel]="record().isApproved"
+                                        (ngModelChange)="updateField('isApproved', $event)" />
+                                    <label class="form-check-label" for="WorkFlowApprover_IsApproved">{{ 'IsApproved' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

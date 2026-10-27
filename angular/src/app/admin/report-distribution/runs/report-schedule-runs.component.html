@@ -1,0 +1,144 @@
+<sub-header [title]="'RunHistory' | localize" [description]="'RunHistoryDescription' | localize">
+    <div role="actions">
+        <button class="btn btn-secondary" type="button" (click)="back()">
+            {{ 'BackToSchedules' | localize }}
+        </button>
+        <button class="btn btn-primary ms-2" type="button" (click)="loadRuns()">
+            <i class="fa fa-sync"></i> {{ 'Refresh' | localize }}
+        </button>
+    </div>
+</sub-header>
+
+<div [class]="containerClass">
+    <div class="row">
+        <!-- Runs -->
+        <div class="col-md-5">
+            <div class="card card-custom">
+                <div class="card-body">
+                    <h5 class="mb-3">{{ 'Runs' | localize }}</h5>
+
+                    <div [busyIf]="isLoading()">
+                        @if (runs().length) {
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'StartedAt' | localize }}</th>
+                                        <th>{{ 'Slices' | localize }}</th>
+                                        <th>{{ 'Status' | localize }}</th>
+                                        <th>{{ 'TriggeredBy' | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (run of runs(); track run.id) {
+                                        <tr
+                                            style="cursor: pointer"
+                                            [class.table-active]="selectedRunId() === run.id"
+                                            (click)="selectRun(run)">
+                                            <td>{{ toDate(run.startedAt) | date: 'dd/MM/yyyy HH:mm' }}</td>
+                                            <td>{{ run.sliceCount }}</td>
+                                            <td>
+                                                <span [class]="statusClass(run.status)">
+                                                    {{ statusText(run.status) }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {{ (run.isManual ? 'Manual' : 'Scheduled') | localize }}
+                                            </td>
+                                        </tr>
+
+                                        @if (run.errorMessage) {
+                                            <tr>
+                                                <td colspan="4" class="text-danger small">
+                                                    {{ run.errorMessage }}
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        } @else {
+                            <div class="alert alert-light-info mb-0">{{ 'NoRunsYet' | localize }}</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Per-recipient breakdown -->
+        <div class="col-md-7">
+            <div class="card card-custom">
+                <div class="card-body">
+                    <h5 class="mb-3">{{ 'DeliveryDetail' | localize }}</h5>
+
+                    <div [busyIf]="isLoadingSlices()">
+                        @if (selectedRunId() === null) {
+                            <div class="alert alert-light-info mb-0">{{ 'SelectARun' | localize }}</div>
+                        } @else if (slices().length) {
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'Slice' | localize }}</th>
+                                        <th>{{ 'Recipient' | localize }}</th>
+                                        <th>{{ 'Method' | localize }}</th>
+                                        <th>{{ 'Rows' | localize }}</th>
+                                        <th>{{ 'Scoped' | localize }}</th>
+                                        <th>{{ 'Status' | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (slice of slices(); track slice.id) {
+                                        <tr>
+                                            <td>{{ slice.burstKeyDisplay || ('WholeReport' | localize) }}</td>
+                                            <td>{{ slice.recipientEmail }}</td>
+                                            <td>{{ methodText(slice.method) }}</td>
+                                            <td>{{ slice.rowCount }}</td>
+                                            <td>
+                                                <!-- The first question anyone asks about an unexpected
+                                                     delivery is whether it was scoped. Recorded per slice
+                                                     so it can be answered from the log alone. -->
+                                                @if (slice.wasRecipientScoped) {
+                                                    <span class="badge badge-light-success">
+                                                        {{ 'Yes' | localize }}
+                                                    </span>
+                                                } @else {
+                                                    <span class="badge badge-light-warning">
+                                                        {{ 'No' | localize }}
+                                                    </span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <span [class]="statusClass(slice.status)">
+                                                    {{ statusText(slice.status) }}
+                                                </span>
+                                            </td>
+                                        </tr>
+
+                                        @if (slice.errorMessage) {
+                                            <tr>
+                                                <td colspan="6" class="text-danger small">
+                                                    {{ slice.errorMessage }}
+                                                </td>
+                                            </tr>
+                                        }
+
+                                        @if (emptyExplanation(slice)) {
+                                            <tr>
+                                                <td colspan="6" class="text-muted small">
+                                                    {{ emptyExplanation(slice) }}
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        } @else {
+                            <!-- A run with no slices at all means the recipient rules matched nobody --
+                                 a configuration problem that otherwise looks exactly like a clean run. -->
+                            <div class="alert alert-light-warning mb-0">{{ 'RunHadNoSlices' | localize }}</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.simulation-time-register.edit",
+  "lang": "en",
+  "title": "Simulation Time Registers — Create / Edit",
+  "entity": "HCMv3.TimeManagement.SimulationTimeRegister",
+  "overviewHtml": "<p>A day from a trial time engine run.</p><p>Not written at present: no process fills these registers and nothing reads them. Payroll and the reports work from the daily time register.</p>",
+  "aliasIndex": {
+    "loc:Employee": "SimulationTimeRegister.EmployeeId",
+    "dom:SimulationTimeRegister_EmployeeId": "SimulationTimeRegister.EmployeeId",
+    "loc:DayDate": "SimulationTimeRegister.DayDate",
+    "dom:SimulationTimeRegister_DayDate": "SimulationTimeRegister.DayDate",
+    "loc:DutyPeriod": "SimulationTimeRegister.DutyPeriodId",
+    "dom:SimulationTimeRegister_DutyPeriodId": "SimulationTimeRegister.DutyPeriodId"
+  },
+  "fields": [
+    {
+      "id": "SimulationTimeRegister.EmployeeId",
+      "label": "Employee",
+      "section": "SimulationTimeRegisters",
+      "aliases": [
+        "loc:Employee",
+        "dom:SimulationTimeRegister_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationTimeRegister.DayDate",
+      "label": "DayDate",
+      "section": "SimulationTimeRegisters",
+      "aliases": [
+        "loc:DayDate",
+        "dom:SimulationTimeRegister_DayDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The day.</p><p><strong>Example.</strong> <code>2026-04-14</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationTimeRegister.DutyPeriodId",
+      "label": "DutyPeriod",
+      "section": "SimulationTimeRegisters",
+      "aliases": [
+        "loc:DutyPeriod",
+        "dom:SimulationTimeRegister_DutyPeriodId"
+      ],
+      "rules": "Optional. Chosen from Duty Period master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty period that applied.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

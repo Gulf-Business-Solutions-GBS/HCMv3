@@ -1,0 +1,229 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EmployeeWorkbench' | localize" [description]="'PersonnelAdministration' | localize">
+        <div role="actions">
+            <div class="btn-group" role="group" [attr.aria-label]="'WorkbenchView' | localize">
+                @for (mode of viewModes; track mode) {
+                    <button
+                        type="button"
+                        class="btn btn-sm"
+                        [class.btn-primary]="viewMode() === mode"
+                        [class.btn-light]="viewMode() !== mode"
+                        [attr.aria-pressed]="viewMode() === mode"
+                        (click)="setViewMode(mode)">
+                        @switch (mode) {
+                            @case ('drawer') {
+                                <i class="fa fa-outdent"></i>
+                                <span class="d-none d-md-inline">{{ 'WorkbenchViewDrawer' | localize }}</span>
+                            }
+                            @case ('popup') {
+                                <i class="fa fa-window-maximize"></i>
+                                <span class="d-none d-md-inline">{{ 'WorkbenchViewPopup' | localize }}</span>
+                            }
+                            @case ('split') {
+                                <i class="fa fa-columns"></i>
+                                <span class="d-none d-md-inline">{{ 'WorkbenchViewSplit' | localize }}</span>
+                            }
+                        }
+                    </button>
+                }
+            </div>
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <!-- Search -->
+        <div class="card card-custom mb-4">
+            <div class="card-body py-4">
+                <div class="d-flex flex-wrap align-items-center gap-4">
+                    <div class="workbench-search flex-grow-1">
+                        <i class="fa fa-search workbench-search__icon"></i>
+                        <input
+                            type="text"
+                            class="form-control form-control-solid workbench-search__input"
+                            autocomplete="off"
+                            [placeholder]="'WorkbenchSearchPlaceholder' | localize"
+                            [ngModel]="searchText()"
+                            (ngModelChange)="onSearchChanged($event)"
+                            (focus)="showResults.set(true)"
+                            (blur)="hideResultsSoon()"
+                            (keydown.enter)="pickFirstResult()" />
+                        @if (showResults() && searchText().trim()) {
+                            <div class="workbench-search__results">
+                                @if (searching() && !searchResults().length) {
+                                    <div class="workbench-search__message">
+                                        <span class="spinner-border spinner-border-sm me-2"></span>
+                                        {{ 'LoadingWithThreeDot' | localize }}
+                                    </div>
+                                } @else {
+                                    @for (item of searchResults(); track item.id) {
+                                        <button type="button" class="workbench-search__item" (mousedown)="pick(item)">
+                                            <span class="fw-bold me-2">{{ item.code }}</span>
+                                            <span class="flex-grow-1">{{ name(item.fullNameEn, item.fullNameAr) }}</span>
+                                            @if (item.status === exEmployeeStatus) {
+                                                <span class="badge badge-light-danger">{{ 'ExEmployee' | localize }}</span>
+                                            }
+                                        </button>
+                                    } @empty {
+                                        <div class="workbench-search__message">{{ 'NoData' | localize }}</div>
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+                    <label class="form-check form-check-custom form-check-solid">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            [ngModel]="includeExEmployees()"
+                            (ngModelChange)="onIncludeExEmployeesChanged($event)" />
+                        <span class="form-check-label">{{ 'IncludeExEmployees' | localize }}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        @if (employee(); as emp) {
+            <!-- Header strip: who this is, before anything is changed -->
+            <div class="card card-custom mb-4">
+                <div class="card-body py-4 d-flex flex-wrap align-items-center gap-4">
+                    <div class="workbench-avatar">{{ initials() }}</div>
+                    <div class="flex-grow-1">
+                        <div class="fs-4 fw-bold">
+                            {{ name(emp.fullNameEn, emp.fullNameAr) }}
+                            <span class="text-muted fw-normal ms-2">{{ emp.code }}</span>
+                        </div>
+                        <div class="text-muted">
+                            @if (name(emp.jobTitleNameEn, emp.jobTitleNameAr)) {
+                                <span>{{ name(emp.jobTitleNameEn, emp.jobTitleNameAr) }}</span>
+                            }
+                            @if (emp.organizationUnitName) {
+                                <span class="workbench-dot">{{ emp.organizationUnitName }}</span>
+                            }
+                            @if (name(emp.managerFullNameEn, emp.managerFullNameAr)) {
+                                <span class="workbench-dot">
+                                    {{ 'Manager' | localize }}: {{ name(emp.managerFullNameEn, emp.managerFullNameAr) }}
+                                </span>
+                            }
+                        </div>
+                        <div class="text-muted fs-7">
+                            <span>{{ 'JoiningDate' | localize }}: {{ emp.joiningDate | luxonFormat: 'DD' }}</span>
+                            @if (emp.payrollAreaName) {
+                                <span class="workbench-dot">{{ 'PayrollArea' | localize }}: {{ emp.payrollAreaName }}</span>
+                            }
+                        </div>
+                    </div>
+                    @if (isExEmployee()) {
+                        <span class="badge badge-light-danger fs-7 px-4 py-2">
+                            {{ 'ExEmployee' | localize }}
+                            @if (emp.lastDayInService) {
+                                &middot; {{ 'LastDayInService' | localize }} {{ emp.lastDayInService | luxonFormat: 'DD' }}
+                            }
+                        </span>
+                    } @else {
+                        <span class="badge badge-light-success fs-7 px-4 py-2">{{ 'Active' | localize }}</span>
+                    }
+                </div>
+            </div>
+
+            <div class="workbench-body" [class.workbench-body--split]="isSplitOpen()">
+                <div #tilesGrid class="workbench-tiles" [style.--wb-tile-height.px]="tileHeight()">
+                    @for (tile of tiles(); track tile.id) {
+                        <button
+                            type="button"
+                            class="workbench-tile"
+                            [class.workbench-tile--open]="openTileId() === tile.id"
+                            (click)="openTileById(tile.id)">
+                            <span class="workbench-tile__icon"><i [class]="tile.icon"></i></span>
+                            <span class="workbench-tile__label">{{ tile.labelKey | localize }}</span>
+                        </button>
+                    } @empty {
+                        <div class="text-muted">{{ 'WorkbenchNoTiles' | localize }}</div>
+                    }
+                </div>
+
+                @if (isSplitOpen()) {
+                    <div class="card card-custom workbench-split">
+                        <div class="card-body">
+                            <ng-container [ngTemplateOutlet]="detail" />
+                        </div>
+                    </div>
+                }
+            </div>
+        } @else if (loadingEmployee()) {
+            <div class="card card-custom">
+                <div class="card-body text-center text-muted py-15">
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    {{ 'LoadingWithThreeDot' | localize }}
+                </div>
+            </div>
+        } @else {
+            <div class="card card-custom">
+                <div class="card-body text-center py-15">
+                    <i class="flaticon-search-1 fs-3x text-muted d-block mb-4"></i>
+                    <div class="fs-5 fw-bold">{{ 'WorkbenchPickEmployee' | localize }}</div>
+                    <div class="text-muted">{{ 'WorkbenchPickEmployeeHint' | localize }}</div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (openTile() && employee() && viewMode() === 'drawer') {
+    <div class="workbench-backdrop" (click)="closeTile()"></div>
+    <aside class="workbench-drawer" role="dialog" [attr.aria-label]="openTile()!.labelKey | localize">
+        <ng-container [ngTemplateOutlet]="detail" />
+    </aside>
+}
+
+@if (openTile() && employee() && viewMode() === 'popup') {
+    <div class="workbench-backdrop workbench-backdrop--center" (click)="closeTile()">
+        <div
+            class="workbench-popup"
+            role="dialog"
+            [attr.aria-label]="openTile()!.labelKey | localize"
+            (click)="$event.stopPropagation()">
+            <ng-container [ngTemplateOutlet]="detail" />
+        </div>
+    </div>
+}
+
+<ng-template #detail>
+    @if (openTile(); as tile) {
+        <div class="d-flex align-items-center mb-4">
+            <span class="workbench-detail__icon"><i [class]="tile.icon"></i></span>
+            <div class="ms-3">
+                <h3 class="mb-0">{{ tile.labelKey | localize }}</h3>
+                <div class="text-muted fs-7">{{ employee()?.code }} &middot; {{ name(employee()?.fullNameEn, employee()?.fullNameAr) }}</div>
+            </div>
+            <span class="flex-grow-1"></span>
+            <button type="button" class="btn btn-icon btn-sm btn-light" [attr.aria-label]="'Close' | localize" (click)="closeTile()">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+
+        <ul class="nav nav-tabs nav-line-tabs nav-stretch mb-5 fs-6 flex-nowrap text-nowrap overflow-auto">
+            @for (view of tile.subViews; track view.id) {
+                <li class="nav-item">
+                    <button
+                        type="button"
+                        class="nav-link btn btn-link"
+                        [class.active]="activeSubView()?.id === view.id"
+                        (click)="activeSubViewId.set(view.id)">
+                        {{ view.labelKey | localize }}
+                    </button>
+                </li>
+            }
+        </ul>
+
+        @if (activeSubView(); as view) {
+            <workbench-grid
+                [subView]="view"
+                [employeeId]="employee()!.id"
+                [isExEmployee]="isExEmployee()"
+                [formHost]="formHost()" />
+        }
+    }
+</ng-template>
+
+<!-- The Employee Detail forms open here, outside the drawer and popup layers (see WorkbenchGridComponent.formHost). -->
+<ng-container #formHostAnchor />

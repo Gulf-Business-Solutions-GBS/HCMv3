@@ -1,0 +1,155 @@
+{
+  "helpId": "wf.request-master.edit",
+  "lang": "en",
+  "title": "Request Masters — Create / Edit",
+  "entity": "HCMv3.Workflow.RequestMaster",
+  "overviewHtml": "<p>An approval chain: the named sequence of steps a request goes through. Each step is set up on the chain's request details. A request finds its chain in this order: a business rule that names a chain by code, then the employee's workflow group (when the workflow setting EnableWorkflowGroup is on), then the transaction type's default chain. If none gives a chain, the request cannot be submitted and says so.</p>",
+  "aliasIndex": {
+    "loc:Code": "RequestMaster.Code",
+    "dom:RequestMaster_Code": "RequestMaster.Code",
+    "loc:SecurityLevel": "RequestMaster.SecurityLevel",
+    "dom:RequestMaster_SecurityLevel": "RequestMaster.SecurityLevel",
+    "loc:NameEn": "RequestMaster.NameEn",
+    "dom:RequestMaster_NameEn": "RequestMaster.NameEn",
+    "loc:NameAr": "RequestMaster.NameAr",
+    "dom:RequestMaster_NameAr": "RequestMaster.NameAr",
+    "loc:DefaultApprover": "RequestMaster.DefaultApproverId",
+    "dom:RequestMaster_DefaultApproverId": "RequestMaster.DefaultApproverId",
+    "loc:AutoCloseInDays": "RequestMaster.AutoCloseInDays",
+    "dom:RequestMaster_AutoCloseInDays": "RequestMaster.AutoCloseInDays",
+    "loc:DueInDays": "RequestMaster.DueInDays",
+    "dom:RequestMaster_DueInDays": "RequestMaster.DueInDays",
+    "loc:AutoClose": "RequestMaster.AutoClose",
+    "dom:RequestMaster_AutoClose": "RequestMaster.AutoClose",
+    "loc:IsCommentRequired": "RequestMaster.IsCommentRequire",
+    "dom:RequestMaster_IsCommentRequire": "RequestMaster.IsCommentRequire"
+  },
+  "fields": [
+    {
+      "id": "RequestMaster.Code",
+      "label": "Code",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:Code",
+        "dom:RequestMaster_Code"
+      ],
+      "rules": "Required. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestMaster.SecurityLevel",
+      "label": "SecurityLevel",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:SecurityLevel",
+        "dom:RequestMaster_SecurityLevel"
+      ],
+      "rules": "Required. One of: EmployeeOnly, EmployeeManager, EmployeeDepartment, Everyone.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who may see requests on this chain.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestMaster.NameEn",
+      "label": "NameEn",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:NameEn",
+        "dom:RequestMaster_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestMaster.NameAr",
+      "label": "NameAr",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:NameAr",
+        "dom:RequestMaster_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestMaster.DefaultApproverId",
+      "label": "DefaultApprover",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:DefaultApprover",
+        "dom:RequestMaster_DefaultApproverId"
+      ],
+      "rules": "Optional. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee who approves when a step finds nobody.</p><p><strong>Example.</strong> HR Manager</p><p><strong>Why it matters.</strong> Used as the last resort at any step: when the step's role has no holders, the manager chain runs out, or every candidate already signed an earlier signatory step. If that employee has delegated their approvals, the request goes to their stand-in.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestMaster.AutoCloseInDays",
+      "label": "AutoCloseInDays",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:AutoCloseInDays",
+        "dom:RequestMaster_AutoCloseInDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many days after approval a request closes by itself.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestMaster.DueInDays",
+      "label": "DueInDays",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:DueInDays",
+        "dom:RequestMaster_DueInDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many days a request has to be completed.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestMaster.AutoClose",
+      "label": "AutoClose",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:AutoClose",
+        "dom:RequestMaster_AutoClose"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether approved requests close by themselves.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestMaster.IsCommentRequire",
+      "label": "IsCommentRequired",
+      "section": "RequestMasters",
+      "aliases": [
+        "loc:IsCommentRequired",
+        "dom:RequestMaster_IsCommentRequire"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether approvers must write a comment.</p><p><strong>Why it matters.</strong> Not read at present. The same box on each step is the one that is enforced.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

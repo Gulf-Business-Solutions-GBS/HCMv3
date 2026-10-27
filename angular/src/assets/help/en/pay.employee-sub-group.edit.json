@@ -1,0 +1,203 @@
+{
+  "helpId": "pay.employee-sub-group.edit",
+  "lang": "en",
+  "title": "Employee Sub Groups — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroup",
+  "overviewHtml": "<p>A finer grouping of employees under a salary profile, and the place most benefit rules hang from: leave, gratuity, air tickets, health reimbursement, bonus and other entitlements are all set per grade on its own tabs. Each employee's organisation assignment names their grade.</p><p>The fields on this form are the grade's general settings for overtime, air tickets and health reimbursement.</p>",
+  "aliasIndex": {
+    "loc:EmployeeGroup": "EmployeeSubGroup.EmployeeGroupId",
+    "dom:EmployeeSubGroup_EmployeeGroupId": "EmployeeSubGroup.EmployeeGroupId",
+    "loc:Code": "EmployeeSubGroup.Code",
+    "dom:EmployeeSubGroup_Code": "EmployeeSubGroup.Code",
+    "loc:TicketClass": "EmployeeSubGroup.TicketClassId",
+    "dom:EmployeeSubGroup_TicketClassId": "EmployeeSubGroup.TicketClassId",
+    "loc:NameEn": "EmployeeSubGroup.NameEn",
+    "dom:EmployeeSubGroup_NameEn": "EmployeeSubGroup.NameEn",
+    "loc:NameAr": "EmployeeSubGroup.NameAr",
+    "dom:EmployeeSubGroup_NameAr": "EmployeeSubGroup.NameAr",
+    "loc:PayOvertime": "EmployeeSubGroup.PayOvertime",
+    "dom:EmployeeSubGroup_PayOvertime": "EmployeeSubGroup.PayOvertime",
+    "loc:AirTicketPayType": "EmployeeSubGroup.AirTicketPayType",
+    "dom:EmployeeSubGroup_AirTicketPayType": "EmployeeSubGroup.AirTicketPayType",
+    "loc:AutoPayAirTicket": "EmployeeSubGroup.AutoPayAirTicket",
+    "dom:EmployeeSubGroup_AutoPayAirTicket": "EmployeeSubGroup.AutoPayAirTicket",
+    "loc:MaxDependantAirTicketCount": "EmployeeSubGroup.MaxDependantAirTicketCount",
+    "dom:EmployeeSubGroup_MaxDependantAirTicketCount": "EmployeeSubGroup.MaxDependantAirTicketCount",
+    "loc:MaxHealthReimburseAmount": "EmployeeSubGroup.MaxHealthReimburseAmount",
+    "dom:EmployeeSubGroup_MaxHealthReimburseAmount": "EmployeeSubGroup.MaxHealthReimburseAmount",
+    "loc:HealthInsurancePeriod": "EmployeeSubGroup.HealthInsurancePeriod",
+    "dom:EmployeeSubGroup_HealthInsurancePeriod": "EmployeeSubGroup.HealthInsurancePeriod",
+    "loc:MaxDependantHealthReimburseCount": "EmployeeSubGroup.MaxDependantHealthReimburseCount",
+    "dom:EmployeeSubGroup_MaxDependantHealthReimburseCount": "EmployeeSubGroup.MaxDependantHealthReimburseCount"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroup.EmployeeGroupId",
+      "label": "EmployeeGroup",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:EmployeeGroup",
+        "dom:EmployeeSubGroup_EmployeeGroupId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The salary profile this grade belongs to.</p><p><strong>Example.</strong> Staff</p><p><strong>Why it matters.</strong> Groups the grades; the grade list can be filtered by it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroup.Code",
+      "label": "Code",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:Code",
+        "dom:EmployeeSubGroup_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroup.TicketClassId",
+      "label": "TicketClass",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:TicketClass",
+        "dom:EmployeeSubGroup_TicketClassId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The class of air travel the grade is entitled to.</p><p><strong>Example.</strong> Economy</p><p><strong>Why it matters.</strong> When the air ticket pay type is <em>FareAmount</em>, the ticket is priced from the fare for this class on the employee's ticket route. Left blank, a fare-priced ticket is worth 0.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroup.NameEn",
+      "label": "NameEn",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:NameEn",
+        "dom:EmployeeSubGroup_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroup.NameAr",
+      "label": "NameAr",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:NameAr",
+        "dom:EmployeeSubGroup_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroup.PayOvertime",
+      "label": "PayOvertime",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:PayOvertime",
+        "dom:EmployeeSubGroup_PayOvertime"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether employees in this grade are paid for overtime.</p><p><strong>Why it matters.</strong> Ticked, the time engine turns overtime it finds on a day into an employee overtime record, which is then approved and paid. Unticked, no overtime record is created, so no overtime is paid however long the employee works.</p>",
+      "adminHtml": "<p>With it ticked, a day with overtime needs an overtime type — set on the duty, or on the holiday for a public holiday. Without one the time engine raises an error for that day asking for one.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroup.AirTicketPayType",
+      "label": "AirTicketPayType",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:AirTicketPayType",
+        "dom:EmployeeSubGroup_AirTicketPayType"
+      ],
+      "rules": "Required. One of: FareAmount, Fix Amount, Actual Amount, ActualAmountWithinMaxlimit.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the value of one air ticket is worked out for this grade.</p><p><strong>Example.</strong> Fix Amount</p><p><strong>Why it matters.</strong> <em>FareAmount</em> prices the ticket from the fare table for the ticket class and the employee's route. <em>Fix Amount</em> uses the fixed amount on the grade's ticket rule. <em>Actual Amount</em> divides what was actually paid by the number of tickets, falling back to the rule's maximum amount when nothing was paid. <em>ActualAmountWithinMaxlimit</em> does the same division but never goes above the rule's maximum amount. The average-ticket wagetype is priced this way.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroup.AutoPayAirTicket",
+      "label": "AutoPayAirTicket",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:AutoPayAirTicket",
+        "dom:EmployeeSubGroup_AutoPayAirTicket"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether air tickets are paid automatically when they fall due.</p><p><strong>Why it matters.</strong> Ticked, the time engine adds an employee ticket for each ticket type on the first day of that ticket's accrual period — the employee's own ticket and their dependants' — without anyone entering it. Benefit exceptions for the employee or a dependant are respected; an exception of 0 means not entitled.</p>",
+      "adminHtml": "<p>A ticket type with no ticket rule on the grade is paid automatically only when the employee has an exception for it.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroup.MaxDependantAirTicketCount",
+      "label": "MaxDependantAirTicketCount",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:MaxDependantAirTicketCount",
+        "dom:EmployeeSubGroup_MaxDependantAirTicketCount"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most dependant air tickets paid automatically at one time.</p><p><strong>Example.</strong> <code>3</code></p><p><strong>Why it matters.</strong> When automatic air ticket pay reaches this many dependant tickets it stops adding more. 0 means no limit.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroup.MaxHealthReimburseAmount",
+      "label": "MaxHealthReimburseAmount",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:MaxHealthReimburseAmount",
+        "dom:EmployeeSubGroup_MaxHealthReimburseAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most an employee in this grade can be reimbursed for health expenses in one health insurance year.</p><p><strong>Example.</strong> <code>500</code></p><p><strong>Why it matters.</strong> Caps the employee's health reimbursement quota, after any balance carried forward from the previous year is added. 0 means no cap.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroup.HealthInsurancePeriod",
+      "label": "HealthInsurancePeriod",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:HealthInsurancePeriod",
+        "dom:EmployeeSubGroup_HealthInsurancePeriod"
+      ],
+      "rules": "Required. One of: None, January, February, March, April, May, June, July, August, September, October, November, December.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The month the health insurance year starts.</p><p><strong>Example.</strong> January</p><p><strong>Why it matters.</strong> The reimbursement quota resets every year from the first of this month. <em>None</em> makes each employee's year run from their joining date instead.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroup.MaxDependantHealthReimburseCount",
+      "label": "MaxDependantHealthReimburseCount",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:MaxDependantHealthReimburseCount",
+        "dom:EmployeeSubGroup_MaxDependantHealthReimburseCount"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most dependants whose health reimbursement entitlement counts towards the employee's amount.</p><p><strong>Example.</strong> <code>4</code></p><p><strong>Why it matters.</strong> The eligible amount adds up the grade's per-dependant entitlements for the employee's dependants, up to this many. 0 means no limit.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

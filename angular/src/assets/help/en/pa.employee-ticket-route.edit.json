@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-ticket-route.edit",
+  "lang": "en",
+  "title": "Employee Ticket Routes — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeTicketRoute",
+  "overviewHtml": "<p>The route the employee's air tickets are priced on, for a period. Routes for the same employee cannot overlap.</p><p>The ticket provision and average ticket calculations take the fare for this route.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeTicketRoute.StartDate",
+    "dom:EmployeeTicketRoute_StartDate": "EmployeeTicketRoute.StartDate",
+    "loc:EndDate": "EmployeeTicketRoute.EndDate",
+    "dom:EmployeeTicketRoute_EndDate": "EmployeeTicketRoute.EndDate",
+    "loc:TicketRouteId": "EmployeeTicketRoute.TicketRouteId",
+    "dom:EmployeeTicketRoute_TicketRouteId": "EmployeeTicketRoute.TicketRouteId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeTicketRoute.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeTicketRoutes",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeTicketRoute_StartDate"
+      ],
+      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicketRoute.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeTicketRoutes",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeTicketRoute_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicketRoute.TicketRouteId",
+      "label": "TicketRouteId",
+      "section": "EmployeeTicketRoutes",
+      "aliases": [
+        "loc:TicketRouteId",
+        "dom:EmployeeTicketRoute_TicketRouteId"
+      ],
+      "rules": "Required. Chosen from Ticket Route master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The route.</p><p><strong>Example.</strong> Kuwait – Cairo</p><p><strong>Why it matters.</strong> The ticket fare is looked up for this route; without a fare row for the route, the provision line is left unchanged.</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Ticket Routes, with fares under Payroll Management → Ticket Fares.</p>",
+      "stub": false
+    }
+  ]
+}

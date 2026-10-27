@@ -1,0 +1,43 @@
+{
+  "helpId": "tm.holiday-period.edit",
+  "lang": "en",
+  "title": "Holiday Periods — Create / Edit",
+  "entity": "HCMv3.TimeManagement.HolidayPeriod",
+  "overviewHtml": "<p>One date of a holiday. A holiday lasting three days has three holiday periods. The time engine treats the date as a public holiday for employees whose duty period uses the holiday's calendar.</p>",
+  "aliasIndex": {
+    "loc:Holiday": "HolidayPeriod.HolidayId",
+    "dom:HolidayPeriod_HolidayId": "HolidayPeriod.HolidayId",
+    "loc:HolidayDate": "HolidayPeriod.HolidayDate",
+    "dom:HolidayPeriod_HolidayDate": "HolidayPeriod.HolidayDate"
+  },
+  "fields": [
+    {
+      "id": "HolidayPeriod.HolidayId",
+      "label": "Holiday",
+      "section": "HolidayPeriods",
+      "aliases": [
+        "loc:Holiday",
+        "dom:HolidayPeriod_HolidayId"
+      ],
+      "rules": "Required. Chosen from Holiday master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The holiday.</p><p><strong>Example.</strong> Eid al-Fitr</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "HolidayPeriod.HolidayDate",
+      "label": "HolidayDate",
+      "section": "HolidayPeriods",
+      "aliases": [
+        "loc:HolidayDate",
+        "dom:HolidayPeriod_HolidayDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date of the holiday.</p><p><strong>Example.</strong> <code>2026-03-20</code></p><p><strong>Why it matters.</strong> A holiday can have each date once.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

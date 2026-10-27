@@ -1,0 +1,91 @@
+{
+  "helpId": "wf.workflow-group-field-access.edit",
+  "lang": "en",
+  "title": "Workflow Group Field Accesses — Create / Edit",
+  "entity": "HCMv3.Workflow.WorkflowGroupFieldAccess",
+  "overviewHtml": "<p>Whether a field on the request form is shown, editable or required at a given step. The step must exist on the chain, and a field can be listed once per step. Not read at present: the request forms do not apply these rows.</p>",
+  "aliasIndex": {
+    "loc:Step": "WorkflowGroupFieldAccess.Step",
+    "dom:WorkflowGroupFieldAccess_Step": "WorkflowGroupFieldAccess.Step",
+    "loc:Field": "WorkflowGroupFieldAccess.Field",
+    "dom:WorkflowGroupFieldAccess_Field": "WorkflowGroupFieldAccess.Field",
+    "loc:IsVisible": "WorkflowGroupFieldAccess.IsVisible",
+    "dom:WorkflowGroupFieldAccess_IsVisible": "WorkflowGroupFieldAccess.IsVisible",
+    "loc:IsEditable": "WorkflowGroupFieldAccess.IsEditable",
+    "dom:WorkflowGroupFieldAccess_IsEditable": "WorkflowGroupFieldAccess.IsEditable",
+    "loc:IsRequired": "WorkflowGroupFieldAccess.IsRequired",
+    "dom:WorkflowGroupFieldAccess_IsRequired": "WorkflowGroupFieldAccess.IsRequired"
+  },
+  "fields": [
+    {
+      "id": "WorkflowGroupFieldAccess.Step",
+      "label": "Step",
+      "section": "WorkflowGroupFieldAccesses",
+      "aliases": [
+        "loc:Step",
+        "dom:WorkflowGroupFieldAccess_Step"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The step the rule applies at.</p><p><strong>Example.</strong> 2</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroupFieldAccess.Field",
+      "label": "Field",
+      "section": "WorkflowGroupFieldAccesses",
+      "aliases": [
+        "loc:Field",
+        "dom:WorkflowGroupFieldAccess_Field"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The form field.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroupFieldAccess.IsVisible",
+      "label": "IsVisible",
+      "section": "WorkflowGroupFieldAccesses",
+      "aliases": [
+        "loc:IsVisible",
+        "dom:WorkflowGroupFieldAccess_IsVisible"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the field is shown.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroupFieldAccess.IsEditable",
+      "label": "IsEditable",
+      "section": "WorkflowGroupFieldAccesses",
+      "aliases": [
+        "loc:IsEditable",
+        "dom:WorkflowGroupFieldAccess_IsEditable"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the field can be changed.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroupFieldAccess.IsRequired",
+      "label": "IsRequired",
+      "section": "WorkflowGroupFieldAccesses",
+      "aliases": [
+        "loc:IsRequired",
+        "dom:WorkflowGroupFieldAccess_IsRequired"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the field must be filled in.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

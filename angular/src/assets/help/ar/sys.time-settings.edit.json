@@ -1,0 +1,699 @@
+{
+  "helpId": "sys.time-settings.edit",
+  "lang": "ar",
+  "title": "Time settings",
+  "entity": "HCMv3.SystemSettings.ManageTimeSettings",
+  "overviewHtml": "<p>سلوك الوقت والحضور على مستوى الشركة: من أين يبدأ الاحتساب، والمناوبات، وتكاملات الحضور، وكيف تجتمع العطلات مع أيام الراحة، والإجازة بالساعات، والعمل الإضافي، ومصادرة الإجازات، واعتماد سجلات الوقت.</p><p>وكثير من قواعد طلب الإجازة في النصف السفلي لا تُطبَّق حالياً، ومبيَّن ذلك.</p><p>لكل شركة سجل إعدادات واحد، ولا يمكن حذفه.</p>",
+  "aliasIndex": {
+    "loc:EarliestEvaluationDate": "ManageTimeSettings.EarliestEvaluationDate",
+    "dom:TimeSettings_EarliestEvaluationDate": "ManageTimeSettings.EarliestEvaluationDate",
+    "loc:FutureEvaluationInDays": "ManageTimeSettings.FutureEvaluationInDays",
+    "dom:TimeSettings_FutureEvaluationInDays": "ManageTimeSettings.FutureEvaluationInDays",
+    "loc:RosterPlannerFrequency": "ManageTimeSettings.RosterPlannerFrequency",
+    "dom:TimeSettings_RosterPlannerFrequency": "ManageTimeSettings.RosterPlannerFrequency",
+    "loc:EnableRosterDuty": "ManageTimeSettings.EnableRosterDuty",
+    "dom:TimeSettings_EnableRosterDuty": "ManageTimeSettings.EnableRosterDuty",
+    "loc:EnableTimeEngineAutorun": "ManageTimeSettings.EnableTimeEngineAutorun",
+    "dom:TimeSettings_EnableTimeEngineAutorun": "ManageTimeSettings.EnableTimeEngineAutorun",
+    "loc:EnableMiddleTierTimeEvents": "ManageTimeSettings.EnableMiddleTierTimeEvents",
+    "dom:TimeSettings_EnableMiddleTierTimeEvents": "ManageTimeSettings.EnableMiddleTierTimeEvents",
+    "loc:EnableGeoFence": "ManageTimeSettings.EnableGeoFence",
+    "dom:TimeSettings_EnableGeoFence": "ManageTimeSettings.EnableGeoFence",
+    "loc:EnableTimeAttendanceIntegration": "ManageTimeSettings.EnableTimeAttendanceIntegration",
+    "dom:TimeSettings_EnableTimeAttendanceIntegration": "ManageTimeSettings.EnableTimeAttendanceIntegration",
+    "loc:EnableAttendanceOnHoliday": "ManageTimeSettings.EnableAttendanceOnHoliday",
+    "dom:TimeSettings_EnableAttendanceOnHoliday": "ManageTimeSettings.EnableAttendanceOnHoliday",
+    "loc:EnableAttendanceOnWeekOff": "ManageTimeSettings.EnableAttendanceOnWeekOff",
+    "dom:TimeSettings_EnableAttendanceOnWeekOff": "ManageTimeSettings.EnableAttendanceOnWeekOff",
+    "loc:EnableAttendanceOnRestDay": "ManageTimeSettings.EnableAttendanceOnRestDay",
+    "dom:TimeSettings_EnableAttendanceOnRestDay": "ManageTimeSettings.EnableAttendanceOnRestDay",
+    "loc:CountWeekoffOnPH": "ManageTimeSettings.CountWeekoffOnPH",
+    "dom:TimeSettings_CountWeekoffOnPH": "ManageTimeSettings.CountWeekoffOnPH",
+    "loc:CountRestDayOnPH": "ManageTimeSettings.CountRestDayOnPH",
+    "dom:TimeSettings_CountRestDayOnPH": "ManageTimeSettings.CountRestDayOnPH",
+    "loc:EnableTimeAttIntegrationAPI": "ManageTimeSettings.EnableTimeAttIntegrationAPI",
+    "dom:TimeSettings_EnableTimeAttIntegrationAPI": "ManageTimeSettings.EnableTimeAttIntegrationAPI",
+    "loc:AllowDuplicateInTimeEvent": "ManageTimeSettings.AllowDuplicateInTimeEvent",
+    "dom:TimeSettings_AllowDuplicateInTimeEvent": "ManageTimeSettings.AllowDuplicateInTimeEvent",
+    "loc:UseActualTransInPlannedTimePolicy": "ManageTimeSettings.UseActualTransInPlannedTimePolicy",
+    "dom:TimeSettings_UseActualTransInPlannedTimePolicy": "ManageTimeSettings.UseActualTransInPlannedTimePolicy",
+    "loc:EnableMySqlIntegration": "ManageTimeSettings.EnableMySqlIntegration",
+    "dom:TimeSettings_EnableMySqlIntegration": "ManageTimeSettings.EnableMySqlIntegration",
+    "loc:TimeEventImportPath": "ManageTimeSettings.TimeEventImportPath",
+    "dom:TimeSettings_TimeEventImportPath": "ManageTimeSettings.TimeEventImportPath",
+    "loc:TimeEventSyncBatchCount": "ManageTimeSettings.TimeEventSyncBatchCount",
+    "dom:TimeSettings_TimeEventSyncBatchCount": "ManageTimeSettings.TimeEventSyncBatchCount",
+    "loc:TimeEventSyncFreq": "ManageTimeSettings.TimeEventSyncFreq",
+    "dom:TimeSettings_TimeEventSyncFreq": "ManageTimeSettings.TimeEventSyncFreq",
+    "loc:MidTierSyncBatchCount": "ManageTimeSettings.MidTierSyncBatchCount",
+    "dom:TimeSettings_MidTierSyncBatchCount": "ManageTimeSettings.MidTierSyncBatchCount",
+    "loc:MidTierSyncFreq": "ManageTimeSettings.MidTierSyncFreq",
+    "dom:TimeSettings_MidTierSyncFreq": "ManageTimeSettings.MidTierSyncFreq",
+    "loc:ExcludePaidLeaveAccrualOnAbsent": "ManageTimeSettings.ExcludePaidLeaveAccrualOnAbsent",
+    "dom:TimeSettings_ExcludePaidLeaveAccrualOnAbsent": "ManageTimeSettings.ExcludePaidLeaveAccrualOnAbsent",
+    "loc:HourlyLeavelogicEnable": "ManageTimeSettings.HourlyLeavelogicEnable",
+    "dom:TimeSettings_HourlyLeavelogicEnable": "ManageTimeSettings.HourlyLeavelogicEnable",
+    "loc:HourlyLeaveShouldSignIn": "ManageTimeSettings.HourlyLeaveShouldSignIn",
+    "dom:TimeSettings_HourlyLeaveShouldSignIn": "ManageTimeSettings.HourlyLeaveShouldSignIn",
+    "loc:HourlyLeaveShouldSignOut": "ManageTimeSettings.HourlyLeaveShouldSignOut",
+    "dom:TimeSettings_HourlyLeaveShouldSignOut": "ManageTimeSettings.HourlyLeaveShouldSignOut",
+    "loc:RestrictUnpaidleaveIfAnnualleaveAvailable": "ManageTimeSettings.RestrictUnpaidleaveIfAnnualleaveAvailable",
+    "dom:TimeSettings_RestrictUnpaidleaveIfAnnualleaveAvailable": "ManageTimeSettings.RestrictUnpaidleaveIfAnnualleaveAvailable",
+    "loc:AllowPaidleaveBackdateEntry": "ManageTimeSettings.AllowPaidleaveBackdateEntry",
+    "dom:TimeSettings_AllowPaidleaveBackdateEntry": "ManageTimeSettings.AllowPaidleaveBackdateEntry",
+    "loc:SickLeaveAttachMandatory": "ManageTimeSettings.SickLeaveAttachMandatory",
+    "dom:TimeSettings_SickLeaveAttachMandatory": "ManageTimeSettings.SickLeaveAttachMandatory",
+    "loc:EnableAutoReturnInConsecutiveLeave": "ManageTimeSettings.EnableAutoReturnInConsecutiveLeave",
+    "dom:TimeSettings_EnableAutoReturnInConsecutiveLeave": "ManageTimeSettings.EnableAutoReturnInConsecutiveLeave",
+    "loc:AllowFutureDatedReturnFromLeave": "ManageTimeSettings.AllowFutureDatedReturnFromLeave",
+    "dom:TimeSettings_AllowFutureDatedReturnFromLeave": "ManageTimeSettings.AllowFutureDatedReturnFromLeave",
+    "loc:EnableAutoHalfDayLeave": "ManageTimeSettings.EnableAutoHalfDayLeave",
+    "dom:TimeSettings_EnableAutoHalfDayLeave": "ManageTimeSettings.EnableAutoHalfDayLeave",
+    "loc:EnableSettleFractionalLeaveBalance": "ManageTimeSettings.EnableSettleFractionalLeaveBalance",
+    "dom:TimeSettings_EnableSettleFractionalLeaveBalance": "ManageTimeSettings.EnableSettleFractionalLeaveBalance",
+    "loc:EnableBookingQuotaInLeaveRequest": "ManageTimeSettings.EnableBookingQuotaInLeaveRequest",
+    "dom:TimeSettings_EnableBookingQuotaInLeaveRequest": "ManageTimeSettings.EnableBookingQuotaInLeaveRequest",
+    "loc:LeaveDeductionStartMonth": "ManageTimeSettings.LeaveDeductionStartMonth",
+    "dom:TimeSettings_LeaveDeductionStartMonth": "ManageTimeSettings.LeaveDeductionStartMonth",
+    "loc:ForfeitRule": "ManageTimeSettings.ForfeitRule",
+    "dom:TimeSettings_ForfeitRule": "ManageTimeSettings.ForfeitRule",
+    "loc:AbsenceViolationRuleId": "ManageTimeSettings.AbsenceViolationRuleId",
+    "dom:TimeSettings_AbsenceViolationRuleId": "ManageTimeSettings.AbsenceViolationRuleId",
+    "loc:AbsenceViolationEffectiveDate": "ManageTimeSettings.AbsenceViolationEffectiveDate",
+    "dom:TimeSettings_AbsenceViolationEffectiveDate": "ManageTimeSettings.AbsenceViolationEffectiveDate",
+    "loc:EnableOvertimeInTimeEngine": "ManageTimeSettings.EnableOvertimeInTimeEngine",
+    "dom:TimeSettings_EnableOvertimeInTimeEngine": "ManageTimeSettings.EnableOvertimeInTimeEngine",
+    "loc:EnableIsTravelling": "ManageTimeSettings.EnableIsTravelling",
+    "dom:TimeSettings_EnableIsTravelling": "ManageTimeSettings.EnableIsTravelling",
+    "loc:EnablePayFullWithPayroll": "ManageTimeSettings.EnablePayFullWithPayroll",
+    "dom:TimeSettings_EnablePayFullWithPayroll": "ManageTimeSettings.EnablePayFullWithPayroll",
+    "loc:EnableTimeRegisterApproval": "ManageTimeSettings.EnableTimeRegisterApproval",
+    "dom:TimeSettings_EnableTimeRegisterApproval": "ManageTimeSettings.EnableTimeRegisterApproval",
+    "loc:AutoApproveTimeLog": "ManageTimeSettings.AutoApproveTimeLog",
+    "dom:TimeSettings_AutoApproveTimeLog": "ManageTimeSettings.AutoApproveTimeLog"
+  },
+  "fields": [
+    {
+      "id": "ManageTimeSettings.EarliestEvaluationDate",
+      "label": "EarliestEvaluationDate",
+      "section": null,
+      "aliases": [
+        "loc:EarliestEvaluationDate",
+        "dom:TimeSettings_EarliestEvaluationDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول تاريخ يحتسبه محرك الوقت.</p><p><strong>مثال.</strong> <code>2026-01-01</code></p><p><strong>لماذا يهم.</strong> لا يحتسب محرك الوقت الأيام السابقة له أبداً، وتبدأ منه عمليات استيراد الحضور إذا لم يُستورد شيء بعد، ويعامل نظام الرواتب تغييرات البيانات الأساسية المؤرخة قبله كأنها تمت فيه. اجعله تاريخ بدء التشغيل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.FutureEvaluationInDays",
+      "label": "FutureEvaluationInDays",
+      "section": null,
+      "aliases": [
+        "loc:FutureEvaluationInDays",
+        "dom:TimeSettings_FutureEvaluationInDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأيام المقبلة التي يحتسبها محرك الوقت.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.RosterPlannerFrequency",
+      "label": "RosterPlannerFrequency",
+      "section": null,
+      "aliases": [
+        "loc:RosterPlannerFrequency",
+        "dom:TimeSettings_RosterPlannerFrequency"
+      ],
+      "rules": "إلزامي. إحدى القيم: إسبوعي، شهري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد مرات تشغيل مخطط المناوبات.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableRosterDuty",
+      "label": "EnableRosterDuty",
+      "section": null,
+      "aliases": [
+        "loc:EnableRosterDuty",
+        "dom:TimeSettings_EnableRosterDuty"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الدوامات تأتي من المناوبات.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يجد محرك الوقت ونظام الرواتب دوام كل يوم عبر ترتيب المناوبات — الدوام البديل، ثم فترة دوام الموظف مع دورتها، ثم مجموعة المناوبة. وإلا فيبقى الدوام البديل مقدَّماً، ثم تُستخدم دوامات أيام الأسبوع في فترة دوام الموظف، وتُتجاهل دورات الأسابيع ومجموعات المناوبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableTimeEngineAutorun",
+      "label": "EnableTimeEngineAutorun",
+      "section": null,
+      "aliases": [
+        "loc:EnableTimeEngineAutorun",
+        "dom:TimeSettings_EnableTimeEngineAutorun"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان محرك الوقت يعمل تلقائياً.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه تشغّل مهمة خلفية محرك الوقت تلقائياً، ويتغير أسلوب تشغيل الرواتب في اختيار الموظفين وتواريخ التشغيل خارج الدورة (انظر تشغيل الرواتب). وإلا فلا يعمل محرك الوقت إلا عند تشغيله يدوياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableMiddleTierTimeEvents",
+      "label": "EnableMiddleTierTimeEvents",
+      "section": null,
+      "aliases": [
+        "loc:EnableMiddleTierTimeEvents",
+        "dom:TimeSettings_EnableMiddleTierTimeEvents"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت البصمات تُؤخذ من قاعدة بيانات الحضور الوسيطة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه تعمل مزامنة البصمات الوسيطة، وإلا فلا تفعل شيئاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableGeoFence",
+      "label": "EnableGeoFence",
+      "section": null,
+      "aliases": [
+        "loc:EnableGeoFence",
+        "dom:TimeSettings_EnableGeoFence"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب أن تكون بصمات الجوال ضمن نطاق موقع العمل.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableTimeAttendanceIntegration",
+      "label": "EnableTimeAttendanceIntegration",
+      "section": null,
+      "aliases": [
+        "loc:EnableTimeAttendanceIntegration",
+        "dom:TimeSettings_EnableTimeAttendanceIntegration"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت البصمات تُستورد من أجهزة الحضور.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يعمل الاستيراد من الأجهزة وإعادة السحب، وإلا فلا يفعلان شيئاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableAttendanceOnHoliday",
+      "label": "EnableAttendanceOnHoliday",
+      "section": null,
+      "aliases": [
+        "loc:EnableAttendanceOnHoliday",
+        "dom:TimeSettings_EnableAttendanceOnHoliday"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان محرك الوقت يسجّل المواظبة تلقائياً.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه ينشئ محرك الوقت سجلات مواظبة الموظفين أو يحدّثها بنفسه أثناء معالجة كل يوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableAttendanceOnWeekOff",
+      "label": "EnableAttendanceOnWeekOff",
+      "section": null,
+      "aliases": [
+        "loc:EnableAttendanceOnWeekOff",
+        "dom:TimeSettings_EnableAttendanceOnWeekOff"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت المواظبة تُسجَّل تلقائياً في أيام الراحة الأسبوعية.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableAttendanceOnRestDay",
+      "label": "EnableAttendanceOnRestDay",
+      "section": null,
+      "aliases": [
+        "loc:EnableAttendanceOnRestDay",
+        "dom:TimeSettings_EnableAttendanceOnRestDay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت المواظبة تُسجَّل تلقائياً في أيام الراحة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.CountWeekoffOnPH",
+      "label": "CountWeekoffOnPH",
+      "section": null,
+      "aliases": [
+        "loc:CountWeekoffOnPH",
+        "dom:TimeSettings_CountWeekoffOnPH"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت العطلة الرسمية الواقعة في راحة أسبوعية تُعدّ راحة أسبوعية.</p><p><strong>لماذا يهم.</strong> لا يمكن أن يكون اليوم الاثنين معاً. فإذا أُشِّر عليه يُعدّ راحة أسبوعية، وإلا فعطلة رسمية. وهذا يغيّر ما يصرفه نظام الرواتب عن اليوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.CountRestDayOnPH",
+      "label": "CountRestDayOnPH",
+      "section": null,
+      "aliases": [
+        "loc:CountRestDayOnPH",
+        "dom:TimeSettings_CountRestDayOnPH"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت العطلة الرسمية الواقعة في يوم راحة تُعدّ يوم راحة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُعدّ يوم راحة، وإلا فعطلة رسمية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableTimeAttIntegrationAPI",
+      "label": "EnableTimeAttIntegrationAPI",
+      "section": null,
+      "aliases": [
+        "loc:EnableTimeAttIntegrationAPI",
+        "dom:TimeSettings_EnableTimeAttIntegrationAPI"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت البصمات تُستورد من الواجهة البرمجية لنظام الحضور (BioTime).</p><p><strong>لماذا يهم.</strong> هو المفتاح نفسه في <strong>مركز التكامل ← BioTime</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.AllowDuplicateInTimeEvent",
+      "label": "AllowDuplicateInTimeEvent",
+      "section": null,
+      "aliases": [
+        "loc:AllowDuplicateInTimeEvent",
+        "dom:TimeSettings_AllowDuplicateInTimeEvent"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز الاحتفاظ ببصمتين متطابقتين.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.UseActualTransInPlannedTimePolicy",
+      "label": "UseActualTransInPlannedTimePolicy",
+      "section": null,
+      "aliases": [
+        "loc:UseActualTransInPlannedTimePolicy",
+        "dom:TimeSettings_UseActualTransInPlannedTimePolicy"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت بصمات موظفي الوقت المخطط تُقرأ رغم ذلك.</p><p><strong>لماذا يهم.</strong> إذا لم يُؤشَّر عليه يُعدّ موظفو سياسة <em>الوقت المخطط</em> قد عملوا المناوبة المخططة. وإذا أُشِّر عليه تُقرأ بصمات دخولهم وخروجهم أيضاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableMySqlIntegration",
+      "label": "EnableMySqlIntegration",
+      "section": null,
+      "aliases": [
+        "loc:EnableMySqlIntegration",
+        "dom:TimeSettings_EnableMySqlIntegration"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت البصمات تُستورد من قاعدة بيانات حضور MySQL.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يعمل الاستيراد من MySQL، وإلا فلا يفعل شيئاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.TimeEventImportPath",
+      "label": "TimeEventImportPath",
+      "section": null,
+      "aliases": [
+        "loc:TimeEventImportPath",
+        "dom:TimeSettings_TimeEventImportPath"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المجلد الذي تُستورد منه ملفات البصمات.</p><p><strong>مثال.</strong> <code>D:\\Attendance\\Import</code></p><p><strong>لماذا يهم.</strong> يفحص الاستيراد من الملفات هذا المجلد بحثاً عن ملفات البصمات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.TimeEventSyncBatchCount",
+      "label": "TimeEventSyncBatchCount",
+      "section": null,
+      "aliases": [
+        "loc:TimeEventSyncBatchCount",
+        "dom:TimeSettings_TimeEventSyncBatchCount"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد البصمات المزامنة في المرة الواحدة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.TimeEventSyncFreq",
+      "label": "TimeEventSyncFreq",
+      "section": null,
+      "aliases": [
+        "loc:TimeEventSyncFreq",
+        "dom:TimeSettings_TimeEventSyncFreq"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد مرات مزامنة البصمات.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.MidTierSyncBatchCount",
+      "label": "MidTierSyncBatchCount",
+      "section": null,
+      "aliases": [
+        "loc:MidTierSyncBatchCount",
+        "dom:TimeSettings_MidTierSyncBatchCount"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد البصمات الوسيطة المزامنة في المرة الواحدة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.MidTierSyncFreq",
+      "label": "MidTierSyncFreq",
+      "section": null,
+      "aliases": [
+        "loc:MidTierSyncFreq",
+        "dom:TimeSettings_MidTierSyncFreq"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد مرات مزامنة البصمات الوسيطة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.ExcludePaidLeaveAccrualOnAbsent",
+      "label": "ExcludePaidLeaveAccrualOnAbsent",
+      "section": null,
+      "aliases": [
+        "loc:ExcludePaidLeaveAccrualOnAbsent",
+        "dom:TimeSettings_ExcludePaidLeaveAccrualOnAbsent"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت أيام الغياب لا تُكسب إجازة سنوية.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه لا يراكم محرك الوقت إجازة سنوية عن يوم غاب فيه الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.HourlyLeavelogicEnable",
+      "label": "HourlyLeavelogicEnable",
+      "section": null,
+      "aliases": [
+        "loc:HourlyLeavelogicEnable",
+        "dom:TimeSettings_HourlyLeavelogicEnable"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الإجازة بالساعات في بداية المناوبة أو نهايتها تنقل البصمة المتوقعة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يأخذ محرك الوقت الإجازة بالساعات في الحسبان عند قراءة الدخول والخروج لموظفي الوقت الفعلي، فلا يُعدّ الانصراف المبكر أو التأخر بسبب الإجازة تأخيراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.HourlyLeaveShouldSignIn",
+      "label": "HourlyLeaveShouldSignIn",
+      "section": null,
+      "aliases": [
+        "loc:HourlyLeaveShouldSignIn",
+        "dom:TimeSettings_HourlyLeaveShouldSignIn"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب على الموظف تسجيل الدخول بعد الإجازة بالساعات في بداية المناوبة.</p><p><strong>لماذا يهم.</strong> يُستخدم مع منطق الإجازة بالساعات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.HourlyLeaveShouldSignOut",
+      "label": "HourlyLeaveShouldSignOut",
+      "section": null,
+      "aliases": [
+        "loc:HourlyLeaveShouldSignOut",
+        "dom:TimeSettings_HourlyLeaveShouldSignOut"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب على الموظف تسجيل الخروج قبل الإجازة بالساعات في نهاية المناوبة.</p><p><strong>لماذا يهم.</strong> يُستخدم مع منطق الإجازة بالساعات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.RestrictUnpaidleaveIfAnnualleaveAvailable",
+      "label": "RestrictUnpaidleaveIfAnnualleaveAvailable",
+      "section": null,
+      "aliases": [
+        "loc:RestrictUnpaidleaveIfAnnualleaveAvailable",
+        "dom:TimeSettings_RestrictUnpaidleaveIfAnnualleaveAvailable"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الإجازة غير المدفوعة تُرفض ما دام رصيد إجازة سنوية باقياً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.AllowPaidleaveBackdateEntry",
+      "label": "AllowPaidleaveBackdateEntry",
+      "section": null,
+      "aliases": [
+        "loc:AllowPaidleaveBackdateEntry",
+        "dom:TimeSettings_AllowPaidleaveBackdateEntry"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز إدخال الإجازة المدفوعة بتاريخ سابق.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.SickLeaveAttachMandatory",
+      "label": "SickLeaveAttachMandatory",
+      "section": null,
+      "aliases": [
+        "loc:SickLeaveAttachMandatory",
+        "dom:TimeSettings_SickLeaveAttachMandatory"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الإجازة المرضية تتطلب مرفقاً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableAutoReturnInConsecutiveLeave",
+      "label": "EnableAutoReturnInConsecutiveLeave",
+      "section": null,
+      "aliases": [
+        "loc:EnableAutoReturnInConsecutiveLeave",
+        "dom:TimeSettings_EnableAutoReturnInConsecutiveLeave"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت العودة تُسجَّل تلقائياً بين الإجازات المتتالية.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.AllowFutureDatedReturnFromLeave",
+      "label": "AllowFutureDatedReturnFromLeave",
+      "section": null,
+      "aliases": [
+        "loc:AllowFutureDatedReturnFromLeave",
+        "dom:TimeSettings_AllowFutureDatedReturnFromLeave"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز أن يكون تاريخ العودة من الإجازة في المستقبل.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableAutoHalfDayLeave",
+      "label": "EnableAutoHalfDayLeave",
+      "section": null,
+      "aliases": [
+        "loc:EnableAutoHalfDayLeave",
+        "dom:TimeSettings_EnableAutoHalfDayLeave"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت إجازة نصف اليوم تُنشأ تلقائياً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableSettleFractionalLeaveBalance",
+      "label": "EnableSettleFractionalLeaveBalance",
+      "section": null,
+      "aliases": [
+        "loc:EnableSettleFractionalLeaveBalance",
+        "dom:TimeSettings_EnableSettleFractionalLeaveBalance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت أرصدة الإجازات الكسرية تُسوّى.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableBookingQuotaInLeaveRequest",
+      "label": "EnableBookingQuotaInLeaveRequest",
+      "section": null,
+      "aliases": [
+        "loc:EnableBookingQuotaInLeaveRequest",
+        "dom:TimeSettings_EnableBookingQuotaInLeaveRequest"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان طلب الإجازة يحجز الرصيد فوراً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.LeaveDeductionStartMonth",
+      "label": "LeaveDeductionStartMonth",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDeductionStartMonth",
+        "dom:TimeSettings_LeaveDeductionStartMonth"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الإجازة تُخصم من الشهر الذي تبدأ فيه.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.ForfeitRule",
+      "label": "ForfeitRule",
+      "section": null,
+      "aliases": [
+        "loc:ForfeitRule",
+        "dom:TimeSettings_ForfeitRule"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، شهري، سنوي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى تُصادر الإجازة السنوية التي تتجاوز الحد الأقصى للمجموعة الفرعية.</p><p><strong>مثال.</strong> لا شيء</p><p><strong>لماذا يهم.</strong> <em>لا شيء</em> يخفض الرصيد إلى الحد الأقصى يوماً بيوم أثناء تشغيل محرك الوقت. و<em>شهري</em> و<em>سنوي</em> يسمحان بتجاوزه ويسجّلان المصادرة في نهاية كل شهر أو سنة. وتتبع تقارير مخصص الإجازات والإجازة السنوية القاعدة نفسها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.AbsenceViolationRuleId",
+      "label": "AbsenceViolationRuleId",
+      "section": null,
+      "aliases": [
+        "loc:AbsenceViolationRuleId",
+        "dom:TimeSettings_AbsenceViolationRuleId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> قاعدة مخالفة الغياب المطبقة على الموظفين.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.AbsenceViolationEffectiveDate",
+      "label": "AbsenceViolationEffectiveDate",
+      "section": null,
+      "aliases": [
+        "loc:AbsenceViolationEffectiveDate",
+        "dom:TimeSettings_AbsenceViolationEffectiveDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي يبدأ منه فحص مخالفات الغياب.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableOvertimeInTimeEngine",
+      "label": "EnableOvertimeInTimeEngine",
+      "section": null,
+      "aliases": [
+        "loc:EnableOvertimeInTimeEngine",
+        "dom:TimeSettings_EnableOvertimeInTimeEngine"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان محرك الوقت يحتسب العمل الإضافي.</p><p><strong>لماذا يهم.</strong> إذا لم يُؤشَّر عليه لا تُنتج أي دقائق عمل إضافي أو سجلات عمل إضافي، مهما كانت الدوامات والسياسات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableIsTravelling",
+      "label": "EnableIsTravelling",
+      "section": null,
+      "aliases": [
+        "loc:EnableIsTravelling",
+        "dom:TimeSettings_EnableIsTravelling"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يمكن تأشير الموظفين على أنهم مسافرون.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnablePayFullWithPayroll",
+      "label": "EnablePayFullWithPayroll",
+      "section": null,
+      "aliases": [
+        "loc:EnablePayFullWithPayroll",
+        "dom:TimeSettings_EnablePayFullWithPayroll"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يمكن صرف الإجازة كاملة مع الرواتب.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.EnableTimeRegisterApproval",
+      "label": "EnableTimeRegisterApproval",
+      "section": null,
+      "aliases": [
+        "loc:EnableTimeRegisterApproval",
+        "dom:TimeSettings_EnableTimeRegisterApproval"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب اعتماد سجلات الوقت قبل الرواتب.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يستخدم نظام الرواتب الأرقام المعتمدة ويرفض التشغيل للموظف الذي له أي يوم غير معتمد في الفترة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageTimeSettings.AutoApproveTimeLog",
+      "label": "AutoApproveTimeLog",
+      "section": null,
+      "aliases": [
+        "loc:AutoApproveTimeLog",
+        "dom:TimeSettings_AutoApproveTimeLog"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الأيام التي لا شيء فيها للمراجعة تُعتمد تلقائياً.</p><p><strong>لماذا يهم.</strong> يُستخدم مع اعتماد سجل الوقت: يعتمد محرك الوقت اليوم بنفسه إذا لم يكن فيه ما يستحق الاعتماد.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

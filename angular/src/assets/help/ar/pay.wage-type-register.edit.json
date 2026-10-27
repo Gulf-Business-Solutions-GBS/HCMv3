@@ -1,0 +1,59 @@
+{
+  "helpId": "pay.wage-type-register.edit",
+  "lang": "ar",
+  "title": "سجلات أنواع الأجور — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.WageTypeRegister",
+  "overviewHtml": "<p>سطر سجل لفترة رواتب. لا يُقرأ حالياً: لا يكتب نظام الرواتب هذه الأسطر ولا يقرؤها، وهي محفوظة للرجوع إليها فقط.</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "WageTypeRegister.EmployeeId",
+    "dom:WageTypeRegister_EmployeeId": "WageTypeRegister.EmployeeId",
+    "loc:ForPeriod": "WageTypeRegister.ForPeriod",
+    "dom:WageTypeRegister_ForPeriod": "WageTypeRegister.ForPeriod",
+    "loc:InPeriod": "WageTypeRegister.InPeriod",
+    "dom:WageTypeRegister_InPeriod": "WageTypeRegister.InPeriod"
+  },
+  "fields": [
+    {
+      "id": "WageTypeRegister.EmployeeId",
+      "label": "EmployeeId",
+      "section": "WageTypeRegisters",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:WageTypeRegister_EmployeeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يخصه السطر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageTypeRegister.ForPeriod",
+      "label": "ForPeriod",
+      "section": "WageTypeRegisters",
+      "aliases": [
+        "loc:ForPeriod",
+        "dom:WageTypeRegister_ForPeriod"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الفترة التي يخصها السطر.</p><p><strong>مثال.</strong> <code>202604</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageTypeRegister.InPeriod",
+      "label": "InPeriod",
+      "section": "WageTypeRegisters",
+      "aliases": [
+        "loc:InPeriod",
+        "dom:WageTypeRegister_InPeriod"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الفترة التي سُجِّل فيها السطر.</p><p><strong>مثال.</strong> <code>202605</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "helpId": "pay.employee-sub-group-wage-type.edit",
+  "lang": "ar",
+  "title": "أنواع أجور المجموعة الفرعية للموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupWageType",
+  "overviewHtml": "<p>أنواع أجور مدرجة لمجموعة فرعية للموظفين. لا تُقرأ حالياً: لا يستخدم نظام الرواتب هذه القائمة، وهي محفوظة للرجوع إليها فقط.</p>",
+  "aliasIndex": {
+    "loc:WageType": "EmployeeSubGroupWageType.WageTypeId",
+    "dom:EmployeeSubGroupWageType_WageTypeId": "EmployeeSubGroupWageType.WageTypeId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupWageType.WageTypeId",
+      "label": "WageType",
+      "section": "EmployeeSubGroupWageTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:EmployeeSubGroupWageType_WageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع أجر مدرج للمجموعة الفرعية.</p><p><strong>مثال.</strong> بدل موقع</p><p><strong>لماذا يهم.</strong> لا يُدرج نوع الأجر إلا مرة واحدة لكل مجموعة فرعية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

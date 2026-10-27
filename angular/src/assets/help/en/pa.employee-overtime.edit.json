@@ -1,0 +1,107 @@
+{
+  "helpId": "pa.employee-overtime.edit",
+  "lang": "en",
+  "title": "Employee Overtimes — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeOvertime",
+  "overviewHtml": "<p>Overtime for the employee on one date: hours requested, hours the time engine measured, and hours approved. One overtime record per employee per date.</p><p>Payroll pays the approved hours multiplied by the overtime type's rate. The time engine creates these records itself when it finds overtime, and fills in the approved hours from the measured hours if none were approved.</p><p>Once the record is saved, the form also shows the <strong>Expected Overtime Amount</strong> (read-only, never stored; also a column in the overtime list and on the overtime and monthly payroll transaction reports). It is the approved hours times the overtime type's rate, times an hourly rate. The hourly rate is the fixed rate of the overtime type detail covering the date; otherwise, and when no detail covers the date, it is the employee's basic pay divided by the days of the month — fixed days, calendar days or working days, as the overtime type's wage type is billed — and then by the payroll settings' overtime hours basis (the default working hours, or the employee's duty hours that day). With no wage type on the overtime type it is 0. It is an estimate: payroll works out its own rate from the payslip, so the amount paid can differ.</p>",
+  "aliasIndex": {
+    "loc:EffectiveDate": "EmployeeOvertime.EffectiveDate",
+    "dom:EmployeeOvertime_EffectiveDate": "EmployeeOvertime.EffectiveDate",
+    "loc:OvertimeTypeId": "EmployeeOvertime.OvertimeTypeId",
+    "dom:EmployeeOvertime_OvertimeTypeId": "EmployeeOvertime.OvertimeTypeId",
+    "loc:OvertimeHours": "EmployeeOvertime.OvertimeHours",
+    "dom:EmployeeOvertime_OvertimeHours": "EmployeeOvertime.OvertimeHours",
+    "loc:ActualOvertimeHours": "EmployeeOvertime.ActualOvertimeHours",
+    "dom:EmployeeOvertime_ActualOvertimeHours": "EmployeeOvertime.ActualOvertimeHours",
+    "loc:ApprovedOvertimeHours": "EmployeeOvertime.ApprovedOvertimeHours",
+    "dom:EmployeeOvertime_ApprovedOvertimeHours": "EmployeeOvertime.ApprovedOvertimeHours",
+    "loc:Comments": "EmployeeOvertime.Comments",
+    "dom:EmployeeOvertime_Comments": "EmployeeOvertime.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeOvertime.EffectiveDate",
+      "label": "EffectiveDate",
+      "section": "EmployeeOvertimes",
+      "aliases": [
+        "loc:EffectiveDate",
+        "dom:EmployeeOvertime_EffectiveDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the overtime was worked.</p><p><strong>Example.</strong> 12 Sep 2026</p><p><strong>Why it matters.</strong> Payroll pays overtime falling within the pay period.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOvertime.OvertimeTypeId",
+      "label": "OvertimeTypeId",
+      "section": "EmployeeOvertimes",
+      "aliases": [
+        "loc:OvertimeTypeId",
+        "dom:EmployeeOvertime_OvertimeTypeId"
+      ],
+      "rules": "Required. Chosen from Overtime Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of overtime, which sets the rate.</p><p><strong>Example.</strong> Weekend Overtime</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Overtime Types.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOvertime.OvertimeHours",
+      "label": "OvertimeHours",
+      "section": "EmployeeOvertimes",
+      "aliases": [
+        "loc:OvertimeHours",
+        "dom:EmployeeOvertime_OvertimeHours"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The hours requested.</p><p><strong>Example.</strong> 4</p><p><strong>Why it matters.</strong> Shown in the approval request. Payroll does not pay these hours directly.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOvertime.ActualOvertimeHours",
+      "label": "ActualOvertimeHours",
+      "section": "EmployeeOvertimes",
+      "aliases": [
+        "loc:ActualOvertimeHours",
+        "dom:EmployeeOvertime_ActualOvertimeHours"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The hours the time engine measured.</p><p><strong>Example.</strong> 3.5</p><p><strong>Why it matters.</strong> The time engine overwrites it each time it processes the date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOvertime.ApprovedOvertimeHours",
+      "label": "ApprovedOvertimeHours",
+      "section": "EmployeeOvertimes",
+      "aliases": [
+        "loc:ApprovedOvertimeHours",
+        "dom:EmployeeOvertime_ApprovedOvertimeHours"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The hours approved for payment.</p><p><strong>Example.</strong> 3.5</p><p><strong>Why it matters.</strong> Payroll pays these hours times the overtime rate. If left at zero, the time engine fills them from the measured hours.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOvertime.Comments",
+      "label": "Comments",
+      "section": "EmployeeOvertimes",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeOvertime_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

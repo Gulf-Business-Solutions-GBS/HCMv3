@@ -1,0 +1,108 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Announcements' | localize" [description]="'AnnouncementsIntro' | localize">
+        <div role="actions">
+            <button class="btn btn-primary" type="button" (click)="create()">
+                <i class="fa fa-plus"></i> {{ 'CreateNew' | localize }}
+            </button>
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <input
+                            type="search"
+                            class="form-control"
+                            [ngModel]="filter()"
+                            (ngModelChange)="filter.set($event)"
+                            (keyup.enter)="search()"
+                            [placeholder]="'SearchWithThreeDot' | localize" />
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-primary" type="button" (click)="search()">
+                            <i class="fa fa-search"></i> {{ 'Search' | localize }}
+                        </button>
+                    </div>
+                </div>
+
+                <div [busyIf]="isLoading()">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width: 90px">{{ 'Status' | localize }}</th>
+                                <th>{{ 'Title' | localize }}</th>
+                                <th style="width: 120px">{{ 'IssueDate' | localize }}</th>
+                                <th style="width: 120px">{{ 'ExpiryDate' | localize }}</th>
+                                <th>{{ 'OrganizationUnit' | localize }}</th>
+                                <th style="width: 140px"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (item of items(); track item.id) {
+                                <tr>
+                                    <td>
+                                        <!-- Live / Scheduled / Expired, worked out from the dates. This is
+                                             the column that answers "why can nobody see it". -->
+                                        @if (isLive(item)) {
+                                            <span class="badge badge-light-success">{{ 'Live' | localize }}</span>
+                                        } @else if (isExpired(item)) {
+                                            <span class="badge badge-light">{{ 'Expired' | localize }}</span>
+                                        } @else {
+                                            <span class="badge badge-light-warning">{{ 'Scheduled' | localize }}</span>
+                                        }
+                                    </td>
+                                    <td>{{ item.title }}</td>
+                                    <td>{{ toDate(item.issueDate) | date: 'dd/MM/yyyy' }}</td>
+                                    <td>{{ toDate(item.expiryDate) | date: 'dd/MM/yyyy' }}</td>
+                                    <td class="text-muted">
+                                        <!-- Blank means everybody. Saying so beats an empty cell that
+                                             looks like missing data. -->
+                                        {{ item.organizationUnitDisplayName || ('Everyone' | localize) }}
+                                    </td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-light-primary" type="button" (click)="edit(item)">
+                                            {{ 'Edit' | localize }}
+                                        </button>
+                                        <button
+                                            class="btn btn-sm btn-light-danger ms-1"
+                                            type="button"
+                                            (click)="delete(item)">
+                                            {{ 'Delete' | localize }}
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                            @if (!items().length) {
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">{{ 'NoData' | localize }}</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <div class="d-flex align-items-center justify-content-end gap-2">
+                        <span class="text-muted">{{ totalCount() }}</span>
+                        <button
+                            class="btn btn-sm btn-light"
+                            type="button"
+                            [disabled]="skipCount() === 0"
+                            (click)="previousPage()">
+                            <i class="fa fa-angle-left"></i>
+                        </button>
+                        <button
+                            class="btn btn-sm btn-light"
+                            type="button"
+                            [disabled]="skipCount() + pageSize >= totalCount()"
+                            (click)="nextPage()">
+                            <i class="fa fa-angle-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<createOrEditAnnouncementModal #createOrEditModal (modalSave)="load()" />

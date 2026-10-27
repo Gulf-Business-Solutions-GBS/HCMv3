@@ -1,0 +1,82 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #kpiByOrgUnitForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (kpiByOrgUnit().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'KpiByOrgUnits' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'KpiByOrgUnits' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="KpiByOrgUnit_OrganizationUnitId">{{ 'OrganizationUnit' | localize }}</label>
+                                <select
+                                    id="KpiByOrgUnit_OrganizationUnitId"
+                                    #organizationUnitIdInput="ngModel"
+                                    class="form-select"
+                                    name="OrganizationUnitId"
+                                    [ngModel]="kpiByOrgUnit().organizationUnitId"
+                                    (ngModelChange)="updateField('organizationUnitId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (unit of organizationUnits(); track unit.id) {
+                                        <option [ngValue]="unit.id">{{ unit.displayName }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="organizationUnitIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="KpiByOrgUnit_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="KpiByOrgUnit_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="kpiByOrgUnit().startDate?.toISODate()"
+                                    (ngModelChange)="updateStartDate($event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!kpiByOrgUnitForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

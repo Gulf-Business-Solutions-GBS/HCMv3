@@ -1,0 +1,107 @@
+{
+  "helpId": "sec.retro-reason-log.edit",
+  "lang": "en",
+  "title": "Retro Reason Logs — Create / Edit",
+  "entity": "HCMv3.SystemSecurity.RetroReasonLog",
+  "overviewHtml": "<p>A record of a back-dated change that made payroll recalculate an employee from an earlier date: what changed, when, and the retro date. Written by the system as it runs; there is normally no reason to add or change entries by hand.</p>",
+  "aliasIndex": {
+    "loc:Employee": "RetroReasonLog.EmployeeId",
+    "dom:RetroReasonLog_EmployeeId": "RetroReasonLog.EmployeeId",
+    "loc:ChangedOn": "RetroReasonLog.ChangedOn",
+    "dom:RetroReasonLog_ChangedOn": "RetroReasonLog.ChangedOn",
+    "loc:RetroDate": "RetroReasonLog.RetroDate",
+    "dom:RetroReasonLog_RetroDate": "RetroReasonLog.RetroDate",
+    "loc:EntityObjectName": "RetroReasonLog.EntityObjectName",
+    "dom:RetroReasonLog_EntityObjectName": "RetroReasonLog.EntityObjectName",
+    "loc:EntityObjectId": "RetroReasonLog.EntityObjectId",
+    "dom:RetroReasonLog_EntityObjectId": "RetroReasonLog.EntityObjectId",
+    "loc:RetroReason": "RetroReasonLog.RetroReason",
+    "dom:RetroReasonLog_RetroReason": "RetroReasonLog.RetroReason"
+  },
+  "fields": [
+    {
+      "id": "RetroReasonLog.EmployeeId",
+      "label": "Employee",
+      "section": "RetroReasonLogs",
+      "aliases": [
+        "loc:Employee",
+        "dom:RetroReasonLog_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RetroReasonLog.ChangedOn",
+      "label": "ChangedOn",
+      "section": "RetroReasonLogs",
+      "aliases": [
+        "loc:ChangedOn",
+        "dom:RetroReasonLog_ChangedOn"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the change was made.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RetroReasonLog.RetroDate",
+      "label": "RetroDate",
+      "section": "RetroReasonLogs",
+      "aliases": [
+        "loc:RetroDate",
+        "dom:RetroReasonLog_RetroDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date payroll recalculates from.</p><p><strong>Example.</strong> <code>2026-02-01</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RetroReasonLog.EntityObjectName",
+      "label": "EntityObjectName",
+      "section": "RetroReasonLogs",
+      "aliases": [
+        "loc:EntityObjectName",
+        "dom:RetroReasonLog_EntityObjectName"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The type of record changed.</p><p><strong>Example.</strong> <code>HCMv3.PersonnelAdministration.EmployeeBasicPay</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RetroReasonLog.EntityObjectId",
+      "label": "EntityObjectId",
+      "section": "RetroReasonLogs",
+      "aliases": [
+        "loc:EntityObjectId",
+        "dom:RetroReasonLog_EntityObjectId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The record changed.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RetroReasonLog.RetroReason",
+      "label": "RetroReason",
+      "section": "RetroReasonLogs",
+      "aliases": [
+        "loc:RetroReason",
+        "dom:RetroReasonLog_RetroReason"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Why the retro date was set.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

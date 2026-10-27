@@ -1,0 +1,37 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            {{NgIf_Form_Active_Condition_IfSyntax}}
+                <form  #{{entity_Name_Here}}Form="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{NgIf_Entity_Id_Condition_IfSyntax}}
+                                <span {{NgIf_Entity_Id_Condition_NgIfSyntax}}>{{l("Edit{{Entity_Name_Here}}")}}</span>
+                            {{If_Syntax_Close}}
+
+                            {{NgIf_Entity_Not_Id_Condition_IfSyntax}}
+                                <span {{NgIf_Entity_Not_Id_Condition_NgIfSyntax}}>{{l("CreateNew{{Entity_Name_Here}}")}}</span>
+                            {{If_Syntax_Close}}
+                        </h4>                    
+                        {{Modal_Header_Close_Times_Before_V110000_Here}}
+                        {{Modal_Header_Close_Times_After_V110000_Here}}
+                    </div>
+                    <div class="modal-body">
+                 
+    {{NP_Looped_Template_Before_V110000_Here}}
+    {{NP_Looped_Template_After_V110000_Here}}
+    {{NP_Looped_Template_After_V140300_Here}}
+    {{Property_Looped_Template_Before_V110000_Here}}
+    {{Property_Looped_Template_After_V110000_Here}}
+
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                        <button type="submit" class="btn btn-primary blue" [disabled]="!{{entity_Name_Here}}Form.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                    </div>
+                </form>
+            {{If_Syntax_Close}}
+        </div>
+    </div>
+{{NP_Looped_Modal_Here}}
+</div>

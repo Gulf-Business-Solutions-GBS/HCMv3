@@ -1,0 +1,171 @@
+{
+  "helpId": "pa.employee-absence-quota.edit",
+  "lang": "ar",
+  "title": "حصص إجازات الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAbsenceQuota",
+  "overviewHtml": "<p>استحقاق الموظف من نوع إجازة واحد خلال فترة استحقاق: المتراكم منه، والمستخدَم والمعدَّل والمُسقط.</p><p>يُبنى رصيد الإجازات في الخدمة الذاتية من الحصة التي تغطي فترة استحقاقها التاريخ. وفي الإجازة السنوية، يضيف محرك الوقت تراكم كل يوم إلى الحصة المتراكمة أثناء تشغيله.</p><p>عند فتح حصة قائمة، يعرض <strong>رصيد الحصة</strong> المتبقي منها كما في القائمة: المتراكم مطروحاً منه المستخدَم والمعدَّل والمُسقط. ويُحتسب ولا يمكن إدخاله يدوياً.</p>",
+  "aliasIndex": {
+    "loc:AbsenceTypeId": "EmployeeAbsenceQuota.AbsenceTypeId",
+    "dom:EmployeeAbsenceQuota_AbsenceTypeId": "EmployeeAbsenceQuota.AbsenceTypeId",
+    "loc:NotificationSent": "EmployeeAbsenceQuota.NotificationSent",
+    "dom:EmployeeAbsenceQuota_NotificationSent": "EmployeeAbsenceQuota.NotificationSent",
+    "loc:EntitlementFrom": "EmployeeAbsenceQuota.EntitlementFrom",
+    "dom:EmployeeAbsenceQuota_EntitlementFrom": "EmployeeAbsenceQuota.EntitlementFrom",
+    "loc:EntitlementTo": "EmployeeAbsenceQuota.EntitlementTo",
+    "dom:EmployeeAbsenceQuota_EntitlementTo": "EmployeeAbsenceQuota.EntitlementTo",
+    "loc:DeductionFrom": "EmployeeAbsenceQuota.DeductionFrom",
+    "dom:EmployeeAbsenceQuota_DeductionFrom": "EmployeeAbsenceQuota.DeductionFrom",
+    "loc:DeductionTo": "EmployeeAbsenceQuota.DeductionTo",
+    "dom:EmployeeAbsenceQuota_DeductionTo": "EmployeeAbsenceQuota.DeductionTo",
+    "loc:QuotaAccrued": "EmployeeAbsenceQuota.QuotaAccrued",
+    "dom:EmployeeAbsenceQuota_QuotaAccrued": "EmployeeAbsenceQuota.QuotaAccrued",
+    "loc:QuotaUsed": "EmployeeAbsenceQuota.QuotaUsed",
+    "dom:EmployeeAbsenceQuota_QuotaUsed": "EmployeeAbsenceQuota.QuotaUsed",
+    "loc:QuotaAdjusted": "EmployeeAbsenceQuota.QuotaAdjusted",
+    "dom:EmployeeAbsenceQuota_QuotaAdjusted": "EmployeeAbsenceQuota.QuotaAdjusted",
+    "loc:QuotaForfeited": "EmployeeAbsenceQuota.QuotaForfeited",
+    "dom:EmployeeAbsenceQuota_QuotaForfeited": "EmployeeAbsenceQuota.QuotaForfeited"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAbsenceQuota.AbsenceTypeId",
+      "label": "AbsenceTypeId",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:AbsenceTypeId",
+        "dom:EmployeeAbsenceQuota_AbsenceTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الإجازات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة الذي تخصه هذه الحصة.</p><p><strong>مثال.</strong> إجازة سنوية</p>",
+      "adminHtml": "<p>تُدار من إدارة الرواتب ← أنواع الإجازات.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.NotificationSent",
+      "label": "NotificationSent",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:NotificationSent",
+        "dom:EmployeeAbsenceQuota_NotificationSent"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل أُرسل إشعار بلوغ الحد الأقصى للإجازة السنوية.</p><p><strong>لماذا يهم.</strong> يلغيه محرك الوقت عندما يعود الرصيد إلى ما دون حد الإشعار، ليمكن إرسال الإشعار مرة أخرى.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.EntitlementFrom",
+      "label": "EntitlementFrom",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:EntitlementFrom",
+        "dom:EmployeeAbsenceQuota_EntitlementFrom"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم في فترة الاستحقاق.</p><p><strong>مثال.</strong> 1 يناير 2026</p><p><strong>لماذا يهم.</strong> الحصة التي تغطي فترة استحقاقها تاريخاً ما هي المستخدمة لحساب الرصيد في ذلك التاريخ.</p>",
+      "adminHtml": "<p>احرص على أن تكون فترات استحقاق الإجازة السنوية متصلة. ينشئ محرك الوقت أول حصة إجازة سنوية بنفسه عندما لا يكون للموظف أي حصة، لكن إذا كانت للموظف حصة ولم تغطِّ أيٌّ منها يوماً يعالجه، يتوقف برسالة «AbsenceQuota exists for Employee».</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.EntitlementTo",
+      "label": "EntitlementTo",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:EntitlementTo",
+        "dom:EmployeeAbsenceQuota_EntitlementTo"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم في فترة الاستحقاق.</p><p><strong>مثال.</strong> 31 ديسمبر 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.DeductionFrom",
+      "label": "DeductionFrom",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:DeductionFrom",
+        "dom:EmployeeAbsenceQuota_DeductionFrom"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يمكن فيه أخذ إجازة من هذه الحصة.</p><p><strong>مثال.</strong> 1 يناير 2026</p><p><strong>لماذا يهم.</strong> تختار احتسابات إسقاط الإجازات الحصة التي تغطي فترة الخصم فيها الشهر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.DeductionTo",
+      "label": "DeductionTo",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:DeductionTo",
+        "dom:EmployeeAbsenceQuota_DeductionTo"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يمكن فيه أخذ إجازة من هذه الحصة.</p><p><strong>مثال.</strong> 31 مارس 2027</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.QuotaAccrued",
+      "label": "QuotaAccrued",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:QuotaAccrued",
+        "dom:EmployeeAbsenceQuota_QuotaAccrued"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأيام المكتسبة في هذه الفترة.</p><p><strong>مثال.</strong> 30</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.QuotaUsed",
+      "label": "QuotaUsed",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:QuotaUsed",
+        "dom:EmployeeAbsenceQuota_QuotaUsed"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأيام المأخوذة من هذه الحصة.</p><p><strong>مثال.</strong> 12</p><p><strong>لماذا يهم.</strong> تضيف إليه الإجازات المعتمدة عبر الخدمة الذاتية، ويُطرح منه عند إلغاء إجازة معتمدة. أما حالات الغياب التي يُدخلها قسم الموارد البشرية في نموذج الغياب فلا تغيّره.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.QuotaAdjusted",
+      "label": "QuotaAdjusted",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:QuotaAdjusted",
+        "dom:EmployeeAbsenceQuota_QuotaAdjusted"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأيام المعدَّلة على هذه الحصة — كالأيام المصروفة نقداً.</p><p><strong>مثال.</strong> 5</p><p><strong>لماذا يهم.</strong> لا يؤدي حفظ تعديل إجازة إلى تحديث هذا الرقم؛ أدخله هنا إن كان يجب أن تعكس الحصة التعديل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.QuotaForfeited",
+      "label": "QuotaForfeited",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:QuotaForfeited",
+        "dom:EmployeeAbsenceQuota_QuotaForfeited"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأيام المُسقطة من هذه الحصة.</p><p><strong>مثال.</strong> 3</p><p><strong>لماذا يهم.</strong> تحدّثه احتسابات إسقاط الإجازات، ولا يحدّثه حفظ إسقاط يدوي.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

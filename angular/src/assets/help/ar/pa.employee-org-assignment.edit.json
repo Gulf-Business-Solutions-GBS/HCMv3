@@ -1,0 +1,187 @@
+{
+  "helpId": "pa.employee-org-assignment.edit",
+  "lang": "ar",
+  "title": "التعيينات التنظيمية للموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeOrgAssignment",
+  "overviewHtml": "<p>موقع الموظف في الهيكل التنظيمي اعتباراً من تاريخ معين: القسم والمسمى الوظيفي ومركز التكلفة ومكان العمل.</p><p>تشكّل التعيينات سجلاً تاريخياً. فعند حفظ تعيين جديد يُغلق التعيين السابق للموظف في اليوم السابق لتاريخ البداية الجديد، فيكون هناك دائماً تعيين واحد ساري. وإذا تُرك حقل فارغاً في تعيين جديد، يُنسخ من التعيين السابق.</p><p>يقرأ سير اعتماد الطلبات ومحرك الوقت والتقارير وقواعد العمل التعيينَ الساري في التاريخ الذي تحتاجه.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeOrgAssignment.StartDate",
+    "dom:EmployeeOrgAssignment_StartDate": "EmployeeOrgAssignment.StartDate",
+    "loc:JobTitle": "EmployeeOrgAssignment.JobTitleId",
+    "dom:EmployeeOrgAssignment_JobTitleId": "EmployeeOrgAssignment.JobTitleId",
+    "loc:CostCenter": "EmployeeOrgAssignment.CostCenterId",
+    "dom:EmployeeOrgAssignment_CostCenterId": "EmployeeOrgAssignment.CostCenterId",
+    "loc:WorkLocation": "EmployeeOrgAssignment.WorkLocationId",
+    "dom:EmployeeOrgAssignment_WorkLocationId": "EmployeeOrgAssignment.WorkLocationId",
+    "loc:PostingGroup": "EmployeeOrgAssignment.PostingGroupId",
+    "dom:EmployeeOrgAssignment_PostingGroupId": "EmployeeOrgAssignment.PostingGroupId",
+    "loc:BudgetingGroup": "EmployeeOrgAssignment.BudgetingGroupId",
+    "dom:EmployeeOrgAssignment_BudgetingGroupId": "EmployeeOrgAssignment.BudgetingGroupId",
+    "loc:OrganizationUnit": "EmployeeOrgAssignment.OrganizationUnitId",
+    "dom:EmployeeOrgAssignment_OrganizationUnitId": "EmployeeOrgAssignment.OrganizationUnitId",
+    "loc:EmployeeGroup": "EmployeeOrgAssignment.EmployeeGroupId",
+    "dom:EmployeeOrgAssignment_EmployeeGroupId": "EmployeeOrgAssignment.EmployeeGroupId",
+    "loc:EmployeeSubGroup": "EmployeeOrgAssignment.EmployeeSubGroupId",
+    "dom:EmployeeOrgAssignment_EmployeeSubGroupId": "EmployeeOrgAssignment.EmployeeSubGroupId",
+    "loc:PayrollArea": "EmployeeOrgAssignment.PayrollAreaId",
+    "dom:EmployeeOrgAssignment_PayrollAreaId": "EmployeeOrgAssignment.PayrollAreaId",
+    "loc:WorkflowGroup": "EmployeeOrgAssignment.WorkflowGroupId",
+    "dom:EmployeeOrgAssignment_WorkflowGroupId": "EmployeeOrgAssignment.WorkflowGroupId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeOrgAssignment.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeOrgAssignment_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يبدأ سجلان للموظف نفسه في التاريخ نفسه. عند الحفظ يُغلق السجل السابق للموظف نفسه في اليوم السابق لهذا التاريخ، ويبقى أحدث سجل مفتوحاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.JobTitleId",
+      "label": "JobTitle",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:EmployeeOrgAssignment_JobTitleId"
+      ],
+      "rules": "اختياري. يُختار من قائمة المسميات الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي للموظف اعتباراً من هذا التاريخ.</p><p><strong>مثال.</strong> محاسب أول</p><p><strong>لماذا يهم.</strong> يظهر في التقارير ويمكن لقواعد العمل استخدامه. وإذا تُرك فارغاً في تعيين جديد يُنسخ من التعيين السابق.</p>",
+      "adminHtml": "<p>يُدار من إدارة الهيكل التنظيمي ← المسميات الوظيفية.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.CostCenterId",
+      "label": "CostCenter",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:CostCenter",
+        "dom:EmployeeOrgAssignment_CostCenterId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مراكز التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مركز التكلفة الذي تُحمَّل عليه تكلفة الموظف اعتباراً من هذا التاريخ.</p><p><strong>مثال.</strong> CC-100 المالية</p><p><strong>لماذا يهم.</strong> تُوجَّه خطوات الاعتماد المسندة إلى دور مركز التكلفة إلى معتمِد هذا المركز. وإذا تُرك فارغاً في تعيين جديد يُنسخ من التعيين السابق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.WorkLocationId",
+      "label": "WorkLocation",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:WorkLocation",
+        "dom:EmployeeOrgAssignment_WorkLocationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أماكن العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان العمل المعتاد للموظف اعتباراً من هذا التاريخ.</p><p><strong>مثال.</strong> المكتب الرئيسي</p><p><strong>لماذا يهم.</strong> تُوجَّه خطوات الاعتماد المسندة إلى دور الفرع إلى معتمِد مكان العمل هذا. وإذا تُرك فارغاً في تعيين جديد يُنسخ من التعيين السابق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.PostingGroupId",
+      "label": "PostingGroup",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:PostingGroup",
+        "dom:EmployeeOrgAssignment_PostingGroupId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مجموعات القيود المحاسبية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموعة القيود المحاسبية المسجلة للموظف اعتباراً من هذا التاريخ.</p><p><strong>لماذا يهم.</strong> تُحفظ للرجوع إليها، ولا يقرؤها أي احتساب أو قيد من التعيين حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.BudgetingGroupId",
+      "label": "BudgetingGroup",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:BudgetingGroup",
+        "dom:EmployeeOrgAssignment_BudgetingGroupId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مجموعات الموازنة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموعة الموازنة المسجلة للموظف اعتباراً من هذا التاريخ.</p><p><strong>لماذا يهم.</strong> تُحفظ للرجوع إليها، ولا يقرؤها أي احتساب من التعيين حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.OrganizationUnitId",
+      "label": "OrganizationUnit",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:OrganizationUnit",
+        "dom:EmployeeOrgAssignment_OrganizationUnitId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الوحدات التنظيمية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القسم أو الوحدة التي ينتمي إليها الموظف اعتباراً من هذا التاريخ، ويُختار من الشجرة التنظيمية.</p><p><strong>مثال.</strong> المالية › الحسابات الدائنة</p><p><strong>لماذا يهم.</strong> يحدد موقع الموظف في الهيكل التنظيمي، وتُوجَّه خطوات الاعتماد المسندة إلى دور القسم إلى معتمِد هذا القسم. وتُقرَّب مبالغ رواتب الموظف إلى عدد المنازل العشرية لعملة منطقة الرواتب المحددة لهذه الوحدة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.EmployeeGroupId",
+      "label": "EmployeeGroup",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:EmployeeGroup",
+        "dom:EmployeeOrgAssignment_EmployeeGroupId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملف راتب الموظف خلال تواريخ هذا التعيين.</p><p><strong>مثال.</strong> الموظفون الإداريون</p><p><strong>لماذا يهم.</strong> تؤخذ منه قواعد مكافأة نهاية الخدمة والتسوية التي تعتمد على ملف الراتب. وإذا تُرك فارغاً تبقى القيمة الموجودة في التعيين السابق. وإذا اختيرت الدرجة وحدها، يُعبَّأ ملف الراتب منها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.EmployeeSubGroupId",
+      "label": "EmployeeSubGroup",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:EmployeeSubGroup",
+        "dom:EmployeeOrgAssignment_EmployeeSubGroupId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> درجة الموظف خلال تواريخ هذا التعيين.</p><p><strong>مثال.</strong> الدرجة 5</p><p><strong>لماذا يهم.</strong> تعتمد معظم الاستحقاقات على الدرجة: أرصدة الإجازات، وتذاكر الطيران، ومكافأة نهاية الخدمة، واقتطاعات الصندوق، ومكافأة الخدمة، واسترداد المصاريف الصحية. ويقرأ محرك الوقت والرواتب الدرجة من التعيين الذي يغطي كل تاريخ. ويجب أن تتبع الدرجة ملف الراتب المختار؛ وإذا تُركت فارغة تبقى درجة التعيين السابق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.PayrollAreaId",
+      "label": "PayrollArea",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:PayrollArea",
+        "dom:EmployeeOrgAssignment_PayrollAreaId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مناطق الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> منطقة الرواتب التي يُصرف فيها راتب الموظف خلال تواريخ هذا التعيين.</p><p><strong>مثال.</strong> الكويت - شهري</p><p><strong>لماذا يهم.</strong> تحدد أي تشغيل للرواتب يشمل الموظف، وأي تقويم رواتب وإقفال ينطبقان عليه. وإذا تُركت فارغة تبقى منطقة التعيين السابق، وإلا فالمنطقة المحددة للوحدة التنظيمية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.WorkflowGroupId",
+      "label": "WorkflowGroup",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:WorkflowGroup",
+        "dom:EmployeeOrgAssignment_WorkflowGroupId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مجموعات سير العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموعة سير العمل التي تتبع طلبات الموظف سلاسل اعتمادها.</p><p><strong>مثال.</strong> المكتب الرئيسي</p><p><strong>لماذا يهم.</strong> عندما يقدّم الموظف طلباً، تُختار السلسلة من مجموعة سير العمل في تعيين اليوم. وإذا تُركت فارغة تُستخدم مجموعة سير العمل المحددة كافتراضية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

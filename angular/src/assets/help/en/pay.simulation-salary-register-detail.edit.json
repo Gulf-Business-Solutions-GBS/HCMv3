@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.simulation-salary-register-detail.edit",
+  "lang": "en",
+  "title": "Simulation Salary Register Details — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.SimulationSalaryRegisterDetail",
+  "overviewHtml": "<p>One line of a simulation payslip: a wagetype with its rate, number and amount.</p>",
+  "aliasIndex": {
+    "loc:SimulationSalaryRegisterId": "SimulationSalaryRegisterDetail.SimulationSalaryRegisterId",
+    "dom:SimulationSalaryRegisterDetail_SimulationSalaryRegisterId": "SimulationSalaryRegisterDetail.SimulationSalaryRegisterId",
+    "loc:WageTypeId": "SimulationSalaryRegisterDetail.WageTypeId",
+    "dom:SimulationSalaryRegisterDetail_WageTypeId": "SimulationSalaryRegisterDetail.WageTypeId",
+    "loc:Rate": "SimulationSalaryRegisterDetail.Rate",
+    "dom:SimulationSalaryRegisterDetail_Rate": "SimulationSalaryRegisterDetail.Rate",
+    "loc:Number": "SimulationSalaryRegisterDetail.Number",
+    "dom:SimulationSalaryRegisterDetail_Number": "SimulationSalaryRegisterDetail.Number",
+    "loc:Amount": "SimulationSalaryRegisterDetail.Amount",
+    "dom:SimulationSalaryRegisterDetail_Amount": "SimulationSalaryRegisterDetail.Amount"
+  },
+  "fields": [
+    {
+      "id": "SimulationSalaryRegisterDetail.SimulationSalaryRegisterId",
+      "label": "SimulationSalaryRegisterId",
+      "section": "SimulationSalaryRegisterDetails",
+      "aliases": [
+        "loc:SimulationSalaryRegisterId",
+        "dom:SimulationSalaryRegisterDetail_SimulationSalaryRegisterId"
+      ],
+      "rules": "Required. Chosen from Simulation Salary Register master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The simulation payslip this line belongs to. Not shown when the dialog is opened from a simulation payslip's own page: that payslip is filled in for you.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegisterDetail.WageTypeId",
+      "label": "WageTypeId",
+      "section": "SimulationSalaryRegisterDetails",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:SimulationSalaryRegisterDetail_WageTypeId"
+      ],
+      "rules": "Required. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wagetype of this line.</p><p><strong>Example.</strong> Basic Salary</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegisterDetail.Rate",
+      "label": "Rate",
+      "section": "SimulationSalaryRegisterDetails",
+      "aliases": [
+        "loc:Rate",
+        "dom:SimulationSalaryRegisterDetail_Rate"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The monthly rate the line was worked out from.</p><p><strong>Example.</strong> <code>800</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegisterDetail.Number",
+      "label": "Number",
+      "section": "SimulationSalaryRegisterDetails",
+      "aliases": [
+        "loc:Number",
+        "dom:SimulationSalaryRegisterDetail_Number"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The quantity — days, hours or units — the line was worked out on.</p><p><strong>Example.</strong> <code>30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegisterDetail.Amount",
+      "label": "Amount",
+      "section": "SimulationSalaryRegisterDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:SimulationSalaryRegisterDetail_Amount"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount of the line.</p><p><strong>Example.</strong> <code>800.000</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

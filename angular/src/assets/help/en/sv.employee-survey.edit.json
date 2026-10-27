@@ -1,0 +1,43 @@
+{
+  "helpId": "sv.employee-survey.edit",
+  "lang": "en",
+  "title": "Employee Surveys — Create / Edit",
+  "entity": "HCMv3.SurveyManagement.EmployeeSurvey",
+  "overviewHtml": "<p>An employee's response to a survey. It is created the first time answers are submitted on the Take Survey screen, and later submissions update the same answers.</p>",
+  "aliasIndex": {
+    "loc:Employees": "EmployeeSurvey.EmployeeId",
+    "dom:EmployeeSurvey_EmployeeId": "EmployeeSurvey.EmployeeId",
+    "loc:Surveys": "EmployeeSurvey.SurveyId",
+    "dom:EmployeeSurvey_SurveyId": "EmployeeSurvey.SurveyId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSurvey.EmployeeId",
+      "label": "Employees",
+      "section": "EmployeeSurveys",
+      "aliases": [
+        "loc:Employees",
+        "dom:EmployeeSurvey_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee answering.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSurvey.SurveyId",
+      "label": "Surveys",
+      "section": "EmployeeSurveys",
+      "aliases": [
+        "loc:Surveys",
+        "dom:EmployeeSurvey_SurveyId"
+      ],
+      "rules": "Required. Chosen from Survey master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The survey.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

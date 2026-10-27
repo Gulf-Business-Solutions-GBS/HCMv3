@@ -1,0 +1,43 @@
+{
+  "helpId": "wf.wfread-log.edit",
+  "lang": "en",
+  "title": "Workflow Read Logs — Create / Edit",
+  "entity": "HCMv3.Workflow.WFReadLog",
+  "overviewHtml": "<p>Someone opened a request at a step where the read log is on. Written by the workflow engine as requests move; there is normally no reason to add or change entries by hand.</p>",
+  "aliasIndex": {
+    "loc:WorkflowRequests": "WFReadLog.WorkflowRequestId",
+    "dom:WFReadLog_WorkflowRequestId": "WFReadLog.WorkflowRequestId",
+    "loc:User": "WFReadLog.User",
+    "dom:WFReadLog_User": "WFReadLog.User"
+  },
+  "fields": [
+    {
+      "id": "WFReadLog.WorkflowRequestId",
+      "label": "WorkflowRequests",
+      "section": "WFReadLogs",
+      "aliases": [
+        "loc:WorkflowRequests",
+        "dom:WFReadLog_WorkflowRequestId"
+      ],
+      "rules": "Required. Chosen from Workflow Request master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The workflow request this record belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WFReadLog.User",
+      "label": "User",
+      "section": "WFReadLogs",
+      "aliases": [
+        "loc:User",
+        "dom:WFReadLog_User"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee who opened it, by employee number in the system.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

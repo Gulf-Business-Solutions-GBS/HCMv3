@@ -1,0 +1,43 @@
+{
+  "helpId": "pa.employee-time-policy.edit",
+  "lang": "ar",
+  "title": "سياسات وقت الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.EmployeeTimePolicy",
+  "overviewHtml": "<p>سياسة الوقت التي تحكم حضور الموظف اعتباراً من تاريخ معين. عند حفظ سياسة جديدة تُغلق السابقة في اليوم السابق لتاريخ البداية الجديد.</p><p>يطبّق محرك الوقت السياسة السارية في كل يوم، ويتوقف برسالة «Employee TimePolicy not found» في أي يوم لا تغطيه سياسة. ويقرأ احتساب الأيام في الرواتب حالة إدارة الوقت والسماحية الشهرية في السياسة.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeTimePolicy.StartDate",
+    "dom:EmployeeTimePolicy_StartDate": "EmployeeTimePolicy.StartDate",
+    "loc:TimePolicy": "EmployeeTimePolicy.TimePolicyId",
+    "dom:EmployeeTimePolicy_TimePolicyId": "EmployeeTimePolicy.TimePolicyId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeTimePolicy.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeTimePolicies",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeTimePolicy_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يبدأ سجلان للموظف نفسه في التاريخ نفسه. عند الحفظ يُغلق السجل السابق للموظف نفسه في اليوم السابق لهذا التاريخ، ويبقى أحدث سجل مفتوحاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTimePolicy.TimePolicyId",
+      "label": "TimePolicy",
+      "section": "EmployeeTimePolicies",
+      "aliases": [
+        "loc:TimePolicy",
+        "dom:EmployeeTimePolicy_TimePolicyId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة سياسات الوقت.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سياسة الوقت المخصصة اعتباراً من هذا التاريخ.</p><p><strong>مثال.</strong> موظفو المكاتب — البصمة</p>",
+      "adminHtml": "<p>تُدار من إدارة الوقت ← سياسات الوقت.</p>",
+      "stub": false
+    }
+  ]
+}

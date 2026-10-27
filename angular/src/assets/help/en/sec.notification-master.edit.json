@@ -1,0 +1,75 @@
+{
+  "helpId": "sec.notification-master.edit",
+  "lang": "en",
+  "title": "Notification Masters — Create / Edit",
+  "entity": "HCMv3.SystemSecurity.NotificationMaster",
+  "overviewHtml": "<p>A notification rule: \"tell these people when a record of this kind matches this condition\". For example, warn the employee and their manager when a passport expires within 30 days.</p><p>Enabled rules run with the other daily notifications, every four hours. Each run finds the records of the chosen type and sub type that match the criterion today, and sends each one to the people in the notification config, in the app (the bell) and/or by email. <strong>Each record is notified once by each rule</strong>: after that it is logged and never sent again by the same rule. A second rule on the same records sends its own notice. A rule that cannot run, for example because its criterion no longer fits its type, is skipped and logged, and the other rules still run.</p><p><strong>Before you enable a rule, press Preview.</strong> It shows how many records match today and the first ten of them, with the date each one is about. On its first run a new rule notifies about <strong>every</strong> matching record that has not been notified yet, which for a broad rule can be hundreds of e-mails. If the existing records should not be notified, save the rule, press <strong>Preview</strong>, then <strong>Mark these as sent</strong>: the records matching today are logged as done without anyone being told, and only records that start matching later are sent. Mark these as sent uses the rule as last saved, so save any change first. You are asked to confirm.</p><p><strong>Sent History</strong>, at the top of the list or on a rule's actions, shows what has been logged: the day, the notification, the record, how many people it went to, and whether it was <strong>Sent</strong> or <strong>Marked only</strong> (marked by Mark these as sent, or matched when the configuration found nobody to send to). The button at the top shows every rule and the fixed daily notifications too.</p><p>A rule whose type is shown as <strong>Needs re-entry</strong> was saved before notification types became a fixed list; open it and choose a type, or it will not run.</p><p>:::admin A record matched when the notification config addresses nobody that day is still logged, as the old system did, so it is not re-checked every four hours. A record the criterion cannot evaluate (bad data) is not logged and is tried again on the next run. \"Today\" is the server date at the time of the run. Users can switch each notification type off for themselves under Notification settings. :::</p>",
+  "aliasIndex": {
+    "loc:NotificationType": "NotificationMaster.NotificationType",
+    "dom:NotificationMaster_NotificationType": "NotificationMaster.NotificationType",
+    "loc:NotificationConfig": "NotificationMaster.NotificationConfigId",
+    "dom:NotificationMaster_NotificationConfigId": "NotificationMaster.NotificationConfigId",
+    "loc:Criterion": "NotificationMaster.Criterion",
+    "dom:NotificationMaster_Criterion": "NotificationMaster.Criterion",
+    "loc:IsEnabled": "NotificationMaster.IsEnabled",
+    "dom:NotificationMaster_IsEnabled": "NotificationMaster.IsEnabled"
+  },
+  "fields": [
+    {
+      "id": "NotificationMaster.NotificationType",
+      "label": "NotificationType",
+      "section": "NotificationMasters",
+      "aliases": [
+        "loc:NotificationType",
+        "dom:NotificationMaster_NotificationType"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of record the rule watches: <strong>Employee Document</strong>, <strong>Company Document</strong>, <strong>Leave</strong>, <strong>Disciplinary Action</strong>, <strong>Employee</strong> or <strong>Loan</strong>.</p><p><strong>Example.</strong> Employee Document</p><p><strong>Why it matters.</strong> The type decides the fields the criterion can use and the date each notice is about: the expiry date for documents, the start date for leave, the disciplinary date, the loan end date. The <strong>Employee</strong> type has no date of its own, so its criterion names the date it cares about (probation end, birth date, joining date). Leave only sees approved leave. Company documents belong to no employee, so \"to employee\" and \"to manager\" in the notification config find nobody; notification groups and \"send to all\" still work.</p><p>Next to it, the <strong>sub type</strong> narrows the rule to one kind of record, and its label changes with the type: Document Type for documents, Leave Type for leave, Violation Type for disciplinary actions and Loan Type for loans. <strong>All</strong> takes every kind. The Employee type has no sub type.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationMaster.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "NotificationMasters",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:NotificationMaster_NotificationConfigId"
+      ],
+      "rules": "Required. Chosen from Notification Config master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who receives the notice and how, set up under <strong>Notification Configs</strong>: the employee, their manager, notification groups or everybody, by in-app notice and/or email.</p><p><strong>Example.</strong> \"Employee and manager, in-app and email\"</p><p><strong>Why it matters.</strong> Email is sent only when the config has an email template; without one the notice goes to the bell only. Two rules with the same type, sub type, config and criterion are refused as duplicates.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationMaster.Criterion",
+      "label": "Criterion",
+      "section": "NotificationMasters",
+      "aliases": [
+        "loc:Criterion",
+        "dom:NotificationMaster_Criterion"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The condition a record must meet, written as a formula with the business rule editor. It offers the fields of the chosen type, the employee's fields, and functions such as <strong>DaysUntil</strong>, which gives the days from today to a date: negative once the date has passed, 0 on the day itself, and blank when the date is empty.</p><p><strong>Example.</strong> <code>DaysUntil(Document.ExpiryDate) &lt;= 30 AND DaysUntil(Document.ExpiryDate) &gt;= 0</code> (expires within the next 30 days).</p><p><strong>Why it matters.</strong> Leave it empty to notify about every record of the type and sub type. A record with an empty date never matches a DaysUntil condition. The Save and Preview buttons stay disabled while the formula is not valid. Criteria from the old system's filter editor cannot be reused: write them again here.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationMaster.IsEnabled",
+      "label": "IsEnabled",
+      "section": "NotificationMasters",
+      "aliases": [
+        "loc:IsEnabled",
+        "dom:NotificationMaster_IsEnabled"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the rule runs.</p><p><strong>Example.</strong> Off while you are still testing the criterion with Preview.</p><p><strong>Why it matters.</strong> Only enabled rules run. Preview and Mark these as sent work whether the rule is on or off, so you can prepare a rule fully before switching it on.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,347 @@
+{
+  "helpId": "rec.vacancy.edit",
+  "lang": "ar",
+  "title": "الوظائف الشاغرة — إنشاء / تحرير",
+  "entity": "HCMv3.Recruitment.Vacancy",
+  "overviewHtml": "<p>فرصة عمل. والشاغر <em>المفتوح</em> الذي لم يمضِ تاريخ إغلاقه يُعرض في موقع الوظائف، حيث يمكن للمرشحين التقديم بإحدى سيرهم الذاتية.</p><p>ويُعرض تاريخ النشر للمرشحين لكنه لا يخفي الشاغر قبله — فالشاغر يظهر منذ لحظة فتحه. ويسرد تقرير حالة الشواغر الشواغرَ ومتقدميها.</p>",
+  "aliasIndex": {
+    "loc:Code": "Vacancy.Code",
+    "dom:Vacancy_Code": "Vacancy.Code",
+    "loc:VacancyTitle": "Vacancy.VacancyTitle",
+    "dom:Vacancy_VacancyTitle": "Vacancy.VacancyTitle",
+    "loc:JobTitle": "Vacancy.JobTitleId",
+    "dom:Vacancy_JobTitleId": "Vacancy.JobTitleId",
+    "loc:OrganizationUnit": "Vacancy.OrganizationUnitId",
+    "dom:Vacancy_OrganizationUnitId": "Vacancy.OrganizationUnitId",
+    "loc:RequestionDate": "Vacancy.RequestionDate",
+    "dom:Vacancy_RequestionDate": "Vacancy.RequestionDate",
+    "loc:PublishOn": "Vacancy.PublishOn",
+    "dom:Vacancy_PublishOn": "Vacancy.PublishOn",
+    "loc:ClosingDate": "Vacancy.ClosingDate",
+    "dom:Vacancy_ClosingDate": "Vacancy.ClosingDate",
+    "loc:VacancyStatus": "Vacancy.VacancyStatus",
+    "dom:Vacancy_VacancyStatus": "Vacancy.VacancyStatus",
+    "loc:EmploymentType": "Vacancy.EmploymentType",
+    "dom:Vacancy_EmploymentType": "Vacancy.EmploymentType",
+    "loc:SlaDaysToFill": "Vacancy.SLADaysToFill",
+    "dom:Vacancy_SlaDaysToFill": "Vacancy.SLADaysToFill",
+    "loc:TotalVacancy": "Vacancy.TotalVacancy",
+    "dom:Vacancy_TotalVacancy": "Vacancy.TotalVacancy",
+    "loc:YearsOfExperience": "Vacancy.YearsOfExperience",
+    "dom:Vacancy_YearsOfExperience": "Vacancy.YearsOfExperience",
+    "loc:MonthlySalaryRange": "Vacancy.MonthlySalaryRange",
+    "dom:Vacancy_MonthlySalaryRange": "Vacancy.MonthlySalaryRange",
+    "loc:Qualification": "Vacancy.QualificationId",
+    "dom:Vacancy_QualificationId": "Vacancy.QualificationId",
+    "loc:Position": "Vacancy.PositionId",
+    "dom:Vacancy_PositionId": "Vacancy.PositionId",
+    "loc:Recruiter": "Vacancy.RecruiterId",
+    "dom:Vacancy_RecruiterId": "Vacancy.RecruiterId",
+    "loc:Location": "Vacancy.WorkLocationId",
+    "dom:Vacancy_WorkLocationId": "Vacancy.WorkLocationId",
+    "loc:IsBudgeted": "Vacancy.IsBudgeted",
+    "dom:Vacancy_IsBudgeted": "Vacancy.IsBudgeted",
+    "loc:TemplateOnbGroupId": "Vacancy.TemplateOnbGroupId",
+    "dom:Vacancy_TemplateOnbGroupId": "Vacancy.TemplateOnbGroupId",
+    "loc:OnbGroup": "Vacancy.OnbGroupId",
+    "dom:Vacancy_OnbGroupId": "Vacancy.OnbGroupId",
+    "loc:JobDescription": "Vacancy.JobDescription",
+    "dom:Vacancy_JobDescription": "Vacancy.JobDescription"
+  },
+  "fields": [
+    {
+      "id": "Vacancy.Code",
+      "label": "Code",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:Code",
+        "dom:Vacancy_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.VacancyTitle",
+      "label": "VacancyTitle",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:VacancyTitle",
+        "dom:Vacancy_VacancyTitle"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مسمى الشاغر.</p><p><strong>مثال.</strong> محاسب أول</p><p><strong>لماذا يهم.</strong> يُعرض ويُبحث عنه في موقع الوظائف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.JobTitleId",
+      "label": "JobTitle",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:Vacancy_JobTitleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المسميات الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي الذي يخصه الشاغر.</p><p><strong>لماذا يهم.</strong> يمكن للمرشحين في موقع الوظائف تصفية الشواغر به.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.OrganizationUnitId",
+      "label": "OrganizationUnit",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:OrganizationUnit",
+        "dom:Vacancy_OrganizationUnitId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإدارة التي يتبعها الشاغر.</p><p><strong>لماذا يهم.</strong> يُعرض إدارةً في موقع الوظائف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.RequestionDate",
+      "label": "RequestionDate",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:RequestionDate",
+        "dom:Vacancy_RequestionDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ طلب الشاغر.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.PublishOn",
+      "label": "PublishOn",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:PublishOn",
+        "dom:Vacancy_PublishOn"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ نشر الشاغر.</p><p><strong>لماذا يهم.</strong> يُعرض في موقع الوظائف وفي تقارير الشواغر، ولا يخفي الشاغر قبل ذلك التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.ClosingDate",
+      "label": "ClosingDate",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:ClosingDate",
+        "dom:Vacancy_ClosingDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يستطيع فيه المرشحون رؤية الشاغر.</p><p><strong>مثال.</strong> <code>2026-05-31</code></p><p><strong>لماذا يهم.</strong> بعده يختفي الشاغر من موقع الوظائف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.VacancyStatus",
+      "label": "VacancyStatus",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:VacancyStatus",
+        "dom:Vacancy_VacancyStatus"
+      ],
+      "rules": "إلزامي. إحدى القيم: مفتوح، Filled، معلق، Dropped.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وضع الشاغر.</p><p><strong>مثال.</strong> مفتوح</p><p><strong>لماذا يهم.</strong> لا تُعرض في موقع الوظائف إلا الشواغر <em>المفتوحة</em>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.EmploymentType",
+      "label": "EmploymentType",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:EmploymentType",
+        "dom:Vacancy_EmploymentType"
+      ],
+      "rules": "إلزامي. إحدى القيم: FullTime، PartTime.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دوام كامل أو جزئي.</p><p><strong>لماذا يهم.</strong> يُعرض في موقع الوظائف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.SLADaysToFill",
+      "label": "SlaDaysToFill",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:SlaDaysToFill",
+        "dom:Vacancy_SlaDaysToFill"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأيام المسموح بها لشغل الشاغر.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.TotalVacancy",
+      "label": "TotalVacancy",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:TotalVacancy",
+        "dom:Vacancy_TotalVacancy"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الوظائف التي يخصها الشاغر.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.YearsOfExperience",
+      "label": "YearsOfExperience",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:YearsOfExperience",
+        "dom:Vacancy_YearsOfExperience"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سنوات الخبرة المطلوبة.</p><p><strong>لماذا يهم.</strong> يُعرض في موقع الوظائف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.MonthlySalaryRange",
+      "label": "MonthlySalaryRange",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:MonthlySalaryRange",
+        "dom:Vacancy_MonthlySalaryRange"
+      ],
+      "rules": "اختياري. الحد الأقصى 100 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نطاق الراتب المعروض.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.QualificationId",
+      "label": "Qualification",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:Qualification",
+        "dom:Vacancy_QualificationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة المؤهلات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المؤهل المطلوب.</p><p><strong>لماذا يهم.</strong> يُعرض في موقع الوظائف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.PositionId",
+      "label": "Position",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:Position",
+        "dom:Vacancy_PositionId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الوظائف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوظيفة التي يُراد شغلها بهذا الشاغر.</p><p><strong>مثال.</strong> <code>P-0142</code> - محاسب أول، المالية</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.RecruiterId",
+      "label": "Recruiter",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:Recruiter",
+        "dom:Vacancy_RecruiterId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف المسؤول عن شغل الشاغر.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.WorkLocationId",
+      "label": "Location",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:Location",
+        "dom:Vacancy_WorkLocationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان العمل الذي تقع فيه الوظيفة.</p><p><strong>مثال.</strong> المكتب الرئيسي</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.IsBudgeted",
+      "label": "IsBudgeted",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:IsBudgeted",
+        "dom:Vacancy_IsBudgeted"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الوظيفة ضمن الموازنة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.TemplateOnbGroupId",
+      "label": "TemplateOnbGroupId",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:TemplateOnbGroupId",
+        "dom:Vacancy_TemplateOnbGroupId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نموذج مجموعة تهيئة للشاغر.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.OnbGroupId",
+      "label": "OnbGroup",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:OnbGroup",
+        "dom:Vacancy_OnbGroupId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مجموعات التهيئة الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموعة التهيئة لمن يُعيَّنون على الشاغر.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.JobDescription",
+      "label": "JobDescription",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:JobDescription",
+        "dom:Vacancy_JobDescription"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوصف الوظيفي.</p><p><strong>لماذا يهم.</strong> يُعرض في صفحة الشاغر في موقع الوظائف.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

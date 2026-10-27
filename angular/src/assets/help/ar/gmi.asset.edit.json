@@ -1,0 +1,299 @@
+{
+  "helpId": "gmi.asset.edit",
+  "lang": "ar",
+  "title": "العهد — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.Asset",
+  "overviewHtml": "<p>عُهد الشركة التي يمكن تسليمها للموظفين — من مركبات ومعدات. تُسجَّل العهد المسلَّمة للموظف في سجله، ويمكن للموظفين طلب العهد من خلال الخدمة الذاتية، التي لا تعرض إلا العهد المفعّلة التي حُدِّد في نوعها خيار «تضمين في سير العمل».</p><p>وتُطبع البيانات الوصفية أدناه في تقرير عهد الموظفين.</p>",
+  "aliasIndex": {
+    "loc:Code": "Asset.Code",
+    "dom:Asset_Code": "Asset.Code",
+    "loc:NameEn": "Asset.NameEn",
+    "dom:Asset_NameEn": "Asset.NameEn",
+    "loc:NameAr": "Asset.NameAr",
+    "dom:Asset_NameAr": "Asset.NameAr",
+    "loc:Brand": "Asset.Brand",
+    "dom:Asset_Brand": "Asset.Brand",
+    "loc:Model": "Asset.Model",
+    "dom:Asset_Model": "Asset.Model",
+    "loc:Color": "Asset.Color",
+    "dom:Asset_Color": "Asset.Color",
+    "loc:VIN_Number": "Asset.VIN_Number",
+    "dom:Asset_VinNumber": "Asset.VIN_Number",
+    "loc:Serial": "Asset.Serial",
+    "dom:Asset_Serial": "Asset.Serial",
+    "loc:PlateNumber": "Asset.PlateNumber",
+    "dom:Asset_PlateNumber": "Asset.PlateNumber",
+    "loc:Barcode": "Asset.Barcode",
+    "dom:Asset_Barcode": "Asset.Barcode",
+    "loc:Year": "Asset.Year",
+    "dom:Asset_Year": "Asset.Year",
+    "loc:ExpiryDate": "Asset.ExpiryDate",
+    "dom:Asset_ExpiryDate": "Asset.ExpiryDate",
+    "loc:Value": "Asset.Value",
+    "dom:Asset_Value": "Asset.Value",
+    "loc:AssetType": "Asset.AssetTypeId",
+    "dom:Asset_AssetTypeId": "Asset.AssetTypeId",
+    "loc:Status": "Asset.Status",
+    "dom:Asset_Status": "Asset.Status",
+    "loc:AssetAllocationStatus": "Asset.AssetAllocationStatus",
+    "dom:Asset_AssetAllocationStatus": "Asset.AssetAllocationStatus",
+    "loc:Earning": "Asset.EarningWageTypeId",
+    "dom:Asset_EarningWageTypeId": "Asset.EarningWageTypeId",
+    "loc:Deduction": "Asset.DeductionWageTypeId",
+    "dom:Asset_DeductionWageTypeId": "Asset.DeductionWageTypeId"
+  },
+  "fields": [
+    {
+      "id": "Asset.Code",
+      "label": "Code",
+      "section": "Assets",
+      "aliases": [
+        "loc:Code",
+        "dom:Asset_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.NameEn",
+      "label": "NameEn",
+      "section": "Assets",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Asset_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.NameAr",
+      "label": "NameAr",
+      "section": "Assets",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Asset_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.Brand",
+      "label": "Brand",
+      "section": "Assets",
+      "aliases": [
+        "loc:Brand",
+        "dom:Asset_Brand"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشركة المصنّعة للعهدة.</p><p><strong>مثال.</strong> <code>Toyota</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.Model",
+      "label": "Model",
+      "section": "Assets",
+      "aliases": [
+        "loc:Model",
+        "dom:Asset_Model"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طراز العهدة.</p><p><strong>مثال.</strong> <code>Land Cruiser</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.Color",
+      "label": "Color",
+      "section": "Assets",
+      "aliases": [
+        "loc:Color",
+        "dom:Asset_Color"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> لون العهدة.</p><p><strong>مثال.</strong> <code>أبيض</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.VIN_Number",
+      "label": "VIN_Number",
+      "section": "Assets",
+      "aliases": [
+        "loc:VIN_Number",
+        "dom:Asset_VinNumber"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم تعريف المركبة (رقم الشاصي)، للمركبات.</p><p><strong>مثال.</strong> <code>JTMHV05J804012345</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.Serial",
+      "label": "Serial",
+      "section": "Assets",
+      "aliases": [
+        "loc:Serial",
+        "dom:Asset_Serial"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الرقم التسلسلي من الشركة المصنّعة، للمعدات.</p><p><strong>مثال.</strong> <code>SN-4471902</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.PlateNumber",
+      "label": "PlateNumber",
+      "section": "Assets",
+      "aliases": [
+        "loc:PlateNumber",
+        "dom:Asset_PlateNumber"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم لوحة المركبة، للمركبات.</p><p><strong>مثال.</strong> <code>12/34567</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.Barcode",
+      "label": "Barcode",
+      "section": "Assets",
+      "aliases": [
+        "loc:Barcode",
+        "dom:Asset_Barcode"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملصق العهدة أو الرمز الشريطي الذي تثبّته الشركة عليها.</p><p><strong>مثال.</strong> <code>AST-000312</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.Year",
+      "label": "Year",
+      "section": "Assets",
+      "aliases": [
+        "loc:Year",
+        "dom:Asset_Year"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السنة المرتبطة بالعهدة، وهي عادةً سنة صنع المركبة.</p><p><strong>مثال.</strong> <code>2022</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.ExpiryDate",
+      "label": "ExpiryDate",
+      "section": "Assets",
+      "aliases": [
+        "loc:ExpiryDate",
+        "dom:Asset_ExpiryDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ انتهاء أمر ما يخص العهدة، مثل ترخيص المركبة أو ضمان المعدة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.Value",
+      "label": "Value",
+      "section": "Assets",
+      "aliases": [
+        "loc:Value",
+        "dom:Asset_Value"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> قيمة العهدة.</p><p><strong>مثال.</strong> <code>8500</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.AssetTypeId",
+      "label": "AssetType",
+      "section": "Assets",
+      "aliases": [
+        "loc:AssetType",
+        "dom:Asset_AssetTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع العهد.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع العهدة، من قائمة أنواع العهد.</p>",
+      "adminHtml": "<p>تُدار أنواع العهد من البيانات الأساسية العامة ← أنواع العهد.</p>",
+      "stub": false
+    },
+    {
+      "id": "Asset.Status",
+      "label": "Status",
+      "section": "Assets",
+      "aliases": [
+        "loc:Status",
+        "dom:Asset_Status"
+      ],
+      "rules": "إلزامي. إحدى القيم: مفعّل، غير مفعّل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل العهدة قيد الاستخدام.</p><p><strong>لماذا يهم.</strong> لا تُعرض إلا العهد المفعّلة عندما يطلب الموظفون عهدة من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.AssetAllocationStatus",
+      "label": "AssetAllocationStatus",
+      "section": "Assets",
+      "aliases": [
+        "loc:AssetAllocationStatus",
+        "dom:Asset_AssetAllocationStatus"
+      ],
+      "rules": "إلزامي. إحدى القيم: مشغول، غير مشغول.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل العهدة مسلَّمة لأحد حالياً.</p><p><strong>لماذا يهم.</strong> تُضبط يدوياً — فتسليم العهدة لموظف لا يغيّرها. وتظهر في تقرير العهد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.EarningWageTypeId",
+      "label": "Earning",
+      "section": "Assets",
+      "aliases": [
+        "loc:Earning",
+        "dom:Asset_EarningWageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع أجر الاستحقاق المخصص لما يُصرف بخصوص هذه العهدة، مثل بدل يُصرف للموظف الذي يتسلّمها.</p><p><strong>مثال.</strong> بدل سيارة</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.DeductionWageTypeId",
+      "label": "Deduction",
+      "section": "Assets",
+      "aliases": [
+        "loc:Deduction",
+        "dom:Asset_DeductionWageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع أجر الخصم المخصص لاسترداد ما يترتب على هذه العهدة من الموظف، مثل التلف أو الفقد.</p><p><strong>مثال.</strong> خصم استرداد عهدة</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

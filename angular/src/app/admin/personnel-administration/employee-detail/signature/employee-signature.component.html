@@ -1,0 +1,26 @@
+<div class="row p-3" [busyIf]="loading()">
+    <div class="col-md-6">
+        <div class="mb-5">
+            <label class="form-label" for="EmployeeSignature_Signature">{{ 'Signature' | localize }}</label>
+            <input
+                id="EmployeeSignature_Signature"
+                class="form-control"
+                type="file"
+                accept="image/*"
+                (change)="onSignatureSelected($event)" />
+            @if (record().signature) {
+                <img [src]="toImageSrc(record().signature)" style="max-height: 100px; margin-top: 8px" alt="signature" />
+            }
+        </div>
+
+        @if (
+            ('Pages.PersonnelAdministration.EmployeeSignatures.Create' | permission) ||
+            ('Pages.PersonnelAdministration.EmployeeSignatures.Edit' | permission)
+        ) {
+            <button type="button" class="btn btn-primary" [buttonBusy]="saving()" [busyText]="l('SavingWithThreeDot')" (click)="save()">
+                <i class="fa fa-save"></i>
+                {{ 'Save' | localize }}
+            </button>
+        }
+    </div>
+</div>

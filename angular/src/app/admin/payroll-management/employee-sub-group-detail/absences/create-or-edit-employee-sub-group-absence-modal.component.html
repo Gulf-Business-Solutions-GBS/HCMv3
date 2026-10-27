@@ -1,0 +1,131 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'EmployeeSubGroupAbsences' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="EmployeeSubGroupAbsence_AbsenceTypeId">{{ 'AbsenceType' | localize }}</label>
+                                <select
+                                    id="EmployeeSubGroupAbsence_AbsenceTypeId"
+                                    class="form-select"
+                                    name="AbsenceTypeId"
+                                    required
+                                    [ngModel]="record().absenceTypeId"
+                                    (ngModelChange)="updateField('absenceTypeId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (absenceType of absenceTypes(); track absenceType.id) {
+                                        <option [ngValue]="absenceType.id">{{ absenceType.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="EmployeeSubGroupAbsence_AbsenceDeductionRuleId">{{ 'AbsenceDeductionRule' | localize }}</label>
+                                <select
+                                    id="EmployeeSubGroupAbsence_AbsenceDeductionRuleId"
+                                    class="form-select"
+                                    name="AbsenceDeductionRuleId"
+                                    [ngModel]="record().absenceDeductionRuleId"
+                                    (ngModelChange)="updateField('absenceDeductionRuleId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (rule of absenceDeductionRules(); track rule.id) {
+                                        <option [ngValue]="rule.id">{{ rule.ruleName }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="EmployeeSubGroupAbsence_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupAbsence_StartDate"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    required
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateStartDate($event)" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="EmployeeSubGroupAbsence_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupAbsence_EndDate"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateEndDate($event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="EmployeeSubGroupAbsence_ChangeYear">{{ 'ChangeYear' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupAbsence_ChangeYear"
+                                    class="form-control"
+                                    type="number"
+                                    name="ChangeYear"
+                                    [ngModel]="record().changeYear"
+                                    (ngModelChange)="updateField('changeYear', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="EmployeeSubGroupAbsence_TotalDays">{{ 'TotalDays' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupAbsence_TotalDays"
+                                    class="form-control"
+                                    type="number"
+                                    name="TotalDays"
+                                    [ngModel]="record().totalDays"
+                                    (ngModelChange)="updateField('totalDays', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="EmployeeSubGroupAbsence_MaxLimit">{{ 'MaxLimit' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupAbsence_MaxLimit"
+                                    class="form-control"
+                                    type="number"
+                                    name="MaxLimit"
+                                    [ngModel]="record().maxLimit"
+                                    (ngModelChange)="updateField('maxLimit', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="EmployeeSubGroupAbsence_MaxLimitReachNotificationInDays">{{ 'MaxLimitReachNotificationInDays' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupAbsence_MaxLimitReachNotificationInDays"
+                                    class="form-control"
+                                    type="number"
+                                    name="MaxLimitReachNotificationInDays"
+                                    [ngModel]="record().maxLimitReachNotificationInDays"
+                                    (ngModelChange)="updateField('maxLimitReachNotificationInDays', $event)" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

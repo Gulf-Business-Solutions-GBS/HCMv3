@@ -1,0 +1,91 @@
+{
+  "helpId": "cd.competency-type.edit",
+  "lang": "ar",
+  "title": "أنواع الكفاءات — إنشاء / تحرير",
+  "entity": "HCMv3.CompetencyDevelopment.CompetencyType",
+  "overviewHtml": "<p>مجموعة من الكفاءات، مثل الأساسية أو الفنية.</p>",
+  "aliasIndex": {
+    "loc:Code": "CompetencyType.Code",
+    "dom:CompetencyType_Code": "CompetencyType.Code",
+    "loc:NameEn": "CompetencyType.NameEn",
+    "dom:CompetencyType_NameEn": "CompetencyType.NameEn",
+    "loc:NameAr": "CompetencyType.NameAr",
+    "dom:CompetencyType_NameAr": "CompetencyType.NameAr",
+    "loc:BackColor": "CompetencyType.BackColor",
+    "dom:CompetencyType_BackColor": "CompetencyType.BackColor",
+    "loc:ForeColor": "CompetencyType.ForeColor",
+    "dom:CompetencyType_ForeColor": "CompetencyType.ForeColor"
+  },
+  "fields": [
+    {
+      "id": "CompetencyType.Code",
+      "label": "Code",
+      "section": "CompetencyTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:CompetencyType_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompetencyType.NameEn",
+      "label": "NameEn",
+      "section": "CompetencyTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:CompetencyType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompetencyType.NameAr",
+      "label": "NameAr",
+      "section": "CompetencyTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:CompetencyType_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompetencyType.BackColor",
+      "label": "BackColor",
+      "section": "CompetencyTypes",
+      "aliases": [
+        "loc:BackColor",
+        "dom:CompetencyType_BackColor"
+      ],
+      "rules": "اختياري. الحد الأقصى 50 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> لون خلفية للمجموعة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompetencyType.ForeColor",
+      "label": "ForeColor",
+      "section": "CompetencyTypes",
+      "aliases": [
+        "loc:ForeColor",
+        "dom:CompetencyType_ForeColor"
+      ],
+      "rules": "اختياري. الحد الأقصى 50 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> لون نص للمجموعة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

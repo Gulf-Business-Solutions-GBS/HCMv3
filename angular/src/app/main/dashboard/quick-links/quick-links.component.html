@@ -1,0 +1,64 @@
+<div class="card card-custom ql-card">
+    <div class="card-header ql-head">
+        <h3 class="card-title ql-title">{{ 'Shortcuts' | localize }}</h3>
+    </div>
+
+    <div class="card-body ql-body">
+        @if (isEmpty()) {
+            <!-- Said plainly rather than left as an empty card. A blank tile reads as something that
+                 failed to load; this reads as something waiting to be used. -->
+            <p class="ql-empty">{{ 'QuickLinksEmptyHint' | localize }}</p>
+        }
+
+        <!-- Three sections, in the order they earn attention: what the organisation says to start with,
+             then what you chose, then where you happen to have been. -->
+        @if (shared().length) {
+            <div class="ql-band">
+                <div class="ql-band-head">{{ 'QuickLinks' | localize }}</div>
+                <div class="ql-grid">
+                    @for (screen of shared(); track screen.screenKey) {
+                        <a class="ql-link" [routerLink]="[screen.route]">
+                            @if (showScreenCodes()) {
+                                <span class="ql-code">{{ screen.code }}</span>
+                            }
+                            <span class="ql-name">{{ screen.nameKey | localize }}</span>
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+
+        @if (favorites().length) {
+            <div class="ql-band">
+                <div class="ql-band-head">{{ 'Favorites' | localize }}</div>
+                <div class="ql-grid">
+                    @for (screen of favorites(); track screen.screenKey) {
+                        <a class="ql-link" [routerLink]="[screen.route]">
+                            @if (showScreenCodes()) {
+                                <span class="ql-code">{{ screen.code }}</span>
+                            }
+                            <span class="ql-name">{{ screen.nameKey | localize }}</span>
+                        </a>
+                    }
+                </div>
+                <p class="ql-manage">{{ 'QuickLinksManageHint' | localize }}</p>
+            </div>
+        }
+
+        @if (recent().length) {
+            <div class="ql-band">
+                <div class="ql-band-head">{{ 'RecentlyVisited' | localize }}</div>
+                <div class="ql-grid">
+                    @for (screen of recent(); track screen.screenKey) {
+                        <a class="ql-link ql-link-quiet" [routerLink]="[screen.route]">
+                            @if (showScreenCodes()) {
+                                <span class="ql-code">{{ screen.code }}</span>
+                            }
+                            <span class="ql-name">{{ screen.nameKey | localize }}</span>
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,91 @@
+{
+  "helpId": "gmi.overtime-type.edit",
+  "lang": "en",
+  "title": "Overtime Types — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.OvertimeType",
+  "overviewHtml": "<p>The kinds of overtime — on a working day, a rest day, a public holiday and so on. Every overtime request names a type, and duties and holidays can point to the type that applies to them.</p>",
+  "aliasIndex": {
+    "loc:Code": "OvertimeType.Code",
+    "dom:OvertimeType_Code": "OvertimeType.Code",
+    "loc:NameEn": "OvertimeType.NameEn",
+    "dom:OvertimeType_NameEn": "OvertimeType.NameEn",
+    "loc:NameAr": "OvertimeType.NameAr",
+    "dom:OvertimeType_NameAr": "OvertimeType.NameAr",
+    "loc:OvertimeRate": "OvertimeType.OvertimeRate",
+    "dom:OvertimeType_OvertimeRate": "OvertimeType.OvertimeRate",
+    "loc:WageType": "OvertimeType.WageTypeId",
+    "dom:OvertimeType_WageTypeId": "OvertimeType.WageTypeId"
+  },
+  "fields": [
+    {
+      "id": "OvertimeType.Code",
+      "label": "Code",
+      "section": "OvertimeTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:OvertimeType_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OvertimeType.NameEn",
+      "label": "NameEn",
+      "section": "OvertimeTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:OvertimeType_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OvertimeType.NameAr",
+      "label": "NameAr",
+      "section": "OvertimeTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:OvertimeType_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OvertimeType.OvertimeRate",
+      "label": "OvertimeRate",
+      "section": "OvertimeTypes",
+      "aliases": [
+        "loc:OvertimeRate",
+        "dom:OvertimeType_OvertimeRate"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The multiplier applied to approved overtime hours.</p><p><strong>Example.</strong> <code>1.25</code></p><p><strong>Why it matters.</strong> Payroll multiplies the approved overtime hours by this rate before pricing them, and project costing uses the same multiplier.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OvertimeType.WageTypeId",
+      "label": "WageType",
+      "section": "OvertimeTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:OvertimeType_WageTypeId"
+      ],
+      "rules": "Optional. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wagetype that overtime of this type is paid under.</p><p><strong>Example.</strong> <code>OT125 - Overtime 125%</code></p><p><strong>Why it matters.</strong> Payroll pays approved overtime only for overtime types that have a wagetype: it prices the hours when it reaches that wagetype and puts the amount on the payslip under it. Left blank, overtime of this type is recorded but never paid. The project month-wise summary report also uses it to tell overtime cost apart from other pay.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

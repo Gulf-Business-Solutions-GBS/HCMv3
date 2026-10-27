@@ -1,0 +1,220 @@
+{
+"propertyTemplates":[
+        {
+			"placeholder" : "{{Property_Initializers_Here}}",
+			"templates" : [
+					{
+					"type" : "default",
+					"content" : ""
+					},
+                    {
+                    "type" : "DateTime",
+                    "content" : "{{Property_Name_Here}} = DateTime.Now"
+                    },
+				]
+		},
+        {
+			"placeholder" : "{{Uploaded_File_Name_Set_Here}}",
+			"templates" : [
+					{
+                        "type" : "default",
+					    "content" : ""
+					},
+                    {
+					    "type" : "file",
+					    "content" : "FileDetailsDictionary[\"{{Property_Name_Here}}\"] = new FileDetails
+                            {
+                                FileName = get{{Entity_Name_Here}}ForEditOutput.{{Property_Name_Here}}FileName,
+                                FileToken = get{{Entity_Name_Here}}ForEditOutput.{{Entity_Name_Here}}.{{Property_Name_Here}}Token
+                            };"
+					},
+				]
+		},
+        {
+			"placeholder" : "{{File_Property_Token_Set_Here}}",
+			"templates" : [
+					{
+                        "type" : "default",
+					    "content" : ""
+					},
+                    {
+					    "type" : "file",
+					    "content" : "CreateOrEdit{{Entity_Name_Here}}Model.{{Property_Name_Here}}Token = FileDetailsDictionary[\"{{Property_Name_Here}}\"].FileToken;"
+					},
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{Np_Looped_Parameter_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"preventDuplicate" : true,
+					"content" : "
+					    [Parameter] public {{NP_Id_Type_Here}}{{NP_Nullable_Here}} {{NP_Name_Here}} { get; set; }
+                        
+                        [Parameter] public string {{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} { get; set; }
+		 "
+					}
+				]
+		},		
+		{
+			"placeholder" : "{{Np_Looped_Initialize_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"preventDuplicate" : true,
+					"content" : "   
+					   CreateOrEdit{{Entity_Name_Here}}Model.{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = get{{Entity_Name_Here}}ForEditOutput.{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}};                     
+		 "
+					}
+				]
+		},
+        {
+            "placeholder" : "{{Np_Looped_OnInitializedAsync_Here}}",
+            "templates" : [
+                    {
+                    "relation" : "single",
+                    "preventDuplicate" : true,
+                    "content" : "
+                        if ({{NP_Name_Here}}{{NP_Property_Has_Value_If_Here}})
+                        {
+                            CreateOrEdit{{Entity_Name_Here}}Model.{{NP_Name_Here}} = {{NP_Name_Here}};
+                            CreateOrEdit{{Entity_Name_Here}}Model.{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = {{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}};
+                        }                        
+         "
+                    }
+                ]
+        },
+        {
+            "placeholder" : "{{Np_Looped_Lookup_Method_Here}}",
+            "templates" : [
+                    {
+                    "relation" : "single",
+                    "preventDuplicate" : true,
+                    "content" : "
+                        private void Open{{NP_Foreign_Entity_Name_Here}}LookupModal()
+                        {
+                            NavigationService.NavigateTo(NavigationUrlConsts.{{Entity_Name_Plural_Here}}_{{NP_Foreign_Entity_Name_Here}}_Lookup + $\"/{CreateOrEdit{{Entity_Name_Here}}Model.Id}\");
+                        }                       
+         "
+                    }
+                ]
+        },
+        {
+            "placeholder" : "{{Np_Looped_Remove_Method_Here}}",
+            "templates" : [
+                    {
+                    "relation" : "single",
+                    "preventDuplicate" : true,
+                    "content" : "
+                        private void Remove{{NP_Foreign_Entity_Name_Here}}()
+                        {
+                            CreateOrEdit{{Entity_Name_Here}}Model.{{NP_Name_Here}} = null;
+                            CreateOrEdit{{Entity_Name_Here}}Model.{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = \"\";
+                        }                       
+         "
+                    }
+                ]
+        },
+	],
+"enumTemplates":[
+	],
+"conditionalTemplates":[
+        {
+            "placeholder": "{{Primary_Key_Inside_Tag_Here}}",
+            "condition": "{{Primary_Key_Here}} != 'int'",
+            "content": "<{{Primary_Key_Here}}>"
+        },  
+        {
+            "placeholder": "{{Nullable_Primary_Key_Tag_Here}}",
+            "condition": "{{Primary_Key_Here}} != 'string'",
+            "content": "?"
+        },  
+        {
+            "placeholder": "{{Entity_Id_Has_Value_If_Here}}",
+            "condition": "{{Primary_Key_Here}} != 'string'",
+            "content": ".HasValue"
+        },
+        {
+            "placeholder": "{{Entity_Id_Has_Value_If_Here}}",
+            "condition": "{{Primary_Key_Here}} == 'string'",
+            "content": " != null"
+        },
+        {
+            "placeholder": "{{Entity_Id_Value_Here}}",
+            "condition": "{{Primary_Key_Here}} != 'string'",
+            "content": "!.Value"
+        },
+        {
+            "placeholder": "{{NP_Property_Has_Value_If_Here}}",
+            "condition": "{{NP_Id_Type_Here}} != 'string' && {{NP_IsNullable_Here}} == true",
+            "content": ".HasValue"
+        },
+        {
+            "placeholder": "{{NP_Property_Has_Value_If_Here}}",
+            "condition": "{{NP_Id_Type_Here}} == 'string'",
+            "content": " != null"
+        },
+        {
+            "placeholder": "{{Uploaded_File_Service_Here}}",
+            "condition": "{{Has_File_Type_Property}} == true",
+            "content": "private readonly Proxy{{Entity_Name_Plural_Here}}ControllerService Proxy{{Entity_Name_Plural_Here}}ControllerService;"
+        },
+        {
+            "placeholder": "{{Uploaded_File_Service_Inject_Here}}",
+            "condition": "{{Has_File_Type_Property}} == true",
+            "content": "Proxy{{Entity_Name_Plural_Here}}ControllerService = Resolve<Proxy{{Entity_Name_Plural_Here}}ControllerService>();"
+        },
+        {
+            "placeholder": "{{Uploaded_File_Dictionary_Here}}",
+            "condition": "{{Has_File_Type_Property}} == true",
+            "content": "private Dictionary<string, FileDetails> FileDetailsDictionary = new Dictionary<string, FileDetails>();"
+        },
+        {
+            "placeholder": "{{On_File_Selected_Method_Here}}",
+            "condition": "{{Has_File_Type_Property}} == true",
+            "content": "
+                private async Task OnFileSelected(InputFileChangeEventArgs e, string propertyName)
+                {
+                    var file = e.File;
+                    if (file == null)
+                        return;
+
+                    using var originalStream = file.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024);
+                    using var memoryStream = new MemoryStream();
+                    await originalStream.CopyToAsync(memoryStream);
+                    memoryStream.Position = 0;
+
+                    await SetBusyAsync(async () =>
+                    {
+                        FileUploadCacheOutput result = null;
+
+                        await WebRequestExecuter.Execute(
+                            async () =>
+                            {
+                                result = await Proxy{{Entity_Name_Plural_Here}}ControllerService.UploadFile(memoryStream, file.Name);
+                            },
+                            async () =>
+                            {
+                                if (result != null && string.IsNullOrEmpty(result.Message))
+                                {
+                                    FileDetailsDictionary[propertyName] = new FileDetails
+                                    {
+                                        FileToken = result.FileToken,
+                                        FileName = file.Name
+                                    };
+                                }
+                                else
+                                {
+                                    await UserDialogsService.AlertError(L(result?.Message ?? \"Upload failed\"));
+                                }
+                            }
+                        );
+                    });
+                }
+            "
+        },
+	]
+}

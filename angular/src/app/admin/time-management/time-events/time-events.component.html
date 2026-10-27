@@ -1,0 +1,156 @@
+<div [@routerTransition]>
+    <sub-header [title]="'TimeEvents' | localize" [description]="'TimeManagement' | localize">
+        <div role="actions">
+            @if ('Pages.TimeManagement.TimeEvents.Create' | permission) {
+                <button (click)="createTimeEvent()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getTimeEvents($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '50rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.TimeManagement.TimeEvents.Edit',
+                                                    'Pages.TimeManagement.TimeEvents.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 200px">
+                                        {{ 'EmployeeName' | localize }}
+                                    </th>
+                                    <th style="min-width: 130px" pSortableColumn="transDate">
+                                        {{ 'TransDate' | localize }}
+                                        <p-sortIcon field="transDate" />
+                                    </th>
+                                    <th style="min-width: 110px">
+                                        {{ 'TransTime' | localize }}
+                                    </th>
+                                    <th style="min-width: 150px">
+                                        {{ 'TransType' | localize }}
+                                    </th>
+                                    <th style="min-width: 120px">
+                                        {{ 'TransSource' | localize }}
+                                    </th>
+                                    <th style="min-width: 120px">
+                                        {{ 'RecordSource' | localize }}
+                                    </th>
+                                    <th style="min-width: 220px">
+                                        {{ 'DeviceAgentString' | localize }}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.TimeManagement.TimeEvents.Edit',
+                                                    'Pages.TimeManagement.TimeEvents.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        <span pTooltip="{{ record.employeeFullNameEn }}" class="hide-overflown">{{ record.employeeFullNameEn }}</span>
+                                    </td>
+                                    <td style="min-width: 130px">
+                                        {{ record.transDate | luxonFormat:'yyyy-MM-dd' }}
+                                    </td>
+                                    <td style="min-width: 110px">
+                                        {{ record.transTime | luxonFormat:'HH:mm' }}
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        <span pTooltip="{{ record.transTypeName }}" class="hide-overflown">{{ record.transTypeName }}</span>
+                                    </td>
+                                    <td style="min-width: 120px">
+                                        {{ record.transSource }}
+                                    </td>
+                                    <td style="min-width: 120px">
+                                        {{ record.recordSource || '' }}
+                                    </td>
+                                    <td style="min-width: 220px">
+                                        <span pTooltip="{{ record.deviceAgentString }}" class="hide-overflown">{{ record.deviceAgentString }}</span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getTimeEvents($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditTimeEventModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>
+
+@if (selfiePreview(); as src) {
+    <div
+        class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+        style="background: rgba(0, 0, 0, 0.6); z-index: 1060"
+        (click)="selfiePreview.set(null)"
+    >
+        <div class="bg-white rounded p-3 text-center" style="max-width: 90vw" (click)="$event.stopPropagation()">
+            <img [src]="src" class="img-fluid rounded" style="max-height: 70vh" alt="" />
+            <div class="mt-3">
+                <button type="button" class="btn btn-light" (click)="selfiePreview.set(null)">{{ 'Close' | localize }}</button>
+            </div>
+        </div>
+    </div>
+}

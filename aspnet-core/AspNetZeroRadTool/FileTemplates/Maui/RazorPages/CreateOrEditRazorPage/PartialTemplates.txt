@@ -1,0 +1,160 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"type" : "default",
+					"content" : "<div class=\"d-flex flex-column mb-4\">
+                <label class=\"form-label fw-semibold\">
+                    <span class=\"required\">
+                        @L(\"{{Property_Name_Here}}\")
+                    </span>
+                </label>
+                <InputText @bind-Value=\"CreateOrEdit{{Entity_Name_Here}}Model.{{Property_Name_Here}}\" class=\"form-control form-control-solid\"/>
+                <ValidationMessage For=\"@(() => CreateOrEdit{{Entity_Name_Here}}Model.{{Property_Name_Here}})\"/>
+            </div>
+            "
+					},
+                    {
+                    "type" : "byte",
+                    "content" : "<div class=\"d-flex flex-column mb-4\">
+                <label class=\"form-label fw-semibold\">
+                    <span class=\"required\">
+                        @L(\"{{Property_Name_Here}}\")
+                    </span>
+                </label>
+                <input @bind=\"CreateOrEdit{{Entity_Name_Here}}Model.{{Property_Name_Here}}\" class=\"form-control form-control-solid\"/>
+                <ValidationMessage For=\"@(() => CreateOrEdit{{Entity_Name_Here}}Model.{{Property_Name_Here}})\"/>
+            </div>
+            "
+                    },
+                    {
+                    "type" : "numeric",
+                    "content" : "<div class=\"d-flex flex-column mb-4\">
+                <label class=\"form-label fw-semibold\">
+                    <span class=\"required\">
+                        @L(\"{{Property_Name_Here}}\")
+                    </span>
+                </label>
+                <InputNumber @bind-Value=\"CreateOrEdit{{Entity_Name_Here}}Model.{{Property_Name_Here}}\" class=\"form-control form-control-solid\"/>
+                <ValidationMessage For=\"@(() => CreateOrEdit{{Entity_Name_Here}}Model.{{Property_Name_Here}})\"/>
+            </div>
+            "
+                    },
+                    {
+                    "type" : "bool",
+                    "content" : "<label class=\"form-check form-switch form-check-custom form-check-solid mb-8\">
+                        <InputCheckbox @bind-Value=\"CreateOrEdit{{Entity_Name_Here}}Model.{{Property_Name_Here}}\" class=\"form-check-input\"/>
+                        <span class=\"form-check-label fw-semibold text-muted\">@L(\"{{Property_Name_Here}}\")</span>
+                    </label>
+            "
+                    },
+                    {
+                    "type" : "DateTime",
+                    "content" : "<div class=\"d-flex flex-column mb-4\">
+                <label class=\"form-label fw-semibold\">
+                    <span class=\"required\">
+                        @L(\"{{Property_Name_Here}}\")
+                    </span>
+                </label>
+                <InputDate @bind-Value=\"CreateOrEdit{{Entity_Name_Here}}Model.{{Property_Name_Here}}\" class=\"form-control form-control-solid\"/>
+                <ValidationMessage For=\"@(() => CreateOrEdit{{Entity_Name_Here}}Model.{{Property_Name_Here}})\"/>
+            </div>
+            "
+                    },
+                    {
+                    "type" : "enum",
+                    "content" : "<div class=\"d-flex flex-column mb-4\">
+                <label class=\"form-label fw-semibold\">
+                    <span class=\"required\">
+                        @L(\"{{Property_Name_Here}}\")
+                    </span>
+                </label>
+                <InputSelect @bind-Value=\"CreateOrEdit{{Entity_Name_Here}}Model.{{Property_Name_Here}}\" class=\"form-control form-control-solid\">
+                    @foreach (var {{enum_Name_Here}} in Enum.GetValues(typeof({{Enum_Name_Here}})))
+                    {
+                        <option value=\"@{{enum_Name_Here}}\">@{{enum_Name_Here}}</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For=\"@(() => CreateOrEdit{{Entity_Name_Here}}Model.{{Property_Name_Here}})\"/>
+            </div>
+            "
+                    },
+                    {
+                    "type" : "Guid",
+                    "content" : "<div class=\"d-flex flex-column mb-4\">
+                <label class=\"form-label fw-semibold\">
+                    <span class=\"required\">
+                        @L(\"{{Property_Name_Here}}\")
+                    </span>
+                </label>
+                <InputText @bind-Value=\"CreateOrEdit{{Entity_Name_Here}}Model.{{Property_Name_Here}}String\" class=\"form-control form-control-solid\"/>
+                <ValidationMessage For=\"@(() => CreateOrEdit{{Entity_Name_Here}}Model.{{Property_Name_Here}})\"/>
+            </div>
+            "
+                    },
+                    {
+                    "type" : "file",
+                    "content" : "
+                        <div class=\"d-flex flex-column mb-4\">
+                            <label class=\"form-label fw-semibold\">
+                                @L(\"{{Property_Name_Here}}\")
+                            </label>
+                            <InputFile OnChange=\"@(e => OnFileSelected(e, \"{{Property_Name_Here}}\"))\" class=\"form-control\" />
+                            @if (FileDetailsDictionary.TryGetValue(\"{{Property_Name_Here}}\", out var {{property_Name_Here}}) && {{property_Name_Here}} != null)
+                            {
+                                <div class=\"mt-2 text-success\">@{{property_Name_Here}}.FileName</div>
+                            }
+                        </div>
+                    "
+                    },
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{Np_RouteAttribute_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "
+@attribute [Route(\"/\" + NavigationUrlConsts.{{Entity_Name_Plural_Here}}_Create_Or_Edit + \"/{{{Entity_Name_Here}}Id:int}/{{NP_Foreign_Entity_Name_Here}}/{{{NP_Name_Here}}:{{NP_Id_Type_Here}}?}/{{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}?}\")]
+@attribute [Route(\"/\" + NavigationUrlConsts.{{Entity_Name_Plural_Here}}_Create_Or_Edit + \"/{{NP_Foreign_Entity_Name_Here}}/{{{NP_Name_Here}}:{{NP_Id_Type_Here}}?}/{{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}?}\")]"
+					}
+				]
+		},
+        {
+            "placeholder" : "{{NP_Looped_Template_Here}}",
+            "templates" : [
+                    {
+                    "relation" : "single",
+                    "content" : "
+            <div class=\"mb-4\">
+                <label class=\"form-label fw-semibold\" for=\"{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}\">@L(\"{{NP_Foreign_Entity_Name_Here}}\")</label>
+                <div class=\"input-group\">
+                    <input class=\"form-control\" id=\"{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}\" name=\"{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}\" value=\"@CreateOrEdit{{Entity_Name_Here}}Model.{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}\" type=\"text\" disabled>
+                    <button class=\"btn btn-primary blue\" type=\"button\" id=\"Open{{NP_Foreign_Entity_Name_Here}}LookupTableButton\" @onclick=\"Open{{NP_Foreign_Entity_Name_Here}}LookupModal\">
+                        <i class=\"fa fa-search\"></i> @L(\"Pick\")
+                    </button>
+                    <button class=\"btn btn-danger btn-icon\" type=\"button\" id=\"ClearAuthorNameButton\" @onclick=\"Remove{{NP_Foreign_Entity_Name_Here}}\">
+                        <i class=\"fa fa-times\"></i>
+                    </button>
+                </div>
+            </div>
+            "
+                    }
+                ]
+        },
+	],
+"enumTemplates":[
+		{
+			"placeholder" : "{{Enum_Using_Looped_Template_Here}}",
+			"preventDuplicate":true,
+			"content" : "@using {{Enum_Namespace_Here}};
+"
+		}
+	],
+"conditionalTemplates":[
+	]
+}

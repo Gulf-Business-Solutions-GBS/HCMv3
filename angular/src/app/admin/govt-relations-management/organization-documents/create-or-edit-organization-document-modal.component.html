@@ -1,0 +1,180 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'OrganizationDocuments' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'OrganizationDocuments' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="OrganizationDocument_OrganizationUnitId">{{ 'OrganizationUnit' | localize }}</label>
+                                <select
+                                    id="OrganizationDocument_OrganizationUnitId"
+                                    #organizationUnitInput="ngModel"
+                                    class="form-select"
+                                    name="OrganizationUnitId"
+                                    [ngModel]="record().organizationUnitId"
+                                    (ngModelChange)="updateField('organizationUnitId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of organizationUnits(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.displayName }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="organizationUnitInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="OrganizationDocument_DocumentTypeId">{{ 'DocumentType' | localize }}</label>
+                                <select
+                                    id="OrganizationDocument_DocumentTypeId"
+                                    #documentTypeInput="ngModel"
+                                    class="form-select"
+                                    name="DocumentTypeId"
+                                    [ngModel]="record().documentTypeId"
+                                    (ngModelChange)="updateField('documentTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of documentTypes(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="documentTypeInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="OrganizationDocument_DocumentNum">{{ 'DocumentNum' | localize }}</label>
+                                <input
+                                    id="OrganizationDocument_DocumentNum"
+                                    class="form-control"
+                                    type="text"
+                                    name="DocumentNum"
+                                    [ngModel]="record().documentNum"
+                                    (ngModelChange)="updateField('documentNum', $event)"
+                                    maxlength="100" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="OrganizationDocument_SponsorId">{{ 'Sponsor' | localize }}</label>
+                                <select
+                                    id="OrganizationDocument_SponsorId"
+                                    class="form-select"
+                                    name="SponsorId"
+                                    [ngModel]="record().sponsorId"
+                                    (ngModelChange)="updateField('sponsorId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of sponsors(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="OrganizationDocument_IssueDate">{{ 'IssueDate' | localize }}</label>
+                                <input
+                                    id="OrganizationDocument_IssueDate"
+                                    #issueDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="IssueDate"
+                                    [ngModel]="record().issueDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('issueDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="issueDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="OrganizationDocument_ExpiryDate">{{ 'ExpiryDate' | localize }}</label>
+                                <input
+                                    id="OrganizationDocument_ExpiryDate"
+                                    #expiryDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="ExpiryDate"
+                                    [ngModel]="record().expiryDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('expiryDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="expiryDateInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="OrganizationDocument_DocumentPlace">{{ 'DocumentPlace' | localize }}</label>
+                                <input
+                                    id="OrganizationDocument_DocumentPlace"
+                                    class="form-control"
+                                    type="text"
+                                    name="DocumentPlace"
+                                    [ngModel]="record().documentPlace"
+                                    (ngModelChange)="updateField('documentPlace', $event)"
+                                    maxlength="200" />
+                            </div>
+                            <div class="col-md-6 mb-5 d-flex align-items-end">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="OrganizationDocument_NotificationSent"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="NotificationSent"
+                                        [ngModel]="record().notificationSent"
+                                        (ngModelChange)="updateField('notificationSent', $event)" />
+                                    <label class="form-check-label" for="OrganizationDocument_NotificationSent">
+                                        {{ 'NotificationSent' | localize }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="OrganizationDocument_Comments">{{ 'Comments' | localize }}</label>
+                                <textarea
+                                    id="OrganizationDocument_Comments"
+                                    class="form-control"
+                                    name="Comments"
+                                    rows="3"
+                                    [ngModel]="record().comments"
+                                    (ngModelChange)="updateField('comments', $event)"
+                                    maxlength="1000"></textarea>
+                            </div>
+                        </div>
+                        @if (record().id) {
+                            <div class="mb-5">
+                                <app-attachments entityType="OrganizationDocument" [entityId]="record().id" />
+                            </div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

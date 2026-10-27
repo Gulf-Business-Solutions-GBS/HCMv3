@@ -1,0 +1,43 @@
+{
+  "helpId": "pay.wage-type-security-role.edit",
+  "lang": "en",
+  "title": "Wagetype Security Roles — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.WageTypeSecurityRole",
+  "overviewHtml": "<p>The roles allowed to see a secured wagetype. Not enforced at present: nothing restricts access to a wagetype, whatever is listed here.</p>",
+  "aliasIndex": {
+    "loc:WageTypeId": "WageTypeSecurityRole.WageTypeId",
+    "dom:WageTypeSecurityRole_WageTypeId": "WageTypeSecurityRole.WageTypeId",
+    "loc:RoleId": "WageTypeSecurityRole.RoleId",
+    "dom:WageTypeSecurityRole_RoleId": "WageTypeSecurityRole.RoleId"
+  },
+  "fields": [
+    {
+      "id": "WageTypeSecurityRole.WageTypeId",
+      "label": "WageTypeId",
+      "section": "WageTypeSecurityRoles",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:WageTypeSecurityRole_WageTypeId"
+      ],
+      "rules": "Required. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The secured wagetype.</p><p><strong>Example.</strong> Executive Bonus</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageTypeSecurityRole.RoleId",
+      "label": "RoleId",
+      "section": "WageTypeSecurityRoles",
+      "aliases": [
+        "loc:RoleId",
+        "dom:WageTypeSecurityRole_RoleId"
+      ],
+      "rules": "Required. Chosen from Role master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A role allowed to see it.</p><p><strong>Example.</strong> Payroll Manager</p><p><strong>Why it matters.</strong> Each role can be listed once per wagetype.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

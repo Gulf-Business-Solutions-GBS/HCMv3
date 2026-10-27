@@ -1,0 +1,75 @@
+{
+  "helpId": "gmi.payee-bank-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل بنوك المستفيدين — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.PayeeBankDetail",
+  "overviewHtml": "<p>للبنك الدافع، الرمز الذي يستخدمه لكل بنك آخر في ملف تحويل الرواتب. وعند إنشاء ملف التحويل لبنك دافع، يُبحث هنا عن بنك كل موظف لمعرفة الرمز الذي يُكتب.</p>",
+  "aliasIndex": {
+    "loc:Bank": "PayeeBankDetail.BankId",
+    "dom:PayeeBankDetail_BankId": "PayeeBankDetail.BankId",
+    "loc:PayeeBank": "PayeeBankDetail.PayeeBankId",
+    "dom:PayeeBankDetail_PayeeBankId": "PayeeBankDetail.PayeeBankId",
+    "loc:BankCode": "PayeeBankDetail.BankCode",
+    "dom:PayeeBankDetail_BankCode": "PayeeBankDetail.BankCode",
+    "loc:BankFile": "PayeeBankDetail.BankFileId",
+    "dom:PayeeBankDetail_BankFileId": "PayeeBankDetail.BankFileId"
+  },
+  "fields": [
+    {
+      "id": "PayeeBankDetail.BankId",
+      "label": "Bank",
+      "section": "PayeeBankDetails",
+      "aliases": [
+        "loc:Bank",
+        "dom:PayeeBankDetail_BankId"
+      ],
+      "rules": "اختياري. يُختار من قائمة البنوك.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البنك الدافع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayeeBankDetail.PayeeBankId",
+      "label": "PayeeBank",
+      "section": "PayeeBankDetails",
+      "aliases": [
+        "loc:PayeeBank",
+        "dom:PayeeBankDetail_PayeeBankId"
+      ],
+      "rules": "اختياري. يُختار من قائمة البنوك.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بنك الموظف — أي البنك الذي يُحوَّل إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayeeBankDetail.BankCode",
+      "label": "BankCode",
+      "section": "PayeeBankDetails",
+      "aliases": [
+        "loc:BankCode",
+        "dom:PayeeBankDetail_BankCode"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الرمز الذي يستخدمه البنك الدافع لبنك الموظف.</p><p><strong>لماذا يهم.</strong> يُكتب في ملف تحويل الرواتب للبنك الدافع لكل موظف تُحوَّل رواتبه إلى ذلك البنك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayeeBankDetail.BankFileId",
+      "label": "BankFile",
+      "section": "PayeeBankDetails",
+      "aliases": [
+        "loc:BankFile",
+        "dom:PayeeBankDetail_BankFileId"
+      ],
+      "rules": "اختياري. يُختار من قائمة ملفات البنك.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنسيق ملف بنكي لهذا الزوج من البنوك.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — فملف تحويل الرواتب لا يستخدمه.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

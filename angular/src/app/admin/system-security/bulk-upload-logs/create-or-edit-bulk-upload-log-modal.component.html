@@ -1,0 +1,160 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'BulkUploadLogs' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'BulkUploadLogs' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="BulkUploadLog_EmployeeId">{{ 'Employee' | localize }}</label>
+                                <select
+                                    id="BulkUploadLog_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    [ngModel]="record().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="BulkUploadLog_LogType">{{ 'LogType' | localize }}</label>
+                                <select
+                                    id="BulkUploadLog_LogType"
+                                    class="form-select"
+                                    name="LogType"
+                                    [ngModel]="record().logType"
+                                    (ngModelChange)="updateField('logType', $event)">
+                                    @for (option of logTypes; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="BulkUploadLog_RunTimeStamp">{{ 'RunTimeStamp' | localize }}</label>
+                                <input
+                                    id="BulkUploadLog_RunTimeStamp"
+                                    type="datetime-local"
+                                    class="form-control"
+                                    name="RunTimeStamp"
+                                    [ngModel]="toDateTimeLocal(record().runTimeStamp)"
+                                    (ngModelChange)="updateDateTimeField('runTimeStamp', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="BulkUploadLog_InPeriod">{{ 'InPeriod' | localize }}</label>
+                                <input
+                                    id="BulkUploadLog_InPeriod"
+                                    type="date"
+                                    class="form-control"
+                                    name="InPeriod"
+                                    [ngModel]="record().inPeriod?.toISODate()"
+                                    (ngModelChange)="updateDateField('inPeriod', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="BulkUploadLog_Status">{{ 'Status' | localize }}</label>
+                                <input
+                                    id="BulkUploadLog_Status"
+                                    type="number"
+                                    class="form-control"
+                                    name="Status"
+                                    [ngModel]="record().status"
+                                    (ngModelChange)="updateNumberField('status', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="BulkUploadLog_NoOfEmployee">{{ 'NoOfEmployee' | localize }}</label>
+                                <input
+                                    id="BulkUploadLog_NoOfEmployee"
+                                    type="number"
+                                    class="form-control"
+                                    name="NoOfEmployee"
+                                    [ngModel]="record().noOfEmployee"
+                                    (ngModelChange)="updateNumberField('noOfEmployee', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="BulkUploadLog_RecordNo">{{ 'RecordNo' | localize }}</label>
+                                <input
+                                    id="BulkUploadLog_RecordNo"
+                                    type="number"
+                                    class="form-control"
+                                    name="RecordNo"
+                                    [ngModel]="record().recordNo"
+                                    (ngModelChange)="updateNumberField('recordNo', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5 d-flex align-items-end">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="BulkUploadLog_StopFlag"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="StopFlag"
+                                        [ngModel]="record().stopFlag"
+                                        (ngModelChange)="updateField('stopFlag', $event)" />
+                                    <label class="form-check-label" for="BulkUploadLog_StopFlag">{{ 'StopFlag' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="BulkUploadLog_Message">{{ 'Message' | localize }}</label>
+                                <textarea
+                                    id="BulkUploadLog_Message"
+                                    class="form-control"
+                                    rows="4"
+                                    name="Message"
+                                    [ngModel]="record().message"
+                                    (ngModelChange)="updateField('message', $event)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

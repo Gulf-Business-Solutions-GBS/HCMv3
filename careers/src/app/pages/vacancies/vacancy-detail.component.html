@@ -1,0 +1,110 @@
+<div class="container page">
+    <a class="backlink" routerLink="/">&larr; {{ 'CareersBackToJobs' | localize }}</a>
+
+    @if (loading()) {
+        <div class="loading-block">
+            <span class="spinner"></span>
+            <span>{{ 'CareersLoading' | localize }}</span>
+        </div>
+    } @else if (notFound() || !vacancy()) {
+        <div class="card empty">
+            <p class="empty__title">{{ 'CareersVacancyNotFound' | localize }}</p>
+            <a class="btn btn--primary" routerLink="/">{{ 'CareersBackToJobs' | localize }}</a>
+        </div>
+    } @else if (vacancy(); as job) {
+        <article class="detail">
+            <header class="detail__header card">
+                <div class="detail__headline">
+                    <h1>{{ job.vacancyTitle }}</h1>
+
+                    <div class="detail__meta">
+                        @if (job.departmentName) {
+                            <span>{{ job.departmentName }}</span>
+                        }
+                        @if (job.workLocationName) {
+                            <span>{{ job.workLocationName }}</span>
+                        }
+                        @if (job.code) {
+                            <span>#{{ job.code }}</span>
+                        }
+                    </div>
+
+                    <div class="detail__chips">
+                        <span class="chip chip--accent">{{ employmentTypeKey() | localize }}</span>
+                        @if (job.jobTitleName) {
+                            <span class="chip">{{ job.jobTitleName }}</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="detail__cta">
+                    @if (isClosed()) {
+                        <p class="alert alert--warning">{{ 'CareersVacancyClosed' | localize }}</p>
+                    } @else if (auth.isAuthenticated()) {
+                        <a class="btn btn--primary btn--lg btn--block" [routerLink]="['/jobs', job.id, 'apply']">
+                            {{ 'CareersApplyNow' | localize }}
+                        </a>
+                    } @else {
+                        <!-- Applying requires a candidate account: ApplyToVacancy resolves the applicant from
+                             AbpSession.UserId and takes no applicant id. -->
+                        <a
+                            class="btn btn--primary btn--lg btn--block"
+                            routerLink="/account/login"
+                            [queryParams]="{ returnUrl: '/jobs/' + job.id + '/apply' }"
+                        >
+                            {{ 'CareersSignInToApply' | localize }}
+                        </a>
+                        <a class="btn btn--secondary btn--block" routerLink="/account/register">
+                            {{ 'CareersRegister' | localize }}
+                        </a>
+                    }
+                </div>
+            </header>
+
+            <div class="detail__body">
+                <section class="card">
+                    <h2>{{ 'JobDescription' | localize }}</h2>
+                    @if (job.jobDescription) {
+                        <p class="detail__description">{{ job.jobDescription }}</p>
+                    } @else {
+                        <p class="muted">{{ 'CareersNotSpecified' | localize }}</p>
+                    }
+                </section>
+
+                <aside class="card detail__overview">
+                    <h2>{{ 'CareersJobOverview' | localize }}</h2>
+                    <dl class="overview">
+                        <div class="overview__row">
+                            <dt>{{ 'CareersPostedOn' | localize }}</dt>
+                            <dd>{{ job.publishOn | careersDate }}</dd>
+                        </div>
+                        <div class="overview__row">
+                            <dt>{{ 'ClosingDate' | localize }}</dt>
+                            <dd>{{ job.closingDate | careersDate }}</dd>
+                        </div>
+                        <div class="overview__row">
+                            <dt>{{ 'EmploymentType' | localize }}</dt>
+                            <dd>{{ employmentTypeKey() | localize }}</dd>
+                        </div>
+                        <div class="overview__row">
+                            <dt>{{ 'Qualification' | localize }}</dt>
+                            <dd>{{ job.qualificationName || ('CareersNotSpecified' | localize) }}</dd>
+                        </div>
+                        <div class="overview__row">
+                            <dt>{{ 'YearsOfExperience' | localize }}</dt>
+                            <dd>{{ job.yearsOfExperience }}</dd>
+                        </div>
+                        <div class="overview__row">
+                            <dt>{{ 'Location' | localize }}</dt>
+                            <dd>{{ job.workLocationName || ('CareersNotSpecified' | localize) }}</dd>
+                        </div>
+                        <div class="overview__row">
+                            <dt>{{ 'Department' | localize }}</dt>
+                            <dd>{{ job.departmentName || ('CareersNotSpecified' | localize) }}</dd>
+                        </div>
+                    </dl>
+                </aside>
+            </div>
+        </article>
+    }
+</div>

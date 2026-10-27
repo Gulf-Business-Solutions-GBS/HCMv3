@@ -1,0 +1,43 @@
+{
+  "helpId": "hs.site-audit-detail.edit",
+  "lang": "en",
+  "title": "Site Audit Details — Create / Edit",
+  "entity": "HCMv3.HealthAndSafetyManagement.SiteAuditDetail",
+  "overviewHtml": "<p>One observation from a site audit.</p>",
+  "aliasIndex": {
+    "loc:Observation": "SiteAuditDetail.Observation",
+    "dom:SiteAuditDetail_Observation": "SiteAuditDetail.Observation",
+    "loc:CorrectionAction": "SiteAuditDetail.CorrectionAction",
+    "dom:SiteAuditDetail_CorrectionAction": "SiteAuditDetail.CorrectionAction"
+  },
+  "fields": [
+    {
+      "id": "SiteAuditDetail.Observation",
+      "label": "Observation",
+      "section": "SiteAuditDetails",
+      "aliases": [
+        "loc:Observation",
+        "dom:SiteAuditDetail_Observation"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What was found.</p><p><strong>Example.</strong> Fire exit blocked by pallets</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SiteAuditDetail.CorrectionAction",
+      "label": "CorrectionAction",
+      "section": "SiteAuditDetails",
+      "aliases": [
+        "loc:CorrectionAction",
+        "dom:SiteAuditDetail_CorrectionAction"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What should be done about it.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

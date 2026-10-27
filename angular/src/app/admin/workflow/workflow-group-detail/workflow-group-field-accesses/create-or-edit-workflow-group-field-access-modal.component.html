@@ -1,0 +1,111 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'WorkflowGroupFieldAccesses' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'WorkflowGroupFieldAccesses' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="WorkflowGroupFieldAccess_Step">{{ 'Step' | localize }}</label>
+                                <input
+                                    id="WorkflowGroupFieldAccess_Step"
+                                    #stepInput="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="Step"
+                                    [ngModel]="record().step"
+                                    (ngModelChange)="updateField('step', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="stepInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="WorkflowGroupFieldAccess_Field">{{ 'Field' | localize }}</label>
+                                <input
+                                    id="WorkflowGroupFieldAccess_Field"
+                                    #fieldInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="Field"
+                                    maxlength="256"
+                                    [ngModel]="record().field"
+                                    (ngModelChange)="updateField('field', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="fieldInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="WorkflowGroupFieldAccess_IsVisible"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="IsVisible"
+                                        [ngModel]="record().isVisible"
+                                        (ngModelChange)="updateField('isVisible', $event)" />
+                                    <label class="form-check-label" for="WorkflowGroupFieldAccess_IsVisible">{{ 'IsVisible' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="WorkflowGroupFieldAccess_IsEditable"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="IsEditable"
+                                        [ngModel]="record().isEditable"
+                                        (ngModelChange)="updateField('isEditable', $event)" />
+                                    <label class="form-check-label" for="WorkflowGroupFieldAccess_IsEditable">{{ 'IsEditable' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="WorkflowGroupFieldAccess_IsRequired"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="IsRequired"
+                                        [ngModel]="record().isRequired"
+                                        (ngModelChange)="updateField('isRequired', $event)" />
+                                    <label class="form-check-label" for="WorkflowGroupFieldAccess_IsRequired">{{ 'IsRequired' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

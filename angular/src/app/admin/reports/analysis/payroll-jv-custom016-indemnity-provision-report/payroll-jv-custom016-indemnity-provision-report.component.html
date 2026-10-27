@@ -1,0 +1,129 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'PayrollJVCustom016IndemnityProvisionReport' | localize"
+        [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <!-- Legacy panel is Payroll Area + Month/Year + Run Type + Employee Code. Payroll Area IS
+                     a required filter here (unlike Main Format / Loan Format): legacy produced no rows at
+                     all without it. -->
+                <grid-report-filter
+                    [showDateRange]="false"
+                    [showEmployeeStatus]="false"
+                    [(employeeCode)]="employeeCode"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'PayrollArea' | localize }}</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="payrollJv016IndemProvPayrollArea"
+                            [ngModel]="payrollAreaCode()"
+                            (ngModelChange)="payrollAreaCode.set($event)"
+                            (keydown.enter)="reloadPage()" />
+                    </div>
+
+                    <div class="col-md-1">
+                        <label class="form-label">{{ 'Month' | localize }}</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            name="payrollJv016IndemProvMonth"
+                            min="1"
+                            max="12"
+                            [ngModel]="month()"
+                            (ngModelChange)="month.set($event)"
+                            (keydown.enter)="reloadPage()" />
+                    </div>
+
+                    <div class="col-md-1">
+                        <label class="form-label">{{ 'Year' | localize }}</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            name="payrollJv016IndemProvYear"
+                            [ngModel]="year()"
+                            (ngModelChange)="year.set($event)"
+                            (keydown.enter)="reloadPage()" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'RunType' | localize }}</label>
+                        <p-select
+                            [options]="runTypeOptions"
+                            [ngModel]="payrollRunType()"
+                            (ngModelChange)="payrollRunType.set($event)"
+                            name="payrollJv016IndemProvRunType"
+                            optionLabel="label"
+                            optionValue="value"
+                            [showClear]="true"
+                            [placeholder]="'RunType' | localize"
+                            styleClass="w-100" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '40rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <!-- Legacy DataTable column captions (lines 2459-2518) -- never localized
+                                     in legacy either, so kept literal here rather than added as new keys. -->
+                                <tr>
+                                    <th style="min-width: 70px">{{ 'LineNumber' | localize }}</th>
+                                    <th style="min-width: 130px">EmpCode</th>
+                                    <th style="min-width: 140px">AmountReg</th>
+                                    <th style="min-width: 140px">AmountJV</th>
+                                    <th style="min-width: 140px">Difference</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 70px">{{ record.lineNumber }}</td>
+                                    <td style="min-width: 130px">{{ record.employeeCode }}</td>
+                                    <td style="min-width: 140px">{{ record.amountReg }}</td>
+                                    <td style="min-width: 140px">{{ record.amountJV }}</td>
+                                    <td style="min-width: 140px">{{ record.difference }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

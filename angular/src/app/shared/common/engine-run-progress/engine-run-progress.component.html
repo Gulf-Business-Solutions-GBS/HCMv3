@@ -1,0 +1,393 @@
+<div class="card card-custom mt-5">
+    <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-5">
+            <h5 class="mb-0">{{ 'EngineRunProgress' | localize }}</h5>
+
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-sm btn-secondary fw-bold" (click)="refreshStatus()">
+                    <i class="fa fa-sync"></i>
+                    <span>{{ 'Refresh' | localize }}</span>
+                </button>
+
+                @if (runPermission() | permission) {
+                    @if (status()?.hasRun && status()?.isRunning && !status()?.stopRequested) {
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-danger fw-bold"
+                            [disabled]="working()"
+                            (click)="stopEngine()">
+                            <i class="fa fa-stop"></i>
+                            <span>{{ 'EngineRunStop' | localize }}</span>
+                        </button>
+                    }
+
+                    @if (status()?.isStale) {
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-warning fw-bold"
+                            [disabled]="working()"
+                            (click)="abandonStaleRuns()">
+                            <i class="fa fa-triangle-exclamation"></i>
+                            <span>{{ 'EngineRunAbandonStaleRuns' | localize }}</span>
+                        </button>
+                    }
+
+                    @if (status()?.hasRun && !status()?.isRunning) {
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-light-danger fw-bold"
+                            [disabled]="working()"
+                            (click)="clearProgress()">
+                            <i class="fa fa-eraser"></i>
+                            <span>{{ 'EngineRunClearProgress' | localize }}</span>
+                        </button>
+                    }
+                }
+            </div>
+        </div>
+
+        @if (status(); as run) {
+            @if (!run.hasRun) {
+                <!-- HasRun == false means "never run in this tenant": an empty state, NOT a 0% bar. -->
+                <div class="text-center text-muted py-10">
+                    <i class="fa fa-gauge-high fs-2x d-block mb-3"></i>
+                    <div>{{ 'EngineRunNoRunsYet' | localize }}</div>
+                </div>
+            } @else {
+                @if (run.isStale) {
+                    <div class="alert alert-warning d-flex flex-column mb-5">
+                        <span class="fw-bold">{{ 'EngineRunStaleTitle' | localize }}</span>
+                        <span>
+                            {{
+                                'EngineRunStaleDescription'
+                                    | localize: formatDuration(run.secondsSinceHeartbeat) : run.staleThresholdSeconds
+                            }}
+                        </span>
+                    </div>
+                }
+
+                @if (run.stopRequested && run.isRunning) {
+                    <div class="alert alert-info mb-5">{{ 'EngineRunStopRequestedNotice' | localize }}</div>
+                }
+
+                @if (run.failureMessage) {
+                    <div class="alert alert-danger mb-5">{{ run.failureMessage }}</div>
+                }
+
+                <!-- Progress gauge -->
+                <div class="mb-2 d-flex align-items-center justify-content-between">
+                    <span class="fw-bold">
+                        <span class="badge" [class]="statusCssClass()">{{ headlineStatusText() }}</span>
+                        @if (isCounting()) {
+                            <span class="text-muted ms-3">{{ 'EngineRunCountingEmployees' | localize }}</span>
+                        } @else {
+                            <span class="text-muted ms-3">
+                                {{
+                                    'EngineRunProcessedOfTotal' | localize: run.processedEmployees : run.totalEmployees
+                                }}
+                            </span>
+                        }
+                    </span>
+                    <span class="fw-bold">{{ run.progressPercent }}%</span>
+                </div>
+
+                <div class="progress h-20px mb-5">
+                    <div
+                        class="progress-bar progress-bar-striped"
+                        [class]="statusCssClass()"
+                        [class.progress-bar-animated]="run.isRunning"
+                        role="progressbar"
+                        [style.width.%]="run.progressPercent"
+                        [attr.aria-valuenow]="run.progressPercent"
+                        aria-valuemin="0"
+                        aria-valuemax="100"></div>
+                </div>
+
+                <!-- Counters -->
+                <div class="row mb-5">
+                    <div class="col-md-2 col-6 mb-3">
+                        <label class="form-label text-muted">{{ 'EngineRunTotalEmployees' | localize }}</label>
+                        <div class="fw-bold fs-4">
+                            @if (isCounting()) {
+                                <span class="text-muted fs-6">{{ 'EngineRunCounting' | localize }}</span>
+                            } @else {
+                                {{ run.totalEmployees }}
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6 mb-3">
+                        <label class="form-label text-muted">{{ 'Successfull' | localize }}</label>
+                        <div class="fw-bold fs-4 text-success">{{ run.succeededEmployees }}</div>
+                    </div>
+                    <div class="col-md-2 col-6 mb-3">
+                        <label class="form-label text-muted">{{ 'Failed' | localize }}</label>
+                        <div class="fw-bold fs-4 text-danger">{{ run.failedEmployees }}</div>
+                    </div>
+                    <div class="col-md-2 col-6 mb-3">
+                        <label class="form-label text-muted">{{ 'EngineRunSkipped' | localize }}</label>
+                        <div class="fw-bold fs-4">{{ run.skippedEmployees }}</div>
+                    </div>
+                    <div class="col-md-2 col-6 mb-3">
+                        <label class="form-label text-muted">{{ 'EngineRunRemaining' | localize }}</label>
+                        <div class="fw-bold fs-4">{{ run.remainingEmployees }}</div>
+                    </div>
+                    <div class="col-md-2 col-6 mb-3">
+                        <label class="form-label text-muted">{{ 'EngineRunCurrentEmployee' | localize }}</label>
+                        <div class="fw-bold">{{ run.currentEmployee || '-' }}</div>
+                    </div>
+                </div>
+
+                <!-- Timings -->
+                <div class="row">
+                    <div class="col-md-3 col-6 mb-3">
+                        <label class="form-label text-muted">{{ 'EngineRunElapsed' | localize }}</label>
+                        <div class="fw-bold">{{ formatDuration(run.elapsedSeconds) }}</div>
+                        <div class="text-muted fs-8">
+                            @if (run.completedAt) {
+                                {{ 'EngineRunActualTotalTime' | localize }}
+                            } @else {
+                                {{ 'EngineRunSoFar' | localize }}
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-6 mb-3">
+                        <label class="form-label text-muted">{{ 'EngineRunAveragePerEmployee' | localize }}</label>
+                        <div class="fw-bold">
+                            @if (
+                                run.averageSecondsPerEmployee === undefined || run.averageSecondsPerEmployee === null
+                            ) {
+                                <!-- null until at least one employee completes: never show a bogus 0. -->
+                                <span class="text-muted">{{ 'EngineRunEstimating' | localize }}</span>
+                            } @else {
+                                {{ formatDuration(run.averageSecondsPerEmployee) }}
+                            }
+                        </div>
+                        <div class="text-muted fs-8">{{ 'EngineRunMeasured' | localize }}</div>
+                    </div>
+
+                    <div class="col-md-3 col-6 mb-3">
+                        <label class="form-label text-muted">{{ 'EngineRunEstimatedRemaining' | localize }}</label>
+                        <div class="fw-bold">
+                            @if (
+                                run.estimatedSecondsRemaining === undefined || run.estimatedSecondsRemaining === null
+                            ) {
+                                <span class="text-muted">
+                                    @if (run.isRunning) {
+                                        {{ 'EngineRunEstimating' | localize }}
+                                    } @else {
+                                        -
+                                    }
+                                </span>
+                            } @else {
+                                ~{{ formatDuration(run.estimatedSecondsRemaining) }}
+                            }
+                        </div>
+                        <div class="text-muted fs-8">{{ 'EngineRunEstimateCaveat' | localize }}</div>
+                    </div>
+
+                    <div class="col-md-3 col-6 mb-3">
+                        <label class="form-label text-muted">{{ 'EngineRunEstimatedCompletion' | localize }}</label>
+                        <div class="fw-bold">
+                            @if (run.estimatedCompletionTime) {
+                                ~{{ run.estimatedCompletionTime | luxonFormat: 'yyyy-MM-dd HH:mm:ss' }}
+                            } @else if (run.completedAt) {
+                                {{ run.completedAt | luxonFormat: 'yyyy-MM-dd HH:mm:ss' }}
+                            } @else {
+                                <span class="text-muted">{{ 'EngineRunEstimating' | localize }}</span>
+                            }
+                        </div>
+                        <div class="text-muted fs-8">
+                            @if (run.completedAt) {
+                                {{ 'EngineRunCompletedAt' | localize }}
+                            } @else {
+                                {{ 'EngineRunEstimateCaveat' | localize }}
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 col-6 mb-3">
+                        <label class="form-label text-muted">{{ 'EngineRunStartedAt' | localize }}</label>
+                        <div class="fw-bold">{{ run.startedAt | luxonFormat: 'yyyy-MM-dd HH:mm:ss' }}</div>
+                    </div>
+                    <div class="col-md-3 col-6 mb-3">
+                        <label class="form-label text-muted">{{ 'EngineRunStartedBy' | localize }}</label>
+                        <div class="fw-bold">{{ run.startedByUserName || '-' }}</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-muted">{{ 'Parameters' | localize }}</label>
+                        <div class="fw-bold text-break">{{ run.parameters || '-' }}</div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<!-- Per-employee grid: EVERY employee the run touched, successes included, with a failures-only filter. -->
+<div class="card card-custom mt-5">
+    <div class="card-body">
+        <h5 class="mb-5">{{ 'EngineRunEmployees' | localize }}</h5>
+
+        <div class="row align-items-end mb-5">
+            <div class="col-md-5 mb-3">
+                <label class="form-label" for="EngineRunProgress_Filter">{{ 'SearchWithThreeDot' | localize }}</label>
+                <div class="input-group">
+                    <input
+                        id="EngineRunProgress_Filter"
+                        type="text"
+                        class="form-control"
+                        name="EngineRunEmployeeFilter"
+                        [placeholder]="'EngineRunEmployeeFilterPlaceholder' | localize"
+                        [ngModel]="filterText()"
+                        (ngModelChange)="filterText.set($event)"
+                        (keyup.enter)="applyFilter()" />
+                    <button type="button" class="btn btn-primary" (click)="applyFilter()">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-7 mb-3">
+                <div class="btn-group" role="group">
+                    <button
+                        type="button"
+                        class="btn"
+                        [class.btn-primary]="onlyFailed() === undefined"
+                        [class.btn-light]="onlyFailed() !== undefined"
+                        (click)="setOnlyFailed(undefined)">
+                        {{ 'EngineRunFilterAll' | localize }}
+                    </button>
+                    <button
+                        type="button"
+                        class="btn"
+                        [class.btn-primary]="onlyFailed() === false"
+                        [class.btn-light]="onlyFailed() !== false"
+                        (click)="setOnlyFailed(false)">
+                        {{ 'EngineRunFilterSucceeded' | localize }}
+                    </button>
+                    <button
+                        type="button"
+                        class="btn"
+                        [class.btn-danger]="onlyFailed() === true"
+                        [class.btn-light]="onlyFailed() !== true"
+                        (click)="setOnlyFailed(true)">
+                        {{ 'EngineRunFilterFailed' | localize }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row align-items-center">
+            <!--<Primeng-TurboTable-Start>-->
+            <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                <p-table
+                    #employeeTable
+                    sortMode="multiple"
+                    (onLazyLoad)="getRunEmployees($event)"
+                    [value]="primengTableHelper.records()"
+                    rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                    [paginator]="false"
+                    [lazy]="true"
+                    [scrollable]="true"
+                    scrollDirection="horizontal"
+                    [tableStyle]="{ 'min-width': '60rem' }"
+                    [resizableColumns]="primengTableHelper.resizableColumns">
+                    <ng-template #header>
+                        <tr>
+                            <th style="min-width: 90px" pSortableColumn="sequenceNo">
+                                {{ 'EngineRunSequenceNo' | localize }}
+                                <p-sortIcon field="sequenceNo" />
+                            </th>
+                            <th style="min-width: 130px" pSortableColumn="employeeCode">
+                                {{ 'EmployeeCode' | localize }}
+                                <p-sortIcon field="employeeCode" />
+                            </th>
+                            <th style="min-width: 200px" pSortableColumn="employeeName">
+                                {{ 'EmployeeName' | localize }}
+                                <p-sortIcon field="employeeName" />
+                            </th>
+                            <th style="min-width: 120px" pSortableColumn="succeeded">
+                                {{ 'Status' | localize }}
+                                <p-sortIcon field="succeeded" />
+                            </th>
+                            <th style="min-width: 320px">{{ 'Message' | localize }}</th>
+                            <th style="min-width: 170px" pSortableColumn="startedAt">
+                                {{ 'EngineRunStartedAt' | localize }}
+                                <p-sortIcon field="startedAt" />
+                            </th>
+                            <th style="min-width: 170px" pSortableColumn="completedAt">
+                                {{ 'EngineRunCompletedAt' | localize }}
+                                <p-sortIcon field="completedAt" />
+                            </th>
+                            <th style="min-width: 120px" pSortableColumn="elapsedMilliseconds">
+                                {{ 'EngineRunDuration' | localize }}
+                                <p-sortIcon field="elapsedMilliseconds" />
+                            </th>
+                            @if (showEmployeeDays()) {
+                                <th style="min-width: 100px">{{ 'Days' | localize }}</th>
+                            }
+                        </tr>
+                    </ng-template>
+                    <ng-template #body let-record="$implicit">
+                        <tr>
+                            <td style="min-width: 90px">{{ record.sequenceNo }}</td>
+                            <td style="min-width: 130px">{{ record.employeeCode }}</td>
+                            <td style="min-width: 200px">{{ record.employeeName }}</td>
+                            <td style="min-width: 120px">
+                                @if (record.succeeded) {
+                                    <span class="badge bg-success">{{ 'Successfull' | localize }}</span>
+                                } @else {
+                                    <span class="badge bg-danger">{{ 'Failed' | localize }}</span>
+                                }
+                            </td>
+                            <td style="min-width: 320px" [class.text-danger]="!record.succeeded">
+                                <span class="text-break">{{ record.message }}</span>
+                            </td>
+                            <td style="min-width: 170px">
+                                {{ record.startedAt | luxonFormat: 'yyyy-MM-dd HH:mm:ss' }}
+                            </td>
+                            <td style="min-width: 170px">
+                                {{ record.completedAt | luxonFormat: 'yyyy-MM-dd HH:mm:ss' }}
+                            </td>
+                            <td style="min-width: 120px">{{ formatDuration(record.elapsedSeconds) }}</td>
+                            @if (showEmployeeDays()) {
+                                <td style="min-width: 100px">
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-light-primary"
+                                        [class.btn-light-danger]="!record.succeeded"
+                                        [attr.aria-label]="l('Days') + ' ' + record.employeeCode"
+                                        (click)="employeeDaysRequested.emit(record)">
+                                        <i class="fa fa-calendar-day"></i>
+                                        <span>{{ 'Days' | localize }}</span>
+                                    </button>
+                                </td>
+                            }
+                        </tr>
+                    </ng-template>
+                </p-table>
+                @if (primengTableHelper.totalRecordsCount() == 0) {
+                    <div class="primeng-no-data">
+                        {{ 'NoData' | localize }}
+                    </div>
+                }
+                <div class="primeng-paging-container">
+                    <p-paginator
+                        [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                        #employeePaginator
+                        (onPageChange)="getRunEmployees($event)"
+                        [totalRecords]="primengTableHelper.totalRecordsCount()"
+                        [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                        [showCurrentPageReport]="true"
+                        [currentPageReportTemplate]="
+                            'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                        " />
+                </div>
+            </div>
+            <!--<Primeng-TurboTable-End>-->
+        </div>
+    </div>
+</div>

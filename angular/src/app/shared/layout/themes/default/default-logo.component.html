@@ -1,0 +1,14 @@
+<a href="/" [class]="customHrefClass()">
+    @if (!appSession.tenant || !appSession.tenant.HasLogo()) {
+        <img [src]="defaultLogoUrl" alt="Logo" class="h-25px app-sidebar-logo-default" />
+    }
+    @if (!appSession.tenant || !appSession.tenant.HasLogoMinimal()) {
+        <img [src]="defaultSmallLogoUrl" alt="Logo" class="h-20px app-sidebar-logo-minimize" />
+    }
+    @if (appSession.tenant && appSession.tenant.HasLogo()) {
+        <img [src]="tenantLogoUrl" alt="Logo" class="h-25px app-sidebar-logo-default" />
+    }
+    @if (appSession.tenant && appSession.tenant.HasLogoMinimal()) {
+        <img [src]="tenantSmallLogoUrl" alt="Logo" class="h-20px app-sidebar-logo-minimize" />
+    }
+</a>

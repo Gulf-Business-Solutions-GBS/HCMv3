@@ -1,0 +1,75 @@
+{
+  "helpId": "cd.competency-by-job-title-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل الكفاءات حسب المسمى الوظيفي — إنشاء / تحرير",
+  "entity": "HCMv3.CompetencyDevelopment.CompetencyByJobTitleDetail",
+  "overviewHtml": "<p>كفاءة واحدة متوقعة من مسمى وظيفي، ووزنها. لا تُدرج الكفاءة إلا مرة واحدة لكل مسمى وظيفي، ولا يجوز أن يتجاوز مجموع الأوزان 100.</p>",
+  "aliasIndex": {
+    "loc:CompetencyByJobTitle": "CompetencyByJobTitleDetail.CompetencyByJobTitleId",
+    "dom:CompetencyByJobTitleDetail_CompetencyByJobTitleId": "CompetencyByJobTitleDetail.CompetencyByJobTitleId",
+    "loc:Competency": "CompetencyByJobTitleDetail.CompetencyId",
+    "dom:CompetencyByJobTitleDetail_CompetencyId": "CompetencyByJobTitleDetail.CompetencyId",
+    "loc:Weight": "CompetencyByJobTitleDetail.Weight",
+    "dom:CompetencyByJobTitleDetail_Weight": "CompetencyByJobTitleDetail.Weight",
+    "loc:Target": "CompetencyByJobTitleDetail.Target",
+    "dom:CompetencyByJobTitleDetail_Target": "CompetencyByJobTitleDetail.Target"
+  },
+  "fields": [
+    {
+      "id": "CompetencyByJobTitleDetail.CompetencyByJobTitleId",
+      "label": "CompetencyByJobTitle",
+      "section": "CompetencyByJobTitleDetails",
+      "aliases": [
+        "loc:CompetencyByJobTitle",
+        "dom:CompetencyByJobTitleDetail_CompetencyByJobTitleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الكفاءات حسب المسمى الوظيفي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> قائمة كفاءات المسمى الوظيفي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompetencyByJobTitleDetail.CompetencyId",
+      "label": "Competency",
+      "section": "CompetencyByJobTitleDetails",
+      "aliases": [
+        "loc:Competency",
+        "dom:CompetencyByJobTitleDetail_CompetencyId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الكفاءات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الكفاءة.</p><p><strong>مثال.</strong> التفاوض</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompetencyByJobTitleDetail.Weight",
+      "label": "Weight",
+      "section": "CompetencyByJobTitleDetails",
+      "aliases": [
+        "loc:Weight",
+        "dom:CompetencyByJobTitleDetail_Weight"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مقدار أهمية الكفاءة، كنسبة مئوية.</p><p><strong>مثال.</strong> 25</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompetencyByJobTitleDetail.Target",
+      "label": "Target",
+      "section": "CompetencyByJobTitleDetails",
+      "aliases": [
+        "loc:Target",
+        "dom:CompetencyByJobTitleDetail_Target"
+      ],
+      "rules": "اختياري. الحد الأقصى 512 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما هو متوقع.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

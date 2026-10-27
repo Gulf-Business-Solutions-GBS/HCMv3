@@ -1,0 +1,43 @@
+{
+  "helpId": "wf.workflow-remark.edit",
+  "lang": "en",
+  "title": "Workflow Remarks — Create / Edit",
+  "entity": "HCMv3.Workflow.WorkflowRemark",
+  "overviewHtml": "<p>A request for feedback: someone outside the approval chain is asked for their view on a request. They can then open the request and its activity feed, where the request shows as a feedback event. The same person can be asked only once per request.</p>",
+  "aliasIndex": {
+    "loc:WorkflowRequests": "WorkflowRemark.WorkflowRequestId",
+    "dom:WorkflowRemark_WorkflowRequestId": "WorkflowRemark.WorkflowRequestId",
+    "loc:CCReceiver": "WorkflowRemark.CCReceiverId",
+    "dom:WorkflowRemark_CCReceiverId": "WorkflowRemark.CCReceiverId"
+  },
+  "fields": [
+    {
+      "id": "WorkflowRemark.WorkflowRequestId",
+      "label": "WorkflowRequests",
+      "section": "WorkflowRemarks",
+      "aliases": [
+        "loc:WorkflowRequests",
+        "dom:WorkflowRemark_WorkflowRequestId"
+      ],
+      "rules": "Required. Chosen from Workflow Request master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The workflow request this record belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowRemark.CCReceiverId",
+      "label": "CCReceiver",
+      "section": "WorkflowRemarks",
+      "aliases": [
+        "loc:CCReceiver",
+        "dom:WorkflowRemark_CCReceiverId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The person asked for feedback.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

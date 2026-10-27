@@ -1,0 +1,75 @@
+{
+  "helpId": "acc.building-contract.edit",
+  "lang": "ar",
+  "title": "عقود المباني — إنشاء / تحرير",
+  "entity": "HCMv3.AccommodationManagement.BuildingContract",
+  "overviewHtml": "<p>فترة إيجار أو عقد لمبنى. لا يمكن أن يكون تاريخ الانتهاء قبل تاريخ البدء. يُحفظ كسجل، ولا يوجد ما ينبّه عند انتهاء العقد.</p>",
+  "aliasIndex": {
+    "loc:Building": "BuildingContract.BuildingId",
+    "dom:BuildingContract_BuildingId": "BuildingContract.BuildingId",
+    "loc:StartDate": "BuildingContract.StartDate",
+    "dom:BuildingContract_StartDate": "BuildingContract.StartDate",
+    "loc:EndDate": "BuildingContract.EndDate",
+    "dom:BuildingContract_EndDate": "BuildingContract.EndDate",
+    "loc:Comments": "BuildingContract.Comments",
+    "dom:BuildingContract_Comments": "BuildingContract.Comments"
+  },
+  "fields": [
+    {
+      "id": "BuildingContract.BuildingId",
+      "label": "Building",
+      "section": "BuildingContracts",
+      "aliases": [
+        "loc:Building",
+        "dom:BuildingContract_BuildingId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المباني.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبنى الذي يخصه العقد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BuildingContract.StartDate",
+      "label": "StartDate",
+      "section": "BuildingContracts",
+      "aliases": [
+        "loc:StartDate",
+        "dom:BuildingContract_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BuildingContract.EndDate",
+      "label": "EndDate",
+      "section": "BuildingContracts",
+      "aliases": [
+        "loc:EndDate",
+        "dom:BuildingContract_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BuildingContract.Comments",
+      "label": "Comments",
+      "section": "BuildingContracts",
+      "aliases": [
+        "loc:Comments",
+        "dom:BuildingContract_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

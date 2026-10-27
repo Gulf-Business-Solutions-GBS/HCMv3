@@ -1,0 +1,43 @@
+{
+  "helpId": "suc.nine-box-mapping.edit",
+  "lang": "en",
+  "title": "Nine Box Mappings — Create / Edit",
+  "entity": "HCMv3.SuccessionManagement.NineBoxMapping",
+  "overviewHtml": "<p>Which nine-box grid square a succession rating falls into. Kept as a record; nothing reads it at present.</p>",
+  "aliasIndex": {
+    "loc:RatingId": "NineBoxMapping.RatingId",
+    "dom:NineBoxMapping_RatingId": "NineBoxMapping.RatingId",
+    "loc:NineBoxRatingId": "NineBoxMapping.NineBoxRatingId",
+    "dom:NineBoxMapping_NineBoxRatingId": "NineBoxMapping.NineBoxRatingId"
+  },
+  "fields": [
+    {
+      "id": "NineBoxMapping.RatingId",
+      "label": "RatingId",
+      "section": "NineBoxMappings",
+      "aliases": [
+        "loc:RatingId",
+        "dom:NineBoxMapping_RatingId"
+      ],
+      "rules": "Required. Chosen from Succession Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The succession rating.</p><p><strong>Example.</strong> High performer</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NineBoxMapping.NineBoxRatingId",
+      "label": "NineBoxRatingId",
+      "section": "NineBoxMappings",
+      "aliases": [
+        "loc:NineBoxRatingId",
+        "dom:NineBoxMapping_NineBoxRatingId"
+      ],
+      "rules": "Required. Chosen from Nine Box Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The nine-box square.</p><p><strong>Example.</strong> Future leader</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

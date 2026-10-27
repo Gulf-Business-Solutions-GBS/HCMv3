@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <Import Project="..\..\common.props"></Import>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <AssemblyName>HCMv3.Web.Core</AssemblyName>
+    <PackageId>HCMv3.Web.Core</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
+    <RootNamespace>HCMv3.Web</RootNamespace>
+    <OutputType>Library</OutputType>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HCMv3.GraphQL\HCMv3.GraphQL.csproj" />
+    <ProjectReference Include="..\HCMv3.Application\HCMv3.Application.csproj" />
+    <ProjectReference Include="..\HCMv3.EntityFrameworkCore\HCMv3.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Abp.Mapperly" Version="11.1.0" />
+    <PackageReference Include="Abp.AspNetCore.SignalR" Version="11.1.0" />
+    <PackageReference Include="Abp.AspNetZeroCore.Web" Version="5.1.0" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.8.23" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.4" />
+    <PackageReference Include="Owl.reCAPTCHA" Version="9.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Abp.AspNetCore" Version="11.1.0" />
+    <PackageReference Include="Abp.HangFire.AspNetCore" Version="11.1.0" />
+    <PackageReference Include="Abp.RedisCache" Version="11.1.0" />
+    <PackageReference Include="Abp.HtmlSanitizer" Version="11.1.0" />
+    <PackageReference Include="HtmlSanitizer" Version="9.2.1039" />
+    <PackageReference Include="Abp.AspNetCore.OpenIddict" Version="11.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="10.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.16.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.16.0" />
+  </ItemGroup>
+  <!-- Security pin: Swashbuckle 10.1.4 brings Microsoft.OpenApi 2.4.1 (NU1903). Drop once Swashbuckle ships it. -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.OpenApi" Version="2.7.5" />
+  </ItemGroup>
+</Project>

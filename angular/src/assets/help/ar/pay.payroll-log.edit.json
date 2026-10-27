@@ -1,0 +1,123 @@
+{
+  "helpId": "pay.payroll-log.edit",
+  "lang": "ar",
+  "title": "سجلات تشغيل الرواتب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.PayrollLog",
+  "overviewHtml": "<p>قيود يكتبها تشغيل الرواتب أثناء معالجة الموظفين. ويعدّها سجل التشغيلات في صفحة تشغيل الرواتب ليبيّن كم نجح وكم فشل.</p>",
+  "aliasIndex": {
+    "loc:Message": "PayrollLog.Message",
+    "dom:PayrollLog_Message": "PayrollLog.Message",
+    "loc:RunTimeStamp": "PayrollLog.RunTimeStamp",
+    "dom:PayrollLog_RunTimeStamp": "PayrollLog.RunTimeStamp",
+    "loc:EmployeeId": "PayrollLog.EmployeeId",
+    "dom:PayrollLog_EmployeeId": "PayrollLog.EmployeeId",
+    "loc:Status": "PayrollLog.Status",
+    "dom:PayrollLog_Status": "PayrollLog.Status",
+    "loc:InPeriod": "PayrollLog.InPeriod",
+    "dom:PayrollLog_InPeriod": "PayrollLog.InPeriod",
+    "loc:NoOfEmployee": "PayrollLog.NoOfEmployee",
+    "dom:PayrollLog_NoOfEmployee": "PayrollLog.NoOfEmployee",
+    "loc:StopFlag": "PayrollLog.StopFlag",
+    "dom:PayrollLog_StopFlag": "PayrollLog.StopFlag"
+  },
+  "fields": [
+    {
+      "id": "PayrollLog.Message",
+      "label": "Message",
+      "section": "PayrollLogs",
+      "aliases": [
+        "loc:Message",
+        "dom:PayrollLog_Message"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما سجّله التشغيل.</p><p><strong>مثال.</strong> Employee 1002: Payroll Control Record not locked or is not current.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollLog.RunTimeStamp",
+      "label": "RunTimeStamp",
+      "section": "PayrollLogs",
+      "aliases": [
+        "loc:RunTimeStamp",
+        "dom:PayrollLog_RunTimeStamp"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى كُتب القيد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollLog.EmployeeId",
+      "label": "EmployeeId",
+      "section": "PayrollLogs",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:PayrollLog_EmployeeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يخصه القيد، إن وُجد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollLog.Status",
+      "label": "Status",
+      "section": "PayrollLogs",
+      "aliases": [
+        "loc:Status",
+        "dom:PayrollLog_Status"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النتيجة: 0 نجاح، وأي قيمة أخرى فشل.</p><p><strong>مثال.</strong> <code>0</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollLog.InPeriod",
+      "label": "InPeriod",
+      "section": "PayrollLogs",
+      "aliases": [
+        "loc:InPeriod",
+        "dom:PayrollLog_InPeriod"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> شهر الدفع للتشغيل.</p><p><strong>مثال.</strong> <code>2026-04-30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollLog.NoOfEmployee",
+      "label": "NoOfEmployee",
+      "section": "PayrollLogs",
+      "aliases": [
+        "loc:NoOfEmployee",
+        "dom:PayrollLog_NoOfEmployee"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الموظفين الذين كان التشغيل يعالجهم.</p><p><strong>مثال.</strong> <code>240</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollLog.StopFlag",
+      "label": "StopFlag",
+      "section": "PayrollLogs",
+      "aliases": [
+        "loc:StopFlag",
+        "dom:PayrollLog_StopFlag"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا طُلب إيقاف التشغيل.</p><p><strong>لماذا يهم.</strong> التشغيل الذي فيه أي قيد مؤشَّر عليه يُعرض على أنه أُوقف.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "helpId": "rec.onb-task.edit",
+  "lang": "ar",
+  "title": "مهام التهيئة الوظيفية — إنشاء / تحرير",
+  "entity": "HCMv3.Recruitment.OnbTask",
+  "overviewHtml": "<p>مهمة تهيئة — أمر يجب أن يقوم به الموظف الجديد أو الموارد البشرية، مثل تقديم المستندات أو استلام جهاز محمول.</p><p>التهيئة قائمة مهام يدوية: تُسند المهام إلى المتقدمين يدوياً على شكل مهام المتقدم، ولا شيء ينشئها تلقائياً عند التعيين.</p>",
+  "aliasIndex": {
+    "loc:TaskNameEn": "OnbTask.TaskNameEn",
+    "dom:OnbTask_TaskNameEn": "OnbTask.TaskNameEn",
+    "loc:TaskNameAr": "OnbTask.TaskNameAr",
+    "dom:OnbTask_TaskNameAr": "OnbTask.TaskNameAr",
+    "loc:OnbTemplates": "OnbTask.OnbTemplateId",
+    "dom:OnbTask_OnbTemplateId": "OnbTask.OnbTemplateId",
+    "loc:DueDays": "OnbTask.DueDays",
+    "dom:OnbTask_DueDays": "OnbTask.DueDays",
+    "loc:Guideline": "OnbTask.Guideline",
+    "dom:OnbTask_Guideline": "OnbTask.Guideline"
+  },
+  "fields": [
+    {
+      "id": "OnbTask.TaskNameEn",
+      "label": "TaskNameEn",
+      "section": "OnbTasks",
+      "aliases": [
+        "loc:TaskNameEn",
+        "dom:OnbTask_TaskNameEn"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المهمة بالإنجليزية.</p><p><strong>مثال.</strong> Submit Civil ID copy</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbTask.TaskNameAr",
+      "label": "TaskNameAr",
+      "section": "OnbTasks",
+      "aliases": [
+        "loc:TaskNameAr",
+        "dom:OnbTask_TaskNameAr"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المهمة بالعربية.</p><p><strong>مثال.</strong> تقديم نسخة من البطاقة المدنية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbTask.OnbTemplateId",
+      "label": "OnbTemplates",
+      "section": "OnbTasks",
+      "aliases": [
+        "loc:OnbTemplates",
+        "dom:OnbTask_OnbTemplateId"
+      ],
+      "rules": "اختياري. يُختار من قائمة قوالب التهيئة الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نموذج مرافق للمهمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbTask.DueDays",
+      "label": "DueDays",
+      "section": "OnbTasks",
+      "aliases": [
+        "loc:DueDays",
+        "dom:OnbTask_DueDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأيام المسموح بها لإنجازها.</p><p><strong>مثال.</strong> <code>7</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbTask.Guideline",
+      "label": "Guideline",
+      "section": "OnbTasks",
+      "aliases": [
+        "loc:Guideline",
+        "dom:OnbTask_Guideline"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تعليمات المهمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

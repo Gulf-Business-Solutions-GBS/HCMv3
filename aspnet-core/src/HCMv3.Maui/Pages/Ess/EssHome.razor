@@ -1,0 +1,141 @@
+@using HCMv3.Maui.Services.Navigation
+@using HCMv3.Maui.Core.Helpers
+@inherits HCMv3MainLayoutPageComponentBase
+@attribute [Route("/" + NavigationUrlConsts.EssHome)]
+
+@if (_context == null)
+{
+    @if (_loaded)
+    {
+        <div class="card mb-5">
+            <div class="card-body text-center">
+                <button class="btn btn-light-primary" @onclick="LoadAsync">
+                    <i class="fa-solid fa-rotate me-2"></i>@L("Refresh")
+                </button>
+            </div>
+        </div>
+    }
+}
+else if (!_context.IsLinkedToEmployee)
+{
+    <div class="card mb-5">
+        <div class="card-body">
+            <div class="alert alert-warning mb-0">
+                <h5 class="alert-heading">
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i>@L("EmployeeSelfService")
+                </h5>
+                <p class="mb-0">@L("CurrentUserHasNoEmployeeRecord")</p>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card shadow-xs mb-5">
+        <div class="card-body py-5 d-flex align-items-center">
+            <div class="symbol symbol-50px symbol-circle me-4">
+                <span class="symbol-label bg-light-primary text-primary fs-2 fw-bold">
+                    <i class="fa-solid fa-user"></i>
+                </span>
+            </div>
+            <div class="flex-grow-1 min-w-0">
+                <div class="fw-bold text-gray-800 fs-3 text-truncate">@EmployeeName</div>
+                <div class="text-muted fs-6">@_context.EmployeeCode</div>
+                @if (_context.IsManager)
+                {
+                    <span class="badge badge-light-primary mt-2">@L("EssMyTeam")</span>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-5">
+        @if (ShowInbox)
+        {
+            <div class="col-6">
+                <a href="javascript:;" class="card h-100 text-decoration-none" @onclick="() => Open(NavigationUrlConsts.Inbox)">
+                    <div class="card-body p-4">
+                        <div class="fs-2hx fw-bold text-primary">@_context.PendingApprovalCount</div>
+                        <div class="fw-semibold text-gray-800">@L("WaitingOnMe")</div>
+                        <div class="text-muted fs-7">@L("EssInbox")</div>
+                    </div>
+                </a>
+            </div>
+        }
+        <div class="@(ShowInbox ? "col-6" : "col-12")">
+            <div class="card h-100">
+                <div class="card-body p-4">
+                    <div class="fs-2hx fw-bold text-warning">@_context.MyPendingRequestCount</div>
+                    <div class="fw-semibold text-gray-800">@L("MyRequestsAwaitingApproval")</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-5">
+        <div class="card-header min-h-50px">
+            <h3 class="card-title fs-5">@L("WhatWouldYouLikeToDo")</h3>
+        </div>
+        <div class="card-body p-3">
+            <div class="d-grid gap-3">
+                <button class="btn btn-light-primary btn-lg text-start py-4" @onclick="() => Open(NavigationUrlConsts.MyLeave)">
+                    <i class="fa-solid fa-plane-departure fs-2 me-3"></i>@L("EssMyLeave")
+                </button>
+                <button class="btn btn-light-primary btn-lg text-start py-4" @onclick="() => Open(NavigationUrlConsts.GeoPunch)">
+                    <i class="fa-solid fa-location-dot fs-2 me-3"></i>@L("EssGeoPunch")
+                </button>
+                <button class="btn btn-light-primary btn-lg text-start py-4" @onclick="() => Open(NavigationUrlConsts.ExitPermit)">
+                    <i class="fa-solid fa-passport fs-2 me-3"></i>@L("EssMyExitPermits")
+                </button>
+                @if (ShowInbox)
+                {
+                    <button class="btn btn-light-primary btn-lg text-start py-4 d-flex align-items-center" @onclick="() => Open(NavigationUrlConsts.Inbox)">
+                        <i class="fa-solid fa-inbox fs-2 me-3"></i>
+                        <span class="flex-grow-1">@L("EssInbox")</span>
+                        @if (_context.PendingApprovalCount > 0)
+                        {
+                            <span class="badge badge-danger">@_context.PendingApprovalCount</span>
+                        }
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-5">
+        <div class="card-header min-h-50px">
+            <h3 class="card-title fs-5">@L("MyRecentRequests")</h3>
+        </div>
+        <div class="card-body p-3">
+            @if (_context.RecentRequests == null || _context.RecentRequests.Count == 0)
+            {
+                <p class="text-muted mb-0">@L("YouHaveNotRaisedAnyRequestsYet")</p>
+            }
+            else
+            {
+                @foreach (var request in _context.RecentRequests)
+                {
+                    <div class="border-bottom py-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="min-w-0 me-2">
+                                <div class="fw-bold text-gray-800">
+                                    @RequestTypeName(request)
+                                    @if (request.IsAmendment)
+                                    {
+                                        <span class="badge badge-light-info ms-1">@L("ChangePending")</span>
+                                    }
+                                </div>
+                                <div class="text-muted fs-7">@request.RequestNumber &middot; @EssText.Date(request.SubmittedOn)</div>
+                                @if (!string.IsNullOrWhiteSpace(RequestSummary(request)))
+                                {
+                                    <div class="fs-7 text-gray-700">@RequestSummary(request)</div>
+                                }
+                            </div>
+                            <EssStatusBadge Status="request.RequestStatus" />
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}

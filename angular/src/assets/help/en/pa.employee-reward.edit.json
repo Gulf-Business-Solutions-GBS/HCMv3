@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-reward.edit",
+  "lang": "en",
+  "title": "Employee Rewards — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeReward",
+  "overviewHtml": "<p>An award or recognition given to the employee.</p><p>It is recorded for reference; no calculation or report reads it at present.</p>",
+  "aliasIndex": {
+    "loc:RewardType": "EmployeeReward.RewardType",
+    "dom:EmployeeReward_RewardType": "EmployeeReward.RewardType",
+    "loc:RewardDate": "EmployeeReward.RewardDate",
+    "dom:EmployeeReward_RewardDate": "EmployeeReward.RewardDate",
+    "loc:Certificate": "EmployeeReward.Certificate",
+    "dom:EmployeeReward_Certificate": "EmployeeReward.Certificate",
+    "loc:Comments": "EmployeeReward.Comments",
+    "dom:EmployeeReward_Comments": "EmployeeReward.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeReward.RewardType",
+      "label": "RewardType",
+      "section": "EmployeeRewards",
+      "aliases": [
+        "loc:RewardType",
+        "dom:EmployeeReward_RewardType"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of reward, as free text.</p><p><strong>Example.</strong> Employee of the Month</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeReward.RewardDate",
+      "label": "RewardDate",
+      "section": "EmployeeRewards",
+      "aliases": [
+        "loc:RewardDate",
+        "dom:EmployeeReward_RewardDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the reward was given.</p><p><strong>Example.</strong> 30 Jun 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeReward.Certificate",
+      "label": "Certificate",
+      "section": "EmployeeRewards",
+      "aliases": [
+        "loc:Certificate",
+        "dom:EmployeeReward_Certificate"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The certificate given with the reward.</p><p><strong>Example.</strong> Certificate of Excellence</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeReward.Comments",
+      "label": "Comments",
+      "section": "EmployeeRewards",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeReward_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

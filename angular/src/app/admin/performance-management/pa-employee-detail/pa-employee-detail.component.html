@@ -1,0 +1,31 @@
+<div [@routerTransition]>
+    <sub-header [title]="'PAEmployees' | localize" [description]="'PerformanceManagement' | localize" />
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-header align-items-center border-0">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="fw-bolder text-gray-900">
+                        @if (paEmployee()) {
+                            <span>{{ paEmployee().proposedJobTitle }}</span>
+                        }
+                    </span>
+                </h3>
+            </div>
+            <div class="card-body">
+                @if (paEmployeeId()) {
+                    <tabset class="tab-container">
+                        <tab heading="{{ 'PAEmployeeDetails' | localize }}" [active]="true">
+                            <pa-employee-details [paEmployeeId]="paEmployeeId()" />
+                        </tab>
+                        <tab heading="{{ 'PAEmployeeReviewers' | localize }}">
+                            <pa-employee-reviewers [paEmployeeId]="paEmployeeId()" />
+                        </tab>
+                        <tab heading="{{ 'PAEmployeeRatings' | localize }}">
+                            <pa-employee-ratings [paEmployeeId]="paEmployeeId()" />
+                        </tab>
+                    </tabset>
+                }
+            </div>
+        </div>
+    </div>
+</div>

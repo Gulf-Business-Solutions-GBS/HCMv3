@@ -1,0 +1,59 @@
+{
+  "helpId": "perf.paemployee-detail.edit",
+  "lang": "en",
+  "title": "PA Employee Details — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.PAEmployeeDetail",
+  "overviewHtml": "<p>One KPI on an appraisal, with its weight and target. Reviewers rate the appraisal KPI by KPI.</p><p>The employee scorecard report scores each KPI as its weight times the average rating, relative to the highest rating code, and adds them up. Each KPI can appear once per appraisal.</p>",
+  "aliasIndex": {
+    "loc:KpiInfo": "PAEmployeeDetail.KpiInfoId",
+    "dom:PAEmployeeDetail_KpiInfoId": "PAEmployeeDetail.KpiInfoId",
+    "loc:Weight": "PAEmployeeDetail.Weight",
+    "dom:PAEmployeeDetail_Weight": "PAEmployeeDetail.Weight",
+    "loc:Target": "PAEmployeeDetail.Target",
+    "dom:PAEmployeeDetail_Target": "PAEmployeeDetail.Target"
+  },
+  "fields": [
+    {
+      "id": "PAEmployeeDetail.KpiInfoId",
+      "label": "KpiInfo",
+      "section": "PAEmployeeDetails",
+      "aliases": [
+        "loc:KpiInfo",
+        "dom:PAEmployeeDetail_KpiInfoId"
+      ],
+      "rules": "Optional. Chosen from KPI master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI.</p><p><strong>Example.</strong> Customer satisfaction</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeDetail.Weight",
+      "label": "Weight",
+      "section": "PAEmployeeDetails",
+      "aliases": [
+        "loc:Weight",
+        "dom:PAEmployeeDetail_Weight"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI's share of the appraisal, as a percentage.</p><p><strong>Example.</strong> <code>25</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeDetail.Target",
+      "label": "Target",
+      "section": "PAEmployeeDetails",
+      "aliases": [
+        "loc:Target",
+        "dom:PAEmployeeDetail_Target"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The target set for the KPI.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,651 @@
+{
+  "helpId": "rec.applicant.edit",
+  "lang": "en",
+  "title": "Applicants — Create / Edit",
+  "entity": "HCMv3.Recruitment.Applicant",
+  "overviewHtml": "<p>A job candidate. Candidates usually create themselves by registering on the careers site and filling in their profile; HR can also enter them here.</p><p>When an application of theirs is set to <em>Joined</em>, the applicant is copied into a new employee record — names, birth date, gender, nationality, religion, marital status, qualification, contact details, Civil ID, joining and probation dates — unless an employee with the same English names and birth date already exists.</p><p>The birth date must be in the past, the joining date after the birth date and probation end after joining. An email can belong to one applicant only.</p>",
+  "aliasIndex": {
+    "loc:Code": "Applicant.Code",
+    "dom:Applicant_Code": "Applicant.Code",
+    "loc:Title": "Applicant.TitleId",
+    "dom:Applicant_TitleId": "Applicant.TitleId",
+    "loc:FirstNameEn": "Applicant.FirstNameEn",
+    "dom:Applicant_FirstNameEn": "Applicant.FirstNameEn",
+    "loc:SecondNameEn": "Applicant.SecondNameEn",
+    "dom:Applicant_SecondNameEn": "Applicant.SecondNameEn",
+    "loc:ThirdNameEn": "Applicant.ThirdNameEn",
+    "dom:Applicant_ThirdNameEn": "Applicant.ThirdNameEn",
+    "loc:LastNameEn": "Applicant.LastNameEn",
+    "dom:Applicant_LastNameEn": "Applicant.LastNameEn",
+    "loc:FirstNameAr": "Applicant.FirstNameAr",
+    "dom:Applicant_FirstNameAr": "Applicant.FirstNameAr",
+    "loc:SecondNameAr": "Applicant.SecondNameAr",
+    "dom:Applicant_SecondNameAr": "Applicant.SecondNameAr",
+    "loc:ThirdNameAr": "Applicant.ThirdNameAr",
+    "dom:Applicant_ThirdNameAr": "Applicant.ThirdNameAr",
+    "loc:LastNameAr": "Applicant.LastNameAr",
+    "dom:Applicant_LastNameAr": "Applicant.LastNameAr",
+    "loc:BirthDate": "Applicant.BirthDate",
+    "dom:Applicant_BirthDate": "Applicant.BirthDate",
+    "loc:Gender": "Applicant.Gender",
+    "dom:Applicant_Gender": "Applicant.Gender",
+    "loc:MaritalStatus": "Applicant.MaritalStatusId",
+    "dom:Applicant_MaritalStatusId": "Applicant.MaritalStatusId",
+    "loc:Nationality": "Applicant.NationalityId",
+    "dom:Applicant_NationalityId": "Applicant.NationalityId",
+    "loc:Religion": "Applicant.ReligionId",
+    "dom:Applicant_ReligionId": "Applicant.ReligionId",
+    "loc:Qualification": "Applicant.QualificationId",
+    "dom:Applicant_QualificationId": "Applicant.QualificationId",
+    "loc:JobTitle": "Applicant.JobTitleId",
+    "dom:Applicant_JobTitleId": "Applicant.JobTitleId",
+    "loc:BloodGroup": "Applicant.BloodGroup",
+    "dom:Applicant_BloodGroup": "Applicant.BloodGroup",
+    "loc:CivilID": "Applicant.CivilID",
+    "dom:Applicant_CivilID": "Applicant.CivilID",
+    "loc:Country": "Applicant.CountryId",
+    "dom:Applicant_CountryId": "Applicant.CountryId",
+    "loc:PassportNum": "Applicant.PassportNum",
+    "dom:Applicant_PassportNum": "Applicant.PassportNum",
+    "loc:PlaceOfBirth": "Applicant.PlaceOfBirth",
+    "dom:Applicant_PlaceOfBirth": "Applicant.PlaceOfBirth",
+    "loc:DrivingLicense": "Applicant.DrivingLicense",
+    "dom:Applicant_DrivingLicense": "Applicant.DrivingLicense",
+    "loc:Photo": "Applicant.PhotoPath",
+    "dom:Applicant_Photo": "Applicant.PhotoPath",
+    "loc:CurrentAddress": "Applicant.CurrentAddress",
+    "dom:Applicant_CurrentAddress": "Applicant.CurrentAddress",
+    "loc:PermanentAddress": "Applicant.PermanentAddress",
+    "dom:Applicant_PermanentAddress": "Applicant.PermanentAddress",
+    "loc:Address1": "Applicant.Address1",
+    "dom:Applicant_Address1": "Applicant.Address1",
+    "loc:Address2": "Applicant.Address2",
+    "dom:Applicant_Address2": "Applicant.Address2",
+    "loc:Telephone": "Applicant.Telephone",
+    "dom:Applicant_Telephone": "Applicant.Telephone",
+    "loc:Mobile": "Applicant.Mobile",
+    "dom:Applicant_Mobile": "Applicant.Mobile",
+    "loc:Email": "Applicant.Email",
+    "dom:Applicant_Email": "Applicant.Email",
+    "loc:JoiningDate": "Applicant.JoiningDate",
+    "dom:Applicant_JoiningDate": "Applicant.JoiningDate",
+    "loc:ProbationEndDate": "Applicant.ProbationEndDate",
+    "dom:Applicant_ProbationEndDate": "Applicant.ProbationEndDate",
+    "loc:IsAgency": "Applicant.IsAgency",
+    "dom:Applicant_IsAgency": "Applicant.IsAgency",
+    "loc:Comments": "Applicant.Comments",
+    "dom:Applicant_Comments": "Applicant.Comments",
+    "loc:CompletionPoints": "Applicant.CompletionPoints",
+    "dom:Applicant_CompletionPoints": "Applicant.CompletionPoints",
+    "loc:IsOnbdStarted": "Applicant.IsOnbdStarted",
+    "dom:Applicant_IsOnbdStarted": "Applicant.IsOnbdStarted",
+    "loc:IsOnbdInit": "Applicant.IsOnbdInit",
+    "dom:Applicant_IsOnbdInit": "Applicant.IsOnbdInit",
+    "loc:OnbCoordinator": "Applicant.OnbCoordinatorId",
+    "dom:Applicant_OnbCoordinatorId": "Applicant.OnbCoordinatorId",
+    "loc:OnbBuddy": "Applicant.OnbBuddyId",
+    "dom:Applicant_OnbBuddyId": "Applicant.OnbBuddyId"
+  },
+  "fields": [
+    {
+      "id": "Applicant.Code",
+      "label": "Code",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Code",
+        "dom:Applicant_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.TitleId",
+      "label": "Title",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Title",
+        "dom:Applicant_TitleId"
+      ],
+      "rules": "Optional. Chosen from Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The applicant's title.</p><p><strong>Example.</strong> Mr</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.FirstNameEn",
+      "label": "FirstNameEn",
+      "section": "Applicants",
+      "aliases": [
+        "loc:FirstNameEn",
+        "dom:Applicant_FirstNameEn"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first part in English of the applicant's name.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.SecondNameEn",
+      "label": "SecondNameEn",
+      "section": "Applicants",
+      "aliases": [
+        "loc:SecondNameEn",
+        "dom:Applicant_SecondNameEn"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The second part in English of the applicant's name.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.ThirdNameEn",
+      "label": "ThirdNameEn",
+      "section": "Applicants",
+      "aliases": [
+        "loc:ThirdNameEn",
+        "dom:Applicant_ThirdNameEn"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The third part in English of the applicant's name.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.LastNameEn",
+      "label": "LastNameEn",
+      "section": "Applicants",
+      "aliases": [
+        "loc:LastNameEn",
+        "dom:Applicant_LastNameEn"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The family name in English of the applicant's name.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.FirstNameAr",
+      "label": "FirstNameAr",
+      "section": "Applicants",
+      "aliases": [
+        "loc:FirstNameAr",
+        "dom:Applicant_FirstNameAr"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first part in Arabic of the applicant's name.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.SecondNameAr",
+      "label": "SecondNameAr",
+      "section": "Applicants",
+      "aliases": [
+        "loc:SecondNameAr",
+        "dom:Applicant_SecondNameAr"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The second part in Arabic of the applicant's name.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.ThirdNameAr",
+      "label": "ThirdNameAr",
+      "section": "Applicants",
+      "aliases": [
+        "loc:ThirdNameAr",
+        "dom:Applicant_ThirdNameAr"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The third part in Arabic of the applicant's name.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.LastNameAr",
+      "label": "LastNameAr",
+      "section": "Applicants",
+      "aliases": [
+        "loc:LastNameAr",
+        "dom:Applicant_LastNameAr"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The family name in Arabic of the applicant's name.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.BirthDate",
+      "label": "BirthDate",
+      "section": "Applicants",
+      "aliases": [
+        "loc:BirthDate",
+        "dom:Applicant_BirthDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date of birth.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins. Counts towards the profile strength shown to the candidate on the careers site. The applicant search report shows the age from it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.Gender",
+      "label": "Gender",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Gender",
+        "dom:Applicant_Gender"
+      ],
+      "rules": "Required. One of: Male, Female.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Male or female.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins. The applicant search report can filter by it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.MaritalStatusId",
+      "label": "MaritalStatus",
+      "section": "Applicants",
+      "aliases": [
+        "loc:MaritalStatus",
+        "dom:Applicant_MaritalStatusId"
+      ],
+      "rules": "Optional. Chosen from Marital Status master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The marital status.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins. The applicant search report can filter by it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.NationalityId",
+      "label": "Nationality",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Nationality",
+        "dom:Applicant_NationalityId"
+      ],
+      "rules": "Required. Chosen from Nationality master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The nationality.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins. Counts towards the profile strength shown to the candidate on the careers site.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.ReligionId",
+      "label": "Religion",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Religion",
+        "dom:Applicant_ReligionId"
+      ],
+      "rules": "Optional. Chosen from Religion master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The religion.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.QualificationId",
+      "label": "Qualification",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Qualification",
+        "dom:Applicant_QualificationId"
+      ],
+      "rules": "Optional. Chosen from Qualification master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The highest qualification.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.JobTitleId",
+      "label": "JobTitle",
+      "section": "Applicants",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:Applicant_JobTitleId"
+      ],
+      "rules": "Optional. Chosen from Job Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job title the applicant is looking for.</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.BloodGroup",
+      "label": "BloodGroup",
+      "section": "Applicants",
+      "aliases": [
+        "loc:BloodGroup",
+        "dom:Applicant_BloodGroup"
+      ],
+      "rules": "Optional. Maximum 50 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The blood group.</p><p><strong>Example.</strong> <code>O+</code></p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.CivilID",
+      "label": "CivilID",
+      "section": "Applicants",
+      "aliases": [
+        "loc:CivilID",
+        "dom:Applicant_CivilID"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The Kuwait Civil ID number.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins. Counts towards the profile strength shown to the candidate on the careers site.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.CountryId",
+      "label": "Country",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Country",
+        "dom:Applicant_CountryId"
+      ],
+      "rules": "Optional. Chosen from Country master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The country of residence.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.PassportNum",
+      "label": "PassportNum",
+      "section": "Applicants",
+      "aliases": [
+        "loc:PassportNum",
+        "dom:Applicant_PassportNum"
+      ],
+      "rules": "Optional. Maximum 100 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The passport number.</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.PlaceOfBirth",
+      "label": "PlaceOfBirth",
+      "section": "Applicants",
+      "aliases": [
+        "loc:PlaceOfBirth",
+        "dom:Applicant_PlaceOfBirth"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The place of birth.</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.DrivingLicense",
+      "label": "DrivingLicense",
+      "section": "Applicants",
+      "aliases": [
+        "loc:DrivingLicense",
+        "dom:Applicant_DrivingLicense"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The driving licence number.</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.PhotoPath",
+      "label": "Photo",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Photo",
+        "dom:Applicant_Photo"
+      ],
+      "rules": "Optional. Maximum 512 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A photo of the applicant.</p><p><strong>Why it matters.</strong> Counts towards the profile strength shown to the candidate on the careers site.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.CurrentAddress",
+      "label": "CurrentAddress",
+      "section": "Applicants",
+      "aliases": [
+        "loc:CurrentAddress",
+        "dom:Applicant_CurrentAddress"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The current address.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.PermanentAddress",
+      "label": "PermanentAddress",
+      "section": "Applicants",
+      "aliases": [
+        "loc:PermanentAddress",
+        "dom:Applicant_PermanentAddress"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The permanent address.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins. Counts towards the profile strength shown to the candidate on the careers site.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.Address1",
+      "label": "Address1",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Address1",
+        "dom:Applicant_Address1"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> An address line.</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.Address2",
+      "label": "Address2",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Address2",
+        "dom:Applicant_Address2"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> An address line.</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.Telephone",
+      "label": "Telephone",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Telephone",
+        "dom:Applicant_Telephone"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A landline number.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.Mobile",
+      "label": "Mobile",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Mobile",
+        "dom:Applicant_Mobile"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The mobile number.</p><p><strong>Example.</strong> <code>96590001234</code></p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins. Counts towards the profile strength shown to the candidate on the careers site.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.Email",
+      "label": "Email",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Email",
+        "dom:Applicant_Email"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The email address.</p><p><strong>Why it matters.</strong> Copied to the new employee when the applicant joins. Counts towards the profile strength shown to the candidate on the careers site. Each email can belong to one applicant.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.JoiningDate",
+      "label": "JoiningDate",
+      "section": "Applicants",
+      "aliases": [
+        "loc:JoiningDate",
+        "dom:Applicant_JoiningDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the applicant joins, once hired.</p><p><strong>Why it matters.</strong> Must be filled in before an application can be set to <em>Joined</em>; it becomes the employee's joining date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.ProbationEndDate",
+      "label": "ProbationEndDate",
+      "section": "Applicants",
+      "aliases": [
+        "loc:ProbationEndDate",
+        "dom:Applicant_ProbationEndDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The end of probation, once hired.</p><p><strong>Why it matters.</strong> Must be filled in before an application can be set to <em>Joined</em>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.IsAgency",
+      "label": "IsAgency",
+      "section": "Applicants",
+      "aliases": [
+        "loc:IsAgency",
+        "dom:Applicant_IsAgency"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the applicant came through an agency.</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.Comments",
+      "label": "Comments",
+      "section": "Applicants",
+      "aliases": [
+        "loc:Comments",
+        "dom:Applicant_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.CompletionPoints",
+      "label": "CompletionPoints",
+      "section": "Applicants",
+      "aliases": [
+        "loc:CompletionPoints",
+        "dom:Applicant_CompletionPoints"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How complete the candidate's careers profile is, out of 60 points. Calculated, not typed in.</p><p><strong>Example.</strong> 35</p><p><strong>Why it matters.</strong> 5 points each for a photo, Civil ID, nationality, permanent address, birth date, email and mobile, and 25 for at least one CV. Stored when the candidate saves their profile; for information only.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.IsOnbdStarted",
+      "label": "IsOnbdStarted",
+      "section": "Applicants",
+      "aliases": [
+        "loc:IsOnbdStarted",
+        "dom:Applicant_IsOnbdStarted"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether onboarding may start for this applicant.</p><p><strong>Why it matters.</strong> Recorded only. Nothing reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.IsOnbdInit",
+      "label": "IsOnbdInit",
+      "section": "Applicants",
+      "aliases": [
+        "loc:IsOnbdInit",
+        "dom:Applicant_IsOnbdInit"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether onboarding has been initiated for this applicant.</p><p><strong>Why it matters.</strong> Recorded only. Nothing reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.OnbCoordinatorId",
+      "label": "OnbCoordinator",
+      "section": "Applicants",
+      "aliases": [
+        "loc:OnbCoordinator",
+        "dom:Applicant_OnbCoordinatorId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee who coordinates this applicant's onboarding.</p><p><strong>Example.</strong> Fatima Al-Sabah (HR)</p><p><strong>Why it matters.</strong> Recorded only. Nothing reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.OnbBuddyId",
+      "label": "OnbBuddy",
+      "section": "Applicants",
+      "aliases": [
+        "loc:OnbBuddy",
+        "dom:Applicant_OnbBuddyId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee who looks after the new joiner during onboarding.</p><p><strong>Example.</strong> Ahmed Khan</p><p><strong>Why it matters.</strong> Recorded only. Nothing reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

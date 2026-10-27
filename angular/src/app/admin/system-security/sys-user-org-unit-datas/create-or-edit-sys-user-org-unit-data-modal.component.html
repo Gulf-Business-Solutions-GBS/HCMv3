@@ -1,0 +1,133 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'SysUserOrgUnitDatas' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'SysUserOrgUnitDatas' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="SysUserOrgUnitData_EmployeeId">{{ 'Employee' | localize }}</label>
+                                <select
+                                    id="SysUserOrgUnitData_EmployeeId"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    [ngModel]="record().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SysUserOrgUnitData_RoleId">{{ 'Role' | localize }}</label>
+                                <select
+                                    id="SysUserOrgUnitData_RoleId"
+                                    #roleIdInput="ngModel"
+                                    class="form-select"
+                                    name="RoleId"
+                                    [ngModel]="record().roleId"
+                                    (ngModelChange)="updateField('roleId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (role of roles(); track role.id) {
+                                        <option [ngValue]="role.id">{{ role.displayName }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="roleIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SysUserOrgUnitData_OrgLevelId">{{ 'OrgLevel' | localize }}</label>
+                                <select
+                                    id="SysUserOrgUnitData_OrgLevelId"
+                                    #orgLevelIdInput="ngModel"
+                                    class="form-select"
+                                    name="OrgLevelId"
+                                    [ngModel]="record().orgLevelId"
+                                    (ngModelChange)="updateField('orgLevelId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (orgLevel of orgLevels(); track orgLevel.id) {
+                                        <option [ngValue]="orgLevel.id">{{ orgLevel.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="orgLevelIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SysUserOrgUnitData_OrganizationUnitId">{{ 'OrgUnit' | localize }}</label>
+                                <select
+                                    id="SysUserOrgUnitData_OrganizationUnitId"
+                                    #organizationUnitIdInput="ngModel"
+                                    class="form-select"
+                                    name="OrganizationUnitId"
+                                    [ngModel]="record().organizationUnitId"
+                                    (ngModelChange)="updateField('organizationUnitId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (unit of organizationUnits(); track unit.id) {
+                                        <option [ngValue]="unit.id">{{ unit.displayName }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="organizationUnitIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="SysUserOrgUnitData_ShowUnlocked"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="ShowUnlocked"
+                                        [ngModel]="record().showUnlocked"
+                                        (ngModelChange)="updateField('showUnlocked', $event)" />
+                                    <label class="form-check-label" for="SysUserOrgUnitData_ShowUnlocked">{{ 'ShowUnlocked' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

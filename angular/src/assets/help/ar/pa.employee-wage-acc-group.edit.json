@@ -1,0 +1,43 @@
+{
+  "helpId": "pa.employee-wage-acc-group.edit",
+  "lang": "ar",
+  "title": "مجموعات حسابات أجور الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeeWageAccGroup",
+  "overviewHtml": "<p>مجموعة حسابات الأجور المخصصة للموظف اعتباراً من تاريخ معين. عند حفظ مجموعة جديدة تُغلق السابقة في اليوم السابق لتاريخ البداية الجديد. ولا يجوز تسجيل المجموعة نفسها مرتين بتاريخ البداية نفسه.</p><p>تُسجَّل للرجوع إليها، ولا يقرؤها محرك التكلفة ولا القيود المحاسبية حالياً.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeWageAccGroup.StartDate",
+    "dom:EmployeeWageAccGroup_StartDate": "EmployeeWageAccGroup.StartDate",
+    "loc:WageAccGroupId": "EmployeeWageAccGroup.WageAccGroupId",
+    "dom:EmployeeWageAccGroup_WageAccGroupId": "EmployeeWageAccGroup.WageAccGroupId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeWageAccGroup.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeWageAccGroups",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeWageAccGroup_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. عند الحفظ يُغلق السجل السابق للموظف نفسه في اليوم السابق لهذا التاريخ، ويبقى أحدث سجل مفتوحاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccGroup.WageAccGroupId",
+      "label": "WageAccGroupId",
+      "section": "EmployeeWageAccGroups",
+      "aliases": [
+        "loc:WageAccGroupId",
+        "dom:EmployeeWageAccGroup_WageAccGroupId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة مجموعات حسابات الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموعة حسابات الأجور.</p><p><strong>مثال.</strong> موظفو المكتب الرئيسي</p>",
+      "adminHtml": "<p>تُدار من إدارة الرواتب ← مجموعات حسابات الأجور.</p>",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,180 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #paRatingForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (paRating().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'PARatings' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'PARatings' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="PARating_Code">{{ 'Code' | localize }}</label>
+                                <input
+                                    id="PARating_Code"
+                                    type="text"
+                                    class="form-control"
+                                    name="Code"
+                                    maxlength="64"
+                                    [ngModel]="paRating().code"
+                                    (ngModelChange)="updateField('code', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="PARating_NameEn">{{ 'NameEn' | localize }}</label>
+                                <input
+                                    id="PARating_NameEn"
+                                    #nameEnInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameEn"
+                                    maxlength="256"
+                                    [ngModel]="paRating().nameEn"
+                                    (ngModelChange)="updateField('nameEn', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameEnInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="PARating_NameAr">{{ 'NameAr' | localize }}</label>
+                                <input
+                                    id="PARating_NameAr"
+                                    #nameArInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameAr"
+                                    maxlength="256"
+                                    [ngModel]="paRating().nameAr"
+                                    (ngModelChange)="updateField('nameAr', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameArInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="PARating_FromRange">{{ 'FromRange' | localize }}</label>
+                                <input
+                                    id="PARating_FromRange"
+                                    #fromRangeInput="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="FromRange"
+                                    [ngModel]="paRating().fromRange"
+                                    (ngModelChange)="updateField('fromRange', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="fromRangeInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="PARating_ToRange">{{ 'ToRange' | localize }}</label>
+                                <input
+                                    id="PARating_ToRange"
+                                    #toRangeInput="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="ToRange"
+                                    [ngModel]="paRating().toRange"
+                                    (ngModelChange)="updateField('toRange', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="toRangeInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="PARating_MaxLimit">{{ 'MaxLimit' | localize }}</label>
+                                <input
+                                    id="PARating_MaxLimit"
+                                    #maxLimitInput="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="MaxLimit"
+                                    [ngModel]="paRating().maxLimit"
+                                    (ngModelChange)="updateField('maxLimit', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="maxLimitInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="PARating_DescriptionEn">{{ 'DescriptionEn' | localize }}</label>
+                                <textarea
+                                    id="PARating_DescriptionEn"
+                                    class="form-control"
+                                    name="DescriptionEn"
+                                    rows="2"
+                                    [ngModel]="paRating().descriptionEn"
+                                    (ngModelChange)="updateField('descriptionEn', $event)"></textarea>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="PARating_DescriptionAr">{{ 'DescriptionAr' | localize }}</label>
+                                <textarea
+                                    id="PARating_DescriptionAr"
+                                    class="form-control"
+                                    name="DescriptionAr"
+                                    rows="2"
+                                    [ngModel]="paRating().descriptionAr"
+                                    (ngModelChange)="updateField('descriptionAr', $event)"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <div class="form-check">
+                                    <input
+                                        id="PARating_IsCommentRequired"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="IsCommentRequired"
+                                        [ngModel]="paRating().isCommentRequired"
+                                        (ngModelChange)="updateField('isCommentRequired', $event)" />
+                                    <label class="form-check-label" for="PARating_IsCommentRequired">{{ 'IsCommentRequired' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <div class="form-check">
+                                    <input
+                                        id="PARating_Status"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="Status"
+                                        [ngModel]="paRating().status"
+                                        (ngModelChange)="updateField('status', $event)" />
+                                    <label class="form-check-label" for="PARating_Status">{{ 'Status' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!paRatingForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

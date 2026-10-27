@@ -1,0 +1,91 @@
+{
+  "helpId": "gr.sponsor-license-info.edit",
+  "lang": "ar",
+  "title": "بيانات تراخيص الكفيل — إنشاء / تحرير",
+  "entity": "HCMv3.GovtRelationsManagement.SponsorLicenseInfo",
+  "overviewHtml": "<p>رخصة تجارية يحملها كفيل. لا يمكن أن يكون تاريخ الانتهاء قبل تاريخ الإصدار، ولا يُدخل رقم الرخصة إلا مرة واحدة لكل كفيل. تُحفظ كسجل، ولا يوجد ما ينبّه عند انتهائها.</p>",
+  "aliasIndex": {
+    "loc:TradeLicenseNum": "SponsorLicenseInfo.TradeLicenseNum",
+    "dom:SponsorLicenseInfo_TradeLicenseNum": "SponsorLicenseInfo.TradeLicenseNum",
+    "loc:CivilId": "SponsorLicenseInfo.CivilId",
+    "dom:SponsorLicenseInfo_CivilId": "SponsorLicenseInfo.CivilId",
+    "loc:LicenseIssueDate": "SponsorLicenseInfo.LicenseIssueDate",
+    "dom:SponsorLicenseInfo_LicenseIssueDate": "SponsorLicenseInfo.LicenseIssueDate",
+    "loc:LicenseExpiryDate": "SponsorLicenseInfo.LicenseExpiryDate",
+    "dom:SponsorLicenseInfo_LicenseExpiryDate": "SponsorLicenseInfo.LicenseExpiryDate",
+    "loc:ActivityType": "SponsorLicenseInfo.ActivityType",
+    "dom:SponsorLicenseInfo_ActivityType": "SponsorLicenseInfo.ActivityType"
+  },
+  "fields": [
+    {
+      "id": "SponsorLicenseInfo.TradeLicenseNum",
+      "label": "TradeLicenseNum",
+      "section": "SponsorLicenseInfos",
+      "aliases": [
+        "loc:TradeLicenseNum",
+        "dom:SponsorLicenseInfo_TradeLicenseNum"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الرخصة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorLicenseInfo.CivilId",
+      "label": "CivilId",
+      "section": "SponsorLicenseInfos",
+      "aliases": [
+        "loc:CivilId",
+        "dom:SponsorLicenseInfo_CivilId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الرقم المدني لحامل الرخصة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorLicenseInfo.LicenseIssueDate",
+      "label": "LicenseIssueDate",
+      "section": "SponsorLicenseInfos",
+      "aliases": [
+        "loc:LicenseIssueDate",
+        "dom:SponsorLicenseInfo_LicenseIssueDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى صدرت الرخصة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorLicenseInfo.LicenseExpiryDate",
+      "label": "LicenseExpiryDate",
+      "section": "SponsorLicenseInfos",
+      "aliases": [
+        "loc:LicenseExpiryDate",
+        "dom:SponsorLicenseInfo_LicenseExpiryDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى تنتهي الرخصة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorLicenseInfo.ActivityType",
+      "label": "ActivityType",
+      "section": "SponsorLicenseInfos",
+      "aliases": [
+        "loc:ActivityType",
+        "dom:SponsorLicenseInfo_ActivityType"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النشاط المرخّص.</p><p><strong>مثال.</strong> تجارة عامة</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

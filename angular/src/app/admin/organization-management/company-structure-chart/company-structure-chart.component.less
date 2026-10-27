@@ -1,0 +1,84 @@
+.org-chart-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.org-chart-toolbar__zoom {
+    min-width: 62px;
+    font-weight: 600;
+}
+
+.org-chart-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+}
+
+.org-chart-breadcrumb__item {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--bs-primary, #009ef7);
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.org-chart-breadcrumb__separator {
+    color: var(--bs-gray-500, #a1a5b7);
+}
+
+.org-chart-breadcrumb__current {
+    font-weight: 600;
+    color: var(--bs-gray-700, #5e6278);
+}
+
+.org-chart-explorer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 8px 24px;
+}
+
+.org-chart-explorer__focus {
+    /* Capped at the frame so a narrow phone gets a full-width card rather than horizontal overflow. */
+    width: min(320px, 100%);
+}
+
+/* The vertical stem joining the focus card to the group of children below it. */
+.org-chart-explorer__connector {
+    width: 1px;
+    height: 32px;
+    background: var(--bs-gray-400, #b5b5c3);
+}
+
+/*
+ * Children wrap into a grid inside their own container rather than sitting in one horizontal row: a
+ * legal entity with 18 departments is unreadable as an 18-card strip, and this is the layout the
+ * SuccessFactors screen uses for the same reason.
+ */
+.org-chart-explorer__children {
+    display: grid;
+    /* min() inside minmax so the track never demands more width than the screen actually has. */
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 320px));
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 1100px;
+    padding: 20px;
+    border: 1px solid var(--bs-border-color, #eff2f5);
+    border-radius: 10px;
+    background: var(--bs-gray-100, #f9f9f9);
+}
+
+.org-chart-explorer__empty {
+    padding: 48px 0;
+    text-align: center;
+    color: var(--bs-gray-600, #7e8299);
+}

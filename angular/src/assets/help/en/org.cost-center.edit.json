@@ -1,0 +1,75 @@
+{
+  "helpId": "org.cost-center.edit",
+  "lang": "en",
+  "title": "Cost Centers — Create / Edit",
+  "entity": "HCMv3.OrganizationManagement.CostCenter",
+  "overviewHtml": "<p>A cost centre that salary costs are booked to. Employees are placed in one on their organisation assignment. A workflow step can limit its approvers to the requester's cost centre, and some customer-specific payroll journal reports group costs by it.</p>",
+  "aliasIndex": {
+    "loc:Code": "CostCenter.Code",
+    "dom:CostCenter_Code": "CostCenter.Code",
+    "loc:NameEn": "CostCenter.NameEn",
+    "dom:CostCenter_NameEn": "CostCenter.NameEn",
+    "loc:NameAr": "CostCenter.NameAr",
+    "dom:CostCenter_NameAr": "CostCenter.NameAr",
+    "loc:CostCenterGroup": "CostCenter.CostCenterGroupId",
+    "dom:CostCenter_CostCenterGroupId": "CostCenter.CostCenterGroupId"
+  },
+  "fields": [
+    {
+      "id": "CostCenter.Code",
+      "label": "Code",
+      "section": "CostCenters",
+      "aliases": [
+        "loc:Code",
+        "dom:CostCenter_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostCenter.NameEn",
+      "label": "NameEn",
+      "section": "CostCenters",
+      "aliases": [
+        "loc:NameEn",
+        "dom:CostCenter_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostCenter.NameAr",
+      "label": "NameAr",
+      "section": "CostCenters",
+      "aliases": [
+        "loc:NameAr",
+        "dom:CostCenter_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostCenter.CostCenterGroupId",
+      "label": "CostCenterGroup",
+      "section": "CostCenters",
+      "aliases": [
+        "loc:CostCenterGroup",
+        "dom:CostCenter_CostCenterGroupId"
+      ],
+      "rules": "Optional. Chosen from Cost Center Group master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A group the cost centre belongs to.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

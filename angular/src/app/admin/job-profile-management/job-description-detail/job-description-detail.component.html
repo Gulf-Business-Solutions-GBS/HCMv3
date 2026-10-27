@@ -1,0 +1,40 @@
+<div [@routerTransition]>
+    <sub-header [title]="'JobDescription' | localize" [description]="'JobProfileManagement' | localize" />
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-header align-items-center border-0">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="fw-bolder text-gray-900">
+                        @if (jobDescription()) {
+                            <span>{{ jobDescription().shortDescriptionEn }}</span>
+                        }
+                    </span>
+                </h3>
+            </div>
+            <div class="card-body">
+                @if (jobDescriptionId()) {
+                    <tabset class="tab-container">
+                        <tab heading="{{ 'JobDescriptionCertificates' | localize }}" [active]="true">
+                            <job-description-certificates [jobDescriptionId]="jobDescriptionId()" />
+                        </tab>
+                        <tab heading="{{ 'JobDescriptionDegrees' | localize }}">
+                            <job-description-degrees [jobDescriptionId]="jobDescriptionId()" />
+                        </tab>
+                        <tab heading="{{ 'JobDescriptionInterviewQuestions' | localize }}">
+                            <job-description-interview-questions [jobDescriptionId]="jobDescriptionId()" />
+                        </tab>
+                        <tab heading="{{ 'JobDescriptionResponsibilities' | localize }}">
+                            <job-description-responsibilities [jobDescriptionId]="jobDescriptionId()" />
+                        </tab>
+                        <tab heading="{{ 'JobDescriptionSkills' | localize }}">
+                            <job-description-skills [jobDescriptionId]="jobDescriptionId()" />
+                        </tab>
+                        <tab heading="{{ 'JobDescriptionCompetencies' | localize }}">
+                            <job-description-competencies [jobDescriptionId]="jobDescriptionId()" />
+                        </tab>
+                    </tabset>
+                }
+            </div>
+        </div>
+    </div>
+</div>

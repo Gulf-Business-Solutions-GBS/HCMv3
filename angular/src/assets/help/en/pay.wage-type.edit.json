@@ -1,0 +1,523 @@
+{
+  "helpId": "pay.wage-type.edit",
+  "lang": "en",
+  "title": "Wagetypes — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.WageType",
+  "overviewHtml": "<p>A wagetype is one line of pay: basic salary, an allowance, a deduction, a leave payment, a provision. Every amount on a payslip, in costing and in the journal voucher belongs to a wagetype, and the settings here decide how payroll works it out and what else it counts towards.</p><p>Many wagetypes are recognised by the payroll engine <strong>by their code</strong> and calculated by dedicated logic — basic pay, net pay, leave, overtime, indemnity and others. Those are marked <em>Technical</em> and cannot be deleted. The rest are <em>Custom</em>.</p><p>The many <strong>Include In …</strong> boxes each add this wagetype's monthly amount to the base of another calculation: the social security deduction adds up every wagetype marked <em>Include In Social Security</em>, and so on.</p>",
+  "aliasIndex": {
+    "loc:Code": "WageType.Code",
+    "dom:WageType_Code": "WageType.Code",
+    "loc:NameEn": "WageType.NameEn",
+    "dom:WageType_NameEn": "WageType.NameEn",
+    "loc:NameAr": "WageType.NameAr",
+    "dom:WageType_NameAr": "WageType.NameAr",
+    "loc:ShortNameEn": "WageType.ShortNameEn",
+    "dom:WageType_ShortNameEn": "WageType.ShortNameEn",
+    "loc:ShortNameAr": "WageType.ShortNameAr",
+    "dom:WageType_ShortNameAr": "WageType.ShortNameAr",
+    "loc:BillingType": "WageType.BillingType",
+    "dom:WageType_BillingType": "WageType.BillingType",
+    "loc:BillingMethod": "WageType.BillingMethod",
+    "dom:WageType_BillingMethod": "WageType.BillingMethod",
+    "loc:ProrateMethod": "WageType.ProrateMethod",
+    "dom:WageType_ProrateMethod": "WageType.ProrateMethod",
+    "loc:Category": "WageType.Category",
+    "dom:WageType_Category": "WageType.Category",
+    "loc:FixedDays": "WageType.FixedDays",
+    "dom:WageType_FixedDays": "WageType.FixedDays",
+    "loc:Rate": "WageType.Rate",
+    "dom:WageType_Rate": "WageType.Rate",
+    "loc:PayrollOrder": "WageType.PayrollOrder",
+    "dom:WageType_PayrollOrder": "WageType.PayrollOrder",
+    "loc:ArrearSourceWageTypeId": "WageType.ArrearSourceWageTypeId",
+    "dom:WageType_ArrearSourceWageTypeId": "WageType.ArrearSourceWageTypeId",
+    "loc:Status": "WageType.Status",
+    "dom:WageType_Status": "WageType.Status",
+    "loc:IncludeInIndemnity": "WageType.IncludeInIndemnity",
+    "dom:WageType_includeInIndemnity": "WageType.IncludeInIndemnity",
+    "loc:IncludeInPaidLeave": "WageType.IncludeInPaidLeave",
+    "dom:WageType_includeInPaidLeave": "WageType.IncludeInPaidLeave",
+    "loc:IncludeInBasicPay": "WageType.IncludeInBasicPay",
+    "dom:WageType_includeInBasicPay": "WageType.IncludeInBasicPay",
+    "loc:IncludeInArrearPay": "WageType.IncludeInArrearPay",
+    "dom:WageType_includeInArrearPay": "WageType.IncludeInArrearPay",
+    "loc:IncludeInCalculatedPay": "WageType.IncludeInCalculatedPay",
+    "dom:WageType_includeInCalculatedPay": "WageType.IncludeInCalculatedPay",
+    "loc:IncludeInAdvancePay": "WageType.IncludeInAdvancePay",
+    "dom:WageType_includeInAdvancePay": "WageType.IncludeInAdvancePay",
+    "loc:IncludeInOvertimePay": "WageType.IncludeInOvertimePay",
+    "dom:WageType_includeInOvertimePay": "WageType.IncludeInOvertimePay",
+    "loc:IncludeInFIPosting": "WageType.IncludeInFIPosting",
+    "dom:WageType_includeInFIPosting": "WageType.IncludeInFIPosting",
+    "loc:IncludeInCutoff": "WageType.IncludeInCutoff",
+    "dom:WageType_includeInCutoff": "WageType.IncludeInCutoff",
+    "loc:IncludeInDisciplinary": "WageType.IncludeInDisciplinary",
+    "dom:WageType_includeInDisciplinary": "WageType.IncludeInDisciplinary",
+    "loc:IncludeInVariablePay": "WageType.IncludeInVariablePay",
+    "dom:WageType_includeInVariablePay": "WageType.IncludeInVariablePay",
+    "loc:IncludeInSocialSecurity": "WageType.IncludeInSocialSecurity",
+    "dom:WageType_includeInSocialSecurity": "WageType.IncludeInSocialSecurity",
+    "loc:IncludeInPartialPay": "WageType.IncludeInPartialPay",
+    "dom:WageType_includeInPartialPay": "WageType.IncludeInPartialPay",
+    "loc:IncludeInLateEarlyDed": "WageType.IncludeInLateEarlyDed",
+    "dom:WageType_includeInLateEarlyDed": "WageType.IncludeInLateEarlyDed",
+    "loc:IncludeInServiceBonus": "WageType.IncludeInServiceBonus",
+    "dom:WageType_includeInServiceBonus": "WageType.IncludeInServiceBonus",
+    "loc:IncludeInFund": "WageType.IncludeInFund",
+    "dom:WageType_includeInFund": "WageType.IncludeInFund",
+    "loc:DontImpactNetPay": "WageType.DontImpactNetPay",
+    "dom:WageType_dontImpactNetPay": "WageType.DontImpactNetPay",
+    "loc:IsSecured": "WageType.IsSecured",
+    "dom:WageType_isSecured": "WageType.IsSecured"
+  },
+  "fields": [
+    {
+      "id": "WageType.Code",
+      "label": "Code",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:WageType_Code"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wagetype's code. Unlike most lists it is never assigned automatically — you must enter it.</p><p><strong>Example.</strong> <code>1000</code> — basic pay.</p><p><strong>Why it matters.</strong> The payroll engine finds its own wagetypes by code: <code>1000</code> basic pay, <code>9000</code> net pay, <code>4001</code> unpaid leave, <code>4029</code> absent days and several dozen more each have their own calculation. A wagetype whose code the engine does not recognise is paid only through what points to it — an employee's basic pay, a payment, or an absence, overtime or loan type.</p>",
+      "adminHtml": "<p>The code can still be edited after saving, even on a Technical wagetype. Changing the code of one the engine recognises stops its calculation — the engine will no longer find it.</p>",
+      "stub": false
+    },
+    {
+      "id": "WageType.NameEn",
+      "label": "NameEn",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:WageType_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.NameAr",
+      "label": "NameAr",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:WageType_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.ShortNameEn",
+      "label": "ShortNameEn",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:ShortNameEn",
+        "dom:WageType_ShortNameEn"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short English name for the wagetype.</p><p><strong>Example.</strong> <code>HRA</code></p><p><strong>Why it matters.</strong> Only the AI assistant uses it, to recognise the wagetype when you refer to it by its short name. Payslips and reports use the full name.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.ShortNameAr",
+      "label": "ShortNameAr",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:ShortNameAr",
+        "dom:WageType_ShortNameAr"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short Arabic name for the wagetype.</p><p><strong>Example.</strong> <code>بدل سكن</code></p><p><strong>Why it matters.</strong> Only the AI assistant uses it, to recognise the wagetype when you refer to it by its short name.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.BillingType",
+      "label": "BillingType",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:BillingType",
+        "dom:WageType_BillingType"
+      ],
+      "rules": "Required. One of: Earning, Deduction, Time Type, Provision.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What kind of line this is: an earning, a deduction, a time type or a provision.</p><p><strong>Example.</strong> Earning</p><p><strong>Why it matters.</strong> Net pay is earnings minus deductions. Time types (counts of days and hours) and provisions (accruals such as leave and indemnity provision) are worked out by the engine and do not change net pay. Only earnings and deductions can be paid through a payment batch.</p>",
+      "adminHtml": "<p>A new wagetype cannot be created as a time type or a provision — those are reserved for the engine's own wagetypes.</p>",
+      "stub": false
+    },
+    {
+      "id": "WageType.BillingMethod",
+      "label": "BillingMethod",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:BillingMethod",
+        "dom:WageType_BillingMethod"
+      ],
+      "rules": "Required. One of: Fixed Amount Per Month, Fixed Days Per Month, Calendar Days Per Month, Working Days Per Month.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the monthly amount is turned into a daily rate when a month is not paid in full.</p><p><strong>Example.</strong> Calendar Days Per Month</p><p><strong>Why it matters.</strong> <em>Calendar Days Per Month</em> divides by the days in that month; <em>Working Days Per Month</em> by the days in the month less weekly offs; <em>Fixed Days Per Month</em> by <strong>Fixed Days</strong> below; <em>Fixed Amount Per Month</em> pays the full amount regardless of days. The same divisor values leave accruals and leave provision.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.ProrateMethod",
+      "label": "ProrateMethod",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:ProrateMethod",
+        "dom:WageType_ProrateMethod"
+      ],
+      "rules": "Required. One of: Working Days, Working Days (Rest), Active Days.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which days count as paid days when the month is not paid in full.</p><p><strong>Example.</strong> Working Days</p><p><strong>Why it matters.</strong> <em>Active Days</em> pays every day the employee was employed in the month, whatever the billing method. With <em>Working Days Per Month</em>, <em>Working Days</em> pays the days worked plus public holidays, and <em>Working Days (Rest)</em> pays the days worked plus rest days and the public holidays that do not fall on a weekly off. With <em>Calendar Days Per Month</em>, both also pay weekly offs and holidays the employee did not spend on leave. The daily rate comes from the billing method.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.Category",
+      "label": "Category",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:Category",
+        "dom:WageType_Category"
+      ],
+      "rules": "Required. One of: Custom, Technical.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the wagetype is one of the engine's own (Technical) or one your company added (Custom).</p><p><strong>Example.</strong> Custom</p><p><strong>Why it matters.</strong> A Technical wagetype cannot be deleted.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.FixedDays",
+      "label": "FixedDays",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:FixedDays",
+        "dom:WageType_FixedDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The number of days a month is counted as, for the <em>Fixed Days Per Month</em> billing method.</p><p><strong>Example.</strong> <code>26</code></p><p><strong>Why it matters.</strong> The daily rate is the monthly amount divided by this number. On the leave provision wagetypes it is the divisor for valuing leave days; on wagetype <code>1010</code> it is the day value used for indemnity when an indemnity slab gives no basis days.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.Rate",
+      "label": "Rate",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:Rate",
+        "dom:WageType_Rate"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A default rate for the wagetype.</p><p><strong>Why it matters.</strong> Not read at present — ticking it changes nothing in payroll.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.PayrollOrder",
+      "label": "PayrollOrder",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:PayrollOrder",
+        "dom:WageType_PayrollOrder"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The position of this wagetype in the order payroll calculates wagetypes, lowest first.</p><p><strong>Example.</strong> <code>150</code></p><p><strong>Why it matters.</strong> Many wagetypes are worked out from lines already on the payslip — deductions from allowances, net pay from everything — so a wagetype must come after the ones it depends on. Journal voucher lines follow the same order. It cannot be 0.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.ArrearSourceWageTypeId",
+      "label": "ArrearSourceWageTypeId",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:ArrearSourceWageTypeId",
+        "dom:WageType_ArrearSourceWageTypeId"
+      ],
+      "rules": "Optional. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> For an arrear wagetype, the wagetype whose back pay it carries.</p><p><strong>Example.</strong> Basic Salary (for \"Basic Salary Arrears\")</p><p><strong>Why it matters.</strong> The arrear calculation takes the difference for this source wagetype, and costing posts the arrear to the source wagetype's accounts. An arrear wagetype with no source is left out of costing.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.Status",
+      "label": "Status",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:Status",
+        "dom:WageType_Status"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the wagetype is active.</p><p><strong>Why it matters.</strong> Payroll calculates only active wagetypes, and only active ones can be paid through a payment batch. Untick it to stop a wagetype without deleting its history.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInIndemnity",
+      "label": "IncludeInIndemnity",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInIndemnity",
+        "dom:WageType_includeInIndemnity"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this wagetype's monthly amount counts in the pay that end-of-service indemnity is based on.</p><p><strong>Why it matters.</strong> Indemnity, and the indemnity cap, are worked out from the sum of the wagetypes marked here.</p>",
+      "adminHtml": "<p>On the time types <code>4001</code> (unpaid leave) and <code>4029</code> (absent days) the box means something else: ticked, those days are taken off the service that indemnity is counted on.</p>",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInPaidLeave",
+      "label": "IncludeInPaidLeave",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInPaidLeave",
+        "dom:WageType_includeInPaidLeave"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the wagetype is paid during leave.</p><p><strong>Why it matters.</strong> Not read at present. Which wagetypes make up leave pay is set per leave type in the <strong>Wagetype Leaves</strong> list.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInBasicPay",
+      "label": "IncludeInBasicPay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInBasicPay",
+        "dom:WageType_includeInBasicPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the wagetype is part of the employee's basic pay.</p><p><strong>Why it matters.</strong> Its monthly amount counts in the base for attendance pay. When an employee's basic pay line for this wagetype is worked out from another wagetype, it is paid in regular runs only with this ticked. A basic-pay wagetype cannot be paid through a payment batch.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInArrearPay",
+      "label": "IncludeInArrearPay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInArrearPay",
+        "dom:WageType_includeInArrearPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this is an arrear wagetype — one that carries back pay for another.</p><p><strong>Why it matters.</strong> Ticked, payroll works it out through the arrear calculation from its <strong>Arrear Source Wagetype</strong>, instead of any other rule. It cannot be paid through a payment batch.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInCalculatedPay",
+      "label": "IncludeInCalculatedPay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInCalculatedPay",
+        "dom:WageType_includeInCalculatedPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the wagetype can be paid as a one-off payment.</p><p><strong>Why it matters.</strong> Payment batches offer only wagetypes with this ticked — and only active earnings or deductions that are not basic pay, not arrears, not net pay and not already paid by an overtime, absence or loan type.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInAdvancePay",
+      "label": "IncludeInAdvancePay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInAdvancePay",
+        "dom:WageType_includeInAdvancePay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the wagetype is paid in advance with leave.</p><p><strong>Why it matters.</strong> In an off-cycle run that pays leave in advance, only wagetypes with this ticked are paid ahead. An end-of-service run pays every wagetype, ticked or not.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInOvertimePay",
+      "label": "IncludeInOvertimePay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInOvertimePay",
+        "dom:WageType_includeInOvertimePay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this wagetype's monthly amount counts in the base for overtime pay.</p><p><strong>Why it matters.</strong> When an overtime type is paid at the actual rate, the hourly rate is the sum of these wagetypes divided by the hours basis.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInFIPosting",
+      "label": "IncludeInFIPosting",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInFIPosting",
+        "dom:WageType_includeInFIPosting"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the wagetype is posted to finance.</p><p><strong>Why it matters.</strong> The cost engine costs only wagetypes with this ticked, so only they reach the cost register and the journal voucher. Each one then needs a wage account for the employee, or costing stops for that employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInCutoff",
+      "label": "IncludeInCutoff",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInCutoff",
+        "dom:WageType_includeInCutoff"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the wagetype's day counts follow the payroll area's cut-off day.</p><p><strong>Why it matters.</strong> Ticked, and with a cut-off day set on the payroll area, days are counted from the day after the previous month's cut-off to this month's cut-off day instead of the calendar month.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInDisciplinary",
+      "label": "IncludeInDisciplinary",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInDisciplinary",
+        "dom:WageType_includeInDisciplinary"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the wagetype counts in disciplinary deductions.</p><p><strong>Why it matters.</strong> Not read at present — ticking it changes nothing in payroll.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInVariablePay",
+      "label": "IncludeInVariablePay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInVariablePay",
+        "dom:WageType_includeInVariablePay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the wagetype counts as variable pay.</p><p><strong>Why it matters.</strong> Not read at present — ticking it changes nothing in payroll.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInSocialSecurity",
+      "label": "IncludeInSocialSecurity",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInSocialSecurity",
+        "dom:WageType_includeInSocialSecurity"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this wagetype's monthly amount counts in the base for the social security deduction.</p><p><strong>Why it matters.</strong> When social security is based on wage salary, the deduction is worked out from the sum of these wagetypes.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInPartialPay",
+      "label": "IncludeInPartialPay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInPartialPay",
+        "dom:WageType_includeInPartialPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this wagetype's monthly amount counts in the base for payments entered in days or hours.</p><p><strong>Why it matters.</strong> A payment entered as a number of days or hours is turned into an amount from the sum of these wagetypes.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInLateEarlyDed",
+      "label": "IncludeInLateEarlyDed",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInLateEarlyDed",
+        "dom:WageType_includeInLateEarlyDed"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this wagetype's monthly amount counts in the base for late-arrival and early-departure deductions.</p><p><strong>Why it matters.</strong> The deduction per day is worked out from the sum of these wagetypes.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInServiceBonus",
+      "label": "IncludeInServiceBonus",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInServiceBonus",
+        "dom:WageType_includeInServiceBonus"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this wagetype's monthly amount counts in the base for the service bonus.</p><p><strong>Why it matters.</strong> The service bonus is a percentage of the sum of these wagetypes.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInFund",
+      "label": "IncludeInFund",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInFund",
+        "dom:WageType_includeInFund"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this wagetype's monthly amount counts in the base for the fund deduction.</p><p><strong>Why it matters.</strong> The sum of these wagetypes decides which of the grade's fund bands applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.DontImpactNetPay",
+      "label": "DontImpactNetPay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:DontImpactNetPay",
+        "dom:WageType_dontImpactNetPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the wagetype is left out of net pay.</p><p><strong>Why it matters.</strong> Ticked, the line still appears on the payslip but is not added to or taken from net pay. Leave pay on such a wagetype does not create an advance payment deduction.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IsSecured",
+      "label": "IsSecured",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IsSecured",
+        "dom:WageType_isSecured"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether access to the wagetype is limited to certain roles.</p><p><strong>Why it matters.</strong> Not enforced at present: the roles can be listed under <strong>Wagetype Security Roles</strong>, but nothing restricts who sees or pays the wagetype.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

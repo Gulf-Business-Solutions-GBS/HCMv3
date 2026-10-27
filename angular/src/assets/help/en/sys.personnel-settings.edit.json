@@ -1,0 +1,75 @@
+{
+  "helpId": "sys.personnel-settings.edit",
+  "lang": "en",
+  "title": "Personnel settings",
+  "entity": "HCMv3.SystemSettings.ManagePersonnelSettings",
+  "overviewHtml": "<p>Settings for personnel administration.</p><p>There is one settings record per company; it cannot be deleted.</p>",
+  "aliasIndex": {
+    "loc:ProbationDaysCalculation": "ManagePersonnelSettings.ProbationDaysCalculation",
+    "dom:PersonnelSettings_ProbationDaysCalculation": "ManagePersonnelSettings.ProbationDaysCalculation",
+    "loc:MaxPhotoSize": "ManagePersonnelSettings.MaxPhotoSize",
+    "dom:PersonnelSettings_MaxPhotoSize": "ManagePersonnelSettings.MaxPhotoSize",
+    "loc:EnableSponsorGovtJobTitleQuota": "ManagePersonnelSettings.EnableSponsorGovtJobTitleQuota",
+    "dom:PersonnelSettings_EnableSponsorGovtJobTitleQuota": "ManagePersonnelSettings.EnableSponsorGovtJobTitleQuota",
+    "loc:AutoWageAssignOnHire": "ManagePersonnelSettings.AutoWageAssignOnHire",
+    "dom:PersonnelSettings_AutoWageAssignOnHire": "ManagePersonnelSettings.AutoWageAssignOnHire"
+  },
+  "fields": [
+    {
+      "id": "ManagePersonnelSettings.ProbationDaysCalculation",
+      "label": "ProbationDaysCalculation",
+      "section": null,
+      "aliases": [
+        "loc:ProbationDaysCalculation",
+        "dom:PersonnelSettings_ProbationDaysCalculation"
+      ],
+      "rules": "Required. One of: Calendar Days, Working Days.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether probation days are counted in calendar days or working days.</p><p><strong>Example.</strong> Calendar Days</p><p><strong>Why it matters.</strong> Only <em>Calendar Days</em> is supported: probation end is always the joining date plus the probation days. With <em>Working Days</em>, the probation recalculation tool refuses to run.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePersonnelSettings.MaxPhotoSize",
+      "label": "MaxPhotoSize",
+      "section": null,
+      "aliases": [
+        "loc:MaxPhotoSize",
+        "dom:PersonnelSettings_MaxPhotoSize"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The largest employee photo accepted by the bulk photo import, in KB.</p><p><strong>Example.</strong> <code>500</code></p><p><strong>Why it matters.</strong> 0 uses the import's own default. Photos chosen on the employee form are not limited by it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePersonnelSettings.EnableSponsorGovtJobTitleQuota",
+      "label": "EnableSponsorGovtJobTitleQuota",
+      "section": null,
+      "aliases": [
+        "loc:EnableSponsorGovtJobTitleQuota",
+        "dom:PersonnelSettings_EnableSponsorGovtJobTitleQuota"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether sponsor job-title quotas are calculated.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePersonnelSettings.AutoWageAssignOnHire",
+      "label": "AutoWageAssignOnHire",
+      "section": null,
+      "aliases": [
+        "loc:AutoWageAssignOnHire",
+        "dom:PersonnelSettings_AutoWageAssignOnHire"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether wagetypes are assigned automatically when an employee is hired.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

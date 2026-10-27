@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.salary-register-detail.edit",
+  "lang": "en",
+  "title": "Salary Register Details — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.SalaryRegisterDetail",
+  "overviewHtml": "<p>One line of a payslip: a wagetype with its rate, number and amount. Lines of a locked payslip cannot be changed.</p>",
+  "aliasIndex": {
+    "loc:SalaryRegisterId": "SalaryRegisterDetail.SalaryRegisterId",
+    "dom:SalaryRegisterDetail_SalaryRegisterId": "SalaryRegisterDetail.SalaryRegisterId",
+    "loc:WageTypeId": "SalaryRegisterDetail.WageTypeId",
+    "dom:SalaryRegisterDetail_WageTypeId": "SalaryRegisterDetail.WageTypeId",
+    "loc:Rate": "SalaryRegisterDetail.Rate",
+    "dom:SalaryRegisterDetail_Rate": "SalaryRegisterDetail.Rate",
+    "loc:Number": "SalaryRegisterDetail.Number",
+    "dom:SalaryRegisterDetail_Number": "SalaryRegisterDetail.Number",
+    "loc:Amount": "SalaryRegisterDetail.Amount",
+    "dom:SalaryRegisterDetail_Amount": "SalaryRegisterDetail.Amount"
+  },
+  "fields": [
+    {
+      "id": "SalaryRegisterDetail.SalaryRegisterId",
+      "label": "SalaryRegisterId",
+      "section": "SalaryRegisterDetails",
+      "aliases": [
+        "loc:SalaryRegisterId",
+        "dom:SalaryRegisterDetail_SalaryRegisterId"
+      ],
+      "rules": "Required. Chosen from Salary Register master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The payslip this line belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegisterDetail.WageTypeId",
+      "label": "WageTypeId",
+      "section": "SalaryRegisterDetails",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:SalaryRegisterDetail_WageTypeId"
+      ],
+      "rules": "Required. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wagetype of this line.</p><p><strong>Example.</strong> Basic Salary</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegisterDetail.Rate",
+      "label": "Rate",
+      "section": "SalaryRegisterDetails",
+      "aliases": [
+        "loc:Rate",
+        "dom:SalaryRegisterDetail_Rate"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The monthly rate the line was worked out from.</p><p><strong>Example.</strong> <code>800</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegisterDetail.Number",
+      "label": "Number",
+      "section": "SalaryRegisterDetails",
+      "aliases": [
+        "loc:Number",
+        "dom:SalaryRegisterDetail_Number"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The quantity — days, hours or units — the line was worked out on.</p><p><strong>Example.</strong> <code>30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegisterDetail.Amount",
+      "label": "Amount",
+      "section": "SalaryRegisterDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:SalaryRegisterDetail_Amount"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount of the line.</p><p><strong>Example.</strong> <code>800.000</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditOnbTemplateDetail' : 'CreateNewOnbTemplateDetail') | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label required" for="OnbTemplateDetail_OnbTemplateId">{{ 'OnbTemplates' | localize }}</label>
+                            <select
+                                id="OnbTemplateDetail_OnbTemplateId"
+                                #onbTemplateInput="ngModel"
+                                class="form-select"
+                                name="OnbTemplateId"
+                                [ngModel]="record().onbTemplateId"
+                                (ngModelChange)="updateField('onbTemplateId', $event)"
+                                required>
+                                <option [ngValue]="undefined"></option>
+                                @for (item of onbTemplates(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.templateTitle }}</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="onbTemplateInput" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required" for="OnbTemplateDetail_TemplateId">{{ 'TemplateId' | localize }}</label>
+                            <input
+                                id="OnbTemplateDetail_TemplateId"
+                                #templateIdInput="ngModel"
+                                type="number"
+                                class="form-control"
+                                name="TemplateId"
+                                [ngModel]="record().templateId"
+                                (ngModelChange)="updateField('templateId', $event)"
+                                required />
+                            <validation-messages [formCtrl]="templateIdInput" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="OnbTemplateDetail_TemplateData">{{ 'TemplateData' | localize }}</label>
+                            <textarea
+                                id="OnbTemplateDetail_TemplateData"
+                                class="form-control"
+                                name="TemplateData"
+                                rows="4"
+                                [ngModel]="record().templateData"
+                                (ngModelChange)="updateField('templateData', $event)"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            [buttonBusy]="saving()"
+                            [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

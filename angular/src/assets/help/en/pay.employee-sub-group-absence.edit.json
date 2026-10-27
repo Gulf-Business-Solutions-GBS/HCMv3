@@ -1,0 +1,139 @@
+{
+  "helpId": "pay.employee-sub-group-absence.edit",
+  "lang": "en",
+  "title": "Employee Sub Group Absences — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupAbsence",
+  "overviewHtml": "<p>A grade's entitlement to one type of leave, from a given date: how many days a year, the most that can be carried, and — for sick leave — the deduction rule.</p><p>Several rows for the same leave type can step the entitlement up with service. Each row applies while the employee's service is below its <strong>Change Year</strong>; the row with the lowest Change Year above the employee's service wins.</p>",
+  "aliasIndex": {
+    "loc:AbsenceType": "EmployeeSubGroupAbsence.AbsenceTypeId",
+    "dom:EmployeeSubGroupAbsence_AbsenceTypeId": "EmployeeSubGroupAbsence.AbsenceTypeId",
+    "loc:AbsenceDeductionRule": "EmployeeSubGroupAbsence.AbsenceDeductionRuleId",
+    "dom:EmployeeSubGroupAbsence_AbsenceDeductionRuleId": "EmployeeSubGroupAbsence.AbsenceDeductionRuleId",
+    "loc:StartDate": "EmployeeSubGroupAbsence.StartDate",
+    "dom:EmployeeSubGroupAbsence_StartDate": "EmployeeSubGroupAbsence.StartDate",
+    "loc:EndDate": "EmployeeSubGroupAbsence.EndDate",
+    "dom:EmployeeSubGroupAbsence_EndDate": "EmployeeSubGroupAbsence.EndDate",
+    "loc:ChangeYear": "EmployeeSubGroupAbsence.ChangeYear",
+    "dom:EmployeeSubGroupAbsence_ChangeYear": "EmployeeSubGroupAbsence.ChangeYear",
+    "loc:TotalDays": "EmployeeSubGroupAbsence.TotalDays",
+    "dom:EmployeeSubGroupAbsence_TotalDays": "EmployeeSubGroupAbsence.TotalDays",
+    "loc:MaxLimit": "EmployeeSubGroupAbsence.MaxLimit",
+    "dom:EmployeeSubGroupAbsence_MaxLimit": "EmployeeSubGroupAbsence.MaxLimit",
+    "loc:MaxLimitReachNotificationInDays": "EmployeeSubGroupAbsence.MaxLimitReachNotificationInDays",
+    "dom:EmployeeSubGroupAbsence_MaxLimitReachNotificationInDays": "EmployeeSubGroupAbsence.MaxLimitReachNotificationInDays"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupAbsence.AbsenceTypeId",
+      "label": "AbsenceType",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:AbsenceType",
+        "dom:EmployeeSubGroupAbsence_AbsenceTypeId"
+      ],
+      "rules": "Optional. Chosen from Leave Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The type of leave this entitlement is for.</p><p><strong>Example.</strong> Annual Leave</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.AbsenceDeductionRuleId",
+      "label": "AbsenceDeductionRule",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:AbsenceDeductionRule",
+        "dom:EmployeeSubGroupAbsence_AbsenceDeductionRuleId"
+      ],
+      "rules": "Optional. Chosen from Absence Deduction Rule master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> For sick leave, the steps by which pay is reduced as sick days add up.</p><p><strong>Example.</strong> Kuwait Sick Leave Scale</p><p><strong>Why it matters.</strong> Read only on the grade's sick leave row — the type with code 3, or quota type Sick Leave. Left blank, sick leave is paid in full.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSubGroupAbsence_StartDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSubGroupAbsence_EndDate"
+      ],
+      "rules": "Optional. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.ChangeYear",
+      "label": "ChangeYear",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:ChangeYear",
+        "dom:EmployeeSubGroupAbsence_ChangeYear"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The years of service up to which this row applies.</p><p><strong>Example.</strong> <code>5</code> — 30 days a year for the first five years; a second row with <code>99</code> gives 45 days after that.</p><p><strong>Why it matters.</strong> Rows are chosen by the employee's service on the day: the lowest Change Year still above it wins. If no row qualifies, any row for the leave type in force that day is used.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.TotalDays",
+      "label": "TotalDays",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:TotalDays",
+        "dom:EmployeeSubGroupAbsence_TotalDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The days of this leave the employee is entitled to each year.</p><p><strong>Example.</strong> <code>30</code></p><p><strong>Why it matters.</strong> Annual leave accrues day by day at this many days a year. Sick leave gives this many days per cycle. It replaces the leave type's own <strong>Total Days Allowed</strong> for employees in this grade.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.MaxLimit",
+      "label": "MaxLimit",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:MaxLimit",
+        "dom:EmployeeSubGroupAbsence_MaxLimit"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most days of this leave a balance can hold.</p><p><strong>Example.</strong> <code>60</code></p><p><strong>Why it matters.</strong> An annual leave balance above it is cut back to it as the time engine runs, when the time setting forfeit rule is <em>None</em>; balances worked out for payroll are capped at it too. 0 means no limit.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.MaxLimitReachNotificationInDays",
+      "label": "MaxLimitReachNotificationInDays",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:MaxLimitReachNotificationInDays",
+        "dom:EmployeeSubGroupAbsence_MaxLimitReachNotificationInDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How far below the maximum the balance must fall before the \"maximum reached\" notification can be sent again.</p><p><strong>Example.</strong> <code>5</code></p><p><strong>Why it matters.</strong> No effect at present: it only re-arms the annual leave maximum-reached notification, and nothing sends that notification.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

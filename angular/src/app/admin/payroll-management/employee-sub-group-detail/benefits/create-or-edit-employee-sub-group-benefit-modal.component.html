@@ -1,0 +1,60 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'EmployeeSubGroupBenefits' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="EmployeeSubGroupBenefit_BenefitTypeId">{{ 'BenefitType' | localize }}</label>
+                            <select
+                                id="EmployeeSubGroupBenefit_BenefitTypeId"
+                                class="form-select"
+                                name="BenefitTypeId"
+                                required
+                                [ngModel]="record().benefitTypeId"
+                                (ngModelChange)="updateField('benefitTypeId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (benefitType of benefitTypes(); track benefitType.id) {
+                                    <option [ngValue]="benefitType.id">{{ benefitType.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="EmployeeSubGroupBenefit_MaxAmount">{{ 'MaxAmount' | localize }}</label>
+                            <input
+                                id="EmployeeSubGroupBenefit_MaxAmount"
+                                class="form-control"
+                                type="number"
+                                name="MaxAmount"
+                                [ngModel]="record().maxAmount"
+                                (ngModelChange)="updateField('maxAmount', $event)" />
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

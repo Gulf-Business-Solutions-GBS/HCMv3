@@ -1,0 +1,75 @@
+{
+  "helpId": "gmi.currency-convertor.edit",
+  "lang": "ar",
+  "title": "محولات العملات — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.CurrencyConvertor",
+  "overviewHtml": "<p>أسعار الصرف بين عملتين في تاريخ معيّن. وهي محفوظة للرجوع إليها فقط: لا يحوّل أي احتساب بين العملات بها حالياً.</p>",
+  "aliasIndex": {
+    "loc:CalendarDate": "CurrencyConvertor.CalendarDate",
+    "dom:CurrencyConvertor_CalendarDate": "CurrencyConvertor.CalendarDate",
+    "loc:FromCurr": "CurrencyConvertor.FromCurrId",
+    "dom:CurrencyConvertor_FromCurrId": "CurrencyConvertor.FromCurrId",
+    "loc:ToCurr": "CurrencyConvertor.ToCurrId",
+    "dom:CurrencyConvertor_ToCurrId": "CurrencyConvertor.ToCurrId",
+    "loc:Rate": "CurrencyConvertor.Rate",
+    "dom:CurrencyConvertor_Rate": "CurrencyConvertor.Rate"
+  },
+  "fields": [
+    {
+      "id": "CurrencyConvertor.CalendarDate",
+      "label": "CalendarDate",
+      "section": "CurrencyConvertors",
+      "aliases": [
+        "loc:CalendarDate",
+        "dom:CurrencyConvertor_CalendarDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي ينطبق عليه السعر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CurrencyConvertor.FromCurrId",
+      "label": "FromCurr",
+      "section": "CurrencyConvertors",
+      "aliases": [
+        "loc:FromCurr",
+        "dom:CurrencyConvertor_FromCurrId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة العملات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> العملة المحوَّل منها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CurrencyConvertor.ToCurrId",
+      "label": "ToCurr",
+      "section": "CurrencyConvertors",
+      "aliases": [
+        "loc:ToCurr",
+        "dom:CurrencyConvertor_ToCurrId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة العملات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> العملة المحوَّل إليها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CurrencyConvertor.Rate",
+      "label": "Rate",
+      "section": "CurrencyConvertors",
+      "aliases": [
+        "loc:Rate",
+        "dom:CurrencyConvertor_Rate"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سعر التحويل بين العملتين في ذلك التاريخ.</p><p><strong>لماذا يهم.</strong> لا يجوز أن يكون صفراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

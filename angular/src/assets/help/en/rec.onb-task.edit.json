@@ -1,0 +1,91 @@
+{
+  "helpId": "rec.onb-task.edit",
+  "lang": "en",
+  "title": "Onboarding Tasks — Create / Edit",
+  "entity": "HCMv3.Recruitment.OnbTask",
+  "overviewHtml": "<p>An onboarding task — something a new joiner or HR must do, such as submitting documents or collecting a laptop.</p><p>Onboarding is a manual checklist: tasks are given to applicants by hand as applicant tasks; nothing creates them automatically when someone is hired.</p>",
+  "aliasIndex": {
+    "loc:TaskNameEn": "OnbTask.TaskNameEn",
+    "dom:OnbTask_TaskNameEn": "OnbTask.TaskNameEn",
+    "loc:TaskNameAr": "OnbTask.TaskNameAr",
+    "dom:OnbTask_TaskNameAr": "OnbTask.TaskNameAr",
+    "loc:OnbTemplates": "OnbTask.OnbTemplateId",
+    "dom:OnbTask_OnbTemplateId": "OnbTask.OnbTemplateId",
+    "loc:DueDays": "OnbTask.DueDays",
+    "dom:OnbTask_DueDays": "OnbTask.DueDays",
+    "loc:Guideline": "OnbTask.Guideline",
+    "dom:OnbTask_Guideline": "OnbTask.Guideline"
+  },
+  "fields": [
+    {
+      "id": "OnbTask.TaskNameEn",
+      "label": "TaskNameEn",
+      "section": "OnbTasks",
+      "aliases": [
+        "loc:TaskNameEn",
+        "dom:OnbTask_TaskNameEn"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The task in English.</p><p><strong>Example.</strong> Submit Civil ID copy</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbTask.TaskNameAr",
+      "label": "TaskNameAr",
+      "section": "OnbTasks",
+      "aliases": [
+        "loc:TaskNameAr",
+        "dom:OnbTask_TaskNameAr"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The task in Arabic.</p><p><strong>Example.</strong> تقديم نسخة من البطاقة المدنية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbTask.OnbTemplateId",
+      "label": "OnbTemplates",
+      "section": "OnbTasks",
+      "aliases": [
+        "loc:OnbTemplates",
+        "dom:OnbTask_OnbTemplateId"
+      ],
+      "rules": "Optional. Chosen from Onboarding Template master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A template that goes with the task.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbTask.DueDays",
+      "label": "DueDays",
+      "section": "OnbTasks",
+      "aliases": [
+        "loc:DueDays",
+        "dom:OnbTask_DueDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The days allowed to complete it.</p><p><strong>Example.</strong> <code>7</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbTask.Guideline",
+      "label": "Guideline",
+      "section": "OnbTasks",
+      "aliases": [
+        "loc:Guideline",
+        "dom:OnbTask_Guideline"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Instructions for the task.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

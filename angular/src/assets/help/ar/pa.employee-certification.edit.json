@@ -1,0 +1,139 @@
+{
+  "helpId": "pa.employee-certification.edit",
+  "lang": "ar",
+  "title": "شهادات الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeCertification",
+  "overviewHtml": "<p>دورة أو شهادة مهنية أنهاها الموظف.</p><p>تُسجَّل للرجوع إليها، ولا يقرؤها أي احتساب أو تقرير حالياً. ويمكن ربط الشهادات التدريبية من سجلات تدريب الموظف.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeCertification.StartDate",
+    "dom:EmployeeCertification_StartDate": "EmployeeCertification.StartDate",
+    "loc:EndDate": "EmployeeCertification.EndDate",
+    "dom:EmployeeCertification_EndDate": "EmployeeCertification.EndDate",
+    "loc:Course": "EmployeeCertification.Course",
+    "dom:EmployeeCertification_Course": "EmployeeCertification.Course",
+    "loc:Institution": "EmployeeCertification.InstitutionId",
+    "dom:EmployeeCertification_InstitutionId": "EmployeeCertification.InstitutionId",
+    "loc:Duration": "EmployeeCertification.Duration",
+    "dom:EmployeeCertification_Duration": "EmployeeCertification.Duration",
+    "loc:Certificate": "EmployeeCertification.Certificate",
+    "dom:EmployeeCertification_Certificate": "EmployeeCertification.Certificate",
+    "loc:Grade": "EmployeeCertification.Grade",
+    "dom:EmployeeCertification_Grade": "EmployeeCertification.Grade",
+    "loc:CertificationType": "EmployeeCertification.CertificationType",
+    "dom:EmployeeCertification_CertificationType": "EmployeeCertification.CertificationType"
+  },
+  "fields": [
+    {
+      "id": "EmployeeCertification.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeCertification_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeCertification_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.Course",
+      "label": "Course",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:Course",
+        "dom:EmployeeCertification_Course"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم الدورة.</p><p><strong>مثال.</strong> أخصائي رواتب معتمد</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.InstitutionId",
+      "label": "Institution",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:Institution",
+        "dom:EmployeeCertification_InstitutionId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الجهات التعليمية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجهة التي نظمت الدورة.</p><p><strong>مثال.</strong> معهد الكويت للأبحاث العلمية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.Duration",
+      "label": "Duration",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:Duration",
+        "dom:EmployeeCertification_Duration"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدة الدورة، كنص حر.</p><p><strong>مثال.</strong> 3 أشهر</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.Certificate",
+      "label": "Certificate",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:Certificate",
+        "dom:EmployeeCertification_Certificate"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشهادة الممنوحة.</p><p><strong>مثال.</strong> CPP</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.Grade",
+      "label": "Grade",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:Grade",
+        "dom:EmployeeCertification_Grade"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التقدير الحاصل عليه.</p><p><strong>مثال.</strong> ناجح</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.CertificationType",
+      "label": "CertificationType",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:CertificationType",
+        "dom:EmployeeCertification_CertificationType"
+      ],
+      "rules": "إلزامي. إحدى القيم: مهنية، تدريبية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت هذه شهادة مهنية أم شهادة نالها الموظف من خلال التدريب.</p><p><strong>مثال.</strong> تدريبية</p><p><strong>لماذا يهم.</strong> لا يمكن ربط إلا الشهادات التدريبية من سجلات تدريب الموظف. والسجلات التي كانت موجودة قبل إضافة هذا الحقل مهنية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

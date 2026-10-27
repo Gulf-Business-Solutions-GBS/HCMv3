@@ -1,0 +1,75 @@
+{
+  "helpId": "prj.employee-project.edit",
+  "lang": "ar",
+  "title": "مشاريع الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.ProjectManagement.EmployeeProject",
+  "overviewHtml": "<p>المشاريع التي يعمل عليها الموظف خلال فترة، وكيفية توزيع راتبه بينها. يجب أن يكون تاريخ البدء أول يوم في الشهر وتاريخ الانتهاء آخر يوم في الشهر، ولا يجوز أن تتداخل فترات الموظف، ويجب إضافة مشروع واحد على الأقل.</p>",
+  "aliasIndex": {
+    "loc:Employee": "EmployeeProject.EmployeeId",
+    "dom:EmployeeProject_EmployeeId": "EmployeeProject.EmployeeId",
+    "loc:CostingMethod": "EmployeeProject.CostingMethod",
+    "dom:EmployeeProject_CostingMethod": "EmployeeProject.CostingMethod",
+    "loc:StartDate": "EmployeeProject.StartDate",
+    "dom:EmployeeProject_StartDate": "EmployeeProject.StartDate",
+    "loc:EndDate": "EmployeeProject.EndDate",
+    "dom:EmployeeProject_EndDate": "EmployeeProject.EndDate"
+  },
+  "fields": [
+    {
+      "id": "EmployeeProject.EmployeeId",
+      "label": "Employee",
+      "section": "EmployeeProjects",
+      "aliases": [
+        "loc:Employee",
+        "dom:EmployeeProject_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeProject.CostingMethod",
+      "label": "CostingMethod",
+      "section": "EmployeeProjects",
+      "aliases": [
+        "loc:CostingMethod",
+        "dom:EmployeeProject_CostingMethod"
+      ],
+      "rules": "إلزامي. إحدى القيم: الساعات الفعلية، الأيام الفعلية، النسبة المئوية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كيفية توزيع الراتب بين المشاريع.</p><p><strong>مثال.</strong> النسبة المئوية</p><p><strong>لماذا يهم.</strong> النسبة المئوية: يُوزَّع كل بند راتب حسب النسب المحددة على المشاريع. الأيام الفعلية: يُوزَّع كل بند حسب أيام العمل في فترة كل مشروع، مأخوذة من سجل الوقت، بينما تُوزَّع الإجازات بالتساوي. أما الساعات الفعلية فلا ينتج عنها أي تكلفة مشاريع، كما في النظام القديم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeProject.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeProjects",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeProject_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeProject.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeProjects",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeProject_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #paTimelineForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (paTimeline().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'PATimelines' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'PATimelines' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PATimeline_PAPeriodId">{{ 'PAPeriod' | localize }}</label>
+                                <select
+                                    id="PATimeline_PAPeriodId"
+                                    #paPeriodIdInput="ngModel"
+                                    class="form-select"
+                                    name="PAPeriodId"
+                                    [ngModel]="paTimeline().paPeriodId"
+                                    (ngModelChange)="updateField('paPeriodId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (period of paPeriods(); track period.id) {
+                                        <option [ngValue]="period.id">{{ period.name }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="paPeriodIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PATimeline_ActivityType">{{ 'ActivityType' | localize }}</label>
+                                <select
+                                    id="PATimeline_ActivityType"
+                                    #activityTypeInput="ngModel"
+                                    class="form-select"
+                                    name="ActivityType"
+                                    [ngModel]="paTimeline().activityType"
+                                    (ngModelChange)="updateField('activityType', $event)"
+                                    required>
+                                    @for (item of activityTypes; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.key | localize }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="activityTypeInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PATimeline_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="PATimeline_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="paTimeline().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PATimeline_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="PATimeline_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="paTimeline().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!paTimelineForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

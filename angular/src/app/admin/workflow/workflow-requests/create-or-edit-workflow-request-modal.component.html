@@ -1,0 +1,142 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'WorkflowRequests' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'WorkflowRequests' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="WorkflowRequest_EmployeeId">{{ 'Employee' | localize }}</label>
+                                <select
+                                    id="WorkflowRequest_EmployeeId"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    [ngModel]="record().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="WorkflowRequest_ApproverId">{{ 'Approver' | localize }}</label>
+                                <select
+                                    id="WorkflowRequest_ApproverId"
+                                    class="form-select"
+                                    name="ApproverId"
+                                    [ngModel]="record().approverId"
+                                    (ngModelChange)="updateField('approverId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="WorkflowRequest_RequestType">{{ 'RequestType' | localize }}</label>
+                                <input
+                                    id="WorkflowRequest_RequestType"
+                                    type="text"
+                                    class="form-control"
+                                    name="RequestType"
+                                    maxlength="256"
+                                    [ngModel]="record().requestType"
+                                    (ngModelChange)="updateField('requestType', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="WorkflowRequest_RequestNumber">{{ 'RequestNumber' | localize }}</label>
+                                <input
+                                    id="WorkflowRequest_RequestNumber"
+                                    type="text"
+                                    class="form-control"
+                                    name="RequestNumber"
+                                    maxlength="64"
+                                    [ngModel]="record().requestNumber"
+                                    (ngModelChange)="updateField('requestNumber', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="WorkflowRequest_WorkflowStep">{{ 'WorkflowStep' | localize }}</label>
+                                <input
+                                    id="WorkflowRequest_WorkflowStep"
+                                    #workflowStepInput="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="WorkflowStep"
+                                    [ngModel]="record().workflowStep"
+                                    (ngModelChange)="updateField('workflowStep', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="workflowStepInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="WorkflowRequest_RequestStatus">{{ 'RequestStatus' | localize }}</label>
+                                <select
+                                    id="WorkflowRequest_RequestStatus"
+                                    #requestStatusInput="ngModel"
+                                    class="form-select"
+                                    name="RequestStatus"
+                                    [ngModel]="record().requestStatus"
+                                    (ngModelChange)="updateField('requestStatus', $event)"
+                                    required>
+                                    @for (item of requestStatuses; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.key | localize }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="requestStatusInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="WorkflowRequest_ApprovalProcessTime">{{ 'ApprovalProcessTime' | localize }}</label>
+                                <input
+                                    id="WorkflowRequest_ApprovalProcessTime"
+                                    #approvalProcessTimeInput="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="ApprovalProcessTime"
+                                    [ngModel]="record().approvalProcessTime"
+                                    (ngModelChange)="updateField('approvalProcessTime', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="approvalProcessTimeInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

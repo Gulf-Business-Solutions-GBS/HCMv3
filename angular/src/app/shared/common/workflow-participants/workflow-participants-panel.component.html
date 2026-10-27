@@ -1,0 +1,216 @@
+<div class="wf-parts">
+    <!-- Legacy's "Workflow Request" tab, which was four header fields presented as a one-row grid. They are
+         cheap enough to show outright, and a click to read a request's own number was never worth it. -->
+    <div class="wf-parts__facts">
+        <span class="wf-parts__fact">
+            <span class="wf-parts__fact-label">{{ 'RequestNumber' | localize }}</span>
+            <span class="wf-parts__fact-value">{{ participants()?.requestNumber || '-' }}</span>
+        </span>
+        <span class="wf-parts__fact">
+            <span class="wf-parts__fact-label">{{ 'WorkflowStep' | localize }}</span>
+            <span class="wf-parts__fact-value">{{ participants()?.workflowStep ?? '-' }}</span>
+        </span>
+        <span class="wf-parts__fact">
+            <span class="wf-parts__fact-label">{{ 'RequestStatus' | localize }}</span>
+            <span class="wf-parts__fact-value">{{ statusLabel() || '-' }}</span>
+        </span>
+        <span class="wf-parts__fact">
+            <span class="wf-parts__fact-label">{{ 'CurrentWorkflowRole' | localize }}</span>
+            <span class="wf-parts__fact-value">{{ currentWorkflowRole() || '-' }}</span>
+        </span>
+    </div>
+
+    <!-- Buttons inside the nav, not anchors: an <a> with no href is not reachable by keyboard, and these
+         switch a view rather than navigate anywhere. -->
+    <ul class="nav nav-tabs wf-parts__tabs">
+        <li class="nav-item">
+            <button type="button" class="nav-link" [class.active]="tab() === 'approvers'" (click)="selectTab('approvers')">
+                {{ 'Approvers' | localize }}
+                <span class="wf-parts__count">{{ approvers().length }}</span>
+            </button>
+        </li>
+        <li class="nav-item">
+            <button type="button" class="nav-link" [class.active]="tab() === 'readLog'" (click)="selectTab('readLog')">
+                {{ 'ReadLog' | localize }}
+                <span class="wf-parts__count">{{ readLog().length }}</span>
+            </button>
+        </li>
+        <li class="nav-item">
+            <!-- The action trail, alongside the other answers about how this request has been handled
+                 rather than as a toggle on the conversation card. Both were views of the same request and
+                 living in two places meant two places to look. -->
+            <button type="button" class="nav-link" [class.active]="tab() === 'log'" (click)="selectTab('log')">
+                {{ 'LogView' | localize }}
+            </button>
+        </li>
+    </ul>
+
+    <div class="wf-parts__body">
+        @if (loading() && !participants()) {
+            <div class="wf-parts__empty"><i class="fa fa-spinner fa-spin"></i></div>
+        } @else {
+            @switch (tab()) {
+                @case ('approvers') {
+                    <!-- A chain is a sequence of steps, so it is drawn as one: each step its own block,
+                         separated by a rule, with its own heading. The rule that governs a step sits
+                         inside that step and nowhere else -- one line above the whole list described
+                         whichever step happened to be first and silently mis-described the rest. -->
+                    @for (group of approverSteps(); track group.step) {
+                        <div class="wf-parts__step">
+                            <div class="wf-parts__step-head">
+                                {{ 'Step' | localize }} {{ group.step }}
+                            </div>
+
+                            @if (group.rule) {
+                                <!-- Only where it says something: a step with one approver has no choice
+                                     to describe, and a creator step has no approval rule at all. -->
+                                <div class="wf-parts__rule">{{ group.rule }}</div>
+                            }
+
+                            @for (entry of group.entries; track entry.person?.employeeId + '-' + entry.workflowStep) {
+                                <div class="wf-parts__row">
+                                    <employee-avatar
+                                        [photoUrl]="entry.person?.photoUrl"
+                                        [name]="plainName(entry.person)"
+                                        [size]="28"></employee-avatar>
+
+                                    <span class="wf-parts__who">
+                                        <!-- A real <button>, styled as a link: it opens a dialog rather
+                                             than navigating, so an anchor would be lying about what it
+                                             does and an anchor without href is not keyboard-reachable. -->
+                                        <button
+                                            type="button"
+                                            class="wf-parts__name wf-parts__name--link"
+                                            (click)="openProfile(entry.person)">
+                                            {{ displayName(entry.person) || '-' }}
+                                        </button>
+                                        @if (jobTitle(entry.person)) {
+                                            <span class="wf-parts__meta">{{ jobTitle(entry.person) }}</span>
+                                        }
+
+                                        <!-- Why this name is on the list, said on the row that raises the
+                                             question. It used to be a tab of its own, which meant holding
+                                             two lists side by side and matching them up by name. -->
+                                        @for (d of entry.delegations; track $index) {
+                                            <span class="wf-parts__meta">
+                                                {{ delegationLabel(d) }}
+                                                <span class="wf-parts__dot">&middot;</span>
+                                                {{ dateOnly(d.startDate) }} &ndash; {{ dateOnly(d.endDate) }}
+                                            </span>
+                                        }
+                                    </span>
+
+                                    @if (approverStatusLabel(entry); as status) {
+                                        <!-- When it happened, under the word that says what happened. Absent
+                                             for a row still waiting: nothing has happened to date yet. -->
+                                        <span class="wf-parts__status">
+                                            <span class="wf-parts__pill" [ngClass]="approverStatusClass(entry)">
+                                                {{ status }}
+                                            </span>
+                                            @if (entry.actedAt) {
+                                                <span class="wf-parts__when">{{ dateTime(entry.actedAt) }}</span>
+                                            }
+                                        </span>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    } @empty {
+                        <div class="wf-parts__empty">{{ 'NoApproversRecorded' | localize }}</div>
+                    }
+
+                    @if (hasReconstructedApprovers()) {
+                        <!-- Honest about a real limitation rather than quietly presenting a partial list as
+                             a complete one. The engine deletes a step's approver rows when the request moves
+                             on, so past steps can only name whoever acted. -->
+                        <div class="wf-parts__note">{{ 'ApproverListMayBeIncompleteForPastSteps' | localize }}</div>
+                    }
+                }
+
+                @case ('readLog') {
+                    @for (entry of readLog(); track $index) {
+                        <div class="wf-parts__row">
+                            <employee-avatar
+                                [photoUrl]="entry.person?.photoUrl"
+                                [name]="plainName(entry.person)"
+                                [size]="28"></employee-avatar>
+
+                            <span class="wf-parts__who">
+                                @if (canOpenProfile(entry.person)) {
+                                    <button
+                                        type="button"
+                                        class="wf-parts__name wf-parts__name--link"
+                                        (click)="openProfile(entry.person)">
+                                        {{ readLogWho(entry) }}
+                                    </button>
+                                } @else {
+                                    <!-- An unresolved reader has no card to open, so the raw stored value
+                                         stays plain text rather than becoming a link that goes nowhere. -->
+                                    <span class="wf-parts__name">{{ readLogWho(entry) }}</span>
+                                }
+                                @if (jobTitle(entry.person)) {
+                                    <span class="wf-parts__meta">{{ jobTitle(entry.person) }}</span>
+                                }
+                            </span>
+
+                            <span class="wf-parts__when">{{ dateTime(entry.readAt) }}</span>
+                        </div>
+                    } @empty {
+                        <div class="wf-parts__empty">{{ 'NobodyHasOpenedThisRequestYet' | localize }}</div>
+                    }
+                }
+
+                @case ('log') {
+                    <div class="wf-parts__log-head">
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-light-primary"
+                            [disabled]="exportingLog() || !logEntries().length"
+                            (click)="exportLog()">
+                            <i class="fa fa-file-excel me-1"></i>{{ 'ExportToExcel' | localize }}
+                        </button>
+                    </div>
+
+                    @if (loadingLog()) {
+                        <div class="wf-parts__empty"><i class="fa fa-spinner fa-spin"></i></div>
+                    } @else {
+                        <!-- Scrolls sideways rather than shrinking its columns to fit a side rail. Who,
+                             what and when are readable without moving; step, days and platform are there
+                             for anyone looking for them, and anybody actually measuring durations wants
+                             the export, which is what the export is for. -->
+                        <div class="table-responsive wf-parts__log">
+                            <table class="table table-sm align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'ActionBy' | localize }}</th>
+                                        <th>{{ 'ActionType' | localize }}</th>
+                                        <th>{{ 'ActionDate' | localize }}</th>
+                                        <th class="text-end">{{ 'WorkflowStep' | localize }}</th>
+                                        <th class="text-end">{{ 'ActionDays' | localize }}</th>
+                                        <th>{{ 'Platform' | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (entry of logEntries(); track entry.id) {
+                                        <tr>
+                                            <td>{{ logActorName(entry) || '-' }}</td>
+                                            <td>{{ actionTypeLabel(entry.actionType) }}</td>
+                                            <td>{{ dateTime(entry.actionDateTime) }}</td>
+                                            <td class="text-end">{{ entry.workflowStep }}</td>
+                                            <td class="text-end">{{ entry.actionDays }}</td>
+                                            <td>{{ platformLabel(entry.platform) }}</td>
+                                        </tr>
+                                    } @empty {
+                                        <tr><td colspan="6" class="text-muted">{{ 'NoData' | localize }}</td></tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                }
+            }
+        }
+    </div>
+</div>
+
+<workflowParticipantProfileModal #profileModal></workflowParticipantProfileModal>

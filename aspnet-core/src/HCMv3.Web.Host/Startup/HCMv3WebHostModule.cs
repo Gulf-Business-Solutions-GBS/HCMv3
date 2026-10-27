@@ -1,0 +1,294 @@
+using System.Collections.Generic;
+using Abp.AspNetZeroCore;
+using Abp.AspNetZeroCore.Web.Authentication.External;
+using Abp.AspNetZeroCore.Web.Authentication.External.Facebook;
+using Abp.AspNetZeroCore.Web.Authentication.External.Google;
+using Abp.AspNetZeroCore.Web.Authentication.External.Microsoft;
+using Abp.AspNetZeroCore.Web.Authentication.External.OpenIdConnect;
+using Abp.AspNetZeroCore.Web.Authentication.External.Twitter;
+using Abp.AspNetZeroCore.Web.Authentication.External.WsFederation;
+using Abp.Configuration.Startup;
+using Abp.Dependency;
+using Abp.Extensions;
+using Abp.Modules;
+using Abp.Reflection.Extensions;
+using Abp.Threading.BackgroundWorkers;
+using Abp.Timing;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using HCMv3.Storage;
+using HCMv3.Auditing;
+using HCMv3.Authorization.Users.Password;
+using HCMv3.Careers;
+using HCMv3.Configuration;
+using HCMv3.EntityFrameworkCore;
+using HCMv3.MultiTenancy;
+using HCMv3.MultiTenancy.Subscription;
+using HCMv3.ReportManagement;
+using HCMv3.TimeManagement;
+using HCMv3.Workflow;
+using HCMv3.Web.Startup.ExternalLoginInfoProviders;
+using Castle.MicroKernel.Registration;
+using HCMv3.Web.Controllers;
+
+namespace HCMv3.Web.Startup;
+
+[DependsOn(
+    typeof(HCMv3WebCoreModule)
+)]
+public class HCMv3WebHostModule : AbpModule
+{
+    private readonly IWebHostEnvironment _env;
+    private readonly IConfigurationRoot _appConfiguration;
+
+    public HCMv3WebHostModule(
+        IWebHostEnvironment env)
+    {
+        _env = env;
+        _appConfiguration = env.GetAppConfiguration();
+    }
+
+    public override void PreInitialize()
+    {
+        Configuration.Modules.AbpWebCommon().MultiTenancy.DomainFormat =
+            _appConfiguration["App:ServerRootAddress"] ?? "https://localhost:44301/";
+        Configuration.Modules.AspNetZero().LicenseCode = _appConfiguration["AbpZeroLicenseCode"];
+
+        // Careers portal (wave R2). Lets ABP resolve the ambient tenant from a careers subdomain so that
+        // candidates authenticate against their own tenant through the STOCK TokenAuthController rather
+        // than through a second, careers-specific login implementation. Inserted FIRST so a careers host
+        // wins over the header/cookie contributors, which an anonymous careers client does not set anyway.
+        //
+        // Inert until App:CareersDomainFormat is configured (it is not, by instruction): with the key unset
+        // the contributor returns null for every request and resolution behaves exactly as it does today.
+        // See CareersTenantResolveContributor for the full blast-radius note.
+        Configuration.MultiTenancy.Resolvers.Insert(0, typeof(CareersTenantResolveContributor));
+
+        // Only this host references the report classes, so it supplies the renderer the lower layers ask
+        // for by contract (a letter request printing its certificate, for one).
+        Configuration.ReplaceService<HCMv3.ReportManagement.Services.IPrintReportPdfRenderer, HCMv3.Web.Reporting.HcmPrintReportPdfRenderer>(
+            Abp.Dependency.DependencyLifeStyle.Transient);
+    }
+
+    public override void Initialize()
+    {
+        IocManager.RegisterAssemblyByConvention(typeof(HCMv3WebHostModule).GetAssembly());
+
+        // ABP replaces MVC's controller activator with one that resolves from Windsor, and the
+        // convention scan above does not pick up the DevExpress reporting controllers (they derive
+        // from DevExpress's own Controller subclass rather than from AbpController). Without these
+        // three lines every request to /DXXRD, /DXXRDV and /DXXQB routes correctly and then fails
+        // with "No component for supporting the service ... was found".
+        IocManager.IocContainer.Register(
+            Component.For<DXXRDController>().LifestyleTransient(),
+            Component.For<DXXRDVController>().LifestyleTransient(),
+            Component.For<DXXQBController>().LifestyleTransient()
+        );
+    }
+
+    public override void PostInitialize()
+    {
+        // Reports show employee photos from the file store (images are never kept in the database). The
+        // reports project cannot reach the store itself, so it is handed a loader here.
+        HCMv3.Reports.HcmReportBase.StoredImageLoader = (tenantId, path) =>
+        {
+            using var imageStore = IocManager.ResolveAsDisposable<IEntityImageStore>();
+            return Abp.Threading.AsyncHelper.RunSync(() => imageStore.Object.ReadOrNullAsync(tenantId, path));
+        };
+        HCMv3.Web.Reporting.HcmReportCompanyLogoHook.Install(IocManager);
+
+        using (var scope = IocManager.CreateScope())
+        {
+            if (!scope.Resolve<DatabaseCheckHelper>().Exist(_appConfiguration["ConnectionStrings:Default"]))
+            {
+                return;
+            }
+        }
+
+        var workManager = IocManager.Resolve<IBackgroundWorkerManager>();
+        if (IocManager.Resolve<IMultiTenancyConfig>().IsEnabled)
+        {
+            workManager.Add(IocManager.Resolve<SubscriptionExpirationCheckWorker>());
+            workManager.Add(IocManager.Resolve<SubscriptionExpireEmailNotifierWorker>());
+            workManager.Add(IocManager.Resolve<SubscriptionPaymentNotCompletedEmailNotifierWorker>());
+        }
+
+        var expiredAuditLogDeleterWorker = IocManager.Resolve<ExpiredAuditLogDeleterWorker>();
+        if (Configuration.Auditing.IsEnabled && expiredAuditLogDeleterWorker.IsEnabled)
+        {
+            workManager.Add(expiredAuditLogDeleterWorker);
+        }
+
+        workManager.Add(IocManager.Resolve<PasswordExpirationBackgroundWorker>());
+
+        // Wave T4: the nightly unattended Time Engine run. Registered unconditionally -- the worker itself
+        // is a no-op per tenant unless that tenant's ManageTimeSettings.EnableTimeEngineAutorun is on, which
+        // is a per-tenant runtime setting and therefore cannot be evaluated here at host start-up.
+        workManager.Add(IocManager.Resolve<TimeEngineAutorunBackgroundWorker>());
+
+        // The nightly unattended payroll run (legacy PayrollService.RunPayrollEngine); a no-op per tenant
+        // unless ManagePayrollSettings.EnablePayrollEngineAutorun is on.
+        workManager.Add(IocManager.Resolve<HCMv3.PayrollManagement.PayrollEngineAutorunBackgroundWorker>());
+
+        // The 15-minute time-attendance API sync (legacy Hangfire job TransferTransactionFromAPI); a no-op per
+        // tenant unless ManageTimeSettings.EnableTimeAttIntegrationAPI is on.
+        workManager.Add(IocManager.Resolve<TimeAttendanceApiSyncBackgroundWorker>());
+
+        // The access-control database transfer, middle-tier dump and MySQL import (legacy Hangfire jobs); each is
+        // a no-op per tenant unless its ManageTimeSettings flag is on and the Integration Center holds the
+        // connection string.
+        workManager.Add(IocManager.Resolve<AccessControlSyncBackgroundWorker>());
+
+        // REPORT DISTRIBUTION: fires report schedules whose next occurrence has arrived. Registered
+        // unconditionally -- it is a no-op unless a tenant has active schedules that are due, and there
+        // is no host-level setting that could be evaluated here instead.
+        //
+        // Deliberately an ABP periodic worker rather than a Hangfire recurring job: Hangfire is
+        // referenced but DISABLED here (WebConsts.HangfireDashboardEnabled is false), so a recurring job
+        // would register against storage nothing polls and silently never fire.
+        workManager.Add(IocManager.Resolve<ReportScheduleDispatcherWorker>());
+
+        // WORKFLOW ESCALATION AND REMINDERS. Registered unconditionally -- it is a no-op unless a tenant has
+        // steps configured with ShouldEscalate or ReminderDays, and there is no host-level setting that
+        // could be evaluated here instead.
+        //
+        // Without this worker those columns are configurable and unread: the setup screen says escalation is
+        // on and nothing ever escalates, which is harder to notice than the feature being absent.
+        workManager.Add(IocManager.Resolve<WorkflowEscalationWorker>());
+
+        // DATE-DRIVEN NOTIFICATIONS: birthdays, anniversaries, leave pay owed before travel, a return from
+        // leave that never came, a punch during leave. Same reasoning as above -- these were ported and
+        // tested but had no caller at all, so every one of them was configurable and silent.
+        workManager.Add(IocManager.Resolve<HCMv3.Notifications.DailyNotificationWorker>());
+
+        ConfigureExternalAuthProviders();
+    }
+
+    private void ConfigureExternalAuthProviders()
+    {
+        var externalAuthConfiguration = IocManager.Resolve<ExternalAuthConfiguration>();
+
+        if (bool.Parse(_appConfiguration["Authentication:OpenId:IsEnabled"]))
+        {
+            if (bool.Parse(_appConfiguration["Authentication:AllowSocialLoginSettingsPerTenant"]))
+            {
+                externalAuthConfiguration.ExternalLoginInfoProviders.Add(
+                    IocManager.Resolve<TenantBasedOpenIdConnectExternalLoginInfoProvider>());
+            }
+            else
+            {
+                var jsonClaimMappings = new List<JsonClaimMap>();
+                _appConfiguration.GetSection("Authentication:OpenId:ClaimsMapping").Bind(jsonClaimMappings);
+
+                externalAuthConfiguration.ExternalLoginInfoProviders.Add(
+                    new OpenIdConnectExternalLoginInfoProvider(
+                        _appConfiguration["Authentication:OpenId:ClientId"],
+                        _appConfiguration["Authentication:OpenId:ClientSecret"],
+                        _appConfiguration["Authentication:OpenId:Authority"],
+                        _appConfiguration["Authentication:OpenId:LoginUrl"],
+                        bool.Parse(_appConfiguration["Authentication:OpenId:ValidateIssuer"]),
+                        _appConfiguration["Authentication:OpenId:ResponseType"],
+                        jsonClaimMappings
+                    )
+                );
+            }
+        }
+
+        if (bool.Parse(_appConfiguration["Authentication:WsFederation:IsEnabled"]))
+        {
+            if (bool.Parse(_appConfiguration["Authentication:AllowSocialLoginSettingsPerTenant"]))
+            {
+                externalAuthConfiguration.ExternalLoginInfoProviders.Add(
+                    IocManager.Resolve<TenantBasedWsFederationExternalLoginInfoProvider>());
+            }
+            else
+            {
+                var jsonClaimMappings = new List<JsonClaimMap>();
+                _appConfiguration.GetSection("Authentication:WsFederation:ClaimsMapping").Bind(jsonClaimMappings);
+
+                externalAuthConfiguration.ExternalLoginInfoProviders.Add(
+                    new WsFederationExternalLoginInfoProvider(
+                        _appConfiguration["Authentication:WsFederation:ClientId"],
+                        _appConfiguration["Authentication:WsFederation:Tenant"],
+                        _appConfiguration["Authentication:WsFederation:MetaDataAddress"],
+                        _appConfiguration["Authentication:WsFederation:Authority"],
+                        jsonClaimMappings
+                    )
+                );
+            }
+        }
+
+        if (bool.Parse(_appConfiguration["Authentication:Facebook:IsEnabled"]))
+        {
+            if (bool.Parse(_appConfiguration["Authentication:AllowSocialLoginSettingsPerTenant"]))
+            {
+                externalAuthConfiguration.ExternalLoginInfoProviders.Add(
+                    IocManager.Resolve<TenantBasedFacebookExternalLoginInfoProvider>());
+            }
+            else
+            {
+                externalAuthConfiguration.ExternalLoginInfoProviders.Add(new FacebookExternalLoginInfoProvider(
+                    _appConfiguration["Authentication:Facebook:AppId"],
+                    _appConfiguration["Authentication:Facebook:AppSecret"]
+                ));
+            }
+        }
+
+        if (bool.Parse(_appConfiguration["Authentication:Twitter:IsEnabled"]))
+        {
+            if (bool.Parse(_appConfiguration["Authentication:AllowSocialLoginSettingsPerTenant"]))
+            {
+                externalAuthConfiguration.ExternalLoginInfoProviders.Add(
+                    IocManager.Resolve<TenantBasedTwitterExternalLoginInfoProvider>());
+            }
+            else
+            {
+                var twitterExternalLoginInfoProvider = new TwitterExternalLoginInfoProvider(
+                    _appConfiguration["Authentication:Twitter:ConsumerKey"],
+                    _appConfiguration["Authentication:Twitter:ConsumerSecret"],
+                    _appConfiguration["App:ClientRootAddress"].EnsureEndsWith('/') + "account/login"
+                );
+
+                externalAuthConfiguration.ExternalLoginInfoProviders.Add(twitterExternalLoginInfoProvider);
+            }
+        }
+
+        if (bool.Parse(_appConfiguration["Authentication:Google:IsEnabled"]))
+        {
+            if (bool.Parse(_appConfiguration["Authentication:AllowSocialLoginSettingsPerTenant"]))
+            {
+                externalAuthConfiguration.ExternalLoginInfoProviders.Add(
+                    IocManager.Resolve<TenantBasedGoogleExternalLoginInfoProvider>());
+            }
+            else
+            {
+                externalAuthConfiguration.ExternalLoginInfoProviders.Add(
+                    new GoogleExternalLoginInfoProvider(
+                        _appConfiguration["Authentication:Google:ClientId"],
+                        _appConfiguration["Authentication:Google:ClientSecret"],
+                        _appConfiguration["Authentication:Google:UserInfoEndpoint"]
+                    )
+                );
+            }
+        }
+
+        if (bool.Parse(_appConfiguration["Authentication:Microsoft:IsEnabled"]))
+        {
+            if (bool.Parse(_appConfiguration["Authentication:AllowSocialLoginSettingsPerTenant"]))
+            {
+                externalAuthConfiguration.ExternalLoginInfoProviders.Add(
+                    IocManager.Resolve<TenantBasedMicrosoftExternalLoginInfoProvider>());
+            }
+            else
+            {
+                externalAuthConfiguration.ExternalLoginInfoProviders.Add(
+                    new MicrosoftExternalLoginInfoProvider(
+                        _appConfiguration["Authentication:Microsoft:ConsumerKey"],
+                        _appConfiguration["Authentication:Microsoft:ConsumerSecret"]
+                    )
+                );
+            }
+        }
+    }
+}
+

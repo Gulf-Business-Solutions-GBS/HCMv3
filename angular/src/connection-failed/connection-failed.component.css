@@ -1,0 +1,133 @@
+body {
+    margin: 0;
+    font-family: Montserrat;
+}
+
+.bg-gradient-connection-failed {
+    background-image: url('assets/images/bg-gradient.png');
+    background-position: center center;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.content-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 450px;
+    padding: 30px 60px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow:
+        0px 3px 5px 0px rgba(6, 21, 66, 0.05),
+        0px 20px 40px -30px rgba(6, 21, 66, 0.05);
+}
+
+.content-container .left-content {
+    width: 320px;
+    margin-right: 40px;
+    color: #061542;
+}
+.content-container .left-content h1 {
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 30px;
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+.content-container .left-content h3 {
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 36px;
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+.content-container .left-content p {
+    color: #6b6b7e;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 22px;
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+.content-container .left-content .btn {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    font-size: 12.85px;
+    font-weight: 600;
+    line-height: 22px;
+    background-color: #1b84ff;
+    cursor: pointer;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.content-container .right-content {
+    width: 560px;
+    height: 320px;
+    background-image: url('assets/images/img-01.png');
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+@media screen and (max-width: 767px) {
+    .bg-gradient {
+        padding: 0 30px;
+    }
+    .content-container {
+        display: block;
+        width: 100%;
+        height: auto;
+        padding: 30px 30px;
+    }
+    .content-container .left-content {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 30px;
+    }
+    .content-container .right-content {
+        width: 100%;
+        height: auto;
+        min-height: 150px;
+    }
+}
+
+@media screen and (min-width: 500px) and (max-width: 767px) {
+  .content-container .right-content {
+      min-height: 300px;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .content-container {
+      height: 340px;
+        padding: 30px 30px;
+    }
+    .content-container .left-content {
+        width: 260px;
+        margin-right: 20px;
+    }
+    .content-container .left-content h1 {
+        font-size: 37px;
+        line-height: 30px;
+        margin-bottom: 13px;
+    }
+    .content-container .left-content h3 {
+        font-size: 26px;
+        line-height: 31px;
+        margin-bottom: 10px;
+    }
+    .content-container .left-content p {
+        font-size: 16px;
+        line-height: 22px;
+    }
+    .content-container .right-content {
+        width: 389px;
+        height: 320px;
+    }
+}

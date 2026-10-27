@@ -1,0 +1,43 @@
+{
+  "helpId": "org.job-title-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل المسميات الوظيفية — إنشاء / تحرير",
+  "entity": "HCMv3.OrganizationManagement.JobTitleDetail",
+  "overviewHtml": "<p>أدوار سير العمل الافتراضية للمسمى الوظيفي: يُدرج كل سطر دور سير عمل واحداً يتولاه شاغلو ذلك المسمى الوظيفي.</p><p>يُحتفظ بهذه الأسطر جاهزةً لخطوات الاعتماد المتوازية، ولا تُقرأ حالياً. ولا يزال توجيه المعتمدين يتم بحسب الأدوار الممنوحة في سجل كل موظف.</p>",
+  "aliasIndex": {
+    "loc:JobTitle": "JobTitleDetail.JobTitleId",
+    "dom:JobTitleDetail_JobTitleId": "JobTitleDetail.JobTitleId",
+    "loc:WorkflowRole": "JobTitleDetail.WorkflowRoleId",
+    "dom:JobTitleDetail_WorkflowRoleId": "JobTitleDetail.WorkflowRoleId"
+  },
+  "fields": [
+    {
+      "id": "JobTitleDetail.JobTitleId",
+      "label": "JobTitle",
+      "section": "JobTitleDetails",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:JobTitleDetail_JobTitleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المسميات الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي الذي يُدرج له دور سير العمل.</p><p><strong>مثال.</strong> مدير الموارد البشرية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobTitleDetail.WorkflowRoleId",
+      "label": "WorkflowRole",
+      "section": "JobTitleDetails",
+      "aliases": [
+        "loc:WorkflowRole",
+        "dom:JobTitleDetail_WorkflowRoleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أدوار سير العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دور سير عمل يتولاه شاغلو المسمى الوظيفي بصفة افتراضية.</p><p><strong>مثال.</strong> معتمد الموارد البشرية</p><p><strong>لماذا يهم.</strong> يجوز أن يُدرج للمسمى الوظيفي عدة أدوار، على ألا يتكرر الدور الواحد. ويُحتفظ بها لخطوات الاعتماد المتوازية، التي ترجع إلى هذه الأدوار إذا لم تحدد الخطوة أي دور؛ ولا توجد في HCMv3 خطوة اعتماد متوازية بعد، فلا يقرؤها شيء حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "helpId": "gp.gate-pass-vendor.edit",
+  "lang": "en",
+  "title": "Gate Pass Vendors — Create / Edit",
+  "entity": "HCMv3.GatePassManagement.GatePassVendor",
+  "overviewHtml": "<p>A supplier or contractor whose people come on site.</p>",
+  "aliasIndex": {
+    "loc:Code": "GatePassVendor.Code",
+    "dom:GatePassVendor_Code": "GatePassVendor.Code",
+    "loc:NameEn": "GatePassVendor.NameEn",
+    "dom:GatePassVendor_NameEn": "GatePassVendor.NameEn",
+    "loc:NameAr": "GatePassVendor.NameAr",
+    "dom:GatePassVendor_NameAr": "GatePassVendor.NameAr",
+    "loc:VendorAddress": "GatePassVendor.VendorAddress",
+    "dom:GatePassVendor_VendorAddress": "GatePassVendor.VendorAddress"
+  },
+  "fields": [
+    {
+      "id": "GatePassVendor.Code",
+      "label": "Code",
+      "section": "GatePassVendors",
+      "aliases": [
+        "loc:Code",
+        "dom:GatePassVendor_Code"
+      ],
+      "rules": "Optional. Maximum 64 characters. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassVendor.NameEn",
+      "label": "NameEn",
+      "section": "GatePassVendors",
+      "aliases": [
+        "loc:NameEn",
+        "dom:GatePassVendor_NameEn"
+      ],
+      "rules": "Required. Maximum 256 characters. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassVendor.NameAr",
+      "label": "NameAr",
+      "section": "GatePassVendors",
+      "aliases": [
+        "loc:NameAr",
+        "dom:GatePassVendor_NameAr"
+      ],
+      "rules": "Required. Maximum 256 characters. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassVendor.VendorAddress",
+      "label": "VendorAddress",
+      "section": "GatePassVendors",
+      "aliases": [
+        "loc:VendorAddress",
+        "dom:GatePassVendor_VendorAddress"
+      ],
+      "rules": "Optional. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The vendor's address.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

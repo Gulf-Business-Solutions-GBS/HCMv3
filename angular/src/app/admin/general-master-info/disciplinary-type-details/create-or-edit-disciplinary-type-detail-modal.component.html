@@ -1,0 +1,98 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #disciplinaryTypeDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (disciplinaryTypeDetail().id) {
+                                <span>{{ 'EditingDisciplinaryTypeDetail' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreatingNewDisciplinaryTypeDetail' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label" for="DisciplinaryTypeDetail_DisciplinaryTypeId">{{ 'DisciplinaryType' | localize }}</label>
+                            <select
+                                id="DisciplinaryTypeDetail_DisciplinaryTypeId"
+                                class="form-select"
+                                name="DisciplinaryTypeId"
+                                [ngModel]="disciplinaryTypeDetail().disciplinaryTypeId"
+                                (ngModelChange)="updateField('disciplinaryTypeId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (disciplinaryType of disciplinaryTypes(); track disciplinaryType.id) {
+                                    <option [ngValue]="disciplinaryType.id">{{ disciplinaryType.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label required" for="DisciplinaryTypeDetail_DisciplinaryCount">{{ 'DisciplinaryCount' | localize }}</label>
+                            <input
+                                id="DisciplinaryTypeDetail_DisciplinaryCount"
+                                #disciplinaryCountInput="ngModel"
+                                class="form-control"
+                                type="number"
+                                name="DisciplinaryCount"
+                                [ngModel]="disciplinaryTypeDetail().disciplinaryCount"
+                                (ngModelChange)="updateField('disciplinaryCount', $event)"
+                                required
+                                min="0" />
+                            <validation-messages [formCtrl]="disciplinaryCountInput" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="DisciplinaryTypeDetail_DisciplinaryDeductionTypeId">{{ 'DisciplinaryDeductionType' | localize }}</label>
+                            <select
+                                id="DisciplinaryTypeDetail_DisciplinaryDeductionTypeId"
+                                class="form-select"
+                                name="DisciplinaryDeductionTypeId"
+                                [ngModel]="disciplinaryTypeDetail().disciplinaryDeductionTypeId"
+                                (ngModelChange)="updateField('disciplinaryDeductionTypeId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (disciplinaryDeductionType of disciplinaryDeductionTypes(); track disciplinaryDeductionType.id) {
+                                    <option [ngValue]="disciplinaryDeductionType.id">{{ disciplinaryDeductionType.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!disciplinaryTypeDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

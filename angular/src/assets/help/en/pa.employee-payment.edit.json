@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.employee-payment.edit",
+  "lang": "en",
+  "title": "Employee Payments — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeePayment",
+  "overviewHtml": "<p>A one-off payment or deduction for the employee on a date — for example a bonus, commission or a single allowance. Payroll pays payments whose date falls in the period it processes.</p><p>Payroll also creates payment records itself for advance payments and net-pay carry-overs, and approved payment batches create them too.</p>",
+  "aliasIndex": {
+    "loc:WageTypeId": "EmployeePayment.WageTypeId",
+    "dom:EmployeePayment_WageTypeId": "EmployeePayment.WageTypeId",
+    "loc:PaymentDate": "EmployeePayment.PaymentDate",
+    "dom:EmployeePayment_PaymentDate": "EmployeePayment.PaymentDate",
+    "loc:Amount": "EmployeePayment.Amount",
+    "dom:EmployeePayment_Amount": "EmployeePayment.Amount",
+    "loc:CurrencyId": "EmployeePayment.CurrencyId",
+    "dom:EmployeePayment_CurrencyId": "EmployeePayment.CurrencyId",
+    "loc:UnitType": "EmployeePayment.UnitType",
+    "dom:EmployeePayment_UnitType": "EmployeePayment.UnitType",
+    "loc:CostCenterId": "EmployeePayment.CostCenterId",
+    "dom:EmployeePayment_CostCenterId": "EmployeePayment.CostCenterId",
+    "loc:Comments": "EmployeePayment.Comments",
+    "dom:EmployeePayment_Comments": "EmployeePayment.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeePayment.WageTypeId",
+      "label": "WageTypeId",
+      "section": "EmployeePayments",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:EmployeePayment_WageTypeId"
+      ],
+      "rules": "Required. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The pay element being paid.</p><p><strong>Example.</strong> Performance Bonus</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Wagetypes.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayment.PaymentDate",
+      "label": "PaymentDate",
+      "section": "EmployeePayments",
+      "aliases": [
+        "loc:PaymentDate",
+        "dom:EmployeePayment_PaymentDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the payment is due.</p><p><strong>Example.</strong> 30 Sep 2026</p><p><strong>Why it matters.</strong> Payroll includes the payment in the run whose period covers this date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayment.Amount",
+      "label": "Amount",
+      "section": "EmployeePayments",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeePayment_Amount"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount, or the number of days or hours, depending on the unit type.</p><p><strong>Example.</strong> 250.000</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayment.CurrencyId",
+      "label": "CurrencyId",
+      "section": "EmployeePayments",
+      "aliases": [
+        "loc:CurrencyId",
+        "dom:EmployeePayment_CurrencyId"
+      ],
+      "rules": "Optional. Chosen from Currency master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The currency of the payment.</p><p><strong>Example.</strong> KWD</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayment.UnitType",
+      "label": "UnitType",
+      "section": "EmployeePayments",
+      "aliases": [
+        "loc:UnitType",
+        "dom:EmployeePayment_UnitType"
+      ],
+      "rules": "Required. One of: Amount, Day, Hour.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the amount is money, days or hours.</p><p><strong>Example.</strong> Amount</p><p><strong>Why it matters.</strong> An Amount is paid as entered. Days and hours are converted to days and paid at the employee's rate for wagetypes included in partial pay; hours use the default working hours per day.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayment.CostCenterId",
+      "label": "CostCenterId",
+      "section": "EmployeePayments",
+      "aliases": [
+        "loc:CostCenterId",
+        "dom:EmployeePayment_CostCenterId"
+      ],
+      "rules": "Optional. Chosen from Cost Center master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A cost centre recorded with the payment.</p><p><strong>Example.</strong> CC-100 Finance</p><p><strong>Why it matters.</strong> Recorded only; cost postings do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayment.Comments",
+      "label": "Comments",
+      "section": "EmployeePayments",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeePayment_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

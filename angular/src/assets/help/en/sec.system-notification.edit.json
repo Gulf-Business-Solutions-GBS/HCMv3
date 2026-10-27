@@ -1,0 +1,75 @@
+{
+  "helpId": "sec.system-notification.edit",
+  "lang": "en",
+  "title": "System Notifications — Create / Edit",
+  "entity": "HCMv3.SystemSecurity.SystemNotification",
+  "overviewHtml": "<p>A reminder the system sends on a schedule, recognised by its <strong>Notification Name</strong>: <code>BIRTHDAY_NOTIFICATION</code>, <code>ANNIVERSARY_NOTIFICATION</code>, <code>AdvancePayment_NOTIFICATION</code>, <code>LEAVERESUMPTION_NOTIFICATION</code>, <code>PUNCHDURINGLEAVE_NOTIFICATION</code> and <code>ANNUALLEAVEMAXLIMITREACHED_NOTIFICATION</code>. A name the system does not recognise does nothing.</p>",
+  "aliasIndex": {
+    "loc:NotificationName": "SystemNotification.NotificationName",
+    "dom:SystemNotification_NotificationName": "SystemNotification.NotificationName",
+    "loc:NotificationConfig": "SystemNotification.NotificationConfigId",
+    "dom:SystemNotification_NotificationConfigId": "SystemNotification.NotificationConfigId",
+    "loc:ReminderDays": "SystemNotification.ReminderDays",
+    "dom:SystemNotification_ReminderDays": "SystemNotification.ReminderDays",
+    "loc:IsActive": "SystemNotification.IsActive",
+    "dom:SystemNotification_IsActive": "SystemNotification.IsActive"
+  },
+  "fields": [
+    {
+      "id": "SystemNotification.NotificationName",
+      "label": "NotificationName",
+      "section": "SystemNotifications",
+      "aliases": [
+        "loc:NotificationName",
+        "dom:SystemNotification_NotificationName"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which reminder this is, as the system names it.</p><p><strong>Example.</strong> <code>LEAVERESUMPTION_NOTIFICATION</code></p><p><strong>Why it matters.</strong> Must match one of the names above exactly.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SystemNotification.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "SystemNotifications",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:SystemNotification_NotificationConfigId"
+      ],
+      "rules": "Required. Chosen from Notification Config master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The notification configuration — template and recipients — the reminder is sent with.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SystemNotification.ReminderDays",
+      "label": "ReminderDays",
+      "section": "SystemNotifications",
+      "aliases": [
+        "loc:ReminderDays",
+        "dom:SystemNotification_ReminderDays"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many days ahead the reminder is sent.</p><p><strong>Example.</strong> <code>3</code></p><p><strong>Why it matters.</strong> Used by the advance-payment reminder: it goes out this many days before the leave start or payment date, as set in Notification Settings.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SystemNotification.IsActive",
+      "label": "IsActive",
+      "section": "SystemNotifications",
+      "aliases": [
+        "loc:IsActive",
+        "dom:SystemNotification_IsActive"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the reminder is sent.</p><p><strong>Why it matters.</strong> Unticked, the reminder is not sent.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

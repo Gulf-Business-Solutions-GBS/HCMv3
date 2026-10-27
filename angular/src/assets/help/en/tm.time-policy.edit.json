@@ -1,0 +1,651 @@
+{
+  "helpId": "tm.time-policy.edit",
+  "lang": "en",
+  "title": "Time Policies — Create / Edit",
+  "entity": "HCMv3.TimeManagement.TimePolicy",
+  "overviewHtml": "<p>How attendance is worked out for the employees on the policy: whether it comes from punches, a plan or timesheets, which punches are required, how late arrival and early leaving are tolerated, and the minimum overtime.</p><p>Employees get a time policy on their own time policy records. The <strong>Time Management Status</strong> decides the method: <em>Actual Time</em> reads punches around the shift start and end; <em>Flexi Time</em> reads them inside the duty's flexi window; <em>Planned Time</em> takes the planned shift as worked; anything else, including <em>Time Sheet</em>, is worked out from timesheets. <em>Variable Time</em> is not processed by the time engine — days on it are skipped with a message.</p><p>The punch-location and punch-notification settings at the end of the form are not read at present.</p>",
+  "aliasIndex": {
+    "loc:Code": "TimePolicy.Code",
+    "dom:TimePolicy_Code": "TimePolicy.Code",
+    "loc:NameEn": "TimePolicy.NameEn",
+    "dom:TimePolicy_NameEn": "TimePolicy.NameEn",
+    "loc:NameAr": "TimePolicy.NameAr",
+    "dom:TimePolicy_NameAr": "TimePolicy.NameAr",
+    "loc:TimeMgmtStatus": "TimePolicy.TimeMgmtStatus",
+    "dom:TimePolicy_TimeMgmtStatus": "TimePolicy.TimeMgmtStatus",
+    "loc:TimeEventRule": "TimePolicy.TimeEventRule",
+    "dom:TimePolicy_TimeEventRule": "TimePolicy.TimeEventRule",
+    "loc:MonthlyToleranceType": "TimePolicy.MonthlyToleranceType",
+    "dom:TimePolicy_MonthlyToleranceType": "TimePolicy.MonthlyToleranceType",
+    "loc:MonthlyAfterTolerance": "TimePolicy.MonthlyAfterTolerance",
+    "dom:TimePolicy_MonthlyAfterTolerance": "TimePolicy.MonthlyAfterTolerance",
+    "loc:OtMinLimit": "TimePolicy.OTMinLimit",
+    "dom:TimePolicy_OtMinLimit": "TimePolicy.OTMinLimit",
+    "loc:MarkWeekoffOnHoliday": "TimePolicy.MarkWeekoffOnHoliday",
+    "dom:TimePolicy_MarkWeekoffOnHoliday": "TimePolicy.MarkWeekoffOnHoliday",
+    "loc:AllowPunchInFromWorkLocationOnly": "TimePolicy.AllowPunchInFromWorkLocationOnly",
+    "dom:TimePolicy_AllowPunchInFromWorkLocationOnly": "TimePolicy.AllowPunchInFromWorkLocationOnly",
+    "loc:AllowPunchOutFromWorkLocationOnly": "TimePolicy.AllowPunchOutFromWorkLocationOnly",
+    "dom:TimePolicy_AllowPunchOutFromWorkLocationOnly": "TimePolicy.AllowPunchOutFromWorkLocationOnly",
+    "loc:AllowPunchInFromExtWorklocation": "TimePolicy.AllowPunchInFromExtWorklocation",
+    "dom:TimePolicy_AllowPunchInFromExtWorklocation": "TimePolicy.AllowPunchInFromExtWorklocation",
+    "loc:AllowPunchOutFromExtWorklocation": "TimePolicy.AllowPunchOutFromExtWorklocation",
+    "dom:TimePolicy_AllowPunchOutFromExtWorklocation": "TimePolicy.AllowPunchOutFromExtWorklocation",
+    "loc:IsFaceRequired": "TimePolicy.IsFaceRequired",
+    "dom:TimePolicy_IsFaceRequired": "TimePolicy.IsFaceRequired",
+    "loc:ShouldSignIn": "TimePolicy.ShouldSignIn",
+    "dom:TimePolicy_ShouldSignIn": "TimePolicy.ShouldSignIn",
+    "loc:ShouldSignOut": "TimePolicy.ShouldSignOut",
+    "dom:TimePolicy_ShouldSignOut": "TimePolicy.ShouldSignOut",
+    "loc:CalcLateInAfterTolerance": "TimePolicy.CalcLateInAfterTolerance",
+    "dom:TimePolicy_CalcLateInAfterTolerance": "TimePolicy.CalcLateInAfterTolerance",
+    "loc:CalcEarlyOutAfterTolerance": "TimePolicy.CalcEarlyOutAfterTolerance",
+    "dom:TimePolicy_CalcEarlyOutAfterTolerance": "TimePolicy.CalcEarlyOutAfterTolerance",
+    "loc:ClockInLimit": "TimePolicy.ClockInLimit",
+    "dom:TimePolicy_ClockInLimit": "TimePolicy.ClockInLimit",
+    "loc:ClockOutLimit": "TimePolicy.ClockOutLimit",
+    "dom:TimePolicy_ClockOutLimit": "TimePolicy.ClockOutLimit",
+    "loc:LateInTolerance": "TimePolicy.LateInTolerance",
+    "dom:TimePolicy_LateInTolerance": "TimePolicy.LateInTolerance",
+    "loc:EarlyOutTolerance": "TimePolicy.EarlyOutTolerance",
+    "dom:TimePolicy_EarlyOutTolerance": "TimePolicy.EarlyOutTolerance",
+    "loc:MonthlyLateInTolerance": "TimePolicy.MonthlyLateInTolerance",
+    "dom:TimePolicy_MonthlyLateInTolerance": "TimePolicy.MonthlyLateInTolerance",
+    "loc:MonthlyEarlyOutTolerance": "TimePolicy.MonthlyEarlyOutTolerance",
+    "dom:TimePolicy_MonthlyEarlyOutTolerance": "TimePolicy.MonthlyEarlyOutTolerance",
+    "loc:IsMissedPunchInNotiEnabled": "TimePolicy.IsMissedPunchInNotiEnabled",
+    "dom:TimePolicy_IsMissedPunchInNotiEnabled": "TimePolicy.IsMissedPunchInNotiEnabled",
+    "loc:MissedPunchInNotiTimeLimit": "TimePolicy.MissedPunchInNotiTimeLimit",
+    "dom:TimePolicy_MissedPunchInNotiTimeLimit": "TimePolicy.MissedPunchInNotiTimeLimit",
+    "loc:IsLatePunchInNotiEnabled": "TimePolicy.IsLatePunchInNotiEnabled",
+    "dom:TimePolicy_IsLatePunchInNotiEnabled": "TimePolicy.IsLatePunchInNotiEnabled",
+    "loc:LatePunchInNotiTimeLimit": "TimePolicy.LatePunchInNotiTimeLimit",
+    "dom:TimePolicy_LatePunchInNotiTimeLimit": "TimePolicy.LatePunchInNotiTimeLimit",
+    "loc:IsMissedPunchOutNotiEnabled": "TimePolicy.IsMissedPunchOutNotiEnabled",
+    "dom:TimePolicy_IsMissedPunchOutNotiEnabled": "TimePolicy.IsMissedPunchOutNotiEnabled",
+    "loc:MissedPunchOutNotiTimeLimit": "TimePolicy.MissedPunchOutNotiTimeLimit",
+    "dom:TimePolicy_MissedPunchOutNotiTimeLimit": "TimePolicy.MissedPunchOutNotiTimeLimit",
+    "loc:IsEarlyPunchOutNotiEnabled": "TimePolicy.IsEarlyPunchOutNotiEnabled",
+    "dom:TimePolicy_IsEarlyPunchOutNotiEnabled": "TimePolicy.IsEarlyPunchOutNotiEnabled",
+    "loc:EarlyPunchOutNotiTimeLimit": "TimePolicy.EarlyPunchOutNotiTimeLimit",
+    "dom:TimePolicy_EarlyPunchOutNotiTimeLimit": "TimePolicy.EarlyPunchOutNotiTimeLimit",
+    "loc:ShouldBreakSignIn": "TimePolicy.ShouldBreakSignIn",
+    "dom:TimePolicy_ShouldBreakSignIn": "TimePolicy.ShouldBreakSignIn",
+    "loc:BreakInLimit": "TimePolicy.BreakInLimit",
+    "dom:TimePolicy_BreakInLimit": "TimePolicy.BreakInLimit",
+    "loc:ShouldBreakSignOut": "TimePolicy.ShouldBreakSignOut",
+    "dom:TimePolicy_ShouldBreakSignOut": "TimePolicy.ShouldBreakSignOut",
+    "loc:BreakOutLimit": "TimePolicy.BreakOutLimit",
+    "dom:TimePolicy_BreakOutLimit": "TimePolicy.BreakOutLimit",
+    "loc:CalcBreakLateInAfterTolerance": "TimePolicy.CalcBreakLateInAfterTolerance",
+    "dom:TimePolicy_CalcBreakLateInAfterTolerance": "TimePolicy.CalcBreakLateInAfterTolerance",
+    "loc:BreakLateInTolerance": "TimePolicy.BreakLateInTolerance",
+    "dom:TimePolicy_BreakLateInTolerance": "TimePolicy.BreakLateInTolerance",
+    "loc:CalcBreakEarlyOutAfterTolerance": "TimePolicy.CalcBreakEarlyOutAfterTolerance",
+    "dom:TimePolicy_CalcBreakEarlyOutAfterTolerance": "TimePolicy.CalcBreakEarlyOutAfterTolerance",
+    "loc:BreakEarlyOutTolerance": "TimePolicy.BreakEarlyOutTolerance",
+    "dom:TimePolicy_BreakEarlyOutTolerance": "TimePolicy.BreakEarlyOutTolerance"
+  },
+  "fields": [
+    {
+      "id": "TimePolicy.Code",
+      "label": "Code",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:Code",
+        "dom:TimePolicy_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.NameEn",
+      "label": "NameEn",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:NameEn",
+        "dom:TimePolicy_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.NameAr",
+      "label": "NameAr",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:NameAr",
+        "dom:TimePolicy_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.TimeMgmtStatus",
+      "label": "TimeMgmtStatus",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:TimeMgmtStatus",
+        "dom:TimePolicy_TimeMgmtStatus"
+      ],
+      "rules": "Required. One of: N/A, Planned Time, Actual Time, Time Sheet, Flexi Time, Variable Time.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How attendance is worked out for employees on this policy.</p><p><strong>Example.</strong> Actual Time</p><p><strong>Why it matters.</strong> See the overview for what each status does.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.TimeEventRule",
+      "label": "TimeEventRule",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:TimeEventRule",
+        "dom:TimePolicy_TimeEventRule"
+      ],
+      "rules": "Required. One of: N/A, First In First Out, First In Last Out, Last In First Out, Last In Last Out.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which punch counts when there are several in the window.</p><p><strong>Example.</strong> First In Last Out</p><p><strong>Why it matters.</strong> The first or last clock-in, and the first or last clock-out, as named. <em>N/A</em> takes no punch at all, so every day looks unpunched.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.MonthlyToleranceType",
+      "label": "MonthlyToleranceType",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:MonthlyToleranceType",
+        "dom:TimePolicy_MonthlyToleranceType"
+      ],
+      "rules": "Required. One of: Not selected, Calculate Monthly Tolerance On Actual, Calculate Monthly Tolerance On Deduction.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether lateness and early leaving are also tolerated across the month, and on what figure.</p><p><strong>Example.</strong> Calculate Monthly Tolerance On Deduction</p><p><strong>Why it matters.</strong> At the end of each month the time engine adds up the employee's lateness and early-leaving minutes — the deducted minutes (<em>On Deduction</em>), or the deducted minutes plus each day's tolerance (<em>On Actual</em>) — and only the total above <strong>Monthly After Tolerance</strong> is carried as the month's deduction. <em>Not selected</em> switches this off.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.MonthlyAfterTolerance",
+      "label": "MonthlyAfterTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:MonthlyAfterTolerance",
+        "dom:TimePolicy_MonthlyAfterTolerance"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The minutes of lateness and early leaving allowed across the month.</p><p><strong>Example.</strong> <code>60</code></p><p><strong>Why it matters.</strong> Used with a monthly tolerance type; only the month's total above it is deducted.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.OTMinLimit",
+      "label": "OtMinLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:OtMinLimit",
+        "dom:TimePolicy_OtMinLimit"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The least overtime, in minutes, that counts.</p><p><strong>Example.</strong> <code>30</code></p><p><strong>Why it matters.</strong> Overtime shorter than this on a day is ignored.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.MarkWeekoffOnHoliday",
+      "label": "MarkWeekoffOnHoliday",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:MarkWeekoffOnHoliday",
+        "dom:TimePolicy_MarkWeekoffOnHoliday"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a public holiday that falls on a weekly off counts as a weekly off.</p><p><strong>Why it matters.</strong> Ticked, and only when basic pay (wagetype <code>1000</code>) is on <em>Fixed Days Per Month</em>, such a day is treated as a weekly off rather than a public holiday.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.AllowPunchInFromWorkLocationOnly",
+      "label": "AllowPunchInFromWorkLocationOnly",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:AllowPunchInFromWorkLocationOnly",
+        "dom:TimePolicy_AllowPunchInFromWorkLocationOnly"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether clock-in is allowed only from the work location.</p><p><strong>Why it matters.</strong> Read by the self-service Geo Punch screen. When it is on, the employee's own work location (from their current organisation assignment) is offered and pre-selected for clock-in, and the punch is checked against that location's range. If no setting offers any work location, the employee may punch from anywhere.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.AllowPunchOutFromWorkLocationOnly",
+      "label": "AllowPunchOutFromWorkLocationOnly",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:AllowPunchOutFromWorkLocationOnly",
+        "dom:TimePolicy_AllowPunchOutFromWorkLocationOnly"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether clock-out is allowed only from the work location.</p><p><strong>Why it matters.</strong> Read by the self-service Geo Punch screen. When it is on, the employee's own work location (from their current organisation assignment) is offered and pre-selected for clock-out, and the punch is checked against that location's range.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.AllowPunchInFromExtWorklocation",
+      "label": "AllowPunchInFromExtWorklocation",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:AllowPunchInFromExtWorklocation",
+        "dom:TimePolicy_AllowPunchInFromExtWorklocation"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether clock-in is allowed from an external work location.</p><p><strong>Why it matters.</strong> Read by the self-service Geo Punch screen. When it is on, the employee's extended work locations that are valid today (including their last day) are offered for clock-in, and the punch is checked against the chosen location's range.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.AllowPunchOutFromExtWorklocation",
+      "label": "AllowPunchOutFromExtWorklocation",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:AllowPunchOutFromExtWorklocation",
+        "dom:TimePolicy_AllowPunchOutFromExtWorklocation"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether clock-out is allowed from an external work location.</p><p><strong>Why it matters.</strong> Read by the self-service Geo Punch screen. When it is on, the employee's extended work locations that are valid today (including their last day) are offered for clock-out, and the punch is checked against the chosen location's range.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.IsFaceRequired",
+      "label": "IsFaceRequired",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:IsFaceRequired",
+        "dom:TimePolicy_IsFaceRequired"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether face recognition is required when punching.</p><p><strong>Why it matters.</strong> Read by the self-service Geo Punch screen, together with the self-service setting Allow Geolocation Selfie: a selfie is required with each geo punch only when both are on.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.ShouldSignIn",
+      "label": "ShouldSignIn",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ShouldSignIn",
+        "dom:TimePolicy_ShouldSignIn"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether employees on this policy must punch in at the start of the shift.</p><p><strong>Why it matters.</strong> Ticked, a working day with this punch missing counts as absent for the planned working time, and lateness or early leaving is measured only when the punch exists. Unticked, the punch is not expected.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.ShouldSignOut",
+      "label": "ShouldSignOut",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ShouldSignOut",
+        "dom:TimePolicy_ShouldSignOut"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether employees on this policy must punch out at the end of the shift.</p><p><strong>Why it matters.</strong> Ticked, a working day with this punch missing counts as absent for the planned working time, and lateness or early leaving is measured only when the punch exists. Unticked, the punch is not expected.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.CalcLateInAfterTolerance",
+      "label": "CalcLateInAfterTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:CalcLateInAfterTolerance",
+        "dom:TimePolicy_CalcLateInAfterTolerance"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether lateness beyond the tolerance is deducted only for the minutes above it.</p><p><strong>Why it matters.</strong> Ticked, a 15-minute late arrival with a 10-minute tolerance deducts 5 minutes. Unticked, it deducts all 15.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.CalcEarlyOutAfterTolerance",
+      "label": "CalcEarlyOutAfterTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:CalcEarlyOutAfterTolerance",
+        "dom:TimePolicy_CalcEarlyOutAfterTolerance"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether early leaving beyond the tolerance is deducted only for the minutes above it.</p><p><strong>Why it matters.</strong> Ticked, a 15-minute late arrival with a 10-minute tolerance deducts 5 minutes. Unticked, it deducts all 15.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.ClockInLimit",
+      "label": "ClockInLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ClockInLimit",
+        "dom:TimePolicy_ClockInLimit"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many minutes either side of the shift start the time engine looks for that punch.</p><p><strong>Example.</strong> <code>120</code></p><p><strong>Why it matters.</strong> Punches outside the window are not taken as that punch. On public holidays, weekly offs and rest days the whole day is searched instead.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.ClockOutLimit",
+      "label": "ClockOutLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ClockOutLimit",
+        "dom:TimePolicy_ClockOutLimit"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many minutes either side of the shift end the time engine looks for that punch.</p><p><strong>Example.</strong> <code>240</code></p><p><strong>Why it matters.</strong> Punches outside the window are not taken as that punch. On public holidays, weekly offs and rest days the whole day is searched instead.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.LateInTolerance",
+      "label": "LateInTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:LateInTolerance",
+        "dom:TimePolicy_LateInTolerance"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The minutes of lateness allowed before anything is deducted.</p><p><strong>Example.</strong> <code>10</code></p><p><strong>Why it matters.</strong> Lateness up to this many minutes is not deducted. Beyond it, the whole lateness is deducted — or only the part above the tolerance, if the matching <strong>after tolerance</strong> box is ticked.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.EarlyOutTolerance",
+      "label": "EarlyOutTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:EarlyOutTolerance",
+        "dom:TimePolicy_EarlyOutTolerance"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The minutes of early leaving allowed before anything is deducted.</p><p><strong>Example.</strong> <code>10</code></p><p><strong>Why it matters.</strong> Early leaving up to this many minutes is not deducted. Beyond it, the whole early leaving is deducted — or only the part above the tolerance, if the matching <strong>after tolerance</strong> box is ticked.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.MonthlyLateInTolerance",
+      "label": "MonthlyLateInTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:MonthlyLateInTolerance",
+        "dom:TimePolicy_MonthlyLateInTolerance"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Monthly minutes of lateness allowed.</p><p><strong>Why it matters.</strong> Used only by the custom monthly attendance with tolerance report (019); the time engine does not read it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.MonthlyEarlyOutTolerance",
+      "label": "MonthlyEarlyOutTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:MonthlyEarlyOutTolerance",
+        "dom:TimePolicy_MonthlyEarlyOutTolerance"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Monthly minutes of early leaving allowed.</p><p><strong>Why it matters.</strong> Used only by the custom monthly attendance with tolerance report (019); the time engine does not read it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.IsMissedPunchInNotiEnabled",
+      "label": "IsMissedPunchInNotiEnabled",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:IsMissedPunchInNotiEnabled",
+        "dom:TimePolicy_IsMissedPunchInNotiEnabled"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a missed clock-in sends a notification.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.MissedPunchInNotiTimeLimit",
+      "label": "MissedPunchInNotiTimeLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:MissedPunchInNotiTimeLimit",
+        "dom:TimePolicy_MissedPunchInNotiTimeLimit"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Minutes after the shift start before a missed clock-in is notified.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.IsLatePunchInNotiEnabled",
+      "label": "IsLatePunchInNotiEnabled",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:IsLatePunchInNotiEnabled",
+        "dom:TimePolicy_IsLatePunchInNotiEnabled"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a late clock-in sends a notification.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.LatePunchInNotiTimeLimit",
+      "label": "LatePunchInNotiTimeLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:LatePunchInNotiTimeLimit",
+        "dom:TimePolicy_LatePunchInNotiTimeLimit"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Minutes of lateness before it is notified.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.IsMissedPunchOutNotiEnabled",
+      "label": "IsMissedPunchOutNotiEnabled",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:IsMissedPunchOutNotiEnabled",
+        "dom:TimePolicy_IsMissedPunchOutNotiEnabled"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a missed clock-out sends a notification.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.MissedPunchOutNotiTimeLimit",
+      "label": "MissedPunchOutNotiTimeLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:MissedPunchOutNotiTimeLimit",
+        "dom:TimePolicy_MissedPunchOutNotiTimeLimit"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Minutes after the shift end before a missed clock-out is notified.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.IsEarlyPunchOutNotiEnabled",
+      "label": "IsEarlyPunchOutNotiEnabled",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:IsEarlyPunchOutNotiEnabled",
+        "dom:TimePolicy_IsEarlyPunchOutNotiEnabled"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether an early clock-out sends a notification.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.EarlyPunchOutNotiTimeLimit",
+      "label": "EarlyPunchOutNotiTimeLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:EarlyPunchOutNotiTimeLimit",
+        "dom:TimePolicy_EarlyPunchOutNotiTimeLimit"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Minutes of early leaving before it is notified.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.ShouldBreakSignIn",
+      "label": "ShouldBreakSignIn",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ShouldBreakSignIn",
+        "dom:TimePolicy_ShouldBreakSignIn"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether employees on this policy must punch back in after the break.</p><p><strong>Why it matters.</strong> Ticked, a working day with this punch missing counts as absent for the planned working time, and lateness or early leaving is measured only when the punch exists. Unticked, the punch is not expected.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.BreakInLimit",
+      "label": "BreakInLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:BreakInLimit",
+        "dom:TimePolicy_BreakInLimit"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many minutes either side of the break end the time engine looks for the back-from-break punch.</p><p><strong>Example.</strong> <code>30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.ShouldBreakSignOut",
+      "label": "ShouldBreakSignOut",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ShouldBreakSignOut",
+        "dom:TimePolicy_ShouldBreakSignOut"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether employees on this policy must punch out for the break.</p><p><strong>Why it matters.</strong> Ticked, a working day with this punch missing counts as absent for the planned working time, and lateness or early leaving is measured only when the punch exists. Unticked, the punch is not expected.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.BreakOutLimit",
+      "label": "BreakOutLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:BreakOutLimit",
+        "dom:TimePolicy_BreakOutLimit"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many minutes either side of the break start the time engine looks for the out-for-break punch.</p><p><strong>Example.</strong> <code>30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.CalcBreakLateInAfterTolerance",
+      "label": "CalcBreakLateInAfterTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:CalcBreakLateInAfterTolerance",
+        "dom:TimePolicy_CalcBreakLateInAfterTolerance"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether lateness back from the break beyond the tolerance is deducted only for the minutes above it.</p><p><strong>Why it matters.</strong> Ticked, a 15-minute late arrival with a 10-minute tolerance deducts 5 minutes. Unticked, it deducts all 15.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.BreakLateInTolerance",
+      "label": "BreakLateInTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:BreakLateInTolerance",
+        "dom:TimePolicy_BreakLateInTolerance"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The minutes of lateness back from the break allowed before anything is deducted.</p><p><strong>Example.</strong> <code>5</code></p><p><strong>Why it matters.</strong> Lateness back from the break up to this many minutes is not deducted. Beyond it, the whole lateness back from the break is deducted — or only the part above the tolerance, if the matching <strong>after tolerance</strong> box is ticked.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.CalcBreakEarlyOutAfterTolerance",
+      "label": "CalcBreakEarlyOutAfterTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:CalcBreakEarlyOutAfterTolerance",
+        "dom:TimePolicy_CalcBreakEarlyOutAfterTolerance"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether leaving early for the break beyond the tolerance is deducted only for the minutes above it.</p><p><strong>Why it matters.</strong> Ticked, a 15-minute late arrival with a 10-minute tolerance deducts 5 minutes. Unticked, it deducts all 15.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.BreakEarlyOutTolerance",
+      "label": "BreakEarlyOutTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:BreakEarlyOutTolerance",
+        "dom:TimePolicy_BreakEarlyOutTolerance"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The minutes of leaving early for the break allowed before anything is deducted.</p><p><strong>Example.</strong> <code>5</code></p><p><strong>Why it matters.</strong> Leaving early for the break up to this many minutes is not deducted. Beyond it, the whole leaving early for the break is deducted — or only the part above the tolerance, if the matching <strong>after tolerance</strong> box is ticked.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,221 @@
+{
+  "helpId": "dash.workflow",
+  "lang": "ar",
+  "title": "لوحة معلومات طلبات سير العمل",
+  "entity": null,
+  "overviewHtml": "<p>مدى سير عمل الموافقات: الطلبات المقدَّمة خلال فترة، وكيف بُتّ فيها وكم استغرق ذلك، والطلبات المفتوحة المتأخرة، ولدى من تنتظر — حسب الشهر ونوع الطلب والإدارة. وتُفتح اللوحة على الفترة من بداية السنة حتى تاريخه.</p><p>كل رقم يحتسب <strong>الطلبات المقدَّمة</strong> خلال الفترة من الموظفين الذين يحق لك الاطلاع عليهم، من اليوم الأول حتى نهاية اليوم الأخير. والمسودة لم تُقدَّم أصلاً، فلا تُحتسب. ويُحتسب كل طلب <strong>بحالته الحالية</strong>: فالطلب المقدَّم في يناير والمعتمد في مارس يُحتسب معتمداً في عمود يناير.</p><p><strong>المسحوب</strong> هو الطلب الذي استرجعه الموظف. و<strong>المتأخر</strong> يعتمد على <strong>مدة الإنجاز بالأيام</strong> المحددة في مسار اعتماد الطلب: فالطلب المفتوح الذي تجاوز هذه المدة متأخر. والمسار الذي لا مدة إنجاز له لا يجعل أي طلب متأخراً.</p><p>انقر على نوع الطلب لعرض جميع المربعات لهذا النوع فقط، وعلى الشهر أو الحالة أو فئة الانتظار أو المعتمِد لعرض الطلبات، وعلى الإدارة لعرض الوحدات التابعة لها. ويظهر كل اختيار كشارة في شريط الأدوات؛ احذف الشارة للرجوع. وتُقصَّر الفترة التي تتجاوز خمس سنوات إلى آخر خمس سنوات.</p>",
+  "aliasIndex": {
+    "loc:Dashboard_Showing": "dash.common.showing",
+    "loc:Filter": "dash.common.filter",
+    "loc:Download": "dash.common.download",
+    "loc:WorkflowDashboard_Raised": "dash.workflow.raised",
+    "loc:WorkflowDashboard_OpenRequests": "dash.workflow.open",
+    "loc:WorkflowDashboard_Overdue": "dash.workflow.overdue",
+    "loc:WorkflowDashboard_ApprovedRequests": "dash.workflow.approved",
+    "loc:WorkflowDashboard_RejectedRequests": "dash.workflow.rejected",
+    "loc:WorkflowDashboard_DaysToDecide": "dash.workflow.days-to-decide",
+    "loc:WorkflowDashboard_ByMonth": "dash.workflow.trend",
+    "loc:WorkflowDashboard_ByType": "dash.workflow.by-type",
+    "loc:WorkflowDashboard_WaitingWith": "dash.workflow.waiting-with",
+    "loc:WorkflowDashboard_WaitingBands": "dash.workflow.waiting-bands",
+    "loc:WorkflowDashboard_ByDepartment": "dash.workflow.by-department",
+    "loc:WorkflowDashboard_Requests": "dash.workflow.requests"
+  },
+  "fields": [
+    {
+      "id": "dash.common.showing",
+      "label": "Dashboard_Showing",
+      "section": null,
+      "aliases": [
+        "loc:Dashboard_Showing"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السطر في شريط الأدوات الذي يبيّن بيانات من بُنيت عليها اللوحة، وعدد هؤلاء الموظفين. ولا تختاره أنت: فهو يتحدد بحسب هويتك.</p><p><strong>كيف يُحدَّد.</strong> الموظفون الذين تراهم هم:</p><ul><li>جميع الموظفين، إذا كان لديك دور <strong>Admin</strong> (مسؤول النظام)؛</li><li>وإلا فالموظفون في الوحدات التنظيمية المخصصة لأدوارك في أمان مستوى السجلات، بما في ذلك كل وحدة تتبعها، <strong>مضافاً إليهم</strong> فريقك — أنت وكل من يتبعك في التسلسل الإداري، على جميع المستويات؛</li><li>ولا أحد، إذا لم ينتج عن أيٍّ مما سبق أي موظف. وعندئذٍ لا تعرض اللوحة شيئاً، ولا تعرض الجميع أبداً.</li></ul><p><strong>مثال.</strong> \"المعروض: المالية + الرواتب + فريقك (123 موظف)\" — أنت موظف موارد بشرية مسؤول عن المالية والرواتب، ولديك فريق تديره أيضاً.</p><p><strong>لماذا يهمّ.</strong> قد يفتح شخصان اللوحة نفسها فيريان أرقاماً مختلفة، وكلاهما صحيح. فكل رقم ورسم بياني وقائمة وملف تحميل في الصفحة يقتصر على هؤلاء الموظفين — ويمكن لعوامل التصفية أن تضيّق النطاق، لكنها لا توسّعه أبداً.</p>",
+      "adminHtml": "<p>يحدده <code>IDashboardScopeService</code> لكل لوحات المعلومات. ولا يُعتدّ عمداً بمفتاح تشغيل أمان مستوى السجلات في إعدادات الأمان: فمن لم يُخصَّص له شيء لا يرى شيئاً، أياً كانت حالة المفتاح. وتُطابَق قاعدة المسؤول مع اسم الدور الثابت <code>Admin</code> في الجهة.</p>",
+      "stub": false
+    },
+    {
+      "id": "dash.common.filter",
+      "label": "Filter",
+      "section": null,
+      "aliases": [
+        "loc:Filter"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النافذة التي تفتح من زر <strong>تصفية</strong>: الفترة ووحدة الشركة. ولا يتغير شيء حتى تضغط <strong>تطبيق</strong>؛ ويعيد زر <strong>مسح</strong> القيم الافتراضية.</p><p><strong>كيف تعمل الفترة.</strong></p><ul><li><strong>من بداية السنة حتى اليوم</strong> (الافتراضي): من 1 يناير من السنة الحالية حتى اليوم.</li><li><strong>هذه السنة</strong> و<strong>السنة الماضية</strong>: من 1 يناير إلى 31 ديسمبر.</li><li><strong>هذا الشهر</strong>: من أول يوم في الشهر الحالي إلى آخر يوم فيه.</li><li><strong>مخصص</strong>: أي تاريخي بداية ونهاية تختارهما. وتُقصَّر الفترة التي تتجاوز خمس سنوات إلى آخر خمس سنوات.</li></ul><p><strong>مثال.</strong> اختر <strong>السنة الماضية</strong> لعرض سنة 2025 عندما تكون بيانات السنة الحالية قليلة.</p><p><strong>لماذا يهمّ.</strong> الأرقام المحسوبة \"حتى اليوم\" (من في إجازة اليوم، وعدد الموظفين) لا تتأثر بالفترة؛ أما الأرقام المحسوبة \"خلال الفترة\" (أيام الإجازة، والمعينون الجدد، والمنتهية خدماتهم، ومعدل الدوران) فتتأثر بها. واختيار وحدة الشركة يشمل كل وحدة تتبعها. والنقر على عمود أو شريحة في الرسم البياني يضيف عامل تصفية آخر يظهر بجانب <strong>المعروض</strong> — احذفه بعلامة <strong>×</strong> الخاصة به، أو احذفها جميعاً بـ<strong>مسح عوامل التصفية</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.common.download",
+      "label": "Download",
+      "section": null,
+      "aliases": [
+        "loc:Download"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيقونة التحميل في شريط الأدوات وفي كل مربع. وعند النقر عليها تظهر ثلاث صيغ.</p><p><strong>ما تحتويه كل صيغة.</strong></p><ul><li><strong>PDF</strong> و<strong>JPEG</strong>: صورة للمربع كما يظهر على الشاشة تماماً، بما في ذلك الرسوم البيانية. ومن شريط الأدوات: صورة للوحة كاملة.</li><li><strong>XLSX</strong>: البيانات التي يقوم عليها المربع، بعوامل التصفية نفسها. ومن شريط الأدوات: ملف يضم ورقة <strong>الملخص</strong> (بيانات من، والفترة، والأرقام الرئيسية) وورقة لكل مربع.</li></ul><p><strong>مثال.</strong> أرسل رسم <strong>الإجازات حسب النوع</strong> بصيغة JPEG في بريد إلكتروني؛ وسلّم قسم الرواتب قائمة <strong>لم يباشروا العمل بعد الإجازة</strong> بصيغة XLSX.</p><p><strong>لماذا يهمّ.</strong> كل ما تحمّله لا يحتوي إلا ما يُسمح لك برؤيته، ويطابق تماماً ما تعرضه الشاشة بعوامل التصفية التي طبّقتها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.raised",
+      "label": "WorkflowDashboard_Raised",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_Raised"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الطلبات المقدَّمة خلال الفترة، ويبيّن السطر أسفله عدد المسحوب منها والمحوَّل. انقر عليه لعرض القائمة.</p><p><strong>طريقة الاحتساب.</strong> <code>الطلبات المقدَّمة خلال الفترة، دون المسودات</code></p><ul><li>تُحتسب جميع الحالات، فيكون مجموع بانتظار الموافقة والمعتمدة والمرفوضة والمسحوبة والمحوَّلة مساوياً لهذا الرقم دائماً.</li></ul><p><strong>مثال.</strong> 412 · 9 مسحوبة · 2 محوَّلة.</p><p><strong>أهميته.</strong> هو حجم العمل الذي يتحمله المعتمِدون.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.open",
+      "label": "WorkflowDashboard_OpenRequests",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_OpenRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الطلبات المقدَّمة خلال الفترة التي ما زالت تنتظر البتّ، ويبيّن السطر أسفله أطول انتظار. انقر عليه لعرض القائمة.</p><p><strong>طريقة الاحتساب.</strong> <code>الطلبات ذات الحالة مفتوح</code>؛ و<strong>أطول انتظار</strong> = <code>أكبر عدد أيام انتظره أي منها منذ آخر إجراء عليه</code></p><ul><li>آخر إجراء هو آخر خطوة حرّكت الطلب — التقديم، أو الاعتماد في مرحلة، أو الإرجاع، أو إعادة التكليف، أو التصعيد. أما الاطلاع أو إضافة ملاحظة فلا يُحتسبان.</li></ul><p><strong>مثال.</strong> 37 · أطول انتظار 19.5 يوماً.</p><p><strong>أهميته.</strong> الموظفون ينتظرون هذه الطلبات؛ وأطول انتظار يبيّن ما إذا كان هناك طلب عالق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.overdue",
+      "label": "WorkflowDashboard_Overdue",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_Overdue"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الطلبات المفتوحة التي تجاوزت المدة التي يسمح بها مسار اعتمادها. انقر عليه لعرض القائمة.</p><p><strong>طريقة الاحتساب.</strong> <code>الطلبات المفتوحة التي تاريخ تقديمها + مدة الإنجاز بالأيام &lt; الآن</code>، ومدة الإنجاز مأخوذة من مسار الاعتماد الذي يتبعه الطلب.</p><ul><li>المسار الذي لا مدة إنجاز له (صفر أو فارغ) لا يجعل أي طلب متأخراً.</li></ul><p><strong>مثال.</strong> 6 طلبات متأخرة.</p><p><strong>أهميته.</strong> هي الالتزامات التي فات موعدها، وهي أول ما يجب متابعته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.approved",
+      "label": "WorkflowDashboard_ApprovedRequests",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_ApprovedRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الطلبات المعتمدة اعتماداً نهائياً، ويبيّن السطر أسفله نسبة الاعتماد. انقر عليه لعرض القائمة.</p><p><strong>طريقة الاحتساب.</strong> <code>الطلبات ذات الحالة معتمد</code>؛ و<strong>نسبة الاعتماد</strong> = <code>المعتمدة ÷ (المعتمدة + المرفوضة) × 100</code></p><ul><li>لا تدخل في النسبة إلا الطلبات التي بُتّ فيها، فلا تخفّضها الطلبات المفتوحة. وتظهر \"—\" إذا لم يُبتّ في أي طلب.</li></ul><p><strong>مثال.</strong> 340 · 94.4% من الطلبات التي بُتّ فيها.</p><p><strong>أهميته.</strong> انخفاض نسبة الاعتماد يعني غالباً قواعد غير واضحة أو طلبات ناقصة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.rejected",
+      "label": "WorkflowDashboard_RejectedRequests",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_RejectedRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الطلبات المرفوضة في أي مرحلة، ويبيّن السطر أسفله عدد الطلبات التي بُتّ فيها. انقر عليه لعرض القائمة.</p><p><strong>طريقة الاحتساب.</strong> <code>الطلبات ذات الحالة مرفوض</code>؛ و<strong>التي بُتّ فيها</strong> = <code>المعتمدة + المرفوضة</code></p><p><strong>مثال.</strong> 20 · من أصل 360 بُتّ فيها.</p><p><strong>أهميته.</strong> راجع قائمة المرفوضة حسب النوع لمعرفة الطلبات التي يُخطئ فيها الموظفون أكثر من غيرها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.days-to-decide",
+      "label": "WorkflowDashboard_DaysToDecide",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_DaysToDecide"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متوسط المدة من تقديم الطلب حتى البتّ النهائي فيه.</p><p><strong>طريقة الاحتساب.</strong> <code>متوسط (وقت الاعتماد أو الرفض النهائي في سجل الطلب − وقت التقديم)</code>، بالأيام، للطلبات المعتمدة والمرفوضة.</p><ul><li>يُقاس من سجل الطلب، بمنزلة عشرية واحدة: فالطلب الذي بُتّ فيه خلال 36 ساعة يُحتسب 1.5 يوم.</li><li>يظهر \"—\" إذا لم يُبتّ في أي طلب.</li></ul><p><strong>مثال.</strong> 2.3 يوم.</p><p><strong>أهميته.</strong> هو مستوى الخدمة الذي يحصل عليه الموظفون فعلاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.trend",
+      "label": "WorkflowDashboard_ByMonth",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_ByMonth"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الطلبات المقدَّمة في كل شهر، مقسّمة حسب حالتها الحالية. انقر على الشهر لعرض طلباته.</p><p><strong>طريقة الاحتساب.</strong> <code>الطلبات المقدَّمة لكل شهر، موزّعة حسب الحالة الحالية</code></p><ul><li>تُعرض جميع أشهر الفترة، بما فيها الأشهر التي لا طلبات فيها.</li></ul><p><strong>مثال.</strong> مارس: 48 معتمدة، و6 بانتظار الموافقة، و2 مرفوضة.</p><p><strong>أهميته.</strong> يُظهر الأشهر المزدحمة، والأشهر القديمة التي ما زالت لها طلبات مفتوحة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.by-type",
+      "label": "WorkflowDashboard_ByType",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_ByType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الطلبات لكل نوع، مع عدد المفتوح والمعتمد والمرفوض والمتأخر، ومتوسط أيام البتّ. انقر على النوع لعرض جميع المربعات لهذا النوع فقط.</p><p><strong>طريقة الاحتساب.</strong> القواعد أعلاه لكل نوع طلب، الأكثر طلبات أولاً.</p><p><strong>مثال.</strong> طلب إجازة: 220 مقدَّماً · 2.1 يوم للبتّ.</p><p><strong>أهميته.</strong> يُظهر أنواع الطلبات البطيئة، لمراجعة مسار اعتمادها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.waiting-with",
+      "label": "WorkflowDashboard_WaitingWith",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_WaitingWith"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المعتمِدون العشرة الذين لديهم أكثر الطلبات المفتوحة في مرحلتهم، مع عدد المتأخر منها وأقدم انتظار. انقر على الاسم لعرض الطلبات.</p><p><strong>طريقة الاحتساب.</strong> لكل معتمِد: <code>الطلبات المفتوحة التي مرحلتها الحالية مكلَّف بها ولم يعتمدها بعد</code>؛ و<strong>الأقدم</strong> = <code>أكبر عدد أيام انتظره أي منها منذ آخر إجراء عليه</code>.</p><ul><li>يظهر اسم المعتمِد حتى لو كان يعمل خارج الجزء الذي تطّلع عليه من المؤسسة: فالمقصود من يحتجز الطلب.</li><li>الطلب المكلَّف به أكثر من شخص في المرحلة نفسها يُحتسب لكل منهم.</li></ul><p><strong>مثال.</strong> رئيس المالية: 9 بالانتظار · 3 متأخرة · الأقدم 12 يوماً.</p><p><strong>أهميته.</strong> يحوّل عبارة \"الطلبات بطيئة\" إلى اسم يمكن متابعته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.waiting-bands",
+      "label": "WorkflowDashboard_WaitingBands",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_WaitingBands"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الطلبات المفتوحة موزّعة حسب مدة انتظارها منذ آخر إجراء عليها. انقر على العمود لعرضها.</p><p><strong>طريقة الاحتساب.</strong> <code>الأيام الكاملة منذ آخر إجراء</code>، موزّعة على الفئات: 0–2، و3–7، و8–14، و15–30، و31 يوماً فأكثر.</p><ul><li>تبدأ كل فئة حيث تنتهي سابقتها، فيقع كل طلب مفتوح في فئة واحدة فقط.</li></ul><p><strong>مثال.</strong> 0–2 يوم: 22 · 31 يوماً فأكثر: 3.</p><p><strong>أهميته.</strong> الطلبات في الفئات الأخيرة غالباً ما تكون منسية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.by-department",
+      "label": "WorkflowDashboard_ByDepartment",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_ByDepartment"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الطلبات المقدَّمة والمفتوحة والمتأخرة، ومتوسط أيام البتّ، لكل إدارة في المستوى الذي يلي الوحدة المعروضة. انقر على الإدارة لعرض الوحدات التابعة لها.</p><p><strong>طريقة الاحتساب.</strong> القواعد أعلاه على طلبات الموظفين في تلك الإدارة أو في أي وحدة تابعة لها.</p><ul><li>يُنسب الطلب إلى إدارة الموظف مقدِّمه كما كانت في آخر يوم من الفترة.</li><li>الموظفون التابعون مباشرة للوحدة المعروضة يظهرون في سطر مستقل.</li></ul><p><strong>مثال.</strong> العمليات: 180 مقدَّماً · 14 مفتوحاً · 4 متأخرة · 2.8 يوم.</p><p><strong>أهميته.</strong> يُظهر أين تتراكم الطلبات وأين يكون البتّ أبطأ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.requests",
+      "label": "WorkflowDashboard_Requests",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_Requests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القائمة التي يقوم عليها الرقم: كل طلب برقمه ونوعه وموظفه وإدارته وتاريخ تقديمه وحالته ولدى من ينتظر وأيامه وموعد إنجازه. انقر على السطر لفتح ملف الموظف.</p><p><strong>طريقة الاحتساب.</strong> القاعدة نفسها للرقم الذي نقرت عليه. و<strong>الأيام</strong> للطلب المفتوح هي الأيام منذ آخر إجراء عليه، وللطلب المبتوت فيه هي الأيام التي استغرقها. ويظهر موعد الإنجاز للطلبات المفتوحة التي لمسارها مدة إنجاز، باللون الأحمر إذا فات.</p><p><strong>مثال.</strong> انقر على <strong>المتأخرة</strong>: 6 أسطر، في كل منها موعد الإنجاز باللون الأحمر.</p><p><strong>أهميته.</strong> هي الدليل الذي تقوم عليه الأرقام، ويمكن تنزيلها بصيغة XLSX بالفلاتر نفسها.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

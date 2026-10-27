@@ -1,0 +1,123 @@
+{
+  "helpId": "pay.gratuity-accrual-summary.edit",
+  "lang": "en",
+  "title": "Gratuity Accrual Summaries — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.GratuityAccrualSummary",
+  "overviewHtml": "<p>A monthly snapshot of an employee's end-of-service indemnity: days accrued, balance and amounts.</p><p>Not written at present: no process fills these summaries, and nothing reads them. Balances are worked out when they are needed, from the time register and the employee's records.</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "GratuityAccrualSummary.EmployeeId",
+    "dom:GratuityAccrualSummary_EmployeeId": "GratuityAccrualSummary.EmployeeId",
+    "loc:Year": "GratuityAccrualSummary.Year",
+    "dom:GratuityAccrualSummary_Year": "GratuityAccrualSummary.Year",
+    "loc:Month": "GratuityAccrualSummary.Month",
+    "dom:GratuityAccrualSummary_Month": "GratuityAccrualSummary.Month",
+    "loc:GratuityDaysAccrued": "GratuityAccrualSummary.GratuityDaysAccrued",
+    "dom:GratuityAccrualSummary_GratuityDaysAccrued": "GratuityAccrualSummary.GratuityDaysAccrued",
+    "loc:GratuityDaysBalance": "GratuityAccrualSummary.GratuityDaysBalance",
+    "dom:GratuityAccrualSummary_GratuityDaysBalance": "GratuityAccrualSummary.GratuityDaysBalance",
+    "loc:GratuityAmount": "GratuityAccrualSummary.GratuityAmount",
+    "dom:GratuityAccrualSummary_GratuityAmount": "GratuityAccrualSummary.GratuityAmount",
+    "loc:GratuityAmountPaid": "GratuityAccrualSummary.GratuityAmountPaid",
+    "dom:GratuityAccrualSummary_GratuityAmountPaid": "GratuityAccrualSummary.GratuityAmountPaid"
+  },
+  "fields": [
+    {
+      "id": "GratuityAccrualSummary.EmployeeId",
+      "label": "EmployeeId",
+      "section": "GratuityAccrualSummaries",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:GratuityAccrualSummary_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GratuityAccrualSummary.Year",
+      "label": "Year",
+      "section": "GratuityAccrualSummaries",
+      "aliases": [
+        "loc:Year",
+        "dom:GratuityAccrualSummary_Year"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The year of the snapshot.</p><p><strong>Example.</strong> <code>2026</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GratuityAccrualSummary.Month",
+      "label": "Month",
+      "section": "GratuityAccrualSummaries",
+      "aliases": [
+        "loc:Month",
+        "dom:GratuityAccrualSummary_Month"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The month of the snapshot.</p><p><strong>Example.</strong> <code>4</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GratuityAccrualSummary.GratuityDaysAccrued",
+      "label": "GratuityDaysAccrued",
+      "section": "GratuityAccrualSummaries",
+      "aliases": [
+        "loc:GratuityDaysAccrued",
+        "dom:GratuityAccrualSummary_GratuityDaysAccrued"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Indemnity days accrued in the month.</p><p><strong>Example.</strong> <code>1.25</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GratuityAccrualSummary.GratuityDaysBalance",
+      "label": "GratuityDaysBalance",
+      "section": "GratuityAccrualSummaries",
+      "aliases": [
+        "loc:GratuityDaysBalance",
+        "dom:GratuityAccrualSummary_GratuityDaysBalance"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Indemnity days accrued to date.</p><p><strong>Example.</strong> <code>37.5</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GratuityAccrualSummary.GratuityAmount",
+      "label": "GratuityAmount",
+      "section": "GratuityAccrualSummaries",
+      "aliases": [
+        "loc:GratuityAmount",
+        "dom:GratuityAccrualSummary_GratuityAmount"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The value of the indemnity to date.</p><p><strong>Example.</strong> <code>1000.000</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GratuityAccrualSummary.GratuityAmountPaid",
+      "label": "GratuityAmountPaid",
+      "section": "GratuityAccrualSummaries",
+      "aliases": [
+        "loc:GratuityAmountPaid",
+        "dom:GratuityAccrualSummary_GratuityAmountPaid"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Indemnity already paid.</p><p><strong>Example.</strong> <code>0.000</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

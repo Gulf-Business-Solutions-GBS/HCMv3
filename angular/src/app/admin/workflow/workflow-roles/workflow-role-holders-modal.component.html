@@ -1,0 +1,41 @@
+<div appBsModal #holdersModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ 'EmployeesHoldingWorkflowRole' | localize: roleName() }}</h4>
+                <button type="button" class="btn-close" (click)="close()"></button>
+            </div>
+            <div class="modal-body" [busyIf]="loading()">
+                @if (!loading() && holders().length === 0) {
+                    <div class="text-muted">{{ 'NoEmployeeHoldsThisWorkflowRole' | localize }}</div>
+                } @else {
+                    <table class="table table-row-dashed align-middle mb-0">
+                        <thead>
+                            <tr class="fw-bold text-muted">
+                                <th>{{ 'EmployeeCode' | localize }}</th>
+                                <th>{{ 'Employee' | localize }}</th>
+                                <th>{{ 'EffectiveDate' | localize }}</th>
+                                <th>{{ 'EndDate' | localize }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (holder of holders(); track holder.id) {
+                                <tr>
+                                    <td>{{ holder.employeeCode }}</td>
+                                    <td>{{ holder.employeeFullNameEn }}</td>
+                                    <td>{{ holder.startDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td>{{ holder.endDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                    {{ 'Close' | localize }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

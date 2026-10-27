@@ -1,0 +1,123 @@
+{
+  "helpId": "pay.absence-violation-rule-detail.edit",
+  "lang": "en",
+  "title": "Absence Violation Rule Details — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.AbsenceViolationRuleDetail",
+  "overviewHtml": "<p>One step of an absence violation rule: after how many days, and what action — a notification, a disciplinary violation or a leave.</p><p>Not run at present: no process escalates absences using these rules. They are saved and kept for reference, and nothing happens when an employee is absent.</p>",
+  "aliasIndex": {
+    "loc:AbsenceViolationRules": "AbsenceViolationRuleDetail.AbsenceViolationRuleId",
+    "dom:AbsenceViolationRuleDetail_AbsenceViolationRuleId": "AbsenceViolationRuleDetail.AbsenceViolationRuleId",
+    "loc:Step": "AbsenceViolationRuleDetail.Step",
+    "dom:AbsenceViolationRuleDetail_Step": "AbsenceViolationRuleDetail.Step",
+    "loc:DayInterval": "AbsenceViolationRuleDetail.DayInterval",
+    "dom:AbsenceViolationRuleDetail_DayInterval": "AbsenceViolationRuleDetail.DayInterval",
+    "loc:Action": "AbsenceViolationRuleDetail.Action",
+    "dom:AbsenceViolationRuleDetail_Action": "AbsenceViolationRuleDetail.Action",
+    "loc:ActionType": "AbsenceViolationRuleDetail.ActionTypeId",
+    "dom:AbsenceViolationRuleDetail_ActionTypeId": "AbsenceViolationRuleDetail.ActionTypeId",
+    "loc:NotificationConfig": "AbsenceViolationRuleDetail.NotificationConfigId",
+    "dom:AbsenceViolationRuleDetail_NotificationConfigId": "AbsenceViolationRuleDetail.NotificationConfigId",
+    "loc:HoldTillPunchFoundHint": "AbsenceViolationRuleDetail.HoldTillPunchFound",
+    "dom:AbsenceViolationRuleDetail_HoldTillPunchFound": "AbsenceViolationRuleDetail.HoldTillPunchFound"
+  },
+  "fields": [
+    {
+      "id": "AbsenceViolationRuleDetail.AbsenceViolationRuleId",
+      "label": "AbsenceViolationRules",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:AbsenceViolationRules",
+        "dom:AbsenceViolationRuleDetail_AbsenceViolationRuleId"
+      ],
+      "rules": "Required. Chosen from Absence Violation Rule master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The rule this step belongs to.</p><p><strong>Example.</strong> Unauthorised Absence</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.Step",
+      "label": "Step",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:Step",
+        "dom:AbsenceViolationRuleDetail_Step"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The step's position in the escalation.</p><p><strong>Example.</strong> <code>2</code></p><p><strong>Why it matters.</strong> Must be greater than 0, and each step number can be used once per rule.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.DayInterval",
+      "label": "DayInterval",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:DayInterval",
+        "dom:AbsenceViolationRuleDetail_DayInterval"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The days of absence after which this step would apply.</p><p><strong>Example.</strong> <code>3</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.Action",
+      "label": "Action",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:Action",
+        "dom:AbsenceViolationRuleDetail_Action"
+      ],
+      "rules": "Required. One of: Notification, Violation, Leave.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What the step would do: send a notification, record a disciplinary violation, or record a leave.</p><p><strong>Example.</strong> Violation</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.ActionTypeId",
+      "label": "ActionType",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:ActionType",
+        "dom:AbsenceViolationRuleDetail_ActionTypeId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The leave type or violation type the action would use, depending on the action.</p><p><strong>Example.</strong> Unpaid Leave</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:AbsenceViolationRuleDetail_NotificationConfigId"
+      ],
+      "rules": "Optional. Chosen from Notification Config master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The notification configuration used to tell people when this step is reached.</p><p><strong>Example.</strong> Absence escalation – notify HR and Line Manager</p><p><strong>Why it matters.</strong> Its recipients get an in-app notification, and an email if the configuration has a template. Left empty, the step acts without telling anybody. A failed notification does not undo the step.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.HoldTillPunchFound",
+      "label": "HoldTillPunchFoundHint",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:HoldTillPunchFoundHint",
+        "dom:AbsenceViolationRuleDetail_HoldTillPunchFound"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this step waits until the employee punches again.</p><p><strong>Why it matters.</strong> Ticked, the step's action — a deduction leave or a violation record — is applied only once the employee is back and has an approved punch, so someone still away is not penalised early.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "helpId": "jp.job-description-interview-question.edit",
+  "lang": "en",
+  "title": "Job Description Interview Questions — Create / Edit",
+  "entity": "HCMv3.JobProfileManagement.JobDescriptionInterviewQuestion",
+  "overviewHtml": "<p>An interview question the job description asks for. Each can be listed once per job description.</p>",
+  "aliasIndex": {
+    "loc:InterviewQuestion": "JobDescriptionInterviewQuestion.InterviewQuestionId",
+    "dom:JobDescriptionInterviewQuestion_InterviewQuestionId": "JobDescriptionInterviewQuestion.InterviewQuestionId"
+  },
+  "fields": [
+    {
+      "id": "JobDescriptionInterviewQuestion.InterviewQuestionId",
+      "label": "InterviewQuestion",
+      "section": "JobDescriptionInterviewQuestions",
+      "aliases": [
+        "loc:InterviewQuestion",
+        "dom:JobDescriptionInterviewQuestion_InterviewQuestionId"
+      ],
+      "rules": "Optional. Chosen from Interview Question master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The interview question.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

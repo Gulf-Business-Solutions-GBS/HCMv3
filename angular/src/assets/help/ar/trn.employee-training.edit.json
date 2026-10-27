@@ -1,0 +1,123 @@
+{
+  "helpId": "trn.employee-training.edit",
+  "lang": "ar",
+  "title": "تدريب الموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.TrainingManagement.EmployeeTraining",
+  "overviewHtml": "<p>موظف مسجَّل في مرة انعقاد لدورة، ونتيجة ذلك. ولا يُسجَّل الموظف إلا مرة واحدة لكل دورة وجدول. وتظهر التسجيلات في تقرير تدريب الموظفين.</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "EmployeeTraining.EmployeeId",
+    "dom:EmployeeTraining_EmployeeId": "EmployeeTraining.EmployeeId",
+    "loc:TrainingCourseId": "EmployeeTraining.TrainingCourseId",
+    "dom:EmployeeTraining_TrainingCourseId": "EmployeeTraining.TrainingCourseId",
+    "loc:TrainingScheduleId": "EmployeeTraining.TrainingScheduleId",
+    "dom:EmployeeTraining_TrainingScheduleId": "EmployeeTraining.TrainingScheduleId",
+    "loc:CompletionStatus": "EmployeeTraining.CompletionStatus",
+    "dom:EmployeeTraining_CompletionStatus": "EmployeeTraining.CompletionStatus",
+    "loc:Score": "EmployeeTraining.Score",
+    "dom:EmployeeTraining_Score": "EmployeeTraining.Score",
+    "loc:Comments": "EmployeeTraining.Comments",
+    "dom:EmployeeTraining_Comments": "EmployeeTraining.Comments",
+    "loc:Certificate": "EmployeeTraining.EmployeeCertificationId",
+    "dom:EmployeeTraining_EmployeeCertificationId": "EmployeeTraining.EmployeeCertificationId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeTraining.EmployeeId",
+      "label": "EmployeeId",
+      "section": "EmployeeTrainings",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:EmployeeTraining_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTraining.TrainingCourseId",
+      "label": "TrainingCourseId",
+      "section": "EmployeeTrainings",
+      "aliases": [
+        "loc:TrainingCourseId",
+        "dom:EmployeeTraining_TrainingCourseId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الدورات التدريبية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدورة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTraining.TrainingScheduleId",
+      "label": "TrainingScheduleId",
+      "section": "EmployeeTrainings",
+      "aliases": [
+        "loc:TrainingScheduleId",
+        "dom:EmployeeTraining_TrainingScheduleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة جداول التدريب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مرة انعقاد الدورة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTraining.CompletionStatus",
+      "label": "CompletionStatus",
+      "section": "EmployeeTrainings",
+      "aliases": [
+        "loc:CompletionStatus",
+        "dom:EmployeeTraining_CompletionStatus"
+      ],
+      "rules": "إلزامي. إحدى القيم: مكتمل، قيد الانتظار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الموظف قد أكمل الدورة.</p><p><strong>مثال.</strong> مكتمل</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTraining.Score",
+      "label": "Score",
+      "section": "EmployeeTrainings",
+      "aliases": [
+        "loc:Score",
+        "dom:EmployeeTraining_Score"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> درجة الموظف، إن قُيّم.</p><p><strong>مثال.</strong> 85</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTraining.Comments",
+      "label": "Comments",
+      "section": "EmployeeTrainings",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeTraining_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTraining.EmployeeCertificationId",
+      "label": "Certificate",
+      "section": "EmployeeTrainings",
+      "aliases": [
+        "loc:Certificate",
+        "dom:EmployeeTraining_EmployeeCertificationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشهادة التي نالها الموظف من هذا التدريب، من شهاداته المسجلة.</p><p><strong>مثال.</strong> اختصاصي رواتب معتمد (CPP)</p><p><strong>لماذا يهم.</strong> لا يمكن اختيار إلا شهادات الموظف من النوع «تدريبية»؛ فيجب تسجيل الشهادة في شهادات الموظف أولاً. وتُرفض الشهادة المختارة حديثاً إذا لم تكن للموظف نفسه أو لم تكن تدريبية. وتبقى الشهادة المرتبطة من قبل حتى لو تغيّر نوعها لاحقاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

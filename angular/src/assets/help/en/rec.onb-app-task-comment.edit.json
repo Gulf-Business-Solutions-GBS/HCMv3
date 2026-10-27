@@ -1,0 +1,59 @@
+{
+  "helpId": "rec.onb-app-task-comment.edit",
+  "lang": "en",
+  "title": "Onb App Task Comment",
+  "entity": "HCMv3.Recruitment.OnbAppTaskComments",
+  "overviewHtml": "<p>A comment on an applicant's onboarding task.</p>",
+  "aliasIndex": {
+    "loc:OnbApplicantTasks": "OnbAppTaskComments.OnbApplicantTasksId",
+    "dom:OnbAppTaskComment_OnbApplicantTasksId": "OnbAppTaskComments.OnbApplicantTasksId",
+    "loc:Comments": "OnbAppTaskComments.Comments",
+    "dom:OnbAppTaskComment_Comments": "OnbAppTaskComments.Comments",
+    "loc:IsByAdmin": "OnbAppTaskComments.IsByAdmin",
+    "dom:OnbAppTaskComment_IsByAdmin": "OnbAppTaskComments.IsByAdmin"
+  },
+  "fields": [
+    {
+      "id": "OnbAppTaskComments.OnbApplicantTasksId",
+      "label": "OnbApplicantTasks",
+      "section": null,
+      "aliases": [
+        "loc:OnbApplicantTasks",
+        "dom:OnbAppTaskComment_OnbApplicantTasksId"
+      ],
+      "rules": "Required. Chosen from Onboarding Applicant Tasks master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The applicant task.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbAppTaskComments.Comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments",
+        "dom:OnbAppTaskComment_Comments"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbAppTaskComments.IsByAdmin",
+      "label": "IsByAdmin",
+      "section": null,
+      "aliases": [
+        "loc:IsByAdmin",
+        "dom:OnbAppTaskComment_IsByAdmin"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether HR wrote the comment rather than the applicant.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

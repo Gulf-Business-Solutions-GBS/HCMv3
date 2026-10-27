@@ -1,0 +1,75 @@
+{
+  "helpId": "org.cost-element.edit",
+  "lang": "ar",
+  "title": "عناصر التكلفة — إنشاء / تحرير",
+  "entity": "HCMv3.OrganizationManagement.CostElement",
+  "overviewHtml": "<p>بُعد محاسبي إضافي، مثل رمز قسم أو نشاط، يُحدَّد في حسابات الأجور وتعيينات حسابات الموظفين. ويُكتب رمزه في بنود قيود الرواتب إلى جانب الحساب. ولا يمكن ترك النوع فارغاً.</p>",
+  "aliasIndex": {
+    "loc:Code": "CostElement.Code",
+    "dom:CostElement_Code": "CostElement.Code",
+    "loc:NameEn": "CostElement.NameEn",
+    "dom:CostElement_NameEn": "CostElement.NameEn",
+    "loc:NameAr": "CostElement.NameAr",
+    "dom:CostElement_NameAr": "CostElement.NameAr",
+    "loc:CostElementType": "CostElement.CostElementTypeId",
+    "dom:CostElement_CostElementTypeId": "CostElement.CostElementTypeId"
+  },
+  "fields": [
+    {
+      "id": "CostElement.Code",
+      "label": "Code",
+      "section": "CostElements",
+      "aliases": [
+        "loc:Code",
+        "dom:CostElement_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostElement.NameEn",
+      "label": "NameEn",
+      "section": "CostElements",
+      "aliases": [
+        "loc:NameEn",
+        "dom:CostElement_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostElement.NameAr",
+      "label": "NameAr",
+      "section": "CostElements",
+      "aliases": [
+        "loc:NameAr",
+        "dom:CostElement_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostElement.CostElementTypeId",
+      "label": "CostElementType",
+      "section": "CostElements",
+      "aliases": [
+        "loc:CostElementType",
+        "dom:CostElement_CostElementTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع البُعد.</p><p><strong>مثال.</strong> القسم</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "helpId": "wf.request-detail-parallel.edit",
+  "lang": "ar",
+  "title": "التفاصيل المتوازية للطلبات — إنشاء / تحرير",
+  "entity": "HCMv3.Workflow.RequestDetailParallel",
+  "overviewHtml": "<p>معتمد إضافي لخطوة، يُحدَّد بالمسمى الوظيفي ودور سير العمل. ولا يمكن ترك دور سير العمل فارغاً. لا يُقرأ حالياً: يأتي المعتمدون من الخطوة نفسها فقط، فلا تضيف هذه السجلات أحداً.</p>",
+  "aliasIndex": {
+    "loc:RequestDetails": "RequestDetailParallel.RequestDetailId",
+    "dom:RequestDetailParallel_RequestDetailId": "RequestDetailParallel.RequestDetailId",
+    "loc:JobTitle": "RequestDetailParallel.JobTitleId",
+    "dom:RequestDetailParallel_JobTitleId": "RequestDetailParallel.JobTitleId",
+    "loc:WorkflowRole": "RequestDetailParallel.WorkflowRoleId",
+    "dom:RequestDetailParallel_WorkflowRoleId": "RequestDetailParallel.WorkflowRoleId"
+  },
+  "fields": [
+    {
+      "id": "RequestDetailParallel.RequestDetailId",
+      "label": "RequestDetails",
+      "section": "RequestDetailParallels",
+      "aliases": [
+        "loc:RequestDetails",
+        "dom:RequestDetailParallel_RequestDetailId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة تفاصيل الطلبات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الخطوة التي يُضاف إليها هذا المعتمد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetailParallel.JobTitleId",
+      "label": "JobTitle",
+      "section": "RequestDetailParallels",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:RequestDetailParallel_JobTitleId"
+      ],
+      "rules": "اختياري. يُختار من قائمة المسميات الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي للمعتمد الإضافي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetailParallel.WorkflowRoleId",
+      "label": "WorkflowRole",
+      "section": "RequestDetailParallels",
+      "aliases": [
+        "loc:WorkflowRole",
+        "dom:RequestDetailParallel_WorkflowRoleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أدوار سير العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دور سير العمل للمعتمد الإضافي.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-dotted-line-manager.edit",
+  "lang": "en",
+  "title": "Employee Dotted Line Managers — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeDottedLineManager",
+  "overviewHtml": "<p>A secondary, dotted-line manager for a period — for example a project lead the employee also answers to.</p><p>It is recorded for reference only: dotted-line managers do not see the employee in self-service, do not approve their requests and do not receive their notifications.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeDottedLineManager.StartDate",
+    "dom:EmployeeDottedLineManager_StartDate": "EmployeeDottedLineManager.StartDate",
+    "loc:EndDate": "EmployeeDottedLineManager.EndDate",
+    "dom:EmployeeDottedLineManager_EndDate": "EmployeeDottedLineManager.EndDate",
+    "loc:Manager": "EmployeeDottedLineManager.ManagerId",
+    "dom:EmployeeDottedLineManager_ManagerId": "EmployeeDottedLineManager.ManagerId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDottedLineManager.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeDottedLineManagers",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeDottedLineManager_StartDate"
+      ],
+      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDottedLineManager.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeDottedLineManagers",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeDottedLineManager_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDottedLineManager.ManagerId",
+      "label": "Manager",
+      "section": "EmployeeDottedLineManagers",
+      "aliases": [
+        "loc:Manager",
+        "dom:EmployeeDottedLineManager_ManagerId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The dotted-line manager for this period.</p><p><strong>Example.</strong> Khaled Al-Rashidi (1044)</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

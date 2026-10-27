@@ -1,0 +1,136 @@
+<div [@routerTransition]>
+    <sub-header [title]="'TimeLogs' | localize" [description]="'TimeManagement' | localize">
+        <div role="actions">
+            @if ('Pages.TimeManagement.TimeLogs.Create' | permission) {
+                <button (click)="createTimeLog()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getTimeLogs($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '50rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.TimeManagement.TimeLogs.Edit',
+                                                    'Pages.TimeManagement.TimeLogs.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 160px" pSortableColumn="runTimeStamp">
+                                        {{ 'RunTimeStamp' | localize }}
+                                        <p-sortIcon field="runTimeStamp" />
+                                    </th>
+                                    <th style="min-width: 200px">
+                                        {{ 'EmployeeName' | localize }}
+                                    </th>
+                                    <th style="min-width: 100px">
+                                        {{ 'Status' | localize }}
+                                    </th>
+                                    <th style="min-width: 130px" pSortableColumn="dayDate">
+                                        {{ 'DayDate' | localize }}
+                                        <p-sortIcon field="dayDate" />
+                                    </th>
+                                    <th style="min-width: 100px">
+                                        {{ 'StopFlag' | localize }}
+                                    </th>
+                                    <th style="min-width: 130px">
+                                        {{ 'NoOfEmployee' | localize }}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.TimeManagement.TimeLogs.Edit',
+                                                    'Pages.TimeManagement.TimeLogs.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 160px">
+                                        {{ record.runTimeStamp | luxonFormat:'yyyy-MM-dd HH:mm' }}
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        <span pTooltip="{{ record.employeeFullNameEn }}" class="hide-overflown">{{ record.employeeFullNameEn }}</span>
+                                    </td>
+                                    <td style="min-width: 100px">
+                                        {{ record.status }}
+                                    </td>
+                                    <td style="min-width: 130px">
+                                        {{ record.dayDate | luxonFormat:'yyyy-MM-dd' }}
+                                    </td>
+                                    <td style="min-width: 100px">
+                                        {{ record.stopFlag }}
+                                    </td>
+                                    <td style="min-width: 130px">
+                                        {{ record.noOfEmployee }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getTimeLogs($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditTimeLogModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

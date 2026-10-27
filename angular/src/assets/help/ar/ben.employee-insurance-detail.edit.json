@@ -1,0 +1,75 @@
+{
+  "helpId": "ben.employee-insurance-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل تأمينات الموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.BenefitsManagement.EmployeeInsuranceDetail",
+  "overviewHtml": "<p>دفعة واحدة من حصة الموظف في تأمين الموظف. والرصيد المتبقي للاسترداد هو مساهمة الموظف مطروحاً منها كل هذه الأسطر أياً كان نوعها. وفي كل شهر تستبدل الرواتب سطر \"عن طريق الرواتب\" لذلك الشهر بسطر جديد بمبلغ القسط المحدد في التأمين، مقلَّصاً إلى ما يسمح به صافي الراتب والرصيد؛ وأضف يدوياً أسطراً من نوع \"خارجي\" أو \"إعفاء\" للمبالغ المسوّاة بطريقة أخرى. ولا يجوز أن يتجاوز المبلغ الرصيد المتبقي، ولا أن يكون التاريخ قبل تاريخ بدء أقساط التأمين.</p><p>وعند فتحه من نافذة أقساط التأمين لتأمين ما، يكون التأمين معبأً مسبقاً ولا يمكن تغييره، ويبدأ النوع بقيمة \"خارجي\".</p>",
+  "aliasIndex": {
+    "loc:EmployeeInsuranceId": "EmployeeInsuranceDetail.EmployeeInsuranceId",
+    "dom:EmployeeInsuranceDetail_EmployeeInsuranceId": "EmployeeInsuranceDetail.EmployeeInsuranceId",
+    "loc:InstallmentDate": "EmployeeInsuranceDetail.InstallmentDate",
+    "dom:EmployeeInsuranceDetail_InstallmentDate": "EmployeeInsuranceDetail.InstallmentDate",
+    "loc:InstallmentAmount": "EmployeeInsuranceDetail.InstallmentAmount",
+    "dom:EmployeeInsuranceDetail_InstallmentAmount": "EmployeeInsuranceDetail.InstallmentAmount",
+    "loc:InstallmentType": "EmployeeInsuranceDetail.InstallmentType",
+    "dom:EmployeeInsuranceDetail_InstallmentType": "EmployeeInsuranceDetail.InstallmentType"
+  },
+  "fields": [
+    {
+      "id": "EmployeeInsuranceDetail.EmployeeInsuranceId",
+      "label": "EmployeeInsuranceId",
+      "section": "EmployeeInsuranceDetails",
+      "aliases": [
+        "loc:EmployeeInsuranceId",
+        "dom:EmployeeInsuranceDetail_EmployeeInsuranceId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تأمين الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsuranceDetail.InstallmentDate",
+      "label": "InstallmentDate",
+      "section": "EmployeeInsuranceDetails",
+      "aliases": [
+        "loc:InstallmentDate",
+        "dom:EmployeeInsuranceDetail_InstallmentDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ الدفعة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsuranceDetail.InstallmentAmount",
+      "label": "InstallmentAmount",
+      "section": "EmployeeInsuranceDetails",
+      "aliases": [
+        "loc:InstallmentAmount",
+        "dom:EmployeeInsuranceDetail_InstallmentAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ المدفوع.</p><p><strong>مثال.</strong> 15.000</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsuranceDetail.InstallmentType",
+      "label": "InstallmentType",
+      "section": "EmployeeInsuranceDetails",
+      "aliases": [
+        "loc:InstallmentType",
+        "dom:EmployeeInsuranceDetail_InstallmentType"
+      ],
+      "rules": "إلزامي. إحدى القيم: عن طريق الرواتب، خارجي، نهاية الخدمة، إعفاء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طريقة تسوية المبلغ.</p><p><strong>مثال.</strong> خارجي</p><p><strong>لماذا يهم.</strong> أسطر \"عن طريق الرواتب\" تكتبها الرواتب. وأسطر \"نهاية الخدمة\" المؤرخة في الشهر تُخصم في تشغيل خارج الدورة لنهاية الخدمة. أما \"خارجي\" و\"إعفاء\" فيقللان الرصيد فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

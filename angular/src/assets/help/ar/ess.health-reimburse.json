@@ -1,0 +1,151 @@
+{
+  "helpId": "ess.health-reimburse",
+  "lang": "ar",
+  "title": "مطالباتي الطبية",
+  "entity": null,
+  "overviewHtml": "<p>طالِب باسترداد التكاليف الطبية التي تغطّيها شركتك — كشف طبي، أو دواء، أو زيارة أسنان — من البدل الصحي الذي تمنحه إيّاك فئتك الفرعية.</p><p>وتبيّن اللوحة في الأعلى ما لديك وما بقي منه. وإن ذكرت أنه لا استحقاق لك فذلك لأن فئتك الفرعية لم يُمنح لها استحقاق، وهو سؤال للموارد البشرية لا أمر يُصلَح من هنا.</p>",
+  "aliasIndex": {
+    "loc:PaymentDate": "ess.health-reimburse.payment-date",
+    "loc:Amount": "ess.health-reimburse.amount",
+    "loc:Comments": "ess.common.comments",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:RequestHealthReimburse": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:Withdraw": "ess.common.withdraw",
+    "loc:HealthReimburseBalance": "ess.health-reimburse.balance"
+  },
+  "fields": [
+    {
+      "id": "ess.health-reimburse.payment-date",
+      "label": "PaymentDate",
+      "section": null,
+      "aliases": [
+        "loc:PaymentDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوم دفعك تكلفة العلاج.</p><p><strong>مثال.</strong> 6 أبريل 2026.</p><p><strong>لماذا يهمّ.</strong> يحدّد فترة الاستحقاق التي تُخصم منها المطالبة؛ ففاتورة دُفعت في ديسمبر وطُولب بها في يناير تبقى تابعة للسنة التي دُفعت فيها، وهو ما يهمّ حين تكون الفترة قد أوشكت على النفاد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.health-reimburse.amount",
+      "label": "Amount",
+      "section": null,
+      "aliases": [
+        "loc:Amount"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما دفعته بعملة راتبك.</p><p><strong>مثال.</strong> 45.000</p><p><strong>لماذا يهمّ.</strong> طالِب بالمبلغ المدوّن في الإيصال. واحتفظ بالإيصال، فالمطالبة بلا إيصال أول ما يسأل عنه المعتمد؛ وإذا زادت المطالبة على رصيدك القابل للمطالبة خُفِّضت إلى ما تبقّى بدل أن تُرفض كلّها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما تريد أن يقرأه من يعتمدون الطلب. نص حرّ واختياري.</p><p><strong>مثال.</strong> «سفري يوم 14 وعودتي يوم 28، وقد اتُّفق على البديل مع أحمد.»</p><p><strong>لماذا يهمّ.</strong> هو المكان الوحيد الذي تشرح فيه طلباً يحتاج إلى شرح، ويبقى مع الطلب دائماً: يراه المعتمدون، ويراه كل من يعود إلى الطلب لاحقاً. والطلب الذي يفاجئ أحدهم طلبٌ يعود إليك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل ما طلبته من هذه الشاشة، والأحدث أولاً، مع ما آل إليه كل طلب.</p><p><strong>مثال.</strong> ثلاثة طلبات تذاكر: واحد اعتُمد الشهر الماضي، وواحد قيد الانتظار، وواحد سحبته.</p><p><strong>لماذا يهمّ.</strong> هذه هي السجلّ. والطلب غير الموجود في هذه القائمة لم يُقدَّم أصلاً، فإن عبّأت النموذج ولم تضغط <strong>حفظ</strong> فلم يُرسل شيء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنبيه بأن الحساب الذي سجّلت الدخول به غير مرتبط بموظف، فلا يوجد من يكون الطلب عنه.</p><p><strong>مثال.</strong> مستخدم أُنشئ حديثاً، أو حساب مسؤول تُرك عمداً بلا موظف.</p><p><strong>لماذا يهمّ.</strong> لا يعمل شيء في شاشات الخدمة الذاتية قبل أن تربط الموارد البشرية الحساب بسجلّ موظفك، ولا يفعل ذلك سواها. وكثيراً ما تُترك حسابات المسؤولين غير مرتبطة عن قصد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما آل إليه الطلب. <strong>مسودة</strong> يعني أنه لم يُقدَّم، و<strong>قيد الانتظار</strong> يعني أنه لدى أحدهم، و<strong>معتمد</strong> يعني أنه أُقرّ ونُفّذ، و<strong>مرفوض</strong> يعني أنه رُفض، و<strong>مسحوب</strong> يعني أنك استرجعته بنفسك.</p><p><strong>مثال.</strong> قيد الانتظار — لدى مديرك المباشر.</p><p><strong>لماذا يهمّ.</strong> لا يغيّر شيئاً إلا الطلب المعتمد: رصيدك أو راتبك أو سجلّك. أما الطلب قيد الانتظار فلم يفعل شيئاً بعد، مهما جاء في النموذج عند تعبئته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestHealthReimburse",
+      "section": null,
+      "aliases": [
+        "loc:RequestHealthReimburse"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزرّ في أعلى الشاشة الذي يفتح النموذج. وتعبئته ثم الضغط على <strong>حفظ</strong> يقدّم الطلب، ولا يُرسل شيء قبل ذلك.</p><p><strong>مثال.</strong> <strong>طلب إجازة</strong>، <strong>طلب تذكرة</strong>، <strong>طلب سلفة</strong> — وتتبع الصياغة الشاشة.</p><p><strong>لماذا يهمّ.</strong> بعد التقديم يذهب الطلب إلى من يعتمد هذا النوع من الطلبات في شركتك، ولا يمكنك تعديله في مكانه. ولتغيير شيء فيه اسحبه وقدّم طلباً جديداً، أو استخدم <strong>التعديل</strong> في الشاشات التي توفّره.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من وصل إليه الطلب، وما فعله كل شخص به ومتى، مع أي ملاحظة تركها.</p><p><strong>مثال.</strong> قُدّم 09:12 ← اعتمده المدير المباشر 11:40 («تم ترتيب البديل») ← لدى الموارد البشرية.</p><p><strong>لماذا يهمّ.</strong> يجيب عن سؤال «لدى من الطلب الآن؟» دون سؤال أحد. وإذا بقي الطلب عند شخص أياماً فهو يخبرك بمن هو، وهو من تراجعه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "Withdraw",
+      "section": null,
+      "aliases": [
+        "loc:Withdraw"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يسترجع الطلب. ولا يظهر إلا ما دام الاسترجاع ممكناً، فإذا اعتُمد الطلب ونُفّذ اختفى الزرّ.</p><p><strong>مثال.</strong> طلبت إجازة الأسبوع القادم ثم تغيّرت خططك، فتسحب الطلب قبل أن يصل إليه مديرك.</p><p><strong>لماذا يهمّ.</strong> لا يُحذف الطلب المسحوب، بل يبقى في القائمة بحالة <strong>مسحوب</strong> ليبيّن السجلّ ما جرى. ويحرّر السحب ما كان الطلب يحجزه، كرصيد إجازة محجوز مقابله.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.health-reimburse.balance",
+      "label": "HealthReimburseBalance",
+      "section": null,
+      "aliases": [
+        "loc:HealthReimburseBalance"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بدلك الصحي للفترة الحالية مفصَّلاً: <strong>البدل</strong> نفسه، وما <strong>رُحِّل</strong> من الفترة السابقة، و<strong>الإجمالي</strong> منهما، وما <strong>استُخدم</strong>، وما هو <strong>قيد الاعتماد</strong>، و<strong>المتبقي</strong>، و<strong>القابل للمطالبة</strong> الآن.</p><p><strong>مثال.</strong> بدل 500.000 + مرحّل 120.000 = إجمالي 620.000؛ مستخدَم 200.000، وقيد الاعتماد 45.000، والمتبقي 375.000.</p><p><strong>لماذا يهمّ.</strong> <strong>القابل للمطالبة هو الرقم الذي يُعتمد عليه لا المتبقي.</strong> فالمتبقي يتجاهل المطالبات التي ما زالت تنتظر الاعتماد، أما القابل للمطالبة فقد حجزها أصلاً. والمطالبة بناءً على «المتبقي» هي ما يجعل الناس يتجاوزون استحقاقهم فتُخفَّض مطالباتهم.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

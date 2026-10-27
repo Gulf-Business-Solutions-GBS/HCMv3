@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.simulation-time-register-detail.edit",
+  "lang": "en",
+  "title": "Simulation Time Register Details — Create / Edit",
+  "entity": "HCMv3.TimeManagement.SimulationTimeRegisterDetail",
+  "overviewHtml": "<p>One time type's value for a simulated day.</p><p>Not written at present: no process fills these registers and nothing reads them. Payroll and the reports work from the daily time register.</p>",
+  "aliasIndex": {
+    "loc:SimulationTimeRegister": "SimulationTimeRegisterDetail.SimulationTimeRegisterId",
+    "dom:SimulationTimeRegisterDetail_SimulationTimeRegisterId": "SimulationTimeRegisterDetail.SimulationTimeRegisterId",
+    "loc:TimeType": "SimulationTimeRegisterDetail.TimeTypeId",
+    "dom:SimulationTimeRegisterDetail_TimeTypeId": "SimulationTimeRegisterDetail.TimeTypeId",
+    "loc:TimeValue": "SimulationTimeRegisterDetail.TimeValue",
+    "dom:SimulationTimeRegisterDetail_TimeValue": "SimulationTimeRegisterDetail.TimeValue"
+  },
+  "fields": [
+    {
+      "id": "SimulationTimeRegisterDetail.SimulationTimeRegisterId",
+      "label": "SimulationTimeRegister",
+      "section": "SimulationTimeRegisterDetails",
+      "aliases": [
+        "loc:SimulationTimeRegister",
+        "dom:SimulationTimeRegisterDetail_SimulationTimeRegisterId"
+      ],
+      "rules": "Required. Chosen from Simulation Time Register master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The simulated day this line belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationTimeRegisterDetail.TimeTypeId",
+      "label": "TimeType",
+      "section": "SimulationTimeRegisterDetails",
+      "aliases": [
+        "loc:TimeType",
+        "dom:SimulationTimeRegisterDetail_TimeTypeId"
+      ],
+      "rules": "Required. Chosen from Time Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time type the value is for.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationTimeRegisterDetail.TimeValue",
+      "label": "TimeValue",
+      "section": "SimulationTimeRegisterDetails",
+      "aliases": [
+        "loc:TimeValue",
+        "dom:SimulationTimeRegisterDetail_TimeValue"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The value.</p><p><strong>Example.</strong> <code>2.5</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

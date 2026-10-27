@@ -1,0 +1,123 @@
+{
+  "helpId": "pay.employee-sub-group-fund.edit",
+  "lang": "ar",
+  "title": "صناديق المجموعة الفرعية للموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupFund",
+  "overviewHtml": "<p>شريحة أجر واحدة من خصم الصندوق للمجموعة الفرعية — مثل صندوق ادخار أو صندوق ضمان. وأجر الموظف للصندوق هو المجموع الشهري لأنواع الأجور المؤشَّر عليها <em>إدراج في الصندوق</em>، والشريحة التي يقع هذا المجموع ضمن نطاقها تحدد الخصم.</p><p>ولا يُخصم إلا للموظفين المشتركين في صندوق، ولا يُخصم ما دام لهم إعفاء من الصندوق أو بعد آخر يوم لهم في الخدمة.</p>",
+  "aliasIndex": {
+    "loc:FromPay": "EmployeeSubGroupFund.FromPay",
+    "dom:EmployeeSubGroupFund_FromPay": "EmployeeSubGroupFund.FromPay",
+    "loc:ToPay": "EmployeeSubGroupFund.ToPay",
+    "dom:EmployeeSubGroupFund_ToPay": "EmployeeSubGroupFund.ToPay",
+    "loc:FundDedType": "EmployeeSubGroupFund.FundDedType",
+    "dom:EmployeeSubGroupFund_FundDedType": "EmployeeSubGroupFund.FundDedType",
+    "loc:Percentage": "EmployeeSubGroupFund.Percentage",
+    "dom:EmployeeSubGroupFund_Percentage": "EmployeeSubGroupFund.Percentage",
+    "loc:MinAmount": "EmployeeSubGroupFund.MinAmount",
+    "dom:EmployeeSubGroupFund_MinAmount": "EmployeeSubGroupFund.MinAmount",
+    "loc:MaxAmount": "EmployeeSubGroupFund.MaxAmount",
+    "dom:EmployeeSubGroupFund_MaxAmount": "EmployeeSubGroupFund.MaxAmount",
+    "loc:FixAmount": "EmployeeSubGroupFund.FixAmount",
+    "dom:EmployeeSubGroupFund_FixAmount": "EmployeeSubGroupFund.FixAmount"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupFund.FromPay",
+      "label": "FromPay",
+      "section": "EmployeeSubGroupFunds",
+      "aliases": [
+        "loc:FromPay",
+        "dom:EmployeeSubGroupFund_FromPay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أدنى أجر في هذه الشريحة.</p><p><strong>مثال.</strong> <code>0</code></p><p><strong>لماذا يهم.</strong> لا يجوز أن يكون \"من\" أكبر من \"إلى\".</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupFund.ToPay",
+      "label": "ToPay",
+      "section": "EmployeeSubGroupFunds",
+      "aliases": [
+        "loc:ToPay",
+        "dom:EmployeeSubGroupFund_ToPay"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أعلى أجر في هذه الشريحة.</p><p><strong>مثال.</strong> <code>999</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupFund.FundDedType",
+      "label": "FundDedType",
+      "section": "EmployeeSubGroupFunds",
+      "aliases": [
+        "loc:FundDedType",
+        "dom:EmployeeSubGroupFund_FundDedType"
+      ],
+      "rules": "إلزامي. إحدى القيم: النسبة المئوية، PercentageWithinLimit، مبلغ ثابت.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طريقة احتساب الخصم لهذه الشريحة.</p><p><strong>مثال.</strong> نسبة مئوية</p><p><strong>لماذا يهم.</strong> <em>مبلغ ثابت</em> يخصم المبلغ الثابت. و<em>نسبة مئوية</em> يخصم النسبة من الأجر. و<em>PercentageWithinLimit</em> يخصم النسبة، على ألا تزيد على الحد الأقصى ولا تقل عن الحد الأدنى. وتُقرَّب النتيجة إلى منزلتين عشريتين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupFund.Percentage",
+      "label": "Percentage",
+      "section": "EmployeeSubGroupFunds",
+      "aliases": [
+        "loc:Percentage",
+        "dom:EmployeeSubGroupFund_Percentage"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النسبة المئوية المخصومة من الأجر، لنوعي النسبة المئوية.</p><p><strong>مثال.</strong> <code>5</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupFund.MinAmount",
+      "label": "MinAmount",
+      "section": "EmployeeSubGroupFunds",
+      "aliases": [
+        "loc:MinAmount",
+        "dom:EmployeeSubGroupFund_MinAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أقل ما يُخصم، لـ<em>PercentageWithinLimit</em>.</p><p><strong>مثال.</strong> <code>10</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupFund.MaxAmount",
+      "label": "MaxAmount",
+      "section": "EmployeeSubGroupFunds",
+      "aliases": [
+        "loc:MaxAmount",
+        "dom:EmployeeSubGroupFund_MaxAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أقصى ما يُخصم، لـ<em>PercentageWithinLimit</em>.</p><p><strong>مثال.</strong> <code>100</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupFund.FixAmount",
+      "label": "FixAmount",
+      "section": "EmployeeSubGroupFunds",
+      "aliases": [
+        "loc:FixAmount",
+        "dom:EmployeeSubGroupFund_FixAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ المخصوم، لـ<em>مبلغ ثابت</em>.</p><p><strong>مثال.</strong> <code>25</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,235 @@
+{
+  "helpId": "mp.manpower-planning-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل خطط القوى العاملة — إنشاء / تحرير",
+  "entity": "HCMv3.ManpowerPlanningManagement.ManpowerPlanningDetail",
+  "overviewHtml": "<p>مسمى وظيفي واحد في خطة القوى العاملة، مع ميزانيته لكل شهر. وبعد أن تصبح للسطر وظيفة، يجب أن يقع مبلغ كل شهر (غير 0) بين الحد الأدنى والأقصى لراتب تلك الوظيفة.</p>",
+  "aliasIndex": {
+    "loc:JobTitle": "ManpowerPlanningDetail.JobTitleId",
+    "dom:ManpowerPlanningDetail_JobTitleId": "ManpowerPlanningDetail.JobTitleId",
+    "loc:Holder": "ManpowerPlanningDetail.HolderId",
+    "dom:ManpowerPlanningDetail_HolderId": "ManpowerPlanningDetail.HolderId",
+    "loc:January": "ManpowerPlanningDetail.January",
+    "dom:ManpowerPlanningDetail_January": "ManpowerPlanningDetail.January",
+    "loc:February": "ManpowerPlanningDetail.February",
+    "dom:ManpowerPlanningDetail_February": "ManpowerPlanningDetail.February",
+    "loc:March": "ManpowerPlanningDetail.March",
+    "dom:ManpowerPlanningDetail_March": "ManpowerPlanningDetail.March",
+    "loc:April": "ManpowerPlanningDetail.April",
+    "dom:ManpowerPlanningDetail_April": "ManpowerPlanningDetail.April",
+    "loc:May": "ManpowerPlanningDetail.May",
+    "dom:ManpowerPlanningDetail_May": "ManpowerPlanningDetail.May",
+    "loc:June": "ManpowerPlanningDetail.June",
+    "dom:ManpowerPlanningDetail_June": "ManpowerPlanningDetail.June",
+    "loc:July": "ManpowerPlanningDetail.July",
+    "dom:ManpowerPlanningDetail_July": "ManpowerPlanningDetail.July",
+    "loc:August": "ManpowerPlanningDetail.August",
+    "dom:ManpowerPlanningDetail_August": "ManpowerPlanningDetail.August",
+    "loc:September": "ManpowerPlanningDetail.September",
+    "dom:ManpowerPlanningDetail_September": "ManpowerPlanningDetail.September",
+    "loc:October": "ManpowerPlanningDetail.October",
+    "dom:ManpowerPlanningDetail_October": "ManpowerPlanningDetail.October",
+    "loc:November": "ManpowerPlanningDetail.November",
+    "dom:ManpowerPlanningDetail_November": "ManpowerPlanningDetail.November",
+    "loc:December": "ManpowerPlanningDetail.December",
+    "dom:ManpowerPlanningDetail_December": "ManpowerPlanningDetail.December"
+  },
+  "fields": [
+    {
+      "id": "ManpowerPlanningDetail.JobTitleId",
+      "label": "JobTitle",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:ManpowerPlanningDetail_JobTitleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المسميات الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي المطلوب.</p><p><strong>مثال.</strong> محاسب</p><p><strong>لماذا يهم.</strong> عند الموافقة يُسمّي الوظيفة الجديدة ويصبح مسماها الوظيفي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.HolderId",
+      "label": "Holder",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:Holder",
+        "dom:ManpowerPlanningDetail_HolderId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف المتوقع أن يشغل الوظيفة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.January",
+      "label": "January",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:January",
+        "dom:ManpowerPlanningDetail_January"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ الشهري المعتمد في الميزانية لشهر يناير.</p><p><strong>مثال.</strong> 850.000</p><p><strong>لماذا يهم.</strong> عند الموافقة على الخطة، يُضبط الحد الأدنى والمتوسط والأقصى لراتب الوظيفة الجديدة جميعها على هذا المبلغ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.February",
+      "label": "February",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:February",
+        "dom:ManpowerPlanningDetail_February"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ الشهري المعتمد في الميزانية لشهر فبراير.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.March",
+      "label": "March",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:March",
+        "dom:ManpowerPlanningDetail_March"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ الشهري المعتمد في الميزانية لشهر مارس.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.April",
+      "label": "April",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:April",
+        "dom:ManpowerPlanningDetail_April"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ الشهري المعتمد في الميزانية لشهر أبريل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.May",
+      "label": "May",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:May",
+        "dom:ManpowerPlanningDetail_May"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ الشهري المعتمد في الميزانية لشهر مايو.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.June",
+      "label": "June",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:June",
+        "dom:ManpowerPlanningDetail_June"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ الشهري المعتمد في الميزانية لشهر يونيو.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.July",
+      "label": "July",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:July",
+        "dom:ManpowerPlanningDetail_July"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ الشهري المعتمد في الميزانية لشهر يوليو.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.August",
+      "label": "August",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:August",
+        "dom:ManpowerPlanningDetail_August"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ الشهري المعتمد في الميزانية لشهر أغسطس.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.September",
+      "label": "September",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:September",
+        "dom:ManpowerPlanningDetail_September"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ الشهري المعتمد في الميزانية لشهر سبتمبر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.October",
+      "label": "October",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:October",
+        "dom:ManpowerPlanningDetail_October"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ الشهري المعتمد في الميزانية لشهر أكتوبر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.November",
+      "label": "November",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:November",
+        "dom:ManpowerPlanningDetail_November"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ الشهري المعتمد في الميزانية لشهر نوفمبر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.December",
+      "label": "December",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:December",
+        "dom:ManpowerPlanningDetail_December"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ الشهري المعتمد في الميزانية لشهر ديسمبر.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

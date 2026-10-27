@@ -1,0 +1,82 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditCVQualification' : 'CreateNewCVQualification') | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label" for="CVQualification_QualificationId">{{ 'Qualification' | localize }}</label>
+                            <select
+                                id="CVQualification_QualificationId"
+                                class="form-select"
+                                name="QualificationId"
+                                [ngModel]="record().qualificationId"
+                                (ngModelChange)="updateField('qualificationId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (item of qualifications(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="CVQualification_University">{{ 'University' | localize }}</label>
+                            <input
+                                id="CVQualification_University"
+                                type="text"
+                                class="form-control"
+                                name="University"
+                                [ngModel]="record().university"
+                                (ngModelChange)="updateField('university', $event)"
+                                maxlength="200" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="CVQualification_Percentage">{{ 'Percentage' | localize }}</label>
+                            <input
+                                id="CVQualification_Percentage"
+                                type="number"
+                                class="form-control"
+                                name="Percentage"
+                                [ngModel]="record().percentage"
+                                (ngModelChange)="updateField('percentage', $event)" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="CVQualification_PassedYear">{{ 'PassedYear' | localize }}</label>
+                            <input
+                                id="CVQualification_PassedYear"
+                                type="number"
+                                class="form-control"
+                                name="PassedYear"
+                                [ngModel]="record().passedYear"
+                                (ngModelChange)="updateField('passedYear', $event)" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            [buttonBusy]="saving()"
+                            [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

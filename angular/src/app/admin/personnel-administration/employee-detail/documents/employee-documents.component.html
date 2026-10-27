@@ -1,0 +1,85 @@
+<div class="row">
+    <div class="col-12 p-3">
+        @if ('Pages.PersonnelAdministration.EmployeeDocuments.Create' | permission) {
+            <button (click)="createRecord()" class="btn btn-primary btn-sm float-end mb-3">
+                <i class="fa fa-plus"></i>
+                {{ 'CreateNew' | localize }}
+            </button>
+        }
+    </div>
+    <div class="col-12">
+        <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+            <p-table
+                #dataTable
+                sortMode="multiple"
+                (onLazyLoad)="getRecords($event)"
+                [value]="primengTableHelper.records()"
+                rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                [paginator]="false"
+                [lazy]="true"
+                [scrollable]="true"
+                scrollDirection="horizontal"
+                [tableStyle]="{ 'min-width': '60rem' }">
+                <ng-template #header>
+                    <tr>
+                        <th style="width: 130px">
+                            {{ 'Actions' | localize }}
+                        </th>
+                        <th>{{ 'DocumentType' | localize }}</th>
+                        <th>{{ 'DocumentNum' | localize }}</th>
+                        <th>{{ 'IssueDate' | localize }}</th>
+                        <th>{{ 'ExpiryDate' | localize }}</th>
+                        <th>{{ 'DocumentPlace' | localize }}</th>
+                        <th>{{ 'Status' | localize }}</th>
+                        <th>{{ 'DaysLeft' | localize }}</th>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-record="$implicit">
+                    <tr>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-primary btn-sm dropdown-toggle"
+                                (click)="showMenu($event, record, actionsMenu)">
+                                <i class="fa fa-cog"></i>
+                                {{ 'Actions' | localize }}
+                            </button>
+                        </td>
+                        <td>{{ record.documentTypeName }}</td>
+                        <td>{{ record.documentNum }}</td>
+                        <td>{{ record.issueDate | luxonFormat: 'DD' }}</td>
+                        <td>{{ record.expiryDate | luxonFormat: 'DD' }}</td>
+                        <td>{{ record.docPlaceName }}</td>
+                        <td>
+                            @if (record.isActive === documentStatus.Active) {
+                                <span class="badge badge-success">{{ 'Active' | localize }}</span>
+                            } @else if (record.isActive === documentStatus.Expired) {
+                                <span class="badge badge-danger">{{ 'Expired' | localize }}</span>
+                            } @else {
+                                <span class="badge badge-secondary">{{ 'Inactive' | localize }}</span>
+                            }
+                        </td>
+                        <td>{{ record.daysLeft }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            @if (primengTableHelper.totalRecordsCount() == 0) {
+                <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+            }
+            <div class="primeng-paging-container">
+                <p-paginator
+                    [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                    #paginator
+                    (onPageChange)="getRecords($event)"
+                    [totalRecords]="primengTableHelper.totalRecordsCount()"
+                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                    [showCurrentPageReport]="true"
+                    [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<createOrEditEmployeeDocumentModal #createOrEditModal (modalSave)="reloadPage()" />
+<employee-document-movements-modal #movementsModal />

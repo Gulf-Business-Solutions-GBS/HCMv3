@@ -1,0 +1,155 @@
+{
+  "helpId": "tm.duty-period-detail.edit",
+  "lang": "en",
+  "title": "Duty Period Details — Create / Edit",
+  "entity": "HCMv3.TimeManagement.DutyPeriodDetail",
+  "overviewHtml": "<p>One week of a duty period's rotation. A rotation of N weeks needs weeks numbered 1 to N; each day of the cycle takes the duty for that week and day.</p><p>The employee's <strong>start point</strong> says which day of the cycle their assignment starts on, and each later day moves one step through the cycle, wrapping round at the end. A missing week number stops the time engine with \"wrong week number assigned\".</p>",
+  "aliasIndex": {
+    "loc:DutyPeriod": "DutyPeriodDetail.DutyPeriodId",
+    "dom:DutyPeriodDetail_DutyPeriodId": "DutyPeriodDetail.DutyPeriodId",
+    "loc:Week": "DutyPeriodDetail.Week",
+    "dom:DutyPeriodDetail_Week": "DutyPeriodDetail.Week",
+    "loc:Day1": "DutyPeriodDetail.Day1DutyId",
+    "dom:DutyPeriodDetail_Day1DutyId": "DutyPeriodDetail.Day1DutyId",
+    "loc:Day2": "DutyPeriodDetail.Day2DutyId",
+    "dom:DutyPeriodDetail_Day2DutyId": "DutyPeriodDetail.Day2DutyId",
+    "loc:Day3": "DutyPeriodDetail.Day3DutyId",
+    "dom:DutyPeriodDetail_Day3DutyId": "DutyPeriodDetail.Day3DutyId",
+    "loc:Day4": "DutyPeriodDetail.Day4DutyId",
+    "dom:DutyPeriodDetail_Day4DutyId": "DutyPeriodDetail.Day4DutyId",
+    "loc:Day5": "DutyPeriodDetail.Day5DutyId",
+    "dom:DutyPeriodDetail_Day5DutyId": "DutyPeriodDetail.Day5DutyId",
+    "loc:Day6": "DutyPeriodDetail.Day6DutyId",
+    "dom:DutyPeriodDetail_Day6DutyId": "DutyPeriodDetail.Day6DutyId",
+    "loc:Day7": "DutyPeriodDetail.Day7DutyId",
+    "dom:DutyPeriodDetail_Day7DutyId": "DutyPeriodDetail.Day7DutyId"
+  },
+  "fields": [
+    {
+      "id": "DutyPeriodDetail.DutyPeriodId",
+      "label": "DutyPeriod",
+      "section": "DutyPeriodDetails",
+      "aliases": [
+        "loc:DutyPeriod",
+        "dom:DutyPeriodDetail_DutyPeriodId"
+      ],
+      "rules": "Required. Chosen from Duty Period master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty period this week belongs to.</p><p><strong>Example.</strong> 4-on 4-off Rotation</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriodDetail.Week",
+      "label": "Week",
+      "section": "DutyPeriodDetails",
+      "aliases": [
+        "loc:Week",
+        "dom:DutyPeriodDetail_Week"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The week's number in the rotation.</p><p><strong>Example.</strong> <code>2</code></p><p><strong>Why it matters.</strong> Must be greater than 0, and each number can be used once per duty period.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriodDetail.Day1DutyId",
+      "label": "Day1",
+      "section": "DutyPeriodDetails",
+      "aliases": [
+        "loc:Day1",
+        "dom:DutyPeriodDetail_Day1DutyId"
+      ],
+      "rules": "Optional. Chosen from Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty on day 1 of this week of the rotation.</p><p><strong>Example.</strong> Night Shift</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriodDetail.Day2DutyId",
+      "label": "Day2",
+      "section": "DutyPeriodDetails",
+      "aliases": [
+        "loc:Day2",
+        "dom:DutyPeriodDetail_Day2DutyId"
+      ],
+      "rules": "Optional. Chosen from Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty on day 2 of this week of the rotation.</p><p><strong>Example.</strong> Night Shift</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriodDetail.Day3DutyId",
+      "label": "Day3",
+      "section": "DutyPeriodDetails",
+      "aliases": [
+        "loc:Day3",
+        "dom:DutyPeriodDetail_Day3DutyId"
+      ],
+      "rules": "Optional. Chosen from Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty on day 3 of this week of the rotation.</p><p><strong>Example.</strong> Night Shift</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriodDetail.Day4DutyId",
+      "label": "Day4",
+      "section": "DutyPeriodDetails",
+      "aliases": [
+        "loc:Day4",
+        "dom:DutyPeriodDetail_Day4DutyId"
+      ],
+      "rules": "Optional. Chosen from Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty on day 4 of this week of the rotation.</p><p><strong>Example.</strong> Night Shift</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriodDetail.Day5DutyId",
+      "label": "Day5",
+      "section": "DutyPeriodDetails",
+      "aliases": [
+        "loc:Day5",
+        "dom:DutyPeriodDetail_Day5DutyId"
+      ],
+      "rules": "Optional. Chosen from Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty on day 5 of this week of the rotation.</p><p><strong>Example.</strong> Night Shift</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriodDetail.Day6DutyId",
+      "label": "Day6",
+      "section": "DutyPeriodDetails",
+      "aliases": [
+        "loc:Day6",
+        "dom:DutyPeriodDetail_Day6DutyId"
+      ],
+      "rules": "Optional. Chosen from Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty on day 6 of this week of the rotation.</p><p><strong>Example.</strong> Weekly Off</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DutyPeriodDetail.Day7DutyId",
+      "label": "Day7",
+      "section": "DutyPeriodDetails",
+      "aliases": [
+        "loc:Day7",
+        "dom:DutyPeriodDetail_Day7DutyId"
+      ],
+      "rules": "Optional. Chosen from Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty on day 7 of this week of the rotation.</p><p><strong>Example.</strong> Weekly Off</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

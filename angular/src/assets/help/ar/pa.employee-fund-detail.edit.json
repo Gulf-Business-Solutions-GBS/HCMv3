@@ -1,0 +1,91 @@
+{
+  "helpId": "pa.employee-fund-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل صناديق الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeFundDetail",
+  "overviewHtml": "<p>معاملة على حساب صندوق الموظف: رصيد افتتاحي، أو اقتطاع، أو صرف، أو اقتطاع خارجي.</p><p>تصرف الرواتب أسطر الصرف المؤرخة في الشهر الذي تعالجه. كما تعيد بناء أسطر الاقتطاع والرصيد الافتتاحي للشهر في كل تشغيل: فتُحذف الأسطر من هذين النوعين المؤرخة في ذلك الشهر ويُعاد احتسابها.</p>",
+  "aliasIndex": {
+    "loc:EmployeeFundId": "EmployeeFundDetail.EmployeeFundId",
+    "dom:EmployeeFundDetail_EmployeeFundId": "EmployeeFundDetail.EmployeeFundId",
+    "loc:TransactionDate": "EmployeeFundDetail.TransactionDate",
+    "dom:EmployeeFundDetail_TransactionDate": "EmployeeFundDetail.TransactionDate",
+    "loc:Amount": "EmployeeFundDetail.Amount",
+    "dom:EmployeeFundDetail_Amount": "EmployeeFundDetail.Amount",
+    "loc:FundPayType": "EmployeeFundDetail.FundPayType",
+    "dom:EmployeeFundDetail_FundPayType": "EmployeeFundDetail.FundPayType",
+    "loc:Comments": "EmployeeFundDetail.Comments",
+    "dom:EmployeeFundDetail_Comments": "EmployeeFundDetail.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeFundDetail.EmployeeFundId",
+      "label": "EmployeeFundId",
+      "section": "EmployeeFundDetails",
+      "aliases": [
+        "loc:EmployeeFundId",
+        "dom:EmployeeFundDetail_EmployeeFundId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حساب الصندوق الذي تنتمي إليه المعاملة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFundDetail.TransactionDate",
+      "label": "TransactionDate",
+      "section": "EmployeeFundDetails",
+      "aliases": [
+        "loc:TransactionDate",
+        "dom:EmployeeFundDetail_TransactionDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ المعاملة.</p><p><strong>مثال.</strong> 30 سبتمبر 2026</p><p><strong>لماذا يهم.</strong> تصرف الرواتب أسطر الصرف المؤرخة في شهرها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFundDetail.Amount",
+      "label": "Amount",
+      "section": "EmployeeFundDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeFundDetail_Amount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مبلغ المعاملة.</p><p><strong>مثال.</strong> 75.000</p><p><strong>لماذا يهم.</strong> تُضاف أسطر الرصيد الافتتاحي والاقتطاع إلى الصندوق، وتُصرف أسطر الصرف منه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFundDetail.FundPayType",
+      "label": "FundPayType",
+      "section": "EmployeeFundDetails",
+      "aliases": [
+        "loc:FundPayType",
+        "dom:EmployeeFundDetail_FundPayType"
+      ],
+      "rules": "إلزامي. إحدى القيم: خصم، دفعات، رصيد افتتاحي، خصم خارجي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع المعاملة.</p><p><strong>مثال.</strong> صرف</p>",
+      "adminHtml": "<p>تحذف الرواتب أسطر الاقتطاع والرصيد الافتتاحي المؤرخة في شهر تعالجه وتعيد احتسابها. أدخل الاشتراكات اليدوية لتلك الأشهر على أنها اقتطاع خارجي.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFundDetail.Comments",
+      "label": "Comments",
+      "section": "EmployeeFundDetails",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeFundDetail_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

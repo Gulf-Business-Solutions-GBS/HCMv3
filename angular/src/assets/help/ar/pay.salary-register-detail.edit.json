@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.salary-register-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل سجلات الرواتب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.SalaryRegisterDetail",
+  "overviewHtml": "<p>سطر واحد من كشف الراتب: نوع أجر مع أجره وعدده ومبلغه. ولا يمكن تعديل أسطر كشف الراتب المقفل.</p>",
+  "aliasIndex": {
+    "loc:SalaryRegisterId": "SalaryRegisterDetail.SalaryRegisterId",
+    "dom:SalaryRegisterDetail_SalaryRegisterId": "SalaryRegisterDetail.SalaryRegisterId",
+    "loc:WageTypeId": "SalaryRegisterDetail.WageTypeId",
+    "dom:SalaryRegisterDetail_WageTypeId": "SalaryRegisterDetail.WageTypeId",
+    "loc:Rate": "SalaryRegisterDetail.Rate",
+    "dom:SalaryRegisterDetail_Rate": "SalaryRegisterDetail.Rate",
+    "loc:Number": "SalaryRegisterDetail.Number",
+    "dom:SalaryRegisterDetail_Number": "SalaryRegisterDetail.Number",
+    "loc:Amount": "SalaryRegisterDetail.Amount",
+    "dom:SalaryRegisterDetail_Amount": "SalaryRegisterDetail.Amount"
+  },
+  "fields": [
+    {
+      "id": "SalaryRegisterDetail.SalaryRegisterId",
+      "label": "SalaryRegisterId",
+      "section": "SalaryRegisterDetails",
+      "aliases": [
+        "loc:SalaryRegisterId",
+        "dom:SalaryRegisterDetail_SalaryRegisterId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة سجلات الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كشف الراتب الذي يتبعه هذا السطر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegisterDetail.WageTypeId",
+      "label": "WageTypeId",
+      "section": "SalaryRegisterDetails",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:SalaryRegisterDetail_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الأجر لهذا السطر.</p><p><strong>مثال.</strong> الراتب الأساسي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegisterDetail.Rate",
+      "label": "Rate",
+      "section": "SalaryRegisterDetails",
+      "aliases": [
+        "loc:Rate",
+        "dom:SalaryRegisterDetail_Rate"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأجر الشهري الذي احتُسب منه السطر.</p><p><strong>مثال.</strong> <code>800</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegisterDetail.Number",
+      "label": "Number",
+      "section": "SalaryRegisterDetails",
+      "aliases": [
+        "loc:Number",
+        "dom:SalaryRegisterDetail_Number"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الكمية — أيام أو ساعات أو وحدات — التي احتُسب عليها السطر.</p><p><strong>مثال.</strong> <code>30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegisterDetail.Amount",
+      "label": "Amount",
+      "section": "SalaryRegisterDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:SalaryRegisterDetail_Amount"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مبلغ السطر.</p><p><strong>مثال.</strong> <code>800.000</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

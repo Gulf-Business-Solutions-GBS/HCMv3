@@ -1,0 +1,304 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #timeEventForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (timeEvent().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'TimeEvent' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'TimeEvent' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto">
+                        <h6>{{ 'CorePunchInfo' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="TimeEvent_EmployeeId">{{ 'Employee' | localize }}</label>
+                                <select
+                                    id="TimeEvent_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    [ngModel]="timeEvent().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TimeEvent_Pin">{{ 'Pin' | localize }}</label>
+                                <input
+                                    id="TimeEvent_Pin"
+                                    class="form-control"
+                                    type="text"
+                                    name="Pin"
+                                    [ngModel]="timeEvent().pin"
+                                    (ngModelChange)="updateField('pin', $event)"
+                                    maxlength="50" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TimeEvent_TransTypeId">{{ 'TransType' | localize }}</label>
+                                <select
+                                    id="TimeEvent_TransTypeId"
+                                    class="form-select"
+                                    name="TransTypeId"
+                                    [ngModel]="timeEvent().transTypeId"
+                                    (ngModelChange)="updateField('transTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (transType of transTypes(); track transType.id) {
+                                        <option [ngValue]="transType.id">{{ transType.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TimeEvent_ActualTransTypeId">{{ 'ActualTransType' | localize }}</label>
+                                <select
+                                    id="TimeEvent_ActualTransTypeId"
+                                    class="form-select"
+                                    name="ActualTransTypeId"
+                                    [ngModel]="timeEvent().actualTransTypeId"
+                                    (ngModelChange)="updateField('actualTransTypeId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (transType of transTypes(); track transType.id) {
+                                        <option [ngValue]="transType.id">{{ transType.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="TimeEvent_TransDate">{{ 'TransDate' | localize }}</label>
+                                <input
+                                    id="TimeEvent_TransDate"
+                                    #transDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="TransDate"
+                                    [ngModel]="timeEvent().transDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('transDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="transDateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="TimeEvent_TransTime">{{ 'TransTime' | localize }}</label>
+                                <input
+                                    id="TimeEvent_TransTime"
+                                    #transTimeInput="ngModel"
+                                    type="time"
+                                    class="form-control"
+                                    name="TransTime"
+                                    [ngModel]="timeEvent().transTime?.toFormat('HH:mm')"
+                                    (ngModelChange)="updateTimeField('transTime', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="transTimeInput" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="TimeEvent_TransSource">{{ 'TransSource' | localize }}</label>
+                                <select
+                                    id="TimeEvent_TransSource"
+                                    class="form-select"
+                                    name="TransSource"
+                                    [ngModel]="timeEvent().transSource"
+                                    (ngModelChange)="updateField('transSource', $event)"
+                                    required>
+                                    @for (source of transSources; track source.value) {
+                                        <option [ngValue]="source.value">{{ source.name }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <!-- Read-only: written by the device import / punch, not typed in. 0 means none. -->
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TimeEvent_RecordSource">{{ 'RecordSource' | localize }}</label>
+                                <input
+                                    id="TimeEvent_RecordSource"
+                                    class="form-control"
+                                    type="text"
+                                    name="RecordSource"
+                                    [value]="timeEvent().recordSource || ''"
+                                    readonly
+                                    disabled />
+                            </div>
+                        </div>
+
+                        <h6>{{ 'DeviceLocation' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TimeEvent_AccessUnitId">{{ 'AccessUnit' | localize }}</label>
+                                <select
+                                    id="TimeEvent_AccessUnitId"
+                                    class="form-select"
+                                    name="AccessUnitId"
+                                    [ngModel]="timeEvent().accessUnitId"
+                                    (ngModelChange)="updateField('accessUnitId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (accessUnit of accessUnits(); track accessUnit.id) {
+                                        <option [ngValue]="accessUnit.id">{{ accessUnit.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TimeEvent_WorkLocationId">{{ 'WorkLocation' | localize }}</label>
+                                <select
+                                    id="TimeEvent_WorkLocationId"
+                                    class="form-select"
+                                    name="WorkLocationId"
+                                    [ngModel]="timeEvent().workLocationId"
+                                    (ngModelChange)="updateField('workLocationId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (workLocation of workLocations(); track workLocation.id) {
+                                        <option [ngValue]="workLocation.id">{{ workLocation.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TimeEvent_IpAddress">{{ 'IpAddress' | localize }}</label>
+                                <input
+                                    id="TimeEvent_IpAddress"
+                                    class="form-control"
+                                    type="text"
+                                    name="IpAddress"
+                                    [ngModel]="timeEvent().ipAddress"
+                                    (ngModelChange)="updateField('ipAddress', $event)"
+                                    maxlength="50" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Read-only: the browser/device that sent the punch, recorded by the server. -->
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="TimeEvent_DeviceAgentString">{{ 'DeviceAgentString' | localize }}</label>
+                                <input
+                                    id="TimeEvent_DeviceAgentString"
+                                    class="form-control"
+                                    type="text"
+                                    name="DeviceAgentString"
+                                    [value]="timeEvent().deviceAgentString ?? ''"
+                                    readonly
+                                    disabled />
+                            </div>
+                        </div>
+
+                        <h6>{{ 'GeoData' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TimeEvent_GeoSelfiePath">{{ 'GeoSelfiePath' | localize }}</label>
+                                <input
+                                    id="TimeEvent_GeoSelfiePath"
+                                    class="form-control"
+                                    type="text"
+                                    name="GeoSelfiePath"
+                                    [ngModel]="timeEvent().geoSelfiePath"
+                                    (ngModelChange)="updateField('geoSelfiePath', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TimeEvent_Latitude">{{ 'Latitude' | localize }}</label>
+                                <input
+                                    id="TimeEvent_Latitude"
+                                    class="form-control"
+                                    type="number"
+                                    step="any"
+                                    name="Latitude"
+                                    [ngModel]="timeEvent().latitude"
+                                    (ngModelChange)="updateField('latitude', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TimeEvent_Longitude">{{ 'Longitude' | localize }}</label>
+                                <input
+                                    id="TimeEvent_Longitude"
+                                    class="form-control"
+                                    type="number"
+                                    step="any"
+                                    name="Longitude"
+                                    [ngModel]="timeEvent().longitude"
+                                    (ngModelChange)="updateField('longitude', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TimeEvent_RangeDifference">{{ 'RangeDifference' | localize }}</label>
+                                <input
+                                    id="TimeEvent_RangeDifference"
+                                    class="form-control"
+                                    type="number"
+                                    step="any"
+                                    name="RangeDifference"
+                                    [ngModel]="timeEvent().rangeDifference"
+                                    (ngModelChange)="updateField('rangeDifference', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TimeEvent_Temperature">{{ 'Temperature' | localize }}</label>
+                                <input
+                                    id="TimeEvent_Temperature"
+                                    class="form-control"
+                                    type="number"
+                                    step="any"
+                                    name="Temperature"
+                                    [ngModel]="timeEvent().temperature"
+                                    (ngModelChange)="updateField('temperature', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input
+                                        id="TimeEvent_PunchInRange"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="PunchInRange"
+                                        [ngModel]="timeEvent().punchInRange"
+                                        (ngModelChange)="updateField('punchInRange', $event)" />
+                                    <label class="form-check-label" for="TimeEvent_PunchInRange">{{ 'PunchInRange' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!timeEventForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

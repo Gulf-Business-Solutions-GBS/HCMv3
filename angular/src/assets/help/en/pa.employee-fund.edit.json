@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-fund.edit",
+  "lang": "en",
+  "title": "Employee Funds — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeFund",
+  "overviewHtml": "<p>The employee's fund account — for example a savings or provident fund — over a period.</p><p>Payroll deducts the fund contribution according to the fund bands on the employee's grade, and creates this record itself if the employee has none. The account's totals are kept up to date from its fund details.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeFund.StartDate",
+    "dom:EmployeeFund_StartDate": "EmployeeFund.StartDate",
+    "loc:EndDate": "EmployeeFund.EndDate",
+    "dom:EmployeeFund_EndDate": "EmployeeFund.EndDate",
+    "loc:Comments": "EmployeeFund.Comments",
+    "dom:EmployeeFund_Comments": "EmployeeFund.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeFund.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeFunds",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeFund_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFund.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeFunds",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeFund_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFund.Comments",
+      "label": "Comments",
+      "section": "EmployeeFunds",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeFund_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

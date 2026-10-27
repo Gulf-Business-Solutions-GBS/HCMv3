@@ -1,0 +1,27 @@
+﻿(function ($) {
+    app.modals.{{Entity_Name_Here}}ExcelColumnSelectionModal = function () {
+        
+        var _modalManager;
+        var _{{entity_Name_Plural_Here}}Service = abp.services.app.{{entity_Name_Plural_Here}};
+
+        this.init = function (modalManager) {
+            _modalManager = modalManager;
+        };
+
+           this.save = function () {
+                const exportExcelInput = _modalManager.getArgs();
+                exportExcelInput.selectedColumns = _modalManager.getModal().find('input[type="checkbox"]:checked').map(function () {
+                    return $(this).val();
+                }).get();
+    
+                _{{entity_Name_Plural_Here}}Service
+                    .Get{{Entity_Name_Here}}ExcelColumnsToExcel()(exportExcelInput)
+                    .done(function (result) {
+                        app.downloadTempFile(result);
+                        _modalManager.close();
+                    });
+            };
+        
+        {{File_Prop_Functions_Here}}
+    };
+})(jQuery);

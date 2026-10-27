@@ -1,0 +1,139 @@
+{
+  "helpId": "pa.employee-task.edit",
+  "lang": "ar",
+  "title": "مهام الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeTask",
+  "overviewHtml": "<p>مهمة أو متابعة تخص الموظف، مع تاريخ تذكير.</p><p>تُسجَّل للرجوع إليها؛ فلا يُرسل منها تذكير ولا يقرؤها شيء حالياً.</p>",
+  "aliasIndex": {
+    "loc:TaskTypeId": "EmployeeTask.TaskTypeId",
+    "dom:EmployeeTask_TaskTypeId": "EmployeeTask.TaskTypeId",
+    "loc:TaskDate": "EmployeeTask.TaskDate",
+    "dom:EmployeeTask_TaskDate": "EmployeeTask.TaskDate",
+    "loc:TaskStatus": "EmployeeTask.TaskStatus",
+    "dom:EmployeeTask_TaskStatus": "EmployeeTask.TaskStatus",
+    "loc:ReminderDate": "EmployeeTask.ReminderDate",
+    "dom:EmployeeTask_ReminderDate": "EmployeeTask.ReminderDate",
+    "loc:MonitoringType": "EmployeeTask.MonitoringType",
+    "dom:EmployeeTask_MonitoringType": "EmployeeTask.MonitoringType",
+    "loc:MonitoringCount": "EmployeeTask.MonitoringCount",
+    "dom:EmployeeTask_MonitoringCount": "EmployeeTask.MonitoringCount",
+    "loc:MonitoringUnit": "EmployeeTask.MonitoringUnit",
+    "dom:EmployeeTask_MonitoringUnit": "EmployeeTask.MonitoringUnit",
+    "loc:Comments": "EmployeeTask.Comments",
+    "dom:EmployeeTask_Comments": "EmployeeTask.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeTask.TaskTypeId",
+      "label": "TaskTypeId",
+      "section": "EmployeeTasks",
+      "aliases": [
+        "loc:TaskTypeId",
+        "dom:EmployeeTask_TaskTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع المهام.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع المهمة.</p><p><strong>مثال.</strong> مراجعة فترة الاختبار</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← أنواع المهام.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTask.TaskDate",
+      "label": "TaskDate",
+      "section": "EmployeeTasks",
+      "aliases": [
+        "loc:TaskDate",
+        "dom:EmployeeTask_TaskDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ استحقاق المهمة.</p><p><strong>مثال.</strong> 30 نوفمبر 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTask.TaskStatus",
+      "label": "TaskStatus",
+      "section": "EmployeeTasks",
+      "aliases": [
+        "loc:TaskStatus",
+        "dom:EmployeeTask_TaskStatus"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حالة المهمة، كرقم.</p><p><strong>مثال.</strong> 0</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTask.ReminderDate",
+      "label": "ReminderDate",
+      "section": "EmployeeTasks",
+      "aliases": [
+        "loc:ReminderDate",
+        "dom:EmployeeTask_ReminderDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ التذكير.</p><p><strong>مثال.</strong> 23 نوفمبر 2026</p><p><strong>لماذا يهم.</strong> لا يُرسل منه تذكير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTask.MonitoringType",
+      "label": "MonitoringType",
+      "section": "EmployeeTasks",
+      "aliases": [
+        "loc:MonitoringType",
+        "dom:EmployeeTask_MonitoringType"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طريقة متابعة المهمة، كرقم.</p><p><strong>مثال.</strong> 0</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTask.MonitoringCount",
+      "label": "MonitoringCount",
+      "section": "EmployeeTasks",
+      "aliases": [
+        "loc:MonitoringCount",
+        "dom:EmployeeTask_MonitoringCount"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد وحدات المتابعة.</p><p><strong>مثال.</strong> 1</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTask.MonitoringUnit",
+      "label": "MonitoringUnit",
+      "section": "EmployeeTasks",
+      "aliases": [
+        "loc:MonitoringUnit",
+        "dom:EmployeeTask_MonitoringUnit"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وحدة المتابعة، كرقم.</p><p><strong>مثال.</strong> 0</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTask.Comments",
+      "label": "Comments",
+      "section": "EmployeeTasks",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeTask_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

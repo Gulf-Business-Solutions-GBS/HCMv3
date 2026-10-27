@@ -1,0 +1,939 @@
+{
+  "helpId": "pa.employee.edit",
+  "lang": "en",
+  "title": "Employee — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.Employee",
+  "overviewHtml": "<p>The one form for an employee's own particulars. <strong>Create</strong> on the Employees list opens it empty; <strong>Edit</strong> on an employee's Personal Information tab opens it filled in. Because both use the same form, the same checks apply however the record is changed.</p><p>The form is split into sections — Names, Personal info, Address, Contact, Emergency contact and Employment. Fields marked as required must be filled before you can save, and a section that is still missing one shows a count beside its title.</p><p>When you save, the system also:</p><ul><li>builds the English and Arabic full names from the name parts you entered</li><li>works out the probation end date as the joining date plus the probation days</li><li>gives the employee the next free code if you left <strong>Code</strong> blank</li></ul><p>It refuses to save when the code is already in use, the birth date is today or later, the joining date is not after the birth date, or the probation days are negative. It also refuses a Civil ID or an Access ID that another <em>active</em> employee already has, and a Login ID that <em>any</em> other employee has.</p>",
+  "aliasIndex": {
+    "loc:FirstNameEn": "Employee.FirstNameEn",
+    "dom:Employee_FirstNameEn": "Employee.FirstNameEn",
+    "loc:SecondNameEn": "Employee.SecondNameEn",
+    "dom:Employee_SecondNameEn": "Employee.SecondNameEn",
+    "loc:ThirdNameEn": "Employee.ThirdNameEn",
+    "dom:Employee_ThirdNameEn": "Employee.ThirdNameEn",
+    "loc:LastNameEn": "Employee.LastNameEn",
+    "dom:Employee_LastNameEn": "Employee.LastNameEn",
+    "loc:FirstNameAr": "Employee.FirstNameAr",
+    "dom:Employee_FirstNameAr": "Employee.FirstNameAr",
+    "loc:SecondNameAr": "Employee.SecondNameAr",
+    "dom:Employee_SecondNameAr": "Employee.SecondNameAr",
+    "loc:ThirdNameAr": "Employee.ThirdNameAr",
+    "dom:Employee_ThirdNameAr": "Employee.ThirdNameAr",
+    "loc:LastNameAr": "Employee.LastNameAr",
+    "dom:Employee_LastNameAr": "Employee.LastNameAr",
+    "loc:Code": "Employee.Code",
+    "dom:Employee_Code": "Employee.Code",
+    "loc:Title": "Employee.TitleId",
+    "dom:Employee_TitleId": "Employee.TitleId",
+    "loc:BirthDate": "Employee.BirthDate",
+    "dom:Employee_BirthDate": "Employee.BirthDate",
+    "loc:Gender": "Employee.Gender",
+    "dom:Employee_Gender": "Employee.Gender",
+    "loc:MaritalStatus": "Employee.MaritalStatusId",
+    "dom:Employee_MaritalStatusId": "Employee.MaritalStatusId",
+    "loc:Nationality": "Employee.NationalityId",
+    "dom:Employee_NationalityId": "Employee.NationalityId",
+    "loc:Religion": "Employee.ReligionId",
+    "dom:Employee_ReligionId": "Employee.ReligionId",
+    "loc:Qualification": "Employee.QualificationId",
+    "dom:Employee_QualificationId": "Employee.QualificationId",
+    "loc:BloodGroup": "Employee.BloodGroup",
+    "dom:Employee_BloodGroup": "Employee.BloodGroup",
+    "loc:CivilID": "Employee.CivilID",
+    "dom:Employee_CivilID": "Employee.CivilID",
+    "loc:BirthPlace": "Employee.BirthPlaceId",
+    "dom:Employee_BirthPlaceId": "Employee.BirthPlaceId",
+    "loc:FatherNameEn": "Employee.FatherNameEn",
+    "dom:Employee_FatherNameEn": "Employee.FatherNameEn",
+    "loc:FatherNameAr": "Employee.FatherNameAr",
+    "dom:Employee_FatherNameAr": "Employee.FatherNameAr",
+    "loc:MotherNameEn": "Employee.MotherNameEn",
+    "dom:Employee_MotherNameEn": "Employee.MotherNameEn",
+    "loc:MotherNameAr": "Employee.MotherNameAr",
+    "dom:Employee_MotherNameAr": "Employee.MotherNameAr",
+    "loc:Photo": "Employee.PhotoPath",
+    "dom:Employee_Photo": "Employee.PhotoPath",
+    "loc:FlatNumber": "Employee.FlatNumn",
+    "dom:Employee_FlatNumn": "Employee.FlatNumn",
+    "loc:FloorNumber": "Employee.FloorNum",
+    "dom:Employee_FloorNum": "Employee.FloorNum",
+    "loc:BuildingNumber": "Employee.BuildingNum",
+    "dom:Employee_BuildingNum": "Employee.BuildingNum",
+    "loc:StreetNumber": "Employee.StreetNum",
+    "dom:Employee_StreetNum": "Employee.StreetNum",
+    "loc:BlockNumber": "Employee.BlockNum",
+    "dom:Employee_BlockNum": "Employee.BlockNum",
+    "loc:LaneNumber": "Employee.LaneNumber",
+    "dom:Employee_LaneNumber": "Employee.LaneNumber",
+    "loc:PaciNumber": "Employee.PACINumber",
+    "dom:Employee_PaciNumber": "Employee.PACINumber",
+    "loc:ZipCode": "Employee.ZipCode",
+    "dom:Employee_ZipCode": "Employee.ZipCode",
+    "loc:City": "Employee.City",
+    "dom:Employee_City": "Employee.City",
+    "loc:Governorate": "Employee.GovernorateId",
+    "dom:Employee_GovernorateId": "Employee.GovernorateId",
+    "loc:Country": "Employee.CountryId",
+    "dom:Employee_CountryId": "Employee.CountryId",
+    "loc:CurrentAddress": "Employee.CurrentAddress",
+    "dom:Employee_CurrentAddress": "Employee.CurrentAddress",
+    "loc:PermanentAddress": "Employee.PermanentAddress",
+    "dom:Employee_PermanentAddress": "Employee.PermanentAddress",
+    "loc:Telephone": "Employee.Telephone",
+    "dom:Employee_Telephone": "Employee.Telephone",
+    "loc:Mobile": "Employee.Mobile",
+    "dom:Employee_Mobile": "Employee.Mobile",
+    "loc:PermanentTelephone": "Employee.PermanentTelephone",
+    "dom:Employee_PermanentTelephone": "Employee.PermanentTelephone",
+    "loc:Email": "Employee.Email",
+    "dom:Employee_Email": "Employee.Email",
+    "loc:AlternateEmail": "Employee.AlternateEmail",
+    "dom:Employee_AlternateEmail": "Employee.AlternateEmail",
+    "loc:LoginID": "Employee.LoginID",
+    "dom:Employee_LoginID": "Employee.LoginID",
+    "loc:AccessID": "Employee.AccessID",
+    "dom:Employee_AccessID": "Employee.AccessID",
+    "loc:BusinessLandline": "Employee.BusinessLandline",
+    "dom:Employee_BusinessLandline": "Employee.BusinessLandline",
+    "loc:BusinessExtension": "Employee.BusinessExtension",
+    "dom:Employee_BusinessExtension": "Employee.BusinessExtension",
+    "loc:EmergencyContact": "Employee.EmergencyContact",
+    "dom:Employee_EmergencyContact": "Employee.EmergencyContact",
+    "loc:EmergencyNumber": "Employee.EmergencyNumber",
+    "dom:Employee_EmergencyNumber": "Employee.EmergencyNumber",
+    "loc:EmergencyRelation": "Employee.EmergencyRelation",
+    "dom:Employee_EmergencyRelation": "Employee.EmergencyRelation",
+    "loc:EmergencyContactAddress": "Employee.EmergencyContactAddress",
+    "dom:Employee_EmergencyContactAddress": "Employee.EmergencyContactAddress",
+    "loc:CriticalIllness": "Employee.CriticalIllness",
+    "dom:Employee_CriticalIllness": "Employee.CriticalIllness",
+    "loc:Status": "Employee.Status",
+    "dom:Employee_Status": "Employee.Status",
+    "loc:EmploymentType": "Employee.EmploymentType",
+    "dom:Employee_EmploymentType": "Employee.EmploymentType",
+    "loc:JoiningDate": "Employee.JoiningDate",
+    "dom:Employee_JoiningDate": "Employee.JoiningDate",
+    "loc:ProbationDays": "Employee.ProbationDays",
+    "dom:Employee_ProbationDays": "Employee.ProbationDays",
+    "loc:RecruitmentType": "Employee.RecruitmentTypeId",
+    "dom:Employee_RecruitmentTypeId": "Employee.RecruitmentTypeId",
+    "loc:PreviousEmpCode": "Employee.PreviousEmpCode",
+    "dom:Employee_PreviousEmpCode": "Employee.PreviousEmpCode",
+    "loc:ReferenceCode": "Employee.ReferenceCode",
+    "dom:Employee_ReferenceCode": "Employee.ReferenceCode"
+  },
+  "fields": [
+    {
+      "id": "Employee.FirstNameEn",
+      "label": "FirstNameEn",
+      "section": "Names",
+      "aliases": [
+        "loc:FirstNameEn",
+        "dom:Employee_FirstNameEn"
+      ],
+      "rules": "Required. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's first (given) name in English, spelled as on their passport or Civil ID.</p><p><strong>Example.</strong> <code>Ahmed</code></p><p><strong>Why it matters.</strong> Together with the other English name parts it builds the English full name used on lists, in search, in self-service and on reports. Employees can ask for a correction through self-service (<em>Update my personal details</em>); it changes here once approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.SecondNameEn",
+      "label": "SecondNameEn",
+      "section": "Names",
+      "aliases": [
+        "loc:SecondNameEn",
+        "dom:Employee_SecondNameEn"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The second part of the English name. In Arabic naming this is usually the father's first name.</p><p><strong>Example.</strong> <code>Khaled</code></p><p><strong>Why it matters.</strong> Part of the English full name. Leave it blank if the employee's documents have no second name — the full name simply skips empty parts.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.ThirdNameEn",
+      "label": "ThirdNameEn",
+      "section": "Names",
+      "aliases": [
+        "loc:ThirdNameEn",
+        "dom:Employee_ThirdNameEn"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The third part of the English name. In Arabic naming this is usually the grandfather's first name.</p><p><strong>Example.</strong> <code>Saleh</code></p><p><strong>Why it matters.</strong> Part of the English full name. Leave it blank if the employee's documents have no third name.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.LastNameEn",
+      "label": "LastNameEn",
+      "section": "Names",
+      "aliases": [
+        "loc:LastNameEn",
+        "dom:Employee_LastNameEn"
+      ],
+      "rules": "Required. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The family or tribal name in English, as on the passport or Civil ID.</p><p><strong>Example.</strong> <code>Al-Mutairi</code></p><p><strong>Why it matters.</strong> Ends the English full name. Employees can ask for a correction through self-service; it changes here once approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.FirstNameAr",
+      "label": "FirstNameAr",
+      "section": "Names",
+      "aliases": [
+        "loc:FirstNameAr",
+        "dom:Employee_FirstNameAr"
+      ],
+      "rules": "Required. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's first name in Arabic, spelled as on the Civil ID.</p><p><strong>Example.</strong> <code>أحمد</code></p><p><strong>Why it matters.</strong> Together with the other Arabic name parts it builds the Arabic full name, which the system shows wherever names appear in Arabic. Employees can ask for a correction through self-service; it changes here once approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.SecondNameAr",
+      "label": "SecondNameAr",
+      "section": "Names",
+      "aliases": [
+        "loc:SecondNameAr",
+        "dom:Employee_SecondNameAr"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The second part of the Arabic name — usually the father's first name.</p><p><strong>Example.</strong> <code>خالد</code></p><p><strong>Why it matters.</strong> Part of the Arabic full name. Leave it blank if the Civil ID has no second name.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.ThirdNameAr",
+      "label": "ThirdNameAr",
+      "section": "Names",
+      "aliases": [
+        "loc:ThirdNameAr",
+        "dom:Employee_ThirdNameAr"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The third part of the Arabic name — usually the grandfather's first name.</p><p><strong>Example.</strong> <code>صالح</code></p><p><strong>Why it matters.</strong> Part of the Arabic full name. Leave it blank if the Civil ID has no third name.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.LastNameAr",
+      "label": "LastNameAr",
+      "section": "Names",
+      "aliases": [
+        "loc:LastNameAr",
+        "dom:Employee_LastNameAr"
+      ],
+      "rules": "Required. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The family or tribal name in Arabic, as on the Civil ID.</p><p><strong>Example.</strong> <code>المطيري</code></p><p><strong>Why it matters.</strong> Ends the Arabic full name. Employees can ask for a correction through self-service; it changes here once approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.Code",
+      "label": "Code",
+      "section": "PersonalInfo",
+      "aliases": [
+        "loc:Code",
+        "dom:Employee_Code"
+      ],
+      "rules": "Optional. Maximum 64 characters. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's business identifier, unique across the organisation. It is how the employee is identified on lists, reports and printed forms.</p><p><strong>Example.</strong> <code>001245</code></p><p><strong>Why it matters.</strong> The next number assigned to a blank code is the highest existing numeric code plus one.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.TitleId",
+      "label": "Title",
+      "section": "PersonalInfo",
+      "aliases": [
+        "loc:Title",
+        "dom:Employee_TitleId"
+      ],
+      "rules": "Optional. Chosen from Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The courtesy title used before the employee's name.</p><p><strong>Example.</strong> <code>Mr</code></p><p><strong>Why it matters.</strong> Printed before the name on the employment notice. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Titles.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.BirthDate",
+      "label": "BirthDate",
+      "section": "PersonalInfo",
+      "aliases": [
+        "loc:BirthDate",
+        "dom:Employee_BirthDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Date of birth exactly as it appears on the Civil ID.</p><p><strong>Example.</strong> <code>14 March 1988</code></p><p><strong>Why it matters.</strong> It must be before today, and the joining date must come after it. Active employees receive a birthday notification on the day, and business rules can test it. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.Gender",
+      "label": "Gender",
+      "section": "PersonalInfo",
+      "aliases": [
+        "loc:Gender",
+        "dom:Employee_Gender"
+      ],
+      "rules": "Required. One of: Male, Female, Not specified.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The gender recorded on the Civil ID.</p><p><strong>Example.</strong> <code>Female</code></p><p><strong>Why it matters.</strong> Used by the social security (PIFSS) calculations in payroll. Business rules can also test it; the sample maternity-leave rule uses it to refuse maternity leave for male employees, where that rule is switched on. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "<p>Leave types have a gender setting, but the system does not currently check it against this field. To restrict a leave type by gender, use a business rule.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.MaritalStatusId",
+      "label": "MaritalStatus",
+      "section": "PersonalInfo",
+      "aliases": [
+        "loc:MaritalStatus",
+        "dom:Employee_MaritalStatusId"
+      ],
+      "rules": "Optional. Chosen from Marital Status master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Current marital status.</p><p><strong>Example.</strong> <code>Married</code></p><p><strong>Why it matters.</strong> Used by the social security (PIFSS) calculations in payroll, including the marital-status allowance, so keep it current. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Marital Statuses.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.NationalityId",
+      "label": "Nationality",
+      "section": "PersonalInfo",
+      "aliases": [
+        "loc:Nationality",
+        "dom:Employee_NationalityId"
+      ],
+      "rules": "Required. Chosen from Nationality master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's nationality as recorded on the Civil ID.</p><p><strong>Example.</strong> <code>Kuwaiti</code></p><p><strong>Why it matters.</strong> One of the most consequential fields on the record. It decides which social security (PIFSS) rules apply in payroll, and whether the employee counts as a citizen or a non-citizen in the workforce quota under Government Relations. It is also printed on the work-visa request form.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Nationalities. For the workforce quota, a nationality counts as citizen when its nationality group is named <em>Citizen</em>.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.ReligionId",
+      "label": "Religion",
+      "section": "PersonalInfo",
+      "aliases": [
+        "loc:Religion",
+        "dom:Employee_ReligionId"
+      ],
+      "rules": "Optional. Chosen from Religion master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Religion, where the organisation records it.</p><p><strong>Example.</strong> <code>Muslim</code></p><p><strong>Why it matters.</strong> Recorded for information and printed on the work-visa request form; no calculation uses it. Leave it blank if your organisation does not track it.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Religions. Leave types have a religion setting (for leave such as Hajj), but the system does not currently check it against this field.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.QualificationId",
+      "label": "Qualification",
+      "section": "PersonalInfo",
+      "aliases": [
+        "loc:Qualification",
+        "dom:Employee_QualificationId"
+      ],
+      "rules": "Optional. Chosen from Qualification master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Highest completed academic or professional qualification.</p><p><strong>Example.</strong> <code>Bachelor of Engineering</code></p><p><strong>Why it matters.</strong> The social security allowance in payroll can depend on it, alongside nationality, gender and marital status. It is also printed on the work-visa request form.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Qualifications.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.BloodGroup",
+      "label": "BloodGroup",
+      "section": "PersonalInfo",
+      "aliases": [
+        "loc:BloodGroup",
+        "dom:Employee_BloodGroup"
+      ],
+      "rules": "Optional. Maximum 32 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Blood group, held for medical and emergency use.</p><p><strong>Example.</strong> <code>O+</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.CivilID",
+      "label": "CivilID",
+      "section": "PersonalInfo",
+      "aliases": [
+        "loc:CivilID",
+        "dom:Employee_CivilID"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The 12-digit Kuwait Civil ID number. It must match the card exactly.</p><p><strong>Example.</strong> <code>288031400123</code></p><p><strong>Why it matters.</strong> Printed on government forms. Two active employees cannot share a Civil ID: the form refuses a number that another active employee already has.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.BirthPlaceId",
+      "label": "BirthPlace",
+      "section": "PersonalInfo",
+      "aliases": [
+        "loc:BirthPlace",
+        "dom:Employee_BirthPlaceId"
+      ],
+      "rules": "Optional. Chosen from City master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The city recorded as place of birth.</p><p><strong>Example.</strong> <code>Kuwait City</code></p><p><strong>Why it matters.</strong> Printed on the new work-visa application and the end-of-service / visa cancellation forms. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "<p>The list is the shared City master data, maintained under General Master Info → Cities.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.FatherNameEn",
+      "label": "FatherNameEn",
+      "section": "PersonalInfo",
+      "aliases": [
+        "loc:FatherNameEn",
+        "dom:Employee_FatherNameEn"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The father's full name in English, as it appears on the employee's documents.</p><p><strong>Example.</strong> <code>Khaled Saleh Al-Mutairi</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a correction through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.FatherNameAr",
+      "label": "FatherNameAr",
+      "section": "PersonalInfo",
+      "aliases": [
+        "loc:FatherNameAr",
+        "dom:Employee_FatherNameAr"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The father's full name in Arabic.</p><p><strong>Example.</strong> <code>خالد صالح المطيري</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a correction through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.MotherNameEn",
+      "label": "MotherNameEn",
+      "section": "PersonalInfo",
+      "aliases": [
+        "loc:MotherNameEn",
+        "dom:Employee_MotherNameEn"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The mother's full name in English, as it appears on the employee's documents.</p><p><strong>Example.</strong> <code>Fatima Ali Al-Enezi</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a correction through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.MotherNameAr",
+      "label": "MotherNameAr",
+      "section": "PersonalInfo",
+      "aliases": [
+        "loc:MotherNameAr",
+        "dom:Employee_MotherNameAr"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The mother's full name in Arabic.</p><p><strong>Example.</strong> <code>فاطمة علي العنزي</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a correction through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.PhotoPath",
+      "label": "Photo",
+      "section": "PersonalInfo",
+      "aliases": [
+        "loc:Photo",
+        "dom:Employee_Photo"
+      ],
+      "rules": "Optional. Maximum 512 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A photograph of the employee. Choose an image file; it is stored with the record when you save the form.</p><p><strong>Example.</strong> A recent head-and-shoulders photo on a plain background, as for a passport.</p><p><strong>Why it matters.</strong> Shown in self-service, on organisation charts, in search results and on the late/early attendance report with photos, and printed on the work-visa request form.</p>",
+      "adminHtml": "<p>Employees cannot change their photo through self-service — by design it is managed by HR on this form only. The form does not limit the file size, and the photo is stored in the database with the employee, so resize large camera images before uploading.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.FlatNumn",
+      "label": "FlatNumber",
+      "section": "Address",
+      "aliases": [
+        "loc:FlatNumber",
+        "dom:Employee_FlatNumn"
+      ],
+      "rules": "Optional. Maximum 32 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The flat (apartment) number within the building, as in a Kuwait address.</p><p><strong>Example.</strong> <code>3</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Letters are allowed, for flats such as <code>3A</code>. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.FloorNum",
+      "label": "FloorNumber",
+      "section": "Address",
+      "aliases": [
+        "loc:FloorNumber",
+        "dom:Employee_FloorNum"
+      ],
+      "rules": "Optional. Maximum 32 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The floor the flat is on.</p><p><strong>Example.</strong> <code>2</code> (or <code>G</code> for ground)</p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.BuildingNum",
+      "label": "BuildingNumber",
+      "section": "Address",
+      "aliases": [
+        "loc:BuildingNumber",
+        "dom:Employee_BuildingNum"
+      ],
+      "rules": "Optional. Maximum 32 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The building (house) number on the street.</p><p><strong>Example.</strong> <code>7</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.StreetNum",
+      "label": "StreetNumber",
+      "section": "Address",
+      "aliases": [
+        "loc:StreetNumber",
+        "dom:Employee_StreetNum"
+      ],
+      "rules": "Optional. Maximum 32 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The street number or name within the block.</p><p><strong>Example.</strong> <code>12</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.BlockNum",
+      "label": "BlockNumber",
+      "section": "Address",
+      "aliases": [
+        "loc:BlockNumber",
+        "dom:Employee_BlockNum"
+      ],
+      "rules": "Optional. Maximum 32 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The block number of the area, as in a Kuwait address.</p><p><strong>Example.</strong> <code>4</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.LaneNumber",
+      "label": "LaneNumber",
+      "section": "Address",
+      "aliases": [
+        "loc:LaneNumber",
+        "dom:Employee_LaneNumber"
+      ],
+      "rules": "Optional. Maximum 32 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The lane (<em>jadda</em>) number, where the address has one.</p><p><strong>Example.</strong> <code>5</code></p><p><strong>Why it matters.</strong> Completes the structured address. Unlike the other address parts, it is not on the self-service change request, so only HR can update it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.PACINumber",
+      "label": "PaciNumber",
+      "section": "Address",
+      "aliases": [
+        "loc:PaciNumber",
+        "dom:Employee_PaciNumber"
+      ],
+      "rules": "Optional. Maximum 32 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The PACI address reference for the employee, issued by the Public Authority for Civil Information.</p><p><strong>Example.</strong> <code>12345678</code></p><p><strong>Why it matters.</strong> Kept for reference; no form or calculation uses it yet. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.ZipCode",
+      "label": "ZipCode",
+      "section": "Address",
+      "aliases": [
+        "loc:ZipCode",
+        "dom:Employee_ZipCode"
+      ],
+      "rules": "Optional. Maximum 32 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Postal code for the current address, where one applies.</p><p><strong>Example.</strong> <code>22001</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.City",
+      "label": "City",
+      "section": "Address",
+      "aliases": [
+        "loc:City",
+        "dom:Employee_City"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> City of the current address, typed in.</p><p><strong>Example.</strong> <code>Salmiya</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.GovernorateId",
+      "label": "Governorate",
+      "section": "Address",
+      "aliases": [
+        "loc:Governorate",
+        "dom:Employee_GovernorateId"
+      ],
+      "rules": "Optional. Chosen from Governorate master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Governorate of the current address.</p><p><strong>Example.</strong> <code>Hawalli</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Governorates.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.CountryId",
+      "label": "Country",
+      "section": "Address",
+      "aliases": [
+        "loc:Country",
+        "dom:Employee_CountryId"
+      ],
+      "rules": "Optional. Chosen from Country master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Country of the current address.</p><p><strong>Example.</strong> <code>Kuwait</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Countries.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.CurrentAddress",
+      "label": "CurrentAddress",
+      "section": "Address",
+      "aliases": [
+        "loc:CurrentAddress",
+        "dom:Employee_CurrentAddress"
+      ],
+      "rules": "Optional. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the employee lives now, in full.</p><p><strong>Example.</strong> <code>Block 4, Street 12, Building 7, Flat 3, Salmiya</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.PermanentAddress",
+      "label": "PermanentAddress",
+      "section": "Address",
+      "aliases": [
+        "loc:PermanentAddress",
+        "dom:Employee_PermanentAddress"
+      ],
+      "rules": "Optional. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The permanent or home-country address, where it differs from the current one.</p><p><strong>Example.</strong> <code>House 22, Sector G-9, Islamabad, Pakistan</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.Telephone",
+      "label": "Telephone",
+      "section": "Contact",
+      "aliases": [
+        "loc:Telephone",
+        "dom:Employee_Telephone"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Home or personal landline number, entered as digits.</p><p><strong>Example.</strong> <code>22551234</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.Mobile",
+      "label": "Mobile",
+      "section": "Contact",
+      "aliases": [
+        "loc:Mobile",
+        "dom:Employee_Mobile"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Mobile telephone number, entered as digits without spaces or symbols.</p><p><strong>Example.</strong> <code>96550123456</code></p><p><strong>Why it matters.</strong> The number HR and managers use to reach the employee, and it is printed on the work-visa request form. Include the country code. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "<p>This is not the number sign-in codes are sent to. Text messages from HCMv3 — verification and sign-in codes — go to the phone number on the employee's <em>user account</em>, which is maintained separately under Users.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.PermanentTelephone",
+      "label": "PermanentTelephone",
+      "section": "Contact",
+      "aliases": [
+        "loc:PermanentTelephone",
+        "dom:Employee_PermanentTelephone"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A telephone number at the employee's permanent address — usually the home-country address — entered as digits without spaces or symbols, including the country code.</p><p><strong>Example.</strong> <code>20212345678</code></p><p><strong>Why it matters.</strong> A way to reach the family at the permanent address when the employee cannot be reached in Kuwait. Only HR can update it; it is not on the self-service change request.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.Email",
+      "label": "Email",
+      "section": "Contact",
+      "aliases": [
+        "loc:Email",
+        "dom:Employee_Email"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The work email address.</p><p><strong>Example.</strong> <code>ahmed.mutairi@company.com</code></p><p><strong>Why it matters.</strong> Where HCMv3 emails the employee: new sign-in details from the bulk password tool, scheduled report deliveries, and notifications such as birthday and work-anniversary greetings. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.AlternateEmail",
+      "label": "AlternateEmail",
+      "section": "Contact",
+      "aliases": [
+        "loc:AlternateEmail",
+        "dom:Employee_AlternateEmail"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A secondary or personal email address.</p><p><strong>Example.</strong> <code>a.mutairi@gmail.com</code></p><p><strong>Why it matters.</strong> Kept for reference; HCMv3 does not send anything to it. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.LoginID",
+      "label": "LoginID",
+      "section": "Contact",
+      "aliases": [
+        "loc:LoginID",
+        "dom:Employee_LoginID"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The user name this employee signs in to HCMv3 with. It must match their user account's user name exactly.</p><p><strong>Example.</strong> <code>ahmed.almutairi</code></p><p><strong>Why it matters.</strong> Connects the person who signs in to this employee record, so self-service shows them their own records and requests. The administration tools for bulk passwords and workflow also find people by it.</p>",
+      "adminHtml": "<p>A Login ID can belong to only one employee — including employees who have left, because an old record keeping the same Login ID would make it unclear who is signing in. To reuse a leaver's Login ID, clear it on their record first; the error message names that employee.</p><p>Records linked directly to a user account do not depend on this field, but for any record that is not, Login ID is how the system finds the employee. If a user account is renamed, update the Login ID to match, or that employee will stop finding their own record in self-service.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.AccessID",
+      "label": "AccessID",
+      "section": "Contact",
+      "aliases": [
+        "loc:AccessID",
+        "dom:Employee_AccessID"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's PIN or enrolment number on the attendance and access-control devices.</p><p><strong>Example.</strong> <code>10457</code></p><p><strong>Why it matters.</strong> Every punch imported from the devices is matched to an employee by this number. If it is blank or does not match the device, the employee's punches are not recorded against them and their attendance will show gaps.</p>",
+      "adminHtml": "<p>No two <em>active</em> employees can share an Access ID, so a leaver's number can be given to someone new. Clear it on the leaver's record first all the same: the attendance import matches punches by this number without checking whether the employee is still active, so a punch could be recorded against the leaver instead. The attendance resync tools only include employees who have an Access ID.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.BusinessLandline",
+      "label": "BusinessLandline",
+      "section": "Contact",
+      "aliases": [
+        "loc:BusinessLandline",
+        "dom:Employee_BusinessLandline"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The direct office line for this employee.</p><p><strong>Example.</strong> <code>+965 2222 3344</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.BusinessExtension",
+      "label": "BusinessExtension",
+      "section": "Contact",
+      "aliases": [
+        "loc:BusinessExtension",
+        "dom:Employee_BusinessExtension"
+      ],
+      "rules": "Optional. Maximum 32 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Internal switchboard extension.</p><p><strong>Example.</strong> <code>4417</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.EmergencyContact",
+      "label": "EmergencyContact",
+      "section": "EmergencyContactSection",
+      "aliases": [
+        "loc:EmergencyContact",
+        "dom:Employee_EmergencyContact"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The name of the person to contact if something happens to this employee at work.</p><p><strong>Example.</strong> <code>Fatima Al-Mutairi</code></p><p><strong>Why it matters.</strong> Worth confirming once a year — it is the one field nobody checks until it is needed. Employees can update it through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.EmergencyNumber",
+      "label": "EmergencyNumber",
+      "section": "EmergencyContactSection",
+      "aliases": [
+        "loc:EmergencyNumber",
+        "dom:Employee_EmergencyNumber"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Telephone number for the emergency contact.</p><p><strong>Example.</strong> <code>96555512345</code></p><p><strong>Why it matters.</strong> Employees can update it through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.EmergencyRelation",
+      "label": "EmergencyRelation",
+      "section": "EmergencyContactSection",
+      "aliases": [
+        "loc:EmergencyRelation",
+        "dom:Employee_EmergencyRelation"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the emergency contact is related to the employee.</p><p><strong>Example.</strong> <code>Spouse</code></p><p><strong>Why it matters.</strong> Employees can update it through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.EmergencyContactAddress",
+      "label": "EmergencyContactAddress",
+      "section": "EmergencyContactSection",
+      "aliases": [
+        "loc:EmergencyContactAddress",
+        "dom:Employee_EmergencyContactAddress"
+      ],
+      "rules": "Optional. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Address of the emergency contact, where it differs from the employee's own.</p><p><strong>Example.</strong> <code>Block 4, Street 12, Building 7, Flat 3, Salmiya</code></p><p><strong>Why it matters.</strong> Unlike the other emergency details, it is not on the self-service change request, so only HR can update it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.CriticalIllness",
+      "label": "CriticalIllness",
+      "section": "EmergencyContactSection",
+      "aliases": [
+        "loc:CriticalIllness",
+        "dom:Employee_CriticalIllness"
+      ],
+      "rules": "Optional. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Medical conditions, allergies or medication that first responders or the company doctor should know about.</p><p><strong>Example.</strong> <code>Type 1 diabetes; allergic to penicillin</code></p><p><strong>Why it matters.</strong> Sensitive personal data. Record only what genuinely serves the employee in an emergency, and restrict who can view this screen accordingly. Employees can update it through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.Status",
+      "label": "Status",
+      "section": "Employment",
+      "aliases": [
+        "loc:Status",
+        "dom:Employee_Status"
+      ],
+      "rules": "Required. One of: Active, Inactive.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this record is currently in service. Inactive employees keep their full record and history, but are left out of payroll runs, the bulk password and attendance tools, self-service lookups and many reports.</p><p><strong>Example.</strong> <code>Active</code></p><p><strong>Why it matters.</strong> Set a leaver to Inactive rather than deleting them: deleting removes the employee from the system, while Inactive keeps the record and its history available. An inactive employee's Civil ID and Access ID can be given to a new record.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.EmploymentType",
+      "label": "EmploymentType",
+      "section": "Employment",
+      "aliases": [
+        "loc:EmploymentType",
+        "dom:Employee_EmploymentType"
+      ],
+      "rules": "Required. One of: Permanent, Temporary.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the employee is on permanent or temporary terms.</p><p><strong>Example.</strong> <code>Permanent</code></p><p><strong>Why it matters.</strong> No built-in calculation uses it. Business rules can test it — for example, to apply a rule only to temporary staff.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.JoiningDate",
+      "label": "JoiningDate",
+      "section": "Employment",
+      "aliases": [
+        "loc:JoiningDate",
+        "dom:Employee_JoiningDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date employment actually began. It must come after the birth date.</p><p><strong>Example.</strong> <code>1 September 2024</code></p><p><strong>Why it matters.</strong> The anchor date for the record: leave accruals, leave provisions, service bonuses and the probation period are all measured from it, and active employees receive a work-anniversary notification. Nothing is recalculated the moment you save — payroll, accruals and provisions use the new date the next time they run.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.ProbationDays",
+      "label": "ProbationDays",
+      "section": "Employment",
+      "aliases": [
+        "loc:ProbationDays",
+        "dom:Employee_ProbationDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Length of the probation period, counted in calendar days from the joining date.</p><p><strong>Example.</strong> <code>90</code></p><p><strong>Why it matters.</strong> Sets the probation end date, which is the joining date plus these days. It cannot be negative.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.RecruitmentTypeId",
+      "label": "RecruitmentType",
+      "section": "Employment",
+      "aliases": [
+        "loc:RecruitmentType",
+        "dom:Employee_RecruitmentTypeId"
+      ],
+      "rules": "Optional. Chosen from Recruitment Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How this employee came into the organisation — direct hire, agency, internal transfer, and so on.</p><p><strong>Example.</strong> <code>Direct</code></p><p><strong>Why it matters.</strong> Recorded for information; no built-in calculation or report uses it. Business rules can test it.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Recruitment Types.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.PreviousEmpCode",
+      "label": "PreviousEmpCode",
+      "section": "Employment",
+      "aliases": [
+        "loc:PreviousEmpCode",
+        "dom:Employee_PreviousEmpCode"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The code this employee held before — in an earlier period of employment, or in a system HCMv3 replaced.</p><p><strong>Example.</strong> <code>EMP-8841</code></p><p><strong>Why it matters.</strong> Shown on the employee rejoin report, so a returning employee can be matched to their earlier record.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.ReferenceCode",
+      "label": "ReferenceCode",
+      "section": "Employment",
+      "aliases": [
+        "loc:ReferenceCode",
+        "dom:Employee_ReferenceCode"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A reference of your own choosing, typically the key used for this employee in another system.</p><p><strong>Example.</strong> <code>SAP-00123</code></p><p><strong>Why it matters.</strong> No calculation uses it. It appears on the employee information report, and some customised payroll journal exports use it to identify the employee in the accounting system.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

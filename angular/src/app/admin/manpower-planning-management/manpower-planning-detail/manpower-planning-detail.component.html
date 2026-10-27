@@ -1,0 +1,151 @@
+<div [@routerTransition]>
+    <sub-header [title]="'ManpowerPlanningDetails' | localize" [description]="manpowerPlanning()?.employeeFullNameEn">
+        <div role="actions">
+            @if ('Pages.ManpowerPlanningManagement.ManpowerPlanningDetails.Create' | permission) {
+                <button (click)="createManpowerPlanningDetail()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        @if (manpowerPlanning(); as plan) {
+            <div class="card card-custom mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <strong>{{ 'Employee' | localize }}:</strong> {{ plan.employeeFullNameEn }}
+                        </div>
+                        <div class="col-md-3">
+                            <strong>{{ 'OrganizationUnit' | localize }}:</strong> {{ plan.organizationUnitDisplayName }}
+                        </div>
+                        <div class="col-md-3">
+                            <strong>{{ 'Period' | localize }}:</strong> {{ plan.periodName }}
+                        </div>
+                        <div class="col-md-3">
+                            <strong>{{ 'GrandTotalAmount' | localize }}:</strong> {{ plan.grandTotalAmount }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getManpowerPlanningDetails($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '160rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.ManpowerPlanningManagement.ManpowerPlanningDetails.Edit',
+                                                    'Pages.ManpowerPlanningManagement.ManpowerPlanningDetails.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 180px">{{ 'JobTitle' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'Position' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'Holder' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'January' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'February' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'March' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'April' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'May' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'June' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'July' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'August' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'September' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'October' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'November' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'December' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'TotalAmount' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.ManpowerPlanningManagement.ManpowerPlanningDetails.Edit',
+                                                    'Pages.ManpowerPlanningManagement.ManpowerPlanningDetails.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 180px">{{ record.jobTitleNameEn }}</td>
+                                    <td style="min-width: 180px">{{ record.positionCodeWithNameEn }}</td>
+                                    <td style="min-width: 180px">{{ record.holderFullNameEn }}</td>
+                                    <td style="min-width: 100px">{{ record.january }}</td>
+                                    <td style="min-width: 100px">{{ record.february }}</td>
+                                    <td style="min-width: 100px">{{ record.march }}</td>
+                                    <td style="min-width: 100px">{{ record.april }}</td>
+                                    <td style="min-width: 100px">{{ record.may }}</td>
+                                    <td style="min-width: 100px">{{ record.june }}</td>
+                                    <td style="min-width: 100px">{{ record.july }}</td>
+                                    <td style="min-width: 100px">{{ record.august }}</td>
+                                    <td style="min-width: 100px">{{ record.september }}</td>
+                                    <td style="min-width: 100px">{{ record.october }}</td>
+                                    <td style="min-width: 100px">{{ record.november }}</td>
+                                    <td style="min-width: 100px">{{ record.december }}</td>
+                                    <td style="min-width: 130px">{{ record.totalAmount }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getManpowerPlanningDetails($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditManpowerPlanningDetailModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

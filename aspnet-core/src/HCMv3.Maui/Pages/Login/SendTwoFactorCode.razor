@@ -1,0 +1,42 @@
+﻿@using HCMv3.Maui.Pages.MySettings
+@using HCMv3.Maui.Services.Navigation
+@using HCMv3.Maui.Pages.Layout
+@layout LoginLayout
+@inherits HCMv3ComponentBase
+@attribute [Route("/" + NavigationUrlConsts.SendTwoFactorCode)]
+
+<div class="d-flex justify-content-between flex-column-fluid flex-column w-100 mw-450px">
+    <div class="py-20">
+        <div class="card-body">
+            <div class="text-start mb-10">
+                <h1 class="text-gray-900 mb-3 fs-3x" data-kt-translate="sign-in-title">@L("SendSecurityCode")</h1>
+                <div class="text-gray-400 fw-semibold fs-6" data-kt-translate="general-desc">
+                    @L("CurrentTenant"):
+                    <span class="text-gray-900">
+                        @CurrentTenancyNameOrDefault
+                    </span>
+                </div>
+            </div>
+            <p>@L("SendSecurityCode_Information")</p>
+            <InputSelect @bind-Value="_selectedProvider" class="form-select form-select-solid" data-control="select2"
+                         data-hide-search="true" tabindex="-1" aria-hidden="true" data-kt-initialized="1">
+                @foreach (var item in _twoFactorAuthProviders)
+                {
+                    <option value="@item">
+                        @item
+                    </option>
+                }
+            </InputSelect>
+            <div class="d-flex flex-stack mt-5">
+                <button id="kt_sign_in_submit" class="btn btn-primary me-2 flex-shrink-0" @onclick="SelectProvider">
+                    <span class="indicator-label" data-kt-translate="sign-in-submit">@L("Submit")</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="m-0">
+        <div class="col-5">
+            <LanguageSwitch OnSave="OnLanguageSwitchAsync"></LanguageSwitch>
+        </div>
+    </div>
+</div>

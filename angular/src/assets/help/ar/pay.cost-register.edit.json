@@ -1,0 +1,59 @@
+{
+  "helpId": "pay.cost-register.edit",
+  "lang": "ar",
+  "title": "سجلات التكلفة — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.CostRegister",
+  "overviewHtml": "<p>تكلفة رواتب الموظف لشهر واحد وتشغيل واحد، موزعة على الحسابات وعناصر التكلفة. يكتبها محرك التكلفة من كشف الراتب وحسابات الأجور للموظف، ويُبنى منها قيد اليومية.</p><p>يفتح خيار التفاصيل على أي سجل في القائمة صفحته الخاصة: الموظف والفترة ونوع التشغيل في الأعلى مع زر التحرير، وتحتها بنود التكلفة، مع عمود لكل نوع من أنواع عناصر التكلفة المستخدمة. ويمكن إضافة البنود وتعديلها وحذفها من هناك.</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "CostRegister.EmployeeId",
+    "dom:CostRegister_EmployeeId": "CostRegister.EmployeeId",
+    "loc:Period": "CostRegister.Period",
+    "dom:CostRegister_Period": "CostRegister.Period",
+    "loc:PayrollRunType": "CostRegister.PayrollRunType",
+    "dom:CostRegister_PayrollRunType": "CostRegister.PayrollRunType"
+  },
+  "fields": [
+    {
+      "id": "CostRegister.EmployeeId",
+      "label": "EmployeeId",
+      "section": "CostRegisters",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:CostRegister_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostRegister.Period",
+      "label": "Period",
+      "section": "CostRegisters",
+      "aliases": [
+        "loc:Period",
+        "dom:CostRegister_Period"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشهر الذي تخصه التكلفة.</p><p><strong>مثال.</strong> <code>2026-04-30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostRegister.PayrollRunType",
+      "label": "PayrollRunType",
+      "section": "CostRegisters",
+      "aliases": [
+        "loc:PayrollRunType",
+        "dom:CostRegister_PayrollRunType"
+      ],
+      "rules": "إلزامي. إحدى القيم: اعتيادي، خارج الدورة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت التكلفة ناتجة عن تشغيل عادي أو خارج الدورة.</p><p><strong>مثال.</strong> عادي</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "helpId": "pa.employee-signature.edit",
+  "lang": "ar",
+  "title": "توقيعات الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeSignature",
+  "overviewHtml": "<p>صورة ممسوحة ضوئياً لتوقيع الموظف.</p><p>تُحفظ للرجوع إليها، ولا يقرؤها أي نموذج مطبوع أو تقرير حالياً.</p>",
+  "aliasIndex": {
+    "loc:Signature": "EmployeeSignature.SignaturePath",
+    "dom:EmployeeSignature_Signature": "EmployeeSignature.SignaturePath"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSignature.SignaturePath",
+      "label": "Signature",
+      "section": "EmployeeSignatures",
+      "aliases": [
+        "loc:Signature",
+        "dom:EmployeeSignature_Signature"
+      ],
+      "rules": "اختياري. الحد الأقصى 512 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملف صورة التوقيع.</p><p><strong>مثال.</strong> صورة PNG للتوقيع على خلفية بيضاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

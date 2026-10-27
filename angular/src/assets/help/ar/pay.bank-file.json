@@ -1,0 +1,164 @@
+{
+  "helpId": "pay.bank-file",
+  "lang": "ar",
+  "title": "ملفات البنك",
+  "entity": null,
+  "overviewHtml": "<p>ينشئ ملف تحويل الرواتب الذي يُرسل إلى البنك، بالصيغة التي يطلبها بنك الدفع، من سجلات رواتب فترة معينة.</p><p>اختر من يُصرف لهم (منطقة رواتب أو كفيل أو رقم شؤون أو أرقام موظفين: ويلزم واحد منها على الأقل)، والفترة، ونوع التشغيل، و<strong>بنك الدفع</strong>، ثم اضغط <strong>إنشاء ملف البنك</strong>. فيُنزَّل الملف فوراً؛ ومع خيار <strong>إنشاء ملف منفصل لكل بنك موظف</strong> يكون ملفاً مضغوطاً يضم ملفاً لكل بنك موظف. ثم يعرض ملخص الصيغة والفترة وعدد المستفيدين والمبلغ الإجمالي.</p><p>لا يُصرف إلا لسجلات الرواتب التي تحتوي أسطراً، ويُستبعد السجل الذي صافي راتبه (نوع الأجر 9000) صفر. وتضيّق كل تصفية القائمة أكثر بهذا الترتيب: منطقة الرواتب، ثم الكفيل، ثم رقم الشؤون، ثم نوع السداد، ثم بنك الموظف، ثم بنك الدفع. وتُقرأ كل سجلات البنوك والكفلاء والتعيين التنظيمي كما هي سارية في تاريخ نهاية الفترة.</p><p>إذا كان إعداد الرواتب <strong>إقفال سجل الرواتب عند إقفال الرواتب</strong> مفعّلاً، فإن إنشاء الملف يقفل كل سجل رواتب مختار لم يُقفل بعد، الاعتيادي وخارج الدورة على السواء، بما فيها السجلات التي يستبعدها الملف (الموقوفة، أو التي بلا حساب)، فلا يمكن تعديلها بعد ذلك. ويذكر الملخص عدد ما أُقفل.</p><p>ويُسجَّل كل تشغيل، ناجحاً كان أو فاشلاً، مع معطياته ونسخة مضغوطة من الملف: انظر <strong>عرض السجل</strong>.</p><p>:::admin إذا كان إعداد الترحيل المالي <em>FIPostingAfterPayrollExit</em> مفعّلاً واختيرت منطقة رواتب، يُرفض الملف الذي يقع تاريخ نهايته بعد آخر فترة مغلقة للمنطقة، وتذكر الرسالة آخر تاريخ مسموح. ويبقى نص المعطيات في السجل بصياغة النظام السابق الإنجليزية، لأن التقارير الحالية تقرؤه. :::</p>",
+  "aliasIndex": {},
+  "fields": [
+    {
+      "id": "pay.bank-file.payroll-area",
+      "label": "PayrollArea",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يصرف للموظفين الذين يقع تعيينهم التنظيمي في نهاية الفترة ضمن منطقة الرواتب هذه.</p><p><strong>مثال.</strong> Kuwait Monthly</p><p><strong>لماذا يهم.</strong> يحدد أيضاً الفترة عند اختيار <strong>الحالي</strong>، من سجل ضبط الرواتب الخاص بها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.sponsor",
+      "label": "Sponsor",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يصرف فقط للموظفين التابعين لهذا الكفيل في نهاية الفترة.</p><p><strong>مثال.</strong> شركة الصباح التجارية</p><p><strong>لماذا يهم.</strong> اختيار الكفيل يملأ قائمة <strong>بنك الكفيل</strong> بحسابات هذا الكفيل ويمسح أي اختيار سابق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.sponsor-bank",
+      "label": "BankFileSponsorBank",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أحد الحسابات البنكية للكفيل المختار، ويُعرض برمز البنك ورقم الحساب. ولا يتاح إلا بعد اختيار كفيل.</p><p><strong>مثال.</strong> NBK (2001234567)</p><p><strong>لماذا يهم.</strong> تستخدمه الصيغ التي تطبع حساب الشركة، في رأس الملف مثلاً؛ وتتجاهله الصيغ الأخرى.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.mosal",
+      "label": "MOSALID",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يصرف فقط للموظفين الذين يحمل كفيلهم في نهاية الفترة رقم الشؤون هذا. وتضم القائمة أرقام الشؤون الخاصة بكفلائكم.</p><p><strong>مثال.</strong> 123456</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.employee-codes",
+      "label": "BankFileEmployeeCodes",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يصرف فقط لهؤلاء الموظفين.</p><p><strong>مثال.</strong> <code>1001, 1002</code></p><p><strong>لماذا يهم.</strong> مفيد لإعادة إنشاء الملف لعدد قليل من الأشخاص. وتبقى التصفيات الأخرى سارية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.employee-bank",
+      "label": "BankFileEmployeeBank",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يصرف فقط للموظفين الذين يكون بنكهم (الذي يُحوَّل إليه راتبهم) هو هذا البنك.</p><p><strong>مثال.</strong> بيت التمويل الكويتي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.run-type",
+      "label": "PayrollRunType",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سجلات الرواتب المطلوب صرفها: <strong>اعتيادي</strong> أو <strong>خارج الدورة</strong> أو <strong>اعتيادي + خارج الدورة</strong>.</p><p><strong>مثال.</strong> اعتيادي + خارج الدورة</p><p><strong>لماذا يهم.</strong> مع <strong>اعتيادي + خارج الدورة</strong> لا تؤخذ سجلات خارج الدورة إلا إذا وقع تاريخ دفعها في يوم الإقفال من شهر الرواتب أو بعده (إعداد الرواتب <em>إقفال ملف البنك خارج الدورة</em>؛ والقيمة 0 تعني اليوم الأول).</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.split",
+      "label": "BankFileSplitPerBank",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ينشئ ملفاً لكل بنك موظف بدلاً من ملف واحد، وينزّلها معاً في ملف مضغوط.</p><p><strong>مثال.</strong> عند تحديده: ملف لمستفيدي البنك الوطني، وملف لمستفيدي بيت التمويل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.period",
+      "label": "Period",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> <strong>الحالي</strong> يأخذ شهر الرواتب وسنتها وتاريخي البدء والانتهاء من سجل ضبط منطقة الرواتب. و<strong>فترة أخرى</strong> تتيح لك كتابة شهر وسنة رواتب، وتُحسب التواريخ عندئذٍ من فترة رواتب المنطقة (وبدون منطقة يكون الشهر التقويمي نفسه). وتاريخا البدء والانتهاء للقراءة فقط.</p><p><strong>مثال.</strong> فترة أخرى، الشهر 3، السنة 2026.</p><p><strong>لماذا يهم.</strong> تُحسب التواريخ على الخادم، فيغطي الملف الفترة بدقة دائماً. ويحتاج <strong>الحالي</strong> إلى منطقة رواتب لها سجل ضبط، وإلا بيّنت الشاشة السبب ولم يمكن إنشاء الملف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.payment-type",
+      "label": "PaymentType",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> <strong>الكل</strong> أو <strong>البنك</strong> أو <strong>نقداً</strong>: نوع السداد في سجل بنك الموظف الساري في نهاية الفترة.</p><p><strong>مثال.</strong> البنك</p><p><strong>لماذا يهم.</strong> حتى <strong>الكل</strong> يستبعد الموظفين الذين ليس لهم سجل بنك سارٍ في ذلك التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.payment-bank",
+      "label": "BankFilePaymentBank",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البنك الذي تصرف منه الشركة الرواتب، وتحدد صيغة ملفه شكل الملف. وهو إلزامي.</p><p><strong>مثال.</strong> NBK</p><p><strong>لماذا يهم.</strong> يُصرف للموظفين الذين بنك الدفع لديهم هو هذا البنك؛ وإذا لم يكن لأي موظف في الفترة بنك دفع، يُصرف للموظفين الذين ليس لديهم بنك دفع. ويُرفض البنك الذي لم تُخصَّص له صيغة ملف برسالة تذكر اسمه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.format",
+      "label": "BankFileFormat",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> صيغ الملفات المعروفة لبنك الدفع المختار، مع رمزها ونوعها: <strong>Text</strong> (نصي) أو <strong>Grid</strong> (جدول بيانات).</p><p><strong>مثال.</strong> بنك له صيغة نصية وصيغة جدول بيانات يظهر له سطران.</p><p><strong>لماذا يهم.</strong> تُنزَّل صيغ Grid بامتداد .xlsx. وفي الصيغ النصية يكون عدد السجلات هو عدد الأسطر التفصيلية في الملف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.generate",
+      "label": "BankFileGenerate",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ينشئ الملف وينزّله. ويتاح بعد تحديد بنك الدفع والفترة وواحد على الأقل من منطقة الرواتب أو الكفيل أو رقم الشؤون أو أرقام الموظفين.</p><p><strong>مثال.</strong> \"المجموع: 245 / 112,450.500\"</p><p><strong>لماذا يهم.</strong> يُرفض إذا لم يطابق أي موظف التصفيات أو لم يوجد لهم سجل رواتب. ويحتاج صلاحية إنشاء ملفات البنك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.view-log",
+      "label": "BankFileViewLog",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يفتح <strong>سجل إنشاء ملفات البنك</strong>: كل تشغيل مع تاريخه ووقته، والمستخدم، والحالة، والمعطيات المستخدمة، والملف. ويمكن تصفيته بـ <strong>الكل</strong> و<strong>ناجح</strong> و<strong>فشل</strong> مع أعدادها.</p><p><strong>مثال.</strong> نزّل ملف البنك الوطني للشهر الماضي مرة أخرى للتحقق مما أُرسل.</p><p><strong>لماذا يهم.</strong> <strong>تصدير السجل</strong> ينزّل القائمة كما هي معروضة. و<strong>تحميل</strong> يعيد النسخة المضغوطة من ملف التشغيل؛ ولأنه يكشف الرواتب فهو يحتاج صلاحية إنشاء ملفات البنك.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

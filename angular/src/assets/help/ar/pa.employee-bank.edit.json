@@ -1,0 +1,171 @@
+{
+  "helpId": "pa.employee-bank.edit",
+  "lang": "ar",
+  "title": "بنوك الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeBank",
+  "overviewHtml": "<p>كيف وأين يُصرف راتب الموظف، اعتباراً من تاريخ معين. ولا يجوز أن يبدأ سجلان للموظف نفسه في التاريخ نفسه.</p><p>تستخدم ملفات التحويل البنكي السجل الساري في تاريخ نهاية الملف. ولا يؤدي حفظ سجل جديد إلى إغلاق السابق، لذا حدد تاريخ انتهاء السجل السابق بنفسك.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeBank.StartDate",
+    "dom:EmployeeBank_StartDate": "EmployeeBank.StartDate",
+    "loc:EndDate": "EmployeeBank.EndDate",
+    "dom:EmployeeBank_EndDate": "EmployeeBank.EndDate",
+    "loc:BankId": "EmployeeBank.BankId",
+    "dom:EmployeeBank_BankId": "EmployeeBank.BankId",
+    "loc:PayerBankId": "EmployeeBank.PayerBankId",
+    "dom:EmployeeBank_PayerBankId": "EmployeeBank.PayerBankId",
+    "loc:BankCountryId": "EmployeeBank.BankCountryId",
+    "dom:EmployeeBank_BankCountryId": "EmployeeBank.BankCountryId",
+    "loc:PaymentType": "EmployeeBank.PaymentType",
+    "dom:EmployeeBank_PaymentType": "EmployeeBank.PaymentType",
+    "loc:PaymentCurrencyId": "EmployeeBank.PaymentCurrencyId",
+    "dom:EmployeeBank_PaymentCurrencyId": "EmployeeBank.PaymentCurrencyId",
+    "loc:AccountNum": "EmployeeBank.AccountNum",
+    "dom:EmployeeBank_AccountNum": "EmployeeBank.AccountNum",
+    "loc:Iban": "EmployeeBank.IBAN",
+    "dom:EmployeeBank_Iban": "EmployeeBank.IBAN",
+    "loc:BankBranch": "EmployeeBank.BankBranch",
+    "dom:EmployeeBank_BankBranch": "EmployeeBank.BankBranch"
+  },
+  "fields": [
+    {
+      "id": "EmployeeBank.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeBank_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeBank_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.BankId",
+      "label": "BankId",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:BankId",
+        "dom:EmployeeBank_BankId"
+      ],
+      "rules": "اختياري. يُختار من قائمة البنوك.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بنك الموظف الذي يستلم الراتب.</p><p><strong>مثال.</strong> بنك الكويت الوطني</p><p><strong>لماذا يهم.</strong> إلزامي عندما يكون نوع الدفع بنكاً، ويمكن تصفية ملفات البنك به.</p>",
+      "adminHtml": "<p>يُدار من البيانات الأساسية العامة ← البنوك.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.PayerBankId",
+      "label": "PayerBankId",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:PayerBankId",
+        "dom:EmployeeBank_PayerBankId"
+      ],
+      "rules": "اختياري. يُختار من قائمة البنوك.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بنك الشركة الذي يدفع لهذا الموظف، عند توزيع الموظفين على عدة بنوك دافعة.</p><p><strong>مثال.</strong> بنك الخليج</p>",
+      "adminHtml": "<p>إذا حدد سجل أي موظف بنكاً دافعاً، فلا يشمل ملف تحويل ذلك البنك إلا الموظفين الذين يحددونه. وإلا فلا يشمل الملف إلا الموظفين الذين لم يُحدَّد لهم بنك دافع.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.BankCountryId",
+      "label": "BankCountryId",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:BankCountryId",
+        "dom:EmployeeBank_BankCountryId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدول.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بلد بنك الموظف.</p><p><strong>مثال.</strong> الكويت</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه ملفات البنك حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.PaymentType",
+      "label": "PaymentType",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:PaymentType",
+        "dom:EmployeeBank_PaymentType"
+      ],
+      "rules": "إلزامي. إحدى القيم: البنك، نقداً، لا ينطبق.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طريقة صرف الراتب.</p><p><strong>مثال.</strong> بنك</p><p><strong>لماذا يهم.</strong> يمكن قصر ملفات البنك على نوع دفع واحد، ويجب اختيار بنك عندما يكون النوع بنكاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.PaymentCurrencyId",
+      "label": "PaymentCurrencyId",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:PaymentCurrencyId",
+        "dom:EmployeeBank_PaymentCurrencyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة العملات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> العملة التي يُصرف بها الراتب.</p><p><strong>مثال.</strong> KWD</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه ملفات البنك حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.AccountNum",
+      "label": "AccountNum",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:AccountNum",
+        "dom:EmployeeBank_AccountNum"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الحساب البنكي للموظف.</p><p><strong>مثال.</strong> 2010123456</p><p><strong>لماذا يهم.</strong> يُكتب في ملف التحويل البنكي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.IBAN",
+      "label": "Iban",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:Iban",
+        "dom:EmployeeBank_Iban"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الحساب البنكي الدولي للموظف.</p><p><strong>مثال.</strong> KW81CBKU0000000000001234560101</p><p><strong>لماذا يهم.</strong> يُكتب في ملف التحويل البنكي. ويحتاج طلب التغيير عبر الخدمة الذاتية إلى رقم حساب أو رقم IBAN.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.BankBranch",
+      "label": "BankBranch",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:BankBranch",
+        "dom:EmployeeBank_BankBranch"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فرع بنك الموظف.</p><p><strong>مثال.</strong> السالمية</p><p><strong>لماذا يهم.</strong> يُدرج في ملفات البنك التي تتضمن الفرع، وفي تقارير الموظفين.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

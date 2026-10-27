@@ -1,0 +1,43 @@
+{
+  "helpId": "gmi.asset-type.edit",
+  "lang": "ar",
+  "title": "أنواع العهد — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.AssetType",
+  "overviewHtml": "<p>أنواع عهد الشركة — المركبات والحواسيب المحمولة والهواتف ونحوها. تسمّي كل عهدة نوعها، ويحدد النوع ما إذا كان يجوز للموظفين طلب عهد من هذا الصنف في الخدمة الذاتية.</p><p>وإلى جانب الرمز والاسمين العربي والإنجليزي، للنوع نوع أجر وخيار «تضمين في سير العمل». ويُمنح الرمز تلقائياً إذا تُرك فارغاً، ويجب ألا تتكرر الرموز والأسماء.</p>",
+  "aliasIndex": {
+    "loc:WageType": "AssetType.WageTypeId",
+    "dom:AssetType_WageTypeId": "AssetType.WageTypeId",
+    "loc:IncludeInWorkflow": "AssetType.IncludeInWorkflow",
+    "dom:AssetType_IncludeInWorkflow": "AssetType.IncludeInWorkflow"
+  },
+  "fields": [
+    {
+      "id": "AssetType.WageTypeId",
+      "label": "WageType",
+      "section": "AssetTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:AssetType_WageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الأجر المخصص لما يُصرف بخصوص العهد من هذا النوع.</p><p><strong>مثال.</strong> بدل سيارة</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب ولا تقارير العهد حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AssetType.IncludeInWorkflow",
+      "label": "IncludeInWorkflow",
+      "section": "AssetTypes",
+      "aliases": [
+        "loc:IncludeInWorkflow",
+        "dom:AssetType_IncludeInWorkflow"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز للموظفين طلب العهد من هذا النوع من خلال الخدمة الذاتية.</p><p><strong>مثال.</strong> محدد للحاسوب المحمول والهاتف النقال؛ وغير محدد للمركبة التي لا تسلّمها إلا الموارد البشرية.</p><p><strong>لماذا يهم.</strong> لا تعرض الخدمة الذاتية إلا العهد المفعّلة التي حُدِّد هذا الخيار في نوعها، ولا تُعرض أبداً العهدة التي ليس لها نوع. ويبدأ النوع الجديد وهذا الخيار غير محدد، فيجب تحديده لكل نوع ينبغي أن يتمكن الموظفون من طلبه. ويظل بإمكان الموارد البشرية تسليم عهد من أي نوع في سجل الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

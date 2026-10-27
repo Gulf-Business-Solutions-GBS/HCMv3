@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.simulation-salary-register.edit",
+  "lang": "en",
+  "title": "Simulation Salary Registers — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.SimulationSalaryRegister",
+  "overviewHtml": "<p>A payslip from a simulation — a trial run that shows what payroll would pay without paying it. Simulation payslips are kept apart from real ones and are never locked.</p><p>Details on a payslip in the list opens its own page: the employee, periods, run type and result type at the top, with Edit, and below them its wagetype lines, which can be added, changed and removed there.</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "SimulationSalaryRegister.EmployeeId",
+    "dom:SimulationSalaryRegister_EmployeeId": "SimulationSalaryRegister.EmployeeId",
+    "loc:ForPeriod": "SimulationSalaryRegister.ForPeriod",
+    "dom:SimulationSalaryRegister_ForPeriod": "SimulationSalaryRegister.ForPeriod",
+    "loc:InPeriod": "SimulationSalaryRegister.InPeriod",
+    "dom:SimulationSalaryRegister_InPeriod": "SimulationSalaryRegister.InPeriod",
+    "loc:PayrollRunType": "SimulationSalaryRegister.PayrollRunType",
+    "dom:SimulationSalaryRegister_PayrollRunType": "SimulationSalaryRegister.PayrollRunType",
+    "loc:PayrollResultType": "SimulationSalaryRegister.PayrollResultType",
+    "dom:SimulationSalaryRegister_PayrollResultType": "SimulationSalaryRegister.PayrollResultType",
+    "loc:PayrollReasonTypeId": "SimulationSalaryRegister.PayrollReasonTypeId",
+    "dom:SimulationSalaryRegister_PayrollReasonTypeId": "SimulationSalaryRegister.PayrollReasonTypeId"
+  },
+  "fields": [
+    {
+      "id": "SimulationSalaryRegister.EmployeeId",
+      "label": "EmployeeId",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:SimulationSalaryRegister_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee the payslip is for.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegister.ForPeriod",
+      "label": "ForPeriod",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:ForPeriod",
+        "dom:SimulationSalaryRegister_ForPeriod"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The month the pay is for.</p><p><strong>Example.</strong> <code>2026-03-31</code></p><p><strong>Why it matters.</strong> For a retro recalculation this is an earlier month than <strong>In Period</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegister.InPeriod",
+      "label": "InPeriod",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:InPeriod",
+        "dom:SimulationSalaryRegister_InPeriod"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The month the pay is paid in — the run's pay date.</p><p><strong>Example.</strong> <code>2026-04-30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegister.PayrollRunType",
+      "label": "PayrollRunType",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:PayrollRunType",
+        "dom:SimulationSalaryRegister_PayrollRunType"
+      ],
+      "rules": "Required. One of: Regular, Off Cycle.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the payslip came from a regular or an off-cycle run.</p><p><strong>Example.</strong> Regular</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegister.PayrollResultType",
+      "label": "PayrollResultType",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:PayrollResultType",
+        "dom:SimulationSalaryRegister_PayrollResultType"
+      ],
+      "rules": "Required. One of: Current, Last, Archive.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which result this is for its month.</p><p><strong>Example.</strong> Current</p><p><strong>Why it matters.</strong> A regular run writes <em>Current</em>. When the same month is recalculated in a later run, the older payslips for that month become <em>Last</em> (the most recent before) and <em>Archive</em> (the rest).</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegister.PayrollReasonTypeId",
+      "label": "PayrollReasonTypeId",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:PayrollReasonTypeId",
+        "dom:SimulationSalaryRegister_PayrollReasonTypeId"
+      ],
+      "rules": "Required. Chosen from Payroll Reason Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The off-cycle reason, for an off-cycle payslip.</p><p><strong>Example.</strong> End Of Service</p><p><strong>Why it matters.</strong> Blank on regular payslips.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

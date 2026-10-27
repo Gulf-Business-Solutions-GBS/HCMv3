@@ -1,0 +1,92 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EmployeeSubGroups' | localize" [description]="'PayrollManagement' | localize">
+        <div role="actions">
+            <button type="button" class="btn btn-light-primary float-end" (click)="goBack()">
+                <i class="fa fa-arrow-left btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">{{ 'Back' | localize }}</span>
+            </button>
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <record-breadcrumb [steps]="breadcrumb()" />
+
+        <div class="card card-custom mb-5">
+            <div class="card-body py-5">
+                <h3 class="fw-bold text-gray-900 m-0">{{ title() }}</h3>
+            </div>
+        </div>
+
+        <div class="sg-layout">
+            <!-- The lists, down the side as on the employee profile. -->
+            <nav class="sg-rail card card-custom" [attr.aria-label]="'EmployeeSubGroups' | localize">
+                <ul class="sg-rail-list">
+                    @for (section of sections; track section.id) {
+                        <li>
+                            <button
+                                type="button"
+                                class="sg-rail-item"
+                                [class.sg-rail-on]="activeSectionId() === section.id"
+                                [attr.aria-current]="activeSectionId() === section.id ? 'true' : null"
+                                (click)="selectSection(section)">
+                                {{ section.labelKey | localize }}
+                            </button>
+                        </li>
+                    }
+                </ul>
+            </nav>
+
+            <main class="sg-main card card-custom">
+                <div class="card-header border-0 pt-5">
+                    <h3 class="card-title fw-bold text-gray-900">{{ activeSection()?.labelKey | localize }}</h3>
+                </div>
+                <div class="card-body pt-0">
+                    <!-- Tracked by id so moving to another sub group builds its lists afresh; each list loads
+                         its rows once, when it is created. -->
+                    @for (id of [employeeSubGroupId()]; track id) {
+                        @if (id) {
+                            @switch (activeSectionId()) {
+                                @case ('absence-types') {
+                                    <employee-sub-group-absence-types [employeeSubGroupId]="id" />
+                                }
+                                @case ('absences') {
+                                    <employee-sub-group-absences [employeeSubGroupId]="id" />
+                                }
+                                @case ('asset-allowances') {
+                                    <employee-sub-group-asset-allowances [employeeSubGroupId]="id" />
+                                }
+                                @case ('benefits') {
+                                    <employee-sub-group-benefits [employeeSubGroupId]="id" />
+                                }
+                                @case ('bonuses') {
+                                    <employee-sub-group-bonuses [employeeSubGroupId]="id" />
+                                }
+                                @case ('commissions') {
+                                    <employee-sub-group-commissions [employeeSubGroupId]="id" />
+                                }
+                                @case ('funds') {
+                                    <employee-sub-group-funds [employeeSubGroupId]="id" />
+                                }
+                                @case ('gratuities') {
+                                    <employee-sub-group-gratuities [employeeSubGroupId]="id" />
+                                }
+                                @case ('health-reimburses') {
+                                    <employee-sub-group-health-reimburses [employeeSubGroupId]="id" />
+                                }
+                                @case ('payments') {
+                                    <employee-sub-group-payments [employeeSubGroupId]="id" />
+                                }
+                                @case ('tickets') {
+                                    <employee-sub-group-tickets [employeeSubGroupId]="id" />
+                                }
+                                @case ('wage-types') {
+                                    <employee-sub-group-wage-types [employeeSubGroupId]="id" />
+                                }
+                            }
+                        }
+                    }
+                </div>
+            </main>
+        </div>
+    </div>
+</div>

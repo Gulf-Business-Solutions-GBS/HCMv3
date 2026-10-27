@@ -1,0 +1,195 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'GatePasses' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="GatePass_GatePassNumber">{{ 'GatePassNumber' | localize }}</label>
+                                <input
+                                    id="GatePass_GatePassNumber"
+                                    #gatePassNumberInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="GatePassNumber"
+                                    [ngModel]="record().gatePassNumber"
+                                    (ngModelChange)="updateField('gatePassNumber', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="gatePassNumberInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="GatePass_GatePassTypeId">{{ 'GatePassType' | localize }}</label>
+                                <select
+                                    id="GatePass_GatePassTypeId"
+                                    #gatePassTypeInput="ngModel"
+                                    class="form-select"
+                                    name="GatePassTypeId"
+                                    [ngModel]="record().gatePassTypeId"
+                                    (ngModelChange)="updateField('gatePassTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of gatePassTypes(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="gatePassTypeInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="GatePass_GatePassMovementId">{{ 'GatePassMovement' | localize }}</label>
+                                <select
+                                    id="GatePass_GatePassMovementId"
+                                    #gatePassMovementInput="ngModel"
+                                    class="form-select"
+                                    name="GatePassMovementId"
+                                    [ngModel]="record().gatePassMovementId"
+                                    (ngModelChange)="updateField('gatePassMovementId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of gatePassMovements(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="gatePassMovementInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="GatePass_LocationId">{{ 'Location' | localize }}</label>
+                                <select
+                                    id="GatePass_LocationId"
+                                    class="form-select"
+                                    name="LocationId"
+                                    [ngModel]="record().locationId"
+                                    (ngModelChange)="updateField('locationId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of locations(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="GatePass_RequestedByEmployeeId">{{ 'RequestedByEmployee' | localize }}</label>
+                                <select
+                                    id="GatePass_RequestedByEmployeeId"
+                                    class="form-select"
+                                    name="RequestedByEmployeeId"
+                                    [ngModel]="record().requestedByEmployeeId"
+                                    (ngModelChange)="updateField('requestedByEmployeeId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of employees(); track item.id) {
+                                        <option [ngValue]="item.id">{{ employeeLabel(item) }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="GatePass_GatePassStatusId">{{ 'GatePassStatus' | localize }}</label>
+                                <select
+                                    id="GatePass_GatePassStatusId"
+                                    class="form-select"
+                                    name="GatePassStatusId"
+                                    [ngModel]="record().gatePassStatusId"
+                                    (ngModelChange)="updateField('gatePassStatusId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of gatePassStatuses(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="GatePass_IssueDate">{{ 'IssueDate' | localize }}</label>
+                                <input
+                                    id="GatePass_IssueDate"
+                                    #issueDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="IssueDate"
+                                    [ngModel]="record().issueDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('issueDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="issueDateInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="GatePass_ValidUpto">{{ 'ValidUpto' | localize }}</label>
+                                <input
+                                    id="GatePass_ValidUpto"
+                                    #validUptoInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="ValidUpto"
+                                    [ngModel]="record().validUpto?.toISODate()"
+                                    (ngModelChange)="updateDateField('validUpto', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="validUptoInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="GatePass_StartTime">{{ 'StartTime' | localize }}</label>
+                                <input
+                                    id="GatePass_StartTime"
+                                    #startTimeInput="ngModel"
+                                    class="form-control"
+                                    type="time"
+                                    name="StartTime"
+                                    [ngModel]="record().startTime?.toFormat('HH:mm')"
+                                    (ngModelChange)="updateTimeField('startTime', 'issueDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startTimeInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="GatePass_EndTime">{{ 'EndTime' | localize }}</label>
+                                <input
+                                    id="GatePass_EndTime"
+                                    #endTimeInput="ngModel"
+                                    class="form-control"
+                                    type="time"
+                                    name="EndTime"
+                                    [ngModel]="record().endTime?.toFormat('HH:mm')"
+                                    (ngModelChange)="updateTimeField('endTime', 'validUpto', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endTimeInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="GatePass_Comments">{{ 'Comments' | localize }}</label>
+                                <textarea
+                                    id="GatePass_Comments"
+                                    class="form-control"
+                                    name="Comments"
+                                    rows="3"
+                                    [ngModel]="record().comments"
+                                    (ngModelChange)="updateField('comments', $event)">
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

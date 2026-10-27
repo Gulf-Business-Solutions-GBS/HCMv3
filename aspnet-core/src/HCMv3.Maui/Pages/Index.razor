@@ -1,0 +1,11 @@
+@page "/"
+@using HCMv3.Maui.Services.Navigation
+@inherits HCMv3MainLayoutPageComponentBase
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        Resolve<INavigationService>().NavigateTo("/" + NavigationUrlConsts.EssHome);
+    }
+}

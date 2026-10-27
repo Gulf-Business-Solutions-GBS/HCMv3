@@ -1,0 +1,138 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'OrganizationDocumentReport' | localize"
+        [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [(fromDate)]="fromDate"
+                    [(toDate)]="toDate"
+                    [showEmployeeCode]="false"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-3">
+                        <label class="form-label">{{ 'DocumentType' | localize }}</label>
+                        <p-select
+                            [options]="documentTypeOptions()"
+                            [(ngModel)]="documentTypeId"
+                            optionLabel="label"
+                            optionValue="value"
+                            [showClear]="true"
+                            styleClass="w-100"
+                            [placeholder]="'All' | localize" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '60rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 220px" pSortableColumn="organizationUnitName">
+                                        {{ 'OrgUnit' | localize }}
+                                        <p-sortIcon field="organizationUnitName" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="documentTypeName">
+                                        {{ 'DocumentType' | localize }}
+                                        <p-sortIcon field="documentTypeName" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="issueDate">
+                                        {{ 'IssueDate' | localize }}
+                                        <p-sortIcon field="issueDate" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="expiryDate">
+                                        {{ 'ExpiryDate' | localize }}
+                                        <p-sortIcon field="expiryDate" />
+                                    </th>
+                                    <th style="min-width: 160px" pSortableColumn="documentPlace">
+                                        {{ 'DocumentPlace' | localize }}
+                                        <p-sortIcon field="documentPlace" />
+                                    </th>
+                                    <th style="min-width: 160px" pSortableColumn="documentNum">
+                                        {{ 'DocumentNumber' | localize }}
+                                        <p-sortIcon field="documentNum" />
+                                    </th>
+                                    <th style="min-width: 220px" pSortableColumn="description">
+                                        {{ 'Description' | localize }}
+                                        <p-sortIcon field="description" />
+                                    </th>
+                                    <th style="min-width: 110px" pSortableColumn="daysLeft">
+                                        {{ 'DaysLeft' | localize }}
+                                        <p-sortIcon field="daysLeft" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 220px">
+                                        {{ record.organizationUnitName }}
+                                    </td>
+                                    <td style="min-width: 180px">
+                                        {{ record.documentTypeName }}
+                                    </td>
+                                    <td style="min-width: 140px">
+                                        {{ record.issueDate | luxonFormat: 'dd/MM/yyyy' }}
+                                    </td>
+                                    <td style="min-width: 140px">
+                                        {{ record.expiryDate | luxonFormat: 'dd/MM/yyyy' }}
+                                    </td>
+                                    <td style="min-width: 160px">
+                                        <span pTooltip="{{ record.documentPlace }}" class="hide-overflown">
+                                            {{ record.documentPlace }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 160px">
+                                        {{ record.documentNum }}
+                                    </td>
+                                    <td style="min-width: 220px">
+                                        <span pTooltip="{{ record.description }}" class="hide-overflown">
+                                            {{ record.description }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 110px">
+                                        {{ record.daysLeft }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

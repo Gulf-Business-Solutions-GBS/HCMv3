@@ -1,0 +1,442 @@
+<div [@routerTransition] [helpPage]="'dash.leave'">
+    <sub-header [title]="'LeaveDashboard' | localize" [description]="'Dashboards' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        @if (scopeIsNobody()) {
+            <div class="alert alert-warning">{{ 'Dashboard_ScopeNobody' | localize }}</div>
+        }
+
+        @if (optionsLoaded()) {
+            <!-- ================= Toolbar: what is shown, filter window, export ================= -->
+            <div class="ld-toolbar mb-5" [class.ld-toolbar-loading]="loading() && !!dashboard()">
+                <div class="ld-toolbar-summary">
+                    <span class="ld-period">
+                        <i class="la la-calendar"></i>
+                        <strong>{{ presetLabel(preset()) }}</strong>
+                        @if (dashboard(); as d) {
+                            <span class="text-muted">
+                                {{ d.fromDate | luxonFormat: 'dd/MM/yyyy' }} – {{ d.toDate | luxonFormat: 'dd/MM/yyyy' }}
+                            </span>
+                        }
+                    </span>
+                    @if (dashboard(); as d) {
+                        <span class="text-muted">·</span>
+                        <span data-help-loc="Dashboard_Showing" class="ld-scope" [attr.title]="'Dashboard_ScopeEmployees' | localize: d.scope.employeesInScope">
+                            <i class="la la-user-shield"></i>
+                            {{ 'Dashboard_Showing' | localize }}:
+                            <strong>{{ scopeIsNobody() ? '—' : scopeLabel() }}</strong>
+                            <span class="text-muted">({{ 'Dashboard_ScopeEmployees' | localize: d.scope.employeesInScope }})</span>
+                        </span>
+                    }
+
+                    <!-- Active drill-downs, each removable -->
+                    @if (dashboard()?.orgUnitPath?.length) {
+                        <span class="ld-chip">
+                            <a href="javascript:;" (click)="selectOrgUnit(undefined)">{{ 'LeaveDashboard_AllUnits' | localize }}</a>
+                            @for (p of dashboard()!.orgUnitPath; track p.id; let last = $last) {
+                                <span class="ld-chip-sep">›</span>
+                                @if (last) {
+                                    <strong>{{ p.name }}</strong>
+                                } @else {
+                                    <a href="javascript:;" (click)="selectOrgUnit(p.id)">{{ p.name }}</a>
+                                }
+                            }
+                            <button type="button" class="ld-chip-x" (click)="selectOrgUnit(undefined)" [attr.aria-label]="'Remove' | localize">×</button>
+                        </span>
+                    }
+                    @if (absenceTypeId()) {
+                        <span class="ld-chip">
+                            {{ selectedTypeName() }}
+                            <button type="button" class="ld-chip-x" (click)="selectAbsenceType(undefined)" [attr.aria-label]="'Remove' | localize">×</button>
+                        </span>
+                    }
+                    @if (periodBeforeDrill()) {
+                        <span class="ld-chip">
+                            {{ dashboard()?.fromDate | luxonFormat: 'MMMM yyyy' }}
+                            <button type="button" class="ld-chip-x" (click)="clearMonthDrill()" [attr.aria-label]="'Remove' | localize">×</button>
+                        </span>
+                    }
+                    @if (dashboard()?.orgUnitPath?.length || absenceTypeId() || periodBeforeDrill()) {
+                        <a href="javascript:;" class="fs-7" (click)="clearAll()">{{ 'ClearFilters' | localize }}</a>
+                    }
+                </div>
+
+                <div class="ld-toolbar-actions">
+                    <button data-help-loc="Filter" type="button" class="btn btn-sm btn-light-primary" (click)="openFilters($event)" [attr.title]="'Filter' | localize">
+                        <i class="fa fa-filter"></i>
+                        {{ 'Filter' | localize }}
+                    </button>
+                    <dashboard-export-menu data-help-loc="Download" [fileName]="'LeaveDashboard' | localize" [target]="dashboardBody" [disabled]="exporting() || !dashboard()" (xlsx)="exportToExcel(Part.All)" />
+                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="refresh()" [disabled]="loading()" [attr.title]="'Refresh' | localize">
+                        <i class="la la-refresh" [class.ld-spin]="loading()"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= Filter window ================= -->
+            <p-popover #filterPanel appendTo="body" styleClass="ld-filter-popover">
+                <div class="ld-filter">
+                    <label class="form-label">{{ 'Period' | localize }}</label>
+                    <div class="ld-presets mb-3">
+                        @for (p of presets; track p) {
+                            <button type="button" class="btn btn-sm" [class.btn-primary]="draftPreset() === p" [class.btn-light]="draftPreset() !== p" (click)="pickPreset(p)">
+                                {{ presetLabel(p) }}
+                            </button>
+                        }
+                    </div>
+
+                    @if (draftPreset() === 'custom') {
+                        <div class="row g-3 mb-3">
+                            <div class="col-6">
+                                <label class="form-label">{{ 'FromDate' | localize }}</label>
+                                <p-datepicker [ngModel]="draftFrom()" (ngModelChange)="draftFrom.set($event)" dateFormat="dd/mm/yy" [showIcon]="true" styleClass="w-100" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">{{ 'ToDate' | localize }}</label>
+                                <p-datepicker [ngModel]="draftTo()" (ngModelChange)="draftTo.set($event)" dateFormat="dd/mm/yy" [showIcon]="true" styleClass="w-100" />
+                            </div>
+                        </div>
+                    } @else {
+                        <div class="text-muted fs-7 mb-3">
+                            {{ draftFrom().toLocaleDateString('en-GB') }} – {{ draftTo().toLocaleDateString('en-GB') }}
+                        </div>
+                    }
+
+                    <label class="form-label" for="ldUnit">{{ 'OrganizationUnit' | localize }}</label>
+                    <select id="ldUnit" class="form-select mb-4" [ngModel]="draftUnitId()" (ngModelChange)="draftUnitId.set($event)">
+                        <option [ngValue]="undefined">{{ 'LeaveDashboard_AllUnits' | localize }}</option>
+                        @for (u of dashboard()?.orgUnitOptions ?? []; track u.id) {
+                            <option [ngValue]="u.id">{{ indent(u.depth) }}{{ u.name }}</option>
+                        }
+                    </select>
+
+                    <label class="form-label" for="ldType">{{ 'LeaveType' | localize }}</label>
+                    <select id="ldType" class="form-select mb-5" [ngModel]="draftTypeId()" (ngModelChange)="draftTypeId.set($event)">
+                        <option [ngValue]="undefined">{{ 'LeaveDashboard_AllLeaveTypes' | localize }}</option>
+                        @for (t of absenceTypes(); track t.id) {
+                            <option [ngValue]="t.id">{{ pick(t.nameEn, t.nameAr) }}</option>
+                        }
+                    </select>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-sm btn-light" (click)="resetFilters()">{{ 'Reset' | localize }}</button>
+                        <button type="button" class="btn btn-sm btn-primary" (click)="applyFilters()">{{ 'Apply' | localize }}</button>
+                    </div>
+                </div>
+            </p-popover>
+
+            <!-- Full spinner only for the first load; after that the tiles stay visible and animate to the new data. -->
+            <div #dashboardBody [busyIf]="loading() && !dashboard()" [class.ld-updating]="loading() && !!dashboard()">
+                @if (dashboard(); as d) {
+                    <!-- ================= Tile 1: headline numbers ================= -->
+                    <div class="ld-kpis mb-5">
+                        <button data-help-loc="LeaveDashboard_OnLeaveToday" type="button" class="ld-kpi" [class.active]="detailKind() === 'onLeaveToday'" (click)="showDetail('onLeaveToday')">
+                            <span class="ld-kpi-value" [countUp]="d.kpis.onLeaveToday"></span>
+                            <span class="ld-kpi-label">{{ 'LeaveDashboard_OnLeaveToday' | localize }}</span>
+                            <span class="ld-kpi-sub">{{ 'LeaveDashboard_OfEmployees' | localize: d.kpis.employeesInScope }}</span>
+                        </button>
+                        <button data-help-loc="LeaveDashboard_NotReturned" type="button" class="ld-kpi" [class.ld-kpi-alert]="d.kpis.notReturned > 0" [class.active]="detailKind() === 'notReturned'" (click)="showDetail('notReturned')">
+                            <span class="ld-kpi-value" [countUp]="d.kpis.notReturned"></span>
+                            <span class="ld-kpi-label">{{ 'LeaveDashboard_NotReturned' | localize }}</span>
+                            <span class="ld-kpi-sub">{{ 'LeaveDashboard_EmployeesLeaves' | localize: d.notReturned.length }}</span>
+                        </button>
+                        <button data-help-loc="LeaveDashboard_StartingSoon" type="button" class="ld-kpi" [class.active]="detailKind() === 'startingSoon'" (click)="showDetail('startingSoon')">
+                            <span class="ld-kpi-value" [countUp]="d.kpis.startingSoon"></span>
+                            <span class="ld-kpi-label">{{ 'LeaveDashboard_StartingSoon' | localize }}</span>
+                            <span class="ld-kpi-sub">{{ 'LeaveDashboard_Next7Days' | localize }}</span>
+                        </button>
+                        <button data-help-loc="LeaveDashboard_ReturningSoon" type="button" class="ld-kpi" [class.active]="detailKind() === 'returningSoon'" (click)="showDetail('returningSoon')">
+                            <span class="ld-kpi-value" [countUp]="d.kpis.returningSoon"></span>
+                            <span class="ld-kpi-label">{{ 'LeaveDashboard_ReturningSoon' | localize }}</span>
+                            <span class="ld-kpi-sub">{{ 'LeaveDashboard_Next7Days' | localize }}</span>
+                        </button>
+                        <button data-help-loc="LeaveDashboard_PendingApproval" type="button" class="ld-kpi" [class.active]="detailKind() === 'pending'" (click)="showDetail('pending')">
+                            <span class="ld-kpi-value" [countUp]="d.kpis.pendingApproval"></span>
+                            <span class="ld-kpi-label">{{ 'LeaveDashboard_PendingApproval' | localize }}</span>
+                            <span class="ld-kpi-sub">{{ 'LeaveDashboard_Requests' | localize }}</span>
+                        </button>
+                        <button data-help-loc="LeaveDashboard_LeaveDaysInPeriod" type="button" class="ld-kpi" [class.active]="detailKind() === 'period'" (click)="showDetail('period')">
+                            <span class="ld-kpi-value" [countUp]="d.kpis.leaveDaysInPeriod" [countUpDecimals]="1"></span>
+                            <span class="ld-kpi-label">{{ 'LeaveDashboard_LeaveDaysInPeriod' | localize }}</span>
+                            <span class="ld-kpi-sub">{{ d.fromDate | luxonFormat: 'dd/MM/yyyy' }} – {{ d.toDate | luxonFormat: 'dd/MM/yyyy' }}</span>
+                        </button>
+                    </div>
+
+                    <!-- ================= Tile 2: trend ================= -->
+                    <div data-help-loc="LeaveDashboard_ByMonth" class="card card-custom mb-5 ld-rise" style="--ld-delay: 250ms">
+                        <div class="card-header border-0 pt-5">
+                            <div class="card-title flex-column align-items-start">
+                                <h3 class="fw-bold mb-1">
+                                    {{ (trendIsDaily() ? 'LeaveDashboard_ByDay' : 'LeaveDashboard_ByMonth') | localize }}
+                                </h3>
+                                <span class="text-muted fs-7">
+                                    {{ (trendIsDaily() ? 'LeaveDashboard_ByDayHint' : 'LeaveDashboard_ByMonthHint') | localize }}
+                                </span>
+                            </div>
+                            <div class="card-toolbar">
+                                <dashboard-export-menu [fileName]="'LeaveDashboard_ByMonth' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.Trend)" />
+                            </div>
+                        </div>
+                        <div class="card-body pt-0">
+                            @if (trendHasData()) {
+                                <div class="ld-chart ld-chart-tall">
+                                    <ngx-charts-bar-vertical-stacked
+                                        [results]="trendResults()"
+                                        [customColors]="typeColors()"
+                                        [xAxis]="true"
+                                        [yAxis]="true"
+                                        [legend]="true"
+                                        [legendTitle]="''"
+                                        [legendPosition]="legendBelow"
+                                        [roundDomains]="true"
+                                        [barPadding]="trendIsDaily() ? 2 : 8"
+                                        [trimXAxisTicks]="true"
+                                        (select)="onTrendSelect($event)" />
+                                </div>
+                            } @else {
+                                <div class="text-muted py-10 text-center">{{ 'LeaveDashboard_NoLeaveInPeriod' | localize }}</div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- ================= Tiles 3 + 4: department and type ================= -->
+                    <div class="row g-5 mb-5 ld-rise" style="--ld-delay: 400ms">
+                        <div class="col-xl-7">
+                            <div data-help-loc="LeaveDashboard_ByDepartment" class="card card-custom h-100">
+                                <div class="card-header border-0 pt-5">
+                                    <div class="card-title flex-column align-items-start">
+                                        <h3 class="fw-bold mb-1">{{ 'LeaveDashboard_ByDepartment' | localize }}</h3>
+                                        <span class="text-muted fs-7">{{ 'LeaveDashboard_ByDepartmentHint' | localize }}</span>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <dashboard-export-menu [fileName]="'LeaveDashboard_ByDepartment' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.ByOrgUnit)" />
+                                    </div>
+                                </div>
+                                <div class="card-body pt-0">
+                                    @if (orgUnitResults().length) {
+                                        <div class="ld-chart" [style.height.px]="60 + orgUnitResults().length * 34">
+                                            <ngx-charts-bar-horizontal
+                                                [results]="orgUnitResults()"
+                                                [scheme]="singleColour"
+                                                [xAxis]="true"
+                                                [yAxis]="true"
+                                                [showDataLabel]="true"
+                                                [roundDomains]="true"
+                                                [maxYAxisTickLength]="28"
+                                                [trimYAxisTicks]="true"
+                                                (select)="onOrgUnitSelect($event)" />
+                                        </div>
+                                        <table class="table table-sm table-row-dashed mt-3 mb-0">
+                                            <thead>
+                                                <tr class="text-muted fw-semibold">
+                                                    <th>{{ 'OrganizationUnit' | localize }}</th>
+                                                    <th class="text-end">{{ 'LeaveDashboard_EmployeesOnLeave' | localize }}</th>
+                                                    <th class="text-end">{{ 'LeaveDays' | localize }}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (b of d.byOrgUnit; track $index) {
+                                                    <tr>
+                                                        <td>
+                                                            @if (b.organizationUnitId != null && !b.isDirectStaff) {
+                                                                <a href="javascript:;" (click)="selectOrgUnit(b.organizationUnitId)">{{ b.name }}</a>
+                                                            } @else {
+                                                                {{ b.organizationUnitId == null ? ('LeaveDashboard_Unassigned' | localize) : ('LeaveDashboard_DirectStaff' | localize: b.name) }}
+                                                            }
+                                                        </td>
+                                                        <td class="text-end">{{ b.employees }}</td>
+                                                        <td class="text-end">{{ b.leaveDays | number: '1.0-1' }}</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    } @else {
+                                        <div class="text-muted py-10 text-center">{{ 'LeaveDashboard_NoLeaveInPeriod' | localize }}</div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-5">
+                            <div data-help-loc="LeaveDashboard_ByType" class="card card-custom h-100">
+                                <div class="card-header border-0 pt-5">
+                                    <div class="card-title flex-column align-items-start">
+                                        <h3 class="fw-bold mb-1">{{ 'LeaveDashboard_ByType' | localize }}</h3>
+                                        <span class="text-muted fs-7">{{ 'LeaveDashboard_ByTypeHint' | localize }}</span>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <dashboard-export-menu [fileName]="'LeaveDashboard_ByType' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.ByType)" />
+                                    </div>
+                                </div>
+                                <div class="card-body pt-0">
+                                    @if (typeResults().length) {
+                                        <div class="ld-chart">
+                                            <ngx-charts-pie-chart
+                                                [results]="typeResults()"
+                                                [customColors]="typeColors()"
+                                                [doughnut]="true"
+                                                [arcWidth]="0.35"
+                                                [legend]="true"
+                                                [legendTitle]="''"
+                                                [legendPosition]="legendBelow"
+                                                (select)="onTypeSelect($event)" />
+                                        </div>
+                                    } @else {
+                                        <div class="text-muted py-10 text-center">{{ 'LeaveDashboard_NoLeaveInPeriod' | localize }}</div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ================= Tiles 5 + 6: today's lists, below the charts ================= -->
+                    <div class="row g-5 mb-5 ld-rise" style="--ld-delay: 550ms">
+                        <div class="col-xl-6">
+                            <div data-help-loc="LeaveDashboard_OnLeaveToday" class="card card-custom h-100">
+                                <div class="card-header border-0 pt-5">
+                                    <h3 class="card-title fw-bold">{{ 'LeaveDashboard_OnLeaveToday' | localize }}</h3>
+                                    <div class="card-toolbar gap-2">
+                                        <span class="badge badge-light-primary">{{ d.onLeaveToday.length }}</span>
+                                        <dashboard-export-menu [fileName]="'LeaveDashboard_OnLeaveToday' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.OnLeaveToday)" />
+                                    </div>
+                                </div>
+                                <div class="card-body pt-2 ld-list">
+                                    @if (d.onLeaveToday.length === 0) {
+                                        <div class="text-muted py-5 text-center">{{ 'LeaveDashboard_NobodyOut' | localize }}</div>
+                                    } @else {
+                                        <table class="table table-row-dashed table-sm align-middle mb-0">
+                                            <thead>
+                                                <tr class="text-muted fw-semibold">
+                                                    <th>{{ 'Employee' | localize }}</th>
+                                                    <th>{{ 'LeaveType' | localize }}</th>
+                                                    <th>{{ 'LeaveDashboard_ExpectedBack' | localize }}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (r of d.onLeaveToday; track r.absenceId) {
+                                                    <tr class="ld-row" (click)="openEmployee(r)">
+                                                        <td>
+                                                            <div class="fw-semibold">{{ employeeName(r) }}</div>
+                                                            <div class="text-muted fs-7">{{ r.employeeCode }} · {{ r.organizationUnitName }}</div>
+                                                        </td>
+                                                        <td>{{ typeNameOf(r) }}</td>
+                                                        <td class="text-nowrap">{{ r.endDate.plus({ days: 1 }) | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div data-help-loc="LeaveDashboard_NotReturned" class="card card-custom h-100">
+                                <div class="card-header border-0 pt-5">
+                                    <h3 class="card-title fw-bold">{{ 'LeaveDashboard_NotReturned' | localize }}</h3>
+                                    <div class="card-toolbar gap-2">
+                                        <span class="badge" [class.badge-light-danger]="d.notReturned.length" [class.badge-light-success]="!d.notReturned.length" [attr.title]="'LeaveDashboard_LeavesCount' | localize: d.notReturned.length">
+                                            {{ d.notReturned.length }}
+                                        </span>
+                                        <dashboard-export-menu [fileName]="'LeaveDashboard_NotReturned' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.NotReturned)" />
+                                    </div>
+                                </div>
+                                <div class="card-body pt-2 ld-list">
+                                    @if (d.notReturned.length === 0) {
+                                        <div class="text-muted py-5 text-center">{{ 'LeaveDashboard_NobodyOverdue' | localize }}</div>
+                                    } @else {
+                                        <table class="table table-row-dashed table-sm align-middle mb-0">
+                                            <thead>
+                                                <tr class="text-muted fw-semibold">
+                                                    <th>{{ 'Employee' | localize }}</th>
+                                                    <th>{{ 'LeaveType' | localize }}</th>
+                                                    <th>{{ 'LeaveDashboard_DueBack' | localize }}</th>
+                                                    <th class="text-end">{{ 'DaysOverdue' | localize }}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (r of d.notReturned; track r.absenceId) {
+                                                    <tr class="ld-row" (click)="openEmployee(r)">
+                                                        <td>
+                                                            <div class="fw-semibold">{{ employeeName(r) }}</div>
+                                                            <div class="text-muted fs-7">{{ r.employeeCode }} · {{ r.organizationUnitName }}</div>
+                                                        </td>
+                                                        <td>{{ typeNameOf(r) }}</td>
+                                                        <td class="text-nowrap">{{ r.endDate.plus({ days: 1 }) | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                                        <td class="text-end fw-bold text-danger">{{ r.daysOverdue }}</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            </div>
+
+            <!-- ================= Drill-down list ================= -->
+            @if (detailKind()) {
+                <div data-help-loc="LeaveDashboard_LeaveInPeriod" class="card card-custom mb-5 ld-rise" #detailPanel>
+                    <div class="card-header border-0 pt-5">
+                        <h3 class="card-title fw-bold">{{ detailTitle() }}</h3>
+                        <div class="card-toolbar gap-2">
+                            <dashboard-export-menu [fileName]="detailTitle()" [disabled]="exporting()" (xlsx)="exportDetail()" />
+                            <button type="button" class="btn btn-sm btn-icon btn-light ld-no-export" (click)="closeDetail()" [attr.aria-label]="'Close' | localize">
+                                <i class="la la-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="primeng-datatable-container" [busyIf]="serverLoading()">
+                            <p-table [value]="detailIsServer() ? serverRows() : detailRows()" [scrollable]="true" [tableStyle]="{ 'min-width': '60rem' }">
+                                <ng-template #header>
+                                    <tr>
+                                        <th>{{ 'Code' | localize }}</th>
+                                        <th>{{ 'Employee' | localize }}</th>
+                                        <th>{{ 'OrganizationUnit' | localize }}</th>
+                                        <th>{{ 'LeaveType' | localize }}</th>
+                                        <th>{{ 'StartDate' | localize }}</th>
+                                        <th>{{ 'EndDate' | localize }}</th>
+                                        <th class="text-end">{{ 'TotalLeaveDays' | localize }}</th>
+                                        @if (detailKind() === 'notReturned') {
+                                            <th class="text-end">{{ 'DaysOverdue' | localize }}</th>
+                                        }
+                                    </tr>
+                                </ng-template>
+                                <ng-template #body let-r>
+                                    <tr class="ld-row" (click)="openEmployee(r)">
+                                        <td>{{ r.employeeCode }}</td>
+                                        <td>{{ employeeName(r) }}</td>
+                                        <td>{{ r.organizationUnitName }}</td>
+                                        <td>{{ typeNameOf(r) }}</td>
+                                        <td>{{ r.startDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                        <td>{{ r.endDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                        <td class="text-end">{{ r.totalLeaveDays | number: '1.0-1' }}</td>
+                                        @if (detailKind() === 'notReturned') {
+                                            <td class="text-end fw-bold text-danger">{{ r.daysOverdue }}</td>
+                                        }
+                                    </tr>
+                                </ng-template>
+                                <ng-template #emptymessage>
+                                    <tr>
+                                        <td colspan="8" class="text-muted text-center py-5">{{ 'NoData' | localize }}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            @if (detailIsServer()) {
+                                <p-paginator
+                                    #paginator
+                                    [rows]="10"
+                                    [totalRecords]="serverTotal()"
+                                    [rowsPerPageOptions]="[10, 25, 50, 100]"
+                                    [showCurrentPageReport]="true"
+                                    [currentPageReportTemplate]="'TotalRecordsCount' | localize: serverTotal()"
+                                    (onPageChange)="getServerRows($event)" />
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

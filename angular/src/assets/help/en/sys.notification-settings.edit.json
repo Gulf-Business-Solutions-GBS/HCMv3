@@ -1,0 +1,43 @@
+{
+  "helpId": "sys.notification-settings.edit",
+  "lang": "en",
+  "title": "Notification settings",
+  "entity": "HCMv3.SystemSettings.ManageNotificationSettings",
+  "overviewHtml": "<p>Settings for notifications.</p><p>There is one settings record per company; it cannot be deleted.</p>",
+  "aliasIndex": {
+    "loc:DisableNotificationWindow": "ManageNotificationSettings.DisableNotificationWindow",
+    "dom:NotificationSettings_DisableNotificationWindow": "ManageNotificationSettings.DisableNotificationWindow",
+    "loc:AdvancePaymentReminderDateType": "ManageNotificationSettings.AdvancePaymentReminderDateType",
+    "dom:NotificationSettings_AdvancePaymentReminderDateType": "ManageNotificationSettings.AdvancePaymentReminderDateType"
+  },
+  "fields": [
+    {
+      "id": "ManageNotificationSettings.DisableNotificationWindow",
+      "label": "DisableNotificationWindow",
+      "section": null,
+      "aliases": [
+        "loc:DisableNotificationWindow",
+        "dom:NotificationSettings_DisableNotificationWindow"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the notification window is hidden.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageNotificationSettings.AdvancePaymentReminderDateType",
+      "label": "AdvancePaymentReminderDateType",
+      "section": null,
+      "aliases": [
+        "loc:AdvancePaymentReminderDateType",
+        "dom:NotificationSettings_AdvancePaymentReminderDateType"
+      ],
+      "rules": "Required. One of: Leave Start Date, Leave Payment Date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which date the advance-payment reminder counts back from.</p><p><strong>Example.</strong> Leave Start Date</p><p><strong>Why it matters.</strong> The reminder about paid leave is sent a set number of days before either the leave's start date or its payment date, as chosen here.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

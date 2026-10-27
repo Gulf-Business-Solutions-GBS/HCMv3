@@ -1,0 +1,75 @@
+{
+  "helpId": "perf.kpi-by-job-title-detail.edit",
+  "lang": "en",
+  "title": "KPI By Job Title Details — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.KpiByJobTitleDetail",
+  "overviewHtml": "<p>One KPI in a job title's set. Each KPI can appear once, and the weights in a set must not add up to more than 100.</p>",
+  "aliasIndex": {
+    "loc:KpiByJobTitle": "KpiByJobTitleDetail.KpiByJobTitleId",
+    "dom:KpiByJobTitleDetail_KpiByJobTitleId": "KpiByJobTitleDetail.KpiByJobTitleId",
+    "loc:KpiInfo": "KpiByJobTitleDetail.KpiInfoId",
+    "dom:KpiByJobTitleDetail_KpiInfoId": "KpiByJobTitleDetail.KpiInfoId",
+    "loc:Weight": "KpiByJobTitleDetail.Weight",
+    "dom:KpiByJobTitleDetail_Weight": "KpiByJobTitleDetail.Weight",
+    "loc:Target": "KpiByJobTitleDetail.Target",
+    "dom:KpiByJobTitleDetail_Target": "KpiByJobTitleDetail.Target"
+  },
+  "fields": [
+    {
+      "id": "KpiByJobTitleDetail.KpiByJobTitleId",
+      "label": "KpiByJobTitle",
+      "section": "KpiByJobTitleDetails",
+      "aliases": [
+        "loc:KpiByJobTitle",
+        "dom:KpiByJobTitleDetail_KpiByJobTitleId"
+      ],
+      "rules": "Required. Chosen from KPI By Job Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job title's KPI set.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiByJobTitleDetail.KpiInfoId",
+      "label": "KpiInfo",
+      "section": "KpiByJobTitleDetails",
+      "aliases": [
+        "loc:KpiInfo",
+        "dom:KpiByJobTitleDetail_KpiInfoId"
+      ],
+      "rules": "Required. Chosen from KPI master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiByJobTitleDetail.Weight",
+      "label": "Weight",
+      "section": "KpiByJobTitleDetails",
+      "aliases": [
+        "loc:Weight",
+        "dom:KpiByJobTitleDetail_Weight"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI's weight, as a percentage.</p><p><strong>Example.</strong> <code>20</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiByJobTitleDetail.Target",
+      "label": "Target",
+      "section": "KpiByJobTitleDetails",
+      "aliases": [
+        "loc:Target",
+        "dom:KpiByJobTitleDetail_Target"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The target for the KPI.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

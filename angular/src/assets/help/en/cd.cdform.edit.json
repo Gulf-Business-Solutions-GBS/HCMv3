@@ -1,0 +1,91 @@
+{
+  "helpId": "cd.cdform.edit",
+  "lang": "en",
+  "title": "CD Forms — Create / Edit",
+  "entity": "HCMv3.CompetencyDevelopment.CDForm",
+  "overviewHtml": "<p>An employee's competency development form for one period, holding their plan, mid-year review and annual review. An employee can have one form per period.</p>",
+  "aliasIndex": {
+    "loc:CDPeriod": "CDForm.CDPeriodId",
+    "dom:CDForm_CDPeriodId": "CDForm.CDPeriodId",
+    "loc:Employee": "CDForm.EmployeeId",
+    "dom:CDForm_EmployeeId": "CDForm.EmployeeId",
+    "loc:ModeratedScore": "CDForm.ModeratedScore",
+    "dom:CDForm_ModeratedScore": "CDForm.ModeratedScore",
+    "loc:EmployeeSignedOff": "CDForm.EmployeeSignedOff",
+    "dom:CDForm_EmployeeSignedOff": "CDForm.EmployeeSignedOff",
+    "loc:ManagerSignedOff": "CDForm.ManagerSignedOff",
+    "dom:CDForm_ManagerSignedOff": "CDForm.ManagerSignedOff"
+  },
+  "fields": [
+    {
+      "id": "CDForm.CDPeriodId",
+      "label": "CDPeriod",
+      "section": "CDForms",
+      "aliases": [
+        "loc:CDPeriod",
+        "dom:CDForm_CDPeriodId"
+      ],
+      "rules": "Required. Chosen from CD Period master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The review period.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDForm.EmployeeId",
+      "label": "Employee",
+      "section": "CDForms",
+      "aliases": [
+        "loc:Employee",
+        "dom:CDForm_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDForm.ModeratedScore",
+      "label": "ModeratedScore",
+      "section": "CDForms",
+      "aliases": [
+        "loc:ModeratedScore",
+        "dom:CDForm_ModeratedScore"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The final score after moderation, entered by hand.</p><p><strong>Example.</strong> 3.5</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDForm.EmployeeSignedOff",
+      "label": "EmployeeSignedOff",
+      "section": "CDForms",
+      "aliases": [
+        "loc:EmployeeSignedOff",
+        "dom:CDForm_EmployeeSignedOff"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the employee has agreed the form.</p><p><strong>Why it matters.</strong> A record only: the form can still be changed.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDForm.ManagerSignedOff",
+      "label": "ManagerSignedOff",
+      "section": "CDForms",
+      "aliases": [
+        "loc:ManagerSignedOff",
+        "dom:CDForm_ManagerSignedOff"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the manager has agreed the form.</p><p><strong>Why it matters.</strong> A record only: the form can still be changed.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

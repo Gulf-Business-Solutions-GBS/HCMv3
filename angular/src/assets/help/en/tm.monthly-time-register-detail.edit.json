@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.monthly-time-register-detail.edit",
+  "lang": "en",
+  "title": "Monthly Time Register Details — Create / Edit",
+  "entity": "HCMv3.TimeManagement.MonthlyTimeRegisterDetail",
+  "overviewHtml": "<p>One time type's value in a monthly register.</p><p>Not written at present: no process fills these registers and nothing reads them. Payroll and the reports work from the daily time register.</p>",
+  "aliasIndex": {
+    "loc:MonthlyTimeRegister": "MonthlyTimeRegisterDetail.MonthlyTimeRegisterId",
+    "dom:MonthlyTimeRegisterDetail_MonthlyTimeRegisterId": "MonthlyTimeRegisterDetail.MonthlyTimeRegisterId",
+    "loc:TimeType": "MonthlyTimeRegisterDetail.TimeTypeId",
+    "dom:MonthlyTimeRegisterDetail_TimeTypeId": "MonthlyTimeRegisterDetail.TimeTypeId",
+    "loc:TimeValue": "MonthlyTimeRegisterDetail.TimeValue",
+    "dom:MonthlyTimeRegisterDetail_TimeValue": "MonthlyTimeRegisterDetail.TimeValue"
+  },
+  "fields": [
+    {
+      "id": "MonthlyTimeRegisterDetail.MonthlyTimeRegisterId",
+      "label": "MonthlyTimeRegister",
+      "section": "MonthlyTimeRegisterDetails",
+      "aliases": [
+        "loc:MonthlyTimeRegister",
+        "dom:MonthlyTimeRegisterDetail_MonthlyTimeRegisterId"
+      ],
+      "rules": "Required. Chosen from Monthly Time Register master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The monthly register this line belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "MonthlyTimeRegisterDetail.TimeTypeId",
+      "label": "TimeType",
+      "section": "MonthlyTimeRegisterDetails",
+      "aliases": [
+        "loc:TimeType",
+        "dom:MonthlyTimeRegisterDetail_TimeTypeId"
+      ],
+      "rules": "Required. Chosen from Time Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time type the value is for.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "MonthlyTimeRegisterDetail.TimeValue",
+      "label": "TimeValue",
+      "section": "MonthlyTimeRegisterDetails",
+      "aliases": [
+        "loc:TimeValue",
+        "dom:MonthlyTimeRegisterDetail_TimeValue"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The value.</p><p><strong>Example.</strong> <code>2.5</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

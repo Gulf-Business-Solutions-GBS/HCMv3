@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.simulation-salary-register-days-detail.edit",
+  "lang": "en",
+  "title": "Simulation Salary Register Days Details — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.SimulationSalaryRegisterDaysDetail",
+  "overviewHtml": "<p>The breakdown of a simulation payslip line by date.</p>",
+  "aliasIndex": {
+    "loc:SimulationSalaryRegisterDetailId": "SimulationSalaryRegisterDaysDetail.SimulationSalaryRegisterDetailId",
+    "dom:SimulationSalaryRegisterDaysDetail_SimulationSalaryRegisterDetailId": "SimulationSalaryRegisterDaysDetail.SimulationSalaryRegisterDetailId",
+    "loc:Period": "SimulationSalaryRegisterDaysDetail.Period",
+    "dom:SimulationSalaryRegisterDaysDetail_Period": "SimulationSalaryRegisterDaysDetail.Period",
+    "loc:Rate": "SimulationSalaryRegisterDaysDetail.Rate",
+    "dom:SimulationSalaryRegisterDaysDetail_Rate": "SimulationSalaryRegisterDaysDetail.Rate",
+    "loc:Number": "SimulationSalaryRegisterDaysDetail.Number",
+    "dom:SimulationSalaryRegisterDaysDetail_Number": "SimulationSalaryRegisterDaysDetail.Number",
+    "loc:Amount": "SimulationSalaryRegisterDaysDetail.Amount",
+    "dom:SimulationSalaryRegisterDaysDetail_Amount": "SimulationSalaryRegisterDaysDetail.Amount"
+  },
+  "fields": [
+    {
+      "id": "SimulationSalaryRegisterDaysDetail.SimulationSalaryRegisterDetailId",
+      "label": "SimulationSalaryRegisterDetailId",
+      "section": "SimulationSalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:SimulationSalaryRegisterDetailId",
+        "dom:SimulationSalaryRegisterDaysDetail_SimulationSalaryRegisterDetailId"
+      ],
+      "rules": "Required. Chosen from Simulation Salary Register Detail master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The simulation payslip line this breakdown belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegisterDaysDetail.Period",
+      "label": "Period",
+      "section": "SimulationSalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Period",
+        "dom:SimulationSalaryRegisterDaysDetail_Period"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date this part of the line is for.</p><p><strong>Example.</strong> <code>2026-03-14</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegisterDaysDetail.Rate",
+      "label": "Rate",
+      "section": "SimulationSalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Rate",
+        "dom:SimulationSalaryRegisterDaysDetail_Rate"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The rate for that date.</p><p><strong>Example.</strong> <code>800</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegisterDaysDetail.Number",
+      "label": "Number",
+      "section": "SimulationSalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Number",
+        "dom:SimulationSalaryRegisterDaysDetail_Number"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The days, hours or units for that date.</p><p><strong>Example.</strong> <code>2</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegisterDaysDetail.Amount",
+      "label": "Amount",
+      "section": "SimulationSalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:SimulationSalaryRegisterDaysDetail_Amount"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount for that date.</p><p><strong>Example.</strong> <code>12.500</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

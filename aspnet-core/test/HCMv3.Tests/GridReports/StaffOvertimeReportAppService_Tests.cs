@@ -1,0 +1,168 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using HCMv3.GeneralMasterInfo;
+using HCMv3.GridReports.PayrollReport;
+using HCMv3.GridReports.PayrollReport.Dto;
+using HCMv3.PayrollManagement;
+using HCMv3.PersonnelAdministration;
+using HCMv3.Storage;
+using MiniExcelLibs;
+using Shouldly;
+using Xunit;
+
+namespace HCMv3.Tests.GridReports;
+
+// ReSharper disable once InconsistentNaming
+public class StaffOvertimeReportAppService_Tests : AppTestBase
+{
+    private readonly IStaffOvertimeReportAppService _appService;
+    private readonly ITempFileCacheManager _tempFileCacheManager;
+
+    public StaffOvertimeReportAppService_Tests()
+    {
+        LoginAsDefaultTenantAdmin();
+        _appService = Resolve<IStaffOvertimeReportAppService>();
+        _tempFileCacheManager = Resolve<ITempFileCacheManager>();
+    }
+
+    private int TenantId => AbpSession.TenantId ?? 1;
+
+    private Employee CreateEmployee(string code)
+    {
+        Nationality nationality = null;
+        UsingDbContext(context =>
+        {
+            nationality = context.Nationalities.Add(new Nationality
+            {
+                TenantId = TenantId,
+                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
+                NameEn = "N",
+                NameAr = "N"
+            }).Entity;
+        });
+
+        Employee employee = null;
+        UsingDbContext(context =>
+        {
+            employee = context.Set<Employee>().Add(new Employee
+            {
+                TenantId = TenantId,
+                Code = code,
+                FirstNameEn = "F" + code,
+                LastNameEn = "L",
+                FirstNameAr = "ف",
+                LastNameAr = "ل",
+                FullNameEn = "Full " + code,
+                FullNameAr = "عربي " + code,
+                BirthDate = new DateTime(1990, 1, 1),
+                JoiningDate = new DateTime(2020, 1, 1),
+                ProbationEndDate = new DateTime(2020, 4, 1),
+                NationalityId = nationality.Id,
+                Status = EmployeeStatus.Active
+            }).Entity;
+        });
+
+        return employee;
+    }
+
+    private WageType CreateWageType(string code)
+    {
+        WageType wageType = null;
+        UsingDbContext(context =>
+        {
+            wageType = context.Set<WageType>().Add(new WageType
+            {
+                TenantId = TenantId,
+                Code = code,
+                NameEn = "WT-" + code,
+                NameAr = "WT-" + code,
+                ShortNameEn = code,
+                ShortNameAr = code,
+                Status = true
+            }).Entity;
+        });
+
+        return wageType;
+    }
+
+    private SalaryRegister CreateRegister(Employee employee, DateTime period)
+    {
+        SalaryRegister register = null;
+        UsingDbContext(context =>
+        {
+            register = context.Set<SalaryRegister>().Add(new SalaryRegister
+            {
+                TenantId = TenantId,
+                EmployeeId = employee.Id,
+                ForPeriod = period,
+                InPeriod = period,
+                PayrollRunType = PayrollRunType.Regular,
+                PayrollResultType = PayrollResultType.Current,
+                OffCyclePaymentDate = period
+            }).Entity;
+        });
+
+        return register;
+    }
+
+    private void CreateDetail(SalaryRegister register, WageType wageType, double number, double amount)
+    {
+        UsingDbContext(context =>
+        {
+            context.Set<SalaryRegisterDetail>().Add(new SalaryRegisterDetail
+            {
+                TenantId = TenantId,
+                SalaryRegisterId = register.Id,
+                WageTypeId = wageType.Id,
+                Number = number,
+                Amount = amount,
+                Rate = 0
+            });
+        });
+    }
+
+    private static GetStaffOvertimeReportInput Input(int month, int year, int maxResultCount = 100, int skipCount = 0)
+    {
+        return new GetStaffOvertimeReportInput { Month = month, Year = year, MaxResultCount = maxResultCount, SkipCount = skipCount };
+    }
+
+    [Fact]
+    public async Task Should_Sum_Regular_And_Arrear_Overtime_Codes_Into_The_Same_Column()
+    {
+        var employee = CreateEmployee("OVT-SUM");
+        var register = CreateRegister(employee, new DateTime(2024, 6, 30));
+
+        CreateDetail(register, CreateWageType("1007"), 2, 20);
+        CreateDetail(register, CreateWageType("7007"), 1, 10);
+        CreateDetail(register, CreateWageType("1008"), 3, 30);
+
+        var result = await _appService.GetStaffOvertimeReport(Input(6, 2024));
+
+        var row = result.Items.Single(i => i.EmployeeCode == "OVT-SUM");
+        row.NormalDay.ShouldBe(3);
+        row.NormalDayAmount.ShouldBe(30);
+        row.Weekend.ShouldBe(3);
+        row.WeekendAmount.ShouldBe(30);
+        row.PublicHoliday.ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task Should_Export_All_Matching_Rows_And_Resolve_Every_Header()
+    {
+        var a = CreateEmployee("OVT-EXP-A");
+        var b = CreateEmployee("OVT-EXP-B");
+        CreateDetail(CreateRegister(a, new DateTime(2024, 6, 30)), CreateWageType("1007"), 1, 10);
+        CreateDetail(CreateRegister(b, new DateTime(2024, 6, 30)), CreateWageType("1008"), 1, 10);
+
+        var file = await _appService.GetStaffOvertimeReportToExcel(Input(6, 2024, maxResultCount: 1));
+
+        var bytes = _tempFileCacheManager.GetFile(file.FileToken);
+        using var stream = new MemoryStream(bytes);
+        var exported = stream.Query(useHeaderRow: true).Cast<System.Collections.Generic.IDictionary<string, object>>().ToList();
+
+        exported.Count.ShouldBe(2);
+        exported.First().Keys.Where(k => k.StartsWith("[") && k.EndsWith("]")).ShouldBeEmpty();
+    }
+}

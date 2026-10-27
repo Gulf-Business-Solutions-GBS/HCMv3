@@ -1,0 +1,99 @@
+/* Dashboard quick links. Palette comes from the theme, so these follow a theme change and
+   invert under dark mode rather than staying a pale tile on a dark card. */
+
+.ql-card {
+    margin-bottom: 20px;
+}
+
+.ql-head {
+    min-height: 48px;
+    padding: 0 18px;
+}
+
+.ql-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--bs-gray-900);
+}
+
+.ql-body {
+    padding: 14px 18px 16px;
+}
+
+.ql-band + .ql-band {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--bs-border-color);
+}
+
+.ql-band-head {
+    margin-bottom: 8px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--bs-gray-700);
+}
+
+.ql-grid {
+    display: grid;
+    /* Wraps to whatever fits rather than a fixed column count: capped at six, this is one row on a wide
+       dashboard and two or three on a narrow one, with no empty cells either way. */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+}
+
+.ql-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 9px 12px;
+    background: var(--bs-gray-100);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--bs-gray-900);
+    text-decoration: none;
+}
+
+/* Same accent treatment as the my-summary tiles next door: brand colour for the edge, brand pulled
+   halfway toward --bs-gray-900 for the label. gray-900 inverts between colour modes, so the one
+   expression darkens the accent on a light page and lightens it on a dark one. */
+.ql-link:hover {
+    background: rgba(var(--bs-primary-rgb), 0.12);
+    border-color: var(--bs-primary);
+    color: color-mix(in srgb, var(--bs-primary) 50%, var(--bs-gray-900));
+}
+
+.ql-code {
+    flex: 0 0 auto;
+    font-family: 'IBM Plex Mono', SFMono-Regular, Consolas, monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--bs-gray-600);
+}
+
+.ql-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ql-empty,
+.ql-manage {
+    margin: 0;
+    font-size: 12px;
+    color: var(--bs-gray-700);
+}
+
+.ql-manage {
+    margin-top: 8px;
+}
+
+/* Recents are where you happened to be, not where you chose to go -- lighter than the two sections
+   above so the eye lands on the deliberate lists first. */
+.ql-link-quiet {
+    background: var(--bs-body-bg);
+    border-style: dashed;
+}

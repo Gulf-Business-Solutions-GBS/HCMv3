@@ -1,0 +1,40 @@
+/*
+ * The drag handle for reordering approval steps.
+ *
+ * The whole cell is the grab target rather than the icon inside it. A grip glyph is about 12px wide, and
+ * at that size the drag has to be started two or three times before it takes; the cell is 44px, which is
+ * a target you hit first go.
+ *
+ * user-select is off because a drag that starts on text selects the row's text instead of moving it, and
+ * touch-action is off because on a touchpad or tablet the browser otherwise claims the gesture for
+ * scrolling and the row never moves.
+ */
+.step-drag-cell {
+    width: 44px;
+    text-align: center;
+    cursor: grab;
+    color: var(--bs-gray-500, #a1a5b7);
+    user-select: none;
+    touch-action: none;
+}
+
+.step-drag-cell:hover {
+    color: var(--bs-primary, #009ef7);
+    background: var(--bs-gray-100, #f9f9f9);
+}
+
+.step-drag-cell:active {
+    cursor: grabbing;
+}
+
+/*
+ * Where the row will land. PrimeNG puts these classes on the row being hovered over during a drag, and
+ * ::ng-deep is needed because the table renders them outside this component's own emulated scope.
+ */
+:host ::ng-deep tr.p-datatable-dragpoint-top > td {
+    box-shadow: inset 0 2px 0 0 var(--bs-primary, #009ef7);
+}
+
+:host ::ng-deep tr.p-datatable-dragpoint-bottom > td {
+    box-shadow: inset 0 -2px 0 0 var(--bs-primary, #009ef7);
+}

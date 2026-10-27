@@ -1,0 +1,59 @@
+{
+  "helpId": "rec.onb-app-task-comment.edit",
+  "lang": "ar",
+  "title": "Onb App Task Comment",
+  "entity": "HCMv3.Recruitment.OnbAppTaskComments",
+  "overviewHtml": "<p>تعليق على مهمة تهيئة لمتقدم.</p>",
+  "aliasIndex": {
+    "loc:OnbApplicantTasks": "OnbAppTaskComments.OnbApplicantTasksId",
+    "dom:OnbAppTaskComment_OnbApplicantTasksId": "OnbAppTaskComments.OnbApplicantTasksId",
+    "loc:Comments": "OnbAppTaskComments.Comments",
+    "dom:OnbAppTaskComment_Comments": "OnbAppTaskComments.Comments",
+    "loc:IsByAdmin": "OnbAppTaskComments.IsByAdmin",
+    "dom:OnbAppTaskComment_IsByAdmin": "OnbAppTaskComments.IsByAdmin"
+  },
+  "fields": [
+    {
+      "id": "OnbAppTaskComments.OnbApplicantTasksId",
+      "label": "OnbApplicantTasks",
+      "section": null,
+      "aliases": [
+        "loc:OnbApplicantTasks",
+        "dom:OnbAppTaskComment_OnbApplicantTasksId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة OnbApplicantTasks.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مهمة المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbAppTaskComments.Comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments",
+        "dom:OnbAppTaskComment_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbAppTaskComments.IsByAdmin",
+      "label": "IsByAdmin",
+      "section": null,
+      "aliases": [
+        "loc:IsByAdmin",
+        "dom:OnbAppTaskComment_IsByAdmin"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الموارد البشرية كاتبة التعليق لا المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

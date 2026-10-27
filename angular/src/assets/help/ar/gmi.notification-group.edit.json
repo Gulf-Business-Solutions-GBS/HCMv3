@@ -1,0 +1,59 @@
+{
+  "helpId": "gmi.notification-group.edit",
+  "lang": "ar",
+  "title": "مجموعات الإخطار — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.NotificationGroup",
+  "overviewHtml": "<p>مجموعات مرتبطة بإعدادات إخطار. لا تُستخدم حالياً: فإرسال الإخطارات إلى المجموعات لم يُنقل إلى HCMv3.</p>",
+  "aliasIndex": {
+    "loc:NotificationConfig": "NotificationGroup.NotificationConfigId",
+    "dom:NotificationGroup_NotificationConfigId": "NotificationGroup.NotificationConfigId",
+    "loc:NotifyRoleHolders": "NotificationGroup.WorkflowRoleId",
+    "dom:NotificationGroup_WorkflowRoleId": "NotificationGroup.WorkflowRoleId",
+    "loc:NarrowToRequesterOrgScope": "NotificationGroup.WorkflowRoleGroup",
+    "dom:NotificationGroup_WorkflowRoleGroup": "NotificationGroup.WorkflowRoleGroup"
+  },
+  "fields": [
+    {
+      "id": "NotificationGroup.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "NotificationGroups",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:NotificationGroup_NotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إعدادات الإخطار التي تنتمي إليها المجموعة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationGroup.WorkflowRoleId",
+      "label": "NotifyRoleHolders",
+      "section": "NotificationGroups",
+      "aliases": [
+        "loc:NotifyRoleHolders",
+        "dom:NotificationGroup_WorkflowRoleId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أدوار سير العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دور سير عمل يُبلَّغ شاغلوه عند تنفيذ هذا الإخطار.</p><p><strong>مثال.</strong> شريك أعمال الموارد البشرية</p><p><strong>لماذا يهم.</strong> يُضاف إلى المستلمين كل من يشغل الدور في ذلك اليوم. والمجموعة التي ليس لها دور لا تضيف أحداً. وإذا أُشِّر على <strong>إرسال إلى المعتمِد</strong> في الإعداد، فلا تُستخدم المجموعات إطلاقاً ولا يُبلَّغ إلا المعتمِدون.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationGroup.WorkflowRoleGroup",
+      "label": "NarrowToRequesterOrgScope",
+      "section": "NotificationGroups",
+      "aliases": [
+        "loc:NarrowToRequesterOrgScope",
+        "dom:NotificationGroup_WorkflowRoleGroup"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، الشركة، الإدارة، الفرع، مركز التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يقصر شاغلي الدور على من هم في الجزء نفسه من المؤسسة الذي ينتمي إليه مقدّم الطلب.</p><p><strong>مثال.</strong> القسم</p><p><strong>لماذا يهم.</strong> مع «القسم» مثلاً، لا يُبلَّغ إلا شاغلو الدور في قسم مقدّم الطلب. و«لا شيء» يبلّغ جميع الشاغلين. وإذا لم يبقَ أحد بعد هذا القصر، يُبلَّغ جميع شاغلي الدور بدلاً من ذلك، فلا يضيع الإخطار.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

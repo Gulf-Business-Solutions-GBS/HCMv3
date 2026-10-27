@@ -1,0 +1,301 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="EmployeeFnFPayment_CompensationDate">{{ 'CompensationDate' | localize }}</label>
+                                <input
+                                    id="EmployeeFnFPayment_CompensationDate"
+                                    #compensationDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="CompensationDate"
+                                    [ngModel]="record().compensationDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('compensationDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="compensationDateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeFnFPayment_EmployeeActionId">{{ 'EmployeeActionId' | localize }}</label>
+                                <select
+                                    id="EmployeeFnFPayment_EmployeeActionId"
+                                    class="form-select"
+                                    name="EmployeeActionId"
+                                    [ngModel]="record().employeeActionId"
+                                    (ngModelChange)="updateField('employeeActionId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (action of employeeActions(); track action.id) {
+                                        <option [ngValue]="action.id">
+                                            {{ action.personalActionName }} - {{ action.startDate | luxonFormat: 'yyyy-MM-dd' }}
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeFnFPayment_EmployeeBasicPayDetailId">{{ 'EmployeeBasicPayDetailId' | localize }}</label>
+                                <select
+                                    id="EmployeeFnFPayment_EmployeeBasicPayDetailId"
+                                    class="form-select"
+                                    name="EmployeeBasicPayDetailId"
+                                    [ngModel]="record().employeeBasicPayDetailId"
+                                    (ngModelChange)="updateField('employeeBasicPayDetailId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (detail of employeeBasicPayDetails(); track detail.id) {
+                                        <option [ngValue]="detail.id">{{ detail.wageTypeName }} - {{ detail.amount }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        @if (balances(); as b) {
+                            <div class="bg-light rounded p-4 mb-5" id="EmployeeFnFPayment_Balances">
+                                <div class="fw-bold mb-3">{{ 'FullAndFinalBalances' | localize }}</div>
+                                <div class="row g-3">
+                                    <div class="col-6 col-md-2">
+                                        <div class="text-muted fs-7">{{ 'LeaveAccrualDays' | localize }}</div>
+                                        <div class="fw-semibold">{{ b.leaveAccrualDays | number: '1.0-2' }}</div>
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        <div class="text-muted fs-7">{{ 'LeaveRemainingDays' | localize }}</div>
+                                        <div class="fw-semibold">{{ b.leaveRemainingDays | number: '1.0-2' }}</div>
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        <div class="text-muted fs-7">{{ 'IndemnityAccrualDays' | localize }}</div>
+                                        <div class="fw-semibold">{{ b.gratuityAccrualDays | number: '1.0-3' }}</div>
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        <div class="text-muted fs-7">{{ 'IndemnityRemainingDays' | localize }}</div>
+                                        <div class="fw-semibold">{{ b.gratuityRemainingDays | number: '1.0-3' }}</div>
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        <div class="text-muted fs-7">{{ 'SuggestedIndemnityDays' | localize }}</div>
+                                        <div class="fw-bold text-primary">{{ b.suggestedIndemnityDays | number: '1.0-3' }}</div>
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        <div class="text-muted fs-7">{{ 'TicketAccrualCount' | localize }}</div>
+                                        <div class="fw-semibold">{{ b.ticketAccrualCount | number: '1.0-3' }}</div>
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        <div class="text-muted fs-7">{{ 'TicketRemainingCount' | localize }}</div>
+                                        <div class="fw-semibold">{{ b.ticketRemainingCount | number: '1.0-3' }}</div>
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        <div class="text-muted fs-7">{{ 'LoanBalanceDueAmount' | localize }}</div>
+                                        <div class="fw-semibold" [class.text-danger]="b.loanBalanceDueAmount > 0">
+                                            {{ b.loanBalanceDueAmount | number: '1.0-3' }}
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        <div class="text-muted fs-7">{{ 'SuggestedBonusPay' | localize }}</div>
+                                        <div class="fw-semibold">{{ b.suggestedBonusPay | number: '1.0-3' }}</div>
+                                    </div>
+                                </div>
+                                <div class="text-muted fs-7 mt-3">{{ 'FullAndFinalBalancesHint' | localize }}</div>
+                            </div>
+                        }
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="EmployeeFnFPayment_LeaveCompensateDays">{{ 'LeaveCompensateDays' | localize }}</label>
+                                <input
+                                    id="EmployeeFnFPayment_LeaveCompensateDays"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="LeaveCompensateDays"
+                                    [ngModel]="record().leaveCompensateDays"
+                                    (ngModelChange)="updateNumberField('leaveCompensateDays', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="EmployeeFnFPayment_GratuityCompensateDays">{{ 'GratuityCompensateDays' | localize }}</label>
+                                <input
+                                    id="EmployeeFnFPayment_GratuityCompensateDays"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="GratuityCompensateDays"
+                                    [ngModel]="record().gratuityCompensateDays"
+                                    (ngModelChange)="updateNumberField('gratuityCompensateDays', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="EmployeeFnFPayment_IndemnityCompensateAmount">{{ 'IndemnityCompensateAmount' | localize }}</label>
+                                <input
+                                    id="EmployeeFnFPayment_IndemnityCompensateAmount"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="IndemnityCompensateAmount"
+                                    [ngModel]="record().indemnityCompensateAmount"
+                                    (ngModelChange)="updateNumberField('indemnityCompensateAmount', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="EmployeeFnFPayment_IndemnityPayAdjustment">{{ 'IndemnityPayAdjustment' | localize }}</label>
+                                <input
+                                    id="EmployeeFnFPayment_IndemnityPayAdjustment"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="IndemnityPayAdjustment"
+                                    [ngModel]="record().indemnityPayAdjustment"
+                                    (ngModelChange)="updateNumberField('indemnityPayAdjustment', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="EmployeeFnFPayment_TicketCompensateCount">{{ 'TicketCompensateCount' | localize }}</label>
+                                <input
+                                    id="EmployeeFnFPayment_TicketCompensateCount"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="TicketCompensateCount"
+                                    [ngModel]="record().ticketCompensateCount"
+                                    (ngModelChange)="updateNumberField('ticketCompensateCount', $event)" />
+                            </div>
+                            <!-- Legacy showed a dependant's ticket only when the employee had that entitlement. -->
+                            @if (showDependantTicket(1)) {
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="EmployeeFnFPayment_Dependant1TicketCompensateCount">{{ 'Dependant1TicketCompensateCount' | localize }}</label>
+                                <input
+                                    id="EmployeeFnFPayment_Dependant1TicketCompensateCount"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="Dependant1TicketCompensateCount"
+                                    [ngModel]="record().dependant1TicketCompensateCount"
+                                    (ngModelChange)="updateNumberField('dependant1TicketCompensateCount', $event)" />
+                                @if (balances(); as b) {
+                                    <span class="form-text text-muted">
+                                        {{ 'TicketRemainingCount' | localize }}: {{ b.dependant1TicketRemainingCount | number: '1.0-3' }}
+                                    </span>
+                                }
+                            </div>
+                            }
+                            <!-- Legacy showed a dependant's ticket only when the employee had that entitlement. -->
+                            @if (showDependantTicket(2)) {
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="EmployeeFnFPayment_Dependant2TicketCompensateCount">{{ 'Dependant2TicketCompensateCount' | localize }}</label>
+                                <input
+                                    id="EmployeeFnFPayment_Dependant2TicketCompensateCount"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="Dependant2TicketCompensateCount"
+                                    [ngModel]="record().dependant2TicketCompensateCount"
+                                    (ngModelChange)="updateNumberField('dependant2TicketCompensateCount', $event)" />
+                                @if (balances(); as b) {
+                                    <span class="form-text text-muted">
+                                        {{ 'TicketRemainingCount' | localize }}: {{ b.dependant2TicketRemainingCount | number: '1.0-3' }}
+                                    </span>
+                                }
+                            </div>
+                            }
+                            <!-- Legacy showed a dependant's ticket only when the employee had that entitlement. -->
+                            @if (showDependantTicket(3)) {
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="EmployeeFnFPayment_Dependant3TicketCompensateCount">{{ 'Dependant3TicketCompensateCount' | localize }}</label>
+                                <input
+                                    id="EmployeeFnFPayment_Dependant3TicketCompensateCount"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="Dependant3TicketCompensateCount"
+                                    [ngModel]="record().dependant3TicketCompensateCount"
+                                    (ngModelChange)="updateNumberField('dependant3TicketCompensateCount', $event)" />
+                                @if (balances(); as b) {
+                                    <span class="form-text text-muted">
+                                        {{ 'TicketRemainingCount' | localize }}: {{ b.dependant3TicketRemainingCount | number: '1.0-3' }}
+                                    </span>
+                                }
+                            </div>
+                            }
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeFnFPayment_CompensateLoanAmount">{{ 'CompensateLoanAmount' | localize }}</label>
+                                <input
+                                    id="EmployeeFnFPayment_CompensateLoanAmount"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="CompensateLoanAmount"
+                                    [ngModel]="record().compensateLoanAmount"
+                                    (ngModelChange)="updateNumberField('compensateLoanAmount', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeFnFPayment_CompensateBonusPay">{{ 'CompensateBonusPay' | localize }}</label>
+                                <input
+                                    id="EmployeeFnFPayment_CompensateBonusPay"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="CompensateBonusPay"
+                                    [ngModel]="record().compensateBonusPay"
+                                    (ngModelChange)="updateNumberField('compensateBonusPay', $event)" />
+                            </div>
+                        </div>
+                        @if (balances()?.loanBalanceDueAmount > 0) {
+                            <div class="form-check mb-5">
+                                <input
+                                    id="EmployeeFnFPayment_SettleLoanInEndOfService"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="SettleLoanInEndOfService"
+                                    [ngModel]="record().settleLoanInEndOfService"
+                                    (ngModelChange)="updateField('settleLoanInEndOfService', $event)" />
+                                <label class="form-check-label fw-semibold" for="EmployeeFnFPayment_SettleLoanInEndOfService">
+                                    {{ 'SettleLoanInEndOfService' | localize }}
+                                </label>
+                                <div class="text-muted fs-7">{{ 'SettleLoanInEndOfServiceHint' | localize }}</div>
+                            </div>
+                        }
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeFnFPayment_Comments">{{ 'Comments' | localize }}</label>
+                            <textarea
+                                id="EmployeeFnFPayment_Comments"
+                                class="form-control"
+                                rows="3"
+                                name="Comments"
+                                [ngModel]="record().comments"
+                                (ngModelChange)="updateField('comments', $event)"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

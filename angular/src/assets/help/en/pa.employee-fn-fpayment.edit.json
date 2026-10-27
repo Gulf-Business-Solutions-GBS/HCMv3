@@ -1,0 +1,235 @@
+{
+  "helpId": "pa.employee-fn-fpayment.edit",
+  "lang": "en",
+  "title": "Employee Full & Final Payments — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeFnFPayment",
+  "overviewHtml": "<p>The employee's full and final settlement at the end of service.</p><p>An end-of-service payroll run includes employees whose compensation date falls in its period, and needs a settlement whose compensation date equals the run's payment date. The amounts, days and counts on this form are recorded for reference: payroll calculates the settlement itself and does not read them at present.</p><p>When the employee still owes on a loan, the form shows <strong>Settle the open loans in this payment</strong>. Tick it to recover the whole remaining loan balance on the compensation date; without it, an employee with an open loan cannot be settled.</p>",
+  "aliasIndex": {
+    "loc:CompensationDate": "EmployeeFnFPayment.CompensationDate",
+    "dom:EmployeeFnFPayment_CompensationDate": "EmployeeFnFPayment.CompensationDate",
+    "loc:EmployeeActionId": "EmployeeFnFPayment.EmployeeActionId",
+    "dom:EmployeeFnFPayment_EmployeeActionId": "EmployeeFnFPayment.EmployeeActionId",
+    "loc:EmployeeBasicPayDetailId": "EmployeeFnFPayment.EmployeeBasicPayDetailId",
+    "dom:EmployeeFnFPayment_EmployeeBasicPayDetailId": "EmployeeFnFPayment.EmployeeBasicPayDetailId",
+    "loc:LeaveCompensateDays": "EmployeeFnFPayment.LeaveCompensateDays",
+    "dom:EmployeeFnFPayment_LeaveCompensateDays": "EmployeeFnFPayment.LeaveCompensateDays",
+    "loc:GratuityCompensateDays": "EmployeeFnFPayment.GratuityCompensateDays",
+    "dom:EmployeeFnFPayment_GratuityCompensateDays": "EmployeeFnFPayment.GratuityCompensateDays",
+    "loc:IndemnityCompensateAmount": "EmployeeFnFPayment.IndemnityCompensateAmount",
+    "dom:EmployeeFnFPayment_IndemnityCompensateAmount": "EmployeeFnFPayment.IndemnityCompensateAmount",
+    "loc:IndemnityPayAdjustment": "EmployeeFnFPayment.IndemnityPayAdjustment",
+    "dom:EmployeeFnFPayment_IndemnityPayAdjustment": "EmployeeFnFPayment.IndemnityPayAdjustment",
+    "loc:TicketCompensateCount": "EmployeeFnFPayment.TicketCompensateCount",
+    "dom:EmployeeFnFPayment_TicketCompensateCount": "EmployeeFnFPayment.TicketCompensateCount",
+    "loc:Dependant1TicketCompensateCount": "EmployeeFnFPayment.Dependant1TicketCompensateCount",
+    "dom:EmployeeFnFPayment_Dependant1TicketCompensateCount": "EmployeeFnFPayment.Dependant1TicketCompensateCount",
+    "loc:Dependant2TicketCompensateCount": "EmployeeFnFPayment.Dependant2TicketCompensateCount",
+    "dom:EmployeeFnFPayment_Dependant2TicketCompensateCount": "EmployeeFnFPayment.Dependant2TicketCompensateCount",
+    "loc:Dependant3TicketCompensateCount": "EmployeeFnFPayment.Dependant3TicketCompensateCount",
+    "dom:EmployeeFnFPayment_Dependant3TicketCompensateCount": "EmployeeFnFPayment.Dependant3TicketCompensateCount",
+    "loc:CompensateLoanAmount": "EmployeeFnFPayment.CompensateLoanAmount",
+    "dom:EmployeeFnFPayment_CompensateLoanAmount": "EmployeeFnFPayment.CompensateLoanAmount",
+    "loc:CompensateBonusPay": "EmployeeFnFPayment.CompensateBonusPay",
+    "dom:EmployeeFnFPayment_CompensateBonusPay": "EmployeeFnFPayment.CompensateBonusPay",
+    "loc:Comments": "EmployeeFnFPayment.Comments",
+    "dom:EmployeeFnFPayment_Comments": "EmployeeFnFPayment.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeFnFPayment.CompensationDate",
+      "label": "CompensationDate",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:CompensationDate",
+        "dom:EmployeeFnFPayment_CompensationDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the settlement is paid.</p><p><strong>Example.</strong> 15 Sep 2026</p><p><strong>Why it matters.</strong> Decides which end-of-service run includes the employee. The employee information report shows the settlement as done once this date has passed.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.EmployeeActionId",
+      "label": "EmployeeActionId",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:EmployeeActionId",
+        "dom:EmployeeFnFPayment_EmployeeActionId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The personnel action this settlement belongs to, if any.</p><p><strong>Why it matters.</strong> Recorded only; payroll and reports do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.EmployeeBasicPayDetailId",
+      "label": "EmployeeBasicPayDetailId",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:EmployeeBasicPayDetailId",
+        "dom:EmployeeFnFPayment_EmployeeBasicPayDetailId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The basic pay line the settlement is based on, if any.</p><p><strong>Why it matters.</strong> Recorded only; payroll and reports do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.LeaveCompensateDays",
+      "label": "LeaveCompensateDays",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:LeaveCompensateDays",
+        "dom:EmployeeFnFPayment_LeaveCompensateDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Leave days compensated.</p><p><strong>Example.</strong> 18</p><p><strong>Why it matters.</strong> Recorded only; payroll and reports do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.GratuityCompensateDays",
+      "label": "GratuityCompensateDays",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:GratuityCompensateDays",
+        "dom:EmployeeFnFPayment_GratuityCompensateDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Indemnity days compensated.</p><p><strong>Example.</strong> 255</p><p><strong>Why it matters.</strong> Recorded only; payroll and reports do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.IndemnityCompensateAmount",
+      "label": "IndemnityCompensateAmount",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:IndemnityCompensateAmount",
+        "dom:EmployeeFnFPayment_IndemnityCompensateAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The indemnity amount compensated.</p><p><strong>Example.</strong> 4250.000</p><p><strong>Why it matters.</strong> Recorded only; payroll and reports do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.IndemnityPayAdjustment",
+      "label": "IndemnityPayAdjustment",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:IndemnityPayAdjustment",
+        "dom:EmployeeFnFPayment_IndemnityPayAdjustment"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> An adjustment to the indemnity pay.</p><p><strong>Example.</strong> -50.000</p><p><strong>Why it matters.</strong> Recorded only; payroll and reports do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.TicketCompensateCount",
+      "label": "TicketCompensateCount",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:TicketCompensateCount",
+        "dom:EmployeeFnFPayment_TicketCompensateCount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Employee tickets compensated.</p><p><strong>Example.</strong> 1</p><p><strong>Why it matters.</strong> Recorded only; payroll and reports do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.Dependant1TicketCompensateCount",
+      "label": "Dependant1TicketCompensateCount",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:Dependant1TicketCompensateCount",
+        "dom:EmployeeFnFPayment_Dependant1TicketCompensateCount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Tickets compensated for the first dependant.</p><p><strong>Example.</strong> 1</p><p><strong>Why it matters.</strong> Recorded only; payroll and reports do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.Dependant2TicketCompensateCount",
+      "label": "Dependant2TicketCompensateCount",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:Dependant2TicketCompensateCount",
+        "dom:EmployeeFnFPayment_Dependant2TicketCompensateCount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Tickets compensated for the second dependant.</p><p><strong>Example.</strong> 1</p><p><strong>Why it matters.</strong> Recorded only; payroll and reports do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.Dependant3TicketCompensateCount",
+      "label": "Dependant3TicketCompensateCount",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:Dependant3TicketCompensateCount",
+        "dom:EmployeeFnFPayment_Dependant3TicketCompensateCount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Tickets compensated for the third dependant.</p><p><strong>Example.</strong> 0</p><p><strong>Why it matters.</strong> Recorded only; payroll and reports do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.CompensateLoanAmount",
+      "label": "CompensateLoanAmount",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:CompensateLoanAmount",
+        "dom:EmployeeFnFPayment_CompensateLoanAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The loan amount settled.</p><p><strong>Example.</strong> 300.000</p><p><strong>Why it matters.</strong> Recorded only; payroll and reports do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.CompensateBonusPay",
+      "label": "CompensateBonusPay",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:CompensateBonusPay",
+        "dom:EmployeeFnFPayment_CompensateBonusPay"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The bonus amount settled.</p><p><strong>Example.</strong> 500.000</p><p><strong>Why it matters.</strong> Recorded only; payroll and reports do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFnFPayment.Comments",
+      "label": "Comments",
+      "section": "EmployeeFnFPayments",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeFnFPayment_Comments"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

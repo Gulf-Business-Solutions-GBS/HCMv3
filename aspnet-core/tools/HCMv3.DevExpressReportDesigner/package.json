@@ -1,0 +1,19 @@
+{
+  "name": "hcmv3.devexpressreportdesigner",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "ace-builds": "^1.44.0",
+    "devexpress-reporting": "^23.2.13",
+    "devextreme": "^23.2.13",
+    "jquery": "^3.6.0",
+    "knockout": "^3.5.1"
+  }
+}

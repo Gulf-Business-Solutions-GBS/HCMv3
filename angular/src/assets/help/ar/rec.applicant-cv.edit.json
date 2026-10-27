@@ -1,0 +1,59 @@
+{
+  "helpId": "rec.applicant-cv.edit",
+  "lang": "ar",
+  "title": "السير الذاتية للمتقدمين — إنشاء / تحرير",
+  "entity": "HCMv3.Recruitment.ApplicantCV",
+  "overviewHtml": "<p>إحدى السير الذاتية للمتقدم. يمكن للمرشح الاحتفاظ بعدة سير ذاتية في موقع الوظائف ويختار إحداها عند التقديم. وتُحفظ لغاتها ومؤهلاتها ومهاراتها وخبراتها في تفاصيلها. ويجب أن تختلف أسماء السير الذاتية للمتقدم الواحد، ولا يستطيع المرشح تعديل السيرة التي لها طلب تجاوز مرحلة <em>تم التقديم</em>.</p>",
+  "aliasIndex": {
+    "loc:JobTitle": "ApplicantCV.JobTitleId",
+    "dom:ApplicantCV_JobTitleId": "ApplicantCV.JobTitleId",
+    "loc:CvName": "ApplicantCV.CVName",
+    "dom:ApplicantCV_CvName": "ApplicantCV.CVName",
+    "loc:UploadDate": "ApplicantCV.UploadDate",
+    "dom:ApplicantCV_UploadDate": "ApplicantCV.UploadDate"
+  },
+  "fields": [
+    {
+      "id": "ApplicantCV.JobTitleId",
+      "label": "JobTitle",
+      "section": "ApplicantCVs",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:ApplicantCV_JobTitleId"
+      ],
+      "rules": "اختياري. يُختار من قائمة المسميات الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي الذي تستهدفه السيرة.</p><p><strong>مثال.</strong> محاسب</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ApplicantCV.CVName",
+      "label": "CvName",
+      "section": "ApplicantCVs",
+      "aliases": [
+        "loc:CvName",
+        "dom:ApplicantCV_CvName"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم للسيرة الذاتية لتمييزها عن غيرها لدى المتقدم.</p><p><strong>مثال.</strong> وظائف المالية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ApplicantCV.UploadDate",
+      "label": "UploadDate",
+      "section": "ApplicantCVs",
+      "aliases": [
+        "loc:UploadDate",
+        "dom:ApplicantCV_UploadDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ إضافة السيرة. ويسرد موقع الوظائف الأحدث أولاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

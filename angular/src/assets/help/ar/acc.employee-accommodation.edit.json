@@ -1,0 +1,203 @@
+{
+  "helpId": "acc.employee-accommodation.edit",
+  "lang": "ar",
+  "title": "سكن الموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.AccommodationManagement.EmployeeAccommodation",
+  "overviewHtml": "<p>مكان سكن الموظف ومدته. تعرض كل قائمة أسفل الموقع الأماكن الموجودة داخل ما اختير فوقها فقط. لا يمكن أن يكون تاريخ الانتهاء قبل تاريخ البدء، ولا يجوز أن تتداخل إقامات الموظف. ولا يوجد ما يمنع إعطاء السرير نفسه لموظفَين. وتظهر الإقامات في تقرير سكن الموظفين.</p>",
+  "aliasIndex": {
+    "loc:Employee": "EmployeeAccommodation.EmployeeId",
+    "dom:EmployeeAccommodation_EmployeeId": "EmployeeAccommodation.EmployeeId",
+    "loc:AccommodationType": "EmployeeAccommodation.AccommodationTypeId",
+    "dom:EmployeeAccommodation_AccommodationTypeId": "EmployeeAccommodation.AccommodationTypeId",
+    "loc:StartDate": "EmployeeAccommodation.StartDate",
+    "dom:EmployeeAccommodation_StartDate": "EmployeeAccommodation.StartDate",
+    "loc:EndDate": "EmployeeAccommodation.EndDate",
+    "dom:EmployeeAccommodation_EndDate": "EmployeeAccommodation.EndDate",
+    "loc:DeductionAmount": "EmployeeAccommodation.DeductionAmount",
+    "dom:EmployeeAccommodation_DeductionAmount": "EmployeeAccommodation.DeductionAmount",
+    "loc:Location": "EmployeeAccommodation.LocationId",
+    "dom:EmployeeAccommodation_LocationId": "EmployeeAccommodation.LocationId",
+    "loc:Building": "EmployeeAccommodation.BuildingId",
+    "dom:EmployeeAccommodation_BuildingId": "EmployeeAccommodation.BuildingId",
+    "loc:Floor": "EmployeeAccommodation.FloorId",
+    "dom:EmployeeAccommodation_FloorId": "EmployeeAccommodation.FloorId",
+    "loc:Flat": "EmployeeAccommodation.FlatId",
+    "dom:EmployeeAccommodation_FlatId": "EmployeeAccommodation.FlatId",
+    "loc:Room": "EmployeeAccommodation.RoomId",
+    "dom:EmployeeAccommodation_RoomId": "EmployeeAccommodation.RoomId",
+    "loc:Bed": "EmployeeAccommodation.BedId",
+    "dom:EmployeeAccommodation_BedId": "EmployeeAccommodation.BedId",
+    "loc:Comments": "EmployeeAccommodation.Comments",
+    "dom:EmployeeAccommodation_Comments": "EmployeeAccommodation.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAccommodation.EmployeeId",
+      "label": "Employee",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:Employee",
+        "dom:EmployeeAccommodation_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يُسكَّن.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.AccommodationTypeId",
+      "label": "AccommodationType",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:AccommodationType",
+        "dom:EmployeeAccommodation_AccommodationTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع السكن.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع السكن.</p><p><strong>مثال.</strong> مشترك</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeAccommodation_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeAccommodation_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.DeductionAmount",
+      "label": "DeductionAmount",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:DeductionAmount",
+        "dom:EmployeeAccommodation_DeductionAmount"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مبلغ يُخصم من الموظف مقابل السكن.</p><p><strong>مثال.</strong> 25.000</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً: لا يخصمه نظام الرواتب. استخدم نوع أجر للخصم على الموظف لاسترداد التكلفة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.LocationId",
+      "label": "Location",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:Location",
+        "dom:EmployeeAccommodation_LocationId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المواقع.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموقع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.BuildingId",
+      "label": "Building",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:Building",
+        "dom:EmployeeAccommodation_BuildingId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المباني.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبنى.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.FloorId",
+      "label": "Floor",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:Floor",
+        "dom:EmployeeAccommodation_FloorId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الطوابق.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الطابق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.FlatId",
+      "label": "Flat",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:Flat",
+        "dom:EmployeeAccommodation_FlatId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الشقق.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشقة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.RoomId",
+      "label": "Room",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:Room",
+        "dom:EmployeeAccommodation_RoomId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الغرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الغرفة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.BedId",
+      "label": "Bed",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:Bed",
+        "dom:EmployeeAccommodation_BedId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الأسرّة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السرير.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.Comments",
+      "label": "Comments",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeAccommodation_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

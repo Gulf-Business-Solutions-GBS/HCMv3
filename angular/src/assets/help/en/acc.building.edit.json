@@ -1,0 +1,91 @@
+{
+  "helpId": "acc.building.edit",
+  "lang": "en",
+  "title": "Buildings — Create / Edit",
+  "entity": "HCMv3.AccommodationManagement.Building",
+  "overviewHtml": "<p>A building used for company housing. Company housing is set up as a tree: location, building, floor, flat, room, bed. An employee's stay names one place at every level.</p>",
+  "aliasIndex": {
+    "loc:Code": "Building.Code",
+    "dom:Building_Code": "Building.Code",
+    "loc:Location": "Building.LocationId",
+    "dom:Building_LocationId": "Building.LocationId",
+    "loc:NameEn": "Building.NameEn",
+    "dom:Building_NameEn": "Building.NameEn",
+    "loc:NameAr": "Building.NameAr",
+    "dom:Building_NameAr": "Building.NameAr",
+    "loc:Comments": "Building.Comments",
+    "dom:Building_Comments": "Building.Comments"
+  },
+  "fields": [
+    {
+      "id": "Building.Code",
+      "label": "Code",
+      "section": "Buildings",
+      "aliases": [
+        "loc:Code",
+        "dom:Building_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Building.LocationId",
+      "label": "Location",
+      "section": "Buildings",
+      "aliases": [
+        "loc:Location",
+        "dom:Building_LocationId"
+      ],
+      "rules": "Required. Chosen from Location master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The location the building is in.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Building.NameEn",
+      "label": "NameEn",
+      "section": "Buildings",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Building_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Building.NameAr",
+      "label": "NameAr",
+      "section": "Buildings",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Building_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Building.Comments",
+      "label": "Comments",
+      "section": "Buildings",
+      "aliases": [
+        "loc:Comments",
+        "dom:Building_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

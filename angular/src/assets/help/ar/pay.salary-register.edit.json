@@ -1,0 +1,139 @@
+{
+  "helpId": "pay.salary-register.edit",
+  "lang": "ar",
+  "title": "سجلات الرواتب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.SalaryRegister",
+  "overviewHtml": "<p>كشف راتب الموظف لشهر واحد وتشغيل واحد، كما احتسبه نظام الرواتب. يكتبه محرك الرواتب، وأسطره هي تفاصيل سجل الرواتب.</p><p>ولا يمكن تعديل كشف الراتب <strong>المقفل</strong> ولا حذفه. وإذا كان إعداد الرواتب <em>إقفال سجل الرواتب عند إقفال الرواتب</em> مفعّلاً، فإن إقفال الفترة يُقفل كشوف الرواتب العادية لذلك الشهر، وفتحها لتشغيل الرواتب يُقفل كشوفه خارج الدورة.</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "SalaryRegister.EmployeeId",
+    "dom:SalaryRegister_EmployeeId": "SalaryRegister.EmployeeId",
+    "loc:ForPeriod": "SalaryRegister.ForPeriod",
+    "dom:SalaryRegister_ForPeriod": "SalaryRegister.ForPeriod",
+    "loc:InPeriod": "SalaryRegister.InPeriod",
+    "dom:SalaryRegister_InPeriod": "SalaryRegister.InPeriod",
+    "loc:PayrollRunType": "SalaryRegister.PayrollRunType",
+    "dom:SalaryRegister_PayrollRunType": "SalaryRegister.PayrollRunType",
+    "loc:PayrollResultType": "SalaryRegister.PayrollResultType",
+    "dom:SalaryRegister_PayrollResultType": "SalaryRegister.PayrollResultType",
+    "loc:PayrollReasonTypeId": "SalaryRegister.PayrollReasonTypeId",
+    "dom:SalaryRegister_PayrollReasonTypeId": "SalaryRegister.PayrollReasonTypeId",
+    "loc:OffCyclePaymentDate": "SalaryRegister.OffCyclePaymentDate",
+    "dom:SalaryRegister_OffCyclePaymentDate": "SalaryRegister.OffCyclePaymentDate",
+    "loc:Locked": "SalaryRegister.Locked",
+    "dom:SalaryRegister_Locked": "SalaryRegister.Locked"
+  },
+  "fields": [
+    {
+      "id": "SalaryRegister.EmployeeId",
+      "label": "EmployeeId",
+      "section": "SalaryRegisters",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:SalaryRegister_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يخصه كشف الراتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegister.ForPeriod",
+      "label": "ForPeriod",
+      "section": "SalaryRegisters",
+      "aliases": [
+        "loc:ForPeriod",
+        "dom:SalaryRegister_ForPeriod"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشهر الذي يخصه الأجر.</p><p><strong>مثال.</strong> <code>2026-03-31</code></p><p><strong>لماذا يهم.</strong> في إعادة الاحتساب بأثر رجعي يكون هذا شهراً أسبق من <strong>في الفترة</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegister.InPeriod",
+      "label": "InPeriod",
+      "section": "SalaryRegisters",
+      "aliases": [
+        "loc:InPeriod",
+        "dom:SalaryRegister_InPeriod"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشهر الذي يُصرف فيه الأجر — تاريخ الدفع للتشغيل.</p><p><strong>مثال.</strong> <code>2026-04-30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegister.PayrollRunType",
+      "label": "PayrollRunType",
+      "section": "SalaryRegisters",
+      "aliases": [
+        "loc:PayrollRunType",
+        "dom:SalaryRegister_PayrollRunType"
+      ],
+      "rules": "إلزامي. إحدى القيم: اعتيادي، خارج الدورة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان كشف الراتب ناتجاً عن تشغيل عادي أو خارج الدورة.</p><p><strong>مثال.</strong> عادي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegister.PayrollResultType",
+      "label": "PayrollResultType",
+      "section": "SalaryRegisters",
+      "aliases": [
+        "loc:PayrollResultType",
+        "dom:SalaryRegister_PayrollResultType"
+      ],
+      "rules": "إلزامي. إحدى القيم: الحالي، الأخير، الأرشيف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أي نتيجة هذه لشهرها.</p><p><strong>مثال.</strong> الحالي</p><p><strong>لماذا يهم.</strong> يكتب التشغيل العادي <em>الحالي</em>. وعندما يُعاد احتساب الشهر نفسه في تشغيل لاحق، تصبح كشوف ذلك الشهر الأقدم <em>الأخير</em> (أحدثها قبل ذلك) و<em>الأرشيف</em> (البقية).</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegister.PayrollReasonTypeId",
+      "label": "PayrollReasonTypeId",
+      "section": "SalaryRegisters",
+      "aliases": [
+        "loc:PayrollReasonTypeId",
+        "dom:SalaryRegister_PayrollReasonTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع أسباب الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سبب التشغيل خارج الدورة، لكشف الراتب خارج الدورة.</p><p><strong>مثال.</strong> نهاية الخدمة</p><p><strong>لماذا يهم.</strong> فارغ في كشوف الرواتب العادية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegister.OffCyclePaymentDate",
+      "label": "OffCyclePaymentDate",
+      "section": "SalaryRegisters",
+      "aliases": [
+        "loc:OffCyclePaymentDate",
+        "dom:SalaryRegister_OffCyclePaymentDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ الدفع للتشغيل خارج الدورة.</p><p><strong>مثال.</strong> <code>2026-05-05</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SalaryRegister.Locked",
+      "label": "Locked",
+      "section": "SalaryRegisters",
+      "aliases": [
+        "loc:Locked",
+        "dom:SalaryRegister_Locked"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان كشف الراتب مقفلاً.</p><p><strong>لماذا يهم.</strong> لا يمكن تعديل كشف الراتب المقفل وأسطره ولا حذفها.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

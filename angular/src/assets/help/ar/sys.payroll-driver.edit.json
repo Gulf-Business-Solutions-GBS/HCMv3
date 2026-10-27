@@ -1,0 +1,43 @@
+{
+  "helpId": "sys.payroll-driver.edit",
+  "lang": "ar",
+  "title": "محركات الرواتب — إنشاء / تحرير",
+  "entity": "HCMv3.SystemSettings.PayrollDriver",
+  "overviewHtml": "<p>إعداد رواتب لكل بلد. لا يُقرأ حالياً: يُؤخذ سلوك خصم الإجازة الذي يحمل اسمه من <strong>إعدادات الوقت</strong>، ولا شيء يقرأ هذه القائمة.</p>",
+  "aliasIndex": {
+    "loc:CountryId": "PayrollDriver.CountryId",
+    "dom:PayrollDriver_CountryId": "PayrollDriver.CountryId",
+    "loc:LeaveDeductionStartMonth": "PayrollDriver.LeaveDeductionStartMonth",
+    "dom:PayrollDriver_LeaveDeductionStartMonth": "PayrollDriver.LeaveDeductionStartMonth"
+  },
+  "fields": [
+    {
+      "id": "PayrollDriver.CountryId",
+      "label": "CountryId",
+      "section": "PayrollDrivers",
+      "aliases": [
+        "loc:CountryId",
+        "dom:PayrollDriver_CountryId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البلد الذي يخصه الإعداد.</p><p><strong>مثال.</strong> الكويت</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollDriver.LeaveDeductionStartMonth",
+      "label": "LeaveDeductionStartMonth",
+      "section": "PayrollDrivers",
+      "aliases": [
+        "loc:LeaveDeductionStartMonth",
+        "dom:PayrollDriver_LeaveDeductionStartMonth"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الإجازة تُخصم من الشهر الذي تبدأ فيه.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

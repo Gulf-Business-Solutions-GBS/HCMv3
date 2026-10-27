@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.indemnity-pay-rule-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل قواعد صرف مكافأة نهاية الخدمة — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.IndemnityPayRuleDetail",
+  "overviewHtml": "<p>خطوة واحدة من قاعدة دفع المكافأة، بحسب سنوات الخدمة — مثل الاستقالة بعد ثلاث إلى خمس سنوات تُصرف بالنصف.</p><p>لا تُستخدم حالياً: لا تمرّر أي عملية احتساب للرواتب أو التقارير قاعدة دفع مكافأة، فيأتي حد المكافأة دائماً من <strong>ملف الراتب</strong> التي ينتمي إليها الموظف. وهذه القواعد تُحفظ للرجوع إليها.</p>",
+  "aliasIndex": {
+    "loc:IndemnityPayRuleId": "IndemnityPayRuleDetail.IndemnityPayRuleId",
+    "dom:IndemnityPayRuleDetail_IndemnityPayRuleId": "IndemnityPayRuleDetail.IndemnityPayRuleId",
+    "loc:MinYearOfService": "IndemnityPayRuleDetail.MinYearOfService",
+    "dom:IndemnityPayRuleDetail_MinYearOfService": "IndemnityPayRuleDetail.MinYearOfService",
+    "loc:MaxYearOfService": "IndemnityPayRuleDetail.MaxYearOfService",
+    "dom:IndemnityPayRuleDetail_MaxYearOfService": "IndemnityPayRuleDetail.MaxYearOfService",
+    "loc:Number": "IndemnityPayRuleDetail.Number",
+    "dom:IndemnityPayRuleDetail_Number": "IndemnityPayRuleDetail.Number",
+    "loc:Unit": "IndemnityPayRuleDetail.Unit",
+    "dom:IndemnityPayRuleDetail_Unit": "IndemnityPayRuleDetail.Unit",
+    "loc:PayPercentage": "IndemnityPayRuleDetail.PayPercentage",
+    "dom:IndemnityPayRuleDetail_PayPercentage": "IndemnityPayRuleDetail.PayPercentage"
+  },
+  "fields": [
+    {
+      "id": "IndemnityPayRuleDetail.IndemnityPayRuleId",
+      "label": "IndemnityPayRuleId",
+      "section": "IndemnityPayRuleDetails",
+      "aliases": [
+        "loc:IndemnityPayRuleId",
+        "dom:IndemnityPayRuleDetail_IndemnityPayRuleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة قواعد صرف مكافأة نهاية الخدمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القاعدة التي تتبعها هذه الخطوة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRuleDetail.MinYearOfService",
+      "label": "MinYearOfService",
+      "section": "IndemnityPayRuleDetails",
+      "aliases": [
+        "loc:MinYearOfService",
+        "dom:IndemnityPayRuleDetail_MinYearOfService"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أقل عدد من سنوات الخدمة تغطيه هذه الخطوة.</p><p><strong>مثال.</strong> <code>3</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRuleDetail.MaxYearOfService",
+      "label": "MaxYearOfService",
+      "section": "IndemnityPayRuleDetails",
+      "aliases": [
+        "loc:MaxYearOfService",
+        "dom:IndemnityPayRuleDetail_MaxYearOfService"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أكبر عدد من سنوات الخدمة تغطيه هذه الخطوة، ولا يجوز أن يقل عن الحد الأدنى.</p><p><strong>مثال.</strong> <code>5</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRuleDetail.Number",
+      "label": "Number",
+      "section": "IndemnityPayRuleDetails",
+      "aliases": [
+        "loc:Number",
+        "dom:IndemnityPayRuleDetail_Number"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كمية للخطوة، بالوحدة أدناه.</p><p><strong>مثال.</strong> <code>15</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRuleDetail.Unit",
+      "label": "Unit",
+      "section": "IndemnityPayRuleDetails",
+      "aliases": [
+        "loc:Unit",
+        "dom:IndemnityPayRuleDetail_Unit"
+      ],
+      "rules": "إلزامي. إحدى القيم: اليوم، الشهر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان العدد بالأيام أو بالأشهر.</p><p><strong>مثال.</strong> يوم</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRuleDetail.PayPercentage",
+      "label": "PayPercentage",
+      "section": "IndemnityPayRuleDetails",
+      "aliases": [
+        "loc:PayPercentage",
+        "dom:IndemnityPayRuleDetail_PayPercentage"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النسبة المصروفة من المكافأة في هذه الخطوة.</p><p><strong>مثال.</strong> <code>50</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

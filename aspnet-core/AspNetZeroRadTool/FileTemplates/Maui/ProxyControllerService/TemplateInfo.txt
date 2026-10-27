@@ -1,0 +1,4 @@
+{
+	"path" : "{{Namespace_Here}}.Application.Client\\{{Namespace_Relative_Full_Reverse_Slash_Here}}\\Proxy{{Entity_Name_Plural_Here}}ControllerService.cs",
+	"condition": "{{Has_File_Type_Property}} ==  true && {{Generate_Maui_Code}} == true"
+}

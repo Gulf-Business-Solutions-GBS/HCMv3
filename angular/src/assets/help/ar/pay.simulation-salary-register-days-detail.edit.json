@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.simulation-salary-register-days-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل أيام سجلات الرواتب التجريبية — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.SimulationSalaryRegisterDaysDetail",
+  "overviewHtml": "<p>تفصيل سطر من كشف راتب المحاكاة بحسب التاريخ.</p>",
+  "aliasIndex": {
+    "loc:SimulationSalaryRegisterDetailId": "SimulationSalaryRegisterDaysDetail.SimulationSalaryRegisterDetailId",
+    "dom:SimulationSalaryRegisterDaysDetail_SimulationSalaryRegisterDetailId": "SimulationSalaryRegisterDaysDetail.SimulationSalaryRegisterDetailId",
+    "loc:Period": "SimulationSalaryRegisterDaysDetail.Period",
+    "dom:SimulationSalaryRegisterDaysDetail_Period": "SimulationSalaryRegisterDaysDetail.Period",
+    "loc:Rate": "SimulationSalaryRegisterDaysDetail.Rate",
+    "dom:SimulationSalaryRegisterDaysDetail_Rate": "SimulationSalaryRegisterDaysDetail.Rate",
+    "loc:Number": "SimulationSalaryRegisterDaysDetail.Number",
+    "dom:SimulationSalaryRegisterDaysDetail_Number": "SimulationSalaryRegisterDaysDetail.Number",
+    "loc:Amount": "SimulationSalaryRegisterDaysDetail.Amount",
+    "dom:SimulationSalaryRegisterDaysDetail_Amount": "SimulationSalaryRegisterDaysDetail.Amount"
+  },
+  "fields": [
+    {
+      "id": "SimulationSalaryRegisterDaysDetail.SimulationSalaryRegisterDetailId",
+      "label": "SimulationSalaryRegisterDetailId",
+      "section": "SimulationSalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:SimulationSalaryRegisterDetailId",
+        "dom:SimulationSalaryRegisterDaysDetail_SimulationSalaryRegisterDetailId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة تفاصيل سجلات الرواتب التجريبية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سطر كشف راتب المحاكاة الذي يتبعه هذا التفصيل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegisterDaysDetail.Period",
+      "label": "Period",
+      "section": "SimulationSalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Period",
+        "dom:SimulationSalaryRegisterDaysDetail_Period"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي يخصه هذا الجزء من السطر.</p><p><strong>مثال.</strong> <code>2026-03-14</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegisterDaysDetail.Rate",
+      "label": "Rate",
+      "section": "SimulationSalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Rate",
+        "dom:SimulationSalaryRegisterDaysDetail_Rate"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأجر لذلك التاريخ.</p><p><strong>مثال.</strong> <code>800</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegisterDaysDetail.Number",
+      "label": "Number",
+      "section": "SimulationSalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Number",
+        "dom:SimulationSalaryRegisterDaysDetail_Number"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأيام أو الساعات أو الوحدات لذلك التاريخ.</p><p><strong>مثال.</strong> <code>2</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegisterDaysDetail.Amount",
+      "label": "Amount",
+      "section": "SimulationSalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:SimulationSalaryRegisterDaysDetail_Amount"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ لذلك التاريخ.</p><p><strong>مثال.</strong> <code>12.500</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

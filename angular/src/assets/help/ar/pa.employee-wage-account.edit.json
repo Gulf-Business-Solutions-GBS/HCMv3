@@ -1,0 +1,219 @@
+{
+  "helpId": "pa.employee-wage-account.edit",
+  "lang": "ar",
+  "title": "حسابات أجور الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeeWageAccount",
+  "overviewHtml": "<p>الحساب في دفتر الأستاذ الذي يُرحَّل إليه أحد أنواع أجور الموظف اعتباراً من تاريخ معين، وعناصر التكلفة التي يُرحَّل تحتها. يقرأ محرك التكلفة وملفات القيود المحاسبية هذه السجلات لترحيل أجر الموظف.</p><p>تشكّل سجلات الموظف ونوع الأجر نفسه تاريخاً متتابعاً: فعند حفظ سجل جديد يُغلق السابق في اليوم السابق لتاريخ البداية الجديد. ويمكن توزيع نوع الأجر على عدة حسابات تبدأ في التاريخ نفسه، بشرط ألا يزيد مجموع النسب على 100.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeWageAccount.StartDate",
+    "dom:EmployeeWageAccount_StartDate": "EmployeeWageAccount.StartDate",
+    "loc:WageTypeId": "EmployeeWageAccount.WageTypeId",
+    "dom:EmployeeWageAccount_WageTypeId": "EmployeeWageAccount.WageTypeId",
+    "loc:CostPercentage": "EmployeeWageAccount.CostPercentage",
+    "dom:EmployeeWageAccount_CostPercentage": "EmployeeWageAccount.CostPercentage",
+    "loc:AccountInfoId": "EmployeeWageAccount.AccountInfoId",
+    "dom:EmployeeWageAccount_AccountInfoId": "EmployeeWageAccount.AccountInfoId",
+    "loc:OffsetAccountInfoId": "EmployeeWageAccount.OffsetAccountInfoId",
+    "dom:EmployeeWageAccount_OffsetAccountInfoId": "EmployeeWageAccount.OffsetAccountInfoId",
+    "loc:MergeOffsetAccount": "EmployeeWageAccount.MergeOffsetAccount",
+    "dom:EmployeeWageAccount_MergeOffsetAccount": "EmployeeWageAccount.MergeOffsetAccount",
+    "loc:CostElement1Id": "EmployeeWageAccount.CostElement1Id",
+    "dom:EmployeeWageAccount_costElement1Id": "EmployeeWageAccount.CostElement1Id",
+    "loc:CostElement2Id": "EmployeeWageAccount.CostElement2Id",
+    "dom:EmployeeWageAccount_costElement2Id": "EmployeeWageAccount.CostElement2Id",
+    "loc:CostElement3Id": "EmployeeWageAccount.CostElement3Id",
+    "dom:EmployeeWageAccount_costElement3Id": "EmployeeWageAccount.CostElement3Id",
+    "loc:CostElement4Id": "EmployeeWageAccount.CostElement4Id",
+    "dom:EmployeeWageAccount_costElement4Id": "EmployeeWageAccount.CostElement4Id",
+    "loc:CostElement5Id": "EmployeeWageAccount.CostElement5Id",
+    "dom:EmployeeWageAccount_costElement5Id": "EmployeeWageAccount.CostElement5Id",
+    "loc:CostElement6Id": "EmployeeWageAccount.CostElement6Id",
+    "dom:EmployeeWageAccount_costElement6Id": "EmployeeWageAccount.CostElement6Id",
+    "loc:CostElement7Id": "EmployeeWageAccount.CostElement7Id",
+    "dom:EmployeeWageAccount_costElement7Id": "EmployeeWageAccount.CostElement7Id"
+  },
+  "fields": [
+    {
+      "id": "EmployeeWageAccount.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeWageAccount_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. عند الحفظ يُغلق السجل السابق للموظف نفسه ونوع الأجر نفسه في اليوم السابق لهذا التاريخ، ويبقى أحدث سجل مفتوحاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.WageTypeId",
+      "label": "WageTypeId",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:EmployeeWageAccount_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الأجر الذي يخص هذا الربط.</p><p><strong>مثال.</strong> بدل السكن</p>",
+      "adminHtml": "<p>يُدار من إدارة الرواتب ← أنواع الأجور. ولا يُرحَّل إلا نوع الأجر المشمول بالترحيل المالي.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.CostPercentage",
+      "label": "CostPercentage",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:CostPercentage",
+        "dom:EmployeeWageAccount_CostPercentage"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حصة مبلغ نوع الأجر التي تُرحَّل إلى هذا الحساب.</p><p><strong>مثال.</strong> 100</p><p><strong>لماذا يهم.</strong> يرحّل محرك التكلفة هذه النسبة من إجمالي نوع الأجر. ولا يجوز أن يزيد مجموع سجلات الموظف ونوع الأجر وتاريخ البداية نفسه على 100.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.AccountInfoId",
+      "label": "AccountInfoId",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:AccountInfoId",
+        "dom:EmployeeWageAccount_AccountInfoId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة بيانات الحسابات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حساب دفتر الأستاذ الذي يُرحَّل إليه المبلغ.</p><p><strong>مثال.</strong> 510100 — الرواتب والأجور</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.OffsetAccountInfoId",
+      "label": "OffsetAccountInfoId",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:OffsetAccountInfoId",
+        "dom:EmployeeWageAccount_OffsetAccountInfoId"
+      ],
+      "rules": "اختياري. يُختار من قائمة بيانات الحسابات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحساب المقابل للقيد المحاسبي.</p><p><strong>مثال.</strong> 210500 — رواتب مستحقة</p><p><strong>لماذا يهم.</strong> عند تحديده، يرحّل ملف القيود الطرف الآخر من القيد إلى هذا الحساب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.MergeOffsetAccount",
+      "label": "MergeOffsetAccount",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:MergeOffsetAccount",
+        "dom:EmployeeWageAccount_MergeOffsetAccount"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل تُدمج أسطر الحساب المقابل للحساب نفسه في سطر واحد في ملف القيود.</p><p><strong>لماذا يهم.</strong> يُقرأ عند إعداد ملف القيود المحاسبية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.CostElement1Id",
+      "label": "CostElement1Id",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:CostElement1Id",
+        "dom:EmployeeWageAccount_costElement1Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 1 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement1، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p><p><strong>لماذا يهم.</strong> ينسخه محرك التكلفة إلى بنود سجل تكلفة الموظف، ويطبع ملف القيود المحاسبية رمزه. ولا تُدمج أسطر الحساب المقابل إلا إذا تطابقت عناصر التكلفة السبعة كلها.</p>",
+      "adminHtml": "<p>تأتي تسميات الحقول من إدارة الهيكل التنظيمي ← أنواع عناصر التكلفة: أعطِ النوع الرمز CostElement1 إلى CostElement7 لتفعيل الحقل المقابل. والقيمة المحفوظة التي نُقل عنصر تكلفتها بعد ذلك إلى نوع آخر تبقى ظاهرة برقمها، فلا يمسحها فتح السجل.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.CostElement2Id",
+      "label": "CostElement2Id",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:CostElement2Id",
+        "dom:EmployeeWageAccount_costElement2Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 2 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement2، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p><p><strong>لماذا يهم.</strong> ينسخه محرك التكلفة إلى بنود سجل تكلفة الموظف، ويطبع ملف القيود المحاسبية رمزه. ولا تُدمج أسطر الحساب المقابل إلا إذا تطابقت عناصر التكلفة السبعة كلها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.CostElement3Id",
+      "label": "CostElement3Id",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:CostElement3Id",
+        "dom:EmployeeWageAccount_costElement3Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 3 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement3، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p><p><strong>لماذا يهم.</strong> ينسخه محرك التكلفة إلى بنود سجل تكلفة الموظف، ويطبع ملف القيود المحاسبية رمزه. ولا تُدمج أسطر الحساب المقابل إلا إذا تطابقت عناصر التكلفة السبعة كلها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.CostElement4Id",
+      "label": "CostElement4Id",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:CostElement4Id",
+        "dom:EmployeeWageAccount_costElement4Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 4 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement4، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p><p><strong>لماذا يهم.</strong> ينسخه محرك التكلفة إلى بنود سجل تكلفة الموظف، ويطبع ملف القيود المحاسبية رمزه. ولا تُدمج أسطر الحساب المقابل إلا إذا تطابقت عناصر التكلفة السبعة كلها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.CostElement5Id",
+      "label": "CostElement5Id",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:CostElement5Id",
+        "dom:EmployeeWageAccount_costElement5Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 5 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement5، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p><p><strong>لماذا يهم.</strong> ينسخه محرك التكلفة إلى بنود سجل تكلفة الموظف، ويطبع ملف القيود المحاسبية رمزه. ولا تُدمج أسطر الحساب المقابل إلا إذا تطابقت عناصر التكلفة السبعة كلها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.CostElement6Id",
+      "label": "CostElement6Id",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:CostElement6Id",
+        "dom:EmployeeWageAccount_costElement6Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 6 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement6، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p><p><strong>لماذا يهم.</strong> ينسخه محرك التكلفة إلى بنود سجل تكلفة الموظف، ويطبع ملف القيود المحاسبية رمزه. ولا تُدمج أسطر الحساب المقابل إلا إذا تطابقت عناصر التكلفة السبعة كلها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.CostElement7Id",
+      "label": "CostElement7Id",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:CostElement7Id",
+        "dom:EmployeeWageAccount_costElement7Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 7 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement7، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p><p><strong>لماذا يهم.</strong> ينسخه محرك التكلفة إلى بنود سجل تكلفة الموظف، ويطبع ملف القيود المحاسبية رمزه. ولا تُدمج أسطر الحساب المقابل إلا إذا تطابقت عناصر التكلفة السبعة كلها.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

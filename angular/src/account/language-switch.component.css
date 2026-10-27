@@ -1,0 +1,25 @@
+/* EN | AR. Sized and spaced to sit above the sign-in card without competing with the logo under it. */
+
+.language-switch-code {
+    padding: 2px 6px;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #6b7c85;
+    user-select: none;
+}
+
+.language-switch-code:hover {
+    color: var(--bs-primary, #1451c4);
+}
+
+/* The language you are already reading. Marked by weight and colour rather than by a box, so the pair
+   still reads as one control and not as a button next to a label. */
+.language-switch-code-active {
+    color: var(--bs-primary, #1451c4);
+    font-weight: 700;
+}
+
+.language-switch-divider {
+    color: #cbd5dd;
+}

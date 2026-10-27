@@ -1,0 +1,75 @@
+{
+  "helpId": "perf.papeer-review.edit",
+  "lang": "ar",
+  "title": "مراجعات الزملاء — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.PAPeerReview",
+  "overviewHtml": "<p>تقدير زميل لمؤشر أداء واحد في نموذج تقييم الأداء. جزء من نموذج التقييم القديم القائم على الفترات (نموذج تقييم الأداء). يُحفظ مع النموذج، ولا يقرؤه أي تقرير حالياً.</p>",
+  "aliasIndex": {
+    "loc:Peer": "PAPeerReview.PeerId",
+    "dom:PAPeerReview_PeerId": "PAPeerReview.PeerId",
+    "loc:KpiInfo": "PAPeerReview.KpiInfoId",
+    "dom:PAPeerReview_KpiInfoId": "PAPeerReview.KpiInfoId",
+    "loc:Rating": "PAPeerReview.RatingId",
+    "dom:PAPeerReview_RatingId": "PAPeerReview.RatingId",
+    "loc:Comments": "PAPeerReview.Comments",
+    "dom:PAPeerReview_Comments": "PAPeerReview.Comments"
+  },
+  "fields": [
+    {
+      "id": "PAPeerReview.PeerId",
+      "label": "Peer",
+      "section": "PAPeerReviews",
+      "aliases": [
+        "loc:Peer",
+        "dom:PAPeerReview_PeerId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزميل الذي يعطي التقدير.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPeerReview.KpiInfoId",
+      "label": "KpiInfo",
+      "section": "PAPeerReviews",
+      "aliases": [
+        "loc:KpiInfo",
+        "dom:PAPeerReview_KpiInfoId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مؤشرات الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المؤشر المُقيَّم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPeerReview.RatingId",
+      "label": "Rating",
+      "section": "PAPeerReviews",
+      "aliases": [
+        "loc:Rating",
+        "dom:PAPeerReview_RatingId"
+      ],
+      "rules": "اختياري. يُختار من قائمة تقديرات تقييم الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التقدير الممنوح.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPeerReview.Comments",
+      "label": "Comments",
+      "section": "PAPeerReviews",
+      "aliases": [
+        "loc:Comments",
+        "dom:PAPeerReview_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

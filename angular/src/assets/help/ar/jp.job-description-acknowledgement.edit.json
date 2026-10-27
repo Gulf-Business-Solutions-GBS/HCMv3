@@ -1,0 +1,91 @@
+{
+  "helpId": "jp.job-description-acknowledgement.edit",
+  "lang": "ar",
+  "title": "إقرارات الوصف الوظيفي — إنشاء / تحرير",
+  "entity": "HCMv3.JobProfileManagement.JobDescriptionAcknowledgement",
+  "overviewHtml": "<p>سجل بأن موظفاً قرأ وصفاً وظيفياً وقبله. ولكل موظف إقرار واحد لكل مسمى وظيفي ووصف وظيفي، فيُسجَّل الإصدار الجديد بتعديل الإقرار الموجود.</p>",
+  "aliasIndex": {
+    "loc:Employee": "JobDescriptionAcknowledgement.EmployeeId",
+    "dom:JobDescriptionAcknowledgement_EmployeeId": "JobDescriptionAcknowledgement.EmployeeId",
+    "loc:JobTitle": "JobDescriptionAcknowledgement.JobTitleId",
+    "dom:JobDescriptionAcknowledgement_JobTitleId": "JobDescriptionAcknowledgement.JobTitleId",
+    "loc:JobDescription": "JobDescriptionAcknowledgement.JobDescriptionId",
+    "dom:JobDescriptionAcknowledgement_JobDescriptionId": "JobDescriptionAcknowledgement.JobDescriptionId",
+    "loc:Version": "JobDescriptionAcknowledgement.Version",
+    "dom:JobDescriptionAcknowledgement_Version": "JobDescriptionAcknowledgement.Version",
+    "loc:Acknowledged": "JobDescriptionAcknowledgement.Acknowledged",
+    "dom:JobDescriptionAcknowledgement_Acknowledged": "JobDescriptionAcknowledgement.Acknowledged"
+  },
+  "fields": [
+    {
+      "id": "JobDescriptionAcknowledgement.EmployeeId",
+      "label": "Employee",
+      "section": "JobDescriptionAcknowledgements",
+      "aliases": [
+        "loc:Employee",
+        "dom:JobDescriptionAcknowledgement_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescriptionAcknowledgement.JobTitleId",
+      "label": "JobTitle",
+      "section": "JobDescriptionAcknowledgements",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:JobDescriptionAcknowledgement_JobTitleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المسميات الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescriptionAcknowledgement.JobDescriptionId",
+      "label": "JobDescription",
+      "section": "JobDescriptionAcknowledgements",
+      "aliases": [
+        "loc:JobDescription",
+        "dom:JobDescriptionAcknowledgement_JobDescriptionId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الأوصاف الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوصف الوظيفي الذي أُقرّ به.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescriptionAcknowledgement.Version",
+      "label": "Version",
+      "section": "JobDescriptionAcknowledgements",
+      "aliases": [
+        "loc:Version",
+        "dom:JobDescriptionAcknowledgement_Version"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإصدار الذي أُقرّ به.</p><p><strong>مثال.</strong> 2.0</p><p><strong>لماذا يهم.</strong> يُكتب يدوياً، ولا يُنسخ من الوصف الوظيفي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescriptionAcknowledgement.Acknowledged",
+      "label": "Acknowledged",
+      "section": "JobDescriptionAcknowledgements",
+      "aliases": [
+        "loc:Acknowledged",
+        "dom:JobDescriptionAcknowledgement_Acknowledged"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الموظف قد أقرّ به.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

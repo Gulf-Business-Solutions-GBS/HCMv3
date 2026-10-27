@@ -1,0 +1,187 @@
+{
+  "helpId": "sec.execution-log.edit",
+  "lang": "en",
+  "title": "Execution Logs — Create / Edit",
+  "entity": "HCMv3.SystemSecurity.ExecutionLog",
+  "overviewHtml": "<p>One run of an engine, import, report or print: who ran it, when, with what parameters, and how it ended. The execution log report lists these. Written by the system as it runs; there is normally no reason to add or change entries by hand.</p>",
+  "aliasIndex": {
+    "loc:UserName": "ExecutionLog.UserName",
+    "dom:ExecutionLog_UserName": "ExecutionLog.UserName",
+    "loc:ActionDateTime": "ExecutionLog.ActionDateTime",
+    "dom:ExecutionLog_ActionDateTime": "ExecutionLog.ActionDateTime",
+    "loc:Action": "ExecutionLog.Action",
+    "dom:ExecutionLog_Action": "ExecutionLog.Action",
+    "loc:Module": "ExecutionLog.Module",
+    "dom:ExecutionLog_Module": "ExecutionLog.Module",
+    "loc:ScreenName": "ExecutionLog.ScreenName",
+    "dom:ExecutionLog_ScreenName": "ExecutionLog.ScreenName",
+    "loc:ScreenCaption": "ExecutionLog.ScreenCaption",
+    "dom:ExecutionLog_ScreenCaption": "ExecutionLog.ScreenCaption",
+    "loc:ExecutionStatus": "ExecutionLog.ExecutionStatus",
+    "dom:ExecutionLog_ExecutionStatus": "ExecutionLog.ExecutionStatus",
+    "loc:TotalRecords": "ExecutionLog.TotalRecords",
+    "dom:ExecutionLog_TotalRecords": "ExecutionLog.TotalRecords",
+    "loc:Successfull": "ExecutionLog.Successfull",
+    "dom:ExecutionLog_Successfull": "ExecutionLog.Successfull",
+    "loc:Failed": "ExecutionLog.Failed",
+    "dom:ExecutionLog_Failed": "ExecutionLog.Failed",
+    "loc:Parameters": "ExecutionLog.Parameters",
+    "dom:ExecutionLog_Parameters": "ExecutionLog.Parameters"
+  },
+  "fields": [
+    {
+      "id": "ExecutionLog.UserName",
+      "label": "UserName",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:UserName",
+        "dom:ExecutionLog_UserName"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who ran it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.ActionDateTime",
+      "label": "ActionDateTime",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:ActionDateTime",
+        "dom:ExecutionLog_ActionDateTime"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When it ran.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.Action",
+      "label": "Action",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:Action",
+        "dom:ExecutionLog_Action"
+      ],
+      "rules": "Required. One of: Run, Generate, View, Export, Print.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What was done.</p><p><strong>Example.</strong> Run</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.Module",
+      "label": "Module",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:Module",
+        "dom:ExecutionLog_Module"
+      ],
+      "rules": "Required. One of: Time Engine, Payroll Engine, Bank File, Grid Report, Print Report, Cost Engine, Project Engine.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which part of the system.</p><p><strong>Example.</strong> Payroll Engine</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.ScreenName",
+      "label": "ScreenName",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:ScreenName",
+        "dom:ExecutionLog_ScreenName"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The screen it was run from.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.ScreenCaption",
+      "label": "ScreenCaption",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:ScreenCaption",
+        "dom:ExecutionLog_ScreenCaption"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The screen's title.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.ExecutionStatus",
+      "label": "ExecutionStatus",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:ExecutionStatus",
+        "dom:ExecutionLog_ExecutionStatus"
+      ],
+      "rules": "Required. One of: In Process, Success, Failed, Partial, Aborted.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How it ended.</p><p><strong>Example.</strong> Success</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.TotalRecords",
+      "label": "TotalRecords",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:TotalRecords",
+        "dom:ExecutionLog_TotalRecords"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Records processed.</p><p><strong>Example.</strong> <code>240</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.Successfull",
+      "label": "Successfull",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:Successfull",
+        "dom:ExecutionLog_Successfull"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Records that succeeded.</p><p><strong>Example.</strong> <code>238</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.Failed",
+      "label": "Failed",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:Failed",
+        "dom:ExecutionLog_Failed"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Records that failed.</p><p><strong>Example.</strong> <code>2</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.Parameters",
+      "label": "Parameters",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:Parameters",
+        "dom:ExecutionLog_Parameters"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The parameters it ran with.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

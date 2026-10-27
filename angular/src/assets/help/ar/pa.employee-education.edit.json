@@ -1,0 +1,187 @@
+{
+  "helpId": "pa.employee-education.edit",
+  "lang": "ar",
+  "title": "مؤهلات الموظف الدراسية — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeEducation",
+  "overviewHtml": "<p>مؤهل حصل عليه الموظف من تعليمه.</p><p>يُطابَق المؤهل والتخصص مع جدول بدل التعليم في التأمينات الاجتماعية في الرواتب. أما بقية التفاصيل فتُسجَّل للرجوع إليها.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeEducation.StartDate",
+    "dom:EmployeeEducation_StartDate": "EmployeeEducation.StartDate",
+    "loc:EndDate": "EmployeeEducation.EndDate",
+    "dom:EmployeeEducation_EndDate": "EmployeeEducation.EndDate",
+    "loc:Education": "EmployeeEducation.EducationId",
+    "dom:EmployeeEducation_EducationId": "EmployeeEducation.EducationId",
+    "loc:EducationBranch": "EmployeeEducation.EducationBranchId",
+    "dom:EmployeeEducation_EducationBranchId": "EmployeeEducation.EducationBranchId",
+    "loc:University": "EmployeeEducation.UniversityId",
+    "dom:EmployeeEducation_UniversityId": "EmployeeEducation.UniversityId",
+    "loc:Institution": "EmployeeEducation.InstitutionId",
+    "dom:EmployeeEducation_InstitutionId": "EmployeeEducation.InstitutionId",
+    "loc:Country": "EmployeeEducation.CountryId",
+    "dom:EmployeeEducation_CountryId": "EmployeeEducation.CountryId",
+    "loc:Location": "EmployeeEducation.Location",
+    "dom:EmployeeEducation_Location": "EmployeeEducation.Location",
+    "loc:DurationOfCourse": "EmployeeEducation.DurationOfCourse",
+    "dom:EmployeeEducation_DurationOfCourse": "EmployeeEducation.DurationOfCourse",
+    "loc:Grade": "EmployeeEducation.Grade",
+    "dom:EmployeeEducation_Grade": "EmployeeEducation.Grade",
+    "loc:YearOfPassing": "EmployeeEducation.YearOfPassing",
+    "dom:EmployeeEducation_YearOfPassing": "EmployeeEducation.YearOfPassing"
+  },
+  "fields": [
+    {
+      "id": "EmployeeEducation.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeEducation_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeEducation_EndDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.EducationId",
+      "label": "Education",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:Education",
+        "dom:EmployeeEducation_EducationId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المؤهلات الدراسية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المستوى التعليمي.</p><p><strong>مثال.</strong> بكالوريوس</p><p><strong>لماذا يهم.</strong> يُستخدم مع التخصص لبدل التعليم في التأمينات الاجتماعية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.EducationBranchId",
+      "label": "EducationBranch",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:EducationBranch",
+        "dom:EmployeeEducation_EducationBranchId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة EducationBranch.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجال الدراسة.</p><p><strong>مثال.</strong> هندسة</p><p><strong>لماذا يهم.</strong> يُستخدم مع المستوى التعليمي لبدل التعليم في التأمينات الاجتماعية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.UniversityId",
+      "label": "University",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:University",
+        "dom:EmployeeEducation_UniversityId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الجامعات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجامعة.</p><p><strong>مثال.</strong> جامعة الكويت</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب أو تقرير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.InstitutionId",
+      "label": "Institution",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:Institution",
+        "dom:EmployeeEducation_InstitutionId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الجهات التعليمية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المؤسسة التعليمية داخل الجامعة.</p><p><strong>مثال.</strong> كلية الهندسة</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب أو تقرير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.CountryId",
+      "label": "Country",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:Country",
+        "dom:EmployeeEducation_CountryId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدول.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بلد الدراسة.</p><p><strong>مثال.</strong> الكويت</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب أو تقرير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.Location",
+      "label": "Location",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:Location",
+        "dom:EmployeeEducation_Location"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان الدراسة، كنص حر.</p><p><strong>مثال.</strong> الشويخ</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.DurationOfCourse",
+      "label": "DurationOfCourse",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:DurationOfCourse",
+        "dom:EmployeeEducation_DurationOfCourse"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدة الدراسة.</p><p><strong>مثال.</strong> 4</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.Grade",
+      "label": "Grade",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:Grade",
+        "dom:EmployeeEducation_Grade"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التقدير الحاصل عليه.</p><p><strong>مثال.</strong> جيد جداً</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.YearOfPassing",
+      "label": "YearOfPassing",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:YearOfPassing",
+        "dom:EmployeeEducation_YearOfPassing"
+      ],
+      "rules": "اختياري. الحد الأقصى 16 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سنة الحصول على المؤهل.</p><p><strong>مثال.</strong> 2012</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

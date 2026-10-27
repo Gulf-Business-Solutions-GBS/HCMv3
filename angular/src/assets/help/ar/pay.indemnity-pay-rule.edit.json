@@ -1,0 +1,123 @@
+{
+  "helpId": "pay.indemnity-pay-rule.edit",
+  "lang": "ar",
+  "title": "قواعد صرف مكافأة نهاية الخدمة — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.IndemnityPayRule",
+  "overviewHtml": "<p>حد لمكافأة نهاية الخدمة بحسب سبب انتهاء الخدمة والبلد.</p><p>لا تُستخدم حالياً: لا تمرّر أي عملية احتساب للرواتب أو التقارير قاعدة دفع مكافأة، فيأتي حد المكافأة دائماً من <strong>ملف الراتب</strong> التي ينتمي إليها الموظف. وهذه القواعد تُحفظ للرجوع إليها.</p>",
+  "aliasIndex": {
+    "loc:SeparationType": "IndemnityPayRule.SeparationType",
+    "dom:IndemnityPayRule_SeparationType": "IndemnityPayRule.SeparationType",
+    "loc:CountryId": "IndemnityPayRule.CountryId",
+    "dom:IndemnityPayRule_CountryId": "IndemnityPayRule.CountryId",
+    "loc:StartDate": "IndemnityPayRule.StartDate",
+    "dom:IndemnityPayRule_StartDate": "IndemnityPayRule.StartDate",
+    "loc:EndDate": "IndemnityPayRule.EndDate",
+    "dom:IndemnityPayRule_EndDate": "IndemnityPayRule.EndDate",
+    "loc:MaxNumber": "IndemnityPayRule.MaxNumber",
+    "dom:IndemnityPayRule_MaxNumber": "IndemnityPayRule.MaxNumber",
+    "loc:MaxUnit": "IndemnityPayRule.MaxUnit",
+    "dom:IndemnityPayRule_MaxUnit": "IndemnityPayRule.MaxUnit",
+    "loc:MaxPayPercentage": "IndemnityPayRule.MaxPayPercentage",
+    "dom:IndemnityPayRule_MaxPayPercentage": "IndemnityPayRule.MaxPayPercentage"
+  },
+  "fields": [
+    {
+      "id": "IndemnityPayRule.SeparationType",
+      "label": "SeparationType",
+      "section": "IndemnityPayRules",
+      "aliases": [
+        "loc:SeparationType",
+        "dom:IndemnityPayRule_SeparationType"
+      ],
+      "rules": "إلزامي. إحدى القيم: استقالة، إنهاء خدمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سبب انتهاء الخدمة الذي تخصه القاعدة.</p><p><strong>مثال.</strong> استقالة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRule.CountryId",
+      "label": "CountryId",
+      "section": "IndemnityPayRules",
+      "aliases": [
+        "loc:CountryId",
+        "dom:IndemnityPayRule_CountryId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدول.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البلد الذي تخصه القاعدة.</p><p><strong>مثال.</strong> الكويت</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRule.StartDate",
+      "label": "StartDate",
+      "section": "IndemnityPayRules",
+      "aliases": [
+        "loc:StartDate",
+        "dom:IndemnityPayRule_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRule.EndDate",
+      "label": "EndDate",
+      "section": "IndemnityPayRules",
+      "aliases": [
+        "loc:EndDate",
+        "dom:IndemnityPayRule_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRule.MaxNumber",
+      "label": "MaxNumber",
+      "section": "IndemnityPayRules",
+      "aliases": [
+        "loc:MaxNumber",
+        "dom:IndemnityPayRule_MaxNumber"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أقصى ما يمكن أن تبلغه المكافأة من الراتب، بالوحدة أدناه.</p><p><strong>مثال.</strong> <code>18</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRule.MaxUnit",
+      "label": "MaxUnit",
+      "section": "IndemnityPayRules",
+      "aliases": [
+        "loc:MaxUnit",
+        "dom:IndemnityPayRule_MaxUnit"
+      ],
+      "rules": "إلزامي. إحدى القيم: اليوم، الشهر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الحد الأقصى بالأشهر أو بالأيام.</p><p><strong>مثال.</strong> شهر</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRule.MaxPayPercentage",
+      "label": "MaxPayPercentage",
+      "section": "IndemnityPayRules",
+      "aliases": [
+        "loc:MaxPayPercentage",
+        "dom:IndemnityPayRule_MaxPayPercentage"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النسبة التي يمكن صرفها من ذلك الحد الأقصى.</p><p><strong>مثال.</strong> <code>100</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

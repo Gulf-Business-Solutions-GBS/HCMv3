@@ -1,0 +1,18 @@
+﻿@using HCMv3.Maui.Services.Navigation
+@inherits HCMv3MainLayoutPageComponentBase
+@attribute [Route("/" + NavigationUrlConsts.Settings)]
+
+<div class="card">
+    <div class="card-body">
+        <ThemeSwitch></ThemeSwitch>
+        <LanguageSwitch OnSave="OnLanguageSwitchAsync"></LanguageSwitch>
+        <button class="btn btn-primary w-100 mb-5" @onclick="ChangePassword">
+            @L("ChangePassword")
+        </button>
+        <button class="btn btn-danger w-100" @onclick="LogOut">
+            @L("Logout")
+        </button>
+    </div>
+</div>
+
+<ChangePasswordModal OnSave="OnChangePasswordAsync" @ref="changePasswordModal"></ChangePasswordModal>

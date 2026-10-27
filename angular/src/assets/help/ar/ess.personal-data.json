@@ -1,0 +1,193 @@
+{
+  "helpId": "ess.personal-data",
+  "lang": "ar",
+  "title": "بياناتي الشخصية",
+  "entity": null,
+  "overviewHtml": "<p>اطلب تصحيح بياناتك أنت: الحالة الاجتماعية، أو رقم الهاتف، أو العنوان، أو طريقة كتابة الاسم.</p><p>ولا يمكنك تعديل سجلّك مباشرةً، بل تقترح التغييرات وتعتمدها الموارد البشرية. وهذا مقصود: فما في سجلّك يحكم راتبك وبدلاتك وما تقدّمه شركتك إلى الجهات الحكومية، فالتغيير أمر يوافق عليه أحد لا أمر تفعله وحدك.</p>",
+  "aliasIndex": {
+    "loc:Comments": "ess.common.comments",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:RequestPersonalDataChange": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:Withdraw": "ess.common.withdraw",
+    "loc:PickTheFieldsYouWantToChangeHint": "ess.personal-data.pick-fields",
+    "loc:Current": "ess.personal-data.current",
+    "loc:NewValue": "ess.personal-data.new-value",
+    "loc:Changes": "ess.personal-data.changes",
+    "loc:Attachments": "ess.personal-data.attachments",
+    "loc:YouAlreadyHaveAPendingPersonalDataChange": "ess.personal-data.pending-change"
+  },
+  "fields": [
+    {
+      "id": "ess.common.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما تريد أن يقرأه من يعتمدون الطلب. نص حرّ واختياري.</p><p><strong>مثال.</strong> «سفري يوم 14 وعودتي يوم 28، وقد اتُّفق على البديل مع أحمد.»</p><p><strong>لماذا يهمّ.</strong> هو المكان الوحيد الذي تشرح فيه طلباً يحتاج إلى شرح، ويبقى مع الطلب دائماً: يراه المعتمدون، ويراه كل من يعود إلى الطلب لاحقاً. والطلب الذي يفاجئ أحدهم طلبٌ يعود إليك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل ما طلبته من هذه الشاشة، والأحدث أولاً، مع ما آل إليه كل طلب.</p><p><strong>مثال.</strong> ثلاثة طلبات تذاكر: واحد اعتُمد الشهر الماضي، وواحد قيد الانتظار، وواحد سحبته.</p><p><strong>لماذا يهمّ.</strong> هذه هي السجلّ. والطلب غير الموجود في هذه القائمة لم يُقدَّم أصلاً، فإن عبّأت النموذج ولم تضغط <strong>حفظ</strong> فلم يُرسل شيء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنبيه بأن الحساب الذي سجّلت الدخول به غير مرتبط بموظف، فلا يوجد من يكون الطلب عنه.</p><p><strong>مثال.</strong> مستخدم أُنشئ حديثاً، أو حساب مسؤول تُرك عمداً بلا موظف.</p><p><strong>لماذا يهمّ.</strong> لا يعمل شيء في شاشات الخدمة الذاتية قبل أن تربط الموارد البشرية الحساب بسجلّ موظفك، ولا يفعل ذلك سواها. وكثيراً ما تُترك حسابات المسؤولين غير مرتبطة عن قصد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما آل إليه الطلب. <strong>مسودة</strong> يعني أنه لم يُقدَّم، و<strong>قيد الانتظار</strong> يعني أنه لدى أحدهم، و<strong>معتمد</strong> يعني أنه أُقرّ ونُفّذ، و<strong>مرفوض</strong> يعني أنه رُفض، و<strong>مسحوب</strong> يعني أنك استرجعته بنفسك.</p><p><strong>مثال.</strong> قيد الانتظار — لدى مديرك المباشر.</p><p><strong>لماذا يهمّ.</strong> لا يغيّر شيئاً إلا الطلب المعتمد: رصيدك أو راتبك أو سجلّك. أما الطلب قيد الانتظار فلم يفعل شيئاً بعد، مهما جاء في النموذج عند تعبئته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestPersonalDataChange",
+      "section": null,
+      "aliases": [
+        "loc:RequestPersonalDataChange"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزرّ في أعلى الشاشة الذي يفتح النموذج. وتعبئته ثم الضغط على <strong>حفظ</strong> يقدّم الطلب، ولا يُرسل شيء قبل ذلك.</p><p><strong>مثال.</strong> <strong>طلب إجازة</strong>، <strong>طلب تذكرة</strong>، <strong>طلب سلفة</strong> — وتتبع الصياغة الشاشة.</p><p><strong>لماذا يهمّ.</strong> بعد التقديم يذهب الطلب إلى من يعتمد هذا النوع من الطلبات في شركتك، ولا يمكنك تعديله في مكانه. ولتغيير شيء فيه اسحبه وقدّم طلباً جديداً، أو استخدم <strong>التعديل</strong> في الشاشات التي توفّره.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من وصل إليه الطلب، وما فعله كل شخص به ومتى، مع أي ملاحظة تركها.</p><p><strong>مثال.</strong> قُدّم 09:12 ← اعتمده المدير المباشر 11:40 («تم ترتيب البديل») ← لدى الموارد البشرية.</p><p><strong>لماذا يهمّ.</strong> يجيب عن سؤال «لدى من الطلب الآن؟» دون سؤال أحد. وإذا بقي الطلب عند شخص أياماً فهو يخبرك بمن هو، وهو من تراجعه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "Withdraw",
+      "section": null,
+      "aliases": [
+        "loc:Withdraw"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يسترجع الطلب. ولا يظهر إلا ما دام الاسترجاع ممكناً، فإذا اعتُمد الطلب ونُفّذ اختفى الزرّ.</p><p><strong>مثال.</strong> طلبت إجازة الأسبوع القادم ثم تغيّرت خططك، فتسحب الطلب قبل أن يصل إليه مديرك.</p><p><strong>لماذا يهمّ.</strong> لا يُحذف الطلب المسحوب، بل يبقى في القائمة بحالة <strong>مسحوب</strong> ليبيّن السجلّ ما جرى. ويحرّر السحب ما كان الطلب يحجزه، كرصيد إجازة محجوز مقابله.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.personal-data.pick-fields",
+      "label": "PickTheFieldsYouWantToChangeHint",
+      "section": null,
+      "aliases": [
+        "loc:PickTheFieldsYouWantToChangeHint"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يحمل الطلب الواحد عدّة تغييرات. أشِّر على الحقول التي تريد تغييرها، فلا يظهر لك سواها لتعبئته.</p><p><strong>مثال.</strong> التأشير على الحالة الاجتماعية ورقم الجوال، وترك العشرين حقلاً الأخرى.</p><p><strong>لماذا يهمّ.</strong> الحقول غير المؤشَّرة ليست جزءاً من الطلب أصلاً، فلا يمكن أن يتغيّر شيء لم تؤشّر عليه بالخطأ. وهو يُبقي الطلب مقروءاً لمن يعتمده: ثلاثة تغييرات يراها أسهل في الموافقة من سجلّ كامل يقارنه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.personal-data.current",
+      "label": "Current",
+      "section": null,
+      "aliases": [
+        "loc:Current"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما يذكره سجلّك اليوم، معروضاً بجانب كل حقل أشّرت عليه.</p><p><strong>مثال.</strong> الحالة الاجتماعية: أعزب.</p><p><strong>لماذا يهمّ.</strong> به يُقاس التغيير، وهو يكشف الحالة الشائعة التي يكون فيها السجلّ صحيحاً أصلاً ولا حاجة إلى الطلب. فاقرأه قبل كتابة القيمة الجديدة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.personal-data.new-value",
+      "label": "NewValue",
+      "section": null,
+      "aliases": [
+        "loc:NewValue"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما ينبغي أن يذكره بدلاً منها.</p><p><strong>مثال.</strong> الحالة الاجتماعية: متزوج.</p><p><strong>لماذا يهمّ.</strong> هذا ما يُكتب في سجلّك عند اعتماد الطلب، فاكتبه كما ينبغي أن يظهر لا كملاحظة عنه. وفي الاسم أو بيانات المستندات انقله من المستند الرسمي لا من الذاكرة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.personal-data.changes",
+      "label": "Changes",
+      "section": null,
+      "aliases": [
+        "loc:Changes"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> في الطلب المقدَّم، قائمة ما يطلب تغييره: كل حقل، ومن أي قيمة، وإلى أي قيمة.</p><p><strong>مثال.</strong> الحالة الاجتماعية: أعزب ← متزوج؛ الجوال: 9XXXXXXX ← 6XXXXXXX.</p><p><strong>لماذا يهمّ.</strong> هي الطلب كلّه في سطر، وهي ما يراه المعتمد. وبها تتحقّق من أن ما قدّمته هو ما قصدته دون فتح النموذج من جديد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.personal-data.attachments",
+      "label": "Attachments",
+      "section": null,
+      "aliases": [
+        "loc:Attachments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المستندات المؤيِّدة للتغيير، مرفقةً بالطلب.</p><p><strong>مثال.</strong> عقد زواج لتغيير الحالة الاجتماعية، أو عقد إيجار لعنوان جديد.</p><p><strong>لماذا يهمّ.</strong> أكثر التغييرات في البيانات الرسمية تحتاج إلى إثبات، والطلب الخالي منه ينتظر حتى يطلبه أحد منك. وإرفاق المستند عند تقديم الطلب هو عادةً الفرق بين اعتماد اليوم نفسه واعتماد الأسبوع القادم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.personal-data.pending-change",
+      "label": "YouAlreadyHaveAPendingPersonalDataChange",
+      "section": null,
+      "aliases": [
+        "loc:YouAlreadyHaveAPendingPersonalDataChange"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إشعار بأن لديك طلباً ما زال منتظراً، فلا يمكنك تقديم طلب آخر.</p><p><strong>مثال.</strong> طلبت تغيير عنوانك الأحد ولم يُعتمد بعد.</p><p><strong>لماذا يهمّ.</strong> طلبان يغيّران السجلّ نفسه يتسابقان، وأيّهما اعتُمد ثانياً ألغى الأول في صمت. فانتظر طلبك القائم، أو اسحبه وقدّم طلباً واحداً يجمع كل ما تريده.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

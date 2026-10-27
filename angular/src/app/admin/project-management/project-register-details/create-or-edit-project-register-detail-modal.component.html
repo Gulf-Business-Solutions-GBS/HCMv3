@@ -1,0 +1,127 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'ProjectRegisterDetails' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'ProjectRegisterDetails' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="ProjectRegisterDetail_ProjectRegisterId">{{ 'ProjectRegister' | localize }}</label>
+                                <select
+                                    id="ProjectRegisterDetail_ProjectRegisterId"
+                                    #projectRegisterIdInput="ngModel"
+                                    class="form-select"
+                                    name="ProjectRegisterId"
+                                    [ngModel]="record().projectRegisterId"
+                                    (ngModelChange)="updateField('projectRegisterId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of projectRegisters(); track item.id) {
+                                        <option [ngValue]="item.id">{{ projectRegisterLabel(item) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="projectRegisterIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="ProjectRegisterDetail_ProjectId">{{ 'Project' | localize }}</label>
+                                <select
+                                    id="ProjectRegisterDetail_ProjectId"
+                                    #projectIdInput="ngModel"
+                                    class="form-select"
+                                    name="ProjectId"
+                                    [ngModel]="record().projectId"
+                                    (ngModelChange)="updateField('projectId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of projects(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="projectIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="ProjectRegisterDetail_WageTypeId">{{ 'WageType' | localize }}</label>
+                                <select
+                                    id="ProjectRegisterDetail_WageTypeId"
+                                    #wageTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="WageTypeId"
+                                    [ngModel]="record().wageTypeId"
+                                    (ngModelChange)="updateField('wageTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of wageTypes(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="wageTypeIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="ProjectRegisterDetail_Number">{{ 'Number' | localize }}</label>
+                                <input
+                                    id="ProjectRegisterDetail_Number"
+                                    #numberInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="Number"
+                                    [ngModel]="record().number"
+                                    (ngModelChange)="updateField('number', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="numberInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="ProjectRegisterDetail_Amount">{{ 'Amount' | localize }}</label>
+                                <input
+                                    id="ProjectRegisterDetail_Amount"
+                                    #amountInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="Amount"
+                                    [ngModel]="record().amount"
+                                    (ngModelChange)="updateField('amount', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="amountInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

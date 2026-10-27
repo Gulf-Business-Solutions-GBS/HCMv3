@@ -1,0 +1,91 @@
+{
+  "helpId": "gmi.institution.edit",
+  "lang": "en",
+  "title": "Institutions — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.Institution",
+  "overviewHtml": "<p>Educational and training institutions, used on employees' education and certification records.</p>",
+  "aliasIndex": {
+    "loc:Code": "Institution.Code",
+    "dom:Institution_Code": "Institution.Code",
+    "loc:NameEn": "Institution.NameEn",
+    "dom:Institution_NameEn": "Institution.NameEn",
+    "loc:NameAr": "Institution.NameAr",
+    "dom:Institution_NameAr": "Institution.NameAr",
+    "loc:University": "Institution.UniversityId",
+    "dom:Institution_UniversityId": "Institution.UniversityId",
+    "loc:Country": "Institution.CountryId",
+    "dom:Institution_CountryId": "Institution.CountryId"
+  },
+  "fields": [
+    {
+      "id": "Institution.Code",
+      "label": "Code",
+      "section": "Institutions",
+      "aliases": [
+        "loc:Code",
+        "dom:Institution_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Institution.NameEn",
+      "label": "NameEn",
+      "section": "Institutions",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Institution_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Institution.NameAr",
+      "label": "NameAr",
+      "section": "Institutions",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Institution_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Institution.UniversityId",
+      "label": "University",
+      "section": "Institutions",
+      "aliases": [
+        "loc:University",
+        "dom:Institution_UniversityId"
+      ],
+      "rules": "Optional. Chosen from University master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The university the institution belongs to, from the universities list.</p><p><strong>Why it matters.</strong> Recorded for reference; nothing else uses it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Institution.CountryId",
+      "label": "Country",
+      "section": "Institutions",
+      "aliases": [
+        "loc:Country",
+        "dom:Institution_CountryId"
+      ],
+      "rules": "Optional. Chosen from Country master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The country the institution is in.</p><p><strong>Example.</strong> United Kingdom</p><p><strong>Why it matters.</strong> Recorded for reference; nothing else uses it.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

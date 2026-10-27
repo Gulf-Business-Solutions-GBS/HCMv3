@@ -1,0 +1,59 @@
+{
+  "helpId": "pay.cost-register.edit",
+  "lang": "en",
+  "title": "Cost Registers — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.CostRegister",
+  "overviewHtml": "<p>An employee's payroll cost for one month and run, split across ledger accounts and cost elements. The cost engine writes these from the payslip and the employee's wage accounts; the journal voucher is built from them.</p><p>Details on a register in the list opens its own page: the employee, period and run type at the top, with Edit, and below them its cost lines, with a column for each cost element type in use. Lines can be added, changed and removed there.</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "CostRegister.EmployeeId",
+    "dom:CostRegister_EmployeeId": "CostRegister.EmployeeId",
+    "loc:Period": "CostRegister.Period",
+    "dom:CostRegister_Period": "CostRegister.Period",
+    "loc:PayrollRunType": "CostRegister.PayrollRunType",
+    "dom:CostRegister_PayrollRunType": "CostRegister.PayrollRunType"
+  },
+  "fields": [
+    {
+      "id": "CostRegister.EmployeeId",
+      "label": "EmployeeId",
+      "section": "CostRegisters",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:CostRegister_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostRegister.Period",
+      "label": "Period",
+      "section": "CostRegisters",
+      "aliases": [
+        "loc:Period",
+        "dom:CostRegister_Period"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The month the cost is for.</p><p><strong>Example.</strong> <code>2026-04-30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostRegister.PayrollRunType",
+      "label": "PayrollRunType",
+      "section": "CostRegisters",
+      "aliases": [
+        "loc:PayrollRunType",
+        "dom:CostRegister_PayrollRunType"
+      ],
+      "rules": "Required. One of: Regular, Off Cycle.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the cost came from a regular or an off-cycle run.</p><p><strong>Example.</strong> Regular</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

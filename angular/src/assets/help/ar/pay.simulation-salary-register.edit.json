@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.simulation-salary-register.edit",
+  "lang": "ar",
+  "title": "سجلات الرواتب التجريبية — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.SimulationSalaryRegister",
+  "overviewHtml": "<p>كشف راتب من محاكاة — تشغيل تجريبي يبيّن ما سيصرفه نظام الرواتب دون صرفه. وتُحفظ كشوف المحاكاة منفصلة عن الكشوف الفعلية ولا تُقفل أبداً.</p><p>يفتح خيار التفاصيل على أي كشف في القائمة صفحته الخاصة: الموظف والفترات ونوع التشغيل ونوع النتيجة في الأعلى مع زر التحرير، وتحتها بنود أنواع الأجور، ويمكن إضافتها وتعديلها وحذفها من هناك.</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "SimulationSalaryRegister.EmployeeId",
+    "dom:SimulationSalaryRegister_EmployeeId": "SimulationSalaryRegister.EmployeeId",
+    "loc:ForPeriod": "SimulationSalaryRegister.ForPeriod",
+    "dom:SimulationSalaryRegister_ForPeriod": "SimulationSalaryRegister.ForPeriod",
+    "loc:InPeriod": "SimulationSalaryRegister.InPeriod",
+    "dom:SimulationSalaryRegister_InPeriod": "SimulationSalaryRegister.InPeriod",
+    "loc:PayrollRunType": "SimulationSalaryRegister.PayrollRunType",
+    "dom:SimulationSalaryRegister_PayrollRunType": "SimulationSalaryRegister.PayrollRunType",
+    "loc:PayrollResultType": "SimulationSalaryRegister.PayrollResultType",
+    "dom:SimulationSalaryRegister_PayrollResultType": "SimulationSalaryRegister.PayrollResultType",
+    "loc:PayrollReasonTypeId": "SimulationSalaryRegister.PayrollReasonTypeId",
+    "dom:SimulationSalaryRegister_PayrollReasonTypeId": "SimulationSalaryRegister.PayrollReasonTypeId"
+  },
+  "fields": [
+    {
+      "id": "SimulationSalaryRegister.EmployeeId",
+      "label": "EmployeeId",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:SimulationSalaryRegister_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يخصه كشف الراتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegister.ForPeriod",
+      "label": "ForPeriod",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:ForPeriod",
+        "dom:SimulationSalaryRegister_ForPeriod"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشهر الذي يخصه الأجر.</p><p><strong>مثال.</strong> <code>2026-03-31</code></p><p><strong>لماذا يهم.</strong> في إعادة الاحتساب بأثر رجعي يكون هذا شهراً أسبق من <strong>في الفترة</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegister.InPeriod",
+      "label": "InPeriod",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:InPeriod",
+        "dom:SimulationSalaryRegister_InPeriod"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشهر الذي يُصرف فيه الأجر — تاريخ الدفع للتشغيل.</p><p><strong>مثال.</strong> <code>2026-04-30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegister.PayrollRunType",
+      "label": "PayrollRunType",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:PayrollRunType",
+        "dom:SimulationSalaryRegister_PayrollRunType"
+      ],
+      "rules": "إلزامي. إحدى القيم: اعتيادي، خارج الدورة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان كشف الراتب ناتجاً عن تشغيل عادي أو خارج الدورة.</p><p><strong>مثال.</strong> عادي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegister.PayrollResultType",
+      "label": "PayrollResultType",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:PayrollResultType",
+        "dom:SimulationSalaryRegister_PayrollResultType"
+      ],
+      "rules": "إلزامي. إحدى القيم: الحالي، الأخير، الأرشيف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أي نتيجة هذه لشهرها.</p><p><strong>مثال.</strong> الحالي</p><p><strong>لماذا يهم.</strong> يكتب التشغيل العادي <em>الحالي</em>. وعندما يُعاد احتساب الشهر نفسه في تشغيل لاحق، تصبح كشوف ذلك الشهر الأقدم <em>الأخير</em> (أحدثها قبل ذلك) و<em>الأرشيف</em> (البقية).</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimulationSalaryRegister.PayrollReasonTypeId",
+      "label": "PayrollReasonTypeId",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:PayrollReasonTypeId",
+        "dom:SimulationSalaryRegister_PayrollReasonTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع أسباب الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سبب التشغيل خارج الدورة، لكشف الراتب خارج الدورة.</p><p><strong>مثال.</strong> نهاية الخدمة</p><p><strong>لماذا يهم.</strong> فارغ في كشوف الرواتب العادية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

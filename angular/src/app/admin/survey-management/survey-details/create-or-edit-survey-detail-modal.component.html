@@ -1,0 +1,126 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #surveyDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (surveyDetail().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'SurveyDetails' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'SurveyDetails' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label required" for="SurveyDetail_SurveyId">{{ 'Surveys' | localize }}</label>
+                                <select
+                                    id="SurveyDetail_SurveyId"
+                                    #surveyIdInput="ngModel"
+                                    class="form-select"
+                                    name="SurveyId"
+                                    [ngModel]="surveyDetail().surveyId"
+                                    (ngModelChange)="updateField('surveyId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (survey of surveys(); track survey.id) {
+                                        <option [ngValue]="survey.id">{{ survey.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="surveyIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 mb-5">
+                                <label class="form-label required" for="SurveyDetail_Question">{{ 'Question' | localize }}</label>
+                                <input
+                                    id="SurveyDetail_Question"
+                                    #questionInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="Question"
+                                    [ngModel]="surveyDetail().question"
+                                    (ngModelChange)="updateField('question', $event)"
+                                    required
+                                    maxlength="500" />
+                                <validation-messages [formCtrl]="questionInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="SurveyDetail_OrderNo">{{ 'OrderNo' | localize }}</label>
+                                <input
+                                    id="SurveyDetail_OrderNo"
+                                    class="form-control"
+                                    type="number"
+                                    name="OrderNo"
+                                    [ngModel]="surveyDetail().orderNo"
+                                    (ngModelChange)="updateField('orderNo', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="SurveyDetail_QuestionType">{{ 'QuestionType' | localize }}</label>
+                                <select
+                                    id="SurveyDetail_QuestionType"
+                                    class="form-select"
+                                    name="QuestionType"
+                                    [ngModel]="surveyDetail().questionType"
+                                    (ngModelChange)="updateField('questionType', $event)">
+                                    @for (type of questionTypes; track type.value) {
+                                        <option [ngValue]="type.value">{{ type.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="SurveyDetail_Options">{{ 'Options' | localize }}</label>
+                                <input
+                                    id="SurveyDetail_Options"
+                                    class="form-control"
+                                    type="text"
+                                    name="Options"
+                                    [ngModel]="surveyDetail().options"
+                                    (ngModelChange)="updateField('options', $event)"
+                                    [placeholder]="isChoiceQuestion() ? 'Option1;Option2;Option3' : ''"
+                                    maxlength="1000" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!surveyDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

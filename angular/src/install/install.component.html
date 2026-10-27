@@ -1,0 +1,251 @@
+<div class="d-flex flex-column flex-root">
+    <div
+        class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed"
+        style="background-image: url(/assets/metronic/assets/media/svg/illustrations/login.png)">
+        <div class="d-flex flex-center flex-column flex-column-fluid">
+            <!--begin::Logo-->
+            <a (click)="goToHome()" href="" class="d-flex justify-content-center mt-10 mb-12">
+                <img [src]="defaultLogo" alt="logo" class="h-40px" />
+            </a>
+            <!--end::Logo-->
+
+            <!--begin::Wrapper-->
+            <div class="container-xxl mx-auto">
+                <!--begin::Form-->
+                <div class="content col-lg-12">
+                    <div class="container container-fluid pb-10">
+                        <div class="card card-custom">
+                            <div class="card-body">
+                                <div class="symbol symbol-35px mb-5">
+                                    <span class="symbol-label bg-light-primary">
+                                        <i class="la la-gear fs-2x text-primary"></i>
+                                    </span>
+                                </div>
+                                <h3 class="text-dark fw-bold mb-5">HCMv3 Installation</h3>
+                                <form id="installForm" class="form w-100 fv-plugins-bootstrap5 fv-plugins-framework">
+                                    <div class="mb-5">
+                                        <label class="form-label required">Connection String</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            name="connectionString"
+                                            placeholder="Connection string"
+                                            [(ngModel)]="setupSettings.connectionString"
+                                            autocomplete="new-password"
+                                            required />
+                                    </div>
+
+                                    <div class="separator my-4"></div>
+
+                                    <div class="mb-5">
+                                        <label class="form-label required">Admin Password</label>
+                                        <input
+                                            type="password"
+                                            class="form-control"
+                                            name="adminPassword"
+                                            placeholder="Admin password"
+                                            [(ngModel)]="setupSettings.adminPassword"
+                                            autocomplete="new-password"
+                                            #adminPassword="ngModel"
+                                            validateEqual="adminPasswordRepeat"
+                                            reverse="true"
+                                            required />
+                                    </div>
+
+                                    <div class="mb-5">
+                                        <label class="form-label required">Repeat Admin Password</label>
+                                        <input
+                                            type="password"
+                                            class="form-control"
+                                            name="adminPasswordRepeat"
+                                            placeholder="Repeat admin password"
+                                            [(ngModel)]="tenantAdminPasswordRepeat"
+                                            autocomplete="new-password"
+                                            #adminPasswordRepeat="ngModel"
+                                            validateEqual="adminPassword"
+                                            required />
+                                    </div>
+
+                                    <div class="separator my-4"></div>
+
+                                    <div class="mb-5">
+                                        <label class="form-label required">Client Side URL</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            name="webSiteUrl"
+                                            placeholder="Client side URL"
+                                            [(ngModel)]="setupSettings.webSiteUrl"
+                                            required />
+                                    </div>
+
+                                    <div class="mb-5">
+                                        <label class="form-label required">Server Side URL</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            name="serverUrl"
+                                            placeholder="Server side URL"
+                                            [(ngModel)]="setupSettings.serverUrl"
+                                            required />
+                                    </div>
+
+                                    <div class="separator my-4"></div>
+
+                                    <div class="mb-5">
+                                        <label class="form-label required">Default Language</label>
+                                        <select
+                                            class="form-select"
+                                            name="defaultLanguage"
+                                            [(ngModel)]="setupSettings.defaultLanguage"
+                                            required>
+                                            @for (language of languages; track language) {
+                                                <option [value]="language.value">
+                                                    {{ language.name }}
+                                                </option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="separator my-4"></div>
+
+                                    <div class="mb-5">
+                                        <label class="form-label required">Default From Address</label>
+                                        <input
+                                            type="email"
+                                            class="form-control"
+                                            name="defaultFromAddress"
+                                            placeholder="example@domain.com"
+                                            [(ngModel)]="setupSettings.smtpSettings.defaultFromAddress"
+                                            #defaultEmailAddressInput="ngModel"
+                                            pattern="^\w+([\-+.']\w+)*@\w+([\-.]\w+)*\.\w+([\-.]\w+)*$" />
+                                        <validation-messages
+                                            [formCtrl]="defaultEmailAddressInput"
+                                            [customMessages]="{
+                                                pattern:
+                                                    'Email must be in a valid format, such as (example@domain.com)',
+                                            }"
+                                            required />
+                                    </div>
+
+                                    <div class="mb-5">
+                                        <label class="form-label">Default From Display Name</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            name="defaultFromDisplayName"
+                                            placeholder="Display name"
+                                            [(ngModel)]="setupSettings.smtpSettings.defaultFromDisplayName" />
+                                    </div>
+
+                                    <div class="mb-5">
+                                        <label class="form-label">SMTP Host</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            name="smtpHost"
+                                            placeholder="SMTP host"
+                                            [(ngModel)]="setupSettings.smtpSettings.smtpHost" />
+                                    </div>
+
+                                    <div class="mb-5">
+                                        <label class="form-label">SMTP Port</label>
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            name="smtpPort"
+                                            placeholder="25"
+                                            [(ngModel)]="setupSettings.smtpSettings.smtpPort" />
+                                    </div>
+
+                                    <div class="form-check form-switch mb-3">
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            id="smtpEnableSsl"
+                                            [(ngModel)]="setupSettings.smtpSettings.smtpEnableSsl"
+                                            name="smtpEnableSsl" />
+                                        <label class="form-check-label" for="smtpEnableSsl">Use SSL</label>
+                                    </div>
+
+                                    <div class="form-check form-switch mb-3">
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            id="smtpUseAuthentication"
+                                            [(ngModel)]="setupSettings.smtpSettings.smtpUseAuthentication"
+                                            name="smtpUseAuthentication" />
+                                        <label class="form-check-label" for="smtpUseAuthentication">
+                                            Use Default Credentials
+                                        </label>
+                                    </div>
+
+                                    <div class="mb-5">
+                                        <label class="form-label">SMTP Domain</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            name="smtpDomain"
+                                            [(ngModel)]="setupSettings.smtpSettings.smtpDomain" />
+                                    </div>
+
+                                    <div class="mb-5">
+                                        <label class="form-label">SMTP Username</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            name="smtpUserName"
+                                            [(ngModel)]="setupSettings.smtpSettings.smtpUserName" />
+                                    </div>
+
+                                    <div class="mb-5">
+                                        <label class="form-label">SMTP Password</label>
+                                        <input
+                                            type="password"
+                                            class="form-control"
+                                            name="smtpPassword"
+                                            [(ngModel)]="setupSettings.smtpSettings.smtpPassword" />
+                                    </div>
+
+                                    <div class="separator my-4"></div>
+
+                                    <div class="mb-5">
+                                        <label class="form-label">Legal Name</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            name="legalName"
+                                            [(ngModel)]="setupSettings.billInfo.legalName" />
+                                    </div>
+
+                                    <div class="mb-5">
+                                        <label class="form-label">Address</label>
+                                        <textarea
+                                            class="form-control"
+                                            name="billAddress"
+                                            rows="3"
+                                            [(ngModel)]="setupSettings.billInfo.address"></textarea>
+                                    </div>
+
+                                    <div class="d-flex justify-content-end">
+                                        <button
+                                            id="SaveButton"
+                                            class="btn btn-primary"
+                                            [buttonBusy]="saving()"
+                                            [busyText]="l('SavingWithThreeDot')"
+                                            (click)="saveAll()">
+                                            Save
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Form-->
+            </div>
+        </div>
+        <!--end::Content-->
+    </div>
+    <!--end::Authentication - Sign-in-->
+</div>

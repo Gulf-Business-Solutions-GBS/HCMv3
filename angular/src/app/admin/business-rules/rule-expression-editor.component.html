@@ -1,0 +1,211 @@
+<div class="rule-node">
+    <div class="d-flex align-items-start gap-2 flex-wrap">
+        <select
+            class="form-select form-select-sm rule-kind-select"
+            [ngModel]="expression().kind"
+            (ngModelChange)="changeKind(expression(), $event)"
+            name="kind">
+            <option value="compare">{{ 'RuleNodeComparison' | localize }}</option>
+            <option value="logical">{{ 'RuleNodeGroup' | localize }}</option>
+            <option value="not">{{ 'RuleNodeNot' | localize }}</option>
+            <option value="field">{{ 'RuleNodeField' | localize }}</option>
+            <option value="const">{{ 'RuleNodeValue' | localize }}</option>
+            <option value="fn">{{ 'RuleNodeFunction' | localize }}</option>
+            <option value="arith">{{ 'RuleNodeArithmetic' | localize }}</option>
+        </select>
+
+        <!-- A literal value. Its data type decides how the server coerces it, so it is part of the value. -->
+        @if (expression().kind === 'const') {
+            <select
+                class="form-select form-select-sm rule-type-select"
+                [ngModel]="expression().dataType"
+                (ngModelChange)="expression().dataType = $event; changed.emit()"
+                name="dataType">
+                <option value="String">{{ 'RuleDataTypeString' | localize }}</option>
+                <option value="Integer">{{ 'RuleDataTypeInteger' | localize }}</option>
+                <option value="Decimal">{{ 'RuleDataTypeDecimal' | localize }}</option>
+                <option value="Boolean">{{ 'RuleDataTypeBoolean' | localize }}</option>
+                <option value="Date">{{ 'RuleDataTypeDate' | localize }}</option>
+            </select>
+
+            @if (expression().dataType === 'Boolean') {
+                <select
+                    class="form-select form-select-sm rule-value-input"
+                    [ngModel]="expression().value"
+                    (ngModelChange)="expression().value = $event; changed.emit()"
+                    name="boolValue">
+                    <option value="true">{{ 'Yes' | localize }}</option>
+                    <option value="false">{{ 'No' | localize }}</option>
+                </select>
+            } @else {
+                <input
+                    class="form-control form-control-sm rule-value-input"
+                    [type]="expression().dataType === 'Date' ? 'date' : 'text'"
+                    [ngModel]="expression().value"
+                    (ngModelChange)="expression().value = $event; changed.emit()"
+                    [placeholder]="l('Value')"
+                    name="value" />
+            }
+        }
+
+        <!-- A field of one of the base object's parameters. The list comes from the server registry, so it
+             can only ever offer something the evaluator can actually read. -->
+        @if (expression().kind === 'field') {
+            <select
+                class="form-select form-select-sm rule-field-select"
+                [ngModel]="fieldKey(expression())"
+                (ngModelChange)="setFieldFromKey(expression(), $event)"
+                name="fieldKey">
+                <option value="">{{ 'SelectAField' | localize }}</option>
+                @for (option of fieldOptions(); track option.parameter + '.' + option.field) {
+                    <option [value]="option.parameter + '.' + option.field">{{ option.label }}</option>
+                }
+            </select>
+        }
+
+        @if (expression().kind === 'fn') {
+            <select
+                class="form-select form-select-sm rule-field-select"
+                [ngModel]="expression().name"
+                (ngModelChange)="expression().name = $event; onFunctionChanged(expression())"
+                name="functionName">
+                @for (fn of functions(); track fn.name) {
+                    <option [value]="fn.name">{{ fn.displayName }}</option>
+                }
+            </select>
+        }
+
+        @if (expression().kind === 'compare') {
+            <select
+                class="form-select form-select-sm rule-op-select"
+                [ngModel]="expression().op"
+                (ngModelChange)="expression().op = $event; changed.emit()"
+                name="op">
+                @for (op of comparisonOperators; track op.value) {
+                    <option [value]="op.value">{{ op.key | localize }}</option>
+                }
+            </select>
+        }
+
+        @if (expression().kind === 'arith') {
+            <select
+                class="form-select form-select-sm rule-op-select"
+                [ngModel]="expression().op"
+                (ngModelChange)="expression().op = $event; changed.emit()"
+                name="arithOp">
+                @for (op of arithmeticOperators; track op.value) {
+                    <option [value]="op.value">{{ op.symbol }}</option>
+                }
+            </select>
+        }
+
+        @if (expression().kind === 'logical') {
+            <select
+                class="form-select form-select-sm rule-op-select"
+                [ngModel]="expression().op"
+                (ngModelChange)="expression().op = $event; changed.emit()"
+                name="logicalOp">
+                <option value="And">{{ 'RuleOperatorAnd' | localize }}</option>
+                <option value="Or">{{ 'RuleOperatorOr' | localize }}</option>
+            </select>
+        }
+
+        <div class="ms-auto d-flex gap-1">
+            @if (expression().kind === 'compare' || expression().kind === 'not') {
+                <button
+                    type="button"
+                    class="btn btn-icon btn-sm btn-light-primary"
+                    [title]="l('RuleGroupWithAnd')"
+                    (click)="wrapInGroup(expression(), 'And')">
+                    <i class="fa fa-object-group"></i>
+                </button>
+            }
+
+            @if (!isRoot()) {
+                <button
+                    type="button"
+                    class="btn btn-icon btn-sm btn-light-danger"
+                    [title]="l('Delete')"
+                    (click)="remove.emit()">
+                    <i class="fa fa-times"></i>
+                </button>
+            }
+        </div>
+    </div>
+
+    <!-- Children. Each recursion is the same component, which is what keeps a five-level condition and a
+         one-level condition the same amount of code. -->
+    @if (expression().kind === 'compare' || expression().kind === 'arith') {
+        <div class="rule-children">
+            <div class="rule-child">
+                <span class="rule-child-label">{{ 'RuleLeftOperand' | localize }}</span>
+                <rule-expression-editor
+                    [expression]="expression().left"
+                    [baseObject]="baseObject()"
+                    [functions]="functions()"
+                    [isRoot]="true"
+                    (changed)="changed.emit()" />
+            </div>
+
+            @if (expression().kind === 'arith' || !isUnary(expression().op)) {
+                <div class="rule-child">
+                    <span class="rule-child-label">{{ 'RuleRightOperand' | localize }}</span>
+                    <rule-expression-editor
+                        [expression]="expression().right"
+                        [baseObject]="baseObject()"
+                        [functions]="functions()"
+                        [isRoot]="true"
+                        (changed)="changed.emit()" />
+                </div>
+            }
+        </div>
+    }
+
+    @if (expression().kind === 'not') {
+        <div class="rule-children">
+            <div class="rule-child">
+                <rule-expression-editor
+                    [expression]="expression().operand"
+                    [baseObject]="baseObject()"
+                    [functions]="functions()"
+                    [isRoot]="true"
+                    (changed)="changed.emit()" />
+            </div>
+        </div>
+    }
+
+    @if (expression().kind === 'logical') {
+        <div class="rule-children">
+            @for (operand of expression().operands; track $index) {
+                <div class="rule-child">
+                    <rule-expression-editor
+                        [expression]="operand"
+                        [baseObject]="baseObject()"
+                        [functions]="functions()"
+                        (remove)="removeOperand(expression(), $index)"
+                        (changed)="changed.emit()" />
+                </div>
+            }
+
+            <button type="button" class="btn btn-sm btn-light-primary mt-1" (click)="addOperand(expression())">
+                <i class="fa fa-plus me-1"></i>{{ 'RuleAddCondition' | localize }}
+            </button>
+        </div>
+    }
+
+    @if (expression().kind === 'fn') {
+        <div class="rule-children">
+            @for (arg of expression().args; track $index) {
+                <div class="rule-child">
+                    <span class="rule-child-label">{{ functionParameterName(expression(), $index) }}</span>
+                    <rule-expression-editor
+                        [expression]="arg"
+                        [baseObject]="baseObject()"
+                        [functions]="functions()"
+                        [isRoot]="true"
+                        (changed)="changed.emit()" />
+                </div>
+            }
+        </div>
+    }
+</div>

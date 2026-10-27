@@ -1,0 +1,198 @@
+<div [@routerTransition] [helpPage]="'ess.home'">
+    <!-- Chrome only when this is its own page. Embedded on the dashboard, the page already has a header
+         and a container, and a second set of both would indent the section and repeat the title. -->
+    @if (!embedded()) {
+        <sub-header [title]="'EmployeeSelfService' | localize"></sub-header>
+    }
+
+    <div [class]="embedded() ? '' : containerClass">
+        @if (loading()) {
+            <div class="card card-custom gutter-b">
+                <div class="card-body text-center p-5">
+                    <i class="fa fa-spinner fa-spin fa-2x"></i>
+                </div>
+            </div>
+        } @else if (context() && !context().isLinkedToEmployee) {
+            <!--
+                The state that must be explained rather than shown as an empty page. A user can hold every
+                ESS permission and still have no records, because an unlinked account resolves to an empty
+                employee scope -- "sees nothing", never "sees everything". Telling them to ask HR is
+                actionable; a blank list is not. Admin accounts land here by design: they are never linked
+                to an employee.
+
+                SILENT WHEN EMBEDDED, but the branch still has to CATCH the unlinked case. On the dashboard
+                this section sits under a notice that already says the account is unlinked, and saying it
+                twice on one page reads as a fault rather than as an explanation. The guard belongs inside
+                the branch, not in its condition: excluding embedded from the condition itself dropped an
+                unlinked user through to the profile branch below, where initials() dereferenced a name
+                that does not exist and threw on every change-detection pass.
+            -->
+            @if (!embedded()) {
+                <div class="card card-custom gutter-b">
+                    <div class="card-body">
+                        <div class="alert alert-warning mb-0">
+                            <h5 class="alert-heading">
+                                <i class="fa fa-exclamation-triangle me-2"></i>{{ 'EmployeeSelfService' | localize }}
+                            </h5>
+                            <p class="mb-0" data-help-loc="CurrentUserHasNoEmployeeRecord">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        } @else if (context()) {
+            <div class="row">
+                <!--
+                    SUPPRESSED WHEN EMBEDDED. The dashboard draws a fuller identity card of its own -- photo,
+                    code, name, job title, and the assignment beside it -- directly above this section, and
+                    two name plates on one screen read as a rendering fault rather than as emphasis.
+                    Still drawn on the standalone page, which has no other identity.
+                -->
+                @if (!embedded()) {
+                    <div class="col-xl-4 col-lg-5 col-md-12">
+                        <div class="card card-custom gutter-b h-100">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="ess-avatar me-3">
+                                    @if (photoUrl()) {
+                                        <img [src]="photoUrl()" [alt]="employeeName()" />
+                                    } @else {
+                                        <span>{{ initials() }}</span>
+                                    }
+                                </div>
+
+                                <div class="min-width-0">
+                                    <h5 class="mb-1 text-truncate">{{ employeeName() }}</h5>
+                                    <div class="text-muted">{{ context().employeeCode }}</div>
+
+                                    @if (context().isManager) {
+                                        <span class="badge badge-light-primary mt-2" data-help-loc="EssMyTeam">{{ 'EssMyTeam' | localize }}</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!--
+                    Two counts, two cards. They are easy to confuse and mean opposite things: one is what
+                    somebody else is waiting on this person for, the other is what they are waiting on
+                    somebody else for. Most people are on both sides of a workflow.
+                -->
+                <div [class]="embedded() ? 'col-md-6' : 'col-xl-4 col-lg-3 col-md-6'">
+                    <a routerLink="/app/main/ess/inbox" class="card card-custom gutter-b h-100 ess-stat">
+                        <div class="card-body">
+                            <div class="ess-stat-value">{{ context().pendingApprovalCount }}</div>
+                            <div class="ess-stat-label" data-help-loc="WaitingOnMe">{{ 'WaitingOnMe' | localize }}</div>
+                            <div class="text-muted small mt-1">{{ 'EssInbox' | localize }}</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div [class]="embedded() ? 'col-md-6' : 'col-xl-4 col-lg-4 col-md-6'">
+                    <!-- Now a link: this tile showed a count of the employee's own pending requests but led
+                         nowhere, because until the central Requests screen existed there was nowhere for it
+                         to lead. -->
+                    <a routerLink="/app/main/ess/requests" class="card card-custom gutter-b h-100 ess-stat">
+                        <div class="card-body">
+                            <div class="ess-stat-value">{{ context().myPendingRequestCount }}</div>
+                            <div class="ess-stat-label" data-help-loc="MyRequestsAwaitingApproval">{{ 'MyRequestsAwaitingApproval' | localize }}</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="card card-custom gutter-b">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label" data-help-loc="WhatWouldYouLikeToDo">{{ 'WhatWouldYouLikeToDo' | localize }}</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (tiles().length) {
+                        <div class="row">
+                            @for (type of tiles(); track type.code) {
+                                <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+                                    <a [routerLink]="type.essRoute" class="ess-tile">
+                                        <!-- Glyph in a tinted disc, the same treatment the dashboard's
+                                             Quick Actions use. A bare icon at label size reads as a
+                                             bullet point; at disc size it reads as the thing you aim
+                                             at, which is what made the legacy tiles legible. -->
+                                        <span class="ess-tile-icon">
+                                            <i [class]="type.iconClass || 'flaticon-file-2'"></i>
+                                        </span>
+                                        <span class="ess-tile-name">{{ typeName(type) }}</span>
+
+                                        <!--
+                                            A type can be self-service without being routed for approval, and
+                                            the difference matters before the employee fills the form in.
+                                        -->
+                                        @if (!type.isWorkflowEnabled) {
+                                            <span class="ess-tile-note" data-help-loc="NoApprovalNeeded">{{ 'NoApprovalNeeded' | localize }}</span>
+                                        }
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    } @else {
+                        <!--
+                            Every transaction type seeds with IsEssEnabled false on purpose, so this is the
+                            expected state on a fresh install rather than a fault: an admin turns each one on
+                            deliberately, after pointing it at an approval chain.
+                        -->
+                        <p class="text-muted mb-0">{{ 'NoSelfServiceTransactionsEnabledYet' | localize }}</p>
+                    }
+                </div>
+            </div>
+
+            <div class="card card-custom gutter-b">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label" data-help-loc="MyRecentRequests">{{ 'MyRecentRequests' | localize }}</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (recent().length) {
+                        <!--
+                            Leave, assets and loans in one list. It costs a single query because each request
+                            carries the summary its own handler wrote at submit -- no transaction table is
+                            touched to render this.
+                        -->
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <tbody>
+                                    @for (request of recent(); track request.id) {
+                                        <tr>
+                                            <td class="text-nowrap">
+                                                {{ requestTypeName(request) }}
+                                                @if (request.isAmendment) {
+                                                    <span class="badge badge-light-info ms-1">{{ 'ChangePending' | localize }}</span>
+                                                }
+                                            </td>
+                                            <td>{{ requestSummary(request) }}</td>
+                                            <td class="text-nowrap text-muted">
+                                                {{ request.submittedOn | luxonFormat: 'DD' }}
+                                            </td>
+                                            <td class="text-nowrap">
+                                                <span class="badge" [ngClass]="statusClass(request)">
+                                                    {{ statusLabel(request) }}
+                                                </span>
+                                            </td>
+                                            <td class="text-end text-nowrap">
+                                                <button type="button" class="btn btn-sm btn-light" (click)="openDetail(request)">
+                                                    {{ 'Details' | localize }}
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    } @else {
+                        <p class="text-muted mb-0">{{ 'YouHaveNotRaisedAnyRequestsYet' | localize }}</p>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<essRequestDetailModal #detail />

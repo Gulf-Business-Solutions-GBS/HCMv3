@@ -1,0 +1,14 @@
+.sc-code,
+.sc-code-input {
+    font-family: 'IBM Plex Mono', SFMono-Regular, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.sc-code {
+    color: #0b6e80;
+}
+
+.sc-route {
+    font-size: 11.5px;
+}

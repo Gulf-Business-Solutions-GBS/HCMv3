@@ -1,0 +1,221 @@
+{
+  "helpId": "ess.passport-withdrawal",
+  "lang": "en",
+  "title": "My Passport Withdrawals",
+  "entity": null,
+  "overviewHtml": "<p>Ask for a document your company holds for you — normally your passport — to be taken out for a while, and record it when you bring it back.</p><p>Two halves. You ask to withdraw, saying when you need it and when you will return it; and when you do return it you record that here, which is what puts the document back in your company's custody and closes the request. A document you never record as returned stays out against your name.</p>",
+  "aliasIndex": {
+    "loc:Document": "ess.passport-withdrawal.document",
+    "loc:WithdrawDate": "ess.passport-withdrawal.withdraw-date",
+    "loc:ReturnDate": "ess.passport-withdrawal.return-date",
+    "loc:WithdrawalReason": "ess.passport-withdrawal.withdrawal-reason",
+    "loc:Guarantor": "ess.passport-withdrawal.guarantor",
+    "loc:Comments": "ess.common.comments",
+    "loc:ActualReturnDate": "ess.passport-withdrawal.actual-return-date",
+    "loc:ReturnMyDocument": "ess.passport-withdrawal.return",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:StillOut": "ess.passport-withdrawal.still-out",
+    "loc:RequestPassportWithdrawal": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:WithdrawRequest": "ess.common.withdraw"
+  },
+  "fields": [
+    {
+      "id": "ess.passport-withdrawal.document",
+      "label": "Document",
+      "section": null,
+      "aliases": [
+        "loc:Document"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which held document you want out. The list holds only documents your company is holding for you and that can be withdrawn.</p><p><strong>Example.</strong> Passport A12345678.</p><p><strong>Why it matters.</strong> An empty list means either nothing of yours is held, or the one you want is already out — which is the other half of this screen, not a reason to raise a second request.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.passport-withdrawal.withdraw-date",
+      "label": "WithdrawDate",
+      "section": null,
+      "aliases": [
+        "loc:WithdrawDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When you need the document from.</p><p><strong>Example.</strong> 18 September 2026, the day before you travel.</p><p><strong>Why it matters.</strong> It is what whoever holds the documents works to, and they need notice. Asking for a passport on the morning you fly is how people miss flights.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.passport-withdrawal.return-date",
+      "label": "ReturnDate",
+      "section": null,
+      "aliases": [
+        "loc:ReturnDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When you expect to bring it back.</p><p><strong>Example.</strong> 28 September 2026.</p><p><strong>Why it matters.</strong> It is a promise, not a limit — nothing happens automatically on that date. What it does is tell your company when to expect the document back, and it is what a chase is based on when it does not appear.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.passport-withdrawal.withdrawal-reason",
+      "label": "WithdrawalReason",
+      "section": null,
+      "aliases": [
+        "loc:WithdrawalReason"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Why you need it, in your own words.</p><p><strong>Example.</strong> Travel to Egypt for family leave; visa application at the embassy.</p><p><strong>Why it matters.</strong> It is what your approver reads. A passport is the document a company is most careful with, so a clear reason is what makes a request straightforward rather than a conversation.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.passport-withdrawal.guarantor",
+      "label": "Guarantor",
+      "section": null,
+      "aliases": [
+        "loc:Guarantor"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A colleague who vouches for the document coming back. Required by some companies, offered by others.</p><p><strong>Example.</strong> Your line manager, or a senior colleague in your department.</p><p><strong>Why it matters.</strong> Your guarantor is told when the request is approved, so pick somebody who knows you are asking. It is a real undertaking on their part, not a formality.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Anything you want the people approving this to read. Free text, and optional.</p><p><strong>Example.</strong> \"Flying on the 14th, back on the 28th — cover agreed with Ahmed.\"</p><p><strong>Why it matters.</strong> It is the only place you can explain a request that needs explaining, and it stays with the request for good: approvers see it, and so does anyone who looks the request up afterwards. A request that surprises somebody is a request that comes back to you.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.passport-withdrawal.actual-return-date",
+      "label": "ActualReturnDate",
+      "section": null,
+      "aliases": [
+        "loc:ActualReturnDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The day you actually handed the document back. Recorded when you return it, not when you ask.</p><p><strong>Example.</strong> 27 September 2026 — a day early.</p><p><strong>Why it matters.</strong> This is what closes the request and puts the document back in custody. Until it is recorded the document is out against your name, whatever the expected date said, and it will show on your clearance at the end of your employment.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.passport-withdrawal.return",
+      "label": "ReturnMyDocument",
+      "section": null,
+      "aliases": [
+        "loc:ReturnMyDocument"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Opens the short form for recording the document coming back. It appears on a request whose document is still out.</p><p><strong>Example.</strong> You are back from leave and handing your passport in at the HR desk.</p><p><strong>Why it matters.</strong> Handing the passport over in person is not what closes the request — recording it is. Do both, on the same day, or the record and the safe disagree.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Everything you have asked for on this screen, newest first, with where each one has got to.</p><p><strong>Example.</strong> Three ticket requests: one approved last month, one waiting, one you withdrew.</p><p><strong>Why it matters.</strong> This is the record. A request that is not in this list was never submitted — if you filled the form in and did not press <strong>Save</strong>, nothing was sent.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A warning that the account you signed in with is not attached to an employee, so there is nobody for a request to be about.</p><p><strong>Example.</strong> A newly created user, or an administrator account that is deliberately not an employee.</p><p><strong>Why it matters.</strong> Nothing on the self-service screens works until HR links the account to your employee record, and only HR can do it. Administrator accounts are often left unlinked on purpose.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where a request has got to. <strong>Draft</strong> is not submitted, <strong>Pending</strong> is waiting for somebody, <strong>Approved</strong> has been agreed and acted on, <strong>Rejected</strong> was turned down, and <strong>Withdrawn</strong> is one you took back yourself.</p><p><strong>Example.</strong> Pending — sitting with your line manager.</p><p><strong>Why it matters.</strong> Only an approved request changes anything: your balance, your pay or your record. A pending one has done nothing yet, whatever the form said when you filled it in.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.passport-withdrawal.still-out",
+      "label": "StillOut",
+      "section": null,
+      "aliases": [
+        "loc:StillOut"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A mark on a request whose document has not been recorded as returned.</p><p><strong>Example.</strong> Withdrawn three weeks ago, expected back a fortnight ago, still out.</p><p><strong>Why it matters.</strong> It is the line that matters to your company's auditors, and the one that appears on your clearance. If it says \"still out\" and the document is in your desk drawer, the record is wrong and only recording the return will fix it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestPassportWithdrawal",
+      "section": null,
+      "aliases": [
+        "loc:RequestPassportWithdrawal"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The button at the top right of the screen that opens the form. Filling it in and pressing <strong>Save</strong> submits the request; nothing is sent until you do.</p><p><strong>Example.</strong> <strong>Request Leave</strong>, <strong>Request Ticket</strong>, <strong>Request Loan</strong> — the wording follows the screen.</p><p><strong>Why it matters.</strong> Once submitted the request goes to whoever approves that kind of request in your company, and you cannot edit it in place. To change something, withdraw it and make a new one, or use <strong>Amend</strong> where the screen offers it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who a request has reached, what each person did with it and when, including any comment they left.</p><p><strong>Example.</strong> Submitted 09:12 → Line manager approved 11:40 (\"cover arranged\") → with HR.</p><p><strong>Why it matters.</strong> It answers \"who is it with?\" without asking anybody. If a request has sat with one person for days, this tells you which person, which is who to chase.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "WithdrawRequest",
+      "section": null,
+      "aliases": [
+        "loc:WithdrawRequest"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Takes a request back. Offered only while it can still be taken back — once it is approved and acted on, the button is gone.</p><p><strong>Example.</strong> You asked for leave next week, your plans changed, you withdraw it before your manager gets to it.</p><p><strong>Why it matters.</strong> A withdrawn request is not deleted: it stays in the list marked <strong>Withdrawn</strong>, so the record shows what happened. Withdrawing frees anything the request was holding, such as a leave balance reserved against it.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

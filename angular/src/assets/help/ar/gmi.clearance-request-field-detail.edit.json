@@ -1,0 +1,43 @@
+{
+  "helpId": "gmi.clearance-request-field-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل بنود براءة الذمة — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.ClearanceRequestFieldDetail",
+  "overviewHtml": "<p>يُسند بنداً واحداً من قائمة إخلاء الطرف عند المغادرة إلى إدارة معيّنة. ففي خطوة الاعتماد المتوازي ينظر معتمِد كل إدارة إلى طلب إخلاء الطرف نفسه في الوقت نفسه، ولا يُعرض على كلٍّ منهم إلا البنود المسندة إلى دوره — فتجيب تقنية المعلومات عن بنودها، والمالية عن بنودها. ويمكن إسناد البند الواحد إلى أكثر من إدارة.</p>",
+  "aliasIndex": {
+    "loc:ClearanceRequestField": "ClearanceRequestFieldDetail.ClearanceRequestFieldId",
+    "dom:ClearanceRequestFieldDetail_ClearanceRequestFieldId": "ClearanceRequestFieldDetail.ClearanceRequestFieldId",
+    "loc:WorkflowRole": "ClearanceRequestFieldDetail.WorkflowRoleId",
+    "dom:ClearanceRequestFieldDetail_WorkflowRoleId": "ClearanceRequestFieldDetail.WorkflowRoleId"
+  },
+  "fields": [
+    {
+      "id": "ClearanceRequestFieldDetail.ClearanceRequestFieldId",
+      "label": "ClearanceRequestField",
+      "section": "ClearanceRequestFieldDetails",
+      "aliases": [
+        "loc:ClearanceRequestField",
+        "dom:ClearanceRequestFieldDetail_ClearanceRequestFieldId"
+      ],
+      "rules": "اختياري. يُختار من قائمة بنود براءة الذمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بند القائمة الذي يجري إسناده. ولا يظهر عند فتح النافذة من صفحة البند نفسه، إذ يُملأ تلقائياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ClearanceRequestFieldDetail.WorkflowRoleId",
+      "label": "WorkflowRole",
+      "section": "ClearanceRequestFieldDetails",
+      "aliases": [
+        "loc:WorkflowRole",
+        "dom:ClearanceRequestFieldDetail_WorkflowRoleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أدوار سير العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دور سير العمل الذي يجيب عن هذا البند من قائمة التحقق أثناء اعتماد إخلاء الطرف.</p><p><strong>مثال.</strong> قسم تقنية المعلومات، للبند «تسليم الحاسوب المحمول»</p><p><strong>لماذا يهم.</strong> عندما يصل طلب إخلاء الطرف إلى معتمِد، لا يرى إلا بنود قائمة التحقق التي يشغل دورها في ذلك اليوم، ويُسجَّل البند باسمه. أما المعتمِد الذي لا يشغل الدور فلا يرى البند، لذا فإن البند المسند إلى دور لا يشغله أحد لا يُجاب عنه أبداً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

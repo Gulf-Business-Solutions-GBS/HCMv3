@@ -1,0 +1,40 @@
+.apply {
+    max-width: 44rem;
+}
+
+.backlink {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+}
+
+.apply h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.apply__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.apply__done-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+@media (max-width: 640px) {
+    .apply__actions {
+        flex-direction: column-reverse;
+    }
+
+    .apply__actions .btn {
+        width: 100%;
+    }
+}

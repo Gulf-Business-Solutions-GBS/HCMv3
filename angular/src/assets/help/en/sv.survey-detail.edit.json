@@ -1,0 +1,91 @@
+{
+  "helpId": "sv.survey-detail.edit",
+  "lang": "en",
+  "title": "Survey Questions — Create / Edit",
+  "entity": "HCMv3.SurveyManagement.SurveyDetail",
+  "overviewHtml": "<p>One question in a survey.</p>",
+  "aliasIndex": {
+    "loc:Surveys": "SurveyDetail.SurveyId",
+    "dom:SurveyDetail_SurveyId": "SurveyDetail.SurveyId",
+    "loc:Question": "SurveyDetail.Question",
+    "dom:SurveyDetail_Question": "SurveyDetail.Question",
+    "loc:OrderNo": "SurveyDetail.OrderNo",
+    "dom:SurveyDetail_OrderNo": "SurveyDetail.OrderNo",
+    "loc:QuestionType": "SurveyDetail.QuestionType",
+    "dom:SurveyDetail_QuestionType": "SurveyDetail.QuestionType",
+    "loc:Options": "SurveyDetail.Options",
+    "dom:SurveyDetail_Options": "SurveyDetail.Options"
+  },
+  "fields": [
+    {
+      "id": "SurveyDetail.SurveyId",
+      "label": "Surveys",
+      "section": "SurveyDetails",
+      "aliases": [
+        "loc:Surveys",
+        "dom:SurveyDetail_SurveyId"
+      ],
+      "rules": "Required. Chosen from Survey master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The survey.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SurveyDetail.Question",
+      "label": "Question",
+      "section": "SurveyDetails",
+      "aliases": [
+        "loc:Question",
+        "dom:SurveyDetail_Question"
+      ],
+      "rules": "Required. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The question.</p><p><strong>Example.</strong> How satisfied are you with your workspace?</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SurveyDetail.OrderNo",
+      "label": "OrderNo",
+      "section": "SurveyDetails",
+      "aliases": [
+        "loc:OrderNo",
+        "dom:SurveyDetail_OrderNo"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the question appears; lower numbers come first.</p><p><strong>Example.</strong> 1</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SurveyDetail.QuestionType",
+      "label": "QuestionType",
+      "section": "SurveyDetails",
+      "aliases": [
+        "loc:QuestionType",
+        "dom:SurveyDetail_QuestionType"
+      ],
+      "rules": "Required. One of: Text Box, Radio List, Checkbox List.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the question is answered: free text, one choice from a list, or several choices.</p><p><strong>Example.</strong> Radio List</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SurveyDetail.Options",
+      "label": "Options",
+      "section": "SurveyDetails",
+      "aliases": [
+        "loc:Options",
+        "dom:SurveyDetail_Options"
+      ],
+      "rules": "Optional. Maximum 2000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The choices, separated by semicolons.</p><p><strong>Example.</strong> Very satisfied;Satisfied;Not satisfied</p><p><strong>Why it matters.</strong> Required for Radio List and Checkbox List questions.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

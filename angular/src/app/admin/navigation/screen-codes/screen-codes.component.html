@@ -1,0 +1,106 @@
+<div [@routerTransition]>
+    <sub-header [title]="'ManageScreenCodes' | localize" [description]="'ScreenCodesIntro' | localize" />
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-5">
+                        <input
+                            type="search"
+                            class="form-control"
+                            [ngModel]="filter()"
+                            (ngModelChange)="filter.set($event)"
+                            (keyup.enter)="search()"
+                            [placeholder]="'ScreenCodeSearchHint' | localize" />
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" [ngModel]="module()" (ngModelChange)="module.set($event); search()">
+                            <option value="">{{ 'AllModules' | localize }}</option>
+                            @for (m of modules(); track m) {
+                                <option [value]="m">{{ m }}</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-primary" type="button" (click)="search()">
+                            <i class="fa fa-search"></i> {{ 'Search' | localize }}
+                        </button>
+                    </div>
+                </div>
+
+                <div [busyIf]="isLoading()">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width: 160px">{{ 'Code' | localize }}</th>
+                                <th>{{ 'Screen' | localize }}</th>
+                                <th>{{ 'Module' | localize }}</th>
+                                <th>{{ 'Route' | localize }}</th>
+                                <th style="width: 130px"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (screen of screens(); track screen.id) {
+                                <tr>
+                                    <td>
+                                        @if (editingId() === screen.id) {
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-sm sc-code-input"
+                                                [ngModel]="editingCode()"
+                                                (ngModelChange)="editingCode.set($event)"
+                                                (keyup.enter)="saveEdit(screen)"
+                                                (keyup.escape)="cancelEdit()"
+                                                autofocus />
+                                        } @else {
+                                            <span class="sc-code">{{ screen.code }}</span>
+                                        }
+                                    </td>
+                                    <td>{{ screen.nameKey | localize }}</td>
+                                    <td class="text-muted">{{ screen.module }}</td>
+                                    <td class="text-muted sc-route">{{ screen.route }}</td>
+                                    <td class="text-end">
+                                        @if (editingId() === screen.id) {
+                                            <button class="btn btn-sm btn-primary" type="button" (click)="saveEdit(screen)">
+                                                {{ 'Save' | localize }}
+                                            </button>
+                                            <button class="btn btn-sm btn-light ms-1" type="button" (click)="cancelEdit()">
+                                                {{ 'Cancel' | localize }}
+                                            </button>
+                                        } @else {
+                                            <button class="btn btn-sm btn-light-primary" type="button" (click)="startEdit(screen)">
+                                                {{ 'Edit' | localize }}
+                                            </button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                            @if (!screens().length) {
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">{{ 'NoData' | localize }}</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <!-- The standard pager, not a pair of arrows. This screen had a bare count and two
+                         chevrons: no page numbers, no total, no way to change the page size, and nothing
+                         that looked like the pager on every other list in the product. With 548 screens
+                         at 20 a page that is 28 clicks to reach the end and no way to tell where you are. -->
+                    <div class="primeng-paging-container">
+                        <p-paginator
+                            #paginator
+                            [rows]="pageSize()"
+                            [first]="skipCount()"
+                            [totalRecords]="totalCount()"
+                            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                            [showCurrentPageReport]="true"
+                            [currentPageReportTemplate]="'TotalRecordsCount' | localize: totalCount()"
+                            (onPageChange)="onPageChange($event)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

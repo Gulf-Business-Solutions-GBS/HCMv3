@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.indemnity-pay-rule-detail.edit",
+  "lang": "en",
+  "title": "Indemnity Pay Rule Details — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.IndemnityPayRuleDetail",
+  "overviewHtml": "<p>One step of an indemnity pay rule, by years of service — for example, a resignation after three to five years paid at half.</p><p>Not used at present: every payroll and report calculation passes no indemnity pay rule, so the indemnity cap always comes from the employee's <strong>Salary Profile</strong>. These rules are saved and kept for reference.</p>",
+  "aliasIndex": {
+    "loc:IndemnityPayRuleId": "IndemnityPayRuleDetail.IndemnityPayRuleId",
+    "dom:IndemnityPayRuleDetail_IndemnityPayRuleId": "IndemnityPayRuleDetail.IndemnityPayRuleId",
+    "loc:MinYearOfService": "IndemnityPayRuleDetail.MinYearOfService",
+    "dom:IndemnityPayRuleDetail_MinYearOfService": "IndemnityPayRuleDetail.MinYearOfService",
+    "loc:MaxYearOfService": "IndemnityPayRuleDetail.MaxYearOfService",
+    "dom:IndemnityPayRuleDetail_MaxYearOfService": "IndemnityPayRuleDetail.MaxYearOfService",
+    "loc:Number": "IndemnityPayRuleDetail.Number",
+    "dom:IndemnityPayRuleDetail_Number": "IndemnityPayRuleDetail.Number",
+    "loc:Unit": "IndemnityPayRuleDetail.Unit",
+    "dom:IndemnityPayRuleDetail_Unit": "IndemnityPayRuleDetail.Unit",
+    "loc:PayPercentage": "IndemnityPayRuleDetail.PayPercentage",
+    "dom:IndemnityPayRuleDetail_PayPercentage": "IndemnityPayRuleDetail.PayPercentage"
+  },
+  "fields": [
+    {
+      "id": "IndemnityPayRuleDetail.IndemnityPayRuleId",
+      "label": "IndemnityPayRuleId",
+      "section": "IndemnityPayRuleDetails",
+      "aliases": [
+        "loc:IndemnityPayRuleId",
+        "dom:IndemnityPayRuleDetail_IndemnityPayRuleId"
+      ],
+      "rules": "Required. Chosen from Indemnity Pay Rule master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The rule this step belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRuleDetail.MinYearOfService",
+      "label": "MinYearOfService",
+      "section": "IndemnityPayRuleDetails",
+      "aliases": [
+        "loc:MinYearOfService",
+        "dom:IndemnityPayRuleDetail_MinYearOfService"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The fewest years of service this step covers.</p><p><strong>Example.</strong> <code>3</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRuleDetail.MaxYearOfService",
+      "label": "MaxYearOfService",
+      "section": "IndemnityPayRuleDetails",
+      "aliases": [
+        "loc:MaxYearOfService",
+        "dom:IndemnityPayRuleDetail_MaxYearOfService"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most years of service this step covers. It cannot be less than the minimum.</p><p><strong>Example.</strong> <code>5</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRuleDetail.Number",
+      "label": "Number",
+      "section": "IndemnityPayRuleDetails",
+      "aliases": [
+        "loc:Number",
+        "dom:IndemnityPayRuleDetail_Number"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A quantity for the step, in the unit below.</p><p><strong>Example.</strong> <code>15</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRuleDetail.Unit",
+      "label": "Unit",
+      "section": "IndemnityPayRuleDetails",
+      "aliases": [
+        "loc:Unit",
+        "dom:IndemnityPayRuleDetail_Unit"
+      ],
+      "rules": "Required. One of: Day, Month.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the number is in days or months.</p><p><strong>Example.</strong> Day</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IndemnityPayRuleDetail.PayPercentage",
+      "label": "PayPercentage",
+      "section": "IndemnityPayRuleDetails",
+      "aliases": [
+        "loc:PayPercentage",
+        "dom:IndemnityPayRuleDetail_PayPercentage"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The percentage of the indemnity paid at this step.</p><p><strong>Example.</strong> <code>50</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

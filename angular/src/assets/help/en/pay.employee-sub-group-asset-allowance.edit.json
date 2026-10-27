@@ -1,0 +1,43 @@
+{
+  "helpId": "pay.employee-sub-group-asset-allowance.edit",
+  "lang": "en",
+  "title": "Employee Sub Group Asset Allowances — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupAssetAllowance",
+  "overviewHtml": "<p>An allowance for company assets, paid through a wagetype.</p><p>Not read at present: payroll does not use this list, and it is kept for reference only.</p>",
+  "aliasIndex": {
+    "loc:WageType": "EmployeeSubGroupAssetAllowance.WageTypeId",
+    "dom:EmployeeSubGroupAssetAllowance_WageTypeId": "EmployeeSubGroupAssetAllowance.WageTypeId",
+    "loc:Amount": "EmployeeSubGroupAssetAllowance.Amount",
+    "dom:EmployeeSubGroupAssetAllowance_Amount": "EmployeeSubGroupAssetAllowance.Amount"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupAssetAllowance.WageTypeId",
+      "label": "WageType",
+      "section": "EmployeeSubGroupAssetAllowances",
+      "aliases": [
+        "loc:WageType",
+        "dom:EmployeeSubGroupAssetAllowance_WageTypeId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wagetype of the allowance.</p><p><strong>Example.</strong> Car Allowance</p><p><strong>Why it matters.</strong> Each wagetype can be listed once per grade.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAssetAllowance.Amount",
+      "label": "Amount",
+      "section": "EmployeeSubGroupAssetAllowances",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeSubGroupAssetAllowance_Amount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The allowance amount.</p><p><strong>Example.</strong> <code>100</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

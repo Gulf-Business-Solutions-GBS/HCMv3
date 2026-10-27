@@ -1,0 +1,43 @@
+{
+  "helpId": "pay.absence-deduction-rule.edit",
+  "lang": "ar",
+  "title": "قواعد الخصم على الغياب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.AbsenceDeductionRule",
+  "overviewHtml": "<p>سلّم مسمّى لتخفيض أجر الإجازة المرضية كلما تراكمت الأيام المرضية خلال الدورة. وخطواته هي تفاصيله، ويُربط السلّم باستحقاق الإجازة المرضية للمجموعة الفرعية.</p>",
+  "aliasIndex": {
+    "loc:Code": "AbsenceDeductionRule.Code",
+    "dom:AbsenceDeductionRule_Code": "AbsenceDeductionRule.Code",
+    "loc:RuleName": "AbsenceDeductionRule.RuleName",
+    "dom:AbsenceDeductionRule_RuleName": "AbsenceDeductionRule.RuleName"
+  },
+  "fields": [
+    {
+      "id": "AbsenceDeductionRule.Code",
+      "label": "Code",
+      "section": "AbsenceDeductionRules",
+      "aliases": [
+        "loc:Code",
+        "dom:AbsenceDeductionRule_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceDeductionRule.RuleName",
+      "label": "RuleName",
+      "section": "AbsenceDeductionRules",
+      "aliases": [
+        "loc:RuleName",
+        "dom:AbsenceDeductionRule_RuleName"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم السلّم. له اسم واحد فقط.</p><p><strong>مثال.</strong> سلّم الإجازة المرضية الكويتي</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "helpId": "org.cost-center.edit",
+  "lang": "ar",
+  "title": "مراكز التكلفة — إنشاء / تحرير",
+  "entity": "HCMv3.OrganizationManagement.CostCenter",
+  "overviewHtml": "<p>مركز تكلفة تُقيَّد عليه تكاليف الرواتب. يوضع الموظفون في أحدها في تعيينهم التنظيمي. ويمكن لخطوة سير العمل أن تحصر معتمديها في مركز تكلفة مقدّم الطلب، وتجمع بعض تقارير قيود الرواتب الخاصة بعملاء معينين التكاليف حسبه.</p>",
+  "aliasIndex": {
+    "loc:Code": "CostCenter.Code",
+    "dom:CostCenter_Code": "CostCenter.Code",
+    "loc:NameEn": "CostCenter.NameEn",
+    "dom:CostCenter_NameEn": "CostCenter.NameEn",
+    "loc:NameAr": "CostCenter.NameAr",
+    "dom:CostCenter_NameAr": "CostCenter.NameAr",
+    "loc:CostCenterGroup": "CostCenter.CostCenterGroupId",
+    "dom:CostCenter_CostCenterGroupId": "CostCenter.CostCenterGroupId"
+  },
+  "fields": [
+    {
+      "id": "CostCenter.Code",
+      "label": "Code",
+      "section": "CostCenters",
+      "aliases": [
+        "loc:Code",
+        "dom:CostCenter_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostCenter.NameEn",
+      "label": "NameEn",
+      "section": "CostCenters",
+      "aliases": [
+        "loc:NameEn",
+        "dom:CostCenter_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostCenter.NameAr",
+      "label": "NameAr",
+      "section": "CostCenters",
+      "aliases": [
+        "loc:NameAr",
+        "dom:CostCenter_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostCenter.CostCenterGroupId",
+      "label": "CostCenterGroup",
+      "section": "CostCenters",
+      "aliases": [
+        "loc:CostCenterGroup",
+        "dom:CostCenter_CostCenterGroupId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مجموعات مراكز التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموعة ينتمي إليها مركز التكلفة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

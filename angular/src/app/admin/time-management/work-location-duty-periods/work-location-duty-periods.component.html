@@ -1,0 +1,106 @@
+<div [@routerTransition]>
+    <sub-header [title]="'WorkLocationDutyPeriods' | localize" [description]="'TimeManagement' | localize">
+        <div role="actions">
+            @if ('Pages.TimeManagement.WorkLocationDutyPeriods.Create' | permission) {
+                <button (click)="createRecord()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '50rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.TimeManagement.WorkLocationDutyPeriods.Edit',
+                                                    'Pages.TimeManagement.WorkLocationDutyPeriods.Delete'
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 200px">{{ 'WorkLocation' | localize }}</th>
+                                    <th style="min-width: 200px">{{ 'DutyPeriod' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'StartDate' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'EndDate' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.TimeManagement.WorkLocationDutyPeriods.Edit',
+                                                    'Pages.TimeManagement.WorkLocationDutyPeriods.Delete'
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 200px">{{ record.workLocationName }}</td>
+                                    <td style="min-width: 200px">{{ record.dutyPeriodName }}</td>
+                                    <td style="min-width: 130px">{{ record.startDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                    <td style="min-width: 130px">{{ record.endDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditWorkLocationDutyPeriodModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

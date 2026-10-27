@@ -1,0 +1,80 @@
+<div [@routerTransition]>
+    <sub-header [title]="'ActiveSessions' | localize">
+        <div role="actions">
+            @if (isRevocationEnabled && hasOtherSessions()) {
+                <button class="btn btn-danger" (click)="revokeAllOtherSessions()">
+                    <i class="fa fa-ban"></i>
+                    {{ 'RevokeAllOtherSessions' | localize }}
+                </button>
+            }
+        </div>
+    </sub-header>
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-body">
+                @if (loading()) {
+                    <div class="text-center p-5">
+                        <i class="fa fa-spinner fa-spin fa-2x"></i>
+                    </div>
+                } @else if (sessions().length === 0) {
+                    <div class="text-center p-5 text-muted">
+                        {{ 'NoActiveSessions' | localize }}
+                    </div>
+                } @else {
+                    <div class="row align-items-center">
+                        <div class="primeng-datatable-container">
+                            <p-table [value]="sessions()" [paginator]="false" [tableStyle]="{ 'min-width': '50rem' }">
+                                <ng-template #header>
+                                    <tr>
+                                        <th>{{ 'DeviceInfo' | localize }}</th>
+                                        <th>{{ 'IpAddress' | localize }}</th>
+                                        <th>{{ 'SignInTime' | localize }}</th>
+                                        <th>{{ 'LastActivityTime' | localize }}</th>
+                                        <th>{{ 'Status' | localize }}</th>
+                                        @if (isRevocationEnabled) {
+                                            <th style="width: 100px" class="text-center">{{ 'Actions' | localize }}</th>
+                                        }
+                                    </tr>
+                                </ng-template>
+                                <ng-template #body let-record="$implicit">
+                                    <tr>
+                                        <td>
+                                            <i class="fa fa-desktop me-2"></i>
+                                            {{ record.deviceInfo || ('Unknown' | localize) }}
+                                        </td>
+                                        <td>{{ record.ipAddress || '-' }}</td>
+                                        <td>{{ record.signInTime | luxonFormat: 'F' }}</td>
+                                        <td>{{ record.lastActivityTime | luxonFormat: 'F' }}</td>
+                                        <td>
+                                            @if (record.isCurrent) {
+                                                <span class="badge badge-success">
+                                                    {{ 'CurrentSession' | localize }}
+                                                </span>
+                                            } @else {
+                                                <span class="badge badge-light-primary">{{ 'Active' | localize }}</span>
+                                            }
+                                        </td>
+                                        @if (isRevocationEnabled) {
+                                            <td class="text-center">
+                                                @if (!record.isCurrent) {
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-sm btn-icon btn-active-danger"
+                                                        (click)="revokeSession(record)"
+                                                        pTooltip="{{ 'Revoke' | localize }}"
+                                                        tooltipPosition="top">
+                                                        <i class="fa fa-ban"></i>
+                                                    </button>
+                                                }
+                                            </td>
+                                        }
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

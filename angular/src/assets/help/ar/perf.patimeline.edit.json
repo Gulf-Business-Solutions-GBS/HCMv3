@@ -1,0 +1,75 @@
+{
+  "helpId": "perf.patimeline.edit",
+  "lang": "ar",
+  "title": "الجداول الزمنية لتقييم الأداء — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.PATimeline",
+  "overviewHtml": "<p>تواريخ مرحلة واحدة من تقييم الفترة — التخطيط أو مراجعة منتصف السنة أو مراجعة نهاية السنة. ولا تظهر المرحلة إلا مرة واحدة في الفترة.</p><p>ويستخدم تقريرا تقييم الأداء وملخص التقييم هذه التواريخ لإيجاد الفترات الواقعة ضمن نطاق تاريخ التقرير. ولا تمنع التواريخ أحداً من التقديم خارجها.</p>",
+  "aliasIndex": {
+    "loc:PAPeriod": "PATimeline.PAPeriodId",
+    "dom:PATimeline_PAPeriodId": "PATimeline.PAPeriodId",
+    "loc:ActivityType": "PATimeline.ActivityType",
+    "dom:PATimeline_ActivityType": "PATimeline.ActivityType",
+    "loc:StartDate": "PATimeline.StartDate",
+    "dom:PATimeline_StartDate": "PATimeline.StartDate",
+    "loc:EndDate": "PATimeline.EndDate",
+    "dom:PATimeline_EndDate": "PATimeline.EndDate"
+  },
+  "fields": [
+    {
+      "id": "PATimeline.PAPeriodId",
+      "label": "PAPeriod",
+      "section": "PATimelines",
+      "aliases": [
+        "loc:PAPeriod",
+        "dom:PATimeline_PAPeriodId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة فترات تقييم الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة التقييم.</p><p><strong>مثال.</strong> السنة المالية 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PATimeline.ActivityType",
+      "label": "ActivityType",
+      "section": "PATimelines",
+      "aliases": [
+        "loc:ActivityType",
+        "dom:PATimeline_ActivityType"
+      ],
+      "rules": "إلزامي. إحدى القيم: Plan، MidYearReview، AnnualReview، Quarter1Review، Quarter3Review.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المرحلة التي تخصها التواريخ.</p><p><strong>مثال.</strong> مراجعة منتصف السنة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PATimeline.StartDate",
+      "label": "StartDate",
+      "section": "PATimelines",
+      "aliases": [
+        "loc:StartDate",
+        "dom:PATimeline_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PATimeline.EndDate",
+      "label": "EndDate",
+      "section": "PATimelines",
+      "aliases": [
+        "loc:EndDate",
+        "dom:PATimeline_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

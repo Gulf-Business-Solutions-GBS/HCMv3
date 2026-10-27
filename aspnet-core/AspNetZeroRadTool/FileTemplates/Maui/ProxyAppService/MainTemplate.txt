@@ -1,0 +1,51 @@
+﻿using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using Abp.Application.Services;
+using Abp.Application.Services.Dto;
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos;
+using {{Namespace_Here}}.Dto;
+
+namespace {{Namespace_Here}}.{{Namespace_Relative_Full_Here}};
+
+public class Proxy{{Entity_Name_Plural_Here}}AppService : ProxyAppServiceBase, I{{Entity_Name_Plural_Here}}AppService 
+{
+    public async Task<PagedResultDto<Get{{Entity_Name_Here}}ForViewDto>> GetAll(GetAll{{Entity_Name_Plural_Here}}Input input)
+    {
+        return await ApiClient.GetAsync<PagedResultDto<Get{{Entity_Name_Here}}ForViewDto>>(GetEndpoint(nameof(GetAll)), input);
+    }
+
+    public async Task<Get{{Entity_Name_Here}}ForViewDto> Get{{Entity_Name_Here}}ForView(EntityDto<{{Primary_Key_Here}}> input)
+    {
+        return await ApiClient.GetAsync<Get{{Entity_Name_Here}}ForViewDto>(GetEndpoint(nameof(Get{{Entity_Name_Here}}ForView)), input);
+    }
+
+    public async Task<Get{{Entity_Name_Here}}ForEditOutput> Get{{Entity_Name_Here}}ForEdit(EntityDto{{Primary_Key_Inside_Tag_Here}} input)
+    {
+        return await ApiClient.GetAsync<Get{{Entity_Name_Here}}ForEditOutput>(GetEndpoint(nameof(Get{{Entity_Name_Here}}ForEdit)), input);
+    }
+
+    public Task<List<string>> Get{{Entity_Name_Here}}ExcelColumnsToExcel()
+    {
+        return ApiClient.GetAsync<List<string>>(GetEndpoint(nameof(Get{{Entity_Name_Here}}ExcelColumnsToExcel)));
+    }
+
+    public async Task CreateOrEdit(CreateOrEdit{{Entity_Name_Here}}Dto input)
+    {
+        await ApiClient.PostAsync(GetEndpoint(nameof(CreateOrEdit)), input);
+    }
+
+    public async Task Delete(EntityDto{{Primary_Key_Inside_Tag_Here}} input)
+    {
+        await ApiClient.DeleteAsync(GetEndpoint(nameof(Delete)), input);
+    }
+
+    public async Task<FileDto> Get{{Entity_Name_Plural_Here}}ToExcel(GetAll{{Entity_Name_Plural_Here}}ForExcelInput input)
+    {
+        return await ApiClient.GetAsync<FileDto>(GetEndpoint(nameof(Get{{Entity_Name_Plural_Here}}ToExcel)), input);
+    }
+
+    {{NP_Looped_Method_Declaration_Here}}
+    
+    {{Remove_File_Prop_Here}}
+}

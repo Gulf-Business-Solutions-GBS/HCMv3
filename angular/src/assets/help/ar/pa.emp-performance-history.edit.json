@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.emp-performance-history.edit",
+  "lang": "ar",
+  "title": "سجل أداء الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.SuccessionManagement.EmpPerformanceHistory",
+  "overviewHtml": "<p>درجة أداء للموظف خلال فترة، لأغراض تخطيط التعاقب الوظيفي. ولا يجوز أن تتداخل فترات الموظف نفسه.</p><p>تُسجَّل للرجوع إليها، ولا يقرؤها أي احتساب أو تقرير حالياً.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmpPerformanceHistory.StartDate",
+    "dom:EmpPerformanceHistory_StartDate": "EmpPerformanceHistory.StartDate",
+    "loc:EndDate": "EmpPerformanceHistory.EndDate",
+    "dom:EmpPerformanceHistory_EndDate": "EmpPerformanceHistory.EndDate",
+    "loc:Description": "EmpPerformanceHistory.Description",
+    "dom:EmpPerformanceHistory_Description": "EmpPerformanceHistory.Description",
+    "loc:Score": "EmpPerformanceHistory.Score",
+    "dom:EmpPerformanceHistory_Score": "EmpPerformanceHistory.Score",
+    "loc:Source": "EmpPerformanceHistory.Source",
+    "dom:EmpPerformanceHistory_Source": "EmpPerformanceHistory.Source",
+    "loc:RatingId": "EmpPerformanceHistory.RatingId",
+    "dom:EmpPerformanceHistory_RatingId": "EmpPerformanceHistory.RatingId",
+    "loc:NineBoxRatingId": "EmpPerformanceHistory.NineBoxRatingId",
+    "dom:EmpPerformanceHistory_NineBoxRatingId": "EmpPerformanceHistory.NineBoxRatingId"
+  },
+  "fields": [
+    {
+      "id": "EmpPerformanceHistory.StartDate",
+      "label": "StartDate",
+      "section": "EmpPerformanceHistories",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmpPerformanceHistory_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPerformanceHistory.EndDate",
+      "label": "EndDate",
+      "section": "EmpPerformanceHistories",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmpPerformanceHistory_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPerformanceHistory.Description",
+      "label": "Description",
+      "section": "EmpPerformanceHistories",
+      "aliases": [
+        "loc:Description",
+        "dom:EmpPerformanceHistory_Description"
+      ],
+      "rules": "اختياري. الحد الأقصى 2000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات على الدرجة.</p><p><strong>مثال.</strong> تجاوز أهداف المبيعات للسنة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPerformanceHistory.Score",
+      "label": "Score",
+      "section": "EmpPerformanceHistories",
+      "aliases": [
+        "loc:Score",
+        "dom:EmpPerformanceHistory_Score"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> درجة الأداء.</p><p><strong>مثال.</strong> 4.2</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPerformanceHistory.Source",
+      "label": "Source",
+      "section": "EmpPerformanceHistories",
+      "aliases": [
+        "loc:Source",
+        "dom:EmpPerformanceHistory_Source"
+      ],
+      "rules": "إلزامي. إحدى القيم: منشور، Manual.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل جاءت الدرجة من تقييم فعلي أم أُدخلت يدوياً.</p><p><strong>مثال.</strong> يدوي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPerformanceHistory.RatingId",
+      "label": "RatingId",
+      "section": "EmpPerformanceHistories",
+      "aliases": [
+        "loc:RatingId",
+        "dom:EmpPerformanceHistory_RatingId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة تقديرات التعاقب الوظيفي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تصنيف التعاقب الوظيفي.</p><p><strong>مثال.</strong> أداء مرتفع</p>",
+      "adminHtml": "<p>تُدار من إدارة التعاقب الوظيفي.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmpPerformanceHistory.NineBoxRatingId",
+      "label": "NineBoxRatingId",
+      "section": "EmpPerformanceHistories",
+      "aliases": [
+        "loc:NineBoxRatingId",
+        "dom:EmpPerformanceHistory_NineBoxRatingId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة تقديرات المصفوفة التساعية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تصنيف المصفوفة التساعية.</p><p><strong>مثال.</strong> نجم</p>",
+      "adminHtml": "<p>تُدار من إدارة التعاقب الوظيفي.</p>",
+      "stub": false
+    }
+  ]
+}

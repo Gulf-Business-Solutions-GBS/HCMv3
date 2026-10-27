@@ -1,0 +1,237 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Tenants' | localize" [description]="'TenantsHeaderInfo' | localize">
+        <div role="actions">
+            @if ('Pages.Tenants.Create' | permission) {
+                <button class="btn btn-primary" (click)="createTenant()">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNewTenant' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-body">
+                <div class="form">
+                    <form (submit)="getTenants()" autocomplete="new-password">
+                        <div class="form-body">
+                            <div class="row mb-4">
+                                <div class="col-xl-6">
+                                    <label for="TenantNameOrTenancyCode" class="form-label">
+                                        {{ 'TenantNameOrTenancyCode' | localize }}
+                                    </label>
+                                    <div class="input-group">
+                                        <input
+                                            id="TenantNameOrTenancyCode"
+                                            [ngModel]="filters().filterText"
+                                            (ngModelChange)="updateFilterText($event)"
+                                            name="filterText"
+                                            class="form-control"
+                                            placeholder="{{ 'SearchWithThreeDot' | localize }}"
+                                            type="text" />
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="flaticon-search-1" [attr.aria-label]="l('Search')"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <label for="EditionDropdown" class="form-label">{{ 'Edition' | localize }}</label>
+                                    <edition-combo
+                                        [selectedEdition]="filters().selectedEditionId?.toString()"
+                                        (selectedEditionChange)="updateSelectedEditionId($event)" />
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-xl-6">
+                                    <label class="form-check form-check-solid form-label py-1 mb-1">
+                                        <input
+                                            id="TenantsTable_SubscriptionEndDateRangeActive"
+                                            type="checkbox"
+                                            name="SubscriptionEndDateRangeActive"
+                                            [ngModel]="filters().subscriptionEndDateRangeActive"
+                                            (ngModelChange)="updateSubscriptionEndDateRangeActive($event)"
+                                            class="form-check-input"
+                                            value="true" />
+                                        <span class="form-check-label">
+                                            {{ 'SubscriptionEndDate' | localize }}
+                                        </span>
+                                    </label>
+                                    <p-datepicker
+                                        dateFormat="dd/mm/yy"
+                                        inputId="SubscriptionEndDateRange"
+                                        name="SubscriptionEndDateRange"
+                                        dateRangePickerLuxonModifier
+                                        selectionMode="range"
+                                        [dateRange]="subscriptionDateRange()"
+                                        (dateRangeChange)="onSubscriptionDateRangeChange($event)"
+                                        [disabled]="!filters().subscriptionEndDateRangeActive"
+                                        [showIcon]="true"
+                                        [iconDisplay]="'input'"
+                                        appendTo="body"
+                                        [baseZIndex]="10000"
+                                        [readonlyInput]="true"
+                                        styleClass="w-100" />
+                                </div>
+                                <div class="col-xl-6">
+                                    <label class="form-check form-check-solid form-label py-1 mb-1">
+                                        <input
+                                            id="TenantsTable_CreationDateRangeActive"
+                                            type="checkbox"
+                                            name="CreationDateRangeActive"
+                                            [ngModel]="filters().creationDateRangeActive"
+                                            (ngModelChange)="updateCreationDateRangeActive($event)"
+                                            class="form-check-input"
+                                            value="true" />
+                                        <span class="form-check-label">
+                                            {{ 'CreationTime' | localize }}
+                                        </span>
+                                    </label>
+                                    <p-datepicker
+                                        dateFormat="dd/mm/yy"
+                                        inputId="CreationDateRange"
+                                        name="CreationDateRange"
+                                        dateRangePickerLuxonModifier
+                                        selectionMode="range"
+                                        [dateRange]="creationDateRange()"
+                                        (dateRangeChange)="onCreationDateRangeChange($event)"
+                                        [disabled]="!filters().creationDateRangeActive"
+                                        [showIcon]="true"
+                                        [iconDisplay]="'input'"
+                                        appendTo="body"
+                                        [baseZIndex]="10000"
+                                        [readonlyInput]="true"
+                                        styleClass="w-100" />
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-xl-12 text-end">
+                                    <button name="RefreshButton" class="btn btn-primary">
+                                        <i class="fa fa-sync btn-md-icon"></i>
+                                        <span class="d-none d-md-inline-block">
+                                            {{ 'Refresh' | localize }}
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeTenantMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="col primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getTenants($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [tableStyle]="{ 'min-width': '50rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 130px">{{ 'Actions' | localize }}</th>
+                                    <th pSortableColumn="tenancyName">
+                                        {{ 'TenancyCode' | localize }}
+                                        <p-sortIcon field="tenancyName" />
+                                    </th>
+                                    <th pSortableColumn="name">
+                                        {{ 'TenantName' | localize }}
+                                        <p-sortIcon field="name" />
+                                    </th>
+                                    <th>{{ 'Edition' | localize }}</th>
+                                    <th pSortableColumn="subscriptionEndDateUtc">
+                                        {{ 'SubscriptionEndDateUtc' | localize }}
+                                        <p-sortIcon field="subscriptionEndDateUtc" />
+                                    </th>
+                                    <th pSortableColumn="isActive">
+                                        {{ 'Active' | localize }}
+                                        <p-sortIcon field="isActive" />
+                                    </th>
+                                    <th pSortableColumn="creationTime">
+                                        {{ 'CreationTime' | localize }}
+                                        <p-sortIcon field="creationTime" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showTenantMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td>
+                                        @if (record.connectionString) {
+                                            <i class="fa fa-database" title="{{ 'HasOwnDatabase' | localize }}"></i>
+                                        }
+                                        {{ record.tenancyName }}
+                                    </td>
+                                    <td>
+                                        {{ record.name }}
+                                    </td>
+                                    <td>
+                                        {{ record.editionDisplayName }}
+                                    </td>
+                                    <td>
+                                        {{
+                                            record.subscriptionEndDateUtc
+                                                ? (record.subscriptionEndDateUtc | luxonFormat: 'F')
+                                                : '-'
+                                        }}
+                                    </td>
+                                    <td>
+                                        @if (record.isActive) {
+                                            <span class="badge badge-success badge-inline">
+                                                {{ 'Yes' | localize }}
+                                            </span>
+                                        }
+                                        @if (!record.isActive) {
+                                            <span class="badge badge-dark badge-inline">
+                                                {{ 'No' | localize }}
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        {{ record.creationTime | luxonFormat: 'F' }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getTenants($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createTenantModal #createTenantModal (modalSave)="getTenants()" />
+    <editTenantModal #editTenantModal (modalSave)="getTenants()" />
+    <tenantFeaturesModal #tenantFeaturesModal />
+    <commonLookupModal #impersonateUserLookupModal (itemSelected)="impersonateUser($event)" />
+</div>

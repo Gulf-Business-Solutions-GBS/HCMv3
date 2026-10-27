@@ -1,0 +1,144 @@
+<div class="wf-feed" [class.wf-feed--flush]="flush()">
+    @if (showHeader()) {
+        <div class="wf-feed__header">
+            {{ 'Activity' | localize }}
+        </div>
+    }
+
+    @if (loading()) {
+        <div class="wf-feed__empty">
+            <i class="fa fa-spinner fa-spin"></i>
+        </div>
+    } @else {
+        <div class="wf-feed__stream">
+            @for (entry of entries(); track entry.key) {
+                <!-- One column for everything. System events and human comments differ only in weight, so
+                     the request reads as a story rather than as a log next to a mailbox. -->
+                <div
+                    class="wf-post"
+                    [class.wf-post--system]="entry.isSystem"
+                    [class.wf-post--internal]="entry.isInternal">
+                    <div class="wf-post__avatar">
+                        <!-- employee-avatar, not a bare <img>: the photo endpoint requires a bearer token,
+                             which an <img src> cannot send, so it answered 401 and showed a broken icon.
+                             The component fetches through HttpClient (the interceptor attaches the token)
+                             and falls back to initials, which stay distinguishable when nobody has a photo. -->
+                        <employee-avatar
+                            [photoUrl]="entry.authorPhotoUrl"
+                            [name]="entry.authorPlainName"
+                            [size]="entry.isSystem ? 26 : 38" />
+                    </div>
+
+                    <div class="wf-post__body">
+                        @if (entry.isSystem) {
+                            <!-- "Ahlam Ahmad Seblani  Approved  2 hours ago", on one quiet line. -->
+                            <div class="wf-post__line">
+                                @if (entry.authorEmployeeId) {
+                                    <!-- A name opens that person's card, as it does in the approvers list.
+                                         Link styling appears on hover so the thread is not a wall of blue. -->
+                                    <button
+                                        type="button"
+                                        class="wf-post__author wf-post__author--link"
+                                        (click)="personClicked.emit(entry.authorEmployeeId!)">
+                                        {{ entry.authorName }}
+                                    </button>
+                                } @else {
+                                    <span class="wf-post__author">{{ entry.authorName }}</span>
+                                }
+                                <span class="wf-post__action">{{ entry.actionLabel }}</span>
+                                <span class="wf-post__time" [title]="timeExact(entry.occurredAt)">{{ timeAgo(entry.occurredAt) }}</span>
+                            </div>
+
+                            @if (entry.body) {
+                                <div class="wf-post__note">{{ entry.body }}</div>
+                            }
+                        } @else {
+                            <div class="wf-post__bubble">
+                                <div class="wf-post__line">
+                                    @if (entry.authorEmployeeId) {
+                                    <!-- A name opens that person's card, as it does in the approvers list.
+                                         Link styling appears on hover so the thread is not a wall of blue. -->
+                                    <button
+                                        type="button"
+                                        class="wf-post__author wf-post__author--link"
+                                        (click)="personClicked.emit(entry.authorEmployeeId!)">
+                                        {{ entry.authorName }}
+                                    </button>
+                                } @else {
+                                    <span class="wf-post__author">{{ entry.authorName }}</span>
+                                }
+
+                                    @if (entry.actionLabel) {
+                                        <span class="wf-post__action">{{ entry.actionLabel }}</span>
+                                    }
+
+                                    <span class="wf-post__time" [title]="timeExact(entry.occurredAt)">{{ timeAgo(entry.occurredAt) }}</span>
+
+                                    @if (entry.isInternal) {
+                                        <span class="wf-post__badge">{{ 'InternalComment' | localize }}</span>
+                                    }
+
+                                    @if (entry.isEdited) {
+                                        <span class="wf-post__edited">{{ 'Edited' | localize }}</span>
+                                    }
+                                </div>
+
+                                @if (editingId() === entry.id && entry.id) {
+                                    <textarea class="form-control wf-post__editor" rows="3" [(ngModel)]="editingBody"></textarea>
+                                    <div class="wf-post__actions">
+                                        <button type="button" class="btn btn-primary" [disabled]="saving()" (click)="saveEdit()">
+                                            {{ 'Save' | localize }}
+                                        </button>
+                                        <button type="button" class="btn btn-light" (click)="cancelEdit()">{{ 'Cancel' | localize }}</button>
+                                    </div>
+                                } @else if (entry.body) {
+                                    <div class="wf-post__text">{{ entry.body }}</div>
+                                }
+                            </div>
+
+                            @if (entry.canEdit && editingId() !== entry.id && !readOnly()) {
+                                <!-- Deliberately links, not buttons: these sit under someone's words and
+                                     must not compete with the composer's own action. -->
+                                <div class="wf-post__links">
+                                    <a href="javascript:;" (click)="startEdit(entry)">{{ 'Edit' | localize }}</a>
+                                    <a href="javascript:;" class="text-danger" (click)="deleteComment(entry)">{{ 'Delete' | localize }}</a>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            } @empty {
+                <div class="wf-feed__empty text-muted">{{ 'NoCommentsYet' | localize }}</div>
+            }
+        </div>
+
+        @if (canComment()) {
+            <div class="wf-feed__composer">
+                <textarea
+                    class="form-control"
+                    rows="2"
+                    [placeholder]="'WriteAComment' | localize"
+                    [(ngModel)]="newComment"
+                ></textarea>
+
+                <!-- No Internal checkbox. The user asked for it gone: it made every approver decide, on
+                     each remark, who would be allowed to read it, and the usual answer -- "the other
+                     approvers" -- was the one it did not express, because ticking it also hid the remark
+                     from the requester. A comment posted here is simply a comment on the request, which is
+                     what people expected it to be. The backend still knows what an internal comment is and
+                     still keeps the ones already stored away from the requester; nothing new is written
+                     internal. -->
+                <div class="wf-feed__composer-actions">
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        [disabled]="saving() || !newComment?.trim()"
+                        (click)="addComment()"
+                    >
+                        {{ 'Send' | localize }}
+                    </button>
+                </div>
+            </div>
+        }
+    }
+</div>

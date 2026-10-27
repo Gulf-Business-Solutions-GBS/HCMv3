@@ -1,0 +1,10 @@
+﻿using Abp.AutoMapper;
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos;
+
+namespace {{Namespace_Here}}.Maui.Models.{{Namespace_Relative_Full_Here}};
+
+[AutoMapFrom(typeof(CreateOrEdit{{Entity_Name_Here}}Dto))]
+public class CreateOrEdit{{Entity_Name_Here}}Model : CreateOrEdit{{Entity_Name_Here}}Dto
+{
+   public bool IsEditMode => {{IsEditMode_Value_Here}}{{Handle_Property_Loop_Here}}{{Navigation_Property_Looped_Template_Here}}{{Navigation_Property_Table_Dropdown_Looped_Template_Here}}
+}

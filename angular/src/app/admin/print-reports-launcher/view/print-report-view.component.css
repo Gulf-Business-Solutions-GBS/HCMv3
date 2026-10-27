@@ -1,0 +1,6 @@
+/* The Dx viewer measures itself against its container, so the host must have a real height. */
+:host ::ng-deep dx-report-viewer,
+:host ::ng-deep .dxrd-report-preview-holder {
+    display: block;
+    width: 100%;
+}

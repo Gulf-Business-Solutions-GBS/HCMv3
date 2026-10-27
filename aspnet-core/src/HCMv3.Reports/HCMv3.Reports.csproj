@@ -1,0 +1,93 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <!--
+      MULTI-TARGETING IS LOAD-BEARING - DO NOT COLLAPSE TO A SINGLE TFM.
+
+      net8.0-windows : required by Visual Studio's *visual* XtraReport designer. DevExpress's
+                       design surrogate (DesignerRunner.exe) needs Microsoft.WindowsDesktop.App
+                       (WinForms). VS opens this flavour when you double-click a report.
+      net8.0         : the flavour HCMv3.Web.Host (net10.0) consumes. A plain net10.0 project
+                       cannot reference a "-windows"-only library (NU1201).
+
+      NOT net10.0: Visual Studio 2022 17.x cannot target net10.0 at all (that needs VS 2026),
+      and DevExpress 23.2 ships net6.0 assets which load fine on both net8.0 and net10.0.
+    -->
+    <TargetFrameworks>net8.0;net8.0-windows</TargetFrameworks>
+    <UseWindowsForms Condition="$(TargetFramework.EndsWith('-windows'))">true</UseWindowsForms>
+    <AssemblyName>HCMv3.Reports</AssemblyName>
+    <RootNamespace>HCMv3.Reports</RootNamespace>
+    <PackageId>HCMv3.Reports</PackageId>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DevExpress.Reporting.Core" Version="23.2.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Full-page A4 letterheads printed behind the two salary certificates. In the legacy reports
+      these lived inside the report .resx as System.Drawing.Bitmap entries; that binds a
+      Windows-only type during resource generation, which the plain net8.0 flavour of this project
+      cannot do. Shipped as raw JPEGs instead and attached in each report's constructor; see
+      Others/SalaryCertificateBackground.cs.
+    -->
+    <EmbeddedResource Include="Others\SalaryCertificateEnBackground.jpg" />
+    <EmbeddedResource Include="Others\SalaryCertificateArBackground.jpg" />
+
+    <!--
+      Full-page scans of the official Kuwait government forms that the GovtForms reports print
+      their labels over. Same reasoning as the two letterheads above: a .resx entry typed
+      System.Drawing.Bitmap binds a Windows-only type during resource generation, which the plain
+      net8.0 flavour of this project cannot do. Shipped as raw JPEGs, byte-identical to what was
+      base64-encoded in each legacy .resx, and attached in each report's constructor; see
+      GovtForms/GovtFormsImageStore.cs. A wildcard rather than one line per file because the
+      GovtForms port lands in several batches.
+    -->
+    <EmbeddedResource Include="GovtForms\Assets\*.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Full-page A4 letterheads printed behind four of the EmployeeInfo documents (status change,
+      final clearance certificate, joining form, termination letter). Same reasoning again: a
+      .resx entry typed System.Drawing.Bitmap binds a Windows-only type during resource
+      generation, which the plain net8.0 flavour of this project cannot do. Shipped as raw JPEGs,
+      byte-identical to what was base64-encoded in each legacy .resx (mimetype bytearray.base64,
+      i.e. the file itself, not a serialised object), and attached in each report's constructor;
+      see EmployeeInfo/EmployeeInfoResources.cs.
+    -->
+    <EmbeddedResource Include="EmployeeInfo\*.jpg" />
+  </ItemGroup>
+
+  <!-- Wave-two Others reports. Images extracted from the legacy .resx files: a
+       System.Drawing.Bitmap .resx entry breaks the multi-targeted build, so the bytes
+       ship as embedded files and are attached in each report's constructor. Not
+       recompressed or resized; several are scans of official paper forms whose field
+       positions the report labels are aligned against. -->
+  <ItemGroup>
+    <EmbeddedResource Include="Others\rptEmployeeProfile.xrPictureBox2.png" />
+    <EmbeddedResource Include="Others\rptBusinessTrip.xrPictureBox2.png" />
+    <EmbeddedResource Include="Others\rptPassportInOut.xrPictureBox1.jpg" />
+    <EmbeddedResource Include="Others\rptPassportRequestForm.xrPictureBox1.jpg" />
+    <EmbeddedResource Include="Others\rptSalaryContinuousCertificateLetterhead.png" />
+    <EmbeddedResource Include="Others\rptSalaryContinuousCertificateSignature.png" />
+    <EmbeddedResource Include="Others\rptWhomsoeverCertificateBackground.jpg" />
+    <EmbeddedResource Include="Others\rptWarningLetterBackground.jpg" />
+    <EmbeddedResource Include="Others\OthersHrFormsClearanceFormBackground.jpg" />
+    <EmbeddedResource Include="Others\OthersHrFormsProbationaryFormBackground.jpg" />
+    <EmbeddedResource Include="Others\OthersHrFormsDisciplinaryFormBackground.jpg" />
+    <EmbeddedResource Include="Others\OthersHrFormsDisciplinaryMark.png" />
+    <EmbeddedResource Include="Others\OthersHrFormsFinalClearanceEosLogo.png" />
+    <EmbeddedResource Include="Others\rptSickLeaveForm.xrPictureBox1.png" />
+    <EmbeddedResource Include="Others\rptSickLeaveMedicalForm.xrPictureBox2.png" />
+    <EmbeddedResource Include="Others\rptSickLeaveMedicalForm.xrPictureBox3.jpg" />
+  </ItemGroup>
+
+</Project>

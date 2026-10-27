@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-grievance.edit",
+  "lang": "en",
+  "title": "Employee Grievances — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeGrievance",
+  "overviewHtml": "<p>A grievance raised by the employee. The same type of grievance cannot be recorded twice on the same date.</p><p>It is recorded for reference; no calculation or report reads it at present.</p>",
+  "aliasIndex": {
+    "loc:GrievanceTypeId": "EmployeeGrievance.GrievanceTypeId",
+    "dom:EmployeeGrievance_GrievanceTypeId": "EmployeeGrievance.GrievanceTypeId",
+    "loc:GrievanceDate": "EmployeeGrievance.GrievanceDate",
+    "dom:EmployeeGrievance_GrievanceDate": "EmployeeGrievance.GrievanceDate",
+    "loc:Comments": "EmployeeGrievance.Comments",
+    "dom:EmployeeGrievance_Comments": "EmployeeGrievance.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeGrievance.GrievanceTypeId",
+      "label": "GrievanceTypeId",
+      "section": "EmployeeGrievances",
+      "aliases": [
+        "loc:GrievanceTypeId",
+        "dom:EmployeeGrievance_GrievanceTypeId"
+      ],
+      "rules": "Required. Chosen from Grievance Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of grievance.</p><p><strong>Example.</strong> Working conditions</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Grievance Types.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGrievance.GrievanceDate",
+      "label": "GrievanceDate",
+      "section": "EmployeeGrievances",
+      "aliases": [
+        "loc:GrievanceDate",
+        "dom:EmployeeGrievance_GrievanceDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the grievance was raised.</p><p><strong>Example.</strong> 2 Sep 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGrievance.Comments",
+      "label": "Comments",
+      "section": "EmployeeGrievances",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeGrievance_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

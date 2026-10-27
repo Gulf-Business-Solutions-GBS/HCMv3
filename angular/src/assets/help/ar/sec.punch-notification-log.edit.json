@@ -1,0 +1,75 @@
+{
+  "helpId": "sec.punch-notification-log.edit",
+  "lang": "ar",
+  "title": "سجلات إشعارات البصمة — إنشاء / تحرير",
+  "entity": "HCMv3.SystemSecurity.PunchNotificationLog",
+  "overviewHtml": "<p>إشعار متعلق بالبصمة أُرسل لفترة دوام موظف. يكتبه النظام أثناء عمله، ولا يوجد عادةً سبب لإضافة قيود أو تعديلها يدوياً.</p>",
+  "aliasIndex": {
+    "loc:EmployeeDutyPeriod": "PunchNotificationLog.EmployeeDutyPeriodId",
+    "dom:PunchNotificationLog_EmployeeDutyPeriodId": "PunchNotificationLog.EmployeeDutyPeriodId",
+    "loc:EmailNotificationLog": "PunchNotificationLog.EmailNotificationLogId",
+    "dom:PunchNotificationLog_EmailNotificationLogId": "PunchNotificationLog.EmailNotificationLogId",
+    "loc:Type": "PunchNotificationLog.Type",
+    "dom:PunchNotificationLog_Type": "PunchNotificationLog.Type",
+    "loc:Date": "PunchNotificationLog.Date",
+    "dom:PunchNotificationLog_Date": "PunchNotificationLog.Date"
+  },
+  "fields": [
+    {
+      "id": "PunchNotificationLog.EmployeeDutyPeriodId",
+      "label": "EmployeeDutyPeriod",
+      "section": "PunchNotificationLogs",
+      "aliases": [
+        "loc:EmployeeDutyPeriod",
+        "dom:PunchNotificationLog_EmployeeDutyPeriodId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة دوام الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PunchNotificationLog.EmailNotificationLogId",
+      "label": "EmailNotificationLog",
+      "section": "PunchNotificationLogs",
+      "aliases": [
+        "loc:EmailNotificationLog",
+        "dom:PunchNotificationLog_EmailNotificationLogId"
+      ],
+      "rules": "اختياري. يُختار من قائمة سجلات إشعارات البريد الإلكتروني.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الرسالة التي أُرسلت.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PunchNotificationLog.Type",
+      "label": "Type",
+      "section": "PunchNotificationLogs",
+      "aliases": [
+        "loc:Type",
+        "dom:PunchNotificationLog_Type"
+      ],
+      "rules": "اختياري. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع إشعار البصمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PunchNotificationLog.Date",
+      "label": "Date",
+      "section": "PunchNotificationLogs",
+      "aliases": [
+        "loc:Date",
+        "dom:PunchNotificationLog_Date"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي يخصه.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

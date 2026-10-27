@@ -1,0 +1,86 @@
+<div [class]="containerClass">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card card-xl-stretch mb-xl-8">
+                <div class="card-header align-items-center border-0 mt-4">
+                    <h3 class="card-title align-items-start flex-column">
+                        @if (!entityAndPropertyChanges() || entityAndPropertyChanges().length === 0) {
+                            <span class="fw-bold mb-2 text-gray-900">
+                                {{ 'NoEntityChanges' | localize }}
+                            </span>
+                        }
+                        @if (entityAndPropertyChanges() && entityAndPropertyChanges().length > 0) {
+                            <span class="fw-bold mb-2 text-gray-900">
+                                {{ 'ChangeLogs' | localize }}: {{ entityTypeShortName() }} #{{ entityId() }}
+                            </span>
+                            <span class="text-muted fw-semibold fs-7">
+                                {{ entityAndPropertyChanges().length }} {{ 'Changes' | localize }}
+                            </span>
+                        }
+                    </h3>
+                </div>
+                <div class="card-body pt-5">
+                    <div class="timeline-label">
+                        @for (entityAndPropertChange of entityAndPropertyChanges(); track entityAndPropertChange) {
+                            <div class="timeline-item">
+                                <div class="timeline-label fw-bold text-gray-800 fs-6">
+                                    {{ entityAndPropertChange.entityChange.changeTime.toJSDate() | date: 'dd/MM/yyyy' }}
+                                    <br />
+                                    {{ entityAndPropertChange.entityChange.changeTime.toJSDate() | date: 'shortTime' }}
+                                </div>
+                                <div class="timeline-badge">
+                                    <i
+                                        class="fa fa-genderless"
+                                        [ngClass]="{
+                                            'text-success fs-1':
+                                                entityAndPropertChange.entityChange.changeTypeName === 'Created',
+                                            'text-warning fs-1':
+                                                entityAndPropertChange.entityChange.changeTypeName === 'Updated',
+                                            'text-danger fs-1':
+                                                entityAndPropertChange.entityChange.changeTypeName === 'Deleted',
+                                        }"></i>
+                                </div>
+                                <div class="fw-normal timeline-content text-muted ps-3">
+                                    <span class="fw-bold text-gray-900 ps-3">
+                                        {{ entityAndPropertChange.entityChange.changeTypeName }} by
+                                        {{ entityAndPropertChange.entityChange.userName }}
+                                        @if (entityAndPropertChange.entityChange.impersonatorUserName) {
+                                            <span class="text-muted">
+                                                ({{
+                                                    l(
+                                                        'ImpersonatedBy',
+                                                        entityAndPropertChange.entityChange.impersonatorUserName
+                                                    )
+                                                }})
+                                            </span>
+                                        }
+                                    </span>
+                                    <div class="ps-3 mt-2">
+                                        <ul class="list-unstyled">
+                                            @for (
+                                                propertyChange of entityAndPropertChange.entityPropertyChanges;
+                                                track propertyChange
+                                            ) {
+                                                <li class="mb-2">
+                                                    <strong>{{ propertyChange.propertyName }}</strong>
+                                                    :
+                                                    <span class="original-value text-gray-900">
+                                                        {{ propertyChange.originalValue }}
+                                                    </span>
+                                                    <span class="change-indicator">-></span>
+                                                    <span class="new-value text-gray-900">
+                                                        {{ propertyChange.newValue }}
+                                                    </span>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

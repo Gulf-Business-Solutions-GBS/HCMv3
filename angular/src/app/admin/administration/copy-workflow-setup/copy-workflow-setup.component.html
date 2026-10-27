@@ -1,0 +1,99 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'CopyWorkflowSetup' | localize"
+        [description]="'AdministrationTools' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-5">
+                        <label class="form-label required" for="CopyWorkflowSetup_Source">{{
+                            'SourceWorkflowRequest' | localize
+                        }}</label>
+                        <select
+                            id="CopyWorkflowSetup_Source"
+                            class="form-select"
+                            name="SourceRequestMasterId"
+                            [ngModel]="sourceRequestMasterId()"
+                            (ngModelChange)="sourceRequestMasterId.set($event)">
+                            <option [ngValue]="undefined"></option>
+                            @for (item of requestMasters(); track item.id) {
+                                <option [ngValue]="item.id">{{ item.code }} - {{ item.nameEn }}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-5">
+                        <label class="form-label required" for="CopyWorkflowSetup_Code">{{
+                            'NewRequestCode' | localize
+                        }}</label>
+                        <input
+                            id="CopyWorkflowSetup_Code"
+                            type="text"
+                            class="form-control"
+                            name="NewRequestCode"
+                            maxlength="64"
+                            [ngModel]="newRequestCode()"
+                            (ngModelChange)="newRequestCode.set($event)" />
+                    </div>
+
+                    <div class="col-md-4 mb-5">
+                        <label class="form-label required" for="CopyWorkflowSetup_NameEn">{{
+                            'NewRequestName' | localize
+                        }}</label>
+                        <input
+                            id="CopyWorkflowSetup_NameEn"
+                            type="text"
+                            class="form-control"
+                            name="NewRequestNameEn"
+                            maxlength="256"
+                            [ngModel]="newRequestNameEn()"
+                            (ngModelChange)="newRequestNameEn.set($event)" />
+                    </div>
+
+                    <div class="col-md-4 mb-5">
+                        <label class="form-label" for="CopyWorkflowSetup_NameAr">{{ 'NameAr' | localize }}</label>
+                        <input
+                            id="CopyWorkflowSetup_NameAr"
+                            type="text"
+                            class="form-control"
+                            name="NewRequestNameAr"
+                            maxlength="256"
+                            [ngModel]="newRequestNameAr()"
+                            (ngModelChange)="newRequestNameAr.set($event)" />
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3">
+                    @if ('Pages.Administration.Tools.CopyWorkflowSetup' | permission) {
+                        <button
+                            type="button"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="saving()"
+                            [busyIf]="saving()"
+                            (click)="copy()">
+                            <i class="fa fa-copy"></i>
+                            <span>{{ 'CopyWorkflowSetup' | localize }}</span>
+                        </button>
+                    }
+
+                    <button type="button" class="btn btn-secondary fw-bold" (click)="clear()">
+                        <i class="fa fa-eraser"></i>
+                        <span>{{ 'Clear' | localize }}</span>
+                    </button>
+                </div>
+
+                @if (messages().length > 0) {
+                    <div class="alert alert-success mt-5 mb-0">
+                        @for (msg of messages(); track msg) {
+                            <div>{{ msg }}</div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

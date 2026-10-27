@@ -1,0 +1,165 @@
+{
+  "helpId": "ess.overtime",
+  "lang": "ar",
+  "title": "عملي الإضافي",
+  "entity": null,
+  "overviewHtml": "<p>طالِب بالساعات التي عملتها خارج دوامك المعتاد. تحدّد اليوم ونوع العمل الإضافي وعدد الساعات، فيعتمد مديرك الساعات وتصرف الرواتب ما اعتُمد منها.</p><p>وهذه مطالبة لا سجلّ حضور. فالساعات التي تبيّنها بصماتك يحتسبها محرّك الوقت من تلقاء نفسه، وما تطلبه هنا هو ما تريد صرفه، ويُقارن الاثنان عند اعتماد المطالبة.</p>",
+  "aliasIndex": {
+    "loc:OvertimeType": "ess.overtime.overtime-type",
+    "loc:EffectiveDate": "ess.overtime.effective-date",
+    "loc:Hours": "ess.overtime.hours",
+    "loc:ApprovedHours": "ess.overtime.approved-hours",
+    "loc:Comments": "ess.common.comments",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:RequestOvertime": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:Withdraw": "ess.common.withdraw"
+  },
+  "fields": [
+    {
+      "id": "ess.overtime.overtime-type",
+      "label": "OvertimeType",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع العمل الإضافي: ساعات يوم عمل عادي، أو يوم راحة، أو عطلة رسمية، أو عمل ليلي — من الأنواع التي أعدّتها شركتك.</p><p><strong>مثال.</strong> عمل إضافي في عطلة رسمية.</p><p><strong>لماذا يهمّ.</strong> يحمل النوع سعر الساعة. فالساعة نفسها تساوي مبلغاً في مساء الثلاثاء ومبلغاً آخر في العيد، والنوع هو ما يُبنى عليه الصرف فعلاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.overtime.effective-date",
+      "label": "EffectiveDate",
+      "section": null,
+      "aliases": [
+        "loc:EffectiveDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اليوم الذي عملت فيه هذه الساعات.</p><p><strong>مثال.</strong> 3 يونيو 2026.</p><p><strong>لماذا يهمّ.</strong> يحدّد دورة الرواتب التي تصرف المطالبة، وهو ما يراجع المعتمد الساعات في ضوئه؛ فالمطالبة عن يوم كنت فيه في إجازة مطالبة سيسأل عنها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.overtime.hours",
+      "label": "Hours",
+      "section": null,
+      "aliases": [
+        "loc:Hours"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الساعات التي تطالب بها عن ذلك اليوم، ويجب أن تزيد على صفر، ويجوز أن تكون كسراً.</p><p><strong>مثال.</strong> 2.5</p><p><strong>لماذا يهمّ.</strong> هذا ما طلبته أنت، ويُحفظ حتى بعد الاعتماد، فيبيّن السجلّ المطالبة وما أُجيز منها معاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.overtime.approved-hours",
+      "label": "ApprovedHours",
+      "section": null,
+      "aliases": [
+        "loc:ApprovedHours"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الساعات التي اعتُمدت فعلاً. ويبقى فارغاً حتى يعتمد أحدهم المطالبة، وقد يكون أقلّ مما طلبت.</p><p><strong>مثال.</strong> طالبت بـ 2.5 فاعتُمدت 2.</p><p><strong>لماذا يهمّ.</strong> <strong>هذا هو الرقم الذي تُصرف على أساسه.</strong> وإذا اختلف عمّا طالبت به فالسبب في سجل سير الطلب، وأرجح مكان له ملاحظة المعتمد؛ وسؤاله أجدى من المطالبة بالفارق مرة أخرى.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما تريد أن يقرأه من يعتمدون الطلب. نص حرّ واختياري.</p><p><strong>مثال.</strong> «سفري يوم 14 وعودتي يوم 28، وقد اتُّفق على البديل مع أحمد.»</p><p><strong>لماذا يهمّ.</strong> هو المكان الوحيد الذي تشرح فيه طلباً يحتاج إلى شرح، ويبقى مع الطلب دائماً: يراه المعتمدون، ويراه كل من يعود إلى الطلب لاحقاً. والطلب الذي يفاجئ أحدهم طلبٌ يعود إليك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل ما طلبته من هذه الشاشة، والأحدث أولاً، مع ما آل إليه كل طلب.</p><p><strong>مثال.</strong> ثلاثة طلبات تذاكر: واحد اعتُمد الشهر الماضي، وواحد قيد الانتظار، وواحد سحبته.</p><p><strong>لماذا يهمّ.</strong> هذه هي السجلّ. والطلب غير الموجود في هذه القائمة لم يُقدَّم أصلاً، فإن عبّأت النموذج ولم تضغط <strong>حفظ</strong> فلم يُرسل شيء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنبيه بأن الحساب الذي سجّلت الدخول به غير مرتبط بموظف، فلا يوجد من يكون الطلب عنه.</p><p><strong>مثال.</strong> مستخدم أُنشئ حديثاً، أو حساب مسؤول تُرك عمداً بلا موظف.</p><p><strong>لماذا يهمّ.</strong> لا يعمل شيء في شاشات الخدمة الذاتية قبل أن تربط الموارد البشرية الحساب بسجلّ موظفك، ولا يفعل ذلك سواها. وكثيراً ما تُترك حسابات المسؤولين غير مرتبطة عن قصد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما آل إليه الطلب. <strong>مسودة</strong> يعني أنه لم يُقدَّم، و<strong>قيد الانتظار</strong> يعني أنه لدى أحدهم، و<strong>معتمد</strong> يعني أنه أُقرّ ونُفّذ، و<strong>مرفوض</strong> يعني أنه رُفض، و<strong>مسحوب</strong> يعني أنك استرجعته بنفسك.</p><p><strong>مثال.</strong> قيد الانتظار — لدى مديرك المباشر.</p><p><strong>لماذا يهمّ.</strong> لا يغيّر شيئاً إلا الطلب المعتمد: رصيدك أو راتبك أو سجلّك. أما الطلب قيد الانتظار فلم يفعل شيئاً بعد، مهما جاء في النموذج عند تعبئته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestOvertime",
+      "section": null,
+      "aliases": [
+        "loc:RequestOvertime"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزرّ في أعلى الشاشة الذي يفتح النموذج. وتعبئته ثم الضغط على <strong>حفظ</strong> يقدّم الطلب، ولا يُرسل شيء قبل ذلك.</p><p><strong>مثال.</strong> <strong>طلب إجازة</strong>، <strong>طلب تذكرة</strong>، <strong>طلب سلفة</strong> — وتتبع الصياغة الشاشة.</p><p><strong>لماذا يهمّ.</strong> بعد التقديم يذهب الطلب إلى من يعتمد هذا النوع من الطلبات في شركتك، ولا يمكنك تعديله في مكانه. ولتغيير شيء فيه اسحبه وقدّم طلباً جديداً، أو استخدم <strong>التعديل</strong> في الشاشات التي توفّره.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من وصل إليه الطلب، وما فعله كل شخص به ومتى، مع أي ملاحظة تركها.</p><p><strong>مثال.</strong> قُدّم 09:12 ← اعتمده المدير المباشر 11:40 («تم ترتيب البديل») ← لدى الموارد البشرية.</p><p><strong>لماذا يهمّ.</strong> يجيب عن سؤال «لدى من الطلب الآن؟» دون سؤال أحد. وإذا بقي الطلب عند شخص أياماً فهو يخبرك بمن هو، وهو من تراجعه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "Withdraw",
+      "section": null,
+      "aliases": [
+        "loc:Withdraw"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يسترجع الطلب. ولا يظهر إلا ما دام الاسترجاع ممكناً، فإذا اعتُمد الطلب ونُفّذ اختفى الزرّ.</p><p><strong>مثال.</strong> طلبت إجازة الأسبوع القادم ثم تغيّرت خططك، فتسحب الطلب قبل أن يصل إليه مديرك.</p><p><strong>لماذا يهمّ.</strong> لا يُحذف الطلب المسحوب، بل يبقى في القائمة بحالة <strong>مسحوب</strong> ليبيّن السجلّ ما جرى. ويحرّر السحب ما كان الطلب يحجزه، كرصيد إجازة محجوز مقابله.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

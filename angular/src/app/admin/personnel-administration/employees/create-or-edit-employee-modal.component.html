@@ -1,0 +1,926 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #employeeForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (employee().id) {
+                                <span>{{ 'EditingEmployee' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreatingNewEmployee' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto">
+                        <div class="emp-acc-section">
+                            <button
+                                type="button"
+                                class="emp-acc-head"
+                                [class.emp-acc-open]="isSectionOpen('names')"
+                                [attr.aria-expanded]="isSectionOpen('names')"
+                                (click)="toggleSection('names')">
+                                <i
+                                    class="fa emp-acc-chevron"
+                                    [class.fa-angle-down]="isSectionOpen('names')"
+                                    [class.fa-angle-right]="!isSectionOpen('names')"
+                                    aria-hidden="true"></i>
+                                <span class="emp-acc-title">{{ 'Names' | localize }}</span>
+                                @if (sectionInvalidCount(employeeForm, 'names'); as missing) {
+                                    <span class="emp-acc-badge" [title]="'EmpFormSectionIncomplete' | localize">{{ missing }}</span>
+                                }
+                            </button>
+                            <!-- [hidden], NOT @if: @if would DESTROY the controls, Angular would drop
+                                 them from the form, and a collapsed section with an empty required
+                                 field would make the form report itself valid. Save would then submit a
+                                 record the server rejects. Hidden controls stay registered. -->
+                            <div class="emp-acc-body" [hidden]="!isSectionOpen('names')">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="Employee_FirstNameEn">{{ 'FirstNameEn' | localize }}</label>
+                                <input
+                                    id="Employee_FirstNameEn"
+                                    #firstNameEnInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="FirstNameEn"
+                                    [ngModel]="employee().firstNameEn"
+                                    (ngModelChange)="updateField('firstNameEn', $event)"
+                                    required
+                                    maxlength="100" />
+                                <validation-messages [formCtrl]="firstNameEnInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_SecondNameEn">{{ 'SecondNameEn' | localize }}</label>
+                                <input
+                                    id="Employee_SecondNameEn"
+                                    class="form-control"
+                                    type="text"
+                                    name="SecondNameEn"
+                                    [ngModel]="employee().secondNameEn"
+                                    (ngModelChange)="updateField('secondNameEn', $event)"
+                                    maxlength="100" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_ThirdNameEn">{{ 'ThirdNameEn' | localize }}</label>
+                                <input
+                                    id="Employee_ThirdNameEn"
+                                    class="form-control"
+                                    type="text"
+                                    name="ThirdNameEn"
+                                    [ngModel]="employee().thirdNameEn"
+                                    (ngModelChange)="updateField('thirdNameEn', $event)"
+                                    maxlength="100" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="Employee_LastNameEn">{{ 'LastNameEn' | localize }}</label>
+                                <input
+                                    id="Employee_LastNameEn"
+                                    #lastNameEnInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="LastNameEn"
+                                    [ngModel]="employee().lastNameEn"
+                                    (ngModelChange)="updateField('lastNameEn', $event)"
+                                    required
+                                    maxlength="100" />
+                                <validation-messages [formCtrl]="lastNameEnInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="Employee_FirstNameAr">{{ 'FirstNameAr' | localize }}</label>
+                                <input
+                                    id="Employee_FirstNameAr"
+                                    #firstNameArInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    dir="rtl"
+                                    name="FirstNameAr"
+                                    [ngModel]="employee().firstNameAr"
+                                    (ngModelChange)="updateField('firstNameAr', $event)"
+                                    required
+                                    maxlength="100" />
+                                <validation-messages [formCtrl]="firstNameArInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_SecondNameAr">{{ 'SecondNameAr' | localize }}</label>
+                                <input
+                                    id="Employee_SecondNameAr"
+                                    class="form-control"
+                                    type="text"
+                                    dir="rtl"
+                                    name="SecondNameAr"
+                                    [ngModel]="employee().secondNameAr"
+                                    (ngModelChange)="updateField('secondNameAr', $event)"
+                                    maxlength="100" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_ThirdNameAr">{{ 'ThirdNameAr' | localize }}</label>
+                                <input
+                                    id="Employee_ThirdNameAr"
+                                    class="form-control"
+                                    type="text"
+                                    dir="rtl"
+                                    name="ThirdNameAr"
+                                    [ngModel]="employee().thirdNameAr"
+                                    (ngModelChange)="updateField('thirdNameAr', $event)"
+                                    maxlength="100" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="Employee_LastNameAr">{{ 'LastNameAr' | localize }}</label>
+                                <input
+                                    id="Employee_LastNameAr"
+                                    #lastNameArInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    dir="rtl"
+                                    name="LastNameAr"
+                                    [ngModel]="employee().lastNameAr"
+                                    (ngModelChange)="updateField('lastNameAr', $event)"
+                                    required
+                                    maxlength="100" />
+                                <validation-messages [formCtrl]="lastNameArInput" />
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+
+                        <div class="emp-acc-section">
+                            <button
+                                type="button"
+                                class="emp-acc-head"
+                                [class.emp-acc-open]="isSectionOpen('personal')"
+                                [attr.aria-expanded]="isSectionOpen('personal')"
+                                (click)="toggleSection('personal')">
+                                <i
+                                    class="fa emp-acc-chevron"
+                                    [class.fa-angle-down]="isSectionOpen('personal')"
+                                    [class.fa-angle-right]="!isSectionOpen('personal')"
+                                    aria-hidden="true"></i>
+                                <span class="emp-acc-title">{{ 'PersonalInfo' | localize }}</span>
+                                @if (sectionInvalidCount(employeeForm, 'personal'); as missing) {
+                                    <span class="emp-acc-badge" [title]="'EmpFormSectionIncomplete' | localize">{{ missing }}</span>
+                                }
+                            </button>
+                            <!-- [hidden], NOT @if: @if would DESTROY the controls, Angular would drop
+                                 them from the form, and a collapsed section with an empty required
+                                 field would make the form report itself valid. Save would then submit a
+                                 record the server rejects. Hidden controls stay registered. -->
+                            <div class="emp-acc-body" [hidden]="!isSectionOpen('personal')">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_Code">{{ 'Code' | localize }}</label>
+                                <input
+                                    id="Employee_Code"
+                                    class="form-control"
+                                    type="text"
+                                    name="Code"
+                                    [ngModel]="employee().code"
+                                    (ngModelChange)="updateField('code', $event)"
+                                    maxlength="50"
+                                    [placeholder]="l('AutoGeneratedIfEmpty')" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_TitleId">{{ 'Title' | localize }}</label>
+                                <div class="input-group">
+                                    <select
+                                        id="Employee_TitleId"
+                                        class="form-select"
+                                        name="TitleId"
+                                        [ngModel]="employee().titleId"
+                                        (ngModelChange)="updateField('titleId', $event)">
+                                        <option [ngValue]="undefined"></option>
+                                        @for (item of titles(); track item.id) {
+                                            <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                        }
+                                    </select>
+                                    @if (isGranted('Pages.GeneralMasterInfo.Titles.Create')) {
+                                        <button
+                                            type="button"
+                                            class="btn btn-light-primary"
+                                            (click)="addTitle()"
+                                            [title]="l('CreateNewItem')"
+                                            [attr.aria-label]="l('CreateNewItem')">
+                                            <i class="fa fa-plus p-0"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="Employee_BirthDate">{{ 'BirthDate' | localize }}</label>
+                                <input
+                                    id="Employee_BirthDate"
+                                    #birthDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="BirthDate"
+                                    [ngModel]="employee().birthDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('birthDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="birthDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_Gender">{{ 'Gender' | localize }}</label>
+                                <select
+                                    id="Employee_Gender"
+                                    class="form-select"
+                                    name="Gender"
+                                    [ngModel]="employee().gender"
+                                    (ngModelChange)="updateField('gender', $event)">
+                                    @for (item of genders; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_MaritalStatusId">{{ 'MaritalStatus' | localize }}</label>
+                                <select
+                                    id="Employee_MaritalStatusId"
+                                    class="form-select"
+                                    name="MaritalStatusId"
+                                    [ngModel]="employee().maritalStatusId"
+                                    (ngModelChange)="updateField('maritalStatusId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of maritalStatuses(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="Employee_NationalityId">{{ 'Nationality' | localize }}</label>
+                                <div class="input-group">
+                                    <select
+                                        id="Employee_NationalityId"
+                                        #nationalityInput="ngModel"
+                                        class="form-select"
+                                        name="NationalityId"
+                                        [ngModel]="employee().nationalityId"
+                                        (ngModelChange)="updateField('nationalityId', $event)"
+                                        required>
+                                        <option [ngValue]="undefined"></option>
+                                        @for (item of nationalities(); track item.id) {
+                                            <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                        }
+                                    </select>
+                                    @if (isGranted('Pages.GeneralMasterInfo.Nationalities.Create')) {
+                                        <button
+                                            type="button"
+                                            class="btn btn-light-primary"
+                                            (click)="addNationality()"
+                                            [title]="l('CreateNewItem')"
+                                            [attr.aria-label]="l('CreateNewItem')">
+                                            <i class="fa fa-plus p-0"></i>
+                                        </button>
+                                    }
+                                </div>
+                                <validation-messages [formCtrl]="nationalityInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_ReligionId">{{ 'Religion' | localize }}</label>
+                                <select
+                                    id="Employee_ReligionId"
+                                    class="form-select"
+                                    name="ReligionId"
+                                    [ngModel]="employee().religionId"
+                                    (ngModelChange)="updateField('religionId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of religions(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_QualificationId">{{ 'Qualification' | localize }}</label>
+                                <select
+                                    id="Employee_QualificationId"
+                                    class="form-select"
+                                    name="QualificationId"
+                                    [ngModel]="employee().qualificationId"
+                                    (ngModelChange)="updateField('qualificationId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of qualifications(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_BloodGroup">{{ 'BloodGroup' | localize }}</label>
+                                <input
+                                    id="Employee_BloodGroup"
+                                    class="form-control"
+                                    type="text"
+                                    name="BloodGroup"
+                                    [ngModel]="employee().bloodGroup"
+                                    (ngModelChange)="updateField('bloodGroup', $event)"
+                                    maxlength="20" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_CivilID">{{ 'CivilID' | localize }}</label>
+                                <input
+                                    id="Employee_CivilID"
+                                    class="form-control"
+                                    type="number"
+                                    name="CivilID"
+                                    [ngModel]="employee().civilID"
+                                    (ngModelChange)="updateField('civilID', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_BirthPlaceId">{{ 'BirthPlace' | localize }}</label>
+                                <select
+                                    id="Employee_BirthPlaceId"
+                                    class="form-select"
+                                    name="BirthPlaceId"
+                                    [ngModel]="employee().birthPlaceId"
+                                    (ngModelChange)="updateField('birthPlaceId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of cities(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_FatherNameEn">{{ 'FatherNameEn' | localize }}</label>
+                                <input
+                                    id="Employee_FatherNameEn"
+                                    class="form-control"
+                                    type="text"
+                                    name="FatherNameEn"
+                                    [ngModel]="employee().fatherNameEn"
+                                    (ngModelChange)="updateField('fatherNameEn', $event)"
+                                    maxlength="200" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_FatherNameAr">{{ 'FatherNameAr' | localize }}</label>
+                                <input
+                                    id="Employee_FatherNameAr"
+                                    class="form-control"
+                                    type="text"
+                                    dir="rtl"
+                                    name="FatherNameAr"
+                                    [ngModel]="employee().fatherNameAr"
+                                    (ngModelChange)="updateField('fatherNameAr', $event)"
+                                    maxlength="200" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_MotherNameEn">{{ 'MotherNameEn' | localize }}</label>
+                                <input
+                                    id="Employee_MotherNameEn"
+                                    class="form-control"
+                                    type="text"
+                                    name="MotherNameEn"
+                                    [ngModel]="employee().motherNameEn"
+                                    (ngModelChange)="updateField('motherNameEn', $event)"
+                                    maxlength="200" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_MotherNameAr">{{ 'MotherNameAr' | localize }}</label>
+                                <input
+                                    id="Employee_MotherNameAr"
+                                    class="form-control"
+                                    type="text"
+                                    dir="rtl"
+                                    name="MotherNameAr"
+                                    [ngModel]="employee().motherNameAr"
+                                    (ngModelChange)="updateField('motherNameAr', $event)"
+                                    maxlength="200" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_Photo">{{ 'Photo' | localize }}</label>
+                                <input id="Employee_Photo" class="form-control" type="file" accept="image/*" (change)="onPhotoSelected($event)" />
+                                @if (employee().photo) {
+                                    <img [src]="toImageSrc(employee().photo)" style="max-height: 80px; margin-top: 8px" alt="photo" />
+                                }
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+
+                        <div class="emp-acc-section">
+                            <button
+                                type="button"
+                                class="emp-acc-head"
+                                [class.emp-acc-open]="isSectionOpen('address')"
+                                [attr.aria-expanded]="isSectionOpen('address')"
+                                (click)="toggleSection('address')">
+                                <i
+                                    class="fa emp-acc-chevron"
+                                    [class.fa-angle-down]="isSectionOpen('address')"
+                                    [class.fa-angle-right]="!isSectionOpen('address')"
+                                    aria-hidden="true"></i>
+                                <span class="emp-acc-title">{{ 'Address' | localize }}</span>
+                                @if (sectionInvalidCount(employeeForm, 'address'); as missing) {
+                                    <span class="emp-acc-badge" [title]="'EmpFormSectionIncomplete' | localize">{{ missing }}</span>
+                                }
+                            </button>
+                            <!-- [hidden], NOT @if: @if would DESTROY the controls, Angular would drop
+                                 them from the form, and a collapsed section with an empty required
+                                 field would make the form report itself valid. Save would then submit a
+                                 record the server rejects. Hidden controls stay registered. -->
+                            <div class="emp-acc-body" [hidden]="!isSectionOpen('address')">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_FlatNumn">{{ 'FlatNumber' | localize }}</label>
+                                <input
+                                    id="Employee_FlatNumn"
+                                    class="form-control"
+                                    type="text"
+                                    name="FlatNumn"
+                                    [ngModel]="employee().flatNumn"
+                                    (ngModelChange)="updateField('flatNumn', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_FloorNum">{{ 'FloorNumber' | localize }}</label>
+                                <input
+                                    id="Employee_FloorNum"
+                                    class="form-control"
+                                    type="text"
+                                    name="FloorNum"
+                                    [ngModel]="employee().floorNum"
+                                    (ngModelChange)="updateField('floorNum', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_BuildingNum">{{ 'BuildingNumber' | localize }}</label>
+                                <input
+                                    id="Employee_BuildingNum"
+                                    class="form-control"
+                                    type="text"
+                                    name="BuildingNum"
+                                    [ngModel]="employee().buildingNum"
+                                    (ngModelChange)="updateField('buildingNum', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_StreetNum">{{ 'StreetNumber' | localize }}</label>
+                                <input
+                                    id="Employee_StreetNum"
+                                    class="form-control"
+                                    type="text"
+                                    name="StreetNum"
+                                    [ngModel]="employee().streetNum"
+                                    (ngModelChange)="updateField('streetNum', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_BlockNum">{{ 'BlockNumber' | localize }}</label>
+                                <input
+                                    id="Employee_BlockNum"
+                                    class="form-control"
+                                    type="text"
+                                    name="BlockNum"
+                                    [ngModel]="employee().blockNum"
+                                    (ngModelChange)="updateField('blockNum', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_LaneNumber">{{ 'LaneNumber' | localize }}</label>
+                                <input
+                                    id="Employee_LaneNumber"
+                                    class="form-control"
+                                    type="text"
+                                    name="LaneNumber"
+                                    [ngModel]="employee().laneNumber"
+                                    (ngModelChange)="updateField('laneNumber', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_PaciNumber">{{ 'PaciNumber' | localize }}</label>
+                                <input
+                                    id="Employee_PaciNumber"
+                                    class="form-control"
+                                    type="text"
+                                    name="PaciNumber"
+                                    [ngModel]="employee().paciNumber"
+                                    (ngModelChange)="updateField('paciNumber', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_ZipCode">{{ 'ZipCode' | localize }}</label>
+                                <input
+                                    id="Employee_ZipCode"
+                                    class="form-control"
+                                    type="text"
+                                    name="ZipCode"
+                                    [ngModel]="employee().zipCode"
+                                    (ngModelChange)="updateField('zipCode', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_City">{{ 'City' | localize }}</label>
+                                <input
+                                    id="Employee_City"
+                                    class="form-control"
+                                    type="text"
+                                    name="City"
+                                    [ngModel]="employee().city"
+                                    (ngModelChange)="updateField('city', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_GovernorateId">{{ 'Governorate' | localize }}</label>
+                                <select
+                                    id="Employee_GovernorateId"
+                                    class="form-select"
+                                    name="GovernorateId"
+                                    [ngModel]="employee().governorateId"
+                                    (ngModelChange)="updateField('governorateId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of governorates(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_CountryId">{{ 'Country' | localize }}</label>
+                                <select
+                                    id="Employee_CountryId"
+                                    class="form-select"
+                                    name="CountryId"
+                                    [ngModel]="employee().countryId"
+                                    (ngModelChange)="updateField('countryId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of countries(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_CurrentAddress">{{ 'CurrentAddress' | localize }}</label>
+                                <input
+                                    id="Employee_CurrentAddress"
+                                    class="form-control"
+                                    type="text"
+                                    name="CurrentAddress"
+                                    [ngModel]="employee().currentAddress"
+                                    (ngModelChange)="updateField('currentAddress', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_PermanentAddress">{{ 'PermanentAddress' | localize }}</label>
+                                <input
+                                    id="Employee_PermanentAddress"
+                                    class="form-control"
+                                    type="text"
+                                    name="PermanentAddress"
+                                    [ngModel]="employee().permanentAddress"
+                                    (ngModelChange)="updateField('permanentAddress', $event)" />
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+
+                        <div class="emp-acc-section">
+                            <button
+                                type="button"
+                                class="emp-acc-head"
+                                [class.emp-acc-open]="isSectionOpen('contact')"
+                                [attr.aria-expanded]="isSectionOpen('contact')"
+                                (click)="toggleSection('contact')">
+                                <i
+                                    class="fa emp-acc-chevron"
+                                    [class.fa-angle-down]="isSectionOpen('contact')"
+                                    [class.fa-angle-right]="!isSectionOpen('contact')"
+                                    aria-hidden="true"></i>
+                                <span class="emp-acc-title">{{ 'Contact' | localize }}</span>
+                                @if (sectionInvalidCount(employeeForm, 'contact'); as missing) {
+                                    <span class="emp-acc-badge" [title]="'EmpFormSectionIncomplete' | localize">{{ missing }}</span>
+                                }
+                            </button>
+                            <!-- [hidden], NOT @if: @if would DESTROY the controls, Angular would drop
+                                 them from the form, and a collapsed section with an empty required
+                                 field would make the form report itself valid. Save would then submit a
+                                 record the server rejects. Hidden controls stay registered. -->
+                            <div class="emp-acc-body" [hidden]="!isSectionOpen('contact')">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_Telephone">{{ 'Telephone' | localize }}</label>
+                                <input
+                                    id="Employee_Telephone"
+                                    class="form-control"
+                                    type="number"
+                                    name="Telephone"
+                                    [ngModel]="employee().telephone"
+                                    (ngModelChange)="updateField('telephone', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_Mobile">{{ 'Mobile' | localize }}</label>
+                                <input
+                                    id="Employee_Mobile"
+                                    class="form-control"
+                                    type="number"
+                                    name="Mobile"
+                                    [ngModel]="employee().mobile"
+                                    (ngModelChange)="updateField('mobile', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_PermanentTelephone">{{ 'PermanentTelephone' | localize }}</label>
+                                <input
+                                    id="Employee_PermanentTelephone"
+                                    class="form-control"
+                                    type="number"
+                                    name="PermanentTelephone"
+                                    [ngModel]="employee().permanentTelephone"
+                                    (ngModelChange)="updateField('permanentTelephone', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_Email">{{ 'Email' | localize }}</label>
+                                <input
+                                    id="Employee_Email"
+                                    class="form-control"
+                                    type="email"
+                                    name="Email"
+                                    [ngModel]="employee().email"
+                                    (ngModelChange)="updateField('email', $event)"
+                                    maxlength="200" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_AlternateEmail">{{ 'AlternateEmail' | localize }}</label>
+                                <input
+                                    id="Employee_AlternateEmail"
+                                    class="form-control"
+                                    type="email"
+                                    name="AlternateEmail"
+                                    [ngModel]="employee().alternateEmail"
+                                    (ngModelChange)="updateField('alternateEmail', $event)"
+                                    maxlength="200" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_LoginID">{{ 'LoginID' | localize }}</label>
+                                <input
+                                    id="Employee_LoginID"
+                                    class="form-control"
+                                    type="text"
+                                    name="LoginID"
+                                    [ngModel]="employee().loginID"
+                                    (ngModelChange)="updateField('loginID', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_AccessID">{{ 'AccessID' | localize }}</label>
+                                <input
+                                    id="Employee_AccessID"
+                                    class="form-control"
+                                    type="text"
+                                    name="AccessID"
+                                    [ngModel]="employee().accessID"
+                                    (ngModelChange)="updateField('accessID', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_BusinessLandline">{{ 'BusinessLandline' | localize }}</label>
+                                <input
+                                    id="Employee_BusinessLandline"
+                                    class="form-control"
+                                    type="text"
+                                    name="BusinessLandline"
+                                    [ngModel]="employee().businessLandline"
+                                    (ngModelChange)="updateField('businessLandline', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_BusinessExtension">{{ 'BusinessExtension' | localize }}</label>
+                                <input
+                                    id="Employee_BusinessExtension"
+                                    class="form-control"
+                                    type="text"
+                                    name="BusinessExtension"
+                                    [ngModel]="employee().businessExtension"
+                                    (ngModelChange)="updateField('businessExtension', $event)" />
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+
+                        <div class="emp-acc-section">
+                            <button
+                                type="button"
+                                class="emp-acc-head"
+                                [class.emp-acc-open]="isSectionOpen('emergency')"
+                                [attr.aria-expanded]="isSectionOpen('emergency')"
+                                (click)="toggleSection('emergency')">
+                                <i
+                                    class="fa emp-acc-chevron"
+                                    [class.fa-angle-down]="isSectionOpen('emergency')"
+                                    [class.fa-angle-right]="!isSectionOpen('emergency')"
+                                    aria-hidden="true"></i>
+                                <span class="emp-acc-title">{{ 'EmergencyContactSection' | localize }}</span>
+                                @if (sectionInvalidCount(employeeForm, 'emergency'); as missing) {
+                                    <span class="emp-acc-badge" [title]="'EmpFormSectionIncomplete' | localize">{{ missing }}</span>
+                                }
+                            </button>
+                            <!-- [hidden], NOT @if: @if would DESTROY the controls, Angular would drop
+                                 them from the form, and a collapsed section with an empty required
+                                 field would make the form report itself valid. Save would then submit a
+                                 record the server rejects. Hidden controls stay registered. -->
+                            <div class="emp-acc-body" [hidden]="!isSectionOpen('emergency')">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_EmergencyContact">{{ 'EmergencyContact' | localize }}</label>
+                                <input
+                                    id="Employee_EmergencyContact"
+                                    class="form-control"
+                                    type="text"
+                                    name="EmergencyContact"
+                                    [ngModel]="employee().emergencyContact"
+                                    (ngModelChange)="updateField('emergencyContact', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_EmergencyNumber">{{ 'EmergencyNumber' | localize }}</label>
+                                <input
+                                    id="Employee_EmergencyNumber"
+                                    class="form-control"
+                                    type="text"
+                                    name="EmergencyNumber"
+                                    [ngModel]="employee().emergencyNumber"
+                                    (ngModelChange)="updateField('emergencyNumber', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_EmergencyRelation">{{ 'EmergencyRelation' | localize }}</label>
+                                <input
+                                    id="Employee_EmergencyRelation"
+                                    class="form-control"
+                                    type="text"
+                                    name="EmergencyRelation"
+                                    [ngModel]="employee().emergencyRelation"
+                                    (ngModelChange)="updateField('emergencyRelation', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_EmergencyContactAddress">{{ 'EmergencyContactAddress' | localize }}</label>
+                                <input
+                                    id="Employee_EmergencyContactAddress"
+                                    class="form-control"
+                                    type="text"
+                                    name="EmergencyContactAddress"
+                                    [ngModel]="employee().emergencyContactAddress"
+                                    (ngModelChange)="updateField('emergencyContactAddress', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_CriticalIllness">{{ 'CriticalIllness' | localize }}</label>
+                                <input
+                                    id="Employee_CriticalIllness"
+                                    class="form-control"
+                                    type="text"
+                                    name="CriticalIllness"
+                                    [ngModel]="employee().criticalIllness"
+                                    (ngModelChange)="updateField('criticalIllness', $event)" />
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+
+                        <div class="emp-acc-section">
+                            <button
+                                type="button"
+                                class="emp-acc-head"
+                                [class.emp-acc-open]="isSectionOpen('employment')"
+                                [attr.aria-expanded]="isSectionOpen('employment')"
+                                (click)="toggleSection('employment')">
+                                <i
+                                    class="fa emp-acc-chevron"
+                                    [class.fa-angle-down]="isSectionOpen('employment')"
+                                    [class.fa-angle-right]="!isSectionOpen('employment')"
+                                    aria-hidden="true"></i>
+                                <span class="emp-acc-title">{{ 'Employment' | localize }}</span>
+                                @if (sectionInvalidCount(employeeForm, 'employment'); as missing) {
+                                    <span class="emp-acc-badge" [title]="'EmpFormSectionIncomplete' | localize">{{ missing }}</span>
+                                }
+                            </button>
+                            <!-- [hidden], NOT @if: @if would DESTROY the controls, Angular would drop
+                                 them from the form, and a collapsed section with an empty required
+                                 field would make the form report itself valid. Save would then submit a
+                                 record the server rejects. Hidden controls stay registered. -->
+                            <div class="emp-acc-body" [hidden]="!isSectionOpen('employment')">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_Status">{{ 'Status' | localize }}</label>
+                                <select
+                                    id="Employee_Status"
+                                    class="form-select"
+                                    name="Status"
+                                    [ngModel]="employee().status"
+                                    (ngModelChange)="updateField('status', $event)">
+                                    @for (item of statuses; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_EmploymentType">{{ 'EmploymentType' | localize }}</label>
+                                <select
+                                    id="Employee_EmploymentType"
+                                    class="form-select"
+                                    name="EmploymentType"
+                                    [ngModel]="employee().employmentType"
+                                    (ngModelChange)="updateField('employmentType', $event)">
+                                    @for (item of employmentTypes; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="Employee_JoiningDate">{{ 'JoiningDate' | localize }}</label>
+                                <input
+                                    id="Employee_JoiningDate"
+                                    #joiningDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="JoiningDate"
+                                    [ngModel]="employee().joiningDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('joiningDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="joiningDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_ProbationDays">{{ 'ProbationDays' | localize }}</label>
+                                <input
+                                    id="Employee_ProbationDays"
+                                    class="form-control"
+                                    type="number"
+                                    name="ProbationDays"
+                                    min="0"
+                                    [ngModel]="employee().probationDays"
+                                    (ngModelChange)="updateField('probationDays', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_RecruitmentTypeId">{{ 'RecruitmentType' | localize }}</label>
+                                <select
+                                    id="Employee_RecruitmentTypeId"
+                                    class="form-select"
+                                    name="RecruitmentTypeId"
+                                    [ngModel]="employee().recruitmentTypeId"
+                                    (ngModelChange)="updateField('recruitmentTypeId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of recruitmentTypes(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_PreviousEmpCode">{{ 'PreviousEmpCode' | localize }}</label>
+                                <input
+                                    id="Employee_PreviousEmpCode"
+                                    class="form-control"
+                                    type="text"
+                                    name="PreviousEmpCode"
+                                    [ngModel]="employee().previousEmpCode"
+                                    (ngModelChange)="updateField('previousEmpCode', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_ReferenceCode">{{ 'ReferenceCode' | localize }}</label>
+                                <input
+                                    id="Employee_ReferenceCode"
+                                    class="form-control"
+                                    type="text"
+                                    name="ReferenceCode"
+                                    [ngModel]="employee().referenceCode"
+                                    (ngModelChange)="updateField('referenceCode', $event)" />
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Save is disabled while the form is invalid, and collapsing sections made it
+                             possible for the blocking field to be off screen -- a dead button with no
+                             visible cause. This names the sections and opens them on click. -->
+                        @if (!employeeForm.form.valid && incompleteSections(employeeForm).length) {
+                            <button
+                                type="button"
+                                class="btn btn-link emp-acc-incomplete me-auto"
+                                (click)="revealIncompleteSections(employeeForm)">
+                                <i class="fa fa-exclamation-circle"></i>
+                                {{ 'EmpFormIncompleteHint' | localize }}
+                                @for (section of incompleteSections(employeeForm); track section.id) {
+                                    <span class="emp-acc-incomplete-name">{{ section.labelKey | localize }}</span>
+                                }
+                            </button>
+                        }
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!employeeForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Quick-add popups for the "+" beside Title and Nationality. Outside the employee dialog, not inside it:
+     a dialog nested in another's markup inherits its stacking and opens underneath. -->
+<simpleLookupModal #titleModal [service]="titlesService" titleKey="Title" (modalSave)="onTitleCreated()" />
+<createOrEditNationalityModal #nationalityModal (modalSave)="onNationalityCreated()" />

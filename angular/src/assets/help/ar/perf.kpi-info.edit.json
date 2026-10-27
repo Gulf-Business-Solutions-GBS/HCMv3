@@ -1,0 +1,123 @@
+{
+  "helpId": "perf.kpi-info.edit",
+  "lang": "ar",
+  "title": "مؤشرات الأداء — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.KpiInfo",
+  "overviewHtml": "<p>مؤشر أداء رئيسي تُقيِّمه التقييمات.</p>",
+  "aliasIndex": {
+    "loc:Code": "KpiInfo.Code",
+    "dom:KpiInfo_Code": "KpiInfo.Code",
+    "loc:NameEn": "KpiInfo.NameEn",
+    "dom:KpiInfo_NameEn": "KpiInfo.NameEn",
+    "loc:NameAr": "KpiInfo.NameAr",
+    "dom:KpiInfo_NameAr": "KpiInfo.NameAr",
+    "loc:KpiCategory": "KpiInfo.KpiCategoryId",
+    "dom:KpiInfo_KpiCategoryId": "KpiInfo.KpiCategoryId",
+    "loc:Active": "KpiInfo.Active",
+    "dom:KpiInfo_Active": "KpiInfo.Active",
+    "loc:Competency": "KpiInfo.CompetencyId",
+    "dom:KpiInfo_CompetencyId": "KpiInfo.CompetencyId",
+    "loc:Comments": "KpiInfo.Comments",
+    "dom:KpiInfo_Comments": "KpiInfo.Comments"
+  },
+  "fields": [
+    {
+      "id": "KpiInfo.Code",
+      "label": "Code",
+      "section": "KpiInfos",
+      "aliases": [
+        "loc:Code",
+        "dom:KpiInfo_Code"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiInfo.NameEn",
+      "label": "NameEn",
+      "section": "KpiInfos",
+      "aliases": [
+        "loc:NameEn",
+        "dom:KpiInfo_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiInfo.NameAr",
+      "label": "NameAr",
+      "section": "KpiInfos",
+      "aliases": [
+        "loc:NameAr",
+        "dom:KpiInfo_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiInfo.KpiCategoryId",
+      "label": "KpiCategory",
+      "section": "KpiInfos",
+      "aliases": [
+        "loc:KpiCategory",
+        "dom:KpiInfo_KpiCategoryId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة فئات مؤشرات الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الفئة التي يتبعها المؤشر.</p><p><strong>مثال.</strong> العملاء</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiInfo.Active",
+      "label": "Active",
+      "section": "KpiInfos",
+      "aliases": [
+        "loc:Active",
+        "dom:KpiInfo_Active"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المؤشر مستخدماً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiInfo.CompetencyId",
+      "label": "Competency",
+      "section": "KpiInfos",
+      "aliases": [
+        "loc:Competency",
+        "dom:KpiInfo_CompetencyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الكفاءات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الكفاءة التي يرتبط بها المؤشر، من قائمة الكفاءات.</p><p><strong>مثال.</strong> التركيز على العملاء</p><p><strong>لماذا يهم.</strong> تُسجَّل للرجوع إليها، ولا يستخدمها شيء آخر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiInfo.Comments",
+      "label": "Comments",
+      "section": "KpiInfos",
+      "aliases": [
+        "loc:Comments",
+        "dom:KpiInfo_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "helpId": "pay.wage-type-register.edit",
+  "lang": "en",
+  "title": "Wagetype Registers — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.WageTypeRegister",
+  "overviewHtml": "<p>A log row for a payroll period. Not read at present: payroll neither writes nor reads these rows, and they are kept for reference only.</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "WageTypeRegister.EmployeeId",
+    "dom:WageTypeRegister_EmployeeId": "WageTypeRegister.EmployeeId",
+    "loc:ForPeriod": "WageTypeRegister.ForPeriod",
+    "dom:WageTypeRegister_ForPeriod": "WageTypeRegister.ForPeriod",
+    "loc:InPeriod": "WageTypeRegister.InPeriod",
+    "dom:WageTypeRegister_InPeriod": "WageTypeRegister.InPeriod"
+  },
+  "fields": [
+    {
+      "id": "WageTypeRegister.EmployeeId",
+      "label": "EmployeeId",
+      "section": "WageTypeRegisters",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:WageTypeRegister_EmployeeId"
+      ],
+      "rules": "Optional. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee the row is about.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageTypeRegister.ForPeriod",
+      "label": "ForPeriod",
+      "section": "WageTypeRegisters",
+      "aliases": [
+        "loc:ForPeriod",
+        "dom:WageTypeRegister_ForPeriod"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The period the row is for.</p><p><strong>Example.</strong> <code>202604</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageTypeRegister.InPeriod",
+      "label": "InPeriod",
+      "section": "WageTypeRegisters",
+      "aliases": [
+        "loc:InPeriod",
+        "dom:WageTypeRegister_InPeriod"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The period the row was recorded in.</p><p><strong>Example.</strong> <code>202605</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

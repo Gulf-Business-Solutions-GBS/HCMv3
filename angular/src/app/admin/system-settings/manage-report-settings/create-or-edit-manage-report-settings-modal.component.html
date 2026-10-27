@@ -1,0 +1,193 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'ReportSettings' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'ReportSettings' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body" style="max-height: 75vh; overflow-y: auto">
+                        <fieldset>
+                            <legend>{{ 'Payslip' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="ReportSettings_ShowSubordinatesPayslip"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="ShowSubordinatesPayslip"
+                                            [ngModel]="record().showSubordinatesPayslip"
+                                            (ngModelChange)="updateField('showSubordinatesPayslip', $event)" />
+                                        <label class="form-check-label" for="ReportSettings_ShowSubordinatesPayslip">{{ 'ShowSubordinatesPayslip' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="ReportSettings_ShowPayslipOnDay">{{ 'ShowPayslipOnDay' | localize }}</label>
+                                    <input
+                                        id="ReportSettings_ShowPayslipOnDay"
+                                        type="number"
+                                        class="form-control"
+                                        name="ShowPayslipOnDay"
+                                        [ngModel]="record().showPayslipOnDay"
+                                        (ngModelChange)="updateNumberField('showPayslipOnDay', $event)" />
+                                </div>
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="ReportSettings_ShowPayslipFromDate">{{ 'ShowPayslipFromDate' | localize }}</label>
+                                    <input
+                                        id="ReportSettings_ShowPayslipFromDate"
+                                        type="date"
+                                        class="form-control"
+                                        name="ShowPayslipFromDate"
+                                        [ngModel]="record().showPayslipFromDate?.toISODate()"
+                                        (ngModelChange)="updateDateField('showPayslipFromDate', $event)" />
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>{{ 'GridReportExport' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="ReportSettings_ExportGridReportWithHeader"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="ExportGridReportWithHeader"
+                                            [ngModel]="record().exportGridReportWithHeader"
+                                            (ngModelChange)="updateField('exportGridReportWithHeader', $event)" />
+                                        <label class="form-check-label" for="ReportSettings_ExportGridReportWithHeader">{{ 'ExportGridReportWithHeader' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="ReportSettings_ExportGridReportWithFooter"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="ExportGridReportWithFooter"
+                                            [ngModel]="record().exportGridReportWithFooter"
+                                            (ngModelChange)="updateField('exportGridReportWithFooter', $event)" />
+                                        <label class="form-check-label" for="ReportSettings_ExportGridReportWithFooter">{{ 'ExportGridReportWithFooter' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="ReportSettings_DecimalInReports">{{ 'DecimalInReports' | localize }}</label>
+                                    <input
+                                        id="ReportSettings_DecimalInReports"
+                                        type="number"
+                                        class="form-control"
+                                        name="DecimalInReports"
+                                        [ngModel]="record().decimalInReports"
+                                        (ngModelChange)="updateNumberField('decimalInReports', $event)" />
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>{{ 'PeriodDisplay' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="ReportSettings_ShowPeriodInPayrollSheet"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="ShowPeriodInPayrollSheet"
+                                            [ngModel]="record().showPeriodInPayrollSheet"
+                                            (ngModelChange)="updateField('showPeriodInPayrollSheet', $event)" />
+                                        <label class="form-check-label" for="ReportSettings_ShowPeriodInPayrollSheet">{{ 'ShowPeriodInPayrollSheet' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="ReportSettings_ShowPeriodInLeaveProvision"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="ShowPeriodInLeaveProvision"
+                                            [ngModel]="record().showPeriodInLeaveProvision"
+                                            (ngModelChange)="updateField('showPeriodInLeaveProvision', $event)" />
+                                        <label class="form-check-label" for="ReportSettings_ShowPeriodInLeaveProvision">{{ 'ShowPeriodInLeaveProvision' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="ReportSettings_ShowPeriodInIndemnityProvision"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="ShowPeriodInIndemnityProvision"
+                                            [ngModel]="record().showPeriodInIndemnityProvision"
+                                            (ngModelChange)="updateField('showPeriodInIndemnityProvision', $event)" />
+                                        <label class="form-check-label" for="ReportSettings_ShowPeriodInIndemnityProvision">{{ 'ShowPeriodInIndemnityProvision' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="ReportSettings_PeriodMonthLimitInPayrollSheet">{{ 'PeriodMonthLimitInPayrollSheet' | localize }}</label>
+                                    <input
+                                        id="ReportSettings_PeriodMonthLimitInPayrollSheet"
+                                        type="number"
+                                        class="form-control"
+                                        name="PeriodMonthLimitInPayrollSheet"
+                                        [ngModel]="record().periodMonthLimitInPayrollSheet"
+                                        (ngModelChange)="updateNumberField('periodMonthLimitInPayrollSheet', $event)" />
+                                </div>
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="ReportSettings_PeriodMonthLimitInLeaveProvision">{{ 'PeriodMonthLimitInLeaveProvision' | localize }}</label>
+                                    <input
+                                        id="ReportSettings_PeriodMonthLimitInLeaveProvision"
+                                        type="number"
+                                        class="form-control"
+                                        name="PeriodMonthLimitInLeaveProvision"
+                                        [ngModel]="record().periodMonthLimitInLeaveProvision"
+                                        (ngModelChange)="updateNumberField('periodMonthLimitInLeaveProvision', $event)" />
+                                </div>
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="ReportSettings_PeriodMonthLimitInIndemnityProvision">{{ 'PeriodMonthLimitInIndemnityProvision' | localize }}</label>
+                                    <input
+                                        id="ReportSettings_PeriodMonthLimitInIndemnityProvision"
+                                        type="number"
+                                        class="form-control"
+                                        name="PeriodMonthLimitInIndemnityProvision"
+                                        [ngModel]="record().periodMonthLimitInIndemnityProvision"
+                                        (ngModelChange)="updateNumberField('periodMonthLimitInIndemnityProvision', $event)" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

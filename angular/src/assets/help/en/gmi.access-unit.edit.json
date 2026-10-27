@@ -1,0 +1,75 @@
+{
+  "helpId": "gmi.access-unit.edit",
+  "lang": "en",
+  "title": "Access Units — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.AccessUnit",
+  "overviewHtml": "<p>An access unit is one attendance or access-control device. Each punch imported from the devices records the access unit it came from, matched by the device's network address.</p><p>When punches arrive from an address that no access unit has, a new unit is created automatically, named after the device — or after its address, if the name is already taken by a unit at a different address. So the list also grows by itself as devices are added.</p>",
+  "aliasIndex": {
+    "loc:Code": "AccessUnit.Code",
+    "dom:AccessUnit_Code": "AccessUnit.Code",
+    "loc:NameEn": "AccessUnit.NameEn",
+    "dom:AccessUnit_NameEn": "AccessUnit.NameEn",
+    "loc:NameAr": "AccessUnit.NameAr",
+    "dom:AccessUnit_NameAr": "AccessUnit.NameAr",
+    "loc:IPAddress": "AccessUnit.IPAddress",
+    "dom:AccessUnit_IPAddress": "AccessUnit.IPAddress"
+  },
+  "fields": [
+    {
+      "id": "AccessUnit.Code",
+      "label": "Code",
+      "section": "AccessUnits",
+      "aliases": [
+        "loc:Code",
+        "dom:AccessUnit_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccessUnit.NameEn",
+      "label": "NameEn",
+      "section": "AccessUnits",
+      "aliases": [
+        "loc:NameEn",
+        "dom:AccessUnit_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccessUnit.NameAr",
+      "label": "NameAr",
+      "section": "AccessUnits",
+      "aliases": [
+        "loc:NameAr",
+        "dom:AccessUnit_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccessUnit.IPAddress",
+      "label": "IPAddress",
+      "section": "AccessUnits",
+      "aliases": [
+        "loc:IPAddress",
+        "dom:AccessUnit_IPAddress"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The network address of the device, as the attendance import sees it.</p><p><strong>Example.</strong> <code>192.168.1.50</code></p><p><strong>Why it matters.</strong> It is how imported punches are matched to this unit. If the device's address changes, change it here too — otherwise the next import creates a second unit for the new address.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

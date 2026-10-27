@@ -1,0 +1,85 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            @for (field of dateFields; track field) {
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" [for]="'EmployeePayrollStatus_' + field">{{ fieldLabel(field) | localize }}</label>
+                                    <input
+                                        [id]="'EmployeePayrollStatus_' + field"
+                                        type="date"
+                                        class="form-control"
+                                        [name]="field"
+                                        [ngModel]="getDateValue(field)"
+                                        (ngModelChange)="updateDateField(field, $event)" />
+                                </div>
+                            }
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input
+                                        id="EmployeePayrollStatus_PersonLocked"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="PersonLocked"
+                                        [ngModel]="record().personLocked"
+                                        (ngModelChange)="updateField('personLocked', $event)" />
+                                    <label class="form-check-label" for="EmployeePayrollStatus_PersonLocked">{{ 'PersonLocked' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-5 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input
+                                        id="EmployeePayrollStatus_PayrollCorrection"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="PayrollCorrection"
+                                        [ngModel]="record().payrollCorrection"
+                                        (ngModelChange)="updateField('payrollCorrection', $event)" />
+                                    <label class="form-check-label" for="EmployeePayrollStatus_PayrollCorrection">{{ 'PayrollCorrection' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

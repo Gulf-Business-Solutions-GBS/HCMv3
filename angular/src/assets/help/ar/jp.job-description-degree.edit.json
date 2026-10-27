@@ -1,0 +1,27 @@
+{
+  "helpId": "jp.job-description-degree.edit",
+  "lang": "ar",
+  "title": "درجات الوصف الوظيفي — إنشاء / تحرير",
+  "entity": "HCMv3.JobProfileManagement.JobDescriptionDegree",
+  "overviewHtml": "<p>بند (الدرجة العلمية) يتطلبه الوصف الوظيفي. ولا يُدرج كل بند إلا مرة واحدة لكل وصف وظيفي.</p>",
+  "aliasIndex": {
+    "loc:EducationDegree": "JobDescriptionDegree.EducationDegreeId",
+    "dom:JobDescriptionDegree_EducationDegreeId": "JobDescriptionDegree.EducationDegreeId"
+  },
+  "fields": [
+    {
+      "id": "JobDescriptionDegree.EducationDegreeId",
+      "label": "EducationDegree",
+      "section": "JobDescriptionDegrees",
+      "aliases": [
+        "loc:EducationDegree",
+        "dom:JobDescriptionDegree_EducationDegreeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدرجات العلمية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدرجة العلمية.</p><p><strong>مثال.</strong> بكالوريوس</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

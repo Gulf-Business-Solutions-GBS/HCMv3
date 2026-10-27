@@ -1,0 +1,24 @@
+<div [class]="footerStyle" id="kt_footer">
+    <div
+        [class]="
+            footerContainerClass + ' py-4 d-flex flex-column flex-md-row align-items-center justify-content-between'
+        ">
+        <div class="text-gray-900 order-2 order-md-1">
+            <span class="text-muted fw-bold me-1">
+                HCMv3
+                @if (appSession.tenant && appSession.tenant.edition && appSession.tenant.edition.displayName) {
+                    <span>
+                        {{ appSession.tenant.edition.displayName }}
+                    </span>
+                }
+                <!--
+                    HCMv3's own release number and nothing else. What stood here -- "API: v15.2.0 | Client:
+                    v15.2.0 [20260929]" -- was the ASP.NET Zero template's version, twice: it moves when the
+                    template is upgraded and tells a customer nothing about the product they are running.
+                -->
+                | v{{ productVersion }}
+            </span>
+        </div>
+        <ul class="menu menu-gray-600 menu-hover-primary fw-bold order-1"></ul>
+    </div>
+</div>

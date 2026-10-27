@@ -1,0 +1,107 @@
+{
+  "helpId": "perf.paemployee.edit",
+  "lang": "ar",
+  "title": "موظفو تقييم الأداء — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.PAEmployee",
+  "overviewHtml": "<p>تقييم شامل (360) لموظف واحد: الدورة ونوع النموذج والنتيجة — الزيادة المقترحة والمسمى الوظيفي المقترح ومجالات التحسين. وتُحفظ مؤشراته ومراجعوه وتقديراته في تفاصيله.</p><p>ويُنشأ التقييم بشأن الموظف لا من قِبله، ويمر بسير العمل للاعتماد. ويعرض تقرير تقييم الموظفين حقول نتيجته.</p>",
+  "aliasIndex": {
+    "loc:Employee": "PAEmployee.EmployeeId",
+    "dom:PAEmployee_EmployeeId": "PAEmployee.EmployeeId",
+    "loc:PACycle": "PAEmployee.PACycleId",
+    "dom:PAEmployee_PACycleId": "PAEmployee.PACycleId",
+    "loc:FormType": "PAEmployee.FormTypeId",
+    "dom:PAEmployee_FormTypeId": "PAEmployee.FormTypeId",
+    "loc:ProposedIncrement": "PAEmployee.ProposedIncrement",
+    "dom:PAEmployee_ProposedIncrement": "PAEmployee.ProposedIncrement",
+    "loc:ProposedJobTitle": "PAEmployee.ProposedJobTitle",
+    "dom:PAEmployee_ProposedJobTitle": "PAEmployee.ProposedJobTitle",
+    "loc:AreaOfImprovement": "PAEmployee.AreaOfImprovement",
+    "dom:PAEmployee_AreaOfImprovement": "PAEmployee.AreaOfImprovement"
+  },
+  "fields": [
+    {
+      "id": "PAEmployee.EmployeeId",
+      "label": "Employee",
+      "section": "PAEmployees",
+      "aliases": [
+        "loc:Employee",
+        "dom:PAEmployee_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف المُقيَّم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployee.PACycleId",
+      "label": "PACycle",
+      "section": "PAEmployees",
+      "aliases": [
+        "loc:PACycle",
+        "dom:PAEmployee_PACycleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة دورات تقييم الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دورة التقييم. مطلوبة لتقديم التقييم.</p><p><strong>مثال.</strong> التقييم السنوي 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployee.FormTypeId",
+      "label": "FormType",
+      "section": "PAEmployees",
+      "aliases": [
+        "loc:FormType",
+        "dom:PAEmployee_FormTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع النماذج.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع النموذج.</p><p><strong>لماذا يهم.</strong> يحدّ الحد الأقصى للمراجعين فيه عدد المراجعين الذين يمكن إضافتهم. وهو مطلوب لتقديم التقييم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployee.ProposedIncrement",
+      "label": "ProposedIncrement",
+      "section": "PAEmployees",
+      "aliases": [
+        "loc:ProposedIncrement",
+        "dom:PAEmployee_ProposedIncrement"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> زيادة الراتب المقترحة.</p><p><strong>مثال.</strong> <code>5%</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployee.ProposedJobTitle",
+      "label": "ProposedJobTitle",
+      "section": "PAEmployees",
+      "aliases": [
+        "loc:ProposedJobTitle",
+        "dom:PAEmployee_ProposedJobTitle"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي المقترح.</p><p><strong>مثال.</strong> محاسب أول</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployee.AreaOfImprovement",
+      "label": "AreaOfImprovement",
+      "section": "PAEmployees",
+      "aliases": [
+        "loc:AreaOfImprovement",
+        "dom:PAEmployee_AreaOfImprovement"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المجالات التي ينبغي أن يتحسن فيها الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

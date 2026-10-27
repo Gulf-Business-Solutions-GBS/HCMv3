@@ -1,0 +1,139 @@
+{
+  "helpId": "pay.employee-sub-group-absence.edit",
+  "lang": "ar",
+  "title": "غيابات المجموعة الفرعية للموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupAbsence",
+  "overviewHtml": "<p>استحقاق الدرجة من نوع واحد من الإجازات، اعتباراً من تاريخ معيّن: كم يوماً في السنة، وأقصى ما يمكن تجميعه، و-- للإجازة المرضية — قاعدة الخصم.</p><p>ويمكن لعدة أسطر لنوع الإجازة نفسه أن ترفع الاستحقاق بحسب مدة الخدمة. فكل سطر يسري ما دامت خدمة الموظف أقل من <strong>تغيير السنة</strong> فيه، ويُطبَّق السطر الذي تغيير السنة فيه هو الأصغر بين ما يتجاوز خدمة الموظف.</p>",
+  "aliasIndex": {
+    "loc:AbsenceType": "EmployeeSubGroupAbsence.AbsenceTypeId",
+    "dom:EmployeeSubGroupAbsence_AbsenceTypeId": "EmployeeSubGroupAbsence.AbsenceTypeId",
+    "loc:AbsenceDeductionRule": "EmployeeSubGroupAbsence.AbsenceDeductionRuleId",
+    "dom:EmployeeSubGroupAbsence_AbsenceDeductionRuleId": "EmployeeSubGroupAbsence.AbsenceDeductionRuleId",
+    "loc:StartDate": "EmployeeSubGroupAbsence.StartDate",
+    "dom:EmployeeSubGroupAbsence_StartDate": "EmployeeSubGroupAbsence.StartDate",
+    "loc:EndDate": "EmployeeSubGroupAbsence.EndDate",
+    "dom:EmployeeSubGroupAbsence_EndDate": "EmployeeSubGroupAbsence.EndDate",
+    "loc:ChangeYear": "EmployeeSubGroupAbsence.ChangeYear",
+    "dom:EmployeeSubGroupAbsence_ChangeYear": "EmployeeSubGroupAbsence.ChangeYear",
+    "loc:TotalDays": "EmployeeSubGroupAbsence.TotalDays",
+    "dom:EmployeeSubGroupAbsence_TotalDays": "EmployeeSubGroupAbsence.TotalDays",
+    "loc:MaxLimit": "EmployeeSubGroupAbsence.MaxLimit",
+    "dom:EmployeeSubGroupAbsence_MaxLimit": "EmployeeSubGroupAbsence.MaxLimit",
+    "loc:MaxLimitReachNotificationInDays": "EmployeeSubGroupAbsence.MaxLimitReachNotificationInDays",
+    "dom:EmployeeSubGroupAbsence_MaxLimitReachNotificationInDays": "EmployeeSubGroupAbsence.MaxLimitReachNotificationInDays"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupAbsence.AbsenceTypeId",
+      "label": "AbsenceType",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:AbsenceType",
+        "dom:EmployeeSubGroupAbsence_AbsenceTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الإجازات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة الذي يخصه هذا الاستحقاق.</p><p><strong>مثال.</strong> الإجازة السنوية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.AbsenceDeductionRuleId",
+      "label": "AbsenceDeductionRule",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:AbsenceDeductionRule",
+        "dom:EmployeeSubGroupAbsence_AbsenceDeductionRuleId"
+      ],
+      "rules": "اختياري. يُختار من قائمة قواعد الخصم على الغياب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> للإجازة المرضية، الخطوات التي يُخفَّض بها الأجر كلما تراكمت الأيام المرضية.</p><p><strong>مثال.</strong> سلّم الإجازة المرضية الكويتي</p><p><strong>لماذا يهم.</strong> لا يُقرأ إلا في سطر الإجازة المرضية للمجموعة الفرعية — النوع ذو الرمز 3، أو نوع الحصة إجازة مرضية. وإذا تُرك فارغاً تُصرف الإجازة المرضية كاملة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSubGroupAbsence_StartDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSubGroupAbsence_EndDate"
+      ],
+      "rules": "اختياري. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.ChangeYear",
+      "label": "ChangeYear",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:ChangeYear",
+        "dom:EmployeeSubGroupAbsence_ChangeYear"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سنوات الخدمة التي يسري هذا السطر حتى بلوغها.</p><p><strong>مثال.</strong> <code>5</code> — 30 يوماً في السنة للسنوات الخمس الأولى، وسطر ثانٍ بـ<code>99</code> يعطي 45 يوماً بعدها.</p><p><strong>لماذا يهم.</strong> تُختار الأسطر بحسب خدمة الموظف في ذلك اليوم: يُطبَّق أصغر تغيير سنة لا يزال أكبر منها. وإذا لم ينطبق أي سطر يُستخدم أي سطر لنوع الإجازة سارٍ في ذلك اليوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.TotalDays",
+      "label": "TotalDays",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:TotalDays",
+        "dom:EmployeeSubGroupAbsence_TotalDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيام هذه الإجازة التي يستحقها الموظف كل سنة.</p><p><strong>مثال.</strong> <code>30</code></p><p><strong>لماذا يهم.</strong> تتراكم الإجازة السنوية يوماً بيوم بمعدل هذا العدد من الأيام في السنة، وتعطي الإجازة المرضية هذا العدد لكل دورة. ويحل محل <strong>مجموع الأيام المسموح بها</strong> في نوع الإجازة لموظفي هذه الدرجة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.MaxLimit",
+      "label": "MaxLimit",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:MaxLimit",
+        "dom:EmployeeSubGroupAbsence_MaxLimit"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أقصى عدد من أيام هذه الإجازة يمكن أن يحمله الرصيد.</p><p><strong>مثال.</strong> <code>60</code></p><p><strong>لماذا يهم.</strong> يُخفَّض رصيد الإجازة السنوية الذي يتجاوزه إليه أثناء تشغيل محرك الوقت، إذا كانت قاعدة المصادرة في إعدادات الوقت <em>لا شيء</em>، وتُحدّ به أيضاً الأرصدة المحتسبة للرواتب. والقيمة 0 تعني بلا حد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.MaxLimitReachNotificationInDays",
+      "label": "MaxLimitReachNotificationInDays",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:MaxLimitReachNotificationInDays",
+        "dom:EmployeeSubGroupAbsence_MaxLimitReachNotificationInDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كم يجب أن ينخفض الرصيد تحت الحد الأقصى قبل أن يمكن إرسال إشعار \"بلوغ الحد الأقصى\" مرة أخرى.</p><p><strong>مثال.</strong> <code>5</code></p><p><strong>لماذا يهم.</strong> لا أثر له حالياً: فهو يعيد تهيئة إشعار بلوغ الحد الأقصى للإجازة السنوية فقط، ولا شيء يرسل ذلك الإشعار.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

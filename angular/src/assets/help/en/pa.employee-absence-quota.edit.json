@@ -1,0 +1,171 @@
+{
+  "helpId": "pa.employee-absence-quota.edit",
+  "lang": "en",
+  "title": "Employee Absence Quotas — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAbsenceQuota",
+  "overviewHtml": "<p>The employee's leave entitlement for one leave type over an entitlement period: how much accrued, and how much was used, adjusted or forfeited.</p><p>The self-service leave balance is built from the quota whose entitlement period covers the date. For annual leave, the time engine adds each day's accrual to Quota Accrued as it runs.</p><p>When an existing quota is opened, <strong>Quota Balance</strong> shows what is left of it, as on the list: accrued, less used, adjusted and forfeited. It is calculated and cannot be typed in.</p>",
+  "aliasIndex": {
+    "loc:AbsenceTypeId": "EmployeeAbsenceQuota.AbsenceTypeId",
+    "dom:EmployeeAbsenceQuota_AbsenceTypeId": "EmployeeAbsenceQuota.AbsenceTypeId",
+    "loc:NotificationSent": "EmployeeAbsenceQuota.NotificationSent",
+    "dom:EmployeeAbsenceQuota_NotificationSent": "EmployeeAbsenceQuota.NotificationSent",
+    "loc:EntitlementFrom": "EmployeeAbsenceQuota.EntitlementFrom",
+    "dom:EmployeeAbsenceQuota_EntitlementFrom": "EmployeeAbsenceQuota.EntitlementFrom",
+    "loc:EntitlementTo": "EmployeeAbsenceQuota.EntitlementTo",
+    "dom:EmployeeAbsenceQuota_EntitlementTo": "EmployeeAbsenceQuota.EntitlementTo",
+    "loc:DeductionFrom": "EmployeeAbsenceQuota.DeductionFrom",
+    "dom:EmployeeAbsenceQuota_DeductionFrom": "EmployeeAbsenceQuota.DeductionFrom",
+    "loc:DeductionTo": "EmployeeAbsenceQuota.DeductionTo",
+    "dom:EmployeeAbsenceQuota_DeductionTo": "EmployeeAbsenceQuota.DeductionTo",
+    "loc:QuotaAccrued": "EmployeeAbsenceQuota.QuotaAccrued",
+    "dom:EmployeeAbsenceQuota_QuotaAccrued": "EmployeeAbsenceQuota.QuotaAccrued",
+    "loc:QuotaUsed": "EmployeeAbsenceQuota.QuotaUsed",
+    "dom:EmployeeAbsenceQuota_QuotaUsed": "EmployeeAbsenceQuota.QuotaUsed",
+    "loc:QuotaAdjusted": "EmployeeAbsenceQuota.QuotaAdjusted",
+    "dom:EmployeeAbsenceQuota_QuotaAdjusted": "EmployeeAbsenceQuota.QuotaAdjusted",
+    "loc:QuotaForfeited": "EmployeeAbsenceQuota.QuotaForfeited",
+    "dom:EmployeeAbsenceQuota_QuotaForfeited": "EmployeeAbsenceQuota.QuotaForfeited"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAbsenceQuota.AbsenceTypeId",
+      "label": "AbsenceTypeId",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:AbsenceTypeId",
+        "dom:EmployeeAbsenceQuota_AbsenceTypeId"
+      ],
+      "rules": "Required. Chosen from Leave Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The leave type this quota is for.</p><p><strong>Example.</strong> Annual Leave</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Leave Types.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.NotificationSent",
+      "label": "NotificationSent",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:NotificationSent",
+        "dom:EmployeeAbsenceQuota_NotificationSent"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the annual-leave maximum-limit notification has been sent.</p><p><strong>Why it matters.</strong> The time engine clears it once the balance drops back below the notification threshold, so the notification can be sent again.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.EntitlementFrom",
+      "label": "EntitlementFrom",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:EntitlementFrom",
+        "dom:EmployeeAbsenceQuota_EntitlementFrom"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day of the entitlement period.</p><p><strong>Example.</strong> 1 Jan 2026</p><p><strong>Why it matters.</strong> The quota whose entitlement period covers a date is the one used for the balance on that date.</p>",
+      "adminHtml": "<p>Keep annual leave entitlement periods continuous. The time engine creates the first annual leave quota itself when the employee has none, but if the employee already has one and none covers a day it processes, it stops with \"AbsenceQuota exists for Employee\".</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.EntitlementTo",
+      "label": "EntitlementTo",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:EntitlementTo",
+        "dom:EmployeeAbsenceQuota_EntitlementTo"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day of the entitlement period.</p><p><strong>Example.</strong> 31 Dec 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.DeductionFrom",
+      "label": "DeductionFrom",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:DeductionFrom",
+        "dom:EmployeeAbsenceQuota_DeductionFrom"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day leave can be taken from this quota.</p><p><strong>Example.</strong> 1 Jan 2026</p><p><strong>Why it matters.</strong> Leave forfeiture calculations pick the quota whose deduction period covers the month.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.DeductionTo",
+      "label": "DeductionTo",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:DeductionTo",
+        "dom:EmployeeAbsenceQuota_DeductionTo"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day leave can be taken from this quota.</p><p><strong>Example.</strong> 31 Mar 2027</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.QuotaAccrued",
+      "label": "QuotaAccrued",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:QuotaAccrued",
+        "dom:EmployeeAbsenceQuota_QuotaAccrued"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The days earned in this period.</p><p><strong>Example.</strong> 30</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.QuotaUsed",
+      "label": "QuotaUsed",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:QuotaUsed",
+        "dom:EmployeeAbsenceQuota_QuotaUsed"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The days taken from this quota.</p><p><strong>Example.</strong> 12</p><p><strong>Why it matters.</strong> Leave approved through self-service adds to it, and cancelling approved leave subtracts from it. Absences entered by HR on the absence form do not change it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.QuotaAdjusted",
+      "label": "QuotaAdjusted",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:QuotaAdjusted",
+        "dom:EmployeeAbsenceQuota_QuotaAdjusted"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Days adjusted on this quota — for example encashed.</p><p><strong>Example.</strong> 5</p><p><strong>Why it matters.</strong> Saving a leave adjustment does not update this figure; enter it here if the quota should reflect the adjustment.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsenceQuota.QuotaForfeited",
+      "label": "QuotaForfeited",
+      "section": "EmployeeAbsenceQuotas",
+      "aliases": [
+        "loc:QuotaForfeited",
+        "dom:EmployeeAbsenceQuota_QuotaForfeited"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Days lost from this quota.</p><p><strong>Example.</strong> 3</p><p><strong>Why it matters.</strong> Leave forfeiture calculations update it. Saving a manual forfeit does not.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

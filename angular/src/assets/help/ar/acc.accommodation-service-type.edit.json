@@ -1,0 +1,75 @@
+{
+  "helpId": "acc.accommodation-service-type.edit",
+  "lang": "ar",
+  "title": "أنواع خدمات السكن — إنشاء / تحرير",
+  "entity": "HCMv3.AccommodationManagement.AccommodationServiceType",
+  "overviewHtml": "<p>خدمة تُقدَّم للموظف أثناء الإقامة، مثل الغسيل أو النقل.</p>",
+  "aliasIndex": {
+    "loc:Code": "AccommodationServiceType.Code",
+    "dom:AccommodationServiceType_Code": "AccommodationServiceType.Code",
+    "loc:NameEn": "AccommodationServiceType.NameEn",
+    "dom:AccommodationServiceType_NameEn": "AccommodationServiceType.NameEn",
+    "loc:NameAr": "AccommodationServiceType.NameAr",
+    "dom:AccommodationServiceType_NameAr": "AccommodationServiceType.NameAr",
+    "loc:Comments": "AccommodationServiceType.Comments",
+    "dom:AccommodationServiceType_Comments": "AccommodationServiceType.Comments"
+  },
+  "fields": [
+    {
+      "id": "AccommodationServiceType.Code",
+      "label": "Code",
+      "section": "AccommodationServiceTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:AccommodationServiceType_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationServiceType.NameEn",
+      "label": "NameEn",
+      "section": "AccommodationServiceTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:AccommodationServiceType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationServiceType.NameAr",
+      "label": "NameAr",
+      "section": "AccommodationServiceTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:AccommodationServiceType_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationServiceType.Comments",
+      "label": "Comments",
+      "section": "AccommodationServiceTypes",
+      "aliases": [
+        "loc:Comments",
+        "dom:AccommodationServiceType_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

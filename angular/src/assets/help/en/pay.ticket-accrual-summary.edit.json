@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.ticket-accrual-summary.edit",
+  "lang": "en",
+  "title": "Ticket Accrual Summaries — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.TicketAccrualSummary",
+  "overviewHtml": "<p>A monthly snapshot of an employee's air ticket entitlement.</p><p>Not written at present: no process fills these summaries, and nothing reads them. Balances are worked out when they are needed, from the time register and the employee's records.</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "TicketAccrualSummary.EmployeeId",
+    "dom:TicketAccrualSummary_EmployeeId": "TicketAccrualSummary.EmployeeId",
+    "loc:Year": "TicketAccrualSummary.Year",
+    "dom:TicketAccrualSummary_Year": "TicketAccrualSummary.Year",
+    "loc:Month": "TicketAccrualSummary.Month",
+    "dom:TicketAccrualSummary_Month": "TicketAccrualSummary.Month",
+    "loc:TicketAccrued": "TicketAccrualSummary.TicketAccrued",
+    "dom:TicketAccrualSummary_TicketAccrued": "TicketAccrualSummary.TicketAccrued",
+    "loc:TicketUsed": "TicketAccrualSummary.TicketUsed",
+    "dom:TicketAccrualSummary_TicketUsed": "TicketAccrualSummary.TicketUsed"
+  },
+  "fields": [
+    {
+      "id": "TicketAccrualSummary.EmployeeId",
+      "label": "EmployeeId",
+      "section": "TicketAccrualSummaries",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:TicketAccrualSummary_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketAccrualSummary.Year",
+      "label": "Year",
+      "section": "TicketAccrualSummaries",
+      "aliases": [
+        "loc:Year",
+        "dom:TicketAccrualSummary_Year"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The year of the snapshot.</p><p><strong>Example.</strong> <code>2026</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketAccrualSummary.Month",
+      "label": "Month",
+      "section": "TicketAccrualSummaries",
+      "aliases": [
+        "loc:Month",
+        "dom:TicketAccrualSummary_Month"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The month of the snapshot.</p><p><strong>Example.</strong> <code>4</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketAccrualSummary.TicketAccrued",
+      "label": "TicketAccrued",
+      "section": "TicketAccrualSummaries",
+      "aliases": [
+        "loc:TicketAccrued",
+        "dom:TicketAccrualSummary_TicketAccrued"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Tickets accrued to date.</p><p><strong>Example.</strong> <code>0.33</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketAccrualSummary.TicketUsed",
+      "label": "TicketUsed",
+      "section": "TicketAccrualSummaries",
+      "aliases": [
+        "loc:TicketUsed",
+        "dom:TicketAccrualSummary_TicketUsed"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Tickets used to date.</p><p><strong>Example.</strong> <code>0</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

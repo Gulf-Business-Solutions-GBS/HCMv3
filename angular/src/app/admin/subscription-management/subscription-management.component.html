@@ -1,0 +1,333 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Subscription' | localize" />
+
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-body">
+                <tabset>
+                    <tab class="p-5" heading="{{ 'SubscriptionInformation' | localize }}">
+                        <form>
+                            <h3 class="mb-10">Your Plan</h3>
+                            <div class="card shadow-sm col-md-6 col-lg-4">
+                                <div class="card-header">
+                                    <div class="container">
+                                        <div class="row">
+                                            @if (tenant().edition) {
+                                                <div class="col-md-12 mt-10">
+                                                    <small class="text-muted text-uppercase d-block">
+                                                        {{ 'Edition' | localize }}
+                                                    </small>
+                                                    <h3 class="d-inline">
+                                                        {{ tenant().edition.displayName }}
+                                                    </h3>
+                                                    @if (tenant().edition.isFree) {
+                                                        <span class="badge badge-success">
+                                                            {{ 'Free' | localize }}
+                                                        </span>
+                                                    }
+                                                    @if (tenant().isInTrialPeriod) {
+                                                        <span class="badge badge-warning">
+                                                            {{ 'Trial' | localize }}
+                                                        </span>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="row my-5">
+                                            <div class="col-md-6">
+                                                <small class="text-muted text-uppercase d-block">
+                                                    {{ 'SubscriptionStartDate' | localize }}
+                                                </small>
+                                                <h3 class="d-inline">
+                                                    {{ tenant().creationTimeString }}
+                                                </h3>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <small class="text-muted text-uppercase d-block">
+                                                    {{ 'SubscriptionEndDate' | localize }}
+                                                </small>
+                                                <h3 class="d-inline">
+                                                    {{ tenant().subscriptionDateString }}
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-body">
+                                    <small class="text-muted text-uppercase d-block mb-5">
+                                        {{ 'WhatsIncludedInYourPlan' | localize }}
+                                    </small>
+                                    @if (tenant().featureValues && tenant().featureValues.length) {
+                                        <div>
+                                            @for (feature of tenant().featureValues; track feature) {
+                                                <span
+                                                    [ngClass]="{
+                                                        'text-muted': feature.value == 'false',
+                                                        'text-success': feature.value != 'false',
+                                                    }"
+                                                    class="text-left d-block mb-2">
+                                                    @if (feature.value == 'false') {
+                                                        <i class="far fa-times-circle text-muted"></i>
+                                                    }
+                                                    @if (feature.value != 'false') {
+                                                        <i class="far fa-check-circle text-success"></i>
+                                                    }
+                                                    {{ feature.name }}
+                                                    @if (feature.value != 'false' && feature.value != 'true') {
+                                                        <span>: {{ feature.value }}</span>
+                                                    }
+                                                </span>
+                                            }
+                                        </div>
+                                    }
+                                    @if (!tenant().featureValues || !tenant().featureValues.length) {
+                                        <div>
+                                            <p>
+                                                {{ 'NoFeaturesInYourPlan' | localize }}
+                                            </p>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="card-footer">
+                                    <div
+                                        class="mb-5 row"
+                                        [hidden]="
+                                            tenant().subscriptionPaymentType !=
+                                            subscriptionPaymentType.RecurringAutomatic
+                                        ">
+                                        <div class="col-md-12">
+                                            <a
+                                                id="btnDisableRecurringPayments"
+                                                href="javascript:;"
+                                                class="btn btn-secondary btn-lg w-100"
+                                                (click)="disableRecurringPayments()">
+                                                {{ 'DisableRecurringPayments' | localize }}
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="mb-5 row"
+                                        [hidden]="
+                                            tenant().subscriptionPaymentType != subscriptionPaymentType.RecurringManual
+                                        ">
+                                        <div class="col-md-12">
+                                            <a
+                                                id="btnEnableRecurringPayments"
+                                                href="javascript:;"
+                                                class="btn btn-info btn-lg w-100"
+                                                (click)="enableRecurringPayments()">
+                                                {{ 'EnableRecurringPayments' | localize }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    @if (
+                                        !hasRecurringSubscription() &&
+                                        tenant().edition &&
+                                        !tenant().edition.isFree &&
+                                        !tenant().isInTrialPeriod
+                                    ) {
+                                        <div class="mb-5 row">
+                                            <div class="col-md-12">
+                                                <a
+                                                    (click)="startExtendSubscription()"
+                                                    class="btn btn-info btn-lg w-100">
+                                                    {{ 'Extend' | localize }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (tenant().isInTrialPeriod) {
+                                        <div class="mb-5 row">
+                                            <div class="col-md-12">
+                                                <p-tieredMenu
+                                                    #buyNowActionsMenu
+                                                    [model]="activeBuyNowMenuItems()"
+                                                    [popup]="true"
+                                                    appendTo="body" />
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-info btn-lg w-100 dropdown-toggle"
+                                                    (click)="showBuyNowMenu($event, buyNowActionsMenu)">
+                                                    {{ 'BuyNow' | localize }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (
+                                        tenant().edition &&
+                                        !tenant().edition.isHighestEdition &&
+                                        !tenant().isInTrialPeriod
+                                    ) {
+                                        <div class="mb-5 row">
+                                            @if (!tenant().edition.isFree) {
+                                                <div>
+                                                    @for (editionToUpgrade of editions(); track editionToUpgrade) {
+                                                        <div class="col-md-12 mb-5">
+                                                            <a
+                                                                (click)="
+                                                                    startUpdateSubscription(editionToUpgrade.edition.id)
+                                                                "
+                                                                class="btn btn-warning btn-lg w-100">
+                                                                {{
+                                                                    l('UpgradeTo', editionToUpgrade.edition.displayName)
+                                                                }}
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+                                            @if (tenant().edition.isFree) {
+                                                <div>
+                                                    @for (editionToUpgrade of editions(); track editionToUpgrade) {
+                                                        <div class="col-md-12 mb-5">
+                                                            <p-tieredMenu
+                                                                #upgradeActionsMenu
+                                                                [model]="activeUpgradeMenuItems()"
+                                                                [popup]="true"
+                                                                appendTo="body" />
+                                                            <button
+                                                                type="button"
+                                                                class="btn btn-warning btn-lg w-100 dropdown-toggle"
+                                                                (click)="
+                                                                    showUpgradeMenu(
+                                                                        $event,
+                                                                        editionToUpgrade.edition.id,
+                                                                        upgradeActionsMenu
+                                                                    )
+                                                                ">
+                                                                {{
+                                                                    l('UpgradeTo', editionToUpgrade.edition.displayName)
+                                                                }}
+                                                            </button>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </form>
+                    </tab>
+                    <tab class="p-5" heading="{{ 'PaymentHistory' | localize }}">
+                        <p-tieredMenu
+                            #paymentActionsMenu
+                            [model]="activePaymentMenuItems()"
+                            [popup]="true"
+                            appendTo="body" />
+                        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                            <p-table
+                                #dataTable
+                                sortMode="multiple"
+                                (onLazyLoad)="getPaymentHistory($event)"
+                                [value]="primengTableHelper.records()"
+                                rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                                [paginator]="false"
+                                [lazy]="true"
+                                [scrollable]="true"
+                                [tableStyle]="{ 'min-width': '50rem' }">
+                                <ng-template #header>
+                                    <tr>
+                                        <th style="width: 130px">{{ 'Actions' | localize }}</th>
+                                        <th style="width: 150px" pSortableColumn="creationTime">
+                                            {{ 'ProcessTime' | localize }}
+                                            <p-sortIcon field="creationTime" />
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="gateway">
+                                            {{ 'Gateway' | localize }}
+                                            <p-sortIcon field="gateway" />
+                                        </th>
+                                        <th style="width: 100px" pSortableColumn="amount">
+                                            {{ 'Amount' | localize }}
+                                            <p-sortIcon field="amount" />
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="status">
+                                            {{ 'Status' | localize }}
+                                            <p-sortIcon field="status" />
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="paymentPeriodType">
+                                            {{ 'Period' | localize }}
+                                            <p-sortIcon field="paymentPeriodType" />
+                                        </th>
+                                        <th style="width: 100px">{{ 'DayCount' | localize }}</th>
+                                        <th style="width: 250px">{{ 'PaymentId' | localize }}</th>
+                                        <th style="width: 150px" pSortableColumn="invoiceNo">
+                                            {{ 'InvoiceNo' | localize }}
+                                            <p-sortIcon field="invoiceNo" />
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template #body let-record="$implicit">
+                                    <tr>
+                                        <td style="width: 130px">
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary btn-sm dropdown-toggle"
+                                                (click)="showPaymentMenu($event, record, paymentActionsMenu)">
+                                                <i class="fa fa-cog"></i>
+                                                {{ 'Actions' | localize }}
+                                            </button>
+                                        </td>
+                                        <td style="width: 150px">
+                                            @if (record.creationTime) {
+                                                <span>
+                                                    {{ record.creationTime | luxonFormat: 'F' }}
+                                                </span>
+                                            }
+                                            @if (!record.creationTime) {
+                                                <span>-</span>
+                                            }
+                                        </td>
+                                        <td style="width: 150px">
+                                            {{ 'SubscriptionPaymentGatewayType_' + record.gateway | localize }}
+                                        </td>
+                                        <td style="width: 100px">
+                                            {{ appSession.application.currencySign }}
+                                            {{ record.totalAmount | number: '.2' }}
+                                        </td>
+                                        <td style="width: 150px">
+                                            {{ 'SubscriptionPaymentStatus_' + record.status | localize }}
+                                        </td>
+                                        <td style="width: 150px">
+                                            {{ 'PaymentPeriodType_' + record.paymentPeriodType | localize }}
+                                        </td>
+                                        <td style="width: 100px">
+                                            {{ record.dayCount }}
+                                        </td>
+                                        <td style="width: 250px">
+                                            {{ record.externalPaymentId }}
+                                        </td>
+                                        <td style="width: 150px">
+                                            {{ record.invoiceNo }}
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            @if (primengTableHelper.totalRecordsCount() == 0) {
+                                <div class="primeng-no-data">
+                                    {{ 'NoData' | localize }}
+                                </div>
+                            }
+                            <div class="primeng-paging-container">
+                                <p-paginator
+                                    [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                    #paginator
+                                    (onPageChange)="getPaymentHistory($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                    [showCurrentPageReport]="true"
+                                    [currentPageReportTemplate]="
+                                        'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                    " />
+                            </div>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+</div>
+
+<showDetailModal #showDetailModal />

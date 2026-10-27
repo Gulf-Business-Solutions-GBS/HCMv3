@@ -1,0 +1,43 @@
+{
+  "helpId": "pay.wage-type-security-role.edit",
+  "lang": "ar",
+  "title": "أدوار صلاحيات أنواع الأجور — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.WageTypeSecurityRole",
+  "overviewHtml": "<p>الأدوار المسموح لها برؤية نوع أجر محمي. لا يُطبَّق حالياً: لا شيء يقيّد الوصول إلى نوع الأجر مهما أُدرج هنا.</p>",
+  "aliasIndex": {
+    "loc:WageTypeId": "WageTypeSecurityRole.WageTypeId",
+    "dom:WageTypeSecurityRole_WageTypeId": "WageTypeSecurityRole.WageTypeId",
+    "loc:RoleId": "WageTypeSecurityRole.RoleId",
+    "dom:WageTypeSecurityRole_RoleId": "WageTypeSecurityRole.RoleId"
+  },
+  "fields": [
+    {
+      "id": "WageTypeSecurityRole.WageTypeId",
+      "label": "WageTypeId",
+      "section": "WageTypeSecurityRoles",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:WageTypeSecurityRole_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الأجر المحمي.</p><p><strong>مثال.</strong> مكافأة الإدارة التنفيذية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageTypeSecurityRole.RoleId",
+      "label": "RoleId",
+      "section": "WageTypeSecurityRoles",
+      "aliases": [
+        "loc:RoleId",
+        "dom:WageTypeSecurityRole_RoleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الأدوار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دور مسموح له برؤيته.</p><p><strong>مثال.</strong> مدير الرواتب</p><p><strong>لماذا يهم.</strong> لا يُدرج الدور إلا مرة واحدة لكل نوع أجر.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

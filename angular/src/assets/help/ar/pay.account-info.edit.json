@@ -1,0 +1,75 @@
+{
+  "helpId": "pay.account-info.edit",
+  "lang": "ar",
+  "title": "بيانات الحسابات — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.AccountInfo",
+  "overviewHtml": "<p>حساب في دفتر الأستاذ في النظام المالي تُرحَّل إليه الرواتب — مصروف الرواتب والمستحقات وحساب الرواتب البنكي وغيرها. وتشير حسابات الأجور ومناطق الرواتب وقيد اليومية إلى حسابات من هذه القائمة.</p>",
+  "aliasIndex": {
+    "loc:Code": "AccountInfo.Code",
+    "dom:AccountInfo_Code": "AccountInfo.Code",
+    "loc:NameEn": "AccountInfo.NameEn",
+    "dom:AccountInfo_NameEn": "AccountInfo.NameEn",
+    "loc:NameAr": "AccountInfo.NameAr",
+    "dom:AccountInfo_NameAr": "AccountInfo.NameAr",
+    "loc:AccountType": "AccountInfo.AccountTypeId",
+    "dom:AccountInfo_AccountTypeId": "AccountInfo.AccountTypeId"
+  },
+  "fields": [
+    {
+      "id": "AccountInfo.Code",
+      "label": "Code",
+      "section": "AccountInfos",
+      "aliases": [
+        "loc:Code",
+        "dom:AccountInfo_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccountInfo.NameEn",
+      "label": "NameEn",
+      "section": "AccountInfos",
+      "aliases": [
+        "loc:NameEn",
+        "dom:AccountInfo_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccountInfo.NameAr",
+      "label": "NameAr",
+      "section": "AccountInfos",
+      "aliases": [
+        "loc:NameAr",
+        "dom:AccountInfo_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccountInfo.AccountTypeId",
+      "label": "AccountType",
+      "section": "AccountInfos",
+      "aliases": [
+        "loc:AccountType",
+        "dom:AccountInfo_AccountTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الحسابات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الحساب في النظام المالي.</p><p><strong>مثال.</strong> دفتر الأستاذ</p><p><strong>لماذا يهم.</strong> يُطبع نوعاً للحساب بجانب الحساب في كل سطر من أسطر قيد اليومية، للحساب الرئيسي والحساب المقابل على السواء.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

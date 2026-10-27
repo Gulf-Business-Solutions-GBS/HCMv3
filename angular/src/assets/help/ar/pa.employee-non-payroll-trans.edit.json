@@ -1,0 +1,155 @@
+{
+  "helpId": "pa.employee-non-payroll-trans.edit",
+  "lang": "ar",
+  "title": "معاملات الموظف خارج الرواتب — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeNonPayrollTrans",
+  "overviewHtml": "<p>دفعة تُصرف للموظف خارج الرواتب — كمكافأة تُدفع بشيك.</p><p>لا تصرفها الرواتب. لكن احتساب متوسط المكافأة يحتسب المبالغ المصروفة خارج الرواتب لنوع أجر المكافأة ضمن الفترة التي يحسب متوسطها، وتظهر في تقريري المكافآت والمعاملات خارج الرواتب.</p>",
+  "aliasIndex": {
+    "loc:WageTypeId": "EmployeeNonPayrollTrans.WageTypeId",
+    "dom:EmployeeNonPayrollTran_WageTypeId": "EmployeeNonPayrollTrans.WageTypeId",
+    "loc:PaymentDate": "EmployeeNonPayrollTrans.PaymentDate",
+    "dom:EmployeeNonPayrollTran_PaymentDate": "EmployeeNonPayrollTrans.PaymentDate",
+    "loc:Amount": "EmployeeNonPayrollTrans.Amount",
+    "dom:EmployeeNonPayrollTran_Amount": "EmployeeNonPayrollTrans.Amount",
+    "loc:CurrencyId": "EmployeeNonPayrollTrans.CurrencyId",
+    "dom:EmployeeNonPayrollTran_CurrencyId": "EmployeeNonPayrollTrans.CurrencyId",
+    "loc:PayableBy": "EmployeeNonPayrollTrans.PayableBy",
+    "dom:EmployeeNonPayrollTran_PayableBy": "EmployeeNonPayrollTrans.PayableBy",
+    "loc:PaymentMethod": "EmployeeNonPayrollTrans.PaymentMethod",
+    "dom:EmployeeNonPayrollTran_PaymentMethod": "EmployeeNonPayrollTrans.PaymentMethod",
+    "loc:IsLocked": "EmployeeNonPayrollTrans.IsLocked",
+    "dom:EmployeeNonPayrollTran_IsLocked": "EmployeeNonPayrollTrans.IsLocked",
+    "loc:NotificationSent": "EmployeeNonPayrollTrans.NotificationSent",
+    "dom:EmployeeNonPayrollTran_NotificationSent": "EmployeeNonPayrollTrans.NotificationSent",
+    "loc:Comments": "EmployeeNonPayrollTrans.Comments",
+    "dom:EmployeeNonPayrollTran_Comments": "EmployeeNonPayrollTrans.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeNonPayrollTrans.WageTypeId",
+      "label": "WageTypeId",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:EmployeeNonPayrollTran_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر الأجر الذي تُسجَّل عليه الدفعة.</p><p><strong>مثال.</strong> مكافأة سنوية</p>",
+      "adminHtml": "<p>تُدار من إدارة الرواتب ← أنواع الأجور.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeNonPayrollTrans.PaymentDate",
+      "label": "PaymentDate",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:PaymentDate",
+        "dom:EmployeeNonPayrollTran_PaymentDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ صرف الدفعة.</p><p><strong>مثال.</strong> 15 مارس 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeNonPayrollTrans.Amount",
+      "label": "Amount",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeNonPayrollTran_Amount"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ المصروف.</p><p><strong>مثال.</strong> 1000.000</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeNonPayrollTrans.CurrencyId",
+      "label": "CurrencyId",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:CurrencyId",
+        "dom:EmployeeNonPayrollTran_CurrencyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة العملات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عملة الدفعة.</p><p><strong>مثال.</strong> KWD</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeNonPayrollTrans.PayableBy",
+      "label": "PayableBy",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:PayableBy",
+        "dom:EmployeeNonPayrollTran_PayableBy"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجهة التي تدفعها، كنص حر.</p><p><strong>مثال.</strong> مالية المكتب الرئيسي</p><p><strong>لماذا يهم.</strong> يظهر في تقرير المعاملات خارج الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeNonPayrollTrans.PaymentMethod",
+      "label": "PaymentMethod",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:PaymentMethod",
+        "dom:EmployeeNonPayrollTran_PaymentMethod"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طريقة الدفع، كنص حر.</p><p><strong>مثال.</strong> شيك</p><p><strong>لماذا يهم.</strong> يظهر في تقرير المعاملات خارج الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeNonPayrollTrans.IsLocked",
+      "label": "IsLocked",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:IsLocked",
+        "dom:EmployeeNonPayrollTran_IsLocked"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يحدد السجل مقفلاً.</p><p><strong>لماذا يهم.</strong> يظهر في تقرير المعاملات خارج الرواتب، ولا يمنع تعديل السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeNonPayrollTrans.NotificationSent",
+      "label": "NotificationSent",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:NotificationSent",
+        "dom:EmployeeNonPayrollTran_NotificationSent"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يحدد أن الموظف قد أُبلغ.</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا يرسله أو يقرؤه شيء حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeNonPayrollTrans.Comments",
+      "label": "Comments",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeNonPayrollTran_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

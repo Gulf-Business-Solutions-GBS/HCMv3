@@ -1,0 +1,43 @@
+{
+  "helpId": "wf.workflow-remark.edit",
+  "lang": "ar",
+  "title": "ملاحظات سير العمل — إنشاء / تحرير",
+  "entity": "HCMv3.Workflow.WorkflowRemark",
+  "overviewHtml": "<p>طلب رأي: يُطلب من شخص من خارج سلسلة الموافقات إبداء رأيه في طلب. ويمكنه عندئذ فتح الطلب وسجل نشاطه، حيث يظهر الطلب كحدث طلب رأي. ولا يمكن سؤال الشخص نفسه إلا مرة واحدة لكل طلب.</p>",
+  "aliasIndex": {
+    "loc:WorkflowRequests": "WorkflowRemark.WorkflowRequestId",
+    "dom:WorkflowRemark_WorkflowRequestId": "WorkflowRemark.WorkflowRequestId",
+    "loc:CCReceiver": "WorkflowRemark.CCReceiverId",
+    "dom:WorkflowRemark_CCReceiverId": "WorkflowRemark.CCReceiverId"
+  },
+  "fields": [
+    {
+      "id": "WorkflowRemark.WorkflowRequestId",
+      "label": "WorkflowRequests",
+      "section": "WorkflowRemarks",
+      "aliases": [
+        "loc:WorkflowRequests",
+        "dom:WorkflowRemark_WorkflowRequestId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة طلبات سير العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طلب سير العمل الذي يخصه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowRemark.CCReceiverId",
+      "label": "CCReceiver",
+      "section": "WorkflowRemarks",
+      "aliases": [
+        "loc:CCReceiver",
+        "dom:WorkflowRemark_CCReceiverId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشخص المطلوب رأيه.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+{
+  "helpId": "tm.daily-duty.edit",
+  "lang": "en",
+  "title": "Daily Duties — Create / Edit",
+  "entity": "HCMv3.TimeManagement.DailyDuty",
+  "overviewHtml": "<p>A duty for the roster lists (roster duty periods and roster daily duties), with its shift times.</p><p>Not read at present: the time engine and payroll take employees' duties from duty periods and roster groups, not from this list. The roster generator that would have used it was never live in the legacy system and was not ported. The roster schedule viewer shows its times when one appears in a roster.</p>",
+  "aliasIndex": {
+    "loc:Code": "DailyDuty.Code",
+    "dom:DailyDuty_Code": "DailyDuty.Code",
+    "loc:NameEn": "DailyDuty.NameEn",
+    "dom:DailyDuty_NameEn": "DailyDuty.NameEn",
+    "loc:NameAr": "DailyDuty.NameAr",
+    "dom:DailyDuty_NameAr": "DailyDuty.NameAr",
+    "loc:StartDate": "DailyDuty.StartDate",
+    "dom:DailyDuty_StartDate": "DailyDuty.StartDate",
+    "loc:EndDate": "DailyDuty.EndDate",
+    "dom:DailyDuty_EndDate": "DailyDuty.EndDate",
+    "loc:StartTime": "DailyDuty.StartTime",
+    "dom:DailyDuty_StartTime": "DailyDuty.StartTime",
+    "loc:EndTime": "DailyDuty.EndTime",
+    "dom:DailyDuty_EndTime": "DailyDuty.EndTime",
+    "loc:BreakShift": "DailyDuty.BreakShiftId",
+    "dom:DailyDuty_BreakShiftId": "DailyDuty.BreakShiftId",
+    "loc:IsNightShift": "DailyDuty.IsNightShift",
+    "dom:DailyDuty_IsNightShift": "DailyDuty.IsNightShift",
+    "loc:AllowTransStart": "DailyDuty.AllowTransStart",
+    "dom:DailyDuty_AllowTransStart": "DailyDuty.AllowTransStart",
+    "loc:AllowTransEnd": "DailyDuty.AllowTransEnd",
+    "dom:DailyDuty_AllowTransEnd": "DailyDuty.AllowTransEnd"
+  },
+  "fields": [
+    {
+      "id": "DailyDuty.Code",
+      "label": "Code",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:Code",
+        "dom:DailyDuty_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.NameEn",
+      "label": "NameEn",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:NameEn",
+        "dom:DailyDuty_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.NameAr",
+      "label": "NameAr",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:NameAr",
+        "dom:DailyDuty_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.StartDate",
+      "label": "StartDate",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:StartDate",
+        "dom:DailyDuty_StartDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.EndDate",
+      "label": "EndDate",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:EndDate",
+        "dom:DailyDuty_EndDate"
+      ],
+      "rules": "Optional. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.StartTime",
+      "label": "StartTime",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:StartTime",
+        "dom:DailyDuty_StartTime"
+      ],
+      "rules": "Optional. Time of day.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the shift starts.</p><p><strong>Example.</strong> <code>07:00</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.EndTime",
+      "label": "EndTime",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:EndTime",
+        "dom:DailyDuty_EndTime"
+      ],
+      "rules": "Optional. Time of day.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the shift ends.</p><p><strong>Example.</strong> <code>19:00</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.BreakShiftId",
+      "label": "BreakShift",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:BreakShift",
+        "dom:DailyDuty_BreakShiftId"
+      ],
+      "rules": "Optional. Chosen from Break Shift master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The break taken during this duty.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.IsNightShift",
+      "label": "IsNightShift",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:IsNightShift",
+        "dom:DailyDuty_IsNightShift"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the shift ends on the next day.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.AllowTransStart",
+      "label": "AllowTransStart",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:AllowTransStart",
+        "dom:DailyDuty_AllowTransStart"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a leave may start on this duty's off days.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.AllowTransEnd",
+      "label": "AllowTransEnd",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:AllowTransEnd",
+        "dom:DailyDuty_AllowTransEnd"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this duty's off days can count towards a leave.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

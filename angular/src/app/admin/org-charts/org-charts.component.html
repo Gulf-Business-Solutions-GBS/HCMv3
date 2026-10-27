@@ -1,0 +1,29 @@
+<div [@routerTransition]>
+    <sub-header [title]="'OrgCharts' | localize" [description]="'OrgChartsDescription' | localize" />
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <ul class="nav nav-tabs org-charts__tabs" role="tablist">
+                    @for (tab of tabs(); track tab.path) {
+                        <li class="nav-item" role="presentation">
+                            <a
+                                class="nav-link"
+                                [routerLink]="[tab.path]"
+                                routerLinkActive="active"
+                                #linkActive="routerLinkActive"
+                                [attr.aria-selected]="linkActive.isActive"
+                                role="tab">
+                                {{ tab.labelKey | localize }}
+                            </a>
+                        </li>
+                    }
+                </ul>
+
+                <div class="org-charts__panel">
+                    <router-outlet />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

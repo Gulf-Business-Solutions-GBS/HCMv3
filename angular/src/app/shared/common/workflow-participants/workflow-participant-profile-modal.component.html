@@ -1,0 +1,75 @@
+<!-- A plain overlay, deliberately NOT a bs-modal.
+     
+     This card is opened from the participants panel, which itself lives inside the request detail dialog.
+     A bs-modal nested in another bs-modal's DOM is a trap: ngx-bootstrap does not reference-count the
+     body's modal-open class or its backdrop stack, so closing the inner one could strip the outer one's
+     state and leave a backdrop over a page nobody could click -- the screen froze while the server had
+     answered 200 and gone home. An overlay scoped to this component cannot do that: it has no backdrop of
+     its own to unwind and no global state to restore. -->
+@if (active()) {
+    <div class="wf-profile__overlay" (click)="close()">
+        <div class="wf-profile__card" (click)="$event.stopPropagation()">
+            <div class="wf-profile__card-header">
+                <h4 class="wf-profile__card-title">{{ 'Profile' | localize }}</h4>
+                <button
+                    type="button"
+                    class="btn-close"
+                    (click)="close()"
+                    [attr.aria-label]="'Close' | localize"></button>
+            </div>
+
+            <div class="wf-profile__card-body">
+                    <div class="wf-profile__head">
+                        <employee-avatar
+                            [photoUrl]="profile()?.photoUrl"
+                            [name]="name()"
+                            [size]="64"></employee-avatar>
+
+                        <div class="wf-profile__identity">
+                            <div class="wf-profile__name">{{ heading() }}</div>
+                            @if (jobTitle()) {
+                                <div class="wf-profile__title">{{ jobTitle() }}</div>
+                            }
+                        </div>
+                    </div>
+
+                    @if (loading() && !profile()) {
+                        <div class="wf-profile__empty"><i class="fa fa-spinner fa-spin"></i></div>
+                    } @else if (hasDetails()) {
+                        <dl class="wf-profile__facts">
+                            @if (profile()?.department) {
+                                <dt>{{ 'Department' | localize }}</dt>
+                                <dd>{{ profile()?.department }}</dd>
+                            }
+                            @if (workLocation()) {
+                                <dt>{{ 'WorkLocation' | localize }}</dt>
+                                <dd>{{ workLocation() }}</dd>
+                            }
+                            @if (profile()?.workEmail) {
+                                <dt>{{ 'Email' | localize }}</dt>
+                                <dd class="wf-profile__wrap">{{ profile()?.workEmail }}</dd>
+                            }
+                            @if (profile()?.businessLandline) {
+                                <dt>{{ 'Telephone' | localize }}</dt>
+                                <dd>{{ profile()?.businessLandline }}</dd>
+                            }
+                            @if (profile()?.businessExtension) {
+                                <dt>{{ 'Extension' | localize }}</dt>
+                                <dd>{{ profile()?.businessExtension }}</dd>
+                            }
+                        </dl>
+                    } @else {
+                        <!-- Honest rather than a grid of blank rows: many deployments never populate the
+                             org unit or the business numbers. -->
+                        <div class="wf-profile__empty">{{ 'NoContactDetailsRecorded' | localize }}</div>
+                    }
+            </div>
+
+            <div class="wf-profile__card-footer">
+                <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                    {{ 'Close' | localize }}
+                </button>
+            </div>
+        </div>
+    </div>
+}

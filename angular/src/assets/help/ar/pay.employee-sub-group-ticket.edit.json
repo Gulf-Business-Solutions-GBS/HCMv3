@@ -1,0 +1,155 @@
+{
+  "helpId": "pay.employee-sub-group-ticket.edit",
+  "lang": "ar",
+  "title": "تذاكر المجموعة الفرعية للموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupTicket",
+  "overviewHtml": "<p>استحقاق الدرجة من تذاكر الطيران لنوع تذكرة واحد — تذكرة الموظف نفسه أو تذكرة عائل: كم تذكرة، وعلى أي فترة، وكيف تُقيَّم كل تذكرة.</p><p>وتُختار طريقة تقييم التذكرة في الدرجة نفسها (<strong>نوع دفع تذكرة الطيران</strong>)، ويقدّم هذا السطر المبالغ التي يستخدمها ذلك الاختيار.</p>",
+  "aliasIndex": {
+    "loc:TicketType": "EmployeeSubGroupTicket.TicketTypeId",
+    "dom:EmployeeSubGroupTicket_TicketTypeId": "EmployeeSubGroupTicket.TicketTypeId",
+    "loc:TicketCount": "EmployeeSubGroupTicket.TicketCount",
+    "dom:EmployeeSubGroupTicket_TicketCount": "EmployeeSubGroupTicket.TicketCount",
+    "loc:StartDate": "EmployeeSubGroupTicket.StartDate",
+    "dom:EmployeeSubGroupTicket_StartDate": "EmployeeSubGroupTicket.StartDate",
+    "loc:EndDate": "EmployeeSubGroupTicket.EndDate",
+    "dom:EmployeeSubGroupTicket_EndDate": "EmployeeSubGroupTicket.EndDate",
+    "loc:MaxAmount": "EmployeeSubGroupTicket.MaxAmount",
+    "dom:EmployeeSubGroupTicket_MaxAmount": "EmployeeSubGroupTicket.MaxAmount",
+    "loc:FixAmount": "EmployeeSubGroupTicket.FixAmount",
+    "dom:EmployeeSubGroupTicket_FixAmount": "EmployeeSubGroupTicket.FixAmount",
+    "loc:FareType": "EmployeeSubGroupTicket.FareType",
+    "dom:EmployeeSubGroupTicket_FareType": "EmployeeSubGroupTicket.FareType",
+    "loc:AgeLimit": "EmployeeSubGroupTicket.AgeLimit",
+    "dom:EmployeeSubGroupTicket_AgeLimit": "EmployeeSubGroupTicket.AgeLimit",
+    "loc:AccrualPeriod": "EmployeeSubGroupTicket.AccrualPeriod",
+    "dom:EmployeeSubGroupTicket_AccrualPeriod": "EmployeeSubGroupTicket.AccrualPeriod"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupTicket.TicketTypeId",
+      "label": "TicketType",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:TicketType",
+        "dom:EmployeeSubGroupTicket_TicketTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع التذكرة الذي يخصه هذا الاستحقاق.</p><p><strong>مثال.</strong> تذكرة الموظف</p><p><strong>لماذا يهم.</strong> نوع التذكرة <code>1</code> هو تذكرة الموظف نفسه، والبقية للعائلين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupTicket.TicketCount",
+      "label": "TicketCount",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:TicketCount",
+        "dom:EmployeeSubGroupTicket_TicketCount"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد التذاكر المكتسبة في كل فترة استحقاق.</p><p><strong>مثال.</strong> <code>1</code></p><p><strong>لماذا يهم.</strong> يراكمه محرك الوقت يوماً بيوم — على سنة، أو على سنتين لفترة <em>نصف سنوي</em> — إلا إذا كان نوع التذكرة يُستحق فوراً. ويستخدمه الصرف التلقائي للتذاكر استحقاقاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupTicket.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSubGroupTicket_StartDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupTicket.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSubGroupTicket_EndDate"
+      ],
+      "rules": "اختياري. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupTicket.MaxAmount",
+      "label": "MaxAmount",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:MaxAmount",
+        "dom:EmployeeSubGroupTicket_MaxAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أقصى قيمة للتذكرة الواحدة.</p><p><strong>مثال.</strong> <code>250</code></p><p><strong>لماذا يهم.</strong> <em>ActualAmountWithinMaxlimit</em> لا يتجاوزه أبداً، و<em>المبلغ الفعلي</em> يستخدمه إذا لم يُدفع شيء فعلاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupTicket.FixAmount",
+      "label": "FixAmount",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:FixAmount",
+        "dom:EmployeeSubGroupTicket_FixAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> قيمة التذكرة الواحدة، لنوع الدفع <em>مبلغ ثابت</em>.</p><p><strong>مثال.</strong> <code>180</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupTicket.FareType",
+      "label": "FareType",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:FareType",
+        "dom:EmployeeSubGroupTicket_FareType"
+      ],
+      "rules": "إلزامي. إحدى القيم: OneWay، Return.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت تُستخدم أجرة الذهاب فقط أو أجرة الذهاب والعودة، لنوع الدفع <em>FareAmount</em>.</p><p><strong>مثال.</strong> ذهاب وعودة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupTicket.AgeLimit",
+      "label": "AgeLimit",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:AgeLimit",
+        "dom:EmployeeSubGroupTicket_AgeLimit"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> لتذكرة العائل، أكبر عمر يكون فيه العائل مستحقاً.</p><p><strong>مثال.</strong> <code>21</code></p><p><strong>لماذا يهم.</strong> يتجاوز الصرف التلقائي للتذاكر العائلين الأكبر من هذا العمر، والعائلين الذين لم يُسجَّل تاريخ ميلادهم، ما لم يكن لهم استثناء تذكرة.</p>",
+      "adminHtml": "<p>حد العمر 0 يعني ألا يستحق أي عائل — لا يعني \"بلا حد\". حدّد أكبر عمر يستحق.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupTicket.AccrualPeriod",
+      "label": "AccrualPeriod",
+      "section": "EmployeeSubGroupTickets",
+      "aliases": [
+        "loc:AccrualPeriod",
+        "dom:EmployeeSubGroupTicket_AccrualPeriod"
+      ],
+      "rules": "إلزامي. إحدى القيم: بلا تراكم، السنة الميلادية، السنة المالية، سنة العمل، نصف سنوي، لكل فترة توظيف، مخصص.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الفترة التي يسري عليها استحقاق التذاكر.</p><p><strong>مثال.</strong> سنة العمل</p><p><strong>لماذا يهم.</strong> يضيف الصرف التلقائي للتذاكر التذكرة في أول يوم من كل فترة. و<em>نصف سنوي</em> يوزّع التراكم على سنتين.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

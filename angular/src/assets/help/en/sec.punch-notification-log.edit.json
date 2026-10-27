@@ -1,0 +1,75 @@
+{
+  "helpId": "sec.punch-notification-log.edit",
+  "lang": "en",
+  "title": "Punch Notification Logs — Create / Edit",
+  "entity": "HCMv3.SystemSecurity.PunchNotificationLog",
+  "overviewHtml": "<p>A punch-related notification sent for an employee's duty period. Written by the system as it runs; there is normally no reason to add or change entries by hand.</p>",
+  "aliasIndex": {
+    "loc:EmployeeDutyPeriod": "PunchNotificationLog.EmployeeDutyPeriodId",
+    "dom:PunchNotificationLog_EmployeeDutyPeriodId": "PunchNotificationLog.EmployeeDutyPeriodId",
+    "loc:EmailNotificationLog": "PunchNotificationLog.EmailNotificationLogId",
+    "dom:PunchNotificationLog_EmailNotificationLogId": "PunchNotificationLog.EmailNotificationLogId",
+    "loc:Type": "PunchNotificationLog.Type",
+    "dom:PunchNotificationLog_Type": "PunchNotificationLog.Type",
+    "loc:Date": "PunchNotificationLog.Date",
+    "dom:PunchNotificationLog_Date": "PunchNotificationLog.Date"
+  },
+  "fields": [
+    {
+      "id": "PunchNotificationLog.EmployeeDutyPeriodId",
+      "label": "EmployeeDutyPeriod",
+      "section": "PunchNotificationLogs",
+      "aliases": [
+        "loc:EmployeeDutyPeriod",
+        "dom:PunchNotificationLog_EmployeeDutyPeriodId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's duty period.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PunchNotificationLog.EmailNotificationLogId",
+      "label": "EmailNotificationLog",
+      "section": "PunchNotificationLogs",
+      "aliases": [
+        "loc:EmailNotificationLog",
+        "dom:PunchNotificationLog_EmailNotificationLogId"
+      ],
+      "rules": "Optional. Chosen from Email Notification Log master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The email that was sent.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PunchNotificationLog.Type",
+      "label": "Type",
+      "section": "PunchNotificationLogs",
+      "aliases": [
+        "loc:Type",
+        "dom:PunchNotificationLog_Type"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of punch notification.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PunchNotificationLog.Date",
+      "label": "Date",
+      "section": "PunchNotificationLogs",
+      "aliases": [
+        "loc:Date",
+        "dom:PunchNotificationLog_Date"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date it was for.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

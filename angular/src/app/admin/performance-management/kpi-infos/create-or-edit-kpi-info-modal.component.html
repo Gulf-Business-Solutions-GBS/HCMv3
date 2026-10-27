@@ -1,0 +1,150 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #kpiInfoForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (kpiInfo().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'KpiInfos' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'KpiInfos' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="KpiInfo_Code">{{ 'Code' | localize }}</label>
+                                <input
+                                    id="KpiInfo_Code"
+                                    type="text"
+                                    class="form-control"
+                                    name="Code"
+                                    maxlength="64"
+                                    [ngModel]="kpiInfo().code"
+                                    (ngModelChange)="updateField('code', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="KpiInfo_NameEn">{{ 'NameEn' | localize }}</label>
+                                <input
+                                    id="KpiInfo_NameEn"
+                                    #nameEnInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameEn"
+                                    maxlength="256"
+                                    [ngModel]="kpiInfo().nameEn"
+                                    (ngModelChange)="updateField('nameEn', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameEnInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="KpiInfo_NameAr">{{ 'NameAr' | localize }}</label>
+                                <input
+                                    id="KpiInfo_NameAr"
+                                    #nameArInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameAr"
+                                    maxlength="256"
+                                    [ngModel]="kpiInfo().nameAr"
+                                    (ngModelChange)="updateField('nameAr', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameArInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="KpiInfo_KpiCategoryId">{{ 'KpiCategory' | localize }}</label>
+                                <select
+                                    id="KpiInfo_KpiCategoryId"
+                                    #kpiCategoryIdInput="ngModel"
+                                    class="form-select"
+                                    name="KpiCategoryId"
+                                    [ngModel]="kpiInfo().kpiCategoryId"
+                                    (ngModelChange)="updateField('kpiCategoryId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (category of kpiCategories(); track category.id) {
+                                        <option [ngValue]="category.id">{{ category.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="kpiCategoryIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input
+                                        id="KpiInfo_Active"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="Active"
+                                        [ngModel]="kpiInfo().active"
+                                        (ngModelChange)="updateField('active', $event)" />
+                                    <label class="form-check-label" for="KpiInfo_Active">{{ 'Active' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="KpiInfo_CompetencyId">{{ 'Competency' | localize }}</label>
+                                <select
+                                    id="KpiInfo_CompetencyId"
+                                    class="form-select"
+                                    name="CompetencyId"
+                                    [ngModel]="kpiInfo().competencyId"
+                                    (ngModelChange)="updateField('competencyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (competency of competencies(); track competency.id) {
+                                        <option [ngValue]="competency.id">{{ competency.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="KpiInfo_Comments">{{ 'Comments' | localize }}</label>
+                                <textarea
+                                    id="KpiInfo_Comments"
+                                    class="form-control"
+                                    name="Comments"
+                                    rows="3"
+                                    [ngModel]="kpiInfo().comments"
+                                    (ngModelChange)="updateField('comments', $event)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!kpiInfoForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

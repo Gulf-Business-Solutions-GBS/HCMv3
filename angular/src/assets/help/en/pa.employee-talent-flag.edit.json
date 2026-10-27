@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-talent-flag.edit",
+  "lang": "en",
+  "title": "Employee Talent Flags — Create / Edit",
+  "entity": "HCMv3.SuccessionManagement.EmployeeTalentFlag",
+  "overviewHtml": "<p>Flags the employee as a retention concern for a period: how likely they are to leave, how much it would matter, and why.</p><p>It is recorded for reference; no calculation or report reads it at present.</p>",
+  "aliasIndex": {
+    "loc:RiskOfLossId": "EmployeeTalentFlag.RiskOfLossId",
+    "dom:EmployeeTalentFlag_RiskOfLossId": "EmployeeTalentFlag.RiskOfLossId",
+    "loc:ImpactOfLossId": "EmployeeTalentFlag.ImpactOfLossId",
+    "dom:EmployeeTalentFlag_ImpactOfLossId": "EmployeeTalentFlag.ImpactOfLossId",
+    "loc:ReasonForLeavingId": "EmployeeTalentFlag.ReasonForLeavingId",
+    "dom:EmployeeTalentFlag_ReasonForLeavingId": "EmployeeTalentFlag.ReasonForLeavingId",
+    "loc:TalentPoolId": "EmployeeTalentFlag.TalentPoolId",
+    "dom:EmployeeTalentFlag_TalentPoolId": "EmployeeTalentFlag.TalentPoolId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeTalentFlag.RiskOfLossId",
+      "label": "RiskOfLossId",
+      "section": "EmployeeTalentFlags",
+      "aliases": [
+        "loc:RiskOfLossId",
+        "dom:EmployeeTalentFlag_RiskOfLossId"
+      ],
+      "rules": "Required. Chosen from Risk Of Loss master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How likely the employee is to leave.</p><p><strong>Example.</strong> High</p>",
+      "adminHtml": "<p>Maintained under Succession Management.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTalentFlag.ImpactOfLossId",
+      "label": "ImpactOfLossId",
+      "section": "EmployeeTalentFlags",
+      "aliases": [
+        "loc:ImpactOfLossId",
+        "dom:EmployeeTalentFlag_ImpactOfLossId"
+      ],
+      "rules": "Required. Chosen from Impact Of Loss master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How much losing the employee would matter.</p><p><strong>Example.</strong> Critical</p>",
+      "adminHtml": "<p>Maintained under Succession Management.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTalentFlag.ReasonForLeavingId",
+      "label": "ReasonForLeavingId",
+      "section": "EmployeeTalentFlags",
+      "aliases": [
+        "loc:ReasonForLeavingId",
+        "dom:EmployeeTalentFlag_ReasonForLeavingId"
+      ],
+      "rules": "Required. Chosen from Reason For Leaving master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The likely reason for leaving.</p><p><strong>Example.</strong> Compensation</p>",
+      "adminHtml": "<p>Maintained under Succession Management.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTalentFlag.TalentPoolId",
+      "label": "TalentPoolId",
+      "section": "EmployeeTalentFlags",
+      "aliases": [
+        "loc:TalentPoolId",
+        "dom:EmployeeTalentFlag_TalentPoolId"
+      ],
+      "rules": "Required. Chosen from Talent Pool master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The talent pool the employee belongs to.</p><p><strong>Example.</strong> Future Leaders</p>",
+      "adminHtml": "<p>Maintained under Succession Management.</p>",
+      "stub": false
+    }
+  ]
+}

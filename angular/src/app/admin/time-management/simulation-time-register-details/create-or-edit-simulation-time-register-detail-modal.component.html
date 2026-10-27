@@ -1,0 +1,103 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #simulationTimeRegisterDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (simulationTimeRegisterDetail().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'SimulationTimeRegisterDetail' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'SimulationTimeRegisterDetail' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SimulationTimeRegisterDetail_SimulationTimeRegisterId">{{ 'SimulationTimeRegister' | localize }}</label>
+                                <select
+                                    id="SimulationTimeRegisterDetail_SimulationTimeRegisterId"
+                                    #simulationTimeRegisterIdInput="ngModel"
+                                    class="form-select"
+                                    name="SimulationTimeRegisterId"
+                                    [ngModel]="simulationTimeRegisterDetail().simulationTimeRegisterId"
+                                    (ngModelChange)="updateField('simulationTimeRegisterId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (record of simulationTimeRegisters(); track record.id) {
+                                        <option [ngValue]="record.id">{{ simulationTimeRegisterLabel(record) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="simulationTimeRegisterIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SimulationTimeRegisterDetail_TimeTypeId">{{ 'TimeType' | localize }}</label>
+                                <select
+                                    id="SimulationTimeRegisterDetail_TimeTypeId"
+                                    #timeTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="TimeTypeId"
+                                    [ngModel]="simulationTimeRegisterDetail().timeTypeId"
+                                    (ngModelChange)="updateField('timeTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (timeType of timeTypes(); track timeType.id) {
+                                        <option [ngValue]="timeType.id">{{ timeType.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="timeTypeIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="SimulationTimeRegisterDetail_TimeValue">{{ 'TimeValue' | localize }}</label>
+                                <input
+                                    id="SimulationTimeRegisterDetail_TimeValue"
+                                    class="form-control"
+                                    type="text"
+                                    name="TimeValue"
+                                    [ngModel]="simulationTimeRegisterDetail().timeValue"
+                                    (ngModelChange)="updateField('timeValue', $event)"
+                                    maxlength="200" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!simulationTimeRegisterDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

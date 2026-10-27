@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.loan-installment.edit",
+  "lang": "ar",
+  "title": "أقساط القرض — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.LoanInstallment",
+  "overviewHtml": "<p>قسط مخطط في جدول سداد القرض.</p><p>يُسجَّل للرجوع إليه؛ إذ تسترد الرواتب القروض بمبلغ القسط المحدد في القرض، ولا تقرأ هذا الجدول حالياً.</p>",
+  "aliasIndex": {
+    "loc:EmployeeLoanId": "LoanInstallment.EmployeeLoanId",
+    "dom:LoanInstallment_EmployeeLoanId": "LoanInstallment.EmployeeLoanId",
+    "loc:InstallmentDate": "LoanInstallment.InstallmentDate",
+    "dom:LoanInstallment_InstallmentDate": "LoanInstallment.InstallmentDate",
+    "loc:InstallmentAmount": "LoanInstallment.InstallmentAmount",
+    "dom:LoanInstallment_InstallmentAmount": "LoanInstallment.InstallmentAmount",
+    "loc:InstallmentStatus": "LoanInstallment.InstallmentStatus",
+    "dom:LoanInstallment_InstallmentStatus": "LoanInstallment.InstallmentStatus"
+  },
+  "fields": [
+    {
+      "id": "LoanInstallment.EmployeeLoanId",
+      "label": "EmployeeLoanId",
+      "section": "LoanInstallments",
+      "aliases": [
+        "loc:EmployeeLoanId",
+        "dom:LoanInstallment_EmployeeLoanId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القرض الذي ينتمي إليه هذا القسط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanInstallment.InstallmentDate",
+      "label": "InstallmentDate",
+      "section": "LoanInstallments",
+      "aliases": [
+        "loc:InstallmentDate",
+        "dom:LoanInstallment_InstallmentDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ استحقاق القسط.</p><p><strong>مثال.</strong> 31 أكتوبر 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanInstallment.InstallmentAmount",
+      "label": "InstallmentAmount",
+      "section": "LoanInstallments",
+      "aliases": [
+        "loc:InstallmentAmount",
+        "dom:LoanInstallment_InstallmentAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مبلغ القسط.</p><p><strong>مثال.</strong> 100.000</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanInstallment.InstallmentStatus",
+      "label": "InstallmentStatus",
+      "section": "LoanInstallments",
+      "aliases": [
+        "loc:InstallmentStatus",
+        "dom:LoanInstallment_InstallmentStatus"
+      ],
+      "rules": "إلزامي. إحدى القيم: غير مدفوع، مدفوع.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل سُدِّد القسط.</p><p><strong>مثال.</strong> غير مسدد</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

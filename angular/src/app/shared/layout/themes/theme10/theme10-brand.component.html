@@ -1,0 +1,8 @@
+<a href="/">
+    @if (!appSession.tenant || !appSession.tenant.HasLogo()) {
+        <img [src]="defaultLogoUrl" alt="logo" class="h-25px h-lg-30px" />
+    }
+    @if (appSession.tenant && appSession.tenant.HasLogo()) {
+        <img [src]="tenantLogoUrl" alt="logo" class="h-25px h-lg-30px" />
+    }
+</a>

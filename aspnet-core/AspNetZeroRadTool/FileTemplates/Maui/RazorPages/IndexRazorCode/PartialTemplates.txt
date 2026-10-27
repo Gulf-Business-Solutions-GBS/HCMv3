@@ -1,0 +1,32 @@
+{
+  "propertyTemplates": [],
+  "navigationPropertyTemplates": [],
+  "enumTemplates": [],
+  "conditionalTemplates": [
+    {
+      "placeholder": "{{Primary_Key_Inside_Tag_Here}}",
+      "condition": "{{Primary_Key_Here}} != 'int'",
+      "content": "<{{Primary_Key_Here}}>"
+    },  
+    {
+      "placeholder": "{{Item_OnClick_Route_Method_Here}}",
+      "condition": "{{Create_Maui_View_Here}} == false",
+      "content": "
+        private void OpenEditPage(EntityDto{{Primary_Key_Inside_Tag_Here}} input)
+        {
+          NavigationService.NavigateTo(NavigationUrlConsts.{{Entity_Name_Plural_Here}}_Create_Or_Edit + $\"/{input.Id}\");
+        }
+      "
+    },
+    {
+      "placeholder": "{{Item_OnClick_Route_Method_Here}}",
+      "condition": "{{Create_Maui_View_Here}} == true",
+      "content": "
+        private void OpenViewPage(EntityDto{{Primary_Key_Inside_Tag_Here}} input)
+        {
+          NavigationService.NavigateTo(NavigationUrlConsts.{{Entity_Name_Plural_Here}}_View + $\"/{input.Id}\");
+        }
+      "
+    }
+  ]
+}

@@ -1,0 +1,331 @@
+{
+  "helpId": "mp.position.edit",
+  "lang": "en",
+  "title": "Positions — Create / Edit",
+  "entity": "HCMv3.ManpowerPlanningManagement.Position",
+  "overviewHtml": "<p>A position in the establishment: one seat, or several, for a job title. Positions are created by hand or from an approved manpower plan, and the Position Chart draws them from each position's Reports to position. Leave the code blank to have the next number given. A position cannot report to itself.</p>",
+  "aliasIndex": {
+    "loc:Code": "Position.Code",
+    "dom:Position_Code": "Position.Code",
+    "loc:NameEn": "Position.NameEn",
+    "dom:Position_NameEn": "Position.NameEn",
+    "loc:NameAr": "Position.NameAr",
+    "dom:Position_NameAr": "Position.NameAr",
+    "loc:StartDate": "Position.StartDate",
+    "dom:Position_StartDate": "Position.StartDate",
+    "loc:EndDate": "Position.EndDate",
+    "dom:Position_EndDate": "Position.EndDate",
+    "loc:JobTitle": "Position.JobTitleId",
+    "dom:Position_JobTitleId": "Position.JobTitleId",
+    "loc:OrganizationUnit": "Position.OrganizationUnitId",
+    "dom:Position_OrganizationUnitId": "Position.OrganizationUnitId",
+    "loc:ParentPosition": "Position.ParentPositionId",
+    "dom:Position_ParentPositionId": "Position.ParentPositionId",
+    "loc:CostCenter": "Position.CostCenterId",
+    "dom:Position_CostCenterId": "Position.CostCenterId",
+    "loc:EmployeeGroup": "Position.EmployeeGroupId",
+    "dom:Position_EmployeeGroupId": "Position.EmployeeGroupId",
+    "loc:EmployeeSubGroup": "Position.EmployeeSubGroupId",
+    "dom:Position_EmployeeSubGroupId": "Position.EmployeeSubGroupId",
+    "loc:PayrollAreaId": "Position.PayrollAreaId",
+    "dom:Position_PayrollAreaId": "Position.PayrollAreaId",
+    "loc:WorkLocationId": "Position.WorkLocationId",
+    "dom:Position_WorkLocationId": "Position.WorkLocationId",
+    "loc:FTELimit": "Position.FTELimit",
+    "dom:Position_FTELimit": "Position.FTELimit",
+    "loc:MinSalary": "Position.MinSalary",
+    "dom:Position_MinSalary": "Position.MinSalary",
+    "loc:MidSalary": "Position.MidSalary",
+    "dom:Position_MidSalary": "Position.MidSalary",
+    "loc:MaxSalary": "Position.MaxSalary",
+    "dom:Position_MaxSalary": "Position.MaxSalary",
+    "loc:Vacant": "Position.Vacant",
+    "dom:Position_Vacant": "Position.Vacant",
+    "loc:Active": "Position.Active",
+    "dom:Position_Active": "Position.Active",
+    "loc:IsBudgeted": "Position.IsBudgeted",
+    "dom:Position_IsBudgeted": "Position.IsBudgeted"
+  },
+  "fields": [
+    {
+      "id": "Position.Code",
+      "label": "Code",
+      "section": "Positions",
+      "aliases": [
+        "loc:Code",
+        "dom:Position_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.NameEn",
+      "label": "NameEn",
+      "section": "Positions",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Position_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.NameAr",
+      "label": "NameAr",
+      "section": "Positions",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Position_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.StartDate",
+      "label": "StartDate",
+      "section": "Positions",
+      "aliases": [
+        "loc:StartDate",
+        "dom:Position_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.EndDate",
+      "label": "EndDate",
+      "section": "Positions",
+      "aliases": [
+        "loc:EndDate",
+        "dom:Position_EndDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.JobTitleId",
+      "label": "JobTitle",
+      "section": "Positions",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:Position_JobTitleId"
+      ],
+      "rules": "Optional. Chosen from Job Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job title of the position.</p><p><strong>Example.</strong> Accountant</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.OrganizationUnitId",
+      "label": "OrganizationUnit",
+      "section": "Positions",
+      "aliases": [
+        "loc:OrganizationUnit",
+        "dom:Position_OrganizationUnitId"
+      ],
+      "rules": "Optional. Chosen from Organization unit master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The department the position sits in.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.ParentPositionId",
+      "label": "ParentPosition",
+      "section": "Positions",
+      "aliases": [
+        "loc:ParentPosition",
+        "dom:Position_ParentPositionId"
+      ],
+      "rules": "Optional. Chosen from Position master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The position this one reports to.</p><p><strong>Example.</strong> Finance Manager</p><p><strong>Why it matters.</strong> Builds the Position Chart.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.CostCenterId",
+      "label": "CostCenter",
+      "section": "Positions",
+      "aliases": [
+        "loc:CostCenter",
+        "dom:Position_CostCenterId"
+      ],
+      "rules": "Optional. Chosen from Cost Center master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The cost centre of the position.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.EmployeeGroupId",
+      "label": "EmployeeGroup",
+      "section": "Positions",
+      "aliases": [
+        "loc:EmployeeGroup",
+        "dom:Position_EmployeeGroupId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The salary profile of the position.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.EmployeeSubGroupId",
+      "label": "EmployeeSubGroup",
+      "section": "Positions",
+      "aliases": [
+        "loc:EmployeeSubGroup",
+        "dom:Position_EmployeeSubGroupId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The grade of the position.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.PayrollAreaId",
+      "label": "PayrollAreaId",
+      "section": "Positions",
+      "aliases": [
+        "loc:PayrollAreaId",
+        "dom:Position_PayrollAreaId"
+      ],
+      "rules": "Optional. Chosen from Payroll Area master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The payroll area of the position.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.WorkLocationId",
+      "label": "WorkLocationId",
+      "section": "Positions",
+      "aliases": [
+        "loc:WorkLocationId",
+        "dom:Position_WorkLocationId"
+      ],
+      "rules": "Optional. Chosen from Work Location master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The work location of the position.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.FTELimit",
+      "label": "FTELimit",
+      "section": "Positions",
+      "aliases": [
+        "loc:FTELimit",
+        "dom:Position_FTELimit"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many people can hold the position at the same time.</p><p><strong>Example.</strong> 1</p><p><strong>Why it matters.</strong> Must be above 0. Adding a holder whose dates would take the position past this number is refused.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.MinSalary",
+      "label": "MinSalary",
+      "section": "Positions",
+      "aliases": [
+        "loc:MinSalary",
+        "dom:Position_MinSalary"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The lowest salary for the position.</p><p><strong>Example.</strong> 700.000</p><p><strong>Why it matters.</strong> Manpower plan lines for this position must stay within the minimum and maximum.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.MidSalary",
+      "label": "MidSalary",
+      "section": "Positions",
+      "aliases": [
+        "loc:MidSalary",
+        "dom:Position_MidSalary"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The midpoint salary for the position.</p><p><strong>Example.</strong> 800.000</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.MaxSalary",
+      "label": "MaxSalary",
+      "section": "Positions",
+      "aliases": [
+        "loc:MaxSalary",
+        "dom:Position_MaxSalary"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The highest salary for the position.</p><p><strong>Example.</strong> 1,000.000</p><p><strong>Why it matters.</strong> See Min Salary.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.Vacant",
+      "label": "Vacant",
+      "section": "Positions",
+      "aliases": [
+        "loc:Vacant",
+        "dom:Position_Vacant"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether nobody holds the position today.</p><p><strong>Why it matters.</strong> Set by the system whenever a holder is added, changed or removed.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.Active",
+      "label": "Active",
+      "section": "Positions",
+      "aliases": [
+        "loc:Active",
+        "dom:Position_Active"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the position is in use.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.IsBudgeted",
+      "label": "IsBudgeted",
+      "section": "Positions",
+      "aliases": [
+        "loc:IsBudgeted",
+        "dom:Position_IsBudgeted"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the position is in the budget.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

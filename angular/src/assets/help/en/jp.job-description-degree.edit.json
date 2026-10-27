@@ -1,0 +1,27 @@
+{
+  "helpId": "jp.job-description-degree.edit",
+  "lang": "en",
+  "title": "Job Description Degrees — Create / Edit",
+  "entity": "HCMv3.JobProfileManagement.JobDescriptionDegree",
+  "overviewHtml": "<p>A degree the job description asks for. Each can be listed once per job description.</p>",
+  "aliasIndex": {
+    "loc:EducationDegree": "JobDescriptionDegree.EducationDegreeId",
+    "dom:JobDescriptionDegree_EducationDegreeId": "JobDescriptionDegree.EducationDegreeId"
+  },
+  "fields": [
+    {
+      "id": "JobDescriptionDegree.EducationDegreeId",
+      "label": "EducationDegree",
+      "section": "JobDescriptionDegrees",
+      "aliases": [
+        "loc:EducationDegree",
+        "dom:JobDescriptionDegree_EducationDegreeId"
+      ],
+      "rules": "Optional. Chosen from Education Degree master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The degree.</p><p><strong>Example.</strong> Bachelor</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

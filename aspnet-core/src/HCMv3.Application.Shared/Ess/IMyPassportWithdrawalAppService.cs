@@ -1,0 +1,49 @@
+using System.Threading.Tasks;
+using Abp.Application.Services;
+using Abp.Application.Services.Dto;
+using HCMv3.Ess.Dto;
+
+namespace HCMv3.Ess;
+
+/// <summary>
+/// Self-service passport (and other document) withdrawal: an employee asking for one of their own documents
+/// out of the company's custody, and the record of when it is due back.
+///
+/// <para>
+/// Legacy split this in two -- a <c>PassportWithdrawalRequest</c> row that went through approval, and an
+/// <c>EmployeeDocumentMvmt</c> row copied out of it at the last approval step. There is one row here, so
+/// there is no copy step to fail halfway and no way for the two to disagree about who is holding the
+/// passport.
+/// </para>
+/// </summary>
+public interface IMyPassportWithdrawalAppService : IApplicationService
+{
+    Task<PagedResultDto<MyPassportWithdrawalDto>> GetMyPassportWithdrawals(GetMyRequestsInput input);
+
+    /// <summary>Creates the record and, when the type is workflow-enabled, submits it in one step.</summary>
+    Task<MyRequestSubmissionDto> RequestPassportWithdrawal(RequestPassportWithdrawalInput input);
+
+    /// <summary>
+    /// Files the withdrawal as a draft, or updates one already filed -- or a request an approver sent back.
+    /// Nothing is sent and nobody is notified, the guarantor included.
+    /// </summary>
+    Task<MyRequestSubmissionDto> SaveMyPassportWithdrawalDraft(SavePassportWithdrawalDraftInput input);
+
+    /// <summary>Reopens one of the requester's own drafts, or a request sent back to them, in the form.
+    /// Refuses anything that is not theirs or is no longer theirs to change.</summary>
+    Task<MyPassportWithdrawalDto> GetMyPassportWithdrawalDraftForEdit(EntityDto input);
+
+    /// <summary>Sends a saved draft for approval, or sends a sent-back request again, after applying the
+    /// rules a one-step request is held to. This is when the guarantor is told.</summary>
+    Task<MyRequestSubmissionDto> SubmitMyPassportWithdrawalDraft(EntityDto input);
+
+    /// <summary>Withdraws the request while it is still theirs to withdraw. Discards a draft, too.</summary>
+    Task CancelMyPassportWithdrawal(EntityDto input);
+
+    /// <summary>
+    /// Reports the document as handed back -- the RETURN leg of the legacy <c>EmployeeDocMvmtRequest</c>.
+    /// Raised as an amendment to the approved movement rather than as a request of its own, so the movement
+    /// keeps reading "still out" until somebody confirms it is back.
+    /// </summary>
+    Task<ReturnDocumentResultDto> ReturnMyDocument(ReturnDocumentInput input);
+}

@@ -1,0 +1,59 @@
+{
+  "helpId": "cd.competency-by-job-title.edit",
+  "lang": "ar",
+  "title": "الكفاءات حسب المسمى الوظيفي — إنشاء / تحرير",
+  "entity": "HCMv3.CompetencyDevelopment.CompetencyByJobTitle",
+  "overviewHtml": "<p>الكفاءات المتوقعة من مسمى وظيفي، لفترة من التواريخ. لا يمكن أن يكون تاريخ الانتهاء قبل تاريخ البدء. يُحفظ للرجوع إليه، ولا يُنسخ إلى نماذج الموظفين.</p>",
+  "aliasIndex": {
+    "loc:JobTitle": "CompetencyByJobTitle.JobTitleId",
+    "dom:CompetencyByJobTitle_JobTitleId": "CompetencyByJobTitle.JobTitleId",
+    "loc:StartDate": "CompetencyByJobTitle.StartDate",
+    "dom:CompetencyByJobTitle_StartDate": "CompetencyByJobTitle.StartDate",
+    "loc:EndDate": "CompetencyByJobTitle.EndDate",
+    "dom:CompetencyByJobTitle_EndDate": "CompetencyByJobTitle.EndDate"
+  },
+  "fields": [
+    {
+      "id": "CompetencyByJobTitle.JobTitleId",
+      "label": "JobTitle",
+      "section": "CompetencyByJobTitles",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:CompetencyByJobTitle_JobTitleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المسميات الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي.</p><p><strong>مثال.</strong> تنفيذي مبيعات</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompetencyByJobTitle.StartDate",
+      "label": "StartDate",
+      "section": "CompetencyByJobTitles",
+      "aliases": [
+        "loc:StartDate",
+        "dom:CompetencyByJobTitle_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompetencyByJobTitle.EndDate",
+      "label": "EndDate",
+      "section": "CompetencyByJobTitles",
+      "aliases": [
+        "loc:EndDate",
+        "dom:CompetencyByJobTitle_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

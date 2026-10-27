@@ -1,0 +1,151 @@
+{
+  "helpId": "ess.bank",
+  "lang": "en",
+  "title": "My Bank Details",
+  "entity": null,
+  "overviewHtml": "<p>Ask for the account your salary is paid into to be changed, and see the accounts already on your record.</p><p>Nothing changes until the request is approved, and the change takes effect from the date you give — so a request raised after payroll has been run for the month is paid into the old account that month. Raise it early.</p>",
+  "aliasIndex": {
+    "loc:Bank": "ess.bank.bank",
+    "loc:AccountNumber": "ess.bank.account-number",
+    "loc:BankBranch": "ess.bank.bank-branch",
+    "loc:StartDate": "ess.bank.start-date",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:RequestBankChange": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:Withdraw": "ess.common.withdraw"
+  },
+  "fields": [
+    {
+      "id": "ess.bank.bank",
+      "label": "Bank",
+      "section": null,
+      "aliases": [
+        "loc:Bank"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The bank holding the new account, from the banks your company can pay to.</p><p><strong>Example.</strong> National Bank of Kuwait.</p><p><strong>Why it matters.</strong> Salaries go out as one file to each bank, so an account at a bank your company does not pay to cannot be used, however valid the account is.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.bank.account-number",
+      "label": "AccountNumber",
+      "section": null,
+      "aliases": [
+        "loc:AccountNumber"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The account, as the bank writes it — usually the IBAN.</p><p><strong>Example.</strong> KW81CBKU0000000000001234560101</p><p><strong>Why it matters.</strong> <strong>Check it character by character against your own bank statement.</strong> A wrong digit does not bounce politely; it either fails the whole payroll file or pays a stranger, and getting the money back after that is slow and is not certain.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.bank.bank-branch",
+      "label": "BankBranch",
+      "section": null,
+      "aliases": [
+        "loc:BankBranch"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The branch the account is held at, where your company records branches.</p><p><strong>Example.</strong> Salmiya Branch.</p><p><strong>Why it matters.</strong> Most transfers do not need it — the account number carries the routing. It is recorded because some banks and some statutory returns still ask for it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.bank.start-date",
+      "label": "StartDate",
+      "section": null,
+      "aliases": [
+        "loc:StartDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the new account takes over.</p><p><strong>Example.</strong> 1 August 2026.</p><p><strong>Why it matters.</strong> Payroll uses whichever account is in force on the day it runs, so this date decides which month is the first paid into the new one. A date in a month already processed changes nothing for that month.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Everything you have asked for on this screen, newest first, with where each one has got to.</p><p><strong>Example.</strong> Three ticket requests: one approved last month, one waiting, one you withdrew.</p><p><strong>Why it matters.</strong> This is the record. A request that is not in this list was never submitted — if you filled the form in and did not press <strong>Save</strong>, nothing was sent.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A warning that the account you signed in with is not attached to an employee, so there is nobody for a request to be about.</p><p><strong>Example.</strong> A newly created user, or an administrator account that is deliberately not an employee.</p><p><strong>Why it matters.</strong> Nothing on the self-service screens works until HR links the account to your employee record, and only HR can do it. Administrator accounts are often left unlinked on purpose.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where a request has got to. <strong>Draft</strong> is not submitted, <strong>Pending</strong> is waiting for somebody, <strong>Approved</strong> has been agreed and acted on, <strong>Rejected</strong> was turned down, and <strong>Withdrawn</strong> is one you took back yourself.</p><p><strong>Example.</strong> Pending — sitting with your line manager.</p><p><strong>Why it matters.</strong> Only an approved request changes anything: your balance, your pay or your record. A pending one has done nothing yet, whatever the form said when you filled it in.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestBankChange",
+      "section": null,
+      "aliases": [
+        "loc:RequestBankChange"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The button at the top right of the screen that opens the form. Filling it in and pressing <strong>Save</strong> submits the request; nothing is sent until you do.</p><p><strong>Example.</strong> <strong>Request Leave</strong>, <strong>Request Ticket</strong>, <strong>Request Loan</strong> — the wording follows the screen.</p><p><strong>Why it matters.</strong> Once submitted the request goes to whoever approves that kind of request in your company, and you cannot edit it in place. To change something, withdraw it and make a new one, or use <strong>Amend</strong> where the screen offers it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who a request has reached, what each person did with it and when, including any comment they left.</p><p><strong>Example.</strong> Submitted 09:12 → Line manager approved 11:40 (\"cover arranged\") → with HR.</p><p><strong>Why it matters.</strong> It answers \"who is it with?\" without asking anybody. If a request has sat with one person for days, this tells you which person, which is who to chase.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "Withdraw",
+      "section": null,
+      "aliases": [
+        "loc:Withdraw"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Takes a request back. Offered only while it can still be taken back — once it is approved and acted on, the button is gone.</p><p><strong>Example.</strong> You asked for leave next week, your plans changed, you withdraw it before your manager gets to it.</p><p><strong>Why it matters.</strong> A withdrawn request is not deleted: it stays in the list marked <strong>Withdrawn</strong>, so the record shows what happened. Withdrawing frees anything the request was holding, such as a leave balance reserved against it.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

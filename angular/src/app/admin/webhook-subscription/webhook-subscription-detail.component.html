@@ -1,0 +1,229 @@
+<div [@routerTransition]>
+    <sub-header [title]="'WebhookSubscriptions' | localize" [breadcrumbs]="breadcrumbs()">
+        <div role="actions">
+            @if (subscription() && subscription()!.isActive) {
+                <span class="badge badge-success me-2">
+                    {{ 'Active' | localize }}
+                </span>
+            }
+            @if (subscription() && !subscription()!.isActive) {
+                <span class="badge badge-dark me-2">
+                    {{ 'Disabled' | localize }}
+                </span>
+            }
+            @if (
+                (subscription() && ('Pages.Administration.WebhookSubscription.Edit' | permission)) ||
+                ('Pages.Administration.WebhookSubscription.ChangeActivity' | permission)
+            ) {
+                <p-tieredMenu #headerActionsMenu [model]="activeHeaderMenuItems()" [popup]="true" appendTo="body" />
+                <button
+                    type="button"
+                    class="btn btn-primary btn-sm dropdown-toggle"
+                    (click)="showHeaderMenu($event, headerActionsMenu)">
+                    <i class="fa fa-cog"></i>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            @if (subscription()) {
+                <div class="card-body">
+                    <div class="mb-5 row">
+                        <label class="col-2 col-form-label">{{ 'WebhookEndpoint' | localize }}</label>
+                        <div class="col-10 text-break mt-2">
+                            {{ subscription()!.webhookUri }}
+                        </div>
+                    </div>
+                    <div class="mb-5 row">
+                        <label class="col-2 col-form-label">{{ 'WebhookEvents' | localize }}</label>
+                        <div class="col-10 text-break mt-2">
+                            @if (subscription()!.webhooks) {
+                                <div>
+                                    @for (webhook of subscription()!.webhooks; track webhook) {
+                                        <div class="col-12">
+                                            {{ webhook }}
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="mb-5 row">
+                        <label class="col-2 col-form-label">{{ 'AdditionalWebhookHeaders' | localize }}</label>
+                        <div class="col-10 text-break mt-2">
+                            @if (subscription()!.headers) {
+                                <div>
+                                    @for (headerKey of objectKeys(subscription()!.headers); track headerKey) {
+                                        <div class="col-12">
+                                            "{{ headerKey }}" : "{{ subscription()!.headers[headerKey] }}"
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="row mb-0">
+                        <label class="col-2 col-form-label">{{ 'WebhookSecret' | localize }}</label>
+                        <div class="col-10 position-relative mt-2">
+                            <span [class.blur]="isSecretBlurActive()">{{ subscription()!.secret }}</span>
+                            @if (isSecretBlurActive()) {
+                                <button
+                                    class="btn btn-sm btn-dark btn-elevate btn-elevate-air secret-view-btn"
+                                    (click)="viewSecret()">
+                                    {{ 'ViewWebhookSecret' | localize }}
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="card card-custom gutter-b">
+            <div class="card-header align-items-center border-0 mt-4">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="fw-bolder text-gray-900">{{ 'WebhookSendAttempts' | localize }}</span>
+                </h3>
+                <div class="card-toolbar">
+                    <button (click)="getSendAttempts()" class="btn btn-outline-brand btn-sm btn-icon btn-icon-md">
+                        <i class="flaticon2-refresh"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu
+                        #sendAttemptActionsMenu
+                        [model]="activeSendAttemptMenuItems()"
+                        [popup]="true"
+                        appendTo="body" />
+                    <div class="col primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            (onLazyLoad)="getSendAttempts($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [tableStyle]="{ 'min-width': '50rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 100px">{{ 'Actions' | localize }}</th>
+                                    <th>{{ 'WebhookEvent' | localize }}</th>
+                                    <th>{{ 'WebhookEventId' | localize }}</th>
+                                    <th style="width: 180px">{{ 'CreationTime' | localize }}</th>
+                                    <th style="width: 130px">{{ 'HttpStatusCode' | localize }}</th>
+                                    <th>{{ 'Response' | localize }}</th>
+                                    <th>{{ 'Data' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td>
+                                        @if (
+                                            (subscription() &&
+                                                ('Pages.Administration.WebhookSubscription.Edit' | permission)) ||
+                                            ('Pages.Administration.WebhookSubscription.ChangeActivity' | permission)
+                                        ) {
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary btn-sm dropdown-toggle"
+                                                (click)="showSendAttemptMenu($event, record, sendAttemptActionsMenu)">
+                                                <i class="fa fa-cog"></i>
+                                            </button>
+                                        }
+                                    </td>
+                                    <td>
+                                        {{ record.webhookName }}
+                                    </td>
+                                    <td>
+                                        {{ record.webhookEventId }}
+                                    </td>
+                                    <td>
+                                        {{ record.creationTime | luxonFormat: 'yyyy-LL-dd HH:mm:ss' }}
+                                    </td>
+                                    <td style="text-align: center">
+                                        {{ record.responseStatusCode }}
+                                    </td>
+                                    <td>
+                                        @if (record?.response?.length <= listMaxDataLength) {
+                                            <span>
+                                                {{ record.response }}
+                                            </span>
+                                        }
+                                        @if (record?.response?.length > listMaxDataLength) {
+                                            <span>
+                                                <button
+                                                    class="btn btn-outline-primary btn-sm"
+                                                    (click)="showDetailModal(record.response)">
+                                                    {{ 'ShowResponse' | localize }}
+                                                </button>
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (record.data.length <= listMaxDataLength) {
+                                            <span>
+                                                {{ record.data }}
+                                            </span>
+                                        }
+                                        @if (record.data.length > listMaxDataLength) {
+                                            <span>
+                                                <div class="d-none">{{ record.data }}</div>
+                                                <button
+                                                    class="btn btn-outline-primary btn-sm"
+                                                    (click)="showDetailModal(record.data)">
+                                                    {{ 'ShowData' | localize }}
+                                                </button>
+                                            </span>
+                                        }
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getSendAttempts($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+        <create-or-edit-webhook-subscription #createOrEditWebhookSubscriptionModal (modalSave)="getDetail()" />
+
+        <div
+            bsModal
+            #detailModal="bs-modal"
+            id="detailModal"
+            class="modal fade"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="detailModal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        {{ detailModalText() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

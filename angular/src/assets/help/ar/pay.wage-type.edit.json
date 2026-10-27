@@ -1,0 +1,523 @@
+{
+  "helpId": "pay.wage-type.edit",
+  "lang": "ar",
+  "title": "أنواع الأجور — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.WageType",
+  "overviewHtml": "<p>نوع الأجر سطر واحد من الراتب: الراتب الأساسي أو بدل أو خصم أو دفعة إجازة أو مخصص. وكل مبلغ في كشف الراتب وفي التكاليف وفي قيد اليومية يتبع نوع أجر، وتحدد الإعدادات هنا كيف يحتسبه نظام الرواتب وما الذي يدخل في حسابه أيضاً.</p><p>ويتعرّف محرك الرواتب على كثير من أنواع الأجور <strong>برمزها</strong> ويحتسبها بمنطق خاص بها — الراتب الأساسي وصافي الراتب والإجازات والعمل الإضافي ومكافأة نهاية الخدمة وغيرها. وهذه مصنّفة <em>فني</em> ولا يمكن حذفها، والبقية <em>مخصص</em>.</p><p>وكل خانة من خانات <strong>إدراج في …</strong> تضيف المبلغ الشهري لنوع الأجر هذا إلى أساس احتساب آخر: فخصم التأمينات الاجتماعية يجمع كل نوع أجر مؤشَّر عليه <em>إدراج في التأمينات الاجتماعية</em>، وهكذا.</p>",
+  "aliasIndex": {
+    "loc:Code": "WageType.Code",
+    "dom:WageType_Code": "WageType.Code",
+    "loc:NameEn": "WageType.NameEn",
+    "dom:WageType_NameEn": "WageType.NameEn",
+    "loc:NameAr": "WageType.NameAr",
+    "dom:WageType_NameAr": "WageType.NameAr",
+    "loc:ShortNameEn": "WageType.ShortNameEn",
+    "dom:WageType_ShortNameEn": "WageType.ShortNameEn",
+    "loc:ShortNameAr": "WageType.ShortNameAr",
+    "dom:WageType_ShortNameAr": "WageType.ShortNameAr",
+    "loc:BillingType": "WageType.BillingType",
+    "dom:WageType_BillingType": "WageType.BillingType",
+    "loc:BillingMethod": "WageType.BillingMethod",
+    "dom:WageType_BillingMethod": "WageType.BillingMethod",
+    "loc:ProrateMethod": "WageType.ProrateMethod",
+    "dom:WageType_ProrateMethod": "WageType.ProrateMethod",
+    "loc:Category": "WageType.Category",
+    "dom:WageType_Category": "WageType.Category",
+    "loc:FixedDays": "WageType.FixedDays",
+    "dom:WageType_FixedDays": "WageType.FixedDays",
+    "loc:Rate": "WageType.Rate",
+    "dom:WageType_Rate": "WageType.Rate",
+    "loc:PayrollOrder": "WageType.PayrollOrder",
+    "dom:WageType_PayrollOrder": "WageType.PayrollOrder",
+    "loc:ArrearSourceWageTypeId": "WageType.ArrearSourceWageTypeId",
+    "dom:WageType_ArrearSourceWageTypeId": "WageType.ArrearSourceWageTypeId",
+    "loc:Status": "WageType.Status",
+    "dom:WageType_Status": "WageType.Status",
+    "loc:IncludeInIndemnity": "WageType.IncludeInIndemnity",
+    "dom:WageType_includeInIndemnity": "WageType.IncludeInIndemnity",
+    "loc:IncludeInPaidLeave": "WageType.IncludeInPaidLeave",
+    "dom:WageType_includeInPaidLeave": "WageType.IncludeInPaidLeave",
+    "loc:IncludeInBasicPay": "WageType.IncludeInBasicPay",
+    "dom:WageType_includeInBasicPay": "WageType.IncludeInBasicPay",
+    "loc:IncludeInArrearPay": "WageType.IncludeInArrearPay",
+    "dom:WageType_includeInArrearPay": "WageType.IncludeInArrearPay",
+    "loc:IncludeInCalculatedPay": "WageType.IncludeInCalculatedPay",
+    "dom:WageType_includeInCalculatedPay": "WageType.IncludeInCalculatedPay",
+    "loc:IncludeInAdvancePay": "WageType.IncludeInAdvancePay",
+    "dom:WageType_includeInAdvancePay": "WageType.IncludeInAdvancePay",
+    "loc:IncludeInOvertimePay": "WageType.IncludeInOvertimePay",
+    "dom:WageType_includeInOvertimePay": "WageType.IncludeInOvertimePay",
+    "loc:IncludeInFIPosting": "WageType.IncludeInFIPosting",
+    "dom:WageType_includeInFIPosting": "WageType.IncludeInFIPosting",
+    "loc:IncludeInCutoff": "WageType.IncludeInCutoff",
+    "dom:WageType_includeInCutoff": "WageType.IncludeInCutoff",
+    "loc:IncludeInDisciplinary": "WageType.IncludeInDisciplinary",
+    "dom:WageType_includeInDisciplinary": "WageType.IncludeInDisciplinary",
+    "loc:IncludeInVariablePay": "WageType.IncludeInVariablePay",
+    "dom:WageType_includeInVariablePay": "WageType.IncludeInVariablePay",
+    "loc:IncludeInSocialSecurity": "WageType.IncludeInSocialSecurity",
+    "dom:WageType_includeInSocialSecurity": "WageType.IncludeInSocialSecurity",
+    "loc:IncludeInPartialPay": "WageType.IncludeInPartialPay",
+    "dom:WageType_includeInPartialPay": "WageType.IncludeInPartialPay",
+    "loc:IncludeInLateEarlyDed": "WageType.IncludeInLateEarlyDed",
+    "dom:WageType_includeInLateEarlyDed": "WageType.IncludeInLateEarlyDed",
+    "loc:IncludeInServiceBonus": "WageType.IncludeInServiceBonus",
+    "dom:WageType_includeInServiceBonus": "WageType.IncludeInServiceBonus",
+    "loc:IncludeInFund": "WageType.IncludeInFund",
+    "dom:WageType_includeInFund": "WageType.IncludeInFund",
+    "loc:DontImpactNetPay": "WageType.DontImpactNetPay",
+    "dom:WageType_dontImpactNetPay": "WageType.DontImpactNetPay",
+    "loc:IsSecured": "WageType.IsSecured",
+    "dom:WageType_isSecured": "WageType.IsSecured"
+  },
+  "fields": [
+    {
+      "id": "WageType.Code",
+      "label": "Code",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:WageType_Code"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز نوع الأجر. وخلافاً لمعظم القوائم لا يُمنح تلقائياً أبداً — يجب إدخاله.</p><p><strong>مثال.</strong> <code>1000</code> — الراتب الأساسي.</p><p><strong>لماذا يهم.</strong> يجد محرك الرواتب أنواع الأجور الخاصة به بالرمز: <code>1000</code> الراتب الأساسي، و<code>9000</code> صافي الراتب، و<code>4001</code> الإجازة غير المدفوعة، و<code>4029</code> أيام الغياب، وعشرات غيرها لكل منها احتسابه الخاص. أما نوع الأجر الذي لا يتعرّف المحرك على رمزه فلا يُصرف إلا عبر ما يشير إليه — الراتب الأساسي للموظف، أو دفعة، أو نوع غياب أو عمل إضافي أو قرض.</p>",
+      "adminHtml": "<p>يمكن تعديل الرمز بعد الحفظ، حتى لنوع الأجر الفني. وتغيير رمز نوع يتعرّف عليه المحرك يوقف احتسابه — إذ لن يجده المحرك بعد ذلك.</p>",
+      "stub": false
+    },
+    {
+      "id": "WageType.NameEn",
+      "label": "NameEn",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:WageType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.NameAr",
+      "label": "NameAr",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:WageType_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.ShortNameEn",
+      "label": "ShortNameEn",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:ShortNameEn",
+        "dom:WageType_ShortNameEn"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم مختصر لنوع الأجر بالإنجليزية.</p><p><strong>مثال.</strong> <code>HRA</code></p><p><strong>لماذا يهم.</strong> لا يستخدمه إلا المساعد الذكي، ليتعرّف على نوع الأجر عندما تشير إليه باسمه المختصر. أما كشوف الرواتب والتقارير فتستخدم الاسم الكامل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.ShortNameAr",
+      "label": "ShortNameAr",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:ShortNameAr",
+        "dom:WageType_ShortNameAr"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم مختصر لنوع الأجر بالعربية.</p><p><strong>مثال.</strong> <code>بدل سكن</code></p><p><strong>لماذا يهم.</strong> لا يستخدمه إلا المساعد الذكي، ليتعرّف على نوع الأجر عندما تشير إليه باسمه المختصر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.BillingType",
+      "label": "BillingType",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:BillingType",
+        "dom:WageType_BillingType"
+      ],
+      "rules": "إلزامي. إحدى القيم: استحقاق، خصم، نوع الوقت، مخصص.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع هذا السطر: استحقاق أو خصم أو نوع وقت أو مخصص.</p><p><strong>مثال.</strong> استحقاق</p><p><strong>لماذا يهم.</strong> صافي الراتب هو الاستحقاقات ناقص الخصومات. أما أنواع الوقت (أعداد الأيام والساعات) والمخصصات (مثل مخصص الإجازات ومكافأة نهاية الخدمة) فيحتسبها المحرك ولا تغيّر صافي الراتب. ولا يُصرف عبر دفعات المدفوعات إلا الاستحقاقات والخصومات.</p>",
+      "adminHtml": "<p>لا يمكن إنشاء نوع أجر جديد بنوع فوترة \"نوع وقت\" أو \"مخصص\" — فهي محجوزة لأنواع الأجور الخاصة بالمحرك.</p>",
+      "stub": false
+    },
+    {
+      "id": "WageType.BillingMethod",
+      "label": "BillingMethod",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:BillingMethod",
+        "dom:WageType_BillingMethod"
+      ],
+      "rules": "إلزامي. إحدى القيم: مبلغ ثابت شهرياً، أيام ثابتة شهرياً، أيام التقويم في الشهر، أيام العمل في الشهر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طريقة تحويل المبلغ الشهري إلى أجر يومي عندما لا يُصرف الشهر كاملاً.</p><p><strong>مثال.</strong> أيام التقويم في الشهر</p><p><strong>لماذا يهم.</strong> <em>أيام التقويم في الشهر</em> تقسم على عدد أيام ذلك الشهر، و<em>أيام العمل في الشهر</em> على أيام الشهر ناقص أيام الراحة الأسبوعية، و<em>أيام ثابتة شهرياً</em> على <strong>الأيام الثابتة</strong> أدناه، و<em>مبلغ ثابت شهرياً</em> تصرف المبلغ كاملاً مهما كان عدد الأيام. وبالقاسم نفسه تُقيَّم مستحقات الإجازات ومخصصها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.ProrateMethod",
+      "label": "ProrateMethod",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:ProrateMethod",
+        "dom:WageType_ProrateMethod"
+      ],
+      "rules": "إلزامي. إحدى القيم: أيام العمل، أيام العمل (مع الراحة)، أيام العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأيام التي تُعدّ أيام مدفوعة عندما لا يُصرف الشهر كاملاً.</p><p><strong>مثال.</strong> أيام العمل</p><p><strong>لماذا يهم.</strong> <em>أيام العمل</em> (Active Days) تصرف كل يوم كان فيه الموظف على رأس العمل خلال الشهر، أياً كانت طريقة الفوترة. ومع <em>أيام العمل في الشهر</em>: تصرف <em>أيام العمل</em> (Working Days) أيام العمل الفعلية مع العطلات الرسمية، وتصرف <em>أيام العمل (مع الراحة)</em> أيام العمل الفعلية مع أيام الراحة والعطلات الرسمية التي لا تقع في يوم راحة أسبوعية. ومع <em>أيام التقويم في الشهر</em> تصرف الطريقتان أيضاً أيام الراحة الأسبوعية والعطلات التي لم يقضها الموظف في إجازة. ويأتي الأجر اليومي من طريقة الفوترة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.Category",
+      "label": "Category",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:Category",
+        "dom:WageType_Category"
+      ],
+      "rules": "إلزامي. إحدى القيم: مخصص، فني.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان نوع الأجر من الأنواع الخاصة بالمحرك (فني) أو أضافته شركتك (مخصص).</p><p><strong>مثال.</strong> مخصص</p><p><strong>لماذا يهم.</strong> لا يمكن حذف نوع الأجر الفني.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.FixedDays",
+      "label": "FixedDays",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:FixedDays",
+        "dom:WageType_FixedDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأيام التي يُحتسب بها الشهر، لطريقة الفوترة <em>أيام ثابتة شهرياً</em>.</p><p><strong>مثال.</strong> <code>26</code></p><p><strong>لماذا يهم.</strong> الأجر اليومي هو المبلغ الشهري مقسوماً على هذا العدد. وفي أنواع أجور مخصص الإجازات هو القاسم لتقييم أيام الإجازة، وفي نوع الأجر <code>1010</code> هو قيمة اليوم المستخدمة لمكافأة نهاية الخدمة إذا لم تحدد شريحة المكافأة أيام الأساس.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.Rate",
+      "label": "Rate",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:Rate",
+        "dom:WageType_Rate"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أجر افتراضي لنوع الأجر.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — التأشير عليه لا يغيّر شيئاً في احتساب الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.PayrollOrder",
+      "label": "PayrollOrder",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:PayrollOrder",
+        "dom:WageType_PayrollOrder"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موقع نوع الأجر هذا في الترتيب الذي يحتسب به نظام الرواتب أنواع الأجور، من الأصغر إلى الأكبر.</p><p><strong>مثال.</strong> <code>150</code></p><p><strong>لماذا يهم.</strong> يُحتسب كثير من أنواع الأجور من أسطر موجودة مسبقاً في كشف الراتب — الخصومات من البدلات، وصافي الراتب من كل شيء — فيجب أن يأتي نوع الأجر بعد الأنواع التي يعتمد عليها. وتتبع أسطر قيد اليومية الترتيب نفسه. ولا يجوز أن يكون صفراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.ArrearSourceWageTypeId",
+      "label": "ArrearSourceWageTypeId",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:ArrearSourceWageTypeId",
+        "dom:WageType_ArrearSourceWageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> لنوع أجر المتأخرات، نوع الأجر الذي يحمل فرق راتبه بأثر رجعي.</p><p><strong>مثال.</strong> الراتب الأساسي (لـ\"متأخرات الراتب الأساسي\")</p><p><strong>لماذا يهم.</strong> يأخذ احتساب المتأخرات الفرق لنوع الأجر المصدر هذا، وتُرحّل التكاليف المتأخرات إلى حسابات نوع الأجر المصدر. ونوع أجر المتأخرات الذي ليس له مصدر يُستبعد من التكاليف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.Status",
+      "label": "Status",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:Status",
+        "dom:WageType_Status"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان نوع الأجر نشطاً.</p><p><strong>لماذا يهم.</strong> لا يحتسب نظام الرواتب إلا أنواع الأجور النشطة، ولا يُصرف عبر دفعات المدفوعات إلا النشط منها. أزل التأشير لإيقاف نوع أجر دون حذف سجله.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInIndemnity",
+      "label": "IncludeInIndemnity",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInIndemnity",
+        "dom:WageType_includeInIndemnity"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المبلغ الشهري لنوع الأجر هذا يُحتسب ضمن الراتب الذي تقوم عليه مكافأة نهاية الخدمة.</p><p><strong>لماذا يهم.</strong> تُحتسب المكافأة وحدّها الأقصى من مجموع أنواع الأجور المؤشَّر عليها هنا.</p>",
+      "adminHtml": "<p>في نوعي الوقت <code>4001</code> (الإجازة غير المدفوعة) و<code>4029</code> (أيام الغياب) للخانة معنى آخر: إذا أُشِّر عليها تُخصم تلك الأيام من مدة الخدمة التي تُحتسب عليها المكافأة.</p>",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInPaidLeave",
+      "label": "IncludeInPaidLeave",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInPaidLeave",
+        "dom:WageType_includeInPaidLeave"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان نوع الأجر يُصرف أثناء الإجازة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً. وأنواع الأجور التي تتكوّن منها دفعة الإجازة تُحدَّد لكل نوع غياب في قائمة <strong>إجازات أنواع الأجور</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInBasicPay",
+      "label": "IncludeInBasicPay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInBasicPay",
+        "dom:WageType_includeInBasicPay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان نوع الأجر جزءاً من الراتب الأساسي للموظف.</p><p><strong>لماذا يهم.</strong> يُحتسب مبلغه الشهري ضمن أساس أجر الحضور. وإذا كان سطر الراتب الأساسي للموظف لنوع الأجر هذا يُحتسب من نوع أجر آخر، فلا يُصرف في التشغيل العادي إلا إذا أُشِّر عليه. ولا يمكن صرف نوع أجر من الراتب الأساسي عبر دفعات المدفوعات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInArrearPay",
+      "label": "IncludeInArrearPay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInArrearPay",
+        "dom:WageType_includeInArrearPay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان هذا نوع أجر متأخرات — أي يحمل فرق راتب بأثر رجعي لنوع آخر.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يحتسبه نظام الرواتب عبر احتساب المتأخرات من <strong>نوع الأجر المصدر للمتأخرات</strong>، بدلاً من أي قاعدة أخرى. ولا يمكن صرفه عبر دفعات المدفوعات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInCalculatedPay",
+      "label": "IncludeInCalculatedPay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInCalculatedPay",
+        "dom:WageType_includeInCalculatedPay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يمكن صرف نوع الأجر دفعةً لمرة واحدة.</p><p><strong>لماذا يهم.</strong> لا تعرض دفعات المدفوعات إلا أنواع الأجور المؤشَّر عليها هنا — وبشرط أن تكون استحقاقات أو خصومات نشطة، ليست من الراتب الأساسي ولا متأخرات ولا صافي الراتب، ولا يصرفها أصلاً نوع عمل إضافي أو نوع غياب أو نوع قرض.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInAdvancePay",
+      "label": "IncludeInAdvancePay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInAdvancePay",
+        "dom:WageType_includeInAdvancePay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان نوع الأجر يُصرف مقدماً مع الإجازة.</p><p><strong>لماذا يهم.</strong> في التشغيل خارج الدورة الذي يصرف الإجازة مقدماً، لا يُصرف مقدماً إلا نوع الأجر المؤشَّر عليه هنا. أما تشغيل نهاية الخدمة فيصرف كل أنواع الأجور، مؤشَّراً عليها أو لا.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInOvertimePay",
+      "label": "IncludeInOvertimePay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInOvertimePay",
+        "dom:WageType_includeInOvertimePay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المبلغ الشهري لنوع الأجر هذا يُحتسب ضمن أساس أجر العمل الإضافي.</p><p><strong>لماذا يهم.</strong> إذا كان نوع العمل الإضافي يُصرف بالأجر الفعلي، يكون أجر الساعة مجموع أنواع الأجور هذه مقسوماً على أساس الساعات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInFIPosting",
+      "label": "IncludeInFIPosting",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInFIPosting",
+        "dom:WageType_includeInFIPosting"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان نوع الأجر يُرحَّل إلى النظام المالي.</p><p><strong>لماذا يهم.</strong> لا يحتسب محرك التكلفة إلا أنواع الأجور المؤشَّر عليها هنا، فلا يصل إلى سجل التكاليف وقيد اليومية غيرها. ويحتاج كل منها عندئذ إلى حساب أجور للموظف، وإلا توقف احتساب التكلفة لذلك الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInCutoff",
+      "label": "IncludeInCutoff",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInCutoff",
+        "dom:WageType_includeInCutoff"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان عدّ الأيام لنوع الأجر يتبع يوم الإقفال في منطقة الرواتب.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه، وكان لمنطقة الرواتب يوم إقفال، تُعدّ الأيام من اليوم التالي لإقفال الشهر السابق إلى يوم إقفال هذا الشهر بدلاً من الشهر الميلادي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInDisciplinary",
+      "label": "IncludeInDisciplinary",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInDisciplinary",
+        "dom:WageType_includeInDisciplinary"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان نوع الأجر يُحتسب في الخصومات التأديبية.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — التأشير عليه لا يغيّر شيئاً في احتساب الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInVariablePay",
+      "label": "IncludeInVariablePay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInVariablePay",
+        "dom:WageType_includeInVariablePay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان نوع الأجر يُعدّ أجراً متغيراً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — التأشير عليه لا يغيّر شيئاً في احتساب الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInSocialSecurity",
+      "label": "IncludeInSocialSecurity",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInSocialSecurity",
+        "dom:WageType_includeInSocialSecurity"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المبلغ الشهري لنوع الأجر هذا يُحتسب ضمن أساس خصم التأمينات الاجتماعية.</p><p><strong>لماذا يهم.</strong> إذا كانت التأمينات الاجتماعية على أساس الراتب، يُحتسب الخصم من مجموع أنواع الأجور هذه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInPartialPay",
+      "label": "IncludeInPartialPay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInPartialPay",
+        "dom:WageType_includeInPartialPay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المبلغ الشهري لنوع الأجر هذا يُحتسب ضمن أساس الدفعات المُدخلة بالأيام أو الساعات.</p><p><strong>لماذا يهم.</strong> تُحوَّل الدفعة المُدخلة بعدد أيام أو ساعات إلى مبلغ من مجموع أنواع الأجور هذه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInLateEarlyDed",
+      "label": "IncludeInLateEarlyDed",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInLateEarlyDed",
+        "dom:WageType_includeInLateEarlyDed"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المبلغ الشهري لنوع الأجر هذا يُحتسب ضمن أساس خصومات التأخير والانصراف المبكر.</p><p><strong>لماذا يهم.</strong> يُحتسب الخصم عن اليوم من مجموع أنواع الأجور هذه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInServiceBonus",
+      "label": "IncludeInServiceBonus",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInServiceBonus",
+        "dom:WageType_includeInServiceBonus"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المبلغ الشهري لنوع الأجر هذا يُحتسب ضمن أساس مكافأة الخدمة.</p><p><strong>لماذا يهم.</strong> مكافأة الخدمة نسبة من مجموع أنواع الأجور هذه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IncludeInFund",
+      "label": "IncludeInFund",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInFund",
+        "dom:WageType_includeInFund"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المبلغ الشهري لنوع الأجر هذا يُحتسب ضمن أساس خصم الصندوق.</p><p><strong>لماذا يهم.</strong> يحدد مجموع أنواع الأجور هذه أي شريحة من شرائح الصندوق في الدرجة تنطبق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.DontImpactNetPay",
+      "label": "DontImpactNetPay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:DontImpactNetPay",
+        "dom:WageType_dontImpactNetPay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان نوع الأجر مستبعداً من صافي الراتب.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يظهر السطر في كشف الراتب لكنه لا يُضاف إلى صافي الراتب ولا يُخصم منه. ودفعة الإجازة على نوع أجر كهذا لا تُنشئ خصم دفعة مقدمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.IsSecured",
+      "label": "IsSecured",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IsSecured",
+        "dom:WageType_isSecured"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الوصول إلى نوع الأجر مقصوراً على أدوار معيّنة.</p><p><strong>لماذا يهم.</strong> لا يُطبَّق حالياً: يمكن إدراج الأدوار في <strong>أدوار صلاحيات أنواع الأجور</strong>، لكن لا شيء يقيّد من يرى نوع الأجر أو يصرفه.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

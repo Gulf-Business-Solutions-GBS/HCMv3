@@ -1,0 +1,82 @@
+<div [@routerTransition]>
+    <sub-header [title]="'ServiceBonusReport' | localize" [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [(fromDate)]="fromDate"
+                    [(toDate)]="toDate"
+                    [(employeeCode)]="employeeCode"
+                    [(employeeStatus)]="employeeStatus"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '70rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th pSortableColumn="employeeCode">{{ 'Code' | localize }}<p-sortIcon field="employeeCode" /></th>
+                                    <th>{{ 'Employee' | localize }}</th>
+                                    <th>{{ 'JobTitle' | localize }}</th>
+                                    <th>{{ 'Grade' | localize }}</th>
+                                    @if (orgLevels.isShown(1)) {
+                                        <th>{{ orgLevels.caption(1) }}</th>
+                                    }
+                                    <th>{{ 'JoiningDate' | localize }}</th>
+                                    <th>{{ 'ServiceDueDate' | localize }}</th>
+                                    <th>{{ 'ServicePeriod' | localize }}</th>
+                                    <th>{{ 'Amount' | localize }}</th>
+                                    <th>{{ 'ArrearAmount' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td>{{ record.employeeCode }}</td>
+                                    <td>{{ record.employeeName }}</td>
+                                    <td>{{ record.jobTitle }}</td>
+                                    <td>{{ record.grade }}</td>
+                                    @if (orgLevels.isShown(1)) {
+                                        <td>{{ record.orgLevel1 }}</td>
+                                    }
+                                    <td>{{ record.joiningDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td>{{ record.serviceDueDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td>{{ record.servicePeriod }}</td>
+                                    <td>{{ record.amount }}</td>
+                                    <td>{{ record.arrearAmount }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

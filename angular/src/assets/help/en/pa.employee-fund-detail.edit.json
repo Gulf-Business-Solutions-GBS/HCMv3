@@ -1,0 +1,91 @@
+{
+  "helpId": "pa.employee-fund-detail.edit",
+  "lang": "en",
+  "title": "Employee Fund Details — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeFundDetail",
+  "overviewHtml": "<p>A transaction on the employee's fund account: an opening balance, a deduction, a payment out, or an external deduction.</p><p>Payroll pays out Payment lines dated in the month it processes. It also rebuilds the month's Deduction and Opening lines each time it runs: lines of those two kinds dated in that month are deleted and recalculated.</p>",
+  "aliasIndex": {
+    "loc:EmployeeFundId": "EmployeeFundDetail.EmployeeFundId",
+    "dom:EmployeeFundDetail_EmployeeFundId": "EmployeeFundDetail.EmployeeFundId",
+    "loc:TransactionDate": "EmployeeFundDetail.TransactionDate",
+    "dom:EmployeeFundDetail_TransactionDate": "EmployeeFundDetail.TransactionDate",
+    "loc:Amount": "EmployeeFundDetail.Amount",
+    "dom:EmployeeFundDetail_Amount": "EmployeeFundDetail.Amount",
+    "loc:FundPayType": "EmployeeFundDetail.FundPayType",
+    "dom:EmployeeFundDetail_FundPayType": "EmployeeFundDetail.FundPayType",
+    "loc:Comments": "EmployeeFundDetail.Comments",
+    "dom:EmployeeFundDetail_Comments": "EmployeeFundDetail.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeFundDetail.EmployeeFundId",
+      "label": "EmployeeFundId",
+      "section": "EmployeeFundDetails",
+      "aliases": [
+        "loc:EmployeeFundId",
+        "dom:EmployeeFundDetail_EmployeeFundId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The fund account the transaction belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFundDetail.TransactionDate",
+      "label": "TransactionDate",
+      "section": "EmployeeFundDetails",
+      "aliases": [
+        "loc:TransactionDate",
+        "dom:EmployeeFundDetail_TransactionDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date of the transaction.</p><p><strong>Example.</strong> 30 Sep 2026</p><p><strong>Why it matters.</strong> Payroll pays Payment lines dated in its month.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFundDetail.Amount",
+      "label": "Amount",
+      "section": "EmployeeFundDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeFundDetail_Amount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount of the transaction.</p><p><strong>Example.</strong> 75.000</p><p><strong>Why it matters.</strong> Opening and Deduction lines add to the fund; Payment lines are paid out of it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFundDetail.FundPayType",
+      "label": "FundPayType",
+      "section": "EmployeeFundDetails",
+      "aliases": [
+        "loc:FundPayType",
+        "dom:EmployeeFundDetail_FundPayType"
+      ],
+      "rules": "Required. One of: Deduction, Payment, Opening, External Deduction.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of transaction.</p><p><strong>Example.</strong> Payment</p>",
+      "adminHtml": "<p>Deduction and Opening lines dated in a month that payroll processes are deleted and recalculated by payroll. Enter manual contributions for those months as External Deduction.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFundDetail.Comments",
+      "label": "Comments",
+      "section": "EmployeeFundDetails",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeFundDetail_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

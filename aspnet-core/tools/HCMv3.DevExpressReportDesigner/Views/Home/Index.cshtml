@@ -1,0 +1,9 @@
+@{
+    var designerRender = Html.DevExpress().ReportDesigner("reportDesigner")
+        .Height("900px")
+        .Bind(HCMv3.DevExpressReportDesigner.Reporting.Hcmv3ReportStorage.ReportUrl);
+    @designerRender.RenderHtml()
+}
+@section Scripts {
+    @designerRender.RenderScripts()
+}

@@ -1,0 +1,139 @@
+{
+  "helpId": "pa.employee-ticket-quota.edit",
+  "lang": "ar",
+  "title": "حصص تذاكر الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeTicketQuota",
+  "overviewHtml": "<p>استحقاق الموظف من تذاكر الطيران لنوع تذكرة واحد خلال فترة استحقاق.</p><p>يظهر في تقرير رصيد حصص تذاكر الطيران، ورصيده هو المتراكم مطروحاً منه المستخدم والمعدَّل. ويحسب محرك الوقت استحقاق التذاكر من قواعد التذاكر في الدرجة والتذاكر المصروفة، ولا يقرأ هذه الحصص حالياً.</p>",
+  "aliasIndex": {
+    "loc:TicketTypeId": "EmployeeTicketQuota.TicketTypeId",
+    "dom:EmployeeTicketQuota_TicketTypeId": "EmployeeTicketQuota.TicketTypeId",
+    "loc:EntitlementFrom": "EmployeeTicketQuota.EntitlementFrom",
+    "dom:EmployeeTicketQuota_EntitlementFrom": "EmployeeTicketQuota.EntitlementFrom",
+    "loc:EntitlementTo": "EmployeeTicketQuota.EntitlementTo",
+    "dom:EmployeeTicketQuota_EntitlementTo": "EmployeeTicketQuota.EntitlementTo",
+    "loc:DeductionFrom": "EmployeeTicketQuota.DeductionFrom",
+    "dom:EmployeeTicketQuota_DeductionFrom": "EmployeeTicketQuota.DeductionFrom",
+    "loc:DeductionTo": "EmployeeTicketQuota.DeductionTo",
+    "dom:EmployeeTicketQuota_DeductionTo": "EmployeeTicketQuota.DeductionTo",
+    "loc:QuotaAccrued": "EmployeeTicketQuota.QuotaAccrued",
+    "dom:EmployeeTicketQuota_QuotaAccrued": "EmployeeTicketQuota.QuotaAccrued",
+    "loc:QuotaUsed": "EmployeeTicketQuota.QuotaUsed",
+    "dom:EmployeeTicketQuota_QuotaUsed": "EmployeeTicketQuota.QuotaUsed",
+    "loc:QuotaAdjusted": "EmployeeTicketQuota.QuotaAdjusted",
+    "dom:EmployeeTicketQuota_QuotaAdjusted": "EmployeeTicketQuota.QuotaAdjusted"
+  },
+  "fields": [
+    {
+      "id": "EmployeeTicketQuota.TicketTypeId",
+      "label": "TicketTypeId",
+      "section": "EmployeeTicketQuotas",
+      "aliases": [
+        "loc:TicketTypeId",
+        "dom:EmployeeTicketQuota_TicketTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع التذاكر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع التذكرة الذي تخصه هذه الحصة.</p><p><strong>مثال.</strong> الموظف</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicketQuota.EntitlementFrom",
+      "label": "EntitlementFrom",
+      "section": "EmployeeTicketQuotas",
+      "aliases": [
+        "loc:EntitlementFrom",
+        "dom:EmployeeTicketQuota_EntitlementFrom"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم في فترة الاستحقاق.</p><p><strong>مثال.</strong> 1 يناير 2026</p><p><strong>لماذا يهم.</strong> يستخدم التقرير الحصة التي تغطي تاريخه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicketQuota.EntitlementTo",
+      "label": "EntitlementTo",
+      "section": "EmployeeTicketQuotas",
+      "aliases": [
+        "loc:EntitlementTo",
+        "dom:EmployeeTicketQuota_EntitlementTo"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم في فترة الاستحقاق.</p><p><strong>مثال.</strong> 31 ديسمبر 2027</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicketQuota.DeductionFrom",
+      "label": "DeductionFrom",
+      "section": "EmployeeTicketQuotas",
+      "aliases": [
+        "loc:DeductionFrom",
+        "dom:EmployeeTicketQuota_DeductionFrom"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يمكن فيه أخذ تذاكر من هذه الحصة.</p><p><strong>مثال.</strong> 1 يناير 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicketQuota.DeductionTo",
+      "label": "DeductionTo",
+      "section": "EmployeeTicketQuotas",
+      "aliases": [
+        "loc:DeductionTo",
+        "dom:EmployeeTicketQuota_DeductionTo"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يمكن فيه أخذ تذاكر من هذه الحصة.</p><p><strong>مثال.</strong> 31 ديسمبر 2027</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicketQuota.QuotaAccrued",
+      "label": "QuotaAccrued",
+      "section": "EmployeeTicketQuotas",
+      "aliases": [
+        "loc:QuotaAccrued",
+        "dom:EmployeeTicketQuota_QuotaAccrued"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التذاكر المكتسبة في الفترة.</p><p><strong>مثال.</strong> 1</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicketQuota.QuotaUsed",
+      "label": "QuotaUsed",
+      "section": "EmployeeTicketQuotas",
+      "aliases": [
+        "loc:QuotaUsed",
+        "dom:EmployeeTicketQuota_QuotaUsed"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التذاكر المأخوذة في الفترة.</p><p><strong>مثال.</strong> 0</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicketQuota.QuotaAdjusted",
+      "label": "QuotaAdjusted",
+      "section": "EmployeeTicketQuotas",
+      "aliases": [
+        "loc:QuotaAdjusted",
+        "dom:EmployeeTicketQuota_QuotaAdjusted"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التذاكر المعدَّلة في الفترة.</p><p><strong>مثال.</strong> 0</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.employee-asset-invoice.edit",
+  "lang": "en",
+  "title": "Employee Asset Invoices — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAssetInvoice",
+  "overviewHtml": "<p>A monthly bill for an asset the employee holds — a mobile phone bill, a fuel card statement — and how much of it the employee pays. Opened from the Asset Invoices section of the employee record.</p><p>An employee can have only one invoice per asset per month (by invoice date). Every amount is entered by hand: nothing is worked out from the employee's asset allowance, and payroll does not deduct anything from these records. The Employee Asset Invoice report lists them, and the printed Employee Deduction report shows the deduction amount of each ticked invoice in its month.</p>",
+  "aliasIndex": {
+    "loc:AssetId": "EmployeeAssetInvoice.AssetId",
+    "dom:EmployeeAssetInvoice_AssetId": "EmployeeAssetInvoice.AssetId",
+    "loc:InvoiceDate": "EmployeeAssetInvoice.InvoiceDate",
+    "dom:EmployeeAssetInvoice_InvoiceDate": "EmployeeAssetInvoice.InvoiceDate",
+    "loc:InvoiceAmount": "EmployeeAssetInvoice.InvoiceAmount",
+    "dom:EmployeeAssetInvoice_InvoiceAmount": "EmployeeAssetInvoice.InvoiceAmount",
+    "loc:EmployeePlanAmount": "EmployeeAssetInvoice.EmployeePlanAmount",
+    "dom:EmployeeAssetInvoice_EmployeePlanAmount": "EmployeeAssetInvoice.EmployeePlanAmount",
+    "loc:DeductionAmount": "EmployeeAssetInvoice.DeductionAmount",
+    "dom:EmployeeAssetInvoice_DeductionAmount": "EmployeeAssetInvoice.DeductionAmount",
+    "loc:DeductFromEmployee": "EmployeeAssetInvoice.DeductFromEmployee",
+    "dom:EmployeeAssetInvoice_DeductFromEmployee": "EmployeeAssetInvoice.DeductFromEmployee",
+    "loc:Comments": "EmployeeAssetInvoice.Comments",
+    "dom:EmployeeAssetInvoice_Comments": "EmployeeAssetInvoice.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAssetInvoice.AssetId",
+      "label": "AssetId",
+      "section": "EmployeeAssetInvoices",
+      "aliases": [
+        "loc:AssetId",
+        "dom:EmployeeAssetInvoice_AssetId"
+      ],
+      "rules": "Required. Chosen from Asset master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The asset the invoice is for.</p><p><strong>Example.</strong> Mobile phone — 9999 1234</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Assets.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAssetInvoice.InvoiceDate",
+      "label": "InvoiceDate",
+      "section": "EmployeeAssetInvoices",
+      "aliases": [
+        "loc:InvoiceDate",
+        "dom:EmployeeAssetInvoice_InvoiceDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date of the invoice.</p><p><strong>Example.</strong> 30 Sep 2026</p><p><strong>Why it matters.</strong> Its month and year decide which month the invoice belongs to, both for the one-invoice-per-month check and on the Employee Deduction report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAssetInvoice.InvoiceAmount",
+      "label": "InvoiceAmount",
+      "section": "EmployeeAssetInvoices",
+      "aliases": [
+        "loc:InvoiceAmount",
+        "dom:EmployeeAssetInvoice_InvoiceAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The total of the invoice.</p><p><strong>Example.</strong> 32.500</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAssetInvoice.EmployeePlanAmount",
+      "label": "EmployeePlanAmount",
+      "section": "EmployeeAssetInvoices",
+      "aliases": [
+        "loc:EmployeePlanAmount",
+        "dom:EmployeeAssetInvoice_EmployeePlanAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The part of the invoice the company covers under the employee's plan or allowance.</p><p><strong>Example.</strong> 20.000</p><p><strong>Why it matters.</strong> Shown on the Employee Asset Invoice report. It is not calculated; enter it yourself.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAssetInvoice.DeductionAmount",
+      "label": "DeductionAmount",
+      "section": "EmployeeAssetInvoices",
+      "aliases": [
+        "loc:DeductionAmount",
+        "dom:EmployeeAssetInvoice_DeductionAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The part of the invoice the employee pays.</p><p><strong>Example.</strong> 12.500</p><p><strong>Why it matters.</strong> Printed on the Employee Deduction report when Deduct From Employee is ticked. Payroll does not deduct it; add a payment on the employee record if it is to come off the salary.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAssetInvoice.DeductFromEmployee",
+      "label": "DeductFromEmployee",
+      "section": "EmployeeAssetInvoices",
+      "aliases": [
+        "loc:DeductFromEmployee",
+        "dom:EmployeeAssetInvoice_DeductFromEmployee"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the employee is to pay the deduction amount.</p><p><strong>Example.</strong> Yes</p><p><strong>Why it matters.</strong> Only ticked invoices with a deduction amount appear on the Employee Deduction report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAssetInvoice.Comments",
+      "label": "Comments",
+      "section": "EmployeeAssetInvoices",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeAssetInvoice_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

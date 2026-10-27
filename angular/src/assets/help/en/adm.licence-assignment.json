@@ -1,0 +1,120 @@
+{
+  "helpId": "adm.licence-assignment",
+  "lang": "en",
+  "title": "Licence Assignment",
+  "entity": null,
+  "overviewHtml": "<p>Decides which parts of HCM each user may use. Your subscription comes with a number of licences per module; here you give them to users, one tick per user and module.</p><p>There are five modules: <strong>Administration (HRMS)</strong> (the whole administration application), <strong>Employee Self Service</strong>, <strong>Mobile Application</strong> (geo punch and the mobile device list, which sit inside self-service), <strong>Performance</strong> and <strong>Recruitment</strong>. They nest: a recruiter needs an Administration licence and a Recruitment licence, and a mobile user needs a self-service licence and a Mobile licence.</p><p>When licences are enforced, a user without a licence for a module simply does not get it: its menu items disappear and its screens refuse to open. Signing in itself is not refused. Every tick takes effect at once.</p><p>The number of licences, and which modules your subscription includes, are set by GBS on your subscription; they cannot be changed from this screen. To get more licences, contact your GBS Account Manager.</p><p>:::admin The counts and switches are ASP.NET Zero edition features, set by the host: \"HCM: Per-user module licences\", one licence count per module (0 = unlimited), the module on/off features, and \"HCM: Maximum active employees\". A module switched off in the edition is refused to everyone, whatever the ticks say. :::</p>",
+  "aliasIndex": {},
+  "fields": [
+    {
+      "id": "adm.licence-assignment.enforced",
+      "label": "HcmFeatureSeats",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether licences are actually checked for your company. When they are not, a blue note at the top says so.</p><p><strong>Example.</strong> \"Per-user licences are not switched on for your subscription, so nobody is refused access yet.\"</p><p><strong>Why it matters.</strong> Until GBS switches them on, nobody is refused anything, but you can already tick users, so that everything is in place on the day enforcement starts.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "adm.licence-assignment.usage",
+      "label": "Module",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> One card per module at the top, showing how many licences are in use and how many your subscription has.</p><p><strong>Example.</strong> \"Employee Self Service: 412 used of 500\", or \"Recruitment: 3 used / unlimited\".</p><p><strong>Why it matters.</strong> A licence counts only while its user is active and is not an administrator. Deactivating a user frees their licence but keeps their tick; reactivating them takes it back, which can push a module over its count (see <strong>Over the limit</strong>).</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "adm.licence-assignment.search",
+      "label": "Search",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Finds users by user name, name, surname or email. The two lists beside it work together: choose a module, then <strong>Assigned</strong> to list the users who hold it or <strong>Not assigned</strong> for those who do not. A module on its own, with <strong>All</strong>, still lists everybody.</p><p><strong>Example.</strong> Module \"Employee Self Service\", <strong>Not assigned</strong>: every user still waiting for a self-service licence.</p><p><strong>Why it matters.</strong> Press <strong>Search</strong> or Enter after typing; the lists apply as soon as you change them.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "adm.licence-assignment.users",
+      "label": "Users",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Every user of your company, with the employee code where the user is linked to an employee, and one tick box per module.</p><p><strong>Example.</strong> Tick <strong>Performance</strong> for a line manager who rates appraisals in the administration application.</p><p><strong>Why it matters.</strong> Ticking or unticking saves immediately. Unticking is always allowed. A box that cannot be ticked is greyed out; hover over it to see why. When a user is linked to an employee, self-service and mobile licences are given to them automatically if those modules are in your subscription and licences are free; otherwise they are skipped without an error.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "adm.licence-assignment.administrator",
+      "label": "LicenceNotNeededForAdministratorShort",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Shown beside users who hold the Admin role.</p><p><strong>Example.</strong> The \"admin\" user.</p><p><strong>Why it matters.</strong> Administrators may use every module without a licence and never use one up, so their boxes cannot be ticked.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "adm.licence-assignment.inactive",
+      "label": "Inactive",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Shown beside users who are switched off.</p><p><strong>Example.</strong> A user deactivated after the employee left.</p><p><strong>Why it matters.</strong> Their ticks are kept but do not count against your licences.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "adm.licence-assignment.not-in-subscription",
+      "label": "LicenceModuleNotInEditionShort",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The module is not part of your subscription.</p><p><strong>Example.</strong> Recruitment, for a company that did not buy it.</p><p><strong>Why it matters.</strong> Nobody can be given that module, and nobody can use it, until GBS adds it to your subscription.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "adm.licence-assignment.no-licence-left",
+      "label": "LicenceNoSeatLeftShort",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Every licence for the module is in use, so a further tick is refused.</p><p><strong>Example.</strong> \"All 25 Administration (HRMS) licences are in use.\"</p><p><strong>Why it matters.</strong> Untick a user who no longer needs the module first, or ask your GBS Account Manager for more licences. If another administrator used the last licence while you had the screen open, your tick is put back and the counts are refreshed.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "adm.licence-assignment.over-limit",
+      "label": "LicenceOverLimit",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A module card in red: more licences are in use than your subscription has.</p><p><strong>Example.</strong> 501 used of 500, after a user who held a licence was reactivated.</p><p><strong>Why it matters.</strong> Nobody is locked out by it, but no new ticks can be given for that module until enough users are unticked to bring it back within the count.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "adm.licence-assignment.active-employees",
+      "label": "HcmFeatureMaxActiveEmployees",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A separate limit on your subscription: how many employees may be Active at the same time. It is about employee records, not users, and is not shown on this screen.</p><p><strong>Example.</strong> A subscription for 300 employees.</p><p><strong>Why it matters.</strong> Once the limit is reached, saving a new active employee, making an employee active again, or rejoining a separated employee is refused with \"Your subscription allows 300 active employees and that number has been reached.\" A limit of 0 means unlimited.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'EmployeeWorkflowRole' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'EmployeeWorkflowRole' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <!-- Effective date first, as on every dated record. -->
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeWorkflowRole_StartDate">
+                                    {{ 'EffectiveDate' | localize }}
+                                </label>
+                                <input
+                                    id="EmployeeWorkflowRole_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeWorkflowRole_EndDate">
+                                    {{ 'EndDate' | localize }}
+                                </label>
+                                <input
+                                    id="EmployeeWorkflowRole_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+
+                            <!-- Shown, not chosen. The section belongs to one employee, and a dropdown
+                                 here would invite filing the assignment against somebody else. -->
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="EmployeeWorkflowRole_EmployeeName">
+                                    {{ 'Employee' | localize }}
+                                </label>
+                                <input
+                                    id="EmployeeWorkflowRole_EmployeeName"
+                                    type="text"
+                                    class="form-control"
+                                    [value]="employeeName()"
+                                    readonly />
+                            </div>
+
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeWorkflowRole_WorkflowRoleId">
+                                    {{ 'WorkflowRole' | localize }}
+                                </label>
+                                <select
+                                    id="EmployeeWorkflowRole_WorkflowRoleId"
+                                    #workflowRoleIdInput="ngModel"
+                                    class="form-select"
+                                    name="WorkflowRoleId"
+                                    [ngModel]="record().workflowRoleId"
+                                    (ngModelChange)="updateField('workflowRoleId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (role of workflowRoles(); track role.id) {
+                                        <option [ngValue]="role.id">{{ role.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="workflowRoleIdInput" />
+                            </div>
+
+                            @if (isNotActiveToday()) {
+                                <!-- Warned, not blocked: dating an assignment ahead of a transfer is
+                                     legitimate, and so is recording one that has ended. What is not
+                                     obvious is that the row saves perfectly and still resolves to nobody. -->
+                                <div class="col-md-12">
+                                    <div class="alert alert-warning mb-0">
+                                        {{ 'AssignmentNotActiveTodayWarning' | localize }}
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary fw-bold" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary fw-bold" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

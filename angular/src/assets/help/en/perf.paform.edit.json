@@ -1,0 +1,363 @@
+{
+  "helpId": "perf.paform.edit",
+  "lang": "en",
+  "title": "PA Forms — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.PAForm",
+  "overviewHtml": "<p>An employee's appraisal form for a period, in the older model: the plan, quarterly reviews, mid-year and year-end reviews, with sign-off and summary comments. Its KPI lines are held on the plan and review lists. Each employee can have one form per period.</p><p>The submission boxes record progress; they do not lock the form. The dashboard counts the plan, mid-year and year-end submissions, and the PA summary report shows the moderated score and comments.</p>",
+  "aliasIndex": {
+    "loc:PAPeriod": "PAForm.PAPeriodId",
+    "dom:PAForm_PAPeriodId": "PAForm.PAPeriodId",
+    "loc:Employee": "PAForm.EmployeeId",
+    "dom:PAForm_EmployeeId": "PAForm.EmployeeId",
+    "loc:OverallScore": "PAForm.OverallScore",
+    "dom:PAForm_OverallScore": "PAForm.OverallScore",
+    "loc:ModeratedScore": "PAForm.ModeratedScore",
+    "dom:PAForm_ModeratedScore": "PAForm.ModeratedScore",
+    "loc:PlanSubmitByAppraiser": "PAForm.PlanSubmitByAppraiser",
+    "dom:PAForm_PlanSubmitByAppraiser": "PAForm.PlanSubmitByAppraiser",
+    "loc:PlanSubmitByAppraisee": "PAForm.PlanSubmitByAppraisee",
+    "dom:PAForm_PlanSubmitByAppraisee": "PAForm.PlanSubmitByAppraisee",
+    "loc:Quarter1SubmitByAppraiser": "PAForm.Quarter1SubmitByAppraiser",
+    "dom:PAForm_Quarter1SubmitByAppraiser": "PAForm.Quarter1SubmitByAppraiser",
+    "loc:Quarter1SubmitByAppraisee": "PAForm.Quarter1SubmitByAppraisee",
+    "dom:PAForm_Quarter1SubmitByAppraisee": "PAForm.Quarter1SubmitByAppraisee",
+    "loc:MRSubmitByAppraiser": "PAForm.MRSubmitByAppraiser",
+    "dom:PAForm_MRSubmitByAppraiser": "PAForm.MRSubmitByAppraiser",
+    "loc:MRSubmitByAppraisee": "PAForm.MRSubmitByAppraisee",
+    "dom:PAForm_MRSubmitByAppraisee": "PAForm.MRSubmitByAppraisee",
+    "loc:Quarter3SubmitByAppraiser": "PAForm.Quarter3SubmitByAppraiser",
+    "dom:PAForm_Quarter3SubmitByAppraiser": "PAForm.Quarter3SubmitByAppraiser",
+    "loc:Quarter3SubmitByAppraisee": "PAForm.Quarter3SubmitByAppraisee",
+    "dom:PAForm_Quarter3SubmitByAppraisee": "PAForm.Quarter3SubmitByAppraisee",
+    "loc:ERSubmitByAppraiser": "PAForm.ERSubmitByAppraiser",
+    "dom:PAForm_ERSubmitByAppraiser": "PAForm.ERSubmitByAppraiser",
+    "loc:ERSubmitByAppraisee": "PAForm.ERSubmitByAppraisee",
+    "dom:PAForm_ERSubmitByAppraisee": "PAForm.ERSubmitByAppraisee",
+    "loc:AppraiserSignedOff": "PAForm.AppraiserSignedOff",
+    "dom:PAForm_AppraiserSignedOff": "PAForm.AppraiserSignedOff",
+    "loc:AppraiseeSignedOff": "PAForm.AppraiseeSignedOff",
+    "dom:PAForm_AppraiseeSignedOff": "PAForm.AppraiseeSignedOff",
+    "loc:AppraiseeStrength": "PAForm.AppraiseeStrength",
+    "dom:PAForm_AppraiseeStrength": "PAForm.AppraiseeStrength",
+    "loc:AreasOfImprovement": "PAForm.AreasOfImprovement",
+    "dom:PAForm_AreasOfImprovement": "PAForm.AreasOfImprovement",
+    "loc:ReviewofPreviousGoals": "PAForm.ReviewofPreviousGoals",
+    "dom:PAForm_ReviewofPreviousGoals": "PAForm.ReviewofPreviousGoals",
+    "loc:NewlySetGoals": "PAForm.NewlySetGoals",
+    "dom:PAForm_NewlySetGoals": "PAForm.NewlySetGoals",
+    "loc:OverallComments": "PAForm.OverallComments",
+    "dom:PAForm_OverallComments": "PAForm.OverallComments",
+    "loc:Comments": "PAForm.Comments",
+    "dom:PAForm_Comments": "PAForm.Comments"
+  },
+  "fields": [
+    {
+      "id": "PAForm.PAPeriodId",
+      "label": "PAPeriod",
+      "section": "PAForms",
+      "aliases": [
+        "loc:PAPeriod",
+        "dom:PAForm_PAPeriodId"
+      ],
+      "rules": "Required. Chosen from PA Period master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraisal period.</p><p><strong>Example.</strong> FY 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.EmployeeId",
+      "label": "Employee",
+      "section": "PAForms",
+      "aliases": [
+        "loc:Employee",
+        "dom:PAForm_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee being appraised.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.OverallScore",
+      "label": "OverallScore",
+      "section": "PAForms",
+      "aliases": [
+        "loc:OverallScore",
+        "dom:PAForm_OverallScore"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraisal's overall score. Calculated, not typed in.</p><p><strong>Example.</strong> 3.60 (KPI A weight 60 rated 4, KPI B weight 40 rated 3)</p><p><strong>Why it matters.</strong> Worked out again whenever a KPI review line is saved or deleted: the appraiser's rating on each line times the line's weight, divided by 100, added up. The employee's self-rating is not used.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.ModeratedScore",
+      "label": "ModeratedScore",
+      "section": "PAForms",
+      "aliases": [
+        "loc:ModeratedScore",
+        "dom:PAForm_ModeratedScore"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The final score after moderation, shown on the PA summary and appraisal reports.</p><p><strong>Example.</strong> <code>78</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.PlanSubmitByAppraiser",
+      "label": "PlanSubmitByAppraiser",
+      "section": "PAForms",
+      "aliases": [
+        "loc:PlanSubmitByAppraiser",
+        "dom:PAForm_PlanSubmitByAppraiser"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the appraiser has submitted the plan.</p><p><strong>Why it matters.</strong> Counted on the performance appraisal dashboard.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.PlanSubmitByAppraisee",
+      "label": "PlanSubmitByAppraisee",
+      "section": "PAForms",
+      "aliases": [
+        "loc:PlanSubmitByAppraisee",
+        "dom:PAForm_PlanSubmitByAppraisee"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the appraisee has submitted the plan.</p><p><strong>Why it matters.</strong> Counted on the performance appraisal dashboard.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.Quarter1SubmitByAppraiser",
+      "label": "Quarter1SubmitByAppraiser",
+      "section": "PAForms",
+      "aliases": [
+        "loc:Quarter1SubmitByAppraiser",
+        "dom:PAForm_Quarter1SubmitByAppraiser"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the appraiser has submitted the first-quarter review.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.Quarter1SubmitByAppraisee",
+      "label": "Quarter1SubmitByAppraisee",
+      "section": "PAForms",
+      "aliases": [
+        "loc:Quarter1SubmitByAppraisee",
+        "dom:PAForm_Quarter1SubmitByAppraisee"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the appraisee has submitted the first-quarter review.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.MRSubmitByAppraiser",
+      "label": "MRSubmitByAppraiser",
+      "section": "PAForms",
+      "aliases": [
+        "loc:MRSubmitByAppraiser",
+        "dom:PAForm_MRSubmitByAppraiser"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the appraiser has submitted the mid-year review.</p><p><strong>Why it matters.</strong> Counted on the performance appraisal dashboard.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.MRSubmitByAppraisee",
+      "label": "MRSubmitByAppraisee",
+      "section": "PAForms",
+      "aliases": [
+        "loc:MRSubmitByAppraisee",
+        "dom:PAForm_MRSubmitByAppraisee"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the appraisee has submitted the mid-year review.</p><p><strong>Why it matters.</strong> Counted on the performance appraisal dashboard.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.Quarter3SubmitByAppraiser",
+      "label": "Quarter3SubmitByAppraiser",
+      "section": "PAForms",
+      "aliases": [
+        "loc:Quarter3SubmitByAppraiser",
+        "dom:PAForm_Quarter3SubmitByAppraiser"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the appraiser has submitted the third-quarter review.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.Quarter3SubmitByAppraisee",
+      "label": "Quarter3SubmitByAppraisee",
+      "section": "PAForms",
+      "aliases": [
+        "loc:Quarter3SubmitByAppraisee",
+        "dom:PAForm_Quarter3SubmitByAppraisee"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the appraisee has submitted the third-quarter review.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.ERSubmitByAppraiser",
+      "label": "ERSubmitByAppraiser",
+      "section": "PAForms",
+      "aliases": [
+        "loc:ERSubmitByAppraiser",
+        "dom:PAForm_ERSubmitByAppraiser"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the appraiser has submitted the year-end review.</p><p><strong>Why it matters.</strong> Counted on the performance appraisal dashboard.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.ERSubmitByAppraisee",
+      "label": "ERSubmitByAppraisee",
+      "section": "PAForms",
+      "aliases": [
+        "loc:ERSubmitByAppraisee",
+        "dom:PAForm_ERSubmitByAppraisee"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the appraisee has submitted the year-end review.</p><p><strong>Why it matters.</strong> Counted on the performance appraisal dashboard.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.AppraiserSignedOff",
+      "label": "AppraiserSignedOff",
+      "section": "PAForms",
+      "aliases": [
+        "loc:AppraiserSignedOff",
+        "dom:PAForm_AppraiserSignedOff"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the appraiser has signed off the form.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.AppraiseeSignedOff",
+      "label": "AppraiseeSignedOff",
+      "section": "PAForms",
+      "aliases": [
+        "loc:AppraiseeSignedOff",
+        "dom:PAForm_AppraiseeSignedOff"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the appraisee has signed off the form.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.AppraiseeStrength",
+      "label": "AppraiseeStrength",
+      "section": "PAForms",
+      "aliases": [
+        "loc:AppraiseeStrength",
+        "dom:PAForm_AppraiseeStrength"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraisee's strengths. Shown on the PA summary report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.AreasOfImprovement",
+      "label": "AreasOfImprovement",
+      "section": "PAForms",
+      "aliases": [
+        "loc:AreasOfImprovement",
+        "dom:PAForm_AreasOfImprovement"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Areas to improve. Shown on the PA summary report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.ReviewofPreviousGoals",
+      "label": "ReviewofPreviousGoals",
+      "section": "PAForms",
+      "aliases": [
+        "loc:ReviewofPreviousGoals",
+        "dom:PAForm_ReviewofPreviousGoals"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A review of the previous period's goals.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.NewlySetGoals",
+      "label": "NewlySetGoals",
+      "section": "PAForms",
+      "aliases": [
+        "loc:NewlySetGoals",
+        "dom:PAForm_NewlySetGoals"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Goals set for the next period. Shown on the PA summary report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.OverallComments",
+      "label": "OverallComments",
+      "section": "PAForms",
+      "aliases": [
+        "loc:OverallComments",
+        "dom:PAForm_OverallComments"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Overall comments. Shown on the PA summary report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.Comments",
+      "label": "Comments",
+      "section": "PAForms",
+      "aliases": [
+        "loc:Comments",
+        "dom:PAForm_Comments"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-extd-work-location.edit",
+  "lang": "en",
+  "title": "Employee Extended Work Locations — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeExtdWorkLocation",
+  "overviewHtml": "<p>An additional work location the employee may work at for a period, besides the one on their org assignment. The same location cannot be recorded for overlapping periods.</p><p>It is recorded for reference; no calculation or approval step reads it at present.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeExtdWorkLocation.StartDate",
+    "dom:EmployeeExtdWorkLocation_StartDate": "EmployeeExtdWorkLocation.StartDate",
+    "loc:EndDate": "EmployeeExtdWorkLocation.EndDate",
+    "dom:EmployeeExtdWorkLocation_EndDate": "EmployeeExtdWorkLocation.EndDate",
+    "loc:WorkLocationId": "EmployeeExtdWorkLocation.WorkLocationId",
+    "dom:EmployeeExtdWorkLocation_WorkLocationId": "EmployeeExtdWorkLocation.WorkLocationId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeExtdWorkLocation.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeExtdWorkLocations",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeExtdWorkLocation_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeExtdWorkLocation.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeExtdWorkLocations",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeExtdWorkLocation_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeExtdWorkLocation.WorkLocationId",
+      "label": "WorkLocationId",
+      "section": "EmployeeExtdWorkLocations",
+      "aliases": [
+        "loc:WorkLocationId",
+        "dom:EmployeeExtdWorkLocation_WorkLocationId"
+      ],
+      "rules": "Required. Chosen from Work Location master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The additional work location.</p><p><strong>Example.</strong> Warehouse — Shuwaikh</p>",
+      "adminHtml": "<p>Maintained under Organization Management → Work Locations.</p>",
+      "stub": false
+    }
+  ]
+}

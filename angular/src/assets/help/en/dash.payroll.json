@@ -1,0 +1,291 @@
+{
+  "helpId": "dash.payroll",
+  "lang": "en",
+  "title": "Payroll Dashboard",
+  "entity": null,
+  "overviewHtml": "<p>What payroll paid and what the staff cost the company over a period: gross pay, deductions, net pay, the employer's social security and provisions, and the cost to company they add up to — by month, department, pay item, basic-salary band, payment method and payroll run. Clicking a payslip opens that employee's cost card. It opens on this year to date.</p><p>Every figure comes from the <strong>payroll results</strong>. Only the result calculated in its own month is used (in-period equals for-period). A retroactive recalculation of an earlier month is not added again: its difference is already paid as arrears in the later month's own result. <strong>Off-cycle</strong> runs are money paid too, so they count in the totals. A month payroll has not been run for has nothing to show.</p><p><strong>Gross pay</strong> and <strong>deductions</strong> follow the payroll engine's own net-pay rule: every earning or deduction that affects net pay counts, whatever its code. <strong>Employer cost</strong> is what the company pays on top of gross: the employer's social security (PIFSS) share and the month's indemnity, leave and ticket provisions. A period longer than five years is shortened to the last five.</p><p>Several tiles are a snapshot of the <strong>latest paid month</strong>: the last month of the period with a regular payroll result. Their titles say which month that is.</p>",
+  "aliasIndex": {
+    "loc:Dashboard_Showing": "dash.common.showing",
+    "loc:Filter": "dash.common.filter",
+    "loc:Download": "dash.common.download",
+    "loc:PayrollDashboard_EmployeesPaid": "dash.payroll.employees-paid",
+    "loc:PayrollDashboard_Gross": "dash.payroll.gross",
+    "loc:PayrollDashboard_Deductions": "dash.payroll.deductions",
+    "loc:PayrollDashboard_Net": "dash.payroll.net",
+    "loc:PayrollDashboard_EmployerCost": "dash.payroll.employer-cost",
+    "loc:PayrollDashboard_CostToCompany": "dash.payroll.cost-to-company",
+    "loc:PayrollDashboard_ByMonth": "dash.payroll.trend",
+    "loc:PayrollDashboard_CostMix": "dash.payroll.cost-mix",
+    "loc:PayrollDashboard_ByDepartment": "dash.payroll.by-department",
+    "loc:PayrollDashboard_BasicBands": "dash.payroll.basic-bands",
+    "loc:PayrollDashboard_Earnings": "dash.payroll.earnings",
+    "loc:PayrollDashboard_DeductionTypes": "dash.payroll.deduction-types",
+    "loc:PayrollDashboard_PaymentMethods": "dash.payroll.payment-methods",
+    "loc:PayrollDashboard_RunTypes": "dash.payroll.run-types",
+    "loc:PayrollDashboard_Provisions": "dash.payroll.provisions",
+    "loc:PayrollDashboard_Payslips": "dash.payroll.payslips",
+    "loc:PayrollDashboard_CostCard": "dash.payroll.cost-card"
+  },
+  "fields": [
+    {
+      "id": "dash.common.showing",
+      "label": "Dashboard_Showing",
+      "section": null,
+      "aliases": [
+        "loc:Dashboard_Showing"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The line in the toolbar that says whose data the dashboard is built from, and how many employees that is. You never choose it: it follows from who you are.</p><p><strong>How it is worked out.</strong> The employees you see are:</p><ul><li>everyone, if you hold the <strong>Admin</strong> role;</li><li>otherwise the employees in the organization units given to your roles in row-level security, including every unit below them, <strong>plus</strong> your own team — you and everybody below you in the manager hierarchy, at every level;</li><li>nobody, if neither gives anyone. The dashboard then shows nothing, never everything.</li></ul><p><strong>Example.</strong> \"Showing: Finance + Payroll + your team (123 employees)\" — you are an HR officer for Finance and Payroll, and also manage a team of your own.</p><p><strong>Why it matters.</strong> Two people can open the same dashboard and see different numbers, and both are right. Every figure, chart, list and download on the page is limited to these employees — changing a filter can narrow them further but never widen them.</p>",
+      "adminHtml": "<p>Resolved by <code>IDashboardScopeService</code> for every dashboard. The row-level security on/off switch in Security Settings is deliberately not consulted: with nothing assigned the user sees nothing, whatever the switch says. The Admin rule matches the static tenant role name <code>Admin</code>.</p>",
+      "stub": false
+    },
+    {
+      "id": "dash.common.filter",
+      "label": "Filter",
+      "section": null,
+      "aliases": [
+        "loc:Filter"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The window behind the <strong>Filter</strong> button: the period and the organization unit. Nothing changes until you press <strong>Apply</strong>; <strong>Reset</strong> goes back to the defaults.</p><p><strong>How the period works.</strong></p><ul><li><strong>This year to date</strong> (the default): 1 January of this year up to today.</li><li><strong>This year</strong> and <strong>Last year</strong>: 1 January to 31 December.</li><li><strong>This month</strong>: the first to the last day of the current month.</li><li><strong>Custom</strong>: any From and To dates you choose. A period longer than five years is shortened to the last five.</li></ul><p><strong>Example.</strong> Pick <strong>Last year</strong> to see 2025 while this year's data is still thin.</p><p><strong>Why it matters.</strong> Figures \"as of today\" (who is on leave today, headcount) do not depend on the period; figures \"in the period\" (leave days, joiners, leavers, turnover) do. Choosing an organization unit includes every unit below it. Clicking a bar or a slice on a chart adds another filter, shown as a chip next to <strong>Showing</strong> — remove it with its <strong>×</strong>, or all of them with <strong>Clear filters</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.common.download",
+      "label": "Download",
+      "section": null,
+      "aliases": [
+        "loc:Download"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The download icon on the toolbar and on every tile. Clicking it offers three formats.</p><p><strong>What each format contains.</strong></p><ul><li><strong>PDF</strong> and <strong>JPEG</strong>: a picture of the tile exactly as it looks on screen, charts included. From the toolbar, a picture of the whole dashboard.</li><li><strong>XLSX</strong>: the data behind the tile, with the same filters. From the toolbar, a workbook with a <strong>Summary</strong> sheet (whose data, the period, the headline figures) and one sheet per tile.</li></ul><p><strong>Example.</strong> Send the <strong>Leave by type</strong> chart as a JPEG in an email; give payroll the <strong>Not returned from leave</strong> list as XLSX.</p><p><strong>Why it matters.</strong> Whatever you download contains only what you are allowed to see, and exactly what the screen shows for the filters you have applied.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.employees-paid",
+      "label": "PayrollDashboard_EmployeesPaid",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_EmployeesPaid"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many employees were paid in the latest paid month. Click it for their payslips.</p><p><strong>How it is calculated.</strong> <code>Distinct employees with a regular payroll result in the latest paid month</code></p><ul><li>Off-cycle payments alone do not count an employee as paid.</li></ul><p><strong>Example.</strong> 742 · in September 2026.</p><p><strong>Why it matters.</strong> It should match the number of people on the payroll; a drop usually means someone was left out of the run.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.gross",
+      "label": "PayrollDashboard_Gross",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_Gross"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Everything employees earned in the period, before deductions.</p><p><strong>How it is calculated.</strong> <code>Sum of every earning that affects net pay</code></p><ul><li>Net pay itself, time types and provisions are not earnings. Arrears, overtime and off-cycle payments are.</li></ul><p><strong>Example.</strong> 1,284,560.250.</p><p><strong>Why it matters.</strong> It is the salary bill before anything is taken off.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.deductions",
+      "label": "PayrollDashboard_Deductions",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_Deductions"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Everything taken off pay in the period. The line below gives it as a share of gross.</p><p><strong>How it is calculated.</strong> <code>Sum of every deduction that affects net pay</code>; <strong>share</strong> = <code>deductions ÷ gross × 100</code></p><ul><li>The employer's social security share is not a deduction from pay: it does not touch net pay and is counted under <strong>Employer cost</strong>.</li></ul><p><strong>Example.</strong> 98,410.500 · 7.7% of gross pay.</p><p><strong>Why it matters.</strong> A jump in the share points at new loans, absences or penalties.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.net",
+      "label": "PayrollDashboard_Net",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_Net"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What was paid out to employees in the period.</p><p><strong>How it is calculated.</strong> <code>Sum of the net-pay line of every payslip</code></p><ul><li>A payslip without a net-pay line (some off-cycle runs) counts <code>gross − deductions</code> instead.</li></ul><p><strong>Example.</strong> 1,186,149.750.</p><p><strong>Why it matters.</strong> It is the money that leaves the bank; it should agree with the bank transfer files.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.employer-cost",
+      "label": "PayrollDashboard_EmployerCost",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_EmployerCost"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What the company pays on top of gross pay.</p><p><strong>How it is calculated.</strong> <code>Employer social security share + indemnity provision + leave provision + ticket provision</code>, each month's own amounts.</p><ul><li>These are the monthly provision amounts, not the running balances shown under <strong>Provision balances</strong>.</li></ul><p><strong>Example.</strong> 214,300.000.</p><p><strong>Why it matters.</strong> It is the part of staff cost that never appears on a payslip.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.cost-to-company",
+      "label": "PayrollDashboard_CostToCompany",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_CostToCompany"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The full cost of the staff for the period. The line below gives the average cost of one employee for one month.</p><p><strong>How it is calculated.</strong> <code>Gross pay + employer cost</code>; <strong>per employee a month</strong> = <code>cost to company ÷ number of regular payslips</code></p><ul><li>An employee paid in all 9 months counts as 9 payslips, so the average is a true monthly figure.</li><li>Shown as \"—\" when nobody was paid.</li></ul><p><strong>Example.</strong> 1,498,860.250 · 673.195 per employee a month.</p><p><strong>Why it matters.</strong> It is the number for budgets and headcount decisions.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.trend",
+      "label": "PayrollDashboard_ByMonth",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_ByMonth"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Each month's net pay, deductions and employer cost, stacked. The full height of a bar is that month's cost to company. Click a month to list its payslips.</p><p><strong>How it is calculated.</strong> For each month: <code>net pay</code>, <code>deductions</code> and <code>employer cost</code> by the rules above; <code>net + deductions = gross</code>, so the stack is <code>gross + employer cost</code>.</p><ul><li>Every month of the period is shown, including months payroll has not been run for.</li></ul><p><strong>Example.</strong> March: 131,200 net · 10,900 deductions · 23,800 employer cost.</p><p><strong>Why it matters.</strong> It shows the months with bonuses, arrears or a hiring wave at a glance.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.cost-mix",
+      "label": "PayrollDashboard_CostMix",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_CostMix"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What the cost to company is made of.</p><p><strong>How it is calculated.</strong> <strong>Basic salary</strong> = <code>sum of the basic-salary line</code>; <strong>allowances and other pay</strong> = <code>gross − basic salary</code>; then the employer's social security and each provision. Together they add up to the cost to company.</p><ul><li>Parts with no amount are left out.</li></ul><p><strong>Example.</strong> Basic 62%, allowances and other pay 24%, social security 6%, provisions 8%.</p><p><strong>Why it matters.</strong> Indemnity and leave are worked out from pay, so a larger basic share means larger provisions later.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.by-department",
+      "label": "PayrollDashboard_ByDepartment",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_ByDepartment"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Employees, gross, net and cost to company for each department one level below the unit you are looking at, highest cost first. Click a department to see the units inside it.</p><p><strong>How it is calculated.</strong> The rules above, over the payslips of the employees in that department or any unit below it; <strong>employees</strong> = <code>distinct employees paid in the period</code>.</p><ul><li>An employee is placed by the department they were in on the last day of the period.</li><li>People attached directly to the unit you are looking at are shown on their own line.</li></ul><p><strong>Example.</strong> Operations: 410 employees · 812,300.000 cost to company.</p><p><strong>Why it matters.</strong> It shows where the salary bill sits, and lets you follow it down to the team.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.basic-bands",
+      "label": "PayrollDashboard_BasicBands",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_BasicBands"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many employees fall in each basic-salary band in the latest paid month. Click a band to see who is in it.</p><p><strong>How it is calculated.</strong> <code>Basic salary on each employee's regular payslip</code>, counted in bands: under 300, 300 – 500, 500 – 1,000, 1,000 – 1,500, 1,500 – 3,000, 3,000 and above.</p><ul><li>Each band includes its lower figure and stops just below the next, so every salary falls in exactly one band. Someone with no basic line is in the first band.</li></ul><p><strong>Example.</strong> 500 – 1,000: 318 employees.</p><p><strong>Why it matters.</strong> It shows the pay structure at a glance and where most of the staff sit.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.earnings",
+      "label": "PayrollDashboard_Earnings",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_Earnings"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The ten pay items that cost the most in the period.</p><p><strong>How it is calculated.</strong> <code>Sum of each earning's amounts</code>, largest first, with the number of employees who received it.</p><p><strong>Example.</strong> Housing allowance (1002): 184,000.000 · 690 employees.</p><p><strong>Why it matters.</strong> After basic salary, a few allowances usually make up most of the bill; this names them.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.deduction-types",
+      "label": "PayrollDashboard_DeductionTypes",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_DeductionTypes"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The ten deductions that took the most from pay in the period.</p><p><strong>How it is calculated.</strong> <code>Sum of each deduction's amounts</code>, largest first, with the number of employees it was taken from.</p><p><strong>Example.</strong> Employee PIFSS share (1): 41,200.000 · 120 employees.</p><p><strong>Why it matters.</strong> Loans, absence and penalty deductions that grow month after month show up here first.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.payment-methods",
+      "label": "PayrollDashboard_PaymentMethods",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_PaymentMethods"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the employees paid in the latest paid month receive their pay. Click a method to see who.</p><p><strong>How it is calculated.</strong> For each employee paid that month: <code>the payment type on their bank details in force at the end of the month</code>, counted by bank transfer, cash, and <strong>not set</strong>.</p><ul><li><strong>Not set</strong> means no bank details cover that date: these people cannot be in the bank file.</li></ul><p><strong>Example.</strong> Bank transfer 721 · cash 15 · not set 6.</p><p><strong>Why it matters.</strong> Anyone under <strong>Not set</strong> needs bank details before the next salary transfer.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.run-types",
+      "label": "PayrollDashboard_RunTypes",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_RunTypes"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Net pay split between the regular monthly runs and off-cycle runs (final settlements, advances and other one-off payments). Click a run type to see its payslips.</p><p><strong>How it is calculated.</strong> <code>Sum of net pay per run type</code>, with the number of payslips and employees.</p><p><strong>Example.</strong> Regular 1,150,000.000 · off-cycle 36,149.750 over 22 payments.</p><p><strong>Why it matters.</strong> A large off-cycle share means much is paid outside the normal run, which is harder to control.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.provisions",
+      "label": "PayrollDashboard_Provisions",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_Provisions"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What the company owes the staff at the end of the latest paid month for end-of-service indemnity, leave and air tickets.</p><p><strong>How it is calculated.</strong> <code>Sum of each balance line on the latest paid month's regular payslips</code></p><ul><li>These are running totals, so they are taken from one month only; adding months together would count the same liability again.</li></ul><p><strong>Example.</strong> Indemnity 2,410,000.000 · leave 380,500.000 · tickets 92,000.000.</p><p><strong>Why it matters.</strong> It is the liability for the balance sheet, and what final settlements will draw on.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.payslips",
+      "label": "PayrollDashboard_Payslips",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_Payslips"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The list behind a figure: one row per payslip with its month, employee, department, run type, basic, gross, deductions, net, cost to company and payment method. Click a row for that employee's cost card.</p><p><strong>How it is calculated.</strong> The same rule as the figure you clicked: a month lists that month's payslips (both run types), a band or payment method lists the latest paid month's regular payslips, and a run type lists that run type's payslips for the whole period.</p><p><strong>Example.</strong> Click <strong>Employees paid</strong>: every payslip of the latest paid month.</p><p><strong>Why it matters.</strong> It is the evidence under the numbers, and it downloads as XLSX with the same filters.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.cost-card",
+      "label": "PayrollDashboard_CostCard",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_CostCard"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> One employee's cost to the company for the month of the payslip you clicked, line by line: each earning, each deduction and each employer cost, with the indemnity balance and the days behind it. The filter button shows every tile for this employee only.</p><p><strong>How it is calculated.</strong> From that month's regular payslip: <strong>cost to company</strong> = <code>gross + employer cost</code>; <strong>a year at this rate</strong> = <code>cost to company × 12</code>.</p><ul><li>For an off-cycle row the card shows the regular payslip of the same month.</li></ul><p><strong>Example.</strong> Gross 1,250.000 · employer cost 196.500 · cost to company 1,446.500 · a year at this rate 17,358.000.</p><p><strong>Why it matters.</strong> It answers \"what does this person really cost us\", which a payslip does not show.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

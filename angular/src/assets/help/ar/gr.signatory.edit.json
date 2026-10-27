@@ -1,0 +1,75 @@
+{
+  "helpId": "gr.signatory.edit",
+  "lang": "ar",
+  "title": "المفوضون بالتوقيع — إنشاء / تحرير",
+  "entity": "HCMv3.GovtRelationsManagement.Signatory",
+  "overviewHtml": "<p>شخص مخوّل بالتوقيع عن الكفلاء. ويُربط المخوّلون بالتوقيع بالكفلاء في قائمة المخوّلين بالتوقيع الخاصة بالكفيل.</p>",
+  "aliasIndex": {
+    "loc:Code": "Signatory.Code",
+    "dom:Signatory_Code": "Signatory.Code",
+    "loc:CivilId": "Signatory.CivilId",
+    "dom:Signatory_CivilId": "Signatory.CivilId",
+    "loc:NameEn": "Signatory.NameEn",
+    "dom:Signatory_NameEn": "Signatory.NameEn",
+    "loc:NameAr": "Signatory.NameAr",
+    "dom:Signatory_NameAr": "Signatory.NameAr"
+  },
+  "fields": [
+    {
+      "id": "Signatory.Code",
+      "label": "Code",
+      "section": "Signatories",
+      "aliases": [
+        "loc:Code",
+        "dom:Signatory_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Signatory.CivilId",
+      "label": "CivilId",
+      "section": "Signatories",
+      "aliases": [
+        "loc:CivilId",
+        "dom:Signatory_CivilId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الرقم المدني للمخوّل بالتوقيع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Signatory.NameEn",
+      "label": "NameEn",
+      "section": "Signatories",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Signatory_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Signatory.NameAr",
+      "label": "NameAr",
+      "section": "Signatories",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Signatory_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

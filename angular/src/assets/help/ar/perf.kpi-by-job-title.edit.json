@@ -1,0 +1,43 @@
+{
+  "helpId": "perf.kpi-by-job-title.edit",
+  "lang": "ar",
+  "title": "مؤشرات الأداء حسب المسمى الوظيفي — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.KpiByJobTitle",
+  "overviewHtml": "<p>مجموعة مؤشرات أداء لمسمى وظيفي، اعتباراً من تاريخ معيّن — المؤشرات والأوزان التي تنطبق على هذا الدور. ولكل مسمى وظيفي مجموعة واحدة لكل تاريخ بداية.</p><p>تُحفظ نموذجاً: ولا تأخذ التقييمات مؤشراتها منها تلقائياً حالياً.</p>",
+  "aliasIndex": {
+    "loc:JobTitle": "KpiByJobTitle.JobTitleId",
+    "dom:KpiByJobTitle_JobTitleId": "KpiByJobTitle.JobTitleId",
+    "loc:StartDate": "KpiByJobTitle.StartDate",
+    "dom:KpiByJobTitle_StartDate": "KpiByJobTitle.StartDate"
+  },
+  "fields": [
+    {
+      "id": "KpiByJobTitle.JobTitleId",
+      "label": "JobTitle",
+      "section": "KpiByJobTitles",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:KpiByJobTitle_JobTitleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المسميات الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي.</p><p><strong>مثال.</strong> محاسب</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiByJobTitle.StartDate",
+      "label": "StartDate",
+      "section": "KpiByJobTitles",
+      "aliases": [
+        "loc:StartDate",
+        "dom:KpiByJobTitle_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يبدأ سجلان للمسمى الوظيفي نفسه في التاريخ نفسه. عند الحفظ يُغلق السجل السابق للمسمى الوظيفي نفسه في اليوم السابق لهذا التاريخ، ويبقى أحدث سجل مفتوحاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

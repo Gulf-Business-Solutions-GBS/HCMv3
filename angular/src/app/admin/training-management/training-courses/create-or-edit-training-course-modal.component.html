@@ -1,0 +1,157 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'TrainingCourses' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'TrainingCourses' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TrainingCourse_Code">{{ 'Code' | localize }}</label>
+                                <input
+                                    id="TrainingCourse_Code"
+                                    #codeInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="Code"
+                                    maxlength="64"
+                                    [ngModel]="record().code"
+                                    (ngModelChange)="updateField('code', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="codeInput" />
+                            </div>
+                            <div class="col-md-6 mb-5 d-flex align-items-end">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="TrainingCourse_Active"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="Active"
+                                        [ngModel]="record().active"
+                                        (ngModelChange)="updateField('active', $event)" />
+                                    <label class="form-check-label" for="TrainingCourse_Active">{{ 'Active' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TrainingCourse_NameEn">{{ 'NameEn' | localize }}</label>
+                                <input
+                                    id="TrainingCourse_NameEn"
+                                    #nameEnInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameEn"
+                                    maxlength="256"
+                                    [ngModel]="record().nameEn"
+                                    (ngModelChange)="updateField('nameEn', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameEnInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TrainingCourse_NameAr">{{ 'NameAr' | localize }}</label>
+                                <input
+                                    id="TrainingCourse_NameAr"
+                                    #nameArInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameAr"
+                                    maxlength="256"
+                                    [ngModel]="record().nameAr"
+                                    (ngModelChange)="updateField('nameAr', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameArInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TrainingCourse_DeliveryMethod">{{ 'DeliveryMethod' | localize }}</label>
+                                <select
+                                    id="TrainingCourse_DeliveryMethod"
+                                    class="form-select"
+                                    name="DeliveryMethod"
+                                    [ngModel]="record().deliveryMethod"
+                                    (ngModelChange)="updateField('deliveryMethod', $event)">
+                                    @for (option of deliveryMethods; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="TrainingCourse_Fees">{{ 'Fees' | localize }}</label>
+                                <input
+                                    id="TrainingCourse_Fees"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="Fees"
+                                    [ngModel]="record().fees"
+                                    (ngModelChange)="updateNumberField('fees', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="TrainingCourse_InstitutionId">{{ 'Institution' | localize }}</label>
+                                <select
+                                    id="TrainingCourse_InstitutionId"
+                                    class="form-select"
+                                    name="InstitutionId"
+                                    [ngModel]="record().institutionId"
+                                    (ngModelChange)="updateField('institutionId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of institutions(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TrainingCourse_Source">{{ 'Source' | localize }}</label>
+                                <select
+                                    id="TrainingCourse_Source"
+                                    class="form-select"
+                                    name="Source"
+                                    [ngModel]="record().source"
+                                    (ngModelChange)="updateField('source', $event)">
+                                    @for (option of sources; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

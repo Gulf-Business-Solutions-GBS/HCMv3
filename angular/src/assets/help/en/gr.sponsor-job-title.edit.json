@@ -1,0 +1,139 @@
+{
+  "helpId": "gr.sponsor-job-title.edit",
+  "lang": "en",
+  "title": "Sponsor Job Titles — Create / Edit",
+  "entity": "HCMv3.GovtRelationsManagement.SponsorJobTitle",
+  "overviewHtml": "<p>How many employees a sponsor may have under one government job title, split between citizens and non-citizens. The two percentages must add up to 100. Allowed places are worked out on save: citizens get the number of positions times their percentage rounded down, non-citizens rounded up. An employee sponsor record can only be added for a job title the sponsor has a row for. Remaining places are shown on the Sponsor Job Title Quota Report; nothing stops the quota being exceeded.</p>",
+  "aliasIndex": {
+    "loc:GovtJobTitle": "SponsorJobTitle.GovtJobTitleId",
+    "dom:SponsorJobTitle_GovtJobTitleId": "SponsorJobTitle.GovtJobTitleId",
+    "loc:StartDate": "SponsorJobTitle.StartDate",
+    "dom:SponsorJobTitle_StartDate": "SponsorJobTitle.StartDate",
+    "loc:EndDate": "SponsorJobTitle.EndDate",
+    "dom:SponsorJobTitle_EndDate": "SponsorJobTitle.EndDate",
+    "loc:NoofPosition": "SponsorJobTitle.NoofPosition",
+    "dom:SponsorJobTitle_NoofPosition": "SponsorJobTitle.NoofPosition",
+    "loc:CitizenPercent": "SponsorJobTitle.CitizenPercent",
+    "dom:SponsorJobTitle_CitizenPercent": "SponsorJobTitle.CitizenPercent",
+    "loc:CitizenQuotaUsed": "SponsorJobTitle.CitizenQuotaUsed",
+    "dom:SponsorJobTitle_CitizenQuotaUsed": "SponsorJobTitle.CitizenQuotaUsed",
+    "loc:NonCitizenPercent": "SponsorJobTitle.NonCitizenPercent",
+    "dom:SponsorJobTitle_NonCitizenPercent": "SponsorJobTitle.NonCitizenPercent",
+    "loc:NonCitizenQuotaUsed": "SponsorJobTitle.NonCitizenQuotaUsed",
+    "dom:SponsorJobTitle_NonCitizenQuotaUsed": "SponsorJobTitle.NonCitizenQuotaUsed"
+  },
+  "fields": [
+    {
+      "id": "SponsorJobTitle.GovtJobTitleId",
+      "label": "GovtJobTitle",
+      "section": "SponsorJobTitles",
+      "aliases": [
+        "loc:GovtJobTitle",
+        "dom:SponsorJobTitle_GovtJobTitleId"
+      ],
+      "rules": "Required. Chosen from Govt Job Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The government job title.</p><p><strong>Example.</strong> Accountant</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorJobTitle.StartDate",
+      "label": "StartDate",
+      "section": "SponsorJobTitles",
+      "aliases": [
+        "loc:StartDate",
+        "dom:SponsorJobTitle_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorJobTitle.EndDate",
+      "label": "EndDate",
+      "section": "SponsorJobTitles",
+      "aliases": [
+        "loc:EndDate",
+        "dom:SponsorJobTitle_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorJobTitle.NoofPosition",
+      "label": "NoofPosition",
+      "section": "SponsorJobTitles",
+      "aliases": [
+        "loc:NoofPosition",
+        "dom:SponsorJobTitle_NoofPosition"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The total number of positions allowed.</p><p><strong>Example.</strong> 20</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorJobTitle.CitizenPercent",
+      "label": "CitizenPercent",
+      "section": "SponsorJobTitles",
+      "aliases": [
+        "loc:CitizenPercent",
+        "dom:SponsorJobTitle_CitizenPercent"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The share of positions for citizens.</p><p><strong>Example.</strong> 30</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorJobTitle.CitizenQuotaUsed",
+      "label": "CitizenQuotaUsed",
+      "section": "SponsorJobTitles",
+      "aliases": [
+        "loc:CitizenQuotaUsed",
+        "dom:SponsorJobTitle_CitizenQuotaUsed"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many places are taken by citizens.</p><p><strong>Why it matters.</strong> Goes up by one when an employee sponsor record is added for an employee whose nationality group is Citizen, and down by one when one is deleted. Changing a record does not recount it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorJobTitle.NonCitizenPercent",
+      "label": "NonCitizenPercent",
+      "section": "SponsorJobTitles",
+      "aliases": [
+        "loc:NonCitizenPercent",
+        "dom:SponsorJobTitle_NonCitizenPercent"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The share of positions for non-citizens.</p><p><strong>Example.</strong> 70</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorJobTitle.NonCitizenQuotaUsed",
+      "label": "NonCitizenQuotaUsed",
+      "section": "SponsorJobTitles",
+      "aliases": [
+        "loc:NonCitizenQuotaUsed",
+        "dom:SponsorJobTitle_NonCitizenQuotaUsed"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many places are taken by non-citizens.</p><p><strong>Why it matters.</strong> Goes up and down the same way, for employees in any other nationality group.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

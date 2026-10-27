@@ -1,0 +1,169 @@
+<div [@routerTransition]>
+    <sub-header [title]="'WorkflowTransactionTypes' | localize" [description]="'Workflow' | localize">
+        <div role="actions">
+            @if ('Pages.Workflow.WorkflowTransactionTypes.Create' | permission) {
+                <button (click)="createRecord()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="form">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-xl-8 col-md-8">
+                            <div class="input-group">
+                                <input
+                                    [ngModel]="filterText()"
+                                    (ngModelChange)="filterText.set($event)"
+                                    name="filterText"
+                                    autoFocus
+                                    class="form-control"
+                                    [placeholder]="l('SearchWithThreeDot')"
+                                    type="text"
+                                    (keydown.enter)="getRecords()" />
+                                <button class="btn btn-primary" (click)="getRecords()">
+                                    <i class="flaticon-search-1" aria-label="Search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '60rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="!(['Pages.Workflow.WorkflowTransactionTypes.Edit', 'Pages.Workflow.WorkflowTransactionTypes.Delete'] | permissionAny)">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="code">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="code" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="nameEn">
+                                        {{ 'NameEn' | localize }}
+                                        <p-sortIcon field="nameEn" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="nameAr">
+                                        {{ 'NameAr' | localize }}
+                                        <p-sortIcon field="nameAr" />
+                                    </th>
+                                    <th style="min-width: 110px">{{ 'Active' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'WorkflowEnabled' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'EssEnabled' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'AllowDirectEntry' | localize }}</th>
+                                    <th style="min-width: 200px">{{ 'DefaultRequestMaster' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="!(['Pages.Workflow.WorkflowTransactionTypes.Edit', 'Pages.Workflow.WorkflowTransactionTypes.Delete'] | permissionAny)">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.code }}" class="hide-overflown">{{ record.code }}</span>
+                                    </td>
+                                    <td style="min-width: 180px">{{ record.nameEn }}</td>
+                                    <td style="min-width: 180px">{{ record.nameAr }}</td>
+
+                                    <!-- Shown as badges rather than ticks: these three are the difference
+                                         between a request reaching an approver and being recorded in
+                                         silence, and they are what an administrator opens this screen to
+                                         check. -->
+                                    <td style="min-width: 110px">
+                                        <span class="badge" [class.badge-light-success]="record.isActive" [class.badge-light-danger]="!record.isActive">
+                                            {{ (record.isActive ? 'Yes' : 'No') | localize }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 130px">
+                                        <span class="badge" [class.badge-light-success]="record.isWorkflowEnabled" [class.badge-light-secondary]="!record.isWorkflowEnabled">
+                                            {{ (record.isWorkflowEnabled ? 'Yes' : 'No') | localize }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 130px">
+                                        <span class="badge" [class.badge-light-success]="record.isEssEnabled" [class.badge-light-secondary]="!record.isEssEnabled">
+                                            {{ (record.isEssEnabled ? 'Yes' : 'No') | localize }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 140px">
+                                        <!-- Blank when routing is off: the flag is stored either way, but it
+                                             only decides anything while there is a chain to bypass, and a
+                                             "No" here would read as a restriction that is not in force. -->
+                                        @if (record.isWorkflowEnabled) {
+                                            <span
+                                                class="badge"
+                                                [class.badge-light-warning]="record.allowDirectEntry"
+                                                [class.badge-light-secondary]="!record.allowDirectEntry">
+                                                {{ (record.allowDirectEntry ? 'Yes' : 'No') | localize }}
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <!-- A type enabled with no chain cannot be routed, and the submit fails
+                                         rather than recording quietly. Worth seeing in the list. -->
+                                    <td style="min-width: 200px">
+                                        @if (record.defaultRequestMasterNameEn) {
+                                            {{ record.defaultRequestMasterNameEn }}
+                                            <span class="text-muted">({{ record.defaultRequestMasterSteps }})</span>
+                                        } @else {
+                                            <span class="text-danger">{{ 'NotSet' | localize }}</span>
+                                        }
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditWorkflowTransactionTypeModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

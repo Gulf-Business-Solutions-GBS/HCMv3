@@ -1,0 +1,100 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeSocialSecurity_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="EmployeeSocialSecurity_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeSocialSecurity_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="EmployeeSocialSecurity_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeSocialSecurity_SocialSecurityNum">{{ 'SocialSecurityNum' | localize }}</label>
+                                <input
+                                    id="EmployeeSocialSecurity_SocialSecurityNum"
+                                    #socialSecurityNumInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="SocialSecurityNum"
+                                    [ngModel]="record().socialSecurityNum"
+                                    (ngModelChange)="updateNumberField('socialSecurityNum', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="socialSecurityNumInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <div class="form-check mt-8">
+                                    <input
+                                        id="EmployeeSocialSecurity_SocialSecurityContrib"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="SocialSecurityContrib"
+                                        [ngModel]="record().socialSecurityContrib"
+                                        (ngModelChange)="updateField('socialSecurityContrib', $event)" />
+                                    <label class="form-check-label" for="EmployeeSocialSecurity_SocialSecurityContrib">{{ 'SocialSecurityContrib' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

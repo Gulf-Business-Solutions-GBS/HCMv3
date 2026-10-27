@@ -1,0 +1,59 @@
+{
+  "helpId": "rpt.report-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل التقارير — إنشاء / تحرير",
+  "entity": "HCMv3.ReportManagement.ReportDetail",
+  "overviewHtml": "<p>مستوى واحد من تقرير تفصيلي متدرج. جزء من مصمم التقارير المنقول من النظام القديم. لا يُقرأ حالياً: لا يوجد في HCMv3 ما يشغّل هذه التعريفات، فلا أثر للسجلات هنا.</p>",
+  "aliasIndex": {
+    "loc:ReportMaster": "ReportDetail.ReportMasterId",
+    "dom:ReportDetail_ReportMasterId": "ReportDetail.ReportMasterId",
+    "loc:ReportSetting": "ReportDetail.ReportSettingId",
+    "dom:ReportDetail_ReportSettingId": "ReportDetail.ReportSettingId",
+    "loc:DrillDownLevel": "ReportDetail.DrillDownLevel",
+    "dom:ReportDetail_DrillDownLevel": "ReportDetail.DrillDownLevel"
+  },
+  "fields": [
+    {
+      "id": "ReportDetail.ReportMasterId",
+      "label": "ReportMaster",
+      "section": "ReportDetails",
+      "aliases": [
+        "loc:ReportMaster",
+        "dom:ReportDetail_ReportMasterId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة التقارير الرئيسية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التقرير التفصيلي المتدرج.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportDetail.ReportSettingId",
+      "label": "ReportSetting",
+      "section": "ReportDetails",
+      "aliases": [
+        "loc:ReportSetting",
+        "dom:ReportDetail_ReportSettingId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات التقارير.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تخطيط الأعمدة لهذا المستوى.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportDetail.DrillDownLevel",
+      "label": "DrillDownLevel",
+      "section": "ReportDetails",
+      "aliases": [
+        "loc:DrillDownLevel",
+        "dom:ReportDetail_DrillDownLevel"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم المستوى، بدءاً من 1.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

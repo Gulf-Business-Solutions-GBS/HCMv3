@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.employee-group.edit",
+  "lang": "en",
+  "title": "Salary Profiles — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeeGroup",
+  "overviewHtml": "<p>A broad grouping of employees, such as staff and labour, that grades sit under. Each employee's organisation assignment names their salary profile and grade.</p><p>The group carries the cap on end-of-service indemnity. The cap applies only when <strong>Indemnity Max Number</strong> is not 0.</p>",
+  "aliasIndex": {
+    "loc:Code": "EmployeeGroup.Code",
+    "dom:EmployeeGroup_Code": "EmployeeGroup.Code",
+    "loc:NameEn": "EmployeeGroup.NameEn",
+    "dom:EmployeeGroup_NameEn": "EmployeeGroup.NameEn",
+    "loc:NameAr": "EmployeeGroup.NameAr",
+    "dom:EmployeeGroup_NameAr": "EmployeeGroup.NameAr",
+    "loc:IndemnityMaxNumber": "EmployeeGroup.IndemnityMaxNumber",
+    "dom:EmployeeGroup_IndemnityMaxNumber": "EmployeeGroup.IndemnityMaxNumber",
+    "loc:IndemnityMaxUnit": "EmployeeGroup.IndemnityMaxUnit",
+    "dom:EmployeeGroup_IndemnityMaxUnit": "EmployeeGroup.IndemnityMaxUnit",
+    "loc:IndemnityMaxAccruePercentage": "EmployeeGroup.IndemnityMaxAccruePercentage",
+    "dom:EmployeeGroup_IndemnityMaxAccruePercentage": "EmployeeGroup.IndemnityMaxAccruePercentage"
+  },
+  "fields": [
+    {
+      "id": "EmployeeGroup.Code",
+      "label": "Code",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:Code",
+        "dom:EmployeeGroup_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGroup.NameEn",
+      "label": "NameEn",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:NameEn",
+        "dom:EmployeeGroup_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGroup.NameAr",
+      "label": "NameAr",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:NameAr",
+        "dom:EmployeeGroup_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGroup.IndemnityMaxNumber",
+      "label": "IndemnityMaxNumber",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:IndemnityMaxNumber",
+        "dom:EmployeeGroup_IndemnityMaxNumber"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How much pay the end-of-service indemnity can reach at most, counted in the unit below.</p><p><strong>Example.</strong> <code>18</code> with unit Month — at most eighteen months' pay, the Kuwait labour law cap.</p><p><strong>Why it matters.</strong> The cap is the employee's monthly pay for wagetypes marked <em>Include In Indemnity</em>, times this many months, times the percentage below. Indemnity days beyond the cap are not accrued. 0 means no cap.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGroup.IndemnityMaxUnit",
+      "label": "IndemnityMaxUnit",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:IndemnityMaxUnit",
+        "dom:EmployeeGroup_IndemnityMaxUnit"
+      ],
+      "rules": "Required. One of: Day, Month.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the maximum is counted in months or in days.</p><p><strong>Example.</strong> Month</p><p><strong>Why it matters.</strong> Days are converted at 30 to a month: 540 days is the same cap as 18 months.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGroup.IndemnityMaxAccruePercentage",
+      "label": "IndemnityMaxAccruePercentage",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:IndemnityMaxAccruePercentage",
+        "dom:EmployeeGroup_IndemnityMaxAccruePercentage"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The percentage of that maximum the employee can actually accrue.</p><p><strong>Example.</strong> <code>100</code></p><p><strong>Why it matters.</strong> Multiplies the cap. Leave it at 0 and the cap becomes 0 — so with a maximum number set, set this too.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

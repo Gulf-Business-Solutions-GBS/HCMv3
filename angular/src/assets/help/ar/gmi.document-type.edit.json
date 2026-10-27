@@ -1,0 +1,267 @@
+{
+  "helpId": "gmi.document-type.edit",
+  "lang": "ar",
+  "title": "أنواع الوثائق — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.DocumentType",
+  "overviewHtml": "<p>أنواع الوثائق التي يحتفظ بها HCMv3 — للموظفين وللشركة. تسمّي وثائق الموظفين ووثائق الشركة وطلبات الخطابات في الخدمة الذاتية كلٌّ منها نوعاً من أنواع الوثائق.</p><p>إعدادات التذكير في هذا النموذج محفوظة، لكن لا تقرؤها أي عملية حالياً، فهي لا ترسل بعدُ تذكيرات قبل انتهاء صلاحية الوثيقة.</p>",
+  "aliasIndex": {
+    "loc:Code": "DocumentType.Code",
+    "dom:DocumentType_Code": "DocumentType.Code",
+    "loc:NameEn": "DocumentType.NameEn",
+    "dom:DocumentType_NameEn": "DocumentType.NameEn",
+    "loc:NameAr": "DocumentType.NameAr",
+    "dom:DocumentType_NameAr": "DocumentType.NameAr",
+    "loc:ReminderDays": "DocumentType.NotificationPeriod",
+    "dom:DocumentType_NotificationPeriod": "DocumentType.NotificationPeriod",
+    "loc:NotificationConfig": "DocumentType.NotificationConfigId",
+    "dom:DocumentType_NotificationConfigId": "DocumentType.NotificationConfigId",
+    "loc:NotificationFrequency": "DocumentType.NotificationFrequency",
+    "dom:DocumentType_NotificationFrequency": "DocumentType.NotificationFrequency",
+    "loc:NotificationCountLimit": "DocumentType.NotificationCountLimit",
+    "dom:DocumentType_NotificationCountLimit": "DocumentType.NotificationCountLimit",
+    "loc:DocumentBelongsTo": "DocumentType.DocumentBelongsTo",
+    "dom:DocumentType_DocumentBelongsTo": "DocumentType.DocumentBelongsTo",
+    "loc:IncludeInWorkflow": "DocumentType.IncludeInWorkflow",
+    "dom:DocumentType_IncludeInWorkflow": "DocumentType.IncludeInWorkflow",
+    "loc:IsLetterType": "DocumentType.IsLetterType",
+    "dom:DocumentType_IsLetterType": "DocumentType.IsLetterType",
+    "loc:PrintReport": "DocumentType.PrintReportId",
+    "dom:DocumentType_PrintReportId": "DocumentType.PrintReportId",
+    "loc:IsWithdrawable": "DocumentType.IsWithdrawable",
+    "dom:DocumentType_IsWithdrawable": "DocumentType.IsWithdrawable",
+    "loc:IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee",
+    "dom:DocumentType_IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee",
+    "loc:ShowToAll": "DocumentType.ShowToAll",
+    "dom:DocumentType_ShowToAll": "DocumentType.ShowToAll",
+    "loc:IsExpiryDateRequired": "DocumentType.IsExpiryDateRequired",
+    "dom:DocumentType_IsExpiryDateRequired": "DocumentType.IsExpiryDateRequired",
+    "loc:AllowDateOverlap": "DocumentType.AllowDateOverlap",
+    "dom:DocumentType_AllowDateOverlap": "DocumentType.AllowDateOverlap"
+  },
+  "fields": [
+    {
+      "id": "DocumentType.Code",
+      "label": "Code",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:DocumentType_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NameEn",
+      "label": "NameEn",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:DocumentType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NameAr",
+      "label": "NameAr",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:DocumentType_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NotificationPeriod",
+      "label": "ReminderDays",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:ReminderDays",
+        "dom:DocumentType_NotificationPeriod"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المدة التي كان يُفترض أن تبدأ فيها التذكيرات قبل انتهاء صلاحية الوثيقة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:DocumentType_NotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إعدادات الإخطار المخصصة لتذكيرات هذا النوع من الوثائق.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NotificationFrequency",
+      "label": "NotificationFrequency",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NotificationFrequency",
+        "dom:DocumentType_NotificationFrequency"
+      ],
+      "rules": "إلزامي. إحدى القيم: مرة واحدة، يومي، إسبوعي، شهري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد مرات تكرار التذكير التي كانت مقصودة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NotificationCountLimit",
+      "label": "NotificationCountLimit",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NotificationCountLimit",
+        "dom:DocumentType_NotificationCountLimit"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحد الأقصى المقصود لعدد التذكيرات للوثيقة الواحدة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.DocumentBelongsTo",
+      "label": "DocumentBelongsTo",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:DocumentBelongsTo",
+        "dom:DocumentType_DocumentBelongsTo"
+      ],
+      "rules": "إلزامي. إحدى القيم: الكل، الموظف، الشركة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل وثائق هذا النوع تخص الموظفين أم الشركة.</p><p><strong>لماذا يهم.</strong> يُسجَّل للعلم، ولا يُصفّى به أي شيء حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IncludeInWorkflow",
+      "label": "IncludeInWorkflow",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IncludeInWorkflow",
+        "dom:DocumentType_IncludeInWorkflow"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يُعرض هذا النوع على الموظفين عند تقديم طلب في الخدمة الذاتية.</p><p><strong>مثال.</strong> مفعّل لجواز السفر وشهادة الراتب، وغير مفعّل لنوع لا يسجّله إلا الموارد البشرية.</p><p><strong>لماذا يهم.</strong> عند إلغاء التفعيل يختفي النوع من قائمة «طلب جديد» في شاشة وثائق الموظف ويُرفض أي طلب له. وتبقى الموارد البشرية قادرة على تسجيل وثائق هذا النوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IsLetterType",
+      "label": "IsLetterType",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IsLetterType",
+        "dom:DocumentType_IsLetterType"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل هذا النوع خطاب تصدره الشركة للموظف، كشهادة الراتب، وليس وثيقة يحملها الموظف.</p><p><strong>مثال.</strong> مفعّل لشهادة الراتب وشهادة الخبرة، وغير مفعّل لجواز السفر والبطاقة المدنية.</p><p><strong>لماذا يهم.</strong> النوع المفعّل يُعرض عند اختيار الموظف «طباعة الخطاب» ويُسأل فيه عن الجهة الموجَّه إليها الخطاب. والنوع غير المفعّل يُعرض عند اختيار «وثيقة جديدة» ويُسأل فيه عن الرقم والتواريخ. ولا يكون النوع الواحد كليهما.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.PrintReportId",
+      "label": "PrintReport",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:PrintReport",
+        "dom:DocumentType_PrintReportId"
+      ],
+      "rules": "اختياري. يُختار من قائمة طباعة التقارير.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التقرير الذي يُصدر منه خطاب هذا النوع: تلقائياً عند اعتماد الطلب، ثم كلما ضغطت الموارد البشرية «طباعة الخطاب». يظهر فقط عند تفعيل «تصدر كخطاب».</p><p><strong>مثال.</strong> «شهادة راتب - إنجليزي» لنوع شهادة الراتب، و«شهادة خبرة» لنوع شهادة العمل.</p><p><strong>لماذا يهم.</strong> بدون اختيار هنا يُحدَّد التقرير من الاسم الإنجليزي للنوع بعد حذف المسافات، فيطبع \"Salary Certificate\" أول تقرير يبدأ اسمه بـ SalaryCertificate، والنوع الذي لا يطابق اسمه أي تقرير لا يُطبع إطلاقاً. واختيار التقرير يزيل التخمين ويتيح للنوع طباعة تقرير باسم مختلف، كالشهادة العربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IsWithdrawable",
+      "label": "IsWithdrawable",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IsWithdrawable",
+        "dom:DocumentType_IsWithdrawable"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يجوز للموظفين طلب سحب وثيقة من هذا النوع من عهدة الشركة ثم إعادتها.</p><p><strong>مثال.</strong> مفعّل لجواز السفر.</p><p><strong>لماذا يهم.</strong> لا يُعرض «سحب الوثيقة» على الموظف إلا للأنواع المفعّلة. ويجوز تفعيل أكثر من نوع. وإن لم يُفعَّل أي نوع رجع النظام إلى النوع الواحد المحدَّد في إعداد جواز السفر السابق (الرمز 2 ما لم يُغيَّر).</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IsHiddenFromEmployee",
+      "label": "IsHiddenFromEmployee",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IsHiddenFromEmployee",
+        "dom:DocumentType_IsHiddenFromEmployee"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يُبقي وثائق هذا النوع خارج شاشة الوثائق الخاصة بالموظف.</p><p><strong>مثال.</strong> مفعّل لوثيقة تحتفظ بها الموارد البشرية عن الموظف لا له.</p><p><strong>لماذا يهم.</strong> لا يرى الموظف هذه الوثائق ولا يستطيع تسجيل واحدة منها. ولا تتأثر شاشات الموارد البشرية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.ShowToAll",
+      "label": "ShowToAll",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:ShowToAll",
+        "dom:DocumentType_ShowToAll"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يجعل وثائق الشركة من هذا النوع سياسات للشركة يحق للجميع الاطلاع عليها.</p><p><strong>مثال.</strong> مفعّل لدليل الموظف ومدونة السلوك؛ وغير مفعّل للرخصة التجارية.</p><p><strong>لماذا يهم.</strong> تُعرض وثائق الشركة من النوع المفعّل للاطلاع فقط في شاشة «سياسات الشركة» لكل من له صلاحية الدخول إليها، ويمكن فتح ملفاتها المرفقة منها. وإذا أُلغي التفعيل اختفت من تلك الشاشة، وتبقى في وثائق الشركة لدى الموارد البشرية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IsExpiryDateRequired",
+      "label": "IsExpiryDateRequired",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IsExpiryDateRequired",
+        "dom:DocumentType_IsExpiryDateRequired"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يجب أن تحمل وثيقة هذا النوع تاريخ انتهاء.</p><p><strong>مثال.</strong> مفعّل لجواز السفر والبطاقة المدنية، وغير مفعّل لشهادة مؤهل لا تنتهي صلاحيتها.</p><p><strong>لماذا يهم.</strong> عند التفعيل تُرفض الوثيقة المحفوظة دون تاريخ انتهاء، في شاشة الموارد البشرية وفي طلب الموظف نفسه. وعند عدم التفعيل يجوز ترك تاريخ الانتهاء فارغاً وتُعدّ الوثيقة غير منتهية أبداً. ويغيّر كذلك طريقة مقارنة الوثيقتين في خيار السماح بتداخل التواريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.AllowDateOverlap",
+      "label": "AllowDateOverlap",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:AllowDateOverlap",
+        "dom:DocumentType_AllowDateOverlap"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يجوز أن يحمل الموظف وثيقتين من هذا النوع تتداخل تواريخهما.</p><p><strong>مثال.</strong> غير مفعّل لجواز السفر: يُرفض جواز ثانٍ يقع تاريخه ضمن مدة صلاحية الأول.</p><p><strong>لماذا يهم.</strong> عند عدم التفعيل تُرفض الوثيقة الجديدة إذا تداخلت مدتها من الإصدار إلى الانتهاء مع وثيقة مسجّلة في ملف الموظف. وللنوع الذي لا يُشترط له تاريخ انتهاء لا تتعارض إلا وثيقتان صادرتان في اليوم نفسه. <strong>والتجديد المُدخل قبل انتهاء الوثيقة القديمة يُعدّ تداخلاً</strong>، ففعّل هذا الخيار للأنواع التي تُجدَّد مبكراً. وأنواع الوثائق الموجودة قبل إضافة هذا الخيار فُعّل لها تلقائياً، فلا يُرفض الآن ما كان مقبولاً من قبل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

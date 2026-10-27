@@ -1,0 +1,78 @@
+<div class="form mb-4">
+    <div class="row align-items-end g-3">
+        @if (showDateRange()) {
+            <div class="col-md-2">
+                <label class="form-label">{{ 'FromDate' | localize }}</label>
+                <p-datepicker
+                    [ngModel]="fromDate()"
+                    (ngModelChange)="fromDate.set($event)"
+                    name="gridReportFromDate"
+                    dateFormat="dd/mm/yy"
+                    [showIcon]="true"
+                    styleClass="w-100" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label">{{ 'ToDate' | localize }}</label>
+                <p-datepicker
+                    [ngModel]="toDate()"
+                    (ngModelChange)="toDate.set($event)"
+                    name="gridReportToDate"
+                    dateFormat="dd/mm/yy"
+                    [showIcon]="true"
+                    styleClass="w-100" />
+            </div>
+        }
+
+        @if (showEmployeeStatus()) {
+            <div class="col-md-2">
+                <label class="form-label">{{ 'EmployeeStatus' | localize }}</label>
+                <p-select
+                    [options]="statusOptions"
+                    [ngModel]="employeeStatus()"
+                    (ngModelChange)="employeeStatus.set($event)"
+                    name="gridReportEmployeeStatus"
+                    optionLabel="label"
+                    optionValue="value"
+                    [showClear]="true"
+                    [placeholder]="'AllStatuses' | localize"
+                    styleClass="w-100" />
+            </div>
+        }
+
+        @if (showEmployeeCode()) {
+            <div class="col-md-3">
+                <label class="form-label">{{ 'EmployeeCode' | localize }}</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    name="gridReportEmployeeCode"
+                    [ngModel]="employeeCode()"
+                    (ngModelChange)="employeeCode.set($event)"
+                    (keydown.enter)="search.emit()"
+                    [placeholder]="'EmployeeCodeFilterHint' | localize" />
+            </div>
+        }
+
+        <!-- Report-specific filters are projected here so they share the panel's row/layout. -->
+        <ng-content />
+
+        <div class="col-md-3">
+            <button type="button" class="btn btn-primary me-2" [disabled]="loading()" (click)="search.emit()">
+                <i class="fa fa-search btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">{{ 'GetData' | localize }}</span>
+            </button>
+
+            @if (showExport()) {
+                <button
+                    type="button"
+                    class="btn btn-outline-primary"
+                    [disabled]="exporting()"
+                    (click)="exportExcel.emit()">
+                    <i class="fa fa-file-excel btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">{{ 'ExportToExcel' | localize }}</span>
+                </button>
+            }
+        </div>
+    </div>
+</div>

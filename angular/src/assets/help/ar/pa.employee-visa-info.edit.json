@@ -1,0 +1,459 @@
+{
+  "helpId": "pa.employee-visa-info.edit",
+  "lang": "ar",
+  "title": "بيانات تأشيرة الموظف",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeVisaInfo",
+  "overviewHtml": "<p>بيانات تأشيرة الموظف وإقامته وجواز سفره، ومنها التفاصيل المنقولة من كفيل سابق.</p><p>تطبع بعض النماذج الحكومية رقم التأشيرة ورقم الإقامة ورقم الملف الحالي من هنا. أما بقية التفاصيل فتُسجَّل للرجوع إليها.</p>",
+  "aliasIndex": {
+    "loc:CurrentFileNo": "EmployeeVisaInfo.CurrentFileNo",
+    "dom:VisaInfo_CurrentFileNo": "EmployeeVisaInfo.CurrentFileNo",
+    "loc:CurrentContractNo": "EmployeeVisaInfo.CurrentContractNo",
+    "dom:VisaInfo_CurrentContractNo": "EmployeeVisaInfo.CurrentContractNo",
+    "loc:CurrentLicenseNo": "EmployeeVisaInfo.CurrentLicenseNo",
+    "dom:VisaInfo_CurrentLicenseNo": "EmployeeVisaInfo.CurrentLicenseNo",
+    "loc:OldFileNo": "EmployeeVisaInfo.OldFileNo",
+    "dom:VisaInfo_OldFileNo": "EmployeeVisaInfo.OldFileNo",
+    "loc:OldContractNo": "EmployeeVisaInfo.OldContractNo",
+    "dom:VisaInfo_OldContractNo": "EmployeeVisaInfo.OldContractNo",
+    "loc:OldLicenseNo": "EmployeeVisaInfo.OldLicenseNo",
+    "dom:VisaInfo_OldLicenseNo": "EmployeeVisaInfo.OldLicenseNo",
+    "loc:MoiFileNumber": "EmployeeVisaInfo.MOIFileNumber",
+    "dom:VisaInfo_MoiFileNumber": "EmployeeVisaInfo.MOIFileNumber",
+    "loc:VisaNum": "EmployeeVisaInfo.VisaNum",
+    "dom:VisaInfo_VisaNum": "EmployeeVisaInfo.VisaNum",
+    "loc:ResidencyNum": "EmployeeVisaInfo.ResidencyNum",
+    "dom:VisaInfo_ResidencyNum": "EmployeeVisaInfo.ResidencyNum",
+    "loc:AuthorizedSign": "EmployeeVisaInfo.AuthorizedSign",
+    "dom:VisaInfo_AuthorizedSign": "EmployeeVisaInfo.AuthorizedSign",
+    "loc:PreviousResidencyPeriod": "EmployeeVisaInfo.PreviousResidencyPeriod",
+    "dom:VisaInfo_PreviousResidencyPeriod": "EmployeeVisaInfo.PreviousResidencyPeriod",
+    "loc:CurrentResidencyPeriod": "EmployeeVisaInfo.CurrentResidencyPeriod",
+    "dom:VisaInfo_CurrentResidencyPeriod": "EmployeeVisaInfo.CurrentResidencyPeriod",
+    "loc:OldContractSalary": "EmployeeVisaInfo.OldContractSalary",
+    "dom:VisaInfo_OldContractSalary": "EmployeeVisaInfo.OldContractSalary",
+    "loc:CurrentContractSalary": "EmployeeVisaInfo.CurrentContractSalary",
+    "dom:VisaInfo_CurrentContractSalary": "EmployeeVisaInfo.CurrentContractSalary",
+    "loc:NewProfession": "EmployeeVisaInfo.NewProfesion",
+    "dom:VisaInfo_NewProfesion": "EmployeeVisaInfo.NewProfesion",
+    "loc:NewProfessionAr": "EmployeeVisaInfo.NewProfessionAr",
+    "dom:VisaInfo_NewProfessionAr": "EmployeeVisaInfo.NewProfessionAr",
+    "loc:OldProfession": "EmployeeVisaInfo.OldProfession",
+    "dom:VisaInfo_OldProfession": "EmployeeVisaInfo.OldProfession",
+    "loc:OldCompany": "EmployeeVisaInfo.OldCompany",
+    "dom:VisaInfo_OldCompany": "EmployeeVisaInfo.OldCompany",
+    "loc:OldSponsor": "EmployeeVisaInfo.OldSponser",
+    "dom:VisaInfo_OldSponser": "EmployeeVisaInfo.OldSponser",
+    "loc:PassportType": "EmployeeVisaInfo.PassportTypeId",
+    "dom:VisaInfo_PassportTypeId": "EmployeeVisaInfo.PassportTypeId",
+    "loc:TypeOfPassport": "EmployeeVisaInfo.TypeOfPassport",
+    "dom:VisaInfo_TypeOfPassport": "EmployeeVisaInfo.TypeOfPassport",
+    "loc:IssuePlacePassport": "EmployeeVisaInfo.IssuePlacePassport",
+    "dom:VisaInfo_IssuePlacePassport": "EmployeeVisaInfo.IssuePlacePassport",
+    "loc:PassportIssueDate": "EmployeeVisaInfo.PassportIssueDate",
+    "dom:VisaInfo_PassportIssueDate": "EmployeeVisaInfo.PassportIssueDate",
+    "loc:PassportExpiryDate": "EmployeeVisaInfo.PassportExpiryDate",
+    "dom:VisaInfo_PassportExpiryDate": "EmployeeVisaInfo.PassportExpiryDate",
+    "loc:EntryDate": "EmployeeVisaInfo.EntryDate",
+    "dom:VisaInfo_EntryDate": "EmployeeVisaInfo.EntryDate",
+    "loc:TerminationDate": "EmployeeVisaInfo.TerminationDate",
+    "dom:VisaInfo_TerminationDate": "EmployeeVisaInfo.TerminationDate",
+    "loc:StartDate": "EmployeeVisaInfo.StartDate",
+    "dom:VisaInfo_StartDate": "EmployeeVisaInfo.StartDate",
+    "loc:EndDate": "EmployeeVisaInfo.EndDate",
+    "dom:VisaInfo_EndDate": "EmployeeVisaInfo.EndDate"
+  },
+  "fields": [
+    {
+      "id": "EmployeeVisaInfo.CurrentFileNo",
+      "label": "CurrentFileNo",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:CurrentFileNo",
+        "dom:VisaInfo_CurrentFileNo"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الملف الحالي لدى الجهات الرسمية.</p><p><strong>مثال.</strong> 2026/45871</p><p><strong>لماذا يهم.</strong> يُطبع على النماذج الحكومية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.CurrentContractNo",
+      "label": "CurrentContractNo",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:CurrentContractNo",
+        "dom:VisaInfo_CurrentContractNo"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم عقد العمل الحالي.</p><p><strong>مثال.</strong> C-889214</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.CurrentLicenseNo",
+      "label": "CurrentLicenseNo",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:CurrentLicenseNo",
+        "dom:VisaInfo_CurrentLicenseNo"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم إذن العمل الحالي.</p><p><strong>مثال.</strong> L-55120</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.OldFileNo",
+      "label": "OldFileNo",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:OldFileNo",
+        "dom:VisaInfo_OldFileNo"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الملف لدى الكفيل السابق.</p><p><strong>مثال.</strong> 2019/11234</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.OldContractNo",
+      "label": "OldContractNo",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:OldContractNo",
+        "dom:VisaInfo_OldContractNo"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم العقد لدى الكفيل السابق.</p><p><strong>مثال.</strong> C-440182</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.OldLicenseNo",
+      "label": "OldLicenseNo",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:OldLicenseNo",
+        "dom:VisaInfo_OldLicenseNo"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم إذن العمل لدى الكفيل السابق.</p><p><strong>مثال.</strong> L-30211</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.MOIFileNumber",
+      "label": "MoiFileNumber",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:MoiFileNumber",
+        "dom:VisaInfo_MoiFileNumber"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الملف لدى وزارة الداخلية.</p><p><strong>مثال.</strong> 7712045</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.VisaNum",
+      "label": "VisaNum",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:VisaNum",
+        "dom:VisaInfo_VisaNum"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم التأشيرة.</p><p><strong>مثال.</strong> 18001234567</p><p><strong>لماذا يهم.</strong> يُطبع على النماذج الحكومية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.ResidencyNum",
+      "label": "ResidencyNum",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:ResidencyNum",
+        "dom:VisaInfo_ResidencyNum"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الإقامة.</p><p><strong>مثال.</strong> 28803140012</p><p><strong>لماذا يهم.</strong> يُطبع على النماذج الحكومية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.AuthorizedSign",
+      "label": "AuthorizedSign",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:AuthorizedSign",
+        "dom:VisaInfo_AuthorizedSign"
+      ],
+      "rules": "اختياري. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المفوَّض بالتوقيع، كنص حر.</p><p><strong>مثال.</strong> مدير الموارد البشرية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.PreviousResidencyPeriod",
+      "label": "PreviousResidencyPeriod",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:PreviousResidencyPeriod",
+        "dom:VisaInfo_PreviousResidencyPeriod"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدة الإقامة لدى الكفيل السابق.</p><p><strong>مثال.</strong> 3 سنوات</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.CurrentResidencyPeriod",
+      "label": "CurrentResidencyPeriod",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:CurrentResidencyPeriod",
+        "dom:VisaInfo_CurrentResidencyPeriod"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدة الإقامة الحالية.</p><p><strong>مثال.</strong> سنتان</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.OldContractSalary",
+      "label": "OldContractSalary",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:OldContractSalary",
+        "dom:VisaInfo_OldContractSalary"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> راتب العقد لدى الكفيل السابق.</p><p><strong>مثال.</strong> 450.000</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.CurrentContractSalary",
+      "label": "CurrentContractSalary",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:CurrentContractSalary",
+        "dom:VisaInfo_CurrentContractSalary"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> راتب العقد الحالي.</p><p><strong>مثال.</strong> 600.000</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.NewProfesion",
+      "label": "NewProfession",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:NewProfession",
+        "dom:VisaInfo_NewProfesion"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المهنة الجديدة في التأشيرة، بالإنجليزية.</p><p><strong>مثال.</strong> Accountant</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.NewProfessionAr",
+      "label": "NewProfessionAr",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:NewProfessionAr",
+        "dom:VisaInfo_NewProfessionAr"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المهنة الجديدة في التأشيرة، بالعربية.</p><p><strong>مثال.</strong> محاسب</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.OldProfession",
+      "label": "OldProfession",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:OldProfession",
+        "dom:VisaInfo_OldProfession"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المهنة لدى الكفيل السابق.</p><p><strong>مثال.</strong> كاتب</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.OldCompany",
+      "label": "OldCompany",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:OldCompany",
+        "dom:VisaInfo_OldCompany"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> جهة العمل السابقة.</p><p><strong>مثال.</strong> شركة الخليج التجارية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.OldSponser",
+      "label": "OldSponsor",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:OldSponsor",
+        "dom:VisaInfo_OldSponser"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الكفيل السابق.</p><p><strong>مثال.</strong> شركة الخليج التجارية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.PassportTypeId",
+      "label": "PassportType",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:PassportType",
+        "dom:VisaInfo_PassportTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع جوازات السفر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع جواز السفر، من القائمة.</p><p><strong>مثال.</strong> عادي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.TypeOfPassport",
+      "label": "TypeOfPassport",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:TypeOfPassport",
+        "dom:VisaInfo_TypeOfPassport"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع جواز السفر، كنص حر.</p><p><strong>مثال.</strong> عادي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.IssuePlacePassport",
+      "label": "IssuePlacePassport",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:IssuePlacePassport",
+        "dom:VisaInfo_IssuePlacePassport"
+      ],
+      "rules": "اختياري. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان إصدار جواز السفر.</p><p><strong>مثال.</strong> القاهرة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.PassportIssueDate",
+      "label": "PassportIssueDate",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:PassportIssueDate",
+        "dom:VisaInfo_PassportIssueDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ إصدار جواز السفر.</p><p><strong>مثال.</strong> 3 مارس 2022</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.PassportExpiryDate",
+      "label": "PassportExpiryDate",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:PassportExpiryDate",
+        "dom:VisaInfo_PassportExpiryDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ انتهاء جواز السفر.</p><p><strong>مثال.</strong> 2 مارس 2032</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.EntryDate",
+      "label": "EntryDate",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:EntryDate",
+        "dom:VisaInfo_EntryDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ دخول الموظف إلى البلاد.</p><p><strong>مثال.</strong> 10 أغسطس 2019</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.TerminationDate",
+      "label": "TerminationDate",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:TerminationDate",
+        "dom:VisaInfo_TerminationDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ انتهاء التأشيرة أو الإقامة.</p><p><strong>مثال.</strong> 31 أغسطس 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:StartDate",
+        "dom:VisaInfo_StartDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeVisaInfo.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeVisaInfos",
+      "aliases": [
+        "loc:EndDate",
+        "dom:VisaInfo_EndDate"
+      ],
+      "rules": "اختياري. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "helpId": "tm.holiday-period.edit",
+  "lang": "ar",
+  "title": "فترات العطلات — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.HolidayPeriod",
+  "overviewHtml": "<p>تاريخ واحد لعطلة. فالعطلة التي تستمر ثلاثة أيام لها ثلاث فترات عطلة. ويعامل محرك الوقت التاريخ عطلةً رسمية للموظفين الذين تستخدم فترة دوامهم تقويم العطلة.</p>",
+  "aliasIndex": {
+    "loc:Holiday": "HolidayPeriod.HolidayId",
+    "dom:HolidayPeriod_HolidayId": "HolidayPeriod.HolidayId",
+    "loc:HolidayDate": "HolidayPeriod.HolidayDate",
+    "dom:HolidayPeriod_HolidayDate": "HolidayPeriod.HolidayDate"
+  },
+  "fields": [
+    {
+      "id": "HolidayPeriod.HolidayId",
+      "label": "Holiday",
+      "section": "HolidayPeriods",
+      "aliases": [
+        "loc:Holiday",
+        "dom:HolidayPeriod_HolidayId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة العطلات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> العطلة.</p><p><strong>مثال.</strong> عيد الفطر</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "HolidayPeriod.HolidayDate",
+      "label": "HolidayDate",
+      "section": "HolidayPeriods",
+      "aliases": [
+        "loc:HolidayDate",
+        "dom:HolidayPeriod_HolidayDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ العطلة.</p><p><strong>مثال.</strong> <code>2026-03-20</code></p><p><strong>لماذا يهم.</strong> لا يكون للعطلة التاريخ نفسه إلا مرة واحدة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

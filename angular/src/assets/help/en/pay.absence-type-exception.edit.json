@@ -1,0 +1,43 @@
+{
+  "helpId": "pay.absence-type-exception.edit",
+  "lang": "en",
+  "title": "Absence Type Exceptions — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.AbsenceTypeException",
+  "overviewHtml": "<p>Pairs of leave types that should not be combined. Not checked at present: the pairs are saved, but nothing stops the two types being taken together.</p>",
+  "aliasIndex": {
+    "loc:AbsenceTypes": "AbsenceTypeException.AbsenceTypeId",
+    "dom:AbsenceTypeException_AbsenceTypeId": "AbsenceTypeException.AbsenceTypeId",
+    "loc:ExceptAbsenceType": "AbsenceTypeException.ExceptAbsenceTypeId",
+    "dom:AbsenceTypeException_ExceptAbsenceTypeId": "AbsenceTypeException.ExceptAbsenceTypeId"
+  },
+  "fields": [
+    {
+      "id": "AbsenceTypeException.AbsenceTypeId",
+      "label": "AbsenceTypes",
+      "section": "AbsenceTypeExceptions",
+      "aliases": [
+        "loc:AbsenceTypes",
+        "dom:AbsenceTypeException_AbsenceTypeId"
+      ],
+      "rules": "Required. Chosen from Leave Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The leave type.</p><p><strong>Example.</strong> Annual Leave</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceTypeException.ExceptAbsenceTypeId",
+      "label": "ExceptAbsenceType",
+      "section": "AbsenceTypeExceptions",
+      "aliases": [
+        "loc:ExceptAbsenceType",
+        "dom:AbsenceTypeException_ExceptAbsenceTypeId"
+      ],
+      "rules": "Required. Chosen from Leave Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The leave type it should not be combined with. A type cannot except itself.</p><p><strong>Example.</strong> Sick Leave</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

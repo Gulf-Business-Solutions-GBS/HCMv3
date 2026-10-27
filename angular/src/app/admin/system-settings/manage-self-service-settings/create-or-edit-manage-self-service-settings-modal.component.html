@@ -1,0 +1,322 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'SelfServiceSettings' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'SelfServiceSettings' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body" style="max-height: 75vh; overflow-y: auto">
+                        <fieldset>
+                            <legend>{{ 'General' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="SelfServiceSettings_RedirectAfterWFApproval">{{ 'RedirectAfterWFApproval' | localize }}</label>
+                                    <select
+                                        id="SelfServiceSettings_RedirectAfterWFApproval"
+                                        class="form-select"
+                                        name="RedirectAfterWFApproval"
+                                        [ngModel]="record().redirectAfterWFApproval"
+                                        (ngModelChange)="updateField('redirectAfterWFApproval', $event)">
+                                        @for (option of redirectAfterWFApprovalOptions; track option.value) {
+                                            <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="SelfServiceSettings_DefaultLoginPage">{{ 'DefaultLoginPage' | localize }}</label>
+                                    <input
+                                        id="SelfServiceSettings_DefaultLoginPage"
+                                        type="text"
+                                        class="form-control"
+                                        name="DefaultLoginPage"
+                                        maxlength="256"
+                                        [ngModel]="record().defaultLoginPage"
+                                        (ngModelChange)="updateField('defaultLoginPage', $event)" />
+                                </div>
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="SelfServiceSettings_CaptchaKey">{{ 'CaptchaKey' | localize }}</label>
+                                    <input
+                                        id="SelfServiceSettings_CaptchaKey"
+                                        type="text"
+                                        class="form-control"
+                                        name="CaptchaKey"
+                                        maxlength="256"
+                                        [ngModel]="record().captchaKey"
+                                        (ngModelChange)="updateField('captchaKey', $event)" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_EmailNotification"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EmailNotification"
+                                            [ngModel]="record().emailNotification"
+                                            (ngModelChange)="updateField('emailNotification', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_EmailNotification">{{ 'EmailNotification' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_ShowEmployeeInfo"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="ShowEmployeeInfo"
+                                            [ngModel]="record().showEmployeeInfo"
+                                            (ngModelChange)="updateField('showEmployeeInfo', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_ShowEmployeeInfo">{{ 'ShowEmployeeInfo' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_IsAttachmentAllowed"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="IsAttachmentAllowed"
+                                            [ngModel]="record().isAttachmentAllowed"
+                                            (ngModelChange)="updateField('isAttachmentAllowed', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_IsAttachmentAllowed">{{ 'IsAttachmentAllowed' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>{{ 'GeolocationAndPunch' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_AllowPunchOutsideRange"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="AllowPunchOutsideRange"
+                                            [ngModel]="record().allowPunchOutsideRange"
+                                            (ngModelChange)="updateField('allowPunchOutsideRange', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_AllowPunchOutsideRange">{{ 'AllowPunchOutsideRange' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_AutoLogoutAfterPunch"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="AutoLogoutAfterPunch"
+                                            [ngModel]="record().autoLogoutAfterPunch"
+                                            (ngModelChange)="updateField('autoLogoutAfterPunch', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_AutoLogoutAfterPunch">{{ 'AutoLogoutAfterPunch' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_AllowGeolocationSelfie"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="AllowGeolocationSelfie"
+                                            [ngModel]="record().allowGeolocationSelfie"
+                                            (ngModelChange)="updateField('allowGeolocationSelfie', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_AllowGeolocationSelfie">{{ 'AllowGeolocationSelfie' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_HideGeolocationInfo"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="HideGeolocationInfo"
+                                            [ngModel]="record().hideGeolocationInfo"
+                                            (ngModelChange)="updateField('hideGeolocationInfo', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_HideGeolocationInfo">{{ 'HideGeolocationInfo' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_HideGeolocationPunchInfo"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="HideGeolocationPunchInfo"
+                                            [ngModel]="record().hideGeolocationPunchInfo"
+                                            (ngModelChange)="updateField('hideGeolocationPunchInfo', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_HideGeolocationPunchInfo">{{ 'HideGeolocationPunchInfo' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>{{ 'LeaveInfo' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_ShowLeaveInfo"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="ShowLeaveInfo"
+                                            [ngModel]="record().showLeaveInfo"
+                                            (ngModelChange)="updateField('showLeaveInfo', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_ShowLeaveInfo">{{ 'ShowLeaveInfo' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_ShowCurrentLeaveBalance"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="ShowCurrentLeaveBalance"
+                                            [ngModel]="record().showCurrentLeaveBalance"
+                                            (ngModelChange)="updateField('showCurrentLeaveBalance', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_ShowCurrentLeaveBalance">{{ 'ShowCurrentLeaveBalance' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_ShowUpdatedLeaveBalance"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="ShowUpdatedLeaveBalance"
+                                            [ngModel]="record().showUpdatedLeaveBalance"
+                                            (ngModelChange)="updateField('showUpdatedLeaveBalance', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_ShowUpdatedLeaveBalance">{{ 'ShowUpdatedLeaveBalance' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_IsAdditionalUnpaidLeaveAllowed"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="IsAdditionalUnpaidLeaveAllowed"
+                                            [ngModel]="record().isAdditionalUnpaidLeaveAllowed"
+                                            (ngModelChange)="updateField('isAdditionalUnpaidLeaveAllowed', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_IsAdditionalUnpaidLeaveAllowed">{{ 'IsAdditionalUnpaidLeaveAllowed' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>{{ 'PaymentAndPassport' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_ShowPaymentDate"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="ShowPaymentDate"
+                                            [ngModel]="record().showPaymentDate"
+                                            (ngModelChange)="updateField('showPaymentDate', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_ShowPaymentDate">{{ 'ShowPaymentDate' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_EnablePayWithPayroll"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnablePayWithPayroll"
+                                            [ngModel]="record().enablePayWithPayroll"
+                                            (ngModelChange)="updateField('enablePayWithPayroll', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_EnablePayWithPayroll">{{ 'EnablePayWithPayroll' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_EnablePayInAdvance"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnablePayInAdvance"
+                                            [ngModel]="record().enablePayInAdvance"
+                                            (ngModelChange)="updateField('enablePayInAdvance', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_EnablePayInAdvance">{{ 'EnablePayInAdvance' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_IsPassportWithdrawalRequired"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="IsPassportWithdrawalRequired"
+                                            [ngModel]="record().isPassportWithdrawalRequired"
+                                            (ngModelChange)="updateField('isPassportWithdrawalRequired', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_IsPassportWithdrawalRequired">{{ 'IsPassportWithdrawalRequired' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="SelfServiceSettings_PassportWithdrawalSubmissionStep">{{ 'PassportWithdrawalSubmissionStep' | localize }}</label>
+                                    <input
+                                        id="SelfServiceSettings_PassportWithdrawalSubmissionStep"
+                                        type="number"
+                                        class="form-control"
+                                        name="PassportWithdrawalSubmissionStep"
+                                        [ngModel]="record().passportWithdrawalSubmissionStep"
+                                        (ngModelChange)="updateNumberField('passportWithdrawalSubmissionStep', $event)" />
+                                </div>
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_IsWithdrawalReasonMandatory"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="IsWithdrawalReasonMandatory"
+                                            [ngModel]="record().isWithdrawalReasonMandatory"
+                                            (ngModelChange)="updateField('isWithdrawalReasonMandatory', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_IsWithdrawalReasonMandatory">{{ 'IsWithdrawalReasonMandatory' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

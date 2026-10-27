@@ -1,0 +1,143 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'WorkflowSettings' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'WorkflowSettings' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <fieldset>
+                            <legend>{{ 'WorkflowSettings' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="WorkflowSettings_EnableWorkflowGroup"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableWorkflowGroup"
+                                            [ngModel]="record().enableWorkflowGroup"
+                                            (ngModelChange)="updateField('enableWorkflowGroup', $event)" />
+                                        <label class="form-check-label" for="WorkflowSettings_EnableWorkflowGroup">{{ 'EnableWorkflowGroup' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="WorkflowSettings_EnableOrgUnitTypeInWorkflow"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableOrgUnitTypeInWorkflow"
+                                            [ngModel]="record().enableOrgUnitTypeInWorkflow"
+                                            (ngModelChange)="updateField('enableOrgUnitTypeInWorkflow', $event)" />
+                                        <label class="form-check-label" for="WorkflowSettings_EnableOrgUnitTypeInWorkflow">{{ 'EnableOrgUnitTypeInWorkflow' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="WorkflowSettings_HideLeavePayDetailsInWorkflow"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="HideLeavePayDetailsInWorkflow"
+                                            [ngModel]="record().hideLeavePayDetailsInWorkflow"
+                                            (ngModelChange)="updateField('hideLeavePayDetailsInWorkflow', $event)" />
+                                        <label class="form-check-label" for="WorkflowSettings_HideLeavePayDetailsInWorkflow">{{ 'HideLeavePayDetailsInWorkflow' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="WorkflowSettings_DynamicWorkflowSteps"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="DynamicWorkflowSteps"
+                                            [ngModel]="record().dynamicWorkflowSteps"
+                                            (ngModelChange)="updateField('dynamicWorkflowSteps', $event)" />
+                                        <label class="form-check-label" for="WorkflowSettings_DynamicWorkflowSteps">{{ 'DynamicWorkflowSteps' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="WorkflowSettings_SendBackToCreator"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="SendBackToCreator"
+                                            [ngModel]="record().sendBackToCreator"
+                                            (ngModelChange)="updateField('sendBackToCreator', $event)" />
+                                        <label class="form-check-label" for="WorkflowSettings_SendBackToCreator">{{ 'SendBackToCreator' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="WorkflowSettings_DelegateEmployeeListByOrganizationUnitTypeId">{{ 'DelegateEmployeeListByOrganizationUnitTypeId' | localize }}</label>
+                                    <input
+                                        id="WorkflowSettings_DelegateEmployeeListByOrganizationUnitTypeId"
+                                        type="number"
+                                        class="form-control"
+                                        name="DelegateEmployeeListByOrganizationUnitTypeId"
+                                        [ngModel]="record().delegateEmployeeListByOrganizationUnitTypeId"
+                                        (ngModelChange)="updateNullableNumberField('delegateEmployeeListByOrganizationUnitTypeId', $event)" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="WorkflowSettings_EnableTravelCostOnWorkflowstep">{{ 'EnableTravelCostOnWorkflowstep' | localize }}</label>
+                                    <input
+                                        id="WorkflowSettings_EnableTravelCostOnWorkflowstep"
+                                        type="number"
+                                        class="form-control"
+                                        name="EnableTravelCostOnWorkflowstep"
+                                        [ngModel]="record().enableTravelCostOnWorkflowstep"
+                                        (ngModelChange)="updateNumberField('enableTravelCostOnWorkflowstep', $event)" />
+                                </div>
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="WorkflowSettings_OvertimeRequestModificationStep">{{ 'OvertimeRequestModificationStep' | localize }}</label>
+                                    <input
+                                        id="WorkflowSettings_OvertimeRequestModificationStep"
+                                        type="number"
+                                        class="form-control"
+                                        name="OvertimeRequestModificationStep"
+                                        [ngModel]="record().overtimeRequestModificationStep"
+                                        (ngModelChange)="updateNumberField('overtimeRequestModificationStep', $event)" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

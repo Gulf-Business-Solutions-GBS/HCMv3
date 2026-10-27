@@ -1,0 +1,123 @@
+{
+  "helpId": "hs.first-aid-box-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل صناديق الإسعافات الأولية — إنشاء / تحرير",
+  "entity": "HCMv3.HealthAndSafetyManagement.FirstAidBoxDetail",
+  "overviewHtml": "<p>دواء أو مادة واحدة في صندوق إسعافات أولية.</p>",
+  "aliasIndex": {
+    "loc:Medicine": "FirstAidBoxDetail.MedicineId",
+    "dom:FirstAidBoxDetail_MedicineId": "FirstAidBoxDetail.MedicineId",
+    "loc:AllocatedBy": "FirstAidBoxDetail.AllocatedById",
+    "dom:FirstAidBoxDetail_AllocatedById": "FirstAidBoxDetail.AllocatedById",
+    "loc:ExpiryDate": "FirstAidBoxDetail.ExpiryDate",
+    "dom:FirstAidBoxDetail_ExpiryDate": "FirstAidBoxDetail.ExpiryDate",
+    "loc:AllocationDate": "FirstAidBoxDetail.AllocationDate",
+    "dom:FirstAidBoxDetail_AllocationDate": "FirstAidBoxDetail.AllocationDate",
+    "loc:IsExpired": "FirstAidBoxDetail.IsExpired",
+    "dom:FirstAidBoxDetail_IsExpired": "FirstAidBoxDetail.IsExpired",
+    "loc:IsReplaced": "FirstAidBoxDetail.IsReplaced",
+    "dom:FirstAidBoxDetail_IsReplaced": "FirstAidBoxDetail.IsReplaced",
+    "loc:Comments": "FirstAidBoxDetail.Comments",
+    "dom:FirstAidBoxDetail_Comments": "FirstAidBoxDetail.Comments"
+  },
+  "fields": [
+    {
+      "id": "FirstAidBoxDetail.MedicineId",
+      "label": "Medicine",
+      "section": "FirstAidBoxDetails",
+      "aliases": [
+        "loc:Medicine",
+        "dom:FirstAidBoxDetail_MedicineId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أدوية الإسعافات الأولية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدواء أو المادة.</p><p><strong>مثال.</strong> ضمادات</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBoxDetail.AllocatedById",
+      "label": "AllocatedBy",
+      "section": "FirstAidBoxDetails",
+      "aliases": [
+        "loc:AllocatedBy",
+        "dom:FirstAidBoxDetail_AllocatedById"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من وضعه في الصندوق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBoxDetail.ExpiryDate",
+      "label": "ExpiryDate",
+      "section": "FirstAidBoxDetails",
+      "aliases": [
+        "loc:ExpiryDate",
+        "dom:FirstAidBoxDetail_ExpiryDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى تنتهي صلاحيته.</p><p><strong>لماذا يهم.</strong> للتسجيل فقط: لا يُرسل تذكير عند حلوله.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBoxDetail.AllocationDate",
+      "label": "AllocationDate",
+      "section": "FirstAidBoxDetails",
+      "aliases": [
+        "loc:AllocationDate",
+        "dom:FirstAidBoxDetail_AllocationDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى وُضع في الصندوق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBoxDetail.IsExpired",
+      "label": "IsExpired",
+      "section": "FirstAidBoxDetails",
+      "aliases": [
+        "loc:IsExpired",
+        "dom:FirstAidBoxDetail_IsExpired"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت صلاحيته قد انتهت.</p><p><strong>لماذا يهم.</strong> يُحدَّد يدوياً، ولا يُضبط من تاريخ انتهاء الصلاحية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBoxDetail.IsReplaced",
+      "label": "IsReplaced",
+      "section": "FirstAidBoxDetails",
+      "aliases": [
+        "loc:IsReplaced",
+        "dom:FirstAidBoxDetail_IsReplaced"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان قد استُبدل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBoxDetail.Comments",
+      "label": "Comments",
+      "section": "FirstAidBoxDetails",
+      "aliases": [
+        "loc:Comments",
+        "dom:FirstAidBoxDetail_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

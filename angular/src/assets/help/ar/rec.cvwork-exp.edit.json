@@ -1,0 +1,91 @@
+{
+  "helpId": "rec.cvwork-exp.edit",
+  "lang": "ar",
+  "title": "الخبرات العملية في السيرة الذاتية — إنشاء / تحرير",
+  "entity": "HCMv3.Recruitment.CVWorkExp",
+  "overviewHtml": "<p>وظيفة سابقة في السيرة الذاتية.</p>",
+  "aliasIndex": {
+    "loc:Company": "CVWorkExp.Company",
+    "dom:CVWorkExp_Company": "CVWorkExp.Company",
+    "loc:Position": "CVWorkExp.Position",
+    "dom:CVWorkExp_Position": "CVWorkExp.Position",
+    "loc:StartDate": "CVWorkExp.StartDate",
+    "dom:CVWorkExp_StartDate": "CVWorkExp.StartDate",
+    "loc:EndDate": "CVWorkExp.EndDate",
+    "dom:CVWorkExp_EndDate": "CVWorkExp.EndDate",
+    "loc:Responsibilities": "CVWorkExp.Responsibilities",
+    "dom:CVWorkExp_Responsibilities": "CVWorkExp.Responsibilities"
+  },
+  "fields": [
+    {
+      "id": "CVWorkExp.Company",
+      "label": "Company",
+      "section": "CVWorkExps",
+      "aliases": [
+        "loc:Company",
+        "dom:CVWorkExp_Company"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> جهة العمل.</p><p><strong>مثال.</strong> شركة الخليج التجارية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVWorkExp.Position",
+      "label": "Position",
+      "section": "CVWorkExps",
+      "aliases": [
+        "loc:Position",
+        "dom:CVWorkExp_Position"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوظيفة المشغولة.</p><p><strong>مثال.</strong> محاسب</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVWorkExp.StartDate",
+      "label": "StartDate",
+      "section": "CVWorkExps",
+      "aliases": [
+        "loc:StartDate",
+        "dom:CVWorkExp_StartDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVWorkExp.EndDate",
+      "label": "EndDate",
+      "section": "CVWorkExps",
+      "aliases": [
+        "loc:EndDate",
+        "dom:CVWorkExp_EndDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVWorkExp.Responsibilities",
+      "label": "Responsibilities",
+      "section": "CVWorkExps",
+      "aliases": [
+        "loc:Responsibilities",
+        "dom:CVWorkExp_Responsibilities"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مهام الوظيفة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

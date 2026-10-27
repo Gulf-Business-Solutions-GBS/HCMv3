@@ -1,0 +1,132 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #numberSeriesForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (numberSeries().id) {
+                                <span>{{ 'EditingNumberSeries' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreatingNewNumberSeries' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label required" for="NumberSeries_Code">{{ 'Code' | localize }}</label>
+                            <input
+                                id="NumberSeries_Code"
+                                #codeInput="ngModel"
+                                class="form-control"
+                                type="text"
+                                name="Code"
+                                [ngModel]="numberSeries().code"
+                                (ngModelChange)="updateField('code', $event)"
+                                required
+                                maxlength="50" />
+                            <validation-messages [formCtrl]="codeInput" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="NumberSeries_Name">{{ 'Name' | localize }}</label>
+                            <input
+                                id="NumberSeries_Name"
+                                class="form-control"
+                                type="text"
+                                name="Name"
+                                [ngModel]="numberSeries().name"
+                                (ngModelChange)="updateField('name', $event)"
+                                maxlength="200" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="NumberSeries_Start">{{ 'Start' | localize }}</label>
+                            <input
+                                id="NumberSeries_Start"
+                                class="form-control"
+                                type="number"
+                                name="Start"
+                                [ngModel]="numberSeries().start"
+                                (ngModelChange)="updateField('start', $event)" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="NumberSeries_Prefix">{{ 'Prefix' | localize }}</label>
+                            <input
+                                id="NumberSeries_Prefix"
+                                class="form-control"
+                                type="text"
+                                name="Prefix"
+                                [ngModel]="numberSeries().prefix"
+                                (ngModelChange)="updateField('prefix', $event)"
+                                maxlength="50" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label required" for="NumberSeries_Formatting">{{ 'Formatting' | localize }}</label>
+                            <input
+                                id="NumberSeries_Formatting"
+                                #formattingInput="ngModel"
+                                class="form-control"
+                                type="text"
+                                name="Formatting"
+                                [ngModel]="numberSeries().formatting"
+                                (ngModelChange)="updateField('formatting', $event)"
+                                required
+                                maxlength="200" />
+                            <validation-messages [formCtrl]="formattingInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="NumberSeries_EmploymentType">{{ 'EmploymentType' | localize }}</label>
+                            <select
+                                id="NumberSeries_EmploymentType"
+                                class="form-select"
+                                name="EmploymentType"
+                                [ngModel]="numberSeries().employmentType"
+                                (ngModelChange)="updateField('employmentType', $event)"
+                                required>
+                                @for (item of employmentTypes; track item.value) {
+                                    <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!numberSeriesForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

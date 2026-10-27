@@ -1,0 +1,451 @@
+topbar,
+top-bar-menu,
+theme4-brand {
+    display: flex;
+}
+
+.dropdown-language {
+    .dropdown-menu {
+        width: 250px !important;
+
+        li.kt-nav__item {
+            span,
+            i {
+                display: block;
+            }
+        }
+    }
+}
+
+.clickable-item {
+    cursor: pointer;
+}
+
+.btn + .btn {
+    margin-left: 5px;
+}
+
+.btn-block + .btn-block {
+    margin-left: 0px !important;
+}
+
+.kt-badge + .kt-badge {
+    margin-left: 5px;
+}
+
+.form-control-feedback {
+    color: #fd397a;
+    margin-top: 0.2rem;
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+li.nav-item {
+    a.nav-link {
+        span.kt-badge {
+            font-size: 11px;
+            margin-left: 4px;
+        }
+    }
+}
+
+.kt-notification.user-profile-menu {
+    .kt-notification__item:after {
+        content: none !important;
+    }
+}
+
+.active-user-delegations {
+
+    &:hover {
+        div,
+        span {
+            cursor: default !important;
+        }
+
+        .kt-header__topbar-icon--brand {
+            background-color: transparent !important;
+        }
+    }
+
+    .kt-header__topbar-icon--brand {
+        width: 200px !important;
+    }
+
+    select{
+        max-width: 120px;
+    }
+}
+
+html[dir="rtl"] {
+    .btn + .btn {
+        margin-right: 5px;
+    }
+
+    .checkbox span,
+    .radio span {
+        margin-left: 0.75rem !important;
+    }
+}
+
+.checkbox span,
+.radio span {
+    margin-right: 0.75rem !important;
+}
+
+@media print{
+     #kt_header {
+        display: none !important;
+    }
+}
+
+.user-notification-item-clickable {
+    a {
+        cursor: pointer;
+    }
+}
+
+.tooltip {
+    position: absolute;
+    }
+    
+    .tooltip-arrow {
+    position: absolute;
+    }
+/*
+ * Mobile search overlay.
+ *
+ * Below lg the header cannot hold a search field between the logo and the controls, so the field lives
+ * behind an icon and opens over the page instead. Anchored to the top rather than centred: a phone
+ * keyboard takes the bottom half of the screen the moment the input focuses, and anything vertically
+ * centred would be pushed under it.
+ */
+.mobile-search-overlay {
+    position: fixed;
+    inset: 0;
+
+    /*
+     * Below PrimeNG's overlay layer on purpose. The autocomplete panel is appendTo="body" and PrimeNG
+     * assigns it roughly 1001, so anything higher here would draw the backdrop over the very results the
+     * overlay exists to show. 900 still clears the Metronic header, which sits far lower.
+     */
+    z-index: 900;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 12px;
+}
+
+.mobile-search-overlay__panel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--bs-body-bg, #ffffff);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+
+    /* The field takes the panel; only the close button keeps its own width. */
+    menu-search-bar {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    /* Override the desktop cap -- on a phone the whole width is the point. */
+    .globalSearchContainer {
+        max-width: none;
+    }
+}
+
+.mobile-search-overlay__close {
+    flex: 0 0 auto;
+    color: var(--bs-gray-700, #5e6278);
+}
+
+/*
+ * The navigation's logo row, on a phone.
+ *
+ * Metronic hides .app-sidebar-logo below lg outright, on the assumption that the header's own logo is
+ * enough. It is not once the menu opens: on a phone the menu is a drawer that covers the header, so the
+ * logo vanished and the drawer had no control of its own. The drawer's close button was already inside
+ * this row (see default-layout.component.html) -- which is why it never appeared either: it was placed in
+ * the one container hidden on exactly the screens it was written for.
+ *
+ * The ID outranks Metronic's class rule without !important. The height mirrors Metronic's desktop rule
+ * for the same row, so the drawer's top edge lines up with the header it covers.
+ */
+@media (max-width: 991.98px) {
+    #kt_app_sidebar_logo {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+        height: calc(var(--bs-app-header-height) + 1px);
+    }
+
+    /*
+     * The collapse-to-icons button is a desktop idea: a drawer is open or closed, never minimised, and
+     * Metronic scopes every minimise rule to lg and up, so on a phone it would do nothing when tapped. It
+     * also hangs half outside the sidebar edge by design. The close button beside the logo is the
+     * phone's equivalent control.
+     */
+    #kt_app_sidebar_toggle {
+        display: none;
+    }
+}
+
+/*
+ * The off-canvas menu below lg, now driven by DefaultLayoutComponent.isMobileSidebarOpen instead of
+ * Metronic's drawer script. Metronic's .drawer/.drawer-start/.drawer-on classes still do the sliding; these
+ * rules supply what its script used to set inline, and fix the one thing it got wrong on iPhone.
+ */
+@media (max-width: 991.98px) {
+    /* The width Metronic's script forced inline from data-kt-drawer-width. The ID outranks .app-sidebar. */
+    #kt_app_sidebar.drawer {
+        width: 225px;
+    }
+
+    .app-sidebar-backdrop {
+        position: fixed;
+        inset: 0;
+
+        /* One below the menu (.app-sidebar sits at 106), as Metronic's own overlay was placed. */
+        z-index: 105;
+        background-color: var(--bs-drawer-overlay-bg-color);
+        animation: animation-drawer-fade-in 0.3s ease-in-out;
+
+        /*
+         * The actual iPhone fix. Safari does not deliver a tap's click to an element that does not look
+         * clickable, and a plain div with cursor:auto does not -- which is exactly what Metronic's overlay
+         * was, so tapping beside the menu to dismiss it did nothing on iOS while working everywhere else.
+         */
+        cursor: pointer;
+    }
+
+    /* Keep the page from scrolling behind the open menu; see the effect in DefaultLayoutComponent. */
+    body.hcm-mobile-menu-open {
+        overflow: hidden;
+    }
+}
+
+/*
+ * The field you are typing in, made obvious.
+ *
+ * The theme means to do this and cannot: its own rule reads
+ *   box-shadow: false, 0 0 0 .25rem rgba(27,132,255,.25)
+ * and the stray "false" makes the whole declaration invalid, so every browser throws it away -- nine rules,
+ * including .form-control:focus and .form-select:focus. The border it also sets is grey, all but invisible against
+ * the field's own border. The result was a cursor and nothing else.
+ *
+ * Written against the theme's own colour variables, so it follows light and dark mode and any re-skinning.
+ */
+.form-control:focus:focus,
+.form-select:focus:focus,
+textarea.form-control:focus:focus,
+.input-group:focus-within .form-control,
+.input-group:focus-within .form-select {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(27, 132, 255, 0.25);
+}
+
+/*
+ * PrimeNG's own inputs -- dropdowns, date pickers, autocompletes -- so a form does not highlight in two styles.
+ *
+ * Written ":enabled:focus:focus" rather than ":focus". PrimeNG styles a focused field from ".p-inputtext:enabled:focus",
+ * which counts for more than a plain ":focus" and so won every time: the header search box took the library's own
+ * colour instead of the application's and, on the screens that had already loaded, went on doing it. Repeating the
+ * pseudo-class costs nothing and outranks it. A disabled field is left alone -- it cannot be typed in.
+ */
+.p-inputtext:enabled:focus:focus,
+.p-select:enabled:focus:focus,
+.p-select.p-focus:not(.p-disabled),
+.p-datepicker-input:enabled:focus:focus,
+.p-autocomplete-input:enabled:focus:focus,
+.p-multiselect.p-focus:not(.p-disabled),
+.p-inputnumber-input:enabled:focus:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(27, 132, 255, 0.25);
+    outline: none;
+}
+
+/* A checkbox or radio gets the same ring, so tabbing through a form never loses where you are. */
+.form-check-input:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(27, 132, 255, 0.25);
+}
+
+/*
+ * PrimeNG's own colours, pointed at the application's blue.
+ *
+ * PrimeNG v21 styles its inputs from design tokens, and its stock palette is emerald -- which is why the header
+ * search box, its dropdowns and its date pickers ringed GREEN while everything else in the app rings blue. The app
+ * never chose green; it is simply the library default nobody overrode.
+ */
+:root:root {
+    --p-primary-50: #eff6ff;
+    --p-primary-100: #dbeafe;
+    --p-primary-200: #bfdbfe;
+    --p-primary-300: #93c5fd;
+    --p-primary-400: #60a5fa;
+    --p-primary-500: #1b84ff;
+    --p-primary-600: #006ae6;
+    --p-primary-700: #0055b8;
+    --p-primary-800: #00408a;
+    --p-primary-900: #002b5c;
+    --p-primary-950: #001a38;
+
+    /* The ring PrimeNG puts round a focused field, in the same blue as everything else. */
+    --p-form-field-focus-ring-shadow: 0 0 0 0.2rem rgba(27, 132, 255, 0.25);
+    --p-form-field-focus-border-color: #1b84ff;
+}
+
+/*
+ * Dropdowns, date pickers and tick boxes highlight like text fields do.
+ *
+ * A dropdown is a wrapper element with the real control inside it, so ":focus" on the wrapper never matches and
+ * tabbing onto one showed nothing at all -- the cursor was somewhere, but nowhere visible. ":focus-within" is what
+ * catches those.
+ *
+ * Only controls that have NO input of their own are ringed here. A search box, a date picker and a number field all
+ * wrap a real input, and ringing the wrapper as well drew a second box around the first -- which is exactly what the
+ * header search looked like.
+ */
+.p-select:focus-within,
+.p-multiselect:focus-within,
+.p-treeselect:focus-within,
+.p-cascadeselect:focus-within {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(27, 132, 255, 0.25);
+}
+
+/*
+ * A tick box or radio gets the ring too, so tabbing through a form never loses where you are.
+ *
+ * ":focus:focus" is not a typo. The theme says "box-shadow: none" for a focused tick box, and its stylesheet is
+ * fetched at runtime -- after this one -- so an equally specific selector loses to it. Repeating the pseudo-class
+ * wins the argument without !important.
+ */
+.form-check-input:focus:focus,
+.form-check-input:focus-visible,
+.p-checkbox:focus-within .p-checkbox-box,
+.p-radiobutton:focus-within .p-radiobutton-box {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(27, 132, 255, 0.25);
+}
+
+/* Native selects rendered without the Bootstrap class still count as fields. */
+select:focus,
+select.form-select:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(27, 132, 255, 0.25);
+}
+
+/*
+ * The header, moving in step with the sidebar as it opens and closes.
+ *
+ * The sidebar animates its width over 0.3s; the header is fixed with its left edge pinned to that same width,
+ * and Metronic gives .app-header "transition: none". So the header jumps while the sidebar glides, and for those
+ * three tenths of a second the two do not meet: opening the menu leaves a band up to 190px wide where the page
+ * behind shows through beside the logo, and closing it runs the header over the menu instead. Measured both ways.
+ * Giving the header the sidebar's own timing closes it to nothing.
+ *
+ * Desktop only: below lg the header is pinned to the left edge and the sidebar slides over it as a drawer, so
+ * there is no gap to close and nothing here applies.
+ */
+@media (min-width: 992px) {
+    [data-kt-app-header-fixed='true'][data-kt-app-sidebar-fixed='true'] .app-header {
+        transition: left 0.3s ease;
+    }
+}
+
+/*
+ * The logo in the navigation, larger than the theme's 25px.
+ *
+ * !important because the height comes from Metronic's .h-25px utility, and those are declared !important --
+ * an ordinary rule cannot raise it. The strip is 74px tall, so 40px leaves clear space above and below.
+ */
+.app-sidebar-logo .app-sidebar-logo-default {
+    height: 40px !important;
+}
+
+/* The collapsed menu is only 75px wide, so its mark grows more modestly. */
+.app-sidebar-logo .app-sidebar-logo-minimize {
+    height: 30px !important;
+}
+
+/*
+ * The off-canvas menu, drawn from the one fact that cannot be stale: the menu is open.
+ *
+ * Everything else about the mobile menu used to hang off a signal in the layout that asked the browser "is
+ * this a phone". That reading went stale twice, and the result was not cosmetic: the sidebar sat over the
+ * page with no drawer, no backdrop and a close button laid out to nothing -- a menu that could not be shut,
+ * reported from a real handset half a dozen times.
+ *
+ * So below lg these rules take over whenever body carries .hcm-mobile-menu-open, which the layout sets from
+ * the open state alone. The menu can only be opened by the hamburger, and the hamburger only exists below lg,
+ * so "open" already means "on a phone". Whatever the layout believes about the viewport, this shows the menu,
+ * shows its close button at a size a thumb can hit, and dims the page behind it.
+ */
+@media (max-width: 991.98px) {
+    body.hcm-mobile-menu-open {
+        overflow: hidden;
+    }
+
+    /* The menu itself, over the page and on screen, whether or not the drawer classes were applied. */
+    body.hcm-mobile-menu-open #kt_app_sidebar {
+        display: flex !important;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 110;
+        transform: none !important;
+        overflow: auto;
+    }
+
+    /* The close button: shown, sized, and above the logo beside it so the tap always lands. */
+    body.hcm-mobile-menu-open #kt_app_sidebar_logo button.d-lg-none {
+        display: flex !important;
+        width: 30px;
+        min-width: 30px;
+        height: 30px;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* A tap target a thumb can hit, without changing what is drawn. */
+    body.hcm-mobile-menu-open #kt_app_sidebar_logo button.d-lg-none::after {
+        content: '';
+        position: absolute;
+        inset: -10px;
+    }
+}
+
+/*
+ * On a phone the menu is HIDDEN until it is opened. Nothing else decides this.
+ *
+ * What was reported, and what every earlier fix missed: on a real handset the menu is already covering the
+ * page when the app loads. It was never opened -- so there is no backdrop to tap, and the X closes something
+ * that was never open, which is why it takes the tap, turns blue, and changes nothing. Narrowing a desktop
+ * window hides the fault because the resize corrects the layout on the way; a phone never resizes, so the
+ * wrong reading at load is the one it keeps.
+ *
+ * Below lg the sidebar is therefore display:none unless the body carries the open class. A menu that was not
+ * opened cannot cover the page, whatever the layout believes about the viewport and whether or not any
+ * JavaScript ran.
+ */
+@media (max-width: 991.98px) {
+    #kt_app_sidebar {
+        display: none !important;
+    }
+
+    body.hcm-mobile-menu-open #kt_app_sidebar {
+        display: flex !important;
+    }
+
+    /* And the hamburger always available, so the menu can always be opened again. */
+    #kt_app_sidebar_mobile_toggle {
+        display: inline-flex !important;
+    }
+}

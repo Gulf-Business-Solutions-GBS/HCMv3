@@ -1,0 +1,145 @@
+<div [@routerTransition]>
+    <sub-header [title]="'PayrollSheetReport' | localize" [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <!-- Legacy panel is Month/Year + To Month/Year + Run Type + employee code: no date range,
+                     no employee status. -->
+                <grid-report-filter
+                    [(employeeCode)]="employeeCode"
+                    [showDateRange]="false"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-1">
+                        <label class="form-label">{{ 'Month' | localize }}</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            name="payrollSheetMonth"
+                            min="1"
+                            max="12"
+                            [ngModel]="month()"
+                            (ngModelChange)="month.set($event)"
+                            (keydown.enter)="reloadPage()" />
+                    </div>
+
+                    <div class="col-md-1">
+                        <label class="form-label">{{ 'Year' | localize }}</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            name="payrollSheetYear"
+                            [ngModel]="year()"
+                            (ngModelChange)="year.set($event)"
+                            (keydown.enter)="reloadPage()" />
+                    </div>
+
+                    <div class="col-md-1">
+                        <label class="form-label">{{ 'ToMonth' | localize }}</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            name="payrollSheetToMonth"
+                            min="1"
+                            max="12"
+                            [ngModel]="toMonth()"
+                            (ngModelChange)="toMonth.set($event)"
+                            (keydown.enter)="reloadPage()" />
+                    </div>
+
+                    <div class="col-md-1">
+                        <label class="form-label">{{ 'ToYear' | localize }}</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            name="payrollSheetToYear"
+                            [ngModel]="toYear()"
+                            (ngModelChange)="toYear.set($event)"
+                            (keydown.enter)="reloadPage()" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'RunType' | localize }}</label>
+                        <p-select
+                            [options]="runTypeOptions"
+                            [ngModel]="payrollRunType()"
+                            (ngModelChange)="payrollRunType.set($event)"
+                            name="payrollSheetRunType"
+                            optionLabel="label"
+                            optionValue="value"
+                            [showClear]="true"
+                            [placeholder]="'RunType' | localize"
+                            styleClass="w-100" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '60rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <!-- Fixed columns plus one per wage type present in the period; the
+                                         list comes from the server so grid and xlsx cannot drift apart. -->
+                                    @for (column of displayColumns(); track column.field) {
+                                        <th style="min-width: 180px">
+                                            @if (column.localize) {
+                                                {{ column.header | localize }}
+                                            } @else {
+                                                {{ column.header }}
+                                            }
+                                        </th>
+                                    }
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    @for (column of displayColumns(); track column.field) {
+                                        <td style="min-width: 180px">
+                                            <span pTooltip="{{ record[column.field] }}" class="hide-overflown">
+                                                {{ record[column.field] }}
+                                            </span>
+                                        </td>
+                                    }
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

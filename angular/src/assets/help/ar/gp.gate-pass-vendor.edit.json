@@ -1,0 +1,75 @@
+{
+  "helpId": "gp.gate-pass-vendor.edit",
+  "lang": "ar",
+  "title": "موردو تصاريح الدخول والخروج — إنشاء / تحرير",
+  "entity": "HCMv3.GatePassManagement.GatePassVendor",
+  "overviewHtml": "<p>مورد أو مقاول يأتي أشخاصه إلى الموقع.</p>",
+  "aliasIndex": {
+    "loc:Code": "GatePassVendor.Code",
+    "dom:GatePassVendor_Code": "GatePassVendor.Code",
+    "loc:NameEn": "GatePassVendor.NameEn",
+    "dom:GatePassVendor_NameEn": "GatePassVendor.NameEn",
+    "loc:NameAr": "GatePassVendor.NameAr",
+    "dom:GatePassVendor_NameAr": "GatePassVendor.NameAr",
+    "loc:VendorAddress": "GatePassVendor.VendorAddress",
+    "dom:GatePassVendor_VendorAddress": "GatePassVendor.VendorAddress"
+  },
+  "fields": [
+    {
+      "id": "GatePassVendor.Code",
+      "label": "Code",
+      "section": "GatePassVendors",
+      "aliases": [
+        "loc:Code",
+        "dom:GatePassVendor_Code"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassVendor.NameEn",
+      "label": "NameEn",
+      "section": "GatePassVendors",
+      "aliases": [
+        "loc:NameEn",
+        "dom:GatePassVendor_NameEn"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassVendor.NameAr",
+      "label": "NameAr",
+      "section": "GatePassVendors",
+      "aliases": [
+        "loc:NameAr",
+        "dom:GatePassVendor_NameAr"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassVendor.VendorAddress",
+      "label": "VendorAddress",
+      "section": "GatePassVendors",
+      "aliases": [
+        "loc:VendorAddress",
+        "dom:GatePassVendor_VendorAddress"
+      ],
+      "rules": "اختياري. الحد الأقصى 1000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنوان المورد.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

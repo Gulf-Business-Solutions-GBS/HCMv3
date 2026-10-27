@@ -1,0 +1,108 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'TravelDetailCosts' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'TravelDetailCosts' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TravelDetailCost_TravelDetailId">{{ 'TravelDetail' | localize }}</label>
+                                <select
+                                    id="TravelDetailCost_TravelDetailId"
+                                    #travelDetailIdInput="ngModel"
+                                    class="form-select"
+                                    name="TravelDetailId"
+                                    [ngModel]="record().travelDetailId"
+                                    (ngModelChange)="updateField('travelDetailId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of travelDetails(); track item.id) {
+                                        <option [ngValue]="item.id">{{ travelDetailLabel(item) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="travelDetailIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TravelDetailCost_ExpenseTypeId">{{ 'ExpenseType' | localize }}</label>
+                                <select
+                                    id="TravelDetailCost_ExpenseTypeId"
+                                    #expenseTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="ExpenseTypeId"
+                                    [ngModel]="record().expenseTypeId"
+                                    (ngModelChange)="updateField('expenseTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of expenseTypes(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="expenseTypeIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="TravelDetailCost_Amount">{{ 'Amount' | localize }}</label>
+                                <input
+                                    id="TravelDetailCost_Amount"
+                                    #amountInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    name="Amount"
+                                    [ngModel]="record().amount"
+                                    (ngModelChange)="updateField('amount', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="amountInput" />
+                            </div>
+                            <div class="col-md-8 mb-5">
+                                <label class="form-label" for="TravelDetailCost_Comments">{{ 'Comments' | localize }}</label>
+                                <input
+                                    id="TravelDetailCost_Comments"
+                                    class="form-control"
+                                    type="text"
+                                    maxlength="1000"
+                                    name="Comments"
+                                    [ngModel]="record().comments"
+                                    (ngModelChange)="updateField('comments', $event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

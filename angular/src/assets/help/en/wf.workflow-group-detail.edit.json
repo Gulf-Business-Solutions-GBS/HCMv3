@@ -1,0 +1,91 @@
+{
+  "helpId": "wf.workflow-group-detail.edit",
+  "lang": "en",
+  "title": "Workflow Group Details — Create / Edit",
+  "entity": "HCMv3.Workflow.WorkflowGroupDetail",
+  "overviewHtml": "<p>Which chain a workflow group uses for one kind of request. Within the group the most specific row wins: type with sub-type and custom sub-type, then type with sub-type, then the row for the type alone. If the group has no match, the transaction type's default chain is used. A request type can be given to only one chain per group.</p>",
+  "aliasIndex": {
+    "loc:RequestMaster": "WorkflowGroupDetail.RequestMasterId",
+    "dom:WorkflowGroupDetail_RequestMasterId": "WorkflowGroupDetail.RequestMasterId",
+    "loc:RequestType": "WorkflowGroupDetail.RequestTypeName",
+    "dom:WorkflowGroupDetail_RequestTypeName": "WorkflowGroupDetail.RequestTypeName",
+    "loc:RequestSubType": "WorkflowGroupDetail.RequestSubTypeId",
+    "dom:WorkflowGroupDetail_RequestSubTypeId": "WorkflowGroupDetail.RequestSubTypeId",
+    "loc:CustomSubType": "WorkflowGroupDetail.CustomSubTypeId",
+    "dom:WorkflowGroupDetail_CustomSubTypeId": "WorkflowGroupDetail.CustomSubTypeId",
+    "loc:RequestActionAppliesTo": "WorkflowGroupDetail.RequestAction",
+    "dom:WorkflowGroupDetail_RequestAction": "WorkflowGroupDetail.RequestAction"
+  },
+  "fields": [
+    {
+      "id": "WorkflowGroupDetail.RequestMasterId",
+      "label": "RequestMaster",
+      "section": "WorkflowGroupDetails",
+      "aliases": [
+        "loc:RequestMaster",
+        "dom:WorkflowGroupDetail_RequestMasterId"
+      ],
+      "rules": "Required. Chosen from Request Master master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The chain to use.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroupDetail.RequestTypeName",
+      "label": "RequestType",
+      "section": "WorkflowGroupDetails",
+      "aliases": [
+        "loc:RequestType",
+        "dom:WorkflowGroupDetail_RequestTypeName"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of request.</p><p><strong>Example.</strong> Leave request</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroupDetail.RequestSubTypeId",
+      "label": "RequestSubType",
+      "section": "WorkflowGroupDetails",
+      "aliases": [
+        "loc:RequestSubType",
+        "dom:WorkflowGroupDetail_RequestSubTypeId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Narrows the row to one sub-type, such as one leave type.</p><p><strong>Example.</strong> Annual leave</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroupDetail.CustomSubTypeId",
+      "label": "CustomSubType",
+      "section": "WorkflowGroupDetails",
+      "aliases": [
+        "loc:CustomSubType",
+        "dom:WorkflowGroupDetail_CustomSubTypeId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Narrows the row further.</p><p><strong>Why it matters.</strong> Requests are routed without a custom sub-type at present, so this does not narrow anything: a row with a sub-type is matched on the sub-type alone, and a row with only this filled in is never chosen.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroupDetail.RequestAction",
+      "label": "RequestActionAppliesTo",
+      "section": "WorkflowGroupDetails",
+      "aliases": [
+        "loc:RequestActionAppliesTo",
+        "dom:WorkflowGroupDetail_RequestAction"
+      ],
+      "rules": "Optional. One of: All actions.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The request action this row applies to: a new request, an amendment, a cancellation or a return from leave.</p><p><strong>Example.</strong> Cancellation</p><p><strong>Why it matters.</strong> Lets one workflow group send, for example, leave cancellations down a shorter chain than new requests. A row naming the request's own action wins; rows left on <strong>All actions</strong> are used only when no row names that action.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

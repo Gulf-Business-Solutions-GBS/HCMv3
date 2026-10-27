@@ -1,0 +1,107 @@
+{
+  "helpId": "gr.sponsor-bank.edit",
+  "lang": "en",
+  "title": "Sponsor Banks — Create / Edit",
+  "entity": "HCMv3.GovtRelationsManagement.SponsorBank",
+  "overviewHtml": "<p>A bank account a sponsor pays salaries from. The end date cannot be before the start date. Each account with a payment bank can be chosen when generating a bank file.</p>",
+  "aliasIndex": {
+    "loc:EmployeeBankId": "SponsorBank.EmployeeBankId",
+    "dom:SponsorBank_EmployeeBankId": "SponsorBank.EmployeeBankId",
+    "loc:PaymentBankId": "SponsorBank.PaymentBankId",
+    "dom:SponsorBank_PaymentBankId": "SponsorBank.PaymentBankId",
+    "loc:AccountNumber": "SponsorBank.AccountNumber",
+    "dom:SponsorBank_AccountNumber": "SponsorBank.AccountNumber",
+    "loc:Iban": "SponsorBank.IBAN",
+    "dom:SponsorBank_Iban": "SponsorBank.IBAN",
+    "loc:StartDate": "SponsorBank.StartDate",
+    "dom:SponsorBank_StartDate": "SponsorBank.StartDate",
+    "loc:EndDate": "SponsorBank.EndDate",
+    "dom:SponsorBank_EndDate": "SponsorBank.EndDate"
+  },
+  "fields": [
+    {
+      "id": "SponsorBank.EmployeeBankId",
+      "label": "EmployeeBankId",
+      "section": "SponsorBanks",
+      "aliases": [
+        "loc:EmployeeBankId",
+        "dom:SponsorBank_EmployeeBankId"
+      ],
+      "rules": "Optional. Chosen from Bank master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The bank the employees bank with.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorBank.PaymentBankId",
+      "label": "PaymentBankId",
+      "section": "SponsorBanks",
+      "aliases": [
+        "loc:PaymentBankId",
+        "dom:SponsorBank_PaymentBankId"
+      ],
+      "rules": "Required. Chosen from Bank master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The bank the account is with.</p><p><strong>Example.</strong> NBK</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorBank.AccountNumber",
+      "label": "AccountNumber",
+      "section": "SponsorBanks",
+      "aliases": [
+        "loc:AccountNumber",
+        "dom:SponsorBank_AccountNumber"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The account number.</p><p><strong>Why it matters.</strong> Written into the bank file header for formats that carry the paying account.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorBank.IBAN",
+      "label": "Iban",
+      "section": "SponsorBanks",
+      "aliases": [
+        "loc:Iban",
+        "dom:SponsorBank_Iban"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The account's IBAN.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorBank.StartDate",
+      "label": "StartDate",
+      "section": "SponsorBanks",
+      "aliases": [
+        "loc:StartDate",
+        "dom:SponsorBank_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorBank.EndDate",
+      "label": "EndDate",
+      "section": "SponsorBanks",
+      "aliases": [
+        "loc:EndDate",
+        "dom:SponsorBank_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

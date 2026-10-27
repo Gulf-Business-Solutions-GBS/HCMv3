@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.emp-potential-assessment.edit",
+  "lang": "en",
+  "title": "Employee Potential Assessments — Create / Edit",
+  "entity": "HCMv3.SuccessionManagement.EmpPotentialAssessment",
+  "overviewHtml": "<p>An assessment of the employee's potential over a period, for succession planning. Periods for the same employee cannot overlap.</p><p>It is recorded for reference; no calculation or report reads it at present.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmpPotentialAssessment.StartDate",
+    "dom:EmpPotentialAssessment_StartDate": "EmpPotentialAssessment.StartDate",
+    "loc:EndDate": "EmpPotentialAssessment.EndDate",
+    "dom:EmpPotentialAssessment_EndDate": "EmpPotentialAssessment.EndDate",
+    "loc:Description": "EmpPotentialAssessment.Description",
+    "dom:EmpPotentialAssessment_Description": "EmpPotentialAssessment.Description",
+    "loc:Score": "EmpPotentialAssessment.Score",
+    "dom:EmpPotentialAssessment_Score": "EmpPotentialAssessment.Score",
+    "loc:Source": "EmpPotentialAssessment.Source",
+    "dom:EmpPotentialAssessment_Source": "EmpPotentialAssessment.Source",
+    "loc:RatingId": "EmpPotentialAssessment.RatingId",
+    "dom:EmpPotentialAssessment_RatingId": "EmpPotentialAssessment.RatingId",
+    "loc:NineBoxRatingId": "EmpPotentialAssessment.NineBoxRatingId",
+    "dom:EmpPotentialAssessment_NineBoxRatingId": "EmpPotentialAssessment.NineBoxRatingId"
+  },
+  "fields": [
+    {
+      "id": "EmpPotentialAssessment.StartDate",
+      "label": "StartDate",
+      "section": "EmpPotentialAssessments",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmpPotentialAssessment_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPotentialAssessment.EndDate",
+      "label": "EndDate",
+      "section": "EmpPotentialAssessments",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmpPotentialAssessment_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPotentialAssessment.Description",
+      "label": "Description",
+      "section": "EmpPotentialAssessments",
+      "aliases": [
+        "loc:Description",
+        "dom:EmpPotentialAssessment_Description"
+      ],
+      "rules": "Optional. Maximum 2000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Notes on the assessment.</p><p><strong>Example.</strong> Ready for a team lead role within a year.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPotentialAssessment.Score",
+      "label": "Score",
+      "section": "EmpPotentialAssessments",
+      "aliases": [
+        "loc:Score",
+        "dom:EmpPotentialAssessment_Score"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The potential score.</p><p><strong>Example.</strong> 3.8</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPotentialAssessment.Source",
+      "label": "Source",
+      "section": "EmpPotentialAssessments",
+      "aliases": [
+        "loc:Source",
+        "dom:EmpPotentialAssessment_Source"
+      ],
+      "rules": "Required. One of: Live, Manual.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the score came from a live assessment or was entered by hand.</p><p><strong>Example.</strong> Manual</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPotentialAssessment.RatingId",
+      "label": "RatingId",
+      "section": "EmpPotentialAssessments",
+      "aliases": [
+        "loc:RatingId",
+        "dom:EmpPotentialAssessment_RatingId"
+      ],
+      "rules": "Required. Chosen from Succession Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The succession rating.</p><p><strong>Example.</strong> High Potential</p>",
+      "adminHtml": "<p>Maintained under Succession Management.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmpPotentialAssessment.NineBoxRatingId",
+      "label": "NineBoxRatingId",
+      "section": "EmpPotentialAssessments",
+      "aliases": [
+        "loc:NineBoxRatingId",
+        "dom:EmpPotentialAssessment_NineBoxRatingId"
+      ],
+      "rules": "Required. Chosen from Nine Box Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The nine-box rating.</p><p><strong>Example.</strong> Future Star</p>",
+      "adminHtml": "<p>Maintained under Succession Management.</p>",
+      "stub": false
+    }
+  ]
+}

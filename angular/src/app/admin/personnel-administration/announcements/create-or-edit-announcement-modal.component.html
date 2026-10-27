@@ -1,0 +1,162 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-lg">
+        @if (active()) {
+            <div class="modal-content">
+                <form #announcementForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            <span>
+                                {{ (announcement().id ? 'EditAnnouncement' : 'CreateAnnouncement') | localize }}
+                            </span>
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto">
+                        <div class="mb-3">
+                            <label class="form-label required" for="Announcement_Title">{{ 'Title' | localize }}</label>
+                            <input
+                                id="Announcement_Title"
+                                class="form-control"
+                                type="text"
+                                name="Title"
+                                required
+                                maxlength="200"
+                                [ngModel]="announcement().title"
+                                (ngModelChange)="updateField('title', $event)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="Announcement_TitleAr">{{ 'TitleAr' | localize }}</label>
+                            <input
+                                id="Announcement_TitleAr"
+                                class="form-control"
+                                type="text"
+                                name="TitleAr"
+                                dir="rtl"
+                                maxlength="200"
+                                [ngModel]="announcement().titleAr"
+                                (ngModelChange)="updateField('titleAr', $event)" />
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required" for="Announcement_IssueDate">
+                                    {{ 'IssueDate' | localize }}
+                                </label>
+                                <input
+                                    id="Announcement_IssueDate"
+                                    class="form-control"
+                                    type="date"
+                                    name="IssueDate"
+                                    required
+                                    [ngModel]="dateText(announcement().issueDate)"
+                                    (ngModelChange)="setDate('issueDate', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required" for="Announcement_ExpiryDate">
+                                    {{ 'ExpiryDate' | localize }}
+                                </label>
+                                <input
+                                    id="Announcement_ExpiryDate"
+                                    class="form-control"
+                                    type="date"
+                                    name="ExpiryDate"
+                                    required
+                                    [ngModel]="dateText(announcement().expiryDate)"
+                                    (ngModelChange)="setDate('expiryDate', $event)" />
+                            </div>
+                        </div>
+
+                        @if (!isDateRangeValid) {
+                            <!-- Said before saving, not after. An expiry before the issue date saves
+                                 cleanly and then never appears anywhere, which is impossible to diagnose
+                                 from the dashboard. -->
+                            <div class="alert alert-light-warning py-2">
+                                {{ 'AnnouncementDateRangeInvalid' | localize }}
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label class="form-label" for="Announcement_Comments">{{ 'Summary' | localize }}</label>
+                            <textarea
+                                id="Announcement_Comments"
+                                class="form-control"
+                                name="Comments"
+                                rows="3"
+                                [ngModel]="announcement().comments"
+                                (ngModelChange)="updateField('comments', $event)"></textarea>
+                            <!-- This is what the dashboard panel shows. Worth saying, because the longer
+                                 article body is a different field and authors expect what they typed
+                                 last to be what appears. -->
+                            <small class="form-text text-muted">{{ 'AnnouncementSummaryHint' | localize }}</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="Announcement_CommentAr">{{ 'SummaryAr' | localize }}</label>
+                            <textarea
+                                id="Announcement_CommentAr"
+                                class="form-control"
+                                name="CommentAr"
+                                rows="3"
+                                dir="rtl"
+                                [ngModel]="announcement().commentAr"
+                                (ngModelChange)="updateField('commentAr', $event)"></textarea>
+                        </div>
+
+                        <div class="form-check mb-2">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="Announcement_SendNotification"
+                                name="SendNotification"
+                                [ngModel]="announcement().sendNotification"
+                                (ngModelChange)="updateField('sendNotification', $event)" />
+                            <label class="form-check-label" for="Announcement_SendNotification">
+                                {{ 'SendNotification' | localize }}
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="Announcement_SendEmail"
+                                name="SendEmail"
+                                [ngModel]="announcement().sendEmail"
+                                (ngModelChange)="updateField('sendEmail', $event)" />
+                            <label class="form-check-label" for="Announcement_SendEmail">
+                                {{ 'SendEmail' | localize }}
+                            </label>
+                            <!-- SMTP is not configured on this deployment, so an e-mail ticked here will
+                                 not arrive. Better said on the form than discovered by an author who
+                                 believed they had notified everyone. -->
+                            <small class="form-text text-muted d-block">{{ 'SendEmailSmtpHint' | localize }}</small>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary fw-bold" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!announcementForm.form.valid || !isDateRangeValid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        }
+    </div>
+</div>

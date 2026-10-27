@@ -1,0 +1,246 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Get_Excel_Columns_Here}}",
+			"templates" : [
+					{
+						"type" : "long",
+						"content" : "{{entity_Name_Here}}.{{Property_Name_Here}} = Convert.ToInt64({{GetValueFromRowOrNull_Here}}(row,  nameof({{entity_Name_Here}}.{{Property_Name_Here}}){{Exception_Here}}));
+						"
+					},
+					{
+						"type" : "int",
+						"content" : "{{entity_Name_Here}}.{{Property_Name_Here}} = Convert.ToInt32({{GetValueFromRowOrNull_Here}}(row,  nameof({{entity_Name_Here}}.{{Property_Name_Here}}){{Exception_Here}}));
+						"
+					},
+					{
+						"type" : "short",
+						"content" : "{{entity_Name_Here}}.{{Property_Name_Here}} = Convert.ToInt16({{GetValueFromRowOrNull_Here}}(row,  nameof({{entity_Name_Here}}.{{Property_Name_Here}}){{Exception_Here}}));
+						"
+					},
+					{
+						"type" : "byte",
+						"content" : "{{entity_Name_Here}}.{{Property_Name_Here}} = Convert.ToByte({{GetValueFromRowOrNull_Here}}(row,  nameof({{entity_Name_Here}}.{{Property_Name_Here}}){{Exception_Here}}));
+						"
+					},
+					{
+						"type" : "double",
+						"content" : "{{entity_Name_Here}}.{{Property_Name_Here}} = Convert.ToDouble({{GetValueFromRowOrNull_Here}}(row,  nameof({{entity_Name_Here}}.{{Property_Name_Here}}){{Exception_Here}}));
+						"
+					},
+					{
+						"type" : "decimal",
+						"content" : "{{entity_Name_Here}}.{{Property_Name_Here}} = Convert.ToDecimal({{GetValueFromRowOrNull_Here}}(row,  nameof({{entity_Name_Here}}.{{Property_Name_Here}}){{Exception_Here}}));
+						"
+					},
+					{
+						"type" : "bool",
+						"content" : "{{entity_Name_Here}}.{{Property_Name_Here}} = Convert.ToBoolean({{GetValueFromRowOrNull_Here}}(row,  nameof({{entity_Name_Here}}.{{Property_Name_Here}}){{Exception_Here}}));
+						"
+					},
+					{
+						"type" : "DateTime",
+						"content" : "{{entity_Name_Here}}.{{Property_Name_Here}} = Convert.ToDateTime({{GetValueFromRowOrNull_Here}}(row,  nameof({{entity_Name_Here}}.{{Property_Name_Here}}){{Exception_Here}}));
+						"
+					},
+					{
+						"type" : "string",
+						"content" : "{{entity_Name_Here}}.{{Property_Name_Here}} = {{GetValueFromRowOrNull_Here}}(row,  nameof({{entity_Name_Here}}.{{Property_Name_Here}}){{Exception_Here}});
+						"
+					}
+				]
+		},
+	],
+"navigationPropertyTemplates":[
+                {
+                    "placeholder" : "{{NP_Using_Looped_Template_Here}}",
+                    "preventDuplicate":true,
+                    "templates" : [
+                            {
+                            "relation" : "single",
+                            "content" : "using {{NP_Namespace_Here}};
+            "
+                            },
+                            {
+                            "relation" : "multi",
+                            "content" : "using {{NP_Namespace_Here}};
+            "
+                            },
+                            {
+                            "relation" : "single",
+                            "viewType": "Dropdown",						
+                            "preventDuplicate":true,
+                            "content" : "using {{NP_Namespace_Here}};
+            "
+                            },
+                        ]
+                },
+                {
+                    "placeholder" : "{{NP_Get_Excel_Columns_Here}}",
+                    "templates" : [
+                        {
+                            "relation" : "single",
+                            "content" : "{{entity_Name_Here}}.{{NP_Name_Here}} =  ConvertToRequiredPrimaryKey<{{NP_Id_Type_Here}}>({{GetValueFromRowOrNull_Here}}(row,  nameof({{entity_Name_Here}}.{{NP_Name_Here}}){{Exception_Here}}));
+                            "
+                        },
+                    ]
+                },
+	],
+	"enumTemplates":[
+    		{
+    			"placeholder" : "{{Enum_Using_Looped_Template_Here}}",
+    			"preventDuplicate":true,
+    			"content" : "using {{Enum_Namespace_Here}};
+    "
+    		}
+    	],
+	"conditionalTemplates":[
+            {
+                "placeholder": "{{Exception_Here}}",
+                "condition": "{{Project_Version_Here}} <= 130400",
+                "content": ", exceptionMessage"
+            },
+            {
+                "placeholder": "{{Create_Excel_Package_Here}}",
+                "condition": "{{Project_Version_Here}} > 130400",
+                "content": "await CreateExcelPackageAsync"
+            },
+            {
+                "placeholder": "{{Create_Excel_Package_Here}}",
+                "condition": "{{Project_Version_Here}} >= 130200",
+                "content": "CreateExcelPackage"
+            },
+            {
+                "placeholder": "{{Threading_Tasks_Namespace_Here}}",
+                "condition": "{{Project_Version_Here}} > 130400",
+                "content": "using System.Threading.Tasks;"
+            },
+            {
+                "placeholder": "{{Return_Type_Here}}",
+                "condition": "{{Project_Version_Here}} > 130400",
+                "content": "async Task<FileDto>"
+            },
+            {
+                "placeholder": "{{Return_Type_Here}}",
+                "condition": "{{Project_Version_Here}} <= 130400",
+                "content": "FileDto"
+            },
+            {
+                "placeholder": "{{GetEntitiesFromExcel_Here}}",
+                "condition": "{{Project_Version_Here}} > 130400",
+                "content": "public async Task<List<Import{{Entity_Name_Here}}Dto>> GetEntitiesFromExcel(byte[] fileBytes)
+                                    {
+                                        return await ProcessExcelFile(fileBytes, ProcessExcelRow);
+                                    }"
+            },
+            {
+                "placeholder": "{{GetEntitiesFromExcel_Here}}",
+                "condition": "{{Project_Version_Here}} <= 130400",
+                "content": "    public List<Import{{Entity_Name_Here}}Dto> GetEntitiesFromExcel(byte[] fileBytes)
+                                {
+                                    return ProcessExcelFile(fileBytes, ProcessExcelRow);
+                                }"
+            },
+            {
+                "placeholder": "{{GetValueFromRowOrNull_Here}}",
+                "condition": "{{Property_Required_Here}} == true",
+                "content": "GetRequiredValueFromRowOrNull"
+            },
+            {
+                "placeholder": "{{GetValueFromRowOrNull_Here}}",
+                "condition": "{{Property_Required_Here}} == false",
+                "content": "GetOptionalValueFromRowOrNull<{{Property_Type_Here}}>"
+            },
+            {
+                "placeholder": "{{GetValueFromRowOrNull_Here}}",
+                "condition": "{{NP_IsNullable_Here}} == true",
+                "content": "GetRequiredValueFromRowOrNull"
+            },
+            {
+                "placeholder": "{{GetValueFromRowOrNull_Here}}",
+                "condition": "{{NP_IsNullable_Here}} == false",
+                "content": "GetOptionalValueFromRowOrNull<{{NP_Id_Type_Here}}>"
+            },
+			{
+    			"placeholder": "{{GetRequiredValueFromRowOrNull_Here}}",
+    			"condition": "{{Project_Version_Here}} < 130200",
+    			"content": "
+    			        private string GetRequiredValueFromRowOrNull(
+                            dynamic row,
+                            string columnName,
+                            StringBuilder exceptionMessage)
+                        {
+                            var cellValue = (row as ExpandoObject).GetOrDefault(columnName)?.ToString();
+                            if (cellValue != null && !string.IsNullOrWhiteSpace(cellValue))
+                            {
+                                return cellValue;
+                            }
+                
+                            exceptionMessage.Append(GetLocalizedExceptionMessagePart(columnName));
+                            return null;
+                        }
+    			"
+    		},
+            {
+                "placeholder": "{{GetOptionalValueFromRowOrNull_Here}}",
+                "condition": "{{Project_Version_Here}} < 130200",
+                "content": "
+                        private object GetOptionalValueFromRowOrNull<T>(dynamic row, string columnName, StringBuilder exceptionMessage)
+                        {
+                            var cellValue = (row as ExpandoObject).GetOrDefault(columnName)?.ToString();
+                            if (cellValue != null && !string.IsNullOrWhiteSpace(cellValue))
+                            {
+                                return cellValue;
+                            }
+                
+                            exceptionMessage.Append(GetLocalizedExceptionMessagePart(columnName));
+                            return default(T);
+                        }
+                "
+            },            
+            {
+                "placeholder": "{{ConvertToRequiredPrimaryKey_Here}}",
+                "condition": "{{Project_Version_Here}} < 130200",
+                "content": "
+                    // Possible types: Int32, Long, Guid, String
+                    // PowerTools:ConvertToRequiredPrimaryKey
+                    private object ConvertToRequiredPrimaryKey<T>(string value)
+                    {
+                        return typeof(T).Name switch
+                        {
+                            \"Int32\" => Convert.ToInt32(value),
+                            \"Long\" => Convert.ToInt64(value),
+                            \"Guid\" => Guid.Parse(value),
+                            \"String\" => value,
+                            _ => default(T)
+                        };
+                    }
+                "
+            },
+            {
+                "placeholder": "{{GetLocalizedExceptionMessagePart_Here}}",
+                "condition": "{{Project_Version_Here}} < 130200",
+                "content": "
+                        private string GetLocalizedExceptionMessagePart(string parameter)
+                        {
+                            return _localizationSource.GetString(\"{0}IsInvalid\", _localizationSource.GetString(parameter)) + \"; \";
+                        }
+                "
+            },
+            {
+                "placeholder": "{{MiniExcel_Base_Here}}",
+                "condition": "{{Project_Version_Here}} >= 130200",
+                "content": "MiniExcelExcelImporterBase<Import{{Entity_Name_Here}}Dto>(localizationManager),"
+            },                     
+            {
+                "placeholder": "{{MiniExcel_Base_Here}}",
+                "condition": "{{Project_Version_Here}} < 130200",
+                "content": "MiniExcelExcelImporterBase<Import{{Entity_Name_Here}}Dto>,"
+            },            
+            {
+                "placeholder": "{{LocalizationSource_Here}}",
+                "condition": "{{Project_Version_Here}} < 130200",
+                "content": "private readonly ILocalizationSource _localizationSource = localizationManager.GetSource({{Project_Name_Here}}Consts.LocalizationSourceName);"
+            },
+	]
+}

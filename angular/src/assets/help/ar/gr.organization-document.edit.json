@@ -1,0 +1,155 @@
+{
+  "helpId": "gr.organization-document.edit",
+  "lang": "ar",
+  "title": "وثائق الشركة — إنشاء / تحرير",
+  "entity": "HCMv3.GovtRelationsManagement.OrganizationDocument",
+  "overviewHtml": "<p>مستند أو ترخيص تحمله المنظمة، مثل الرخصة التجارية. لا يمكن أن يكون تاريخ الانتهاء قبل تاريخ الإصدار. ويعرض تقرير وثائق الشركة المستندات السارية في فترة من التواريخ والأيام المتبقية قبل انتهاء كل منها.</p>",
+  "aliasIndex": {
+    "loc:OrganizationUnit": "OrganizationDocument.OrganizationUnitId",
+    "dom:OrganizationDocument_OrganizationUnitId": "OrganizationDocument.OrganizationUnitId",
+    "loc:DocumentType": "OrganizationDocument.DocumentTypeId",
+    "dom:OrganizationDocument_DocumentTypeId": "OrganizationDocument.DocumentTypeId",
+    "loc:DocumentNum": "OrganizationDocument.DocumentNum",
+    "dom:OrganizationDocument_DocumentNum": "OrganizationDocument.DocumentNum",
+    "loc:Sponsor": "OrganizationDocument.SponsorId",
+    "dom:OrganizationDocument_SponsorId": "OrganizationDocument.SponsorId",
+    "loc:IssueDate": "OrganizationDocument.IssueDate",
+    "dom:OrganizationDocument_IssueDate": "OrganizationDocument.IssueDate",
+    "loc:ExpiryDate": "OrganizationDocument.ExpiryDate",
+    "dom:OrganizationDocument_ExpiryDate": "OrganizationDocument.ExpiryDate",
+    "loc:DocumentPlace": "OrganizationDocument.DocumentPlace",
+    "dom:OrganizationDocument_DocumentPlace": "OrganizationDocument.DocumentPlace",
+    "loc:NotificationSent": "OrganizationDocument.NotificationSent",
+    "dom:OrganizationDocument_NotificationSent": "OrganizationDocument.NotificationSent",
+    "loc:Comments": "OrganizationDocument.Comments",
+    "dom:OrganizationDocument_Comments": "OrganizationDocument.Comments"
+  },
+  "fields": [
+    {
+      "id": "OrganizationDocument.OrganizationUnitId",
+      "label": "OrganizationUnit",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:OrganizationUnit",
+        "dom:OrganizationDocument_OrganizationUnitId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الوحدات التنظيمية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> جزء المنظمة الذي يخصه المستند.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationDocument.DocumentTypeId",
+      "label": "DocumentType",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:DocumentType",
+        "dom:OrganizationDocument_DocumentTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الوثائق.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع المستند.</p><p><strong>مثال.</strong> الرخصة التجارية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationDocument.DocumentNum",
+      "label": "DocumentNum",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:DocumentNum",
+        "dom:OrganizationDocument_DocumentNum"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم المستند.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationDocument.SponsorId",
+      "label": "Sponsor",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:Sponsor",
+        "dom:OrganizationDocument_SponsorId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الكفلاء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الكفيل الذي يخصه المستند، إن وُجد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationDocument.IssueDate",
+      "label": "IssueDate",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:IssueDate",
+        "dom:OrganizationDocument_IssueDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى صدر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationDocument.ExpiryDate",
+      "label": "ExpiryDate",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:ExpiryDate",
+        "dom:OrganizationDocument_ExpiryDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى ينتهي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationDocument.DocumentPlace",
+      "label": "DocumentPlace",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:DocumentPlace",
+        "dom:OrganizationDocument_DocumentPlace"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان حفظ الأصل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationDocument.NotificationSent",
+      "label": "NotificationSent",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:NotificationSent",
+        "dom:OrganizationDocument_NotificationSent"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا أُرسل إشعار انتهاء.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationDocument.Comments",
+      "label": "Comments",
+      "section": "OrganizationDocuments",
+      "aliases": [
+        "loc:Comments",
+        "dom:OrganizationDocument_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

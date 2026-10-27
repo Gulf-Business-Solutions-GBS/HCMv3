@@ -1,0 +1,187 @@
+{
+  "helpId": "pay.payroll-area.edit",
+  "lang": "ar",
+  "title": "مناطق الرواتب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.PayrollArea",
+  "overviewHtml": "<p>منطقة الرواتب مجموعة من الموظفين تُصرف رواتبهم معاً: على التقويم المالي نفسه، وبالعملة نفسها، ويحكمها سجل ضبط رواتب واحد. ويحدد التعيين التنظيمي لكل موظف منطقة الرواتب التي ينتمي إليها.</p><p>ويبيّن سجل ضبط الرواتب الخاص بالمنطقة الشهر الجاري احتسابه، وما إذا كان مفتوحاً أو مفتوحاً لتشغيل الرواتب أو مقفلاً. وتُغذّي إعداداتها المالية قيد اليومية الذي يُرحّل الرواتب إلى النظام المالي.</p>",
+  "aliasIndex": {
+    "loc:Code": "PayrollArea.Code",
+    "dom:PayrollArea_Code": "PayrollArea.Code",
+    "loc:Name": "PayrollArea.Name",
+    "dom:PayrollArea_Name": "PayrollArea.Name",
+    "loc:PayrollPeriodId": "PayrollArea.PayrollPeriodId",
+    "dom:PayrollArea_PayrollPeriodId": "PayrollArea.PayrollPeriodId",
+    "loc:CurrencyId": "PayrollArea.CurrencyId",
+    "dom:PayrollArea_CurrencyId": "PayrollArea.CurrencyId",
+    "loc:CutOffDay": "PayrollArea.CutOffDay",
+    "dom:PayrollArea_CutOffDay": "PayrollArea.CutOffDay",
+    "loc:CountryId": "PayrollArea.CountryId",
+    "dom:PayrollArea_CountryId": "PayrollArea.CountryId",
+    "loc:FICompanyId": "PayrollArea.FICompanyId",
+    "dom:PayrollArea_FICompanyId": "PayrollArea.FICompanyId",
+    "loc:FIBankId": "PayrollArea.FIBankId",
+    "dom:PayrollArea_FIBankId": "PayrollArea.FIBankId",
+    "loc:PAReleaseNotification": "PayrollArea.PAReleaseNotificationId",
+    "dom:PayrollArea_PAReleaseNotificationId": "PayrollArea.PAReleaseNotificationId",
+    "loc:PAExitNotification": "PayrollArea.PAExitNotificationId",
+    "dom:PayrollArea_PAExitNotificationId": "PayrollArea.PAExitNotificationId",
+    "loc:PACorrectionNotification": "PayrollArea.PACorrectionNotificationId",
+    "dom:PayrollArea_PACorrectionNotificationId": "PayrollArea.PACorrectionNotificationId"
+  },
+  "fields": [
+    {
+      "id": "PayrollArea.Code",
+      "label": "Code",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:Code",
+        "dom:PayrollArea_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.Name",
+      "label": "Name",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:Name",
+        "dom:PayrollArea_Name"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم منطقة الرواتب. للمنطقة اسم واحد فقط، دون اسم عربي مستقل.</p><p><strong>مثال.</strong> <code>Kuwait Monthly</code></p><p><strong>لماذا يهم.</strong> يختار تشغيل الرواتب وملف التكاليف وقيد اليومية المنطقةَ بهذا الاسم، ويظهر في الرسائل التي ترفض التعديل أثناء إقفال المنطقة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.PayrollPeriodId",
+      "label": "PayrollPeriodId",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:PayrollPeriodId",
+        "dom:PayrollArea_PayrollPeriodId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة فترات الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السنة المالية التي تعمل عليها المنطقة، مثل يناير–ديسمبر أو أبريل–مارس.</p><p><strong>مثال.</strong> <code>Apr-Mar</code></p><p><strong>لماذا يهم.</strong> تحدد الشهرَ الميلادي المقصود بشهر الرواتب في سجل ضبط الرواتب. فمع أبريل–مارس يكون شهر الرواتب 1 لسنة 2026 هو أبريل 2026، وشهر الرواتب 10 هو يناير 2027.</p>",
+      "adminHtml": "<p>لا يتعرّف سجل ضبط الرواتب إلا على اثني عشر رمزاً للفترة، من <code>Jan-Dec</code> إلى <code>Dec-Nov</code>. وأي رمز آخر يجعل السجل يرفض الحفظ برسالة \"فترة رواتب غير صحيحة\".</p>",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.CurrencyId",
+      "label": "CurrencyId",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:CurrencyId",
+        "dom:PayrollArea_CurrencyId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة العملات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> العملة التي تُصرف بها رواتب المنطقة.</p><p><strong>مثال.</strong> دينار كويتي</p><p><strong>لماذا يهم.</strong> تُطبع عملةً لسطر صافي الراتب في قيد اليومية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.CutOffDay",
+      "label": "CutOffDay",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:CutOffDay",
+        "dom:PayrollArea_CutOffDay"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اليوم من الشهر الذي ينتهي فيه شهر الرواتب لأغراض احتساب الأيام، إذا لم يكن نهاية الشهر الميلادي. والقيمة 0 تعني الشهر الميلادي.</p><p><strong>مثال.</strong> <code>20</code> — يحتسب تشغيل أبريل الفترة من 21 مارس إلى 20 أبريل.</p><p><strong>لماذا يهم.</strong> لأنواع الأجور المؤشَّر عليها <em>إدراج في الإقفال</em>، تُحتسب أيام مثل الغياب غير المدفوع من اليوم التالي ليوم إقفال الشهر السابق إلى يوم إقفال هذا الشهر، بدلاً من الشهر الميلادي. وإذا كان إعداد الرواتب <em>دفع الإجازة حسب تاريخ الإقفال</em> مفعّلاً، فإنه يحدد أيضاً ما إذا كانت الإجازة التي لم يعد منها الموظف بعد تُعالَج في التشغيل العادي لهذا الشهر: ولا يُعالَج منها إلا ما بدأ في يوم الإقفال أو قبله.</p>",
+      "adminHtml": "<p>إذا كان يوم الإقفال أكبر من عدد أيام الشهر فالمقصود آخر يوم فيه — فيوم 31 في فبراير هو 28 أو 29.</p>",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.CountryId",
+      "label": "CountryId",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:CountryId",
+        "dom:PayrollArea_CountryId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدول.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البلد الذي تتبعه منطقة الرواتب.</p><p><strong>مثال.</strong> الكويت</p><p><strong>لماذا يهم.</strong> لا يستخدمه احتساب الرواتب. ويظهر بلداً في تقرير ملخص مراجعي تقييم الأداء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.FICompanyId",
+      "label": "FICompanyId",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:FICompanyId",
+        "dom:PayrollArea_FICompanyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز الشركة في النظام المالي الذي تُرحَّل تحته رواتب المنطقة، ويُختار من عناصر التكلفة.</p><p><strong>مثال.</strong> <code>KW01</code></p><p><strong>لماذا يهم.</strong> يُكتب شركةً على سطر صافي الراتب في قيد اليومية. ويُرفض ترحيل قيد اليومية وإعداد ملف التكاليف للمنطقة ما دام فارغاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.FIBankId",
+      "label": "FIBankId",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:FIBankId",
+        "dom:PayrollArea_FIBankId"
+      ],
+      "rules": "اختياري. يُختار من قائمة بيانات الحسابات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحساب البنكي الذي يُقيَّد فيه إجمالي صافي رواتب المنطقة دائناً في قيد اليومية.</p><p><strong>مثال.</strong> <code>110200 — حساب الرواتب لدى بنك الكويت الوطني</code></p><p><strong>لماذا يهم.</strong> يُقيّد قيد اليومية صافي رواتب التشغيل كله دائناً في هذا الحساب، مع نوع الحساب بجانبه. ويُرفض ترحيل قيد اليومية وإعداد ملف التكاليف للمنطقة ما دام فارغاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.PAReleaseNotificationId",
+      "label": "PAReleaseNotification",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:PAReleaseNotification",
+        "dom:PayrollArea_PAReleaseNotificationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإخطار الذي يُرسل عند فتح سجل ضبط الرواتب الخاص بهذه المنطقة لتشغيل الرواتب.</p><p><strong>مثال.</strong> فتح الرواتب للمعالجة</p><p><strong>لماذا يهم.</strong> يُرسل في كل مرة يُفتح فيها سجل الضبط لتشغيل الرواتب. وهو يخص سجل الضبط لا موظفاً بعينه، فيصل إلى مجموعات الإخطار في الإعداد وغيرها من المستلمين الثابتين. ولا يُرسل شيء ما لم تكن لإعدادات الإخطار مجموعة إخطار.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.PAExitNotificationId",
+      "label": "PAExitNotification",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:PAExitNotification",
+        "dom:PayrollArea_PAExitNotificationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإخطار الذي يُرسل عند إنهاء الرواتب في سجل ضبط الرواتب الخاص بهذه المنطقة وإقفال الشهر.</p><p><strong>مثال.</strong> إقفال الرواتب</p><p><strong>لماذا يهم.</strong> يُرسل في كل مرة يُنهى فيها تشغيل الرواتب في سجل الضبط. ولا يُرسل شيء ما لم تكن لإعدادات الإخطار مجموعة إخطار.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.PACorrectionNotificationId",
+      "label": "PACorrectionNotification",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:PACorrectionNotification",
+        "dom:PayrollArea_PACorrectionNotificationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإخطار الذي يُرسل عند فتح سجل ضبط الرواتب الخاص بهذه المنطقة للتصحيح.</p><p><strong>مثال.</strong> فتح الرواتب للتصحيح</p><p><strong>لماذا يهم.</strong> يُرسل في كل مرة يُفتح فيها سجل الضبط للتصحيح. ولا يُرسل شيء ما لم تكن لإعدادات الإخطار مجموعة إخطار.</p>",
+      "adminHtml": "<p>في الإخطارات الثلاثة: يُرسل البريد الإلكتروني إذا كان خيار «إرسال بريد إلكتروني» محدداً في الإعداد وله قالب بريد إلكتروني، ويُرسل الإخطار داخل النظام إذا كان خيار «إرسال إخطار» محدداً. والإعداد الذي له مجموعتا إخطار يُرسل كل شيء مرتين، كما كان يفعل النظام السابق. وإخفاق الإرسال لا يُلغي تغيير الحالة أبداً.</p>",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+{
+  "helpId": "pa.employee-disciplinary.edit",
+  "lang": "en",
+  "title": "Employee Violations — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeDisciplinary",
+  "overviewHtml": "<p>A disciplinary offence recorded against the employee.</p><p>Violation records can be routed for approval. When they are, the reporting employee and work location are required, and on approval the deduction type is set from the violation type's tiers according to how many earlier offences of the same type fall within its repeat period. No deduction is taken in payroll at present.</p>",
+  "aliasIndex": {
+    "loc:OrganizationUnitId": "EmployeeDisciplinary.OrganizationUnitId",
+    "dom:EmployeeDisciplinary_OrganizationUnitId": "EmployeeDisciplinary.OrganizationUnitId",
+    "loc:WorkLocationId": "EmployeeDisciplinary.WorkLocationId",
+    "dom:EmployeeDisciplinary_WorkLocationId": "EmployeeDisciplinary.WorkLocationId",
+    "loc:DisciplinaryTypeId": "EmployeeDisciplinary.DisciplinaryTypeId",
+    "dom:EmployeeDisciplinary_DisciplinaryTypeId": "EmployeeDisciplinary.DisciplinaryTypeId",
+    "loc:DisciplinaryDate": "EmployeeDisciplinary.DisciplinaryDate",
+    "dom:EmployeeDisciplinary_DisciplinaryDate": "EmployeeDisciplinary.DisciplinaryDate",
+    "loc:DisciplinaryTime": "EmployeeDisciplinary.DisciplinaryTime",
+    "dom:EmployeeDisciplinary_DisciplinaryTime": "EmployeeDisciplinary.DisciplinaryTime",
+    "loc:ReportedById": "EmployeeDisciplinary.ReportedById",
+    "dom:EmployeeDisciplinary_ReportedById": "EmployeeDisciplinary.ReportedById",
+    "loc:Severity": "EmployeeDisciplinary.Severity",
+    "dom:EmployeeDisciplinary_Severity": "EmployeeDisciplinary.Severity",
+    "loc:DisciplinaryDeductionTypeId": "EmployeeDisciplinary.DisciplinaryDeductionTypeId",
+    "dom:EmployeeDisciplinary_DisciplinaryDeductionTypeId": "EmployeeDisciplinary.DisciplinaryDeductionTypeId",
+    "loc:WlSendToEmp": "EmployeeDisciplinary.WLSendToEmp",
+    "dom:EmployeeDisciplinary_WlSendToEmp": "EmployeeDisciplinary.WLSendToEmp",
+    "loc:WlRecvFromEmp": "EmployeeDisciplinary.WLRecvFromEmp",
+    "dom:EmployeeDisciplinary_WlRecvFromEmp": "EmployeeDisciplinary.WLRecvFromEmp",
+    "loc:Comments": "EmployeeDisciplinary.Comments",
+    "dom:EmployeeDisciplinary_Comments": "EmployeeDisciplinary.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDisciplinary.OrganizationUnitId",
+      "label": "OrganizationUnitId",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:OrganizationUnitId",
+        "dom:EmployeeDisciplinary_OrganizationUnitId"
+      ],
+      "rules": "Optional. Chosen from Organization Unit master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The department where the offence happened.</p><p><strong>Example.</strong> Warehouse Operations</p><p><strong>Why it matters.</strong> Shown on the disciplinary report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.WorkLocationId",
+      "label": "WorkLocationId",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:WorkLocationId",
+        "dom:EmployeeDisciplinary_WorkLocationId"
+      ],
+      "rules": "Optional. Chosen from Work Location master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The work location where the offence happened.</p><p><strong>Example.</strong> Warehouse — Shuwaikh</p><p><strong>Why it matters.</strong> Required when the record is routed for approval.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.DisciplinaryTypeId",
+      "label": "DisciplinaryTypeId",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:DisciplinaryTypeId",
+        "dom:EmployeeDisciplinary_DisciplinaryTypeId"
+      ],
+      "rules": "Required. Chosen from Violation Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of offence.</p><p><strong>Example.</strong> Late arrival</p><p><strong>Why it matters.</strong> Earlier offences of the same type within its repeat period decide the escalation tier used on approval.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Violation Types.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.DisciplinaryDate",
+      "label": "DisciplinaryDate",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:DisciplinaryDate",
+        "dom:EmployeeDisciplinary_DisciplinaryDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date of the offence.</p><p><strong>Example.</strong> 14 Sep 2026</p><p><strong>Why it matters.</strong> The repeat period is counted back from this date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.DisciplinaryTime",
+      "label": "DisciplinaryTime",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:DisciplinaryTime",
+        "dom:EmployeeDisciplinary_DisciplinaryTime"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time of the offence.</p><p><strong>Example.</strong> 08:45</p><p><strong>Why it matters.</strong> Recorded for reference; no calculation or report reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.ReportedById",
+      "label": "ReportedById",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:ReportedById",
+        "dom:EmployeeDisciplinary_ReportedById"
+      ],
+      "rules": "Optional. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee who reported the offence.</p><p><strong>Example.</strong> Khaled Al-Rashidi (1044)</p><p><strong>Why it matters.</strong> Required when the record is routed for approval.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.Severity",
+      "label": "Severity",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:Severity",
+        "dom:EmployeeDisciplinary_Severity"
+      ],
+      "rules": "Required. One of: Low, High.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How serious the offence is.</p><p><strong>Example.</strong> Low</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.DisciplinaryDeductionTypeId",
+      "label": "DisciplinaryDeductionTypeId",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:DisciplinaryDeductionTypeId",
+        "dom:EmployeeDisciplinary_DisciplinaryDeductionTypeId"
+      ],
+      "rules": "Optional. Chosen from Violation Deduction Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The penalty applied.</p><p><strong>Example.</strong> One day's pay</p><p><strong>Why it matters.</strong> Set from the violation type's tiers on approval when the record is routed. Not deducted in payroll at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.WLSendToEmp",
+      "label": "WlSendToEmp",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:WlSendToEmp",
+        "dom:EmployeeDisciplinary_WlSendToEmp"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the warning letter was sent to the employee.</p><p><strong>Why it matters.</strong> Recorded for reference; no calculation or report reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.WLRecvFromEmp",
+      "label": "WlRecvFromEmp",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:WlRecvFromEmp",
+        "dom:EmployeeDisciplinary_WlRecvFromEmp"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the signed warning letter was received back from the employee.</p><p><strong>Why it matters.</strong> Recorded for reference; no calculation or report reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDisciplinary.Comments",
+      "label": "Comments",
+      "section": "EmployeeDisciplinaries",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeDisciplinary_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

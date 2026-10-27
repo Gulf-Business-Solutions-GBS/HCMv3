@@ -1,0 +1,91 @@
+{
+  "helpId": "pa.employee-loan-recovery.edit",
+  "lang": "ar",
+  "title": "استردادات قروض الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeLoanRecovery",
+  "overviewHtml": "<p>سداد على أحد قروض الموظف. وتسجل الرواتب أقساطها هنا باسترداد عبر الرواتب.</p><p>لا يجوز أن يسبق تاريخ الاسترداد تاريخ بدء استرداد القرض، ولا أن يزيد مجموع الاستردادات على المبلغ المستحق للقرض. ولا يؤدي حفظ استرداد في هذا النموذج إلى تحديث الرصيد المستحق للقرض؛ إذ تحدّثه الرواتب عند الاسترداد.</p><p>وعند فتحه من نافذة الأقساط والاستردادات والإعفاءات لقرض ما، يكون القرض معبأً مسبقاً ولا يمكن تغييره، وتبدأ الطريقة بقيمة \"الاسترداد خارجياً\".</p>",
+  "aliasIndex": {
+    "loc:EmployeeLoanId": "EmployeeLoanRecovery.EmployeeLoanId",
+    "dom:EmployeeLoanRecovery_EmployeeLoanId": "EmployeeLoanRecovery.EmployeeLoanId",
+    "loc:RecoveryDate": "EmployeeLoanRecovery.RecoveryDate",
+    "dom:EmployeeLoanRecovery_RecoveryDate": "EmployeeLoanRecovery.RecoveryDate",
+    "loc:RecoveryAmount": "EmployeeLoanRecovery.RecoveryAmount",
+    "dom:EmployeeLoanRecovery_RecoveryAmount": "EmployeeLoanRecovery.RecoveryAmount",
+    "loc:LoanRecoveryMethod": "EmployeeLoanRecovery.LoanRecoveryMethod",
+    "dom:EmployeeLoanRecovery_LoanRecoveryMethod": "EmployeeLoanRecovery.LoanRecoveryMethod",
+    "loc:Comments": "EmployeeLoanRecovery.Comments",
+    "dom:EmployeeLoanRecovery_Comments": "EmployeeLoanRecovery.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeLoanRecovery.EmployeeLoanId",
+      "label": "EmployeeLoanId",
+      "section": "EmployeeLoanRecoveries",
+      "aliases": [
+        "loc:EmployeeLoanId",
+        "dom:EmployeeLoanRecovery_EmployeeLoanId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القرض المسدَّد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoanRecovery.RecoveryDate",
+      "label": "RecoveryDate",
+      "section": "EmployeeLoanRecoveries",
+      "aliases": [
+        "loc:RecoveryDate",
+        "dom:EmployeeLoanRecovery_RecoveryDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ السداد.</p><p><strong>مثال.</strong> 31 أكتوبر 2026</p><p><strong>لماذا يهم.</strong> لا يجوز أن يسبق تاريخ بدء استرداد القرض.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoanRecovery.RecoveryAmount",
+      "label": "RecoveryAmount",
+      "section": "EmployeeLoanRecoveries",
+      "aliases": [
+        "loc:RecoveryAmount",
+        "dom:EmployeeLoanRecovery_RecoveryAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ المسدَّد.</p><p><strong>مثال.</strong> 100.000</p><p><strong>لماذا يهم.</strong> لا يجوز أن تتجاوز جميع استردادات القرض مجتمعةً مبلغه المستحق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoanRecovery.LoanRecoveryMethod",
+      "label": "LoanRecoveryMethod",
+      "section": "EmployeeLoanRecoveries",
+      "aliases": [
+        "loc:LoanRecoveryMethod",
+        "dom:EmployeeLoanRecovery_LoanRecoveryMethod"
+      ],
+      "rules": "إلزامي. إحدى القيم: الاسترداد عن طريق الرواتب، الاسترداد خارجياً، الاسترداد من مكافأة نهاية الخدمة، إعفاء من الاسترداد، استرداد إضافي عن طريق الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طريقة السداد.</p><p><strong>مثال.</strong> استرداد خارجي</p><p><strong>لماذا يهم.</strong> تتعرف الرواتب على صفوفها بطريقة الاسترداد عبر الرواتب، وتستبدلها عند إعادة احتساب الشهر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoanRecovery.Comments",
+      "label": "Comments",
+      "section": "EmployeeLoanRecoveries",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeLoanRecovery_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "helpId": "gmi.dependant-type.edit",
+  "lang": "en",
+  "title": "Dependant Types — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.DependantType",
+  "overviewHtml": "<p>The kinds of dependant an employee can have — spouse, son, daughter and so on. Every dependant recorded on an employee has one of these types, and health reimbursement limits are set per dependant type.</p>",
+  "aliasIndex": {
+    "loc:Code": "DependantType.Code",
+    "dom:DependantType_Code": "DependantType.Code",
+    "loc:NameEn": "DependantType.NameEn",
+    "dom:DependantType_NameEn": "DependantType.NameEn",
+    "loc:NameAr": "DependantType.NameAr",
+    "dom:DependantType_NameAr": "DependantType.NameAr",
+    "loc:Gender": "DependantType.Gender",
+    "dom:DependantType_Gender": "DependantType.Gender",
+    "loc:IsEmployee": "DependantType.IsEmployee",
+    "dom:DependantType_IsEmployee": "DependantType.IsEmployee"
+  },
+  "fields": [
+    {
+      "id": "DependantType.Code",
+      "label": "Code",
+      "section": "DependantTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:DependantType_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DependantType.NameEn",
+      "label": "NameEn",
+      "section": "DependantTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:DependantType_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DependantType.NameAr",
+      "label": "NameAr",
+      "section": "DependantTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:DependantType_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DependantType.Gender",
+      "label": "Gender",
+      "section": "DependantTypes",
+      "aliases": [
+        "loc:Gender",
+        "dom:DependantType_Gender"
+      ],
+      "rules": "Required. One of: Male, Female.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The gender this dependant type implies — a son is male, a daughter female.</p><p><strong>Why it matters.</strong> Recorded for information; nothing checks a dependant's gender against it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DependantType.IsEmployee",
+      "label": "IsEmployee",
+      "section": "DependantTypes",
+      "aliases": [
+        "loc:IsEmployee",
+        "dom:DependantType_IsEmployee"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Marks the type that stands for the employee themself rather than a relative.</p><p><strong>Why it matters.</strong> Health reimbursement uses it to tell the employee's own limit apart from their dependants'. Only one dependant type can have it ticked.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

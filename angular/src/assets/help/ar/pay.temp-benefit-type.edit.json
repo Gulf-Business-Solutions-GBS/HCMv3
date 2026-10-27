@@ -1,0 +1,411 @@
+{
+  "helpId": "pay.temp-benefit-type.edit",
+  "lang": "ar",
+  "title": "أنواع المزايا المؤقتة — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.TempBenefitType",
+  "overviewHtml": "<p>ورقة مرجعية بما تستحقه كل درجة — التذاكر والبدلات والإجازات ونطاق الراتب — محفوظة نصاً حراً.</p><p>لا تُقرأ حالياً: لا يستخدم نظام الرواتب هذه القيود، ولا شيء يحوّلها إلى أجر. وهي محفوظة للرجوع إليها فقط.</p>",
+  "aliasIndex": {
+    "loc:Grade": "TempBenefitType.Grade",
+    "dom:TempBenefitType_Grade": "TempBenefitType.Grade",
+    "loc:Ticket": "TempBenefitType.Ticket",
+    "dom:TempBenefitType_ticket": "TempBenefitType.Ticket",
+    "loc:SimCard": "TempBenefitType.SimCard",
+    "dom:TempBenefitType_simCard": "TempBenefitType.SimCard",
+    "loc:Phone": "TempBenefitType.Phone",
+    "dom:TempBenefitType_phone": "TempBenefitType.Phone",
+    "loc:Incentive": "TempBenefitType.Incentive",
+    "dom:TempBenefitType_incentive": "TempBenefitType.Incentive",
+    "loc:BonusSIP": "TempBenefitType.BonusSIP",
+    "dom:TempBenefitType_bonusSIP": "TempBenefitType.BonusSIP",
+    "loc:Uniform": "TempBenefitType.Uniform",
+    "dom:TempBenefitType_uniform": "TempBenefitType.Uniform",
+    "loc:MedicalInsurance": "TempBenefitType.MedicalInsurance",
+    "dom:TempBenefitType_medicalInsurance": "TempBenefitType.MedicalInsurance",
+    "loc:LeaveDays": "TempBenefitType.LeaveDays",
+    "dom:TempBenefitType_leaveDays": "TempBenefitType.LeaveDays",
+    "loc:MedicalLeave": "TempBenefitType.MedicalLeave",
+    "dom:TempBenefitType_medicalLeave": "TempBenefitType.MedicalLeave",
+    "loc:MaternityLeave": "TempBenefitType.MaternityLeave",
+    "dom:TempBenefitType_maternityLeave": "TempBenefitType.MaternityLeave",
+    "loc:StaffDiscount": "TempBenefitType.StaffDiscount",
+    "dom:TempBenefitType_staffDiscount": "TempBenefitType.StaffDiscount",
+    "loc:SpecialAllowance": "TempBenefitType.SpecialAllowance",
+    "dom:TempBenefitType_specialAllowance": "TempBenefitType.SpecialAllowance",
+    "loc:ManagerAllowance": "TempBenefitType.ManagerAllowance",
+    "dom:TempBenefitType_managerAllowance": "TempBenefitType.ManagerAllowance",
+    "loc:CompanyAsset": "TempBenefitType.CompanyAsset",
+    "dom:TempBenefitType_companyAsset": "TempBenefitType.CompanyAsset",
+    "loc:SchoolAllowance": "TempBenefitType.SchoolAllowance",
+    "dom:TempBenefitType_schoolAllowance": "TempBenefitType.SchoolAllowance",
+    "loc:NoticePeriod": "TempBenefitType.NoticePeriod",
+    "dom:TempBenefitType_noticePeriod": "TempBenefitType.NoticePeriod",
+    "loc:Indemnity": "TempBenefitType.Indemnity",
+    "dom:TempBenefitType_indemnity": "TempBenefitType.Indemnity",
+    "loc:Retirement": "TempBenefitType.Retirement",
+    "dom:TempBenefitType_retirement": "TempBenefitType.Retirement",
+    "loc:MinSalary": "TempBenefitType.MinSalary",
+    "dom:TempBenefitType_minSalary": "TempBenefitType.MinSalary",
+    "loc:MidSalary": "TempBenefitType.MidSalary",
+    "dom:TempBenefitType_midSalary": "TempBenefitType.MidSalary",
+    "loc:MaxSalary": "TempBenefitType.MaxSalary",
+    "dom:TempBenefitType_maxSalary": "TempBenefitType.MaxSalary",
+    "loc:TransportationAllowance": "TempBenefitType.TransportationAllowance",
+    "dom:TempBenefitType_transportationAllowance": "TempBenefitType.TransportationAllowance",
+    "loc:HousingAllowance": "TempBenefitType.HousingAllowance",
+    "dom:TempBenefitType_housingAllowance": "TempBenefitType.HousingAllowance",
+    "loc:OtherAllowance": "TempBenefitType.OtherAllowance",
+    "dom:TempBenefitType_otherAllowance": "TempBenefitType.OtherAllowance"
+  },
+  "fields": [
+    {
+      "id": "TempBenefitType.Grade",
+      "label": "Grade",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:Grade",
+        "dom:TempBenefitType_Grade"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدرجة التي تخصها هذه الاستحقاقات.</p><p><strong>مثال.</strong> الدرجة 5</p><p><strong>لماذا يهم.</strong> لا تظهر الدرجة إلا مرة واحدة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.Ticket",
+      "label": "Ticket",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:Ticket",
+        "dom:TempBenefitType_ticket"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> استحقاق تذكرة الطيران لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.SimCard",
+      "label": "SimCard",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:SimCard",
+        "dom:TempBenefitType_simCard"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> استحقاق شريحة الاتصال لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.Phone",
+      "label": "Phone",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:Phone",
+        "dom:TempBenefitType_phone"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> استحقاق الهاتف لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.Incentive",
+      "label": "Incentive",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:Incentive",
+        "dom:TempBenefitType_incentive"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحافز لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.BonusSIP",
+      "label": "BonusSIP",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:BonusSIP",
+        "dom:TempBenefitType_bonusSIP"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكافأة خطة الحوافز لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.Uniform",
+      "label": "Uniform",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:Uniform",
+        "dom:TempBenefitType_uniform"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> استحقاق الزي الرسمي لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.MedicalInsurance",
+      "label": "MedicalInsurance",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:MedicalInsurance",
+        "dom:TempBenefitType_medicalInsurance"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تغطية التأمين الطبي لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.LeaveDays",
+      "label": "LeaveDays",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:LeaveDays",
+        "dom:TempBenefitType_leaveDays"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيام الإجازة السنوية لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.MedicalLeave",
+      "label": "MedicalLeave",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:MedicalLeave",
+        "dom:TempBenefitType_medicalLeave"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإجازة الطبية لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.MaternityLeave",
+      "label": "MaternityLeave",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:MaternityLeave",
+        "dom:TempBenefitType_maternityLeave"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إجازة الوضع لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.StaffDiscount",
+      "label": "StaffDiscount",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:StaffDiscount",
+        "dom:TempBenefitType_staffDiscount"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> خصم الموظفين لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.SpecialAllowance",
+      "label": "SpecialAllowance",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:SpecialAllowance",
+        "dom:TempBenefitType_specialAllowance"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البدل الخاص لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.ManagerAllowance",
+      "label": "ManagerAllowance",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:ManagerAllowance",
+        "dom:TempBenefitType_managerAllowance"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البدل الإداري لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.CompanyAsset",
+      "label": "CompanyAsset",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:CompanyAsset",
+        "dom:TempBenefitType_companyAsset"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عهدة الشركة المقدمة لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.SchoolAllowance",
+      "label": "SchoolAllowance",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:SchoolAllowance",
+        "dom:TempBenefitType_schoolAllowance"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بدل التعليم لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.NoticePeriod",
+      "label": "NoticePeriod",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:NoticePeriod",
+        "dom:TempBenefitType_noticePeriod"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة الإشعار لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.Indemnity",
+      "label": "Indemnity",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:Indemnity",
+        "dom:TempBenefitType_indemnity"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> شروط مكافأة نهاية الخدمة لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.Retirement",
+      "label": "Retirement",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:Retirement",
+        "dom:TempBenefitType_retirement"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> شروط التقاعد لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.MinSalary",
+      "label": "MinSalary",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:MinSalary",
+        "dom:TempBenefitType_minSalary"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحد الأدنى للراتب لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.MidSalary",
+      "label": "MidSalary",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:MidSalary",
+        "dom:TempBenefitType_midSalary"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متوسط الراتب لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.MaxSalary",
+      "label": "MaxSalary",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:MaxSalary",
+        "dom:TempBenefitType_maxSalary"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحد الأقصى للراتب لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.TransportationAllowance",
+      "label": "TransportationAllowance",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:TransportationAllowance",
+        "dom:TempBenefitType_transportationAllowance"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بدل المواصلات لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.HousingAllowance",
+      "label": "HousingAllowance",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:HousingAllowance",
+        "dom:TempBenefitType_housingAllowance"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بدل السكن لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TempBenefitType.OtherAllowance",
+      "label": "OtherAllowance",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:OtherAllowance",
+        "dom:TempBenefitType_otherAllowance"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البدلات الأخرى لهذه الدرجة، نصاً حراً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

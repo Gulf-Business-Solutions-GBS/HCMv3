@@ -1,0 +1,107 @@
+{
+  "helpId": "hs.site-audit.edit",
+  "lang": "ar",
+  "title": "تدقيق المواقع — إنشاء / تحرير",
+  "entity": "HCMv3.HealthAndSafetyManagement.SiteAudit",
+  "overviewHtml": "<p>تفتيش سلامة على موقع. وتُدرج ملاحظاته كتفاصيل.</p>",
+  "aliasIndex": {
+    "loc:AuditDate": "SiteAudit.AuditDate",
+    "dom:SiteAudit_AuditDate": "SiteAudit.AuditDate",
+    "loc:AuditTime": "SiteAudit.AuditTime",
+    "dom:SiteAudit_AuditTime": "SiteAudit.AuditTime",
+    "loc:ReassessmentDate": "SiteAudit.ReassessmentDate",
+    "dom:SiteAudit_ReassessmentDate": "SiteAudit.ReassessmentDate",
+    "loc:Location": "SiteAudit.LocationId",
+    "dom:SiteAudit_LocationId": "SiteAudit.LocationId",
+    "loc:ConductedBy": "SiteAudit.ConductedById",
+    "dom:SiteAudit_ConductedById": "SiteAudit.ConductedById",
+    "loc:Comments": "SiteAudit.Comments",
+    "dom:SiteAudit_Comments": "SiteAudit.Comments"
+  },
+  "fields": [
+    {
+      "id": "SiteAudit.AuditDate",
+      "label": "AuditDate",
+      "section": "SiteAudits",
+      "aliases": [
+        "loc:AuditDate",
+        "dom:SiteAudit_AuditDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى جرى التدقيق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SiteAudit.AuditTime",
+      "label": "AuditTime",
+      "section": "SiteAudits",
+      "aliases": [
+        "loc:AuditTime",
+        "dom:SiteAudit_AuditTime"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوقت من اليوم، إن كان معروفاً.</p><p><strong>مثال.</strong> 14:30</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SiteAudit.ReassessmentDate",
+      "label": "ReassessmentDate",
+      "section": "SiteAudits",
+      "aliases": [
+        "loc:ReassessmentDate",
+        "dom:SiteAudit_ReassessmentDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى يجب تدقيق الموقع مرة أخرى.</p><p><strong>لماذا يهم.</strong> للتسجيل فقط: لا يُرسل تذكير عند حلوله.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SiteAudit.LocationId",
+      "label": "Location",
+      "section": "SiteAudits",
+      "aliases": [
+        "loc:Location",
+        "dom:SiteAudit_LocationId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أماكن العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موقع العمل.</p><p><strong>مثال.</strong> المستودع الرئيسي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SiteAudit.ConductedById",
+      "label": "ConductedBy",
+      "section": "SiteAudits",
+      "aliases": [
+        "loc:ConductedBy",
+        "dom:SiteAudit_ConductedById"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من أجرى التدقيق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SiteAudit.Comments",
+      "label": "Comments",
+      "section": "SiteAudits",
+      "aliases": [
+        "loc:Comments",
+        "dom:SiteAudit_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

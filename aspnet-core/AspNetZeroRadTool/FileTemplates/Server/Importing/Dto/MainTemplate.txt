@@ -1,0 +1,16 @@
+﻿{{NP_Using_Looped_Template_Here}}
+{{Enum_Using_Looped_Template_Here}}
+using System;
+using Abp.AutoMapper;
+using {{Namespace_Here}}.DataImporting.Excel;
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos;
+
+namespace {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Importing.Dto;
+
+[AutoMapTo(typeof({{Entity_Name_Here}}))]
+public class Import{{Entity_Name_Here}}Dto : ImportFromExcelDto
+{
+    {{Property_Looped_Template_Here}}
+    {{NP_Display_Name_Looped_Declaration_Here}}
+    {{NP_Looped_Declaration_Here}}
+}

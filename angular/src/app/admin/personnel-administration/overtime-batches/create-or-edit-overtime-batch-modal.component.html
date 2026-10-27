@@ -1,0 +1,236 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #batchForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (!batchId()) {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            } @else if (isEditable()) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'Details' | localize }}</span>
+                            }
+                            @if (requestNumber()) {
+                                <span class="text-muted ms-2">{{ requestNumber() }}</span>
+                            }
+                            @if (statusLabel()) {
+                                <span class="badge badge-light ms-2">{{ statusLabel() }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row align-items-end">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="OvertimeBatch_OrganizationUnitId">{{ 'Department' | localize }}</label>
+                                <select
+                                    id="OvertimeBatch_OrganizationUnitId"
+                                    class="form-select"
+                                    name="OrganizationUnitId"
+                                    [disabled]="!isEditable()"
+                                    [ngModel]="organizationUnitId()"
+                                    (ngModelChange)="organizationUnitId.set($event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (unit of organizationUnits(); track unit.id) {
+                                        <option [ngValue]="unit.id">{{ unitLabel(unit) }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label required" for="OvertimeBatch_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="OvertimeBatch_StartDate"
+                                    class="form-control"
+                                    type="date"
+                                    name="StartDate"
+                                    [disabled]="!isEditable()"
+                                    [ngModel]="startDate()?.toISODate()"
+                                    (ngModelChange)="updateStartDate($event)"
+                                    required />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label required" for="OvertimeBatch_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="OvertimeBatch_EndDate"
+                                    class="form-control"
+                                    type="date"
+                                    name="EndDate"
+                                    [disabled]="!isEditable()"
+                                    [ngModel]="endDate()?.toISODate()"
+                                    (ngModelChange)="updateEndDate($event)"
+                                    required />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <div class="form-check">
+                                    <input
+                                        id="OvertimeBatch_OnlyOvertimeDays"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="OnlyOvertimeDays"
+                                        [disabled]="!isEditable()"
+                                        [ngModel]="onlyOvertimeDays()"
+                                        (ngModelChange)="onlyOvertimeDays.set($event)" />
+                                    <label class="form-check-label" for="OvertimeBatch_OnlyOvertimeDays">{{ 'OnlyOvertimeDays' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <button
+                                    type="button"
+                                    class="btn btn-light-primary w-100"
+                                    [disabled]="!canLoad() || loading()"
+                                    [buttonBusy]="loading()"
+                                    (click)="loadCandidates()">
+                                    <i class="fa fa-download"></i>
+                                    {{ 'GetData' | localize }}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive mb-5" [busyIf]="loading()" style="max-height: 55vh">
+                            <table class="table table-row-bordered table-sm align-middle gy-2">
+                                <thead>
+                                    <tr class="fw-bold text-muted">
+                                        <th style="min-width: 90px">{{ 'EmployeeCode' | localize }}</th>
+                                        <th style="min-width: 180px">{{ 'Employee' | localize }}</th>
+                                        <th style="min-width: 100px">{{ 'Date' | localize }}</th>
+                                        <th>{{ 'ShiftStart' | localize }}</th>
+                                        <th>{{ 'ShiftEnd' | localize }}</th>
+                                        <th>{{ 'SignIn' | localize }}</th>
+                                        <th>{{ 'SignOut' | localize }}</th>
+                                        <th class="text-end">{{ 'PlannedHours' | localize }}</th>
+                                        <th class="text-end">{{ 'OvertimeHours' | localize }}</th>
+                                        <th class="text-end">{{ 'LateIn' | localize }}</th>
+                                        <th class="text-end">{{ 'EarlyOut' | localize }}</th>
+                                        <th style="min-width: 150px">{{ 'OvertimeType' | localize }}</th>
+                                        <th style="min-width: 100px">{{ 'ApprovedHours' | localize }}</th>
+                                        <th style="min-width: 180px">{{ 'Comments' | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (line of lines(); track $index; let i = $index) {
+                                        <tr [class.table-warning]="line.hasExistingOvertime">
+                                            <td>{{ line.employeeCode }}</td>
+                                            <td>
+                                                {{ employeeName(line) }}
+                                                @if (line.hasExistingOvertime) {
+                                                    <i
+                                                        class="fa fa-exclamation-triangle text-warning ms-1"
+                                                        [pTooltip]="'OvertimeAlreadyRecorded' | localize"></i>
+                                                }
+                                            </td>
+                                            <td>{{ date(line.date) }}</td>
+                                            <td>{{ time(line.shiftStart) }}</td>
+                                            <td>{{ time(line.shiftEnd) }}</td>
+                                            <td>{{ time(line.signIn) }}</td>
+                                            <td>{{ time(line.signOut) }}</td>
+                                            <td class="text-end">{{ line.plannedHours | number: '1.0-2' }}</td>
+                                            <td class="text-end">{{ line.totalHours | number: '1.0-2' }}</td>
+                                            <td class="text-end">{{ line.lateIn | number: '1.0-0' }}</td>
+                                            <td class="text-end">{{ line.earlyOut | number: '1.0-0' }}</td>
+                                            <td>
+                                                @if (isEditable() && !line.hasExistingOvertime) {
+                                                    <select
+                                                        class="form-select form-select-sm"
+                                                        [name]="'OvertimeTypeId_' + i"
+                                                        [ngModel]="line.overtimeTypeId"
+                                                        (ngModelChange)="updateLine(i, 'overtimeTypeId', $event)">
+                                                        <option [ngValue]="undefined"></option>
+                                                        @for (type of overtimeTypes(); track type.id) {
+                                                            <option [ngValue]="type.id">{{ overtimeTypeLabel(type) }}</option>
+                                                        }
+                                                    </select>
+                                                } @else {
+                                                    {{ typeName(line) }}
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (isEditable() && !line.hasExistingOvertime) {
+                                                    <input
+                                                        class="form-control form-control-sm text-end"
+                                                        type="number"
+                                                        min="0"
+                                                        max="24"
+                                                        step="0.25"
+                                                        [name]="'ApprovedHours_' + i"
+                                                        [ngModel]="line.approvedHours"
+                                                        (ngModelChange)="updateLine(i, 'approvedHours', $event)" />
+                                                } @else {
+                                                    {{ line.approvedHours | number: '1.0-2' }}
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (isEditable() && !line.hasExistingOvertime) {
+                                                    <input
+                                                        class="form-control form-control-sm"
+                                                        type="text"
+                                                        maxlength="1000"
+                                                        [name]="'Comments_' + i"
+                                                        [ngModel]="line.comments"
+                                                        (ngModelChange)="updateLine(i, 'comments', $event)" />
+                                                } @else {
+                                                    {{ line.comments }}
+                                                }
+                                            </td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td colspan="14" class="text-center text-muted">{{ 'NoData' | localize }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                @if (lines().length > 0) {
+                                    <tfoot>
+                                        <tr class="fw-bold">
+                                            <td colspan="12" class="text-end">{{ 'ApprovedHours' | localize }}</td>
+                                            <td class="text-end">{{ totalApprovedHours() | number: '1.0-2' }}</td>
+                                            <td>{{ keptLineCount() }} / {{ lines().length }}</td>
+                                        </tr>
+                                    </tfoot>
+                                }
+                            </table>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="OvertimeBatch_Comments">{{ 'RequestComments' | localize }}</label>
+                            <textarea
+                                id="OvertimeBatch_Comments"
+                                class="form-control"
+                                rows="3"
+                                maxlength="4000"
+                                name="Comments"
+                                [disabled]="!isEditable()"
+                                [ngModel]="comments()"
+                                (ngModelChange)="comments.set($event)"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        @if (isEditable()) {
+                            <button
+                                type="submit"
+                                class="btn btn-primary fw-bold"
+                                [disabled]="!batchForm.form.valid || keptLineCount() === 0"
+                                [buttonBusy]="saving()"
+                                [busyText]="l('SavingWithThreeDot')">
+                                <i class="fa fa-paper-plane"></i>
+                                <span>{{ 'Submit' | localize }}</span>
+                            </button>
+                        }
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

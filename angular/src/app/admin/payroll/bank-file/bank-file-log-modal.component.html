@@ -1,0 +1,152 @@
+<div
+    appBsModal
+    #logModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="logModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !working() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{ 'BankFileLogTitle' | localize }}</span>
+                    </h4>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        (click)="close()"
+                        [attr.aria-label]="l('Close')"
+                        [disabled]="working()"></button>
+                </div>
+
+                <div class="modal-body" [busyIf]="working()">
+                    <div class="d-flex flex-wrap align-items-center gap-3 mb-5">
+                        <!-- Legacy rdLogAll / rdLogSuccess / rdLogFailed. -->
+                        <div class="btn-group" role="group">
+                            <button
+                                type="button"
+                                class="btn btn-sm"
+                                [class.btn-primary]="statusFilter() === BankFileLogFilter.All"
+                                [class.btn-light]="statusFilter() !== BankFileLogFilter.All"
+                                (click)="setStatusFilter(BankFileLogFilter.All)">
+                                {{ 'PayrollRunFilterAll' | localize: allCount() }}
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-sm"
+                                [class.btn-primary]="statusFilter() === BankFileLogFilter.Successful"
+                                [class.btn-light]="statusFilter() !== BankFileLogFilter.Successful"
+                                (click)="setStatusFilter(BankFileLogFilter.Successful)">
+                                {{ 'BankFileLogFilterSuccessful' | localize: successfulCount() }}
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-sm"
+                                [class.btn-primary]="statusFilter() === BankFileLogFilter.Failed"
+                                [class.btn-light]="statusFilter() !== BankFileLogFilter.Failed"
+                                (click)="setStatusFilter(BankFileLogFilter.Failed)">
+                                {{ 'BankFileLogFilterFailed' | localize: failedCount() }}
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-success ms-auto" [disabled]="working()" (click)="exportLog()">
+                            <i class="far fa-file-excel"></i>
+                            {{ 'BankFileExportLog' | localize }}
+                        </button>
+                    </div>
+
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getLogs($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollHeight="420px"
+                            [tableStyle]="{ 'min-width': '50rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 170px" pSortableColumn="actionDateTime">
+                                        {{ 'RunDateAndTime' | localize }}
+                                        <p-sortIcon field="actionDateTime" />
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="userName">
+                                        {{ 'User' | localize }}
+                                        <p-sortIcon field="userName" />
+                                    </th>
+                                    <th style="min-width: 110px" pSortableColumn="succeeded">
+                                        {{ 'Status' | localize }}
+                                        <p-sortIcon field="succeeded" />
+                                    </th>
+                                    <th style="min-width: 320px">{{ 'Parameters' | localize }}</th>
+                                    <th style="min-width: 110px">{{ 'File' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 170px">
+                                        {{ record.actionDateTime | luxonFormat: 'dd/MM/yyyy hh:mm:ss a' }}
+                                    </td>
+                                    <td style="min-width: 120px">{{ record.userName }}</td>
+                                    <td style="min-width: 110px">
+                                        <span [class]="statusBadgeClass(record)">
+                                            @if (record.succeeded) {
+                                                {{ 'Successfull' | localize }}
+                                            } @else {
+                                                {{ 'Failed' | localize }}
+                                            }
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 320px" class="text-break">{{ record.parameters }}</td>
+                                    <td style="min-width: 110px">
+                                        @if (record.hasFile && ('Pages.PayrollManagement.BankFiles.Generate' | permission)) {
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-light-primary"
+                                                [disabled]="working()"
+                                                [title]="record.fileName"
+                                                (click)="download(record)">
+                                                <i class="fa fa-download"></i>
+                                                {{ 'Download' | localize }}
+                                            </button>
+                                        }
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getLogs($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary fw-bold" [disabled]="working()" (click)="close()">
+                        {{ 'Close' | localize }}
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

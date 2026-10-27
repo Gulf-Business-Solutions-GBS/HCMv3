@@ -1,0 +1,75 @@
+{
+  "helpId": "pay.social-security-education-allowance.edit",
+  "lang": "ar",
+  "title": "علاوات المؤهل الدراسي في التأمينات — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.SocialSecurityEducationAllowance",
+  "overviewHtml": "<p>مبلغ يُضاف إلى الأجر للتأمينات الاجتماعية عن مؤهل دراسي يحمله الموظف.</p><p>كل مؤهل دراسي للموظف سارٍ في الشهر يضيف مبلغ السطر الذي له المؤهل والتخصص نفسيهما.</p>",
+  "aliasIndex": {
+    "loc:SocialSecurityId": "SocialSecurityEducationAllowance.SocialSecurityId",
+    "dom:SocialSecurityEducationAllowance_SocialSecurityId": "SocialSecurityEducationAllowance.SocialSecurityId",
+    "loc:EducationBranchId": "SocialSecurityEducationAllowance.EducationBranchId",
+    "dom:SocialSecurityEducationAllowance_EducationBranchId": "SocialSecurityEducationAllowance.EducationBranchId",
+    "loc:EducationId": "SocialSecurityEducationAllowance.EducationId",
+    "dom:SocialSecurityEducationAllowance_EducationId": "SocialSecurityEducationAllowance.EducationId",
+    "loc:Amount": "SocialSecurityEducationAllowance.Amount",
+    "dom:SocialSecurityEducationAllowance_Amount": "SocialSecurityEducationAllowance.Amount"
+  },
+  "fields": [
+    {
+      "id": "SocialSecurityEducationAllowance.SocialSecurityId",
+      "label": "SocialSecurityId",
+      "section": "SocialSecurityEducationAllowances",
+      "aliases": [
+        "loc:SocialSecurityId",
+        "dom:SocialSecurityEducationAllowance_SocialSecurityId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة التأمينات الاجتماعية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إعداد التأمينات الاجتماعية الذي تتبعه هذه العلاوة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityEducationAllowance.EducationBranchId",
+      "label": "EducationBranchId",
+      "section": "SocialSecurityEducationAllowances",
+      "aliases": [
+        "loc:EducationBranchId",
+        "dom:SocialSecurityEducationAllowance_EducationBranchId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة EducationBranch.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التخصص الدراسي.</p><p><strong>مثال.</strong> الهندسة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityEducationAllowance.EducationId",
+      "label": "EducationId",
+      "section": "SocialSecurityEducationAllowances",
+      "aliases": [
+        "loc:EducationId",
+        "dom:SocialSecurityEducationAllowance_EducationId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المؤهلات الدراسية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المؤهل الدراسي.</p><p><strong>مثال.</strong> بكالوريوس</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityEducationAllowance.Amount",
+      "label": "Amount",
+      "section": "SocialSecurityEducationAllowances",
+      "aliases": [
+        "loc:Amount",
+        "dom:SocialSecurityEducationAllowance_Amount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ المضاف.</p><p><strong>مثال.</strong> <code>100</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

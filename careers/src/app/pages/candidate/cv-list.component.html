@@ -1,0 +1,55 @@
+<div class="container page">
+    <careers-candidate-nav />
+
+    <div class="section-title">
+        <h1>{{ 'CareersMyCvs' | localize }}</h1>
+        <a class="btn btn--primary" routerLink="/my/cvs/new">{{ 'CareersCreateCv' | localize }}</a>
+    </div>
+
+    @if (loading()) {
+        <div class="loading-block">
+            <span class="spinner"></span>
+            <span>{{ 'CareersLoading' | localize }}</span>
+        </div>
+    } @else if (!cvs().length) {
+        <div class="card empty">
+            <p class="empty__title">{{ 'CareersNoCvs' | localize }}</p>
+            <a class="btn btn--primary" routerLink="/my/cvs/new">{{ 'CareersCreateCv' | localize }}</a>
+        </div>
+    } @else {
+        <ul class="cvlist">
+            @for (cv of cvs(); track cv.id) {
+                <li class="cvcard card">
+                    <div class="cvcard__main">
+                        <h2 class="cvcard__title">{{ cv.cvName }}</h2>
+                        <div class="cvcard__meta small muted">
+                            @if (cv.jobTitleName) {
+                                <span>{{ cv.jobTitleName }}</span>
+                            }
+                            <span>{{ 'UploadDate' | localize }}: {{ cv.uploadDate | careersDate }}</span>
+                        </div>
+                        @if (!cv.canBeDeleted) {
+                            <p class="cvcard__note small muted">{{ 'CareersCvCanNotBeDeletedHint' | localize }}</p>
+                        }
+                    </div>
+
+                    <div class="cvcard__actions">
+                        <a class="btn btn--secondary btn--sm" [routerLink]="['/my/cvs', cv.id]">
+                            {{ 'Edit' | localize }}
+                        </a>
+                        @if (cv.canBeDeleted) {
+                            <button
+                                type="button"
+                                class="btn btn--danger btn--sm"
+                                [disabled]="deletingId() === cv.id"
+                                (click)="delete(cv)"
+                            >
+                                {{ 'Delete' | localize }}
+                            </button>
+                        }
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+</div>

@@ -1,0 +1,123 @@
+{
+  "helpId": "hs.first-aid-box-detail.edit",
+  "lang": "en",
+  "title": "First Aid Box Details — Create / Edit",
+  "entity": "HCMv3.HealthAndSafetyManagement.FirstAidBoxDetail",
+  "overviewHtml": "<p>One medicine or item in a first-aid box.</p>",
+  "aliasIndex": {
+    "loc:Medicine": "FirstAidBoxDetail.MedicineId",
+    "dom:FirstAidBoxDetail_MedicineId": "FirstAidBoxDetail.MedicineId",
+    "loc:AllocatedBy": "FirstAidBoxDetail.AllocatedById",
+    "dom:FirstAidBoxDetail_AllocatedById": "FirstAidBoxDetail.AllocatedById",
+    "loc:ExpiryDate": "FirstAidBoxDetail.ExpiryDate",
+    "dom:FirstAidBoxDetail_ExpiryDate": "FirstAidBoxDetail.ExpiryDate",
+    "loc:AllocationDate": "FirstAidBoxDetail.AllocationDate",
+    "dom:FirstAidBoxDetail_AllocationDate": "FirstAidBoxDetail.AllocationDate",
+    "loc:IsExpired": "FirstAidBoxDetail.IsExpired",
+    "dom:FirstAidBoxDetail_IsExpired": "FirstAidBoxDetail.IsExpired",
+    "loc:IsReplaced": "FirstAidBoxDetail.IsReplaced",
+    "dom:FirstAidBoxDetail_IsReplaced": "FirstAidBoxDetail.IsReplaced",
+    "loc:Comments": "FirstAidBoxDetail.Comments",
+    "dom:FirstAidBoxDetail_Comments": "FirstAidBoxDetail.Comments"
+  },
+  "fields": [
+    {
+      "id": "FirstAidBoxDetail.MedicineId",
+      "label": "Medicine",
+      "section": "FirstAidBoxDetails",
+      "aliases": [
+        "loc:Medicine",
+        "dom:FirstAidBoxDetail_MedicineId"
+      ],
+      "rules": "Required. Chosen from First Aid Medicine master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The medicine or item.</p><p><strong>Example.</strong> Bandages</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBoxDetail.AllocatedById",
+      "label": "AllocatedBy",
+      "section": "FirstAidBoxDetails",
+      "aliases": [
+        "loc:AllocatedBy",
+        "dom:FirstAidBoxDetail_AllocatedById"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who put it in the box.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBoxDetail.ExpiryDate",
+      "label": "ExpiryDate",
+      "section": "FirstAidBoxDetails",
+      "aliases": [
+        "loc:ExpiryDate",
+        "dom:FirstAidBoxDetail_ExpiryDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When it expires.</p><p><strong>Why it matters.</strong> A record only: no reminder is sent when it comes round.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBoxDetail.AllocationDate",
+      "label": "AllocationDate",
+      "section": "FirstAidBoxDetails",
+      "aliases": [
+        "loc:AllocationDate",
+        "dom:FirstAidBoxDetail_AllocationDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When it was put in the box.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBoxDetail.IsExpired",
+      "label": "IsExpired",
+      "section": "FirstAidBoxDetails",
+      "aliases": [
+        "loc:IsExpired",
+        "dom:FirstAidBoxDetail_IsExpired"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether it has expired.</p><p><strong>Why it matters.</strong> Ticked by hand; it is not set from the expiry date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBoxDetail.IsReplaced",
+      "label": "IsReplaced",
+      "section": "FirstAidBoxDetails",
+      "aliases": [
+        "loc:IsReplaced",
+        "dom:FirstAidBoxDetail_IsReplaced"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether it has been replaced.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBoxDetail.Comments",
+      "label": "Comments",
+      "section": "FirstAidBoxDetails",
+      "aliases": [
+        "loc:Comments",
+        "dom:FirstAidBoxDetail_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

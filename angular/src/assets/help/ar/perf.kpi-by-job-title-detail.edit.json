@@ -1,0 +1,75 @@
+{
+  "helpId": "perf.kpi-by-job-title-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل مؤشرات الأداء حسب المسمى الوظيفي — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.KpiByJobTitleDetail",
+  "overviewHtml": "<p>مؤشر أداء واحد في مجموعة المسمى الوظيفي. ولا يظهر المؤشر إلا مرة واحدة، ويجب ألا يتجاوز مجموع الأوزان في المجموعة 100.</p>",
+  "aliasIndex": {
+    "loc:KpiByJobTitle": "KpiByJobTitleDetail.KpiByJobTitleId",
+    "dom:KpiByJobTitleDetail_KpiByJobTitleId": "KpiByJobTitleDetail.KpiByJobTitleId",
+    "loc:KpiInfo": "KpiByJobTitleDetail.KpiInfoId",
+    "dom:KpiByJobTitleDetail_KpiInfoId": "KpiByJobTitleDetail.KpiInfoId",
+    "loc:Weight": "KpiByJobTitleDetail.Weight",
+    "dom:KpiByJobTitleDetail_Weight": "KpiByJobTitleDetail.Weight",
+    "loc:Target": "KpiByJobTitleDetail.Target",
+    "dom:KpiByJobTitleDetail_Target": "KpiByJobTitleDetail.Target"
+  },
+  "fields": [
+    {
+      "id": "KpiByJobTitleDetail.KpiByJobTitleId",
+      "label": "KpiByJobTitle",
+      "section": "KpiByJobTitleDetails",
+      "aliases": [
+        "loc:KpiByJobTitle",
+        "dom:KpiByJobTitleDetail_KpiByJobTitleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة مؤشرات الأداء حسب المسمى الوظيفي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموعة مؤشرات المسمى الوظيفي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiByJobTitleDetail.KpiInfoId",
+      "label": "KpiInfo",
+      "section": "KpiByJobTitleDetails",
+      "aliases": [
+        "loc:KpiInfo",
+        "dom:KpiByJobTitleDetail_KpiInfoId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة مؤشرات الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مؤشر الأداء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiByJobTitleDetail.Weight",
+      "label": "Weight",
+      "section": "KpiByJobTitleDetails",
+      "aliases": [
+        "loc:Weight",
+        "dom:KpiByJobTitleDetail_Weight"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وزن المؤشر، نسبةً مئوية.</p><p><strong>مثال.</strong> <code>20</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiByJobTitleDetail.Target",
+      "label": "Target",
+      "section": "KpiByJobTitleDetails",
+      "aliases": [
+        "loc:Target",
+        "dom:KpiByJobTitleDetail_Target"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المستهدف للمؤشر.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

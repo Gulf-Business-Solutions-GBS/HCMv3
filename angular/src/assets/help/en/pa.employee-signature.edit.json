@@ -1,0 +1,27 @@
+{
+  "helpId": "pa.employee-signature.edit",
+  "lang": "en",
+  "title": "Employee Signatures — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeSignature",
+  "overviewHtml": "<p>A scanned image of the employee's signature.</p><p>It is stored for reference; no printed form or report reads it at present.</p>",
+  "aliasIndex": {
+    "loc:Signature": "EmployeeSignature.SignaturePath",
+    "dom:EmployeeSignature_Signature": "EmployeeSignature.SignaturePath"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSignature.SignaturePath",
+      "label": "Signature",
+      "section": "EmployeeSignatures",
+      "aliases": [
+        "loc:Signature",
+        "dom:EmployeeSignature_Signature"
+      ],
+      "rules": "Optional. Maximum 512 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The signature image file.</p><p><strong>Example.</strong> A PNG of the signature on a white background.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,233 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'RiskRegisters' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="RiskRegister_ReportingDate">{{ 'ReportingDate' | localize }}</label>
+                                <input
+                                    id="RiskRegister_ReportingDate"
+                                    #reportingDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="ReportingDate"
+                                    [ngModel]="record().reportingDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('reportingDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="reportingDateInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="RiskRegister_ReportingTime">{{ 'ReportingTime' | localize }}</label>
+                                <input
+                                    id="RiskRegister_ReportingTime"
+                                    class="form-control"
+                                    type="time"
+                                    step="1"
+                                    name="ReportingTime"
+                                    [ngModel]="getTimeValue('reportingTime')"
+                                    (ngModelChange)="updateTimeField('reportingTime', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="RiskRegister_RiskTypeId">{{ 'RiskType' | localize }}</label>
+                                <select
+                                    id="RiskRegister_RiskTypeId"
+                                    #riskTypeInput="ngModel"
+                                    class="form-select"
+                                    name="RiskTypeId"
+                                    [ngModel]="record().riskTypeId"
+                                    (ngModelChange)="updateField('riskTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of riskTypes(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="riskTypeInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="RiskRegister_ReassessmentDate">{{ 'ReassessmentDate' | localize }}</label>
+                                <input
+                                    id="RiskRegister_ReassessmentDate"
+                                    #reassessmentDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="ReassessmentDate"
+                                    [ngModel]="record().reassessmentDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('reassessmentDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="reassessmentDateInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="RiskRegister_ImpactId">{{ 'Impact' | localize }}</label>
+                                <select
+                                    id="RiskRegister_ImpactId"
+                                    #impactInput="ngModel"
+                                    class="form-select"
+                                    name="ImpactId"
+                                    [ngModel]="record().impactId"
+                                    (ngModelChange)="updateField('impactId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of impacts(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="impactInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="RiskRegister_PossibilityId">{{ 'Possibility' | localize }}</label>
+                                <select
+                                    id="RiskRegister_PossibilityId"
+                                    #possibilityInput="ngModel"
+                                    class="form-select"
+                                    name="PossibilityId"
+                                    [ngModel]="record().possibilityId"
+                                    (ngModelChange)="updateField('possibilityId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of possibilities(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="possibilityInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="RiskRegister_LocationId">{{ 'Location' | localize }}</label>
+                                <select
+                                    id="RiskRegister_LocationId"
+                                    #locationInput="ngModel"
+                                    class="form-select"
+                                    name="LocationId"
+                                    [ngModel]="record().locationId"
+                                    (ngModelChange)="updateField('locationId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of locations(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="locationInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="RiskRegister_StatusId">{{ 'Status' | localize }}</label>
+                                <select
+                                    id="RiskRegister_StatusId"
+                                    class="form-select"
+                                    name="StatusId"
+                                    [ngModel]="record().statusId"
+                                    (ngModelChange)="updateField('statusId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of statuses(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="RiskRegister_ReportedById">{{ 'ReportedBy' | localize }}</label>
+                                <select
+                                    id="RiskRegister_ReportedById"
+                                    #reportedByInput="ngModel"
+                                    class="form-select"
+                                    name="ReportedById"
+                                    [ngModel]="record().reportedById"
+                                    (ngModelChange)="updateField('reportedById', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of employees(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.code }} - {{ item.fullNameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="reportedByInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="RiskRegister_AssignedToId">{{ 'AssignedTo' | localize }}</label>
+                                <select
+                                    id="RiskRegister_AssignedToId"
+                                    class="form-select"
+                                    name="AssignedToId"
+                                    [ngModel]="record().assignedToId"
+                                    (ngModelChange)="updateField('assignedToId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of employees(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.code }} - {{ item.fullNameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="RiskRegister_ActionId">{{ 'Action' | localize }}</label>
+                                <select
+                                    id="RiskRegister_ActionId"
+                                    class="form-select"
+                                    name="ActionId"
+                                    [ngModel]="record().actionId"
+                                    (ngModelChange)="updateField('actionId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of riskActions(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="RiskRegister_Description">{{ 'Description' | localize }}</label>
+                                <textarea
+                                    id="RiskRegister_Description"
+                                    class="form-control"
+                                    name="Description"
+                                    rows="3"
+                                    [ngModel]="record().description"
+                                    (ngModelChange)="updateField('description', $event)"
+                                    maxlength="1000"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="RiskRegister_RiskMitigation">{{ 'RiskMitigation' | localize }}</label>
+                                <textarea
+                                    id="RiskRegister_RiskMitigation"
+                                    class="form-control"
+                                    name="RiskMitigation"
+                                    rows="3"
+                                    [ngModel]="record().riskMitigation"
+                                    (ngModelChange)="updateField('riskMitigation', $event)"
+                                    maxlength="1000"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,235 @@
+{
+  "helpId": "pay.wage-acc-group-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل مجموعات حسابات الأجور — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.WageAccGroupDetail",
+  "overviewHtml": "<p>سطر واحد من مجموعة حسابات الأجور: الحساب الذي يُرحَّل إليه نوع الأجر، وحسابه المقابل وعناصر التكلفة.</p><p>لا تُقرأ حالياً: يأخذ محرك التكلفة وقيد اليومية الحسابات من حسابات الأجور الخاصة بكل موظف، ولا يقرأ شيءٌ هذه الأسطر. وهي محفوظة للرجوع إليها ولاستخدام مستقبلي.</p>",
+  "aliasIndex": {
+    "loc:WageAccGroupId": "WageAccGroupDetail.WageAccGroupId",
+    "dom:WageAccGroupDetail_WageAccGroupId": "WageAccGroupDetail.WageAccGroupId",
+    "loc:WageTypeId": "WageAccGroupDetail.WageTypeId",
+    "dom:WageAccGroupDetail_WageTypeId": "WageAccGroupDetail.WageTypeId",
+    "loc:AccountInfoId": "WageAccGroupDetail.AccountInfoId",
+    "dom:WageAccGroupDetail_AccountInfoId": "WageAccGroupDetail.AccountInfoId",
+    "loc:OffsetAccountInfoType": "WageAccGroupDetail.OffsetAccountInfoType",
+    "dom:WageAccGroupDetail_OffsetAccountInfoType": "WageAccGroupDetail.OffsetAccountInfoType",
+    "loc:OffsetAccountInfoId": "WageAccGroupDetail.OffsetAccountInfoId",
+    "dom:WageAccGroupDetail_OffsetAccountInfoId": "WageAccGroupDetail.OffsetAccountInfoId",
+    "loc:CostPercentage": "WageAccGroupDetail.CostPercentage",
+    "dom:WageAccGroupDetail_CostPercentage": "WageAccGroupDetail.CostPercentage",
+    "loc:MergeOffsetAccount": "WageAccGroupDetail.MergeOffsetAccount",
+    "dom:WageAccGroupDetail_MergeOffsetAccount": "WageAccGroupDetail.MergeOffsetAccount",
+    "loc:CostElement1Id": "WageAccGroupDetail.CostElement1Id",
+    "dom:WageAccGroupDetail_costElement1Id": "WageAccGroupDetail.CostElement1Id",
+    "loc:CostElement2Id": "WageAccGroupDetail.CostElement2Id",
+    "dom:WageAccGroupDetail_costElement2Id": "WageAccGroupDetail.CostElement2Id",
+    "loc:CostElement3Id": "WageAccGroupDetail.CostElement3Id",
+    "dom:WageAccGroupDetail_costElement3Id": "WageAccGroupDetail.CostElement3Id",
+    "loc:CostElement4Id": "WageAccGroupDetail.CostElement4Id",
+    "dom:WageAccGroupDetail_costElement4Id": "WageAccGroupDetail.CostElement4Id",
+    "loc:CostElement5Id": "WageAccGroupDetail.CostElement5Id",
+    "dom:WageAccGroupDetail_costElement5Id": "WageAccGroupDetail.CostElement5Id",
+    "loc:CostElement6Id": "WageAccGroupDetail.CostElement6Id",
+    "dom:WageAccGroupDetail_costElement6Id": "WageAccGroupDetail.CostElement6Id",
+    "loc:CostElement7Id": "WageAccGroupDetail.CostElement7Id",
+    "dom:WageAccGroupDetail_costElement7Id": "WageAccGroupDetail.CostElement7Id"
+  },
+  "fields": [
+    {
+      "id": "WageAccGroupDetail.WageAccGroupId",
+      "label": "WageAccGroupId",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:WageAccGroupId",
+        "dom:WageAccGroupDetail_WageAccGroupId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة مجموعات حسابات الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموعة حسابات الأجور التي يتبعها هذا السطر.</p><p><strong>مثال.</strong> حسابات المكتب الرئيسي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccGroupDetail.WageTypeId",
+      "label": "WageTypeId",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:WageAccGroupDetail_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الأجر الذي يربطه هذا السطر.</p><p><strong>مثال.</strong> الراتب الأساسي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccGroupDetail.AccountInfoId",
+      "label": "AccountInfoId",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:AccountInfoId",
+        "dom:WageAccGroupDetail_AccountInfoId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة بيانات الحسابات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحساب الذي يُرحَّل إليه نوع الأجر.</p><p><strong>مثال.</strong> 510100 — الرواتب والأجور</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccGroupDetail.OffsetAccountInfoType",
+      "label": "OffsetAccountInfoType",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:OffsetAccountInfoType",
+        "dom:WageAccGroupDetail_OffsetAccountInfoType"
+      ],
+      "rules": "إلزامي. إحدى القيم: ثابت، رقم الموظف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مصدر الحساب المقابل: حساب ثابت يُختار أدناه، أو حساب يُستخرج من رمز الموظف.</p><p><strong>مثال.</strong> ثابت</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccGroupDetail.OffsetAccountInfoId",
+      "label": "OffsetAccountInfoId",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:OffsetAccountInfoId",
+        "dom:WageAccGroupDetail_OffsetAccountInfoId"
+      ],
+      "rules": "اختياري. يُختار من قائمة بيانات الحسابات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحساب المقابل، إذا كان نوع الحساب المقابل ثابتاً.</p><p><strong>مثال.</strong> 210500 — رواتب مستحقة الدفع</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccGroupDetail.CostPercentage",
+      "label": "CostPercentage",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:CostPercentage",
+        "dom:WageAccGroupDetail_CostPercentage"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حصة مبلغ نوع الأجر التي يحملها هذا السطر.</p><p><strong>مثال.</strong> <code>100</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccGroupDetail.MergeOffsetAccount",
+      "label": "MergeOffsetAccount",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:MergeOffsetAccount",
+        "dom:WageAccGroupDetail_MergeOffsetAccount"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت أسطر الحساب المقابل لهذا الربط تُدمج في سطر واحد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccGroupDetail.CostElement1Id",
+      "label": "CostElement1Id",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:CostElement1Id",
+        "dom:WageAccGroupDetail_costElement1Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 1 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement1، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p>",
+      "adminHtml": "<p>تأتي تسميات الحقول من إدارة الهيكل التنظيمي ← أنواع عناصر التكلفة: أعطِ النوع الرمز CostElement1 إلى CostElement7 لتفعيل الحقل المقابل. والقيمة المحفوظة التي نُقل عنصر تكلفتها بعد ذلك إلى نوع آخر تبقى ظاهرة برقمها، فلا يمسحها فتح السجل.</p>",
+      "stub": false
+    },
+    {
+      "id": "WageAccGroupDetail.CostElement2Id",
+      "label": "CostElement2Id",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:CostElement2Id",
+        "dom:WageAccGroupDetail_costElement2Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 2 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement2، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccGroupDetail.CostElement3Id",
+      "label": "CostElement3Id",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:CostElement3Id",
+        "dom:WageAccGroupDetail_costElement3Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 3 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement3، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccGroupDetail.CostElement4Id",
+      "label": "CostElement4Id",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:CostElement4Id",
+        "dom:WageAccGroupDetail_costElement4Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 4 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement4، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccGroupDetail.CostElement5Id",
+      "label": "CostElement5Id",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:CostElement5Id",
+        "dom:WageAccGroupDetail_costElement5Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 5 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement5، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccGroupDetail.CostElement6Id",
+      "label": "CostElement6Id",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:CostElement6Id",
+        "dom:WageAccGroupDetail_costElement6Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 6 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement6، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccGroupDetail.CostElement7Id",
+      "label": "CostElement7Id",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:CostElement7Id",
+        "dom:WageAccGroupDetail_costElement7Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 7 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة. ويحمل الحقل اسم نوع عنصر التكلفة الذي رمزه CostElement7، ولا يعرض إلا عناصر التكلفة من ذلك النوع، ولا يظهر إطلاقاً إذا لم يوجد هذا النوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

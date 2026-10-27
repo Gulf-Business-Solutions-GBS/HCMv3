@@ -1,0 +1,75 @@
+{
+  "helpId": "hs.safety-checklist.edit",
+  "lang": "en",
+  "title": "Safety Checklists — Create / Edit",
+  "entity": "HCMv3.HealthAndSafetyManagement.SafetyChecklist",
+  "overviewHtml": "<p>A check to make on a safety area or asset. Leave the code blank to have the next number given.</p>",
+  "aliasIndex": {
+    "loc:Code": "SafetyChecklist.Code",
+    "dom:SafetyChecklist_Code": "SafetyChecklist.Code",
+    "loc:SafetyAreaAsset": "SafetyChecklist.SafetyAreaAssetId",
+    "dom:SafetyChecklist_SafetyAreaAssetId": "SafetyChecklist.SafetyAreaAssetId",
+    "loc:IsActive": "SafetyChecklist.IsActive",
+    "dom:SafetyChecklist_IsActive": "SafetyChecklist.IsActive",
+    "loc:Description": "SafetyChecklist.Description",
+    "dom:SafetyChecklist_Description": "SafetyChecklist.Description"
+  },
+  "fields": [
+    {
+      "id": "SafetyChecklist.Code",
+      "label": "Code",
+      "section": "SafetyChecklists",
+      "aliases": [
+        "loc:Code",
+        "dom:SafetyChecklist_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SafetyChecklist.SafetyAreaAssetId",
+      "label": "SafetyAreaAsset",
+      "section": "SafetyChecklists",
+      "aliases": [
+        "loc:SafetyAreaAsset",
+        "dom:SafetyChecklist_SafetyAreaAssetId"
+      ],
+      "rules": "Required. Chosen from Safety Area Asset master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The area or asset checked.</p><p><strong>Example.</strong> Fire extinguishers</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SafetyChecklist.IsActive",
+      "label": "IsActive",
+      "section": "SafetyChecklists",
+      "aliases": [
+        "loc:IsActive",
+        "dom:SafetyChecklist_IsActive"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the check is still in use.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SafetyChecklist.Description",
+      "label": "Description",
+      "section": "SafetyChecklists",
+      "aliases": [
+        "loc:Description",
+        "dom:SafetyChecklist_Description"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What to check.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

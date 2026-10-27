@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-date.edit",
+  "lang": "ar",
+  "title": "تواريخ الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeDate",
+  "overviewHtml": "<p>تاريخ مهم للموظف — كفحص طبي أو مراجعة عقد — مع عدد أيام اختياري.</p><p>يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب أو تقرير حالياً.</p>",
+  "aliasIndex": {
+    "loc:DateType": "EmployeeDate.DateTypeId",
+    "dom:EmployeeDate_DateTypeId": "EmployeeDate.DateTypeId",
+    "loc:DateData": "EmployeeDate.DateData",
+    "dom:EmployeeDate_DateData": "EmployeeDate.DateData",
+    "loc:DayData": "EmployeeDate.DayData",
+    "dom:EmployeeDate_DayData": "EmployeeDate.DayData"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDate.DateTypeId",
+      "label": "DateType",
+      "section": "EmployeeDates",
+      "aliases": [
+        "loc:DateType",
+        "dom:EmployeeDate_DateTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع التواريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع التاريخ.</p><p><strong>مثال.</strong> فحص طبي</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← أنواع التواريخ.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDate.DateData",
+      "label": "DateData",
+      "section": "EmployeeDates",
+      "aliases": [
+        "loc:DateData",
+        "dom:EmployeeDate_DateData"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ نفسه.</p><p><strong>مثال.</strong> 15 يناير 2027</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDate.DayData",
+      "label": "DayData",
+      "section": "EmployeeDates",
+      "aliases": [
+        "loc:DayData",
+        "dom:EmployeeDate_DayData"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد أيام يُسجَّل مع التاريخ.</p><p><strong>مثال.</strong> 0</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+    "conditionalTemplates" : [
+        {
+            "placeholder": "{{Excel_Selected_Column_Parameter_Here}}",
+            "condition": "{{Project_Version_Here}} >= 130200",
+            "content": ", List<string> selectedColumns"
+        },
+        {
+            "placeholder": "{{Threading_Tasks_Namespace_Here}}",
+            "condition": "{{Project_Version_Here}} > 130400",
+            "content": "using System.Threading.Tasks;"
+        },
+        {
+            "placeholder": "{{Return_Type_Here}}",
+            "condition": "{{Project_Version_Here}} > 130400",
+            "content": "Task<FileDto>"
+        },
+        {
+            "placeholder": "{{Return_Type_Here}}",
+            "condition": "{{Project_Version_Here}} <= 130400",
+            "content": "FileDto"
+        }
+    ],
+}

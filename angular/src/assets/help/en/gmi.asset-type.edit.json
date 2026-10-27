@@ -1,0 +1,43 @@
+{
+  "helpId": "gmi.asset-type.edit",
+  "lang": "en",
+  "title": "Asset Types — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.AssetType",
+  "overviewHtml": "<p>The kinds of company asset — vehicles, laptops, phones and so on. Each asset names its type, and the type decides whether employees can ask for assets of that kind in self-service.</p><p>Besides the code and English and Arabic names, a type has a wage type and the Include In Workflow switch. The code is assigned automatically when left blank, and codes and names must be unique.</p>",
+  "aliasIndex": {
+    "loc:WageType": "AssetType.WageTypeId",
+    "dom:AssetType_WageTypeId": "AssetType.WageTypeId",
+    "loc:IncludeInWorkflow": "AssetType.IncludeInWorkflow",
+    "dom:AssetType_IncludeInWorkflow": "AssetType.IncludeInWorkflow"
+  },
+  "fields": [
+    {
+      "id": "AssetType.WageTypeId",
+      "label": "WageType",
+      "section": "AssetTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:AssetType_WageTypeId"
+      ],
+      "rules": "Optional. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wage type meant for payments for assets of this type.</p><p><strong>Example.</strong> Car Allowance</p><p><strong>Why it matters.</strong> Recorded only; payroll and the asset reports do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AssetType.IncludeInWorkflow",
+      "label": "IncludeInWorkflow",
+      "section": "AssetTypes",
+      "aliases": [
+        "loc:IncludeInWorkflow",
+        "dom:AssetType_IncludeInWorkflow"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether employees may request assets of this type through self-service.</p><p><strong>Example.</strong> Ticked for Laptop and Mobile Phone; unticked for Vehicle, which only HR issues.</p><p><strong>Why it matters.</strong> Self-service offers only active assets whose type has this ticked; an asset with no type is never offered. A new type starts unticked, so tick it for every type employees should be able to ask for. HR can still issue assets of any type on the employee's record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

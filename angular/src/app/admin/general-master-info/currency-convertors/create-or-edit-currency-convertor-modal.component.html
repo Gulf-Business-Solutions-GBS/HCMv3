@@ -1,0 +1,124 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #currencyConvertorForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (currencyConvertor().id) {
+                                <span>{{ 'EditingCurrencyConvertor' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreatingNewCurrencyConvertor' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label required" for="CurrencyConvertor_CalendarDate">
+                                {{ 'CalendarDate' | localize }}
+                            </label>
+                            <input
+                                id="CurrencyConvertor_CalendarDate"
+                                #calendarDateInput="ngModel"
+                                type="date"
+                                class="form-control"
+                                name="CalendarDate"
+                                [ngModel]="currencyConvertor().calendarDate?.toISODate()"
+                                (ngModelChange)="updateDateField('calendarDate', $event)"
+                                required />
+                            <validation-messages [formCtrl]="calendarDateInput" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label required" for="CurrencyConvertor_FromCurrId">
+                                {{ 'FromCurr' | localize }}
+                            </label>
+                            <select
+                                id="CurrencyConvertor_FromCurrId"
+                                #fromCurrInput="ngModel"
+                                class="form-select"
+                                name="FromCurrId"
+                                [ngModel]="currencyConvertor().fromCurrId"
+                                (ngModelChange)="updateField('fromCurrId', $event)"
+                                required>
+                                <option [ngValue]="undefined"></option>
+                                @for (currency of currencies(); track currency.id) {
+                                    <option [ngValue]="currency.id">{{ currency.nameEn }}</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="fromCurrInput" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label required" for="CurrencyConvertor_ToCurrId">
+                                {{ 'ToCurr' | localize }}
+                            </label>
+                            <select
+                                id="CurrencyConvertor_ToCurrId"
+                                #toCurrInput="ngModel"
+                                class="form-select"
+                                name="ToCurrId"
+                                [ngModel]="currencyConvertor().toCurrId"
+                                (ngModelChange)="updateField('toCurrId', $event)"
+                                required>
+                                <option [ngValue]="undefined"></option>
+                                @for (currency of currencies(); track currency.id) {
+                                    <option [ngValue]="currency.id">{{ currency.nameEn }}</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="toCurrInput" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label required" for="CurrencyConvertor_Rate">{{ 'Rate' | localize }}</label>
+                            <input
+                                id="CurrencyConvertor_Rate"
+                                #rateInput="ngModel"
+                                class="form-control"
+                                type="number"
+                                step="any"
+                                name="Rate"
+                                [ngModel]="currencyConvertor().rate"
+                                (ngModelChange)="updateField('rate', $event)"
+                                required />
+                            <validation-messages [formCtrl]="rateInput" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!currencyConvertorForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

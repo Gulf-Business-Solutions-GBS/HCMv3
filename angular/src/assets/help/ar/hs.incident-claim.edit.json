@@ -1,0 +1,123 @@
+{
+  "helpId": "hs.incident-claim.edit",
+  "lang": "ar",
+  "title": "مطالبات الحوادث — إنشاء / تحرير",
+  "entity": "HCMv3.HealthAndSafetyManagement.IncidentClaim",
+  "overviewHtml": "<p>مطالبة تأمين أو تعويض ناشئة عن حادث. تُحفظ كسجل، ولا تُدفع عبر الرواتب.</p>",
+  "aliasIndex": {
+    "loc:ClaimDate": "IncidentClaim.ClaimDate",
+    "dom:IncidentClaim_ClaimDate": "IncidentClaim.ClaimDate",
+    "loc:Incident": "IncidentClaim.IncidentId",
+    "dom:IncidentClaim_IncidentId": "IncidentClaim.IncidentId",
+    "loc:Amount": "IncidentClaim.Amount",
+    "dom:IncidentClaim_Amount": "IncidentClaim.Amount",
+    "loc:Currency": "IncidentClaim.CurrencyId",
+    "dom:IncidentClaim_CurrencyId": "IncidentClaim.CurrencyId",
+    "loc:PaymentDate": "IncidentClaim.PaymentDate",
+    "dom:IncidentClaim_PaymentDate": "IncidentClaim.PaymentDate",
+    "loc:ClaimStatus": "IncidentClaim.ClaimStatusId",
+    "dom:IncidentClaim_ClaimStatusId": "IncidentClaim.ClaimStatusId",
+    "loc:Comments": "IncidentClaim.Comments",
+    "dom:IncidentClaim_Comments": "IncidentClaim.Comments"
+  },
+  "fields": [
+    {
+      "id": "IncidentClaim.ClaimDate",
+      "label": "ClaimDate",
+      "section": "IncidentClaims",
+      "aliases": [
+        "loc:ClaimDate",
+        "dom:IncidentClaim_ClaimDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى قُدمت المطالبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentClaim.IncidentId",
+      "label": "Incident",
+      "section": "IncidentClaims",
+      "aliases": [
+        "loc:Incident",
+        "dom:IncidentClaim_IncidentId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة سجلات الحوادث.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحادث الذي يخصه هذا.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentClaim.Amount",
+      "label": "Amount",
+      "section": "IncidentClaims",
+      "aliases": [
+        "loc:Amount",
+        "dom:IncidentClaim_Amount"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ المطالب به.</p><p><strong>مثال.</strong> 1,500.000</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentClaim.CurrencyId",
+      "label": "Currency",
+      "section": "IncidentClaims",
+      "aliases": [
+        "loc:Currency",
+        "dom:IncidentClaim_CurrencyId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة العملات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عملة المبلغ.</p><p><strong>مثال.</strong> KWD</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentClaim.PaymentDate",
+      "label": "PaymentDate",
+      "section": "IncidentClaims",
+      "aliases": [
+        "loc:PaymentDate",
+        "dom:IncidentClaim_PaymentDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى دُفعت أو يُتوقع دفعها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentClaim.ClaimStatusId",
+      "label": "ClaimStatus",
+      "section": "IncidentClaims",
+      "aliases": [
+        "loc:ClaimStatus",
+        "dom:IncidentClaim_ClaimStatusId"
+      ],
+      "rules": "اختياري. يُختار من قائمة حالات مطالبات الحوادث.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حالة المطالبة.</p><p><strong>مثال.</strong> مقدَّمة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentClaim.Comments",
+      "label": "Comments",
+      "section": "IncidentClaims",
+      "aliases": [
+        "loc:Comments",
+        "dom:IncidentClaim_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

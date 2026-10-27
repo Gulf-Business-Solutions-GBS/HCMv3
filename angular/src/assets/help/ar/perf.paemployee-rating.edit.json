@@ -1,0 +1,91 @@
+{
+  "helpId": "perf.paemployee-rating.edit",
+  "lang": "ar",
+  "title": "تقديرات موظفي تقييم الأداء — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.PAEmployeeRating",
+  "overviewHtml": "<p>تقدير مراجع واحد لمؤشر أداء واحد في التقييم. ويعمل تقريرا بطاقة الأداء وتقييم المدير من هذه التقديرات — وتستخدم بطاقة الأداء تقديرات المديرين فقط إذا وُجد أي منها في التقرير، وإلا فتقديرات كل المراجعين.</p>",
+  "aliasIndex": {
+    "loc:PAEmployeeReviewer": "PAEmployeeRating.PAEmployeeReviewerId",
+    "dom:PAEmployeeRating_PAEmployeeReviewerId": "PAEmployeeRating.PAEmployeeReviewerId",
+    "loc:PAEmployeeDetail": "PAEmployeeRating.PAEmployeeDetailId",
+    "dom:PAEmployeeRating_PAEmployeeDetailId": "PAEmployeeRating.PAEmployeeDetailId",
+    "loc:Marks": "PAEmployeeRating.Marks",
+    "dom:PAEmployeeRating_Marks": "PAEmployeeRating.Marks",
+    "loc:Rating": "PAEmployeeRating.RatingId",
+    "dom:PAEmployeeRating_RatingId": "PAEmployeeRating.RatingId",
+    "loc:Comments": "PAEmployeeRating.Comments",
+    "dom:PAEmployeeRating_Comments": "PAEmployeeRating.Comments"
+  },
+  "fields": [
+    {
+      "id": "PAEmployeeRating.PAEmployeeReviewerId",
+      "label": "PAEmployeeReviewer",
+      "section": "PAEmployeeRatings",
+      "aliases": [
+        "loc:PAEmployeeReviewer",
+        "dom:PAEmployeeRating_PAEmployeeReviewerId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مراجعو تقييم الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المراجع الذي يعطي التقدير.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeRating.PAEmployeeDetailId",
+      "label": "PAEmployeeDetail",
+      "section": "PAEmployeeRatings",
+      "aliases": [
+        "loc:PAEmployeeDetail",
+        "dom:PAEmployeeRating_PAEmployeeDetailId"
+      ],
+      "rules": "اختياري. يُختار من قائمة تفاصيل موظفي تقييم الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مؤشر الأداء الجاري تقديره.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeRating.Marks",
+      "label": "Marks",
+      "section": "PAEmployeeRatings",
+      "aliases": [
+        "loc:Marks",
+        "dom:PAEmployeeRating_Marks"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدرجات الممنوحة، وتظهر في تقرير تقييم المدير.</p><p><strong>مثال.</strong> <code>4</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeRating.RatingId",
+      "label": "Rating",
+      "section": "PAEmployeeRatings",
+      "aliases": [
+        "loc:Rating",
+        "dom:PAEmployeeRating_RatingId"
+      ],
+      "rules": "اختياري. يُختار من قائمة تقديرات تقييم الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التقدير الممنوح.</p><p><strong>مثال.</strong> يتجاوز التوقعات</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeRating.Comments",
+      "label": "Comments",
+      "section": "PAEmployeeRatings",
+      "aliases": [
+        "loc:Comments",
+        "dom:PAEmployeeRating_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-gratuity.edit",
+  "lang": "ar",
+  "title": "مكافأة نهاية الخدمة للموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeGratuity",
+  "overviewHtml": "<p>دفعة مكافأة نهاية خدمة صُرفت للموظف بالفعل، بالأيام.</p><p>تحتسب الرواتب الأيام المصروفة في الشهر عند احتساب مكافأة نهاية الخدمة المستحقة. وتحديد خيار إعادة الضبط يجعل احتساب المكافأة يبدأ من جديد اعتباراً من تاريخ الصرف.</p>",
+  "aliasIndex": {
+    "loc:GratuityPaidDate": "EmployeeGratuity.GratuityPaidDate",
+    "dom:EmployeeGratuity_GratuityPaidDate": "EmployeeGratuity.GratuityPaidDate",
+    "loc:GratuityPaidDays": "EmployeeGratuity.GratuityPaidDays",
+    "dom:EmployeeGratuity_GratuityPaidDays": "EmployeeGratuity.GratuityPaidDays",
+    "loc:ResetGratuityCalc": "EmployeeGratuity.ResetGratuityCalc",
+    "dom:EmployeeGratuity_ResetGratuityCalc": "EmployeeGratuity.ResetGratuityCalc",
+    "loc:Comments": "EmployeeGratuity.Comments",
+    "dom:EmployeeGratuity_Comments": "EmployeeGratuity.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeGratuity.GratuityPaidDate",
+      "label": "GratuityPaidDate",
+      "section": "EmployeeGratuities",
+      "aliases": [
+        "loc:GratuityPaidDate",
+        "dom:EmployeeGratuity_GratuityPaidDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ صرف مكافأة نهاية الخدمة.</p><p><strong>مثال.</strong> 31 ديسمبر 2025</p><p><strong>لماذا يهم.</strong> تُحتسب الأيام المصروفة في شهر الرواتب لهذا التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuity.GratuityPaidDays",
+      "label": "GratuityPaidDays",
+      "section": "EmployeeGratuities",
+      "aliases": [
+        "loc:GratuityPaidDays",
+        "dom:EmployeeGratuity_GratuityPaidDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد أيام مكافأة نهاية الخدمة المصروفة.</p><p><strong>مثال.</strong> 120</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuity.ResetGratuityCalc",
+      "label": "ResetGratuityCalc",
+      "section": "EmployeeGratuities",
+      "aliases": [
+        "loc:ResetGratuityCalc",
+        "dom:EmployeeGratuity_ResetGratuityCalc"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يُعاد بدء احتساب مكافأة نهاية الخدمة من تاريخ الصرف.</p><p><strong>لماذا يهم.</strong> عند تحديده، تُحتسب مدة الخدمة لأغراض المكافأة من تاريخ هذه الدفعة بدلاً من البداية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuity.Comments",
+      "label": "Comments",
+      "section": "EmployeeGratuities",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeGratuity_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

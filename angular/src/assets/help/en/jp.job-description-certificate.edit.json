@@ -1,0 +1,27 @@
+{
+  "helpId": "jp.job-description-certificate.edit",
+  "lang": "en",
+  "title": "Job Description Certificates — Create / Edit",
+  "entity": "HCMv3.JobProfileManagement.JobDescriptionCertificate",
+  "overviewHtml": "<p>A certificate the job description asks for. Each can be listed once per job description.</p>",
+  "aliasIndex": {
+    "loc:EducationCertificate": "JobDescriptionCertificate.EducationCertificateId",
+    "dom:JobDescriptionCertificate_EducationCertificateId": "JobDescriptionCertificate.EducationCertificateId"
+  },
+  "fields": [
+    {
+      "id": "JobDescriptionCertificate.EducationCertificateId",
+      "label": "EducationCertificate",
+      "section": "JobDescriptionCertificates",
+      "aliases": [
+        "loc:EducationCertificate",
+        "dom:JobDescriptionCertificate_EducationCertificateId"
+      ],
+      "rules": "Optional. Chosen from Education Certificate master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The certificate.</p><p><strong>Example.</strong> CIPD</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

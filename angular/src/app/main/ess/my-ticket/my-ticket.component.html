@@ -1,0 +1,111 @@
+<div [@routerTransition] [helpPage]="'ess.ticket'">
+    <sub-header [title]="'EssMyTickets' | localize">
+        <div role="actions">
+            @if (!notLinked()) {
+                <button class="btn btn-primary" data-help-loc="RequestTicket" (click)="openForm()">
+                    <i class="fa fa-plus"></i> {{ 'RequestTicket' | localize }}
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        @if (notLinked()) {
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <div class="alert alert-warning mb-0" data-help-loc="CurrentUserHasNoEmployeeRecord">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</div>
+                </div>
+            </div>
+        } @else {
+            @if (showForm()) {
+                <div class="card card-custom gutter-b">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ 'RequestTicket' | localize }}</h5>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label data-help-loc="TicketType">{{ 'TicketType' | localize }}</label>
+                                <select class="form-control" [(ngModel)]="form.ticketTypeId">
+                                    <option [ngValue]="null">--</option>
+                                    @for (type of ticketTypes(); track type.id) {
+                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label data-help-loc="TicketDate">{{ 'TicketDate' | localize }}</label>
+                                <input type="date" class="form-control" [(ngModel)]="form.ticketDate" />
+                            </div>
+                            <div class="form-group col-md-2">
+                                <!-- Optional: blank claims the entitlement and lets payroll price it. -->
+                                <label data-help-loc="Amount">{{ 'Amount' | localize }}</label>
+                                <input type="number" min="0" class="form-control" [(ngModel)]="form.amount" />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label data-help-loc="Comments">{{ 'Comments' | localize }}</label>
+                                <input type="text" class="form-control" [(ngModel)]="form.comments" />
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submit()">
+                            {{ submitLabel() }}
+                        </button>
+                        <button class="btn btn-light" (click)="closeForm()">{{ 'Cancel' | localize }}</button>
+                    </div>
+                </div>
+            }
+
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <h5 class="card-title" data-help-loc="EssMyRequests">{{ 'EssMyRequests' | localize }}</h5>
+
+                    @if (loading()) {
+                        <div class="text-center p-4"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+                    } @else {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead [essListHead]="list" [exportTitle]="detailTitle()"></thead>
+                                <tbody>
+                                    @for (row of list.view(); track row.id) {
+                                        <tr>
+                                            <td>{{ typeName(row) }}</td>
+                                            <td>{{ row.ticketDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                            <td>{{ row.amount }}</td>
+                                            <td>
+                                                <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
+                                            </td>
+                                            <td class="text-end">
+                                                <!-- Opening the request is the primary action: until this
+                                                     existed the requester could see a status badge but never
+                                                     what they had submitted, nor who was sitting on it.
+                                                     Replaces the old Workflow History button, whose trail
+                                                     the detail view now contains. Shown for every row, not
+                                                     only ones with a workflow request: a row recorded while
+                                                     workflow is off still has fields worth reading. -->
+                                                <button class="btn btn-light-primary" (click)="openDetail(row)" data-help-loc="Details">
+                                                    {{ 'Details' | localize }}
+                                                </button>
+                                                @if (row.canCancel) {
+                                                    <button class="btn btn-light-danger ms-2" (click)="cancel(row)" data-help-loc="Withdraw">
+                                                        {{ 'Withdraw' | localize }}
+                                                    </button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td colspan="5" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <ess-list-pager [list]="list" />
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<essRequestDetailModal #detail />

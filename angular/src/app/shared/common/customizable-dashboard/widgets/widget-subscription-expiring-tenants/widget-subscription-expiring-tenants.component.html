@@ -1,0 +1,71 @@
+<div class="card card-custom h-100">
+    <div class="card-header align-items-center border-0">
+        <div class="card-title">
+            <span class="card-icon">
+                <i class="far fa-clock text-danger"></i>
+            </span>
+            <h3 class="card-label text-danger">
+                {{ 'SubscriptionExpiringTenants' | localize }}
+                @if (expiringTenantsData()) {
+                    <small class="text-muted">
+                        {{
+                            'ExpiringTenantsHelpText'
+                                | localize
+                                    : expiringTenantsData().subscriptionEndAlertDayCount
+                                    : expiringTenantsData().maxExpiringTenantsShownCount
+                        }}
+                    </small>
+                }
+            </h3>
+        </div>
+    </div>
+    <ng-scrollbar>
+        <div class="card-body">
+            <div class="scroller chart">
+                @if (!dataLoading()) {
+                    <div
+                        class="primeng-datatable-container expiring-tenants-table"
+                        [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #ExpiringTenantsTable
+                            [value]="expiringTenantsData()?.expiringTenants ?? []"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="false"
+                            [tableStyle]="{ 'min-width': '25rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th>{{ 'TenantName' | localize }}</th>
+                                    <th>{{ 'RemainingDay' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td>
+                                        {{ record.tenantName }}
+                                    </td>
+                                    <td>
+                                        {{ record.remainingDayCount }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (expiringTenantsData()?.expiringTenants?.length == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="scroller-footer">
+                <div class="btn-arrow-link pull-right">
+                    <a href="javascript:;" class="see-all-expiring-tenants" (click)="gotoAllExpiringTenants()">
+                        {{ 'SeeAllRecords' | localize }}
+                    </a>
+                    <i class="icon-arrow-right"></i>
+                </div>
+            </div>
+        </div>
+    </ng-scrollbar>
+</div>

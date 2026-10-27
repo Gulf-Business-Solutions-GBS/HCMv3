@@ -1,0 +1,75 @@
+{
+  "helpId": "gmi.nationality.edit",
+  "lang": "ar",
+  "title": "الجنسيات — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.Nationality",
+  "overviewHtml": "<p>الجنسيات المستخدمة في سجلات الموظفين. تحدد جنسية الموظف قواعد التأمينات الاجتماعية التي تنطبق في الرواتب، وكيف يُحتسب في نسبة العمالة.</p>",
+  "aliasIndex": {
+    "loc:Code": "Nationality.Code",
+    "dom:Nationality_Code": "Nationality.Code",
+    "loc:NameEn": "Nationality.NameEn",
+    "dom:Nationality_NameEn": "Nationality.NameEn",
+    "loc:NameAr": "Nationality.NameAr",
+    "dom:Nationality_NameAr": "Nationality.NameAr",
+    "loc:NationalityGroup": "Nationality.NationalityGroupId",
+    "dom:Nationality_NationalityGroupId": "Nationality.NationalityGroupId"
+  },
+  "fields": [
+    {
+      "id": "Nationality.Code",
+      "label": "Code",
+      "section": "Nationalities",
+      "aliases": [
+        "loc:Code",
+        "dom:Nationality_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Nationality.NameEn",
+      "label": "NameEn",
+      "section": "Nationalities",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Nationality_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Nationality.NameAr",
+      "label": "NameAr",
+      "section": "Nationalities",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Nationality_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Nationality.NationalityGroupId",
+      "label": "NationalityGroup",
+      "section": "Nationalities",
+      "aliases": [
+        "loc:NationalityGroup",
+        "dom:Nationality_NationalityGroupId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مجموعات الجنسيات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المجموعة التي تنتمي إليها هذه الجنسية.</p><p><strong>لماذا يهم.</strong> لأغراض نسبة العمالة ضمن إدارة العلاقات الحكومية، تُحتسب الجنسيات التي تحمل مجموعتها الاسم Citizen جنسياتِ مواطنين، وتُحتسب سائر الجنسيات غير مواطنين.</p>",
+      "adminHtml": "<p>تُدار المجموعات من البيانات الأساسية العامة ← مجموعات الجنسيات.</p>",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "helpId": "perf.paemployee-reviewer.edit",
+  "lang": "en",
+  "title": "PA Employee Reviewers — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.PAEmployeeReviewer",
+  "overviewHtml": "<p>A person reviewing an appraisal — the manager, or a peer. The number of reviewers is limited by the form type's maximum, a person can review an appraisal once, and only peer reviewers can be deleted.</p>",
+  "aliasIndex": {
+    "loc:Employee": "PAEmployeeReviewer.EmployeeId",
+    "dom:PAEmployeeReviewer_EmployeeId": "PAEmployeeReviewer.EmployeeId",
+    "loc:PeerAddedBy": "PAEmployeeReviewer.PeerAddedById",
+    "dom:PAEmployeeReviewer_PeerAddedById": "PAEmployeeReviewer.PeerAddedById",
+    "loc:IsPeer": "PAEmployeeReviewer.IsPeer",
+    "dom:PAEmployeeReviewer_IsPeer": "PAEmployeeReviewer.IsPeer",
+    "loc:CustomTextField1": "PAEmployeeReviewer.CustomTextField1",
+    "dom:PAEmployeeReviewer_CustomTextField1": "PAEmployeeReviewer.CustomTextField1",
+    "loc:CustomTextField2": "PAEmployeeReviewer.CustomTextField2",
+    "dom:PAEmployeeReviewer_CustomTextField2": "PAEmployeeReviewer.CustomTextField2",
+    "loc:CustomTextField3": "PAEmployeeReviewer.CustomTextField3",
+    "dom:PAEmployeeReviewer_CustomTextField3": "PAEmployeeReviewer.CustomTextField3"
+  },
+  "fields": [
+    {
+      "id": "PAEmployeeReviewer.EmployeeId",
+      "label": "Employee",
+      "section": "PAEmployeeReviewers",
+      "aliases": [
+        "loc:Employee",
+        "dom:PAEmployeeReviewer_EmployeeId"
+      ],
+      "rules": "Optional. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The reviewer.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeReviewer.PeerAddedById",
+      "label": "PeerAddedBy",
+      "section": "PAEmployeeReviewers",
+      "aliases": [
+        "loc:PeerAddedBy",
+        "dom:PAEmployeeReviewer_PeerAddedById"
+      ],
+      "rules": "Optional. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who added the peer reviewer.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeReviewer.IsPeer",
+      "label": "IsPeer",
+      "section": "PAEmployeeReviewers",
+      "aliases": [
+        "loc:IsPeer",
+        "dom:PAEmployeeReviewer_IsPeer"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the reviewer is a peer rather than the manager.</p><p><strong>Why it matters.</strong> The manager evaluation report uses only non-peer reviewers.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeReviewer.CustomTextField1",
+      "label": "CustomTextField1",
+      "section": "PAEmployeeReviewers",
+      "aliases": [
+        "loc:CustomTextField1",
+        "dom:PAEmployeeReviewer_CustomTextField1"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraisee's strengths, in the reviewer's words.</p><p><strong>Why it matters.</strong> Shown as strengths on the reviewer summary report, from the manager's review.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeReviewer.CustomTextField2",
+      "label": "CustomTextField2",
+      "section": "PAEmployeeReviewers",
+      "aliases": [
+        "loc:CustomTextField2",
+        "dom:PAEmployeeReviewer_CustomTextField2"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Areas the appraisee should improve.</p><p><strong>Why it matters.</strong> Shown on the reviewer summary report, from the manager's review.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeReviewer.CustomTextField3",
+      "label": "CustomTextField3",
+      "section": "PAEmployeeReviewers",
+      "aliases": [
+        "loc:CustomTextField3",
+        "dom:PAEmployeeReviewer_CustomTextField3"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The overall evaluation and training needs.</p><p><strong>Why it matters.</strong> Shown on the reviewer summary report, from the manager's review.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

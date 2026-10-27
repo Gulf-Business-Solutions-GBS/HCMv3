@@ -1,0 +1,130 @@
+/*
+ * Screen Codes, the favourite star, and the favourites/recents shortcuts in the sidebar.
+ *
+ * This component is ViewEncapsulation.None, so every class here is global -- hence the `menu-` prefix
+ * on all of them, matching the Metronic classes they sit beside.
+ */
+
+/* ---------- menu icons ---------- */
+/* The dark-sidebar theme paints resting icons #464852 -- almost the sidebar's own background -- so only the
+   selected item's icon could be seen. Give them the menu text's grey instead. The element names (a, span) lift
+   this just above the theme's resting rule but keep it below its hover/open/active rules, which still turn
+   the icon white. */
+[data-kt-app-layout='dark-sidebar'] .app-sidebar .menu .menu-item a.menu-link span.menu-icon i,
+[data-kt-app-layout='dark-sidebar'] .app-sidebar .menu .menu-item a.menu-link span.menu-icon .svg-icon {
+    color: #9a9cae;
+}
+
+/* ---------- screen code ---------- */
+.menu-scode {
+    margin-left: 6px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: 'IBM Plex Mono', SFMono-Regular, Consolas, monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    /* Quiet on purpose: the code is a reference, not the label. Anyone reading the menu by name should
+       be able to ignore it entirely, which is also why it can be switched off per user. */
+    color: #8b9aa3;
+    background: rgba(139, 154, 163, 0.12);
+    white-space: nowrap;
+}
+
+/* ---------- favourite star ---------- */
+.menu-fav {
+    margin-left: auto;
+    padding: 0 2px;
+    font-size: 11px;
+    color: #b9c4ca;
+    /* Only on hover or when set, so 585 menu items are not 585 competing stars. */
+    opacity: 0;
+    transition: opacity 0.12s ease-in-out;
+}
+
+.menu-link:hover .menu-fav,
+.menu-fav.menu-fav-on {
+    opacity: 1;
+}
+
+.menu-fav-on {
+    color: #f0a800;
+}
+
+.menu-fav:hover {
+    color: #f0a800;
+}
+
+/* ---------- favourites / recents ---------- */
+.menu-shortcut-group {
+    margin: 0 0 10px;
+    padding: 0 6px;
+}
+
+.menu-shortcut-head {
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #8b9aa3;
+}
+
+.menu-shortcut {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12.5px;
+    color: #4b5a63;
+    text-decoration: none;
+}
+
+.menu-shortcut:hover {
+    background: rgba(139, 154, 163, 0.12);
+    color: #0b6e80;
+}
+
+.menu-shortcut-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.menu-shortcut .menu-scode {
+    margin-left: auto;
+}
+
+[dir='rtl'] .menu-scode {
+    margin-left: 0;
+    margin-right: 6px;
+}
+
+[dir='rtl'] .menu-fav {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+[dir='rtl'] .menu-shortcut .menu-scode {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+/* ---------- open branch vs. selected item ---------- */
+/*
+ * Opening a leaf three levels down used to light up all four rows in the same solid fill: the group toggles
+ * bound Metronic's `active` class from isMenuItemIsActive(), which is true for every ancestor of the current
+ * route. Ancestors now carry `here` instead (see getItemCssClasses). Metronic recolours the label, icon and
+ * arrow for `here` but leaves the background alone, so only the leaf keeps the filled pill.
+ *
+ * This adds a left rule on top of that, so an open branch reads as a trail back to the selection rather than
+ * as a slightly different shade of selected. Scoped to .menu-accordion, which only the sidebar's expandable
+ * groups carry -- the top bar's static `here` items must not pick it up.
+ */
+.menu-item.here.menu-accordion > .menu-link {
+    box-shadow: inset 2px 0 0 0 var(--bs-primary);
+}
+
+[dir='rtl'] .menu-item.here.menu-accordion > .menu-link {
+    box-shadow: inset -2px 0 0 0 var(--bs-primary);
+}

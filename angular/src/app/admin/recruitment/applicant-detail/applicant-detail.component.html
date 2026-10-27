@@ -1,0 +1,49 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Applicants' | localize" [description]="'Recruitment' | localize" />
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-header align-items-center border-0">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="fw-bolder text-gray-900">
+                        @if (applicant()) {
+                            <span>{{ applicant().code }} - {{ applicant().firstNameEn }} {{ applicant().lastNameEn }}</span>
+                        }
+                    </span>
+                </h3>
+            </div>
+            <div class="card-body">
+                @if (applicant(); as a) {
+                    <div class="row mb-5">
+                        <div class="col-md-2">
+                            <div class="text-muted fs-7">{{ 'CompletionPoints' | localize }}</div>
+                            <div class="fw-bold">{{ a.completionPoints }}</div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="text-muted fs-7">{{ 'IsOnbdStarted' | localize }}</div>
+                            <i class="fa" [class.fa-check]="a.isOnbdStarted" [class.text-success]="a.isOnbdStarted" [class.fa-times]="!a.isOnbdStarted" [class.text-danger]="!a.isOnbdStarted"></i>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="text-muted fs-7">{{ 'IsOnbdInit' | localize }}</div>
+                            <i class="fa" [class.fa-check]="a.isOnbdInit" [class.text-success]="a.isOnbdInit" [class.fa-times]="!a.isOnbdInit" [class.text-danger]="!a.isOnbdInit"></i>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-muted fs-7">{{ 'OnbCoordinator' | localize }}</div>
+                            <div class="fw-bold">{{ employeeName(a.onbCoordinatorId) }}</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-muted fs-7">{{ 'OnbBuddy' | localize }}</div>
+                            <div class="fw-bold">{{ employeeName(a.onbBuddyId) }}</div>
+                        </div>
+                    </div>
+                }
+                @if (applicantId()) {
+                    <tabset class="tab-container">
+                        <tab heading="{{ 'ApplicantCVs' | localize }}" [active]="true">
+                            <applicant-cv [applicantId]="applicantId()" />
+                        </tab>
+                    </tabset>
+                }
+            </div>
+        </div>
+    </div>
+</div>

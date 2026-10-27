@@ -1,0 +1,125 @@
+/*
+ * Header global search. The field is centred and wide like the Outlook and SuccessFactors bars it is
+ * modelled on, and shrinks with the viewport rather than pushing the header controls off-screen.
+ */
+/*
+ * The host has to carry the width. A custom element is display:inline by default, so it shrank to its
+ * content and the width:100% below resolved against that sliver -- the field came out a few hundred
+ * pixels wide no matter what the header wrapper allowed it.
+ */
+:host {
+    display: block;
+    width: 100%;
+    max-width: 720px;
+}
+
+.globalSearchContainer {
+    display: block;
+    width: 100%;
+}
+
+.globalSearchInput {
+    width: 100%;
+}
+
+/* Group heading -- "Actions" / "People". Quiet, because it labels the rows rather than competing. */
+.global-search__group {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--bs-gray-600, #7e8299);
+}
+
+.global-search__group-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+}
+
+/* "Clear recent" and the per-row ✕: small and quiet, so they read as housekeeping, not results. */
+.global-search__clear,
+.global-search__remove {
+    border: 0;
+    background: transparent;
+    padding: 2px 6px;
+    color: var(--bs-gray-600, #7e8299);
+    cursor: pointer;
+}
+
+.global-search__clear {
+    font-size: 0.8rem;
+}
+
+.global-search__clear:hover,
+.global-search__remove:hover {
+    color: var(--bs-primary, #1b84ff);
+}
+
+.global-search__remove {
+    margin-inline-start: auto;
+    font-size: 0.8rem;
+}
+
+.global-search__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.global-search__action-icon {
+    font-size: 0.75rem;
+    color: var(--bs-gray-500, #a1a5b7);
+}
+
+.global-search__person {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.global-search__avatar {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--bs-gray-200, #eef0f4);
+}
+
+.global-search__avatar--blank {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bs-gray-500, #a1a5b7);
+}
+
+.global-search__person-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.global-search__person-name {
+    font-weight: 500;
+}
+
+/* Job title and department. Truncated rather than wrapped, so every row stays the same height. */
+.global-search__person-subtitle {
+    font-size: 0.85rem;
+    color: var(--bs-gray-600, #7e8299);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Lets the ✕ on a recent row sit at the far end. */
+.global-search__row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+}

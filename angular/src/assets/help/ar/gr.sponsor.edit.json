@@ -1,0 +1,363 @@
+{
+  "helpId": "gr.sponsor.edit",
+  "lang": "ar",
+  "title": "الكفلاء — إنشاء / تحرير",
+  "entity": "HCMv3.GovtRelationsManagement.Sponsor",
+  "overviewHtml": "<p>الكفيل: شركة أو مالك مرخّص يُكفل الموظفون تحته لأغراض الإقامة وتصاريح العمل. يُربط الموظفون بالكفيل في سجلات كفلاء الموظف، ويظهر اسم الكفيل عندها في تقارير الموظفين والرواتب. وتُحفظ تراخيصه والمخوّلون بالتوقيع عنه وممثلوه وحساباته البنكية وحصص مسمياته الوظيفية في الشاشات المرتبطة.</p>",
+  "aliasIndex": {
+    "loc:Code": "Sponsor.Code",
+    "dom:Sponsor_Code": "Sponsor.Code",
+    "loc:NameEn": "Sponsor.NameEn",
+    "dom:Sponsor_NameEn": "Sponsor.NameEn",
+    "loc:NameAr": "Sponsor.NameAr",
+    "dom:Sponsor_NameAr": "Sponsor.NameAr",
+    "loc:BusinessOwnerNameEn": "Sponsor.BusinessOwnerNameEn",
+    "dom:Sponsor_BusinessOwnerNameEn": "Sponsor.BusinessOwnerNameEn",
+    "loc:BusinessOwnerNameAr": "Sponsor.BusinessOwnerNameAr",
+    "dom:Sponsor_BusinessOwnerNameAr": "Sponsor.BusinessOwnerNameAr",
+    "loc:Gender": "Sponsor.Gender",
+    "dom:Sponsor_Gender": "Sponsor.Gender",
+    "loc:Nationality": "Sponsor.NationalityId",
+    "dom:Sponsor_NationalityId": "Sponsor.NationalityId",
+    "loc:BusinessType": "Sponsor.BusinessTypeId",
+    "dom:Sponsor_BusinessTypeId": "Sponsor.BusinessTypeId",
+    "loc:Governorate": "Sponsor.GovernorateId",
+    "dom:Sponsor_GovernorateId": "Sponsor.GovernorateId",
+    "loc:Profession": "Sponsor.Profession",
+    "dom:Sponsor_Profession": "Sponsor.Profession",
+    "loc:MOSALID": "Sponsor.MOSALID",
+    "dom:Sponsor_MOSALID": "Sponsor.MOSALID",
+    "loc:UnifiedNum": "Sponsor.UnifiedNum",
+    "dom:Sponsor_UnifiedNum": "Sponsor.UnifiedNum",
+    "loc:OrganizationUnit": "Sponsor.OrganizationUnitId",
+    "dom:Sponsor_OrganizationUnitId": "Sponsor.OrganizationUnitId",
+    "loc:Building": "Sponsor.Building",
+    "dom:Sponsor_Building": "Sponsor.Building",
+    "loc:Street": "Sponsor.Street",
+    "dom:Sponsor_Street": "Sponsor.Street",
+    "loc:Area": "Sponsor.Area",
+    "dom:Sponsor_Area": "Sponsor.Area",
+    "loc:Email": "Sponsor.Email",
+    "dom:Sponsor_Email": "Sponsor.Email",
+    "loc:Telephone": "Sponsor.Telephone",
+    "dom:Sponsor_Telephone": "Sponsor.Telephone",
+    "loc:Block": "Sponsor.Block",
+    "dom:Sponsor_Block": "Sponsor.Block",
+    "loc:SocialSecurityNum": "Sponsor.SocialSecurityNum",
+    "dom:Sponsor_SocialSecurityNum": "Sponsor.SocialSecurityNum",
+    "loc:Fax": "Sponsor.Fax",
+    "dom:Sponsor_Fax": "Sponsor.Fax",
+    "loc:POBox": "Sponsor.POBox",
+    "dom:Sponsor_POBox": "Sponsor.POBox"
+  },
+  "fields": [
+    {
+      "id": "Sponsor.Code",
+      "label": "Code",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:Code",
+        "dom:Sponsor_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.NameEn",
+      "label": "NameEn",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Sponsor_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.NameAr",
+      "label": "NameAr",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Sponsor_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.BusinessOwnerNameEn",
+      "label": "BusinessOwnerNameEn",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:BusinessOwnerNameEn",
+        "dom:Sponsor_BusinessOwnerNameEn"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم مالك النشاط بالإنجليزية.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.BusinessOwnerNameAr",
+      "label": "BusinessOwnerNameAr",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:BusinessOwnerNameAr",
+        "dom:Sponsor_BusinessOwnerNameAr"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم مالك النشاط بالعربية.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.Gender",
+      "label": "Gender",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:Gender",
+        "dom:Sponsor_Gender"
+      ],
+      "rules": "إلزامي. إحدى القيم: ذكر، أنثى.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> جنس المالك، إذا كان الكفيل شخصاً.</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.NationalityId",
+      "label": "Nationality",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:Nationality",
+        "dom:Sponsor_NationalityId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الجنسيات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> جنسية المالك.</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.BusinessTypeId",
+      "label": "BusinessType",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:BusinessType",
+        "dom:Sponsor_BusinessTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع النشاط التجاري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع النشاط التجاري.</p><p><strong>مثال.</strong> تجارة</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.GovernorateId",
+      "label": "Governorate",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:Governorate",
+        "dom:Sponsor_GovernorateId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المحافظات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المحافظة في العنوان.</p><p><strong>مثال.</strong> العاصمة</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.Profession",
+      "label": "Profession",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:Profession",
+        "dom:Sponsor_Profession"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مهنة المالك.</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.MOSALID",
+      "label": "MOSALID",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:MOSALID",
+        "dom:Sponsor_MOSALID"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم ملف الكفيل لدى وزارة الشؤون الاجتماعية والعمل.</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء وفي تقارير كشف الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.UnifiedNum",
+      "label": "UnifiedNum",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:UnifiedNum",
+        "dom:Sponsor_UnifiedNum"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الرقم الموحد للكفيل لدى الجهات الحكومية.</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.OrganizationUnitId",
+      "label": "OrganizationUnit",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:OrganizationUnit",
+        "dom:Sponsor_OrganizationUnitId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الوحدات التنظيمية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> جزء المنظمة الذي ينتمي إليه الكفيل.</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.Building",
+      "label": "Building",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:Building",
+        "dom:Sponsor_Building"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبنى في عنوان الكفيل.</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.Street",
+      "label": "Street",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:Street",
+        "dom:Sponsor_Street"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشارع.</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.Area",
+      "label": "Area",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:Area",
+        "dom:Sponsor_Area"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المنطقة.</p><p><strong>مثال.</strong> الشويخ</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.Email",
+      "label": "Email",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:Email",
+        "dom:Sponsor_Email"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البريد الإلكتروني للكفيل.</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.Telephone",
+      "label": "Telephone",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:Telephone",
+        "dom:Sponsor_Telephone"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الهاتف.</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.Block",
+      "label": "Block",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:Block",
+        "dom:Sponsor_Block"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القطعة.</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.SocialSecurityNum",
+      "label": "SocialSecurityNum",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:SocialSecurityNum",
+        "dom:Sponsor_SocialSecurityNum"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم تسجيل الكفيل في التأمينات الاجتماعية.</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.Fax",
+      "label": "Fax",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:Fax",
+        "dom:Sponsor_Fax"
+      ],
+      "rules": "اختياري. الحد الأقصى 50 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الفاكس.</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.POBox",
+      "label": "POBox",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:POBox",
+        "dom:Sponsor_POBox"
+      ],
+      "rules": "اختياري. الحد الأقصى 50 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> صندوق البريد.</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

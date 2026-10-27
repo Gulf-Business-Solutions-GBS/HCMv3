@@ -1,0 +1,53 @@
+<div class="rule-formula">
+    @if (activeSignature()) {
+        <div class="rule-formula-signature">
+            <i class="fa fa-superscript me-1"></i>{{ activeSignature() }}
+        </div>
+    }
+
+    <textarea
+        #editor
+        class="form-control rule-formula-editor"
+        [class.is-invalid]="errorMessage()"
+        [rows]="rows()"
+        [placeholder]="placeholder()"
+        [ngModel]="text()"
+        (ngModelChange)="onInput($event)"
+        (keydown)="onKeyDown($event)"
+        (keyup)="onCaretMoved()"
+        (click)="onCaretMoved()"
+        (blur)="onBlur()"
+        spellcheck="false"
+        autocomplete="off"></textarea>
+
+    @if (isOpen() && suggestions().length > 0) {
+        <div class="rule-formula-suggestions">
+            @for (suggestion of suggestions(); track suggestion.kind + suggestion.label; let i = $index) {
+                <button
+                    type="button"
+                    class="rule-formula-suggestion"
+                    [class.highlighted]="i === highlightedIndex()"
+                    (mousedown)="$event.preventDefault()"
+                    (click)="accept(suggestion)">
+                    <i class="fa {{ iconFor(suggestion.kind) }} rule-formula-suggestion-icon"></i>
+                    <span class="rule-formula-suggestion-label">{{ suggestion.label }}</span>
+                    <span class="rule-formula-suggestion-detail">{{ suggestion.detail }}</span>
+                    @if (suggestion.description) {
+                        <span class="rule-formula-suggestion-description">{{ suggestion.description }}</span>
+                    }
+                </button>
+            }
+        </div>
+    }
+
+    @if (errorMessage()) {
+        <div class="rule-formula-error">
+            <i class="fa fa-exclamation-circle me-1"></i>{{ errorMessage() }}
+            @if (errorPosition() >= 0) {
+                <span class="rule-formula-error-position">{{ 'AtPosition' | localize: errorPosition() }}</span>
+            }
+        </div>
+    } @else {
+        <div class="rule-formula-hint">{{ 'FormulaEditorHint' | localize }}</div>
+    }
+</div>

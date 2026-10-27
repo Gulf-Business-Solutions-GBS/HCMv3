@@ -1,0 +1,59 @@
+{
+  "helpId": "rpt.report-master.edit",
+  "lang": "en",
+  "title": "Report Masters — Create / Edit",
+  "entity": "HCMv3.ReportManagement.ReportMaster",
+  "overviewHtml": "<p>A drill-down report, whose levels are its details. Part of the report designer carried over from the old system. Not read at present: nothing in HCMv3 runs these definitions, so records here have no effect.</p>",
+  "aliasIndex": {
+    "loc:Code": "ReportMaster.Code",
+    "dom:ReportMaster_Code": "ReportMaster.Code",
+    "loc:NameEn": "ReportMaster.NameEn",
+    "dom:ReportMaster_NameEn": "ReportMaster.NameEn",
+    "loc:NameAr": "ReportMaster.NameAr",
+    "dom:ReportMaster_NameAr": "ReportMaster.NameAr"
+  },
+  "fields": [
+    {
+      "id": "ReportMaster.Code",
+      "label": "Code",
+      "section": "ReportMasters",
+      "aliases": [
+        "loc:Code",
+        "dom:ReportMaster_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportMaster.NameEn",
+      "label": "NameEn",
+      "section": "ReportMasters",
+      "aliases": [
+        "loc:NameEn",
+        "dom:ReportMaster_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportMaster.NameAr",
+      "label": "NameAr",
+      "section": "ReportMasters",
+      "aliases": [
+        "loc:NameAr",
+        "dom:ReportMaster_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

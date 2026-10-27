@@ -1,0 +1,5 @@
+# Generated pipeline artefacts: 481 .repx, 481 .mrt, rendered PDFs/PNGs, conversion logs.
+# All of it is reproducible from HCM10.Module.dll by running the pipeline; none of it belongs in git.
+out/
+bin/
+obj/

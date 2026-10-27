@@ -1,0 +1,272 @@
+<div [@routerTransition] [helpPage]="'pay.post-jv'">
+    <sub-header [title]="'PostJv' | localize" [description]="'PayrollManagement' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom" [busyIf]="busy()">
+            <div class="card-body">
+                <!-- Parameter block: legacy uscCostingFile.ascx filter panel. -->
+                <div class="row mb-2">
+                    <div class="col-md-3 mb-4">
+                        <label class="form-label required" for="PostJv_PayrollArea">{{ 'PayrollArea' | localize }}</label>
+                        <select
+                            id="PostJv_PayrollArea"
+                            class="form-select"
+                            name="PayrollArea"
+                            [disabled]="isRunning()"
+                            [ngModel]="payrollAreaName()"
+                            (ngModelChange)="onPayrollAreaChange($event)">
+                            <option [ngValue]="undefined"></option>
+                            @for (area of payrollAreas(); track area.id) {
+                                <option [ngValue]="area.name">{{ area.name }}</option>
+                            }
+                        </select>
+                        @if (payrollAreaName() && !selectedAreaIsFiConfigured()) {
+                            <small class="text-danger">
+                                {{ 'PayrollFICompanyNull' | localize }} / {{ 'PayrollFIBankNull' | localize }}
+                            </small>
+                        }
+                    </div>
+
+                    <div class="col-md-3 mb-4">
+                        <label class="form-label" for="PostJv_EmployeeCode">{{ 'EmployeeCode' | localize }}</label>
+                        <div class="input-group">
+                            <input
+                                id="PostJv_EmployeeCode"
+                                type="text"
+                                class="form-control"
+                                name="EmployeeCode"
+                                maxlength="4000"
+                                [ngModel]="employeeCode()"
+                                (ngModelChange)="onEmployeeCodeChange($event)" />
+                            <button
+                                type="button"
+                                class="btn btn-light-primary"
+                                [title]="l('PayrollRunSelectEmployees')"
+                                [attr.aria-label]="l('PayrollRunSelectEmployees')"
+                                [disabled]="!canPickEmployees()"
+                                (click)="openEmployeePicker()">
+                                <i class="fa fa-users"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 mb-4">
+                        <label class="form-label required" for="PostJv_RunType">{{ 'PayrollRunType' | localize }}</label>
+                        <select
+                            id="PostJv_RunType"
+                            class="form-select"
+                            name="PayrollRunType"
+                            [ngModel]="payrollRunType()"
+                            (ngModelChange)="onPayrollRunTypeChange($event)">
+                            <option [ngValue]="PayrollRunType.Regular">{{ 'Regular' | localize }}</option>
+                            <option [ngValue]="PayrollRunType.OffCycle">{{ 'OffCycle' | localize }}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 mb-4">
+                        <label class="form-label required" for="PostJv_PostingDate">{{ 'PostingDate' | localize }}</label>
+                        <input
+                            id="PostJv_PostingDate"
+                            type="date"
+                            class="form-control"
+                            name="PostingDate"
+                            [ngModel]="postingDate()"
+                            (ngModelChange)="onPostingDateChange($event)" />
+                    </div>
+                </div>
+
+                <!-- Legacy rdCurrent / rdOtherPeriod with the read-only Start / End Date boxes. -->
+                <div class="row align-items-end mb-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="d-flex gap-5">
+                            <div class="form-check">
+                                <input
+                                    id="PostJv_PeriodCurrent"
+                                    type="radio"
+                                    class="form-check-input"
+                                    name="PostJv_Period"
+                                    [checked]="!otherPeriod()"
+                                    (change)="onPeriodModeChange(false)" />
+                                <label class="form-check-label" for="PostJv_PeriodCurrent">{{ 'Current' | localize }}</label>
+                            </div>
+                            <div class="form-check">
+                                <input
+                                    id="PostJv_PeriodOther"
+                                    type="radio"
+                                    class="form-check-input"
+                                    name="PostJv_Period"
+                                    [checked]="otherPeriod()"
+                                    (change)="onPeriodModeChange(true)" />
+                                <label class="form-check-label" for="PostJv_PeriodOther">{{ 'PayrollRunOtherPeriod' | localize }}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        <label class="form-label" for="PostJv_Month">{{ 'Month' | localize }}</label>
+                        <input
+                            id="PostJv_Month"
+                            type="number"
+                            class="form-control"
+                            name="Month"
+                            min="1"
+                            max="12"
+                            [readonly]="!otherPeriod()"
+                            [class.bg-light]="!otherPeriod()"
+                            [ngModel]="payrollMonth()"
+                            (ngModelChange)="onMonthChange($event)" />
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label class="form-label" for="PostJv_Year">{{ 'Year' | localize }}</label>
+                        <input
+                            id="PostJv_Year"
+                            type="number"
+                            class="form-control"
+                            name="Year"
+                            min="1900"
+                            max="9999"
+                            [readonly]="!otherPeriod()"
+                            [class.bg-light]="!otherPeriod()"
+                            [ngModel]="payrollYear()"
+                            (ngModelChange)="onYearChange($event)" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">{{ 'StartDate' | localize }} - {{ 'EndDate' | localize }}</label>
+                        <div class="form-control bg-light">
+                            @if (periodEnd()) {
+                                {{ periodStart() | luxonFormat: 'dd/MM/yyyy' }} - {{ periodEnd() | luxonFormat: 'dd/MM/yyyy' }}
+                            } @else {
+                                &nbsp;
+                            }
+                        </div>
+                    </div>
+                    @if (periodMessage()) {
+                        <div class="col-12">
+                            <small class="text-danger">{{ periodMessage() }}</small>
+                        </div>
+                    }
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-12 d-flex flex-wrap gap-2">
+                        <button type="button" class="btn btn-secondary" [disabled]="!canSubmit()" (click)="previewJournalVoucher()">
+                            <i class="fa fa-table btn-md-icon"></i>
+                            <span>{{ 'JournalVoucher' | localize }}</span>
+                        </button>
+
+                        <button type="button" class="btn btn-secondary" [disabled]="!canSubmit()" (click)="validateJournalVoucher()">
+                            <i class="fa fa-check btn-md-icon"></i>
+                            <span>{{ 'ValidateJV' | localize }}</span>
+                        </button>
+
+                        @if ('Pages.PayrollManagement.PostJv.Post' | permission) {
+                            <!-- Needs a current preview; the server re-checks everything before queuing. -->
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                [disabled]="!canPost()"
+                                [pTooltip]="postBlockedReason()"
+                                (click)="postJournalVoucher()">
+                                <i class="fa fa-paper-plane btn-md-icon"></i>
+                                <span>{{ 'PostJournalVoucher' | localize }}</span>
+                            </button>
+
+                            <button type="button" class="btn btn-warning" [disabled]="!isRunning()" (click)="requestStop()">
+                                <i class="fa fa-stop btn-md-icon"></i>
+                                <span>{{ 'StopProcess' | localize }}</span>
+                            </button>
+
+                            <button type="button" class="btn btn-light" [disabled]="isRunning()" (click)="clearStatus()">
+                                <i class="fa fa-eraser btn-md-icon"></i>
+                                <span>{{ 'ClearStatus' | localize }}</span>
+                            </button>
+                        }
+                    </div>
+                </div>
+
+                <!-- Legacy status panel: status, progress, counters, Show details (every header / batch row). -->
+                <financeRunStatus [status]="status()" (showDetails)="showDetails()"></financeRunStatus>
+
+                <!-- JV preview -->
+                @if (lines().length) {
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <div class="alert alert-light mb-0">
+                                {{ 'TotalDebit' | localize }}: <strong>{{ totalDebit() }}</strong>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="alert alert-light mb-0">
+                                {{ 'TotalCredit' | localize }}: <strong>{{ totalCredit() }}</strong>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            @if (isBalanced()) {
+                                <div class="alert alert-success mb-0">{{ 'JVValidatedSuccessfully' | localize }}</div>
+                            } @else {
+                                <div class="alert alert-danger mb-0">{{ 'DebitCreditNotMatched' | localize }}</div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="primeng-datatable-container">
+                        <p-table
+                            [value]="lines()"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            scrollHeight="500px"
+                            [tableStyle]="{ 'min-width': '80rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 90px">{{ 'JournalBatchNumber' | localize }}</th>
+                                    <th style="width: 70px">#</th>
+                                    <th style="width: 110px">{{ 'EmployeeCode' | localize }}</th>
+                                    <th style="width: 120px">{{ 'Company' | localize }}</th>
+                                    <th style="width: 120px">{{ 'AccountType' | localize }}</th>
+                                    <th style="width: 130px">{{ 'MainAccount' | localize }}</th>
+                                    <th style="width: 200px">{{ 'Description' | localize }}</th>
+                                    <th style="width: 110px">{{ 'CostElement' | localize }} 2</th>
+                                    <th style="width: 110px">{{ 'CostElement' | localize }} 3</th>
+                                    <th style="width: 110px">{{ 'CostElement' | localize }} 4</th>
+                                    <th style="width: 110px">{{ 'CostElement' | localize }} 5</th>
+                                    <th style="width: 110px">{{ 'CostElement' | localize }} 6</th>
+                                    <th style="width: 110px">{{ 'CostElement' | localize }} 7</th>
+                                    <th style="width: 90px">{{ 'Currency' | localize }}</th>
+                                    <th style="width: 110px">{{ 'Debit' | localize }}</th>
+                                    <th style="width: 110px">{{ 'Credit' | localize }}</th>
+                                    <th style="width: 130px">{{ 'OffsetAccount' | localize }}</th>
+                                    <th style="width: 110px">{{ 'BillingType' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-line>
+                                <tr [class.table-warning]="line.isMerged">
+                                    <td>{{ line.journalBatchNumber }}</td>
+                                    <td>{{ line.lineNumber }}</td>
+                                    <td>{{ line.empCode }}</td>
+                                    <td>{{ line.companyAccounts }}</td>
+                                    <td>{{ line.lineNumberAccountType }}</td>
+                                    <td [pTooltip]="line.ledgerDimensionMainAccountName">{{ line.ledgerDimensionMainAccount }}</td>
+                                    <td>{{ line.description }}</td>
+                                    <td>{{ line.ledgerDimensionLocation }}</td>
+                                    <td>{{ line.ledgerDimensionBrand }}</td>
+                                    <td>{{ line.ledgerDimensionDepartment }}</td>
+                                    <td>{{ line.ledgerDimensionEmployees }}</td>
+                                    <td>{{ line.defaultDimensionEmployees }}</td>
+                                    <td>{{ line.defaultDimensionLocation }}</td>
+                                    <td>{{ line.currency }}</td>
+                                    <td class="text-end">{{ line.debit }}</td>
+                                    <td class="text-end">{{ line.credit }}</td>
+                                    <td>{{ line.offsetLedgerDimensionMainAccount }}</td>
+                                    <td>{{ line.billingType }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <financeRunLogModal #logModal></financeRunLogModal>
+    <costingEmployeePickerModal #pickerModal (codesSelected)="onCodesSelected($event)"></costingEmployeePickerModal>
+</div>

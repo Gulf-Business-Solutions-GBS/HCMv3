@@ -1,0 +1,469 @@
+/* Personal dashboard tiles, modelled on the legacy ESS dashboard. Palette follows the active theme --
+   these tiles used to carry a hardcoded house teal, which meant they were the same colour in all
+   thirteen themes and stayed on a white card when the rest of the app went dark. */
+
+/* The accent, in one place. Everything else on this page reads straight from the Bootstrap tokens the
+   theme bundle sets, which is what makes these tiles follow a theme change and invert under dark mode:
+   Metronic redefines the whole --bs-* palette under [data-bs-theme="dark"], and theme14 redefines
+   --bs-primary outright. The accent gets a name of its own only because it is a product decision
+   rather than a mechanical mapping -- point it somewhere else and the page re-tints from one line.
+
+   THREE tokens rather than one, because the accent is asked to do two different jobs. The house teal
+   these tiles used to hardcode was DARK, so the same value served as both a fill and as small text.
+   Metronic's --bs-primary is a bright blue: fine as a fill behind white, but only 3.6:1 as 12px text
+   on a card. So small accent text uses --ms-accent-text, the brand colour pulled halfway toward the
+   body ink. Pulled toward --bs-gray-900 specifically, because that token INVERTS: in light mode it is
+   near-black and darkens the accent, in dark mode it is near-white and lightens it. One expression,
+   legible both ways, and still derived from --bs-primary so a rebrand carries it.
+
+   Everything here is built from --bs-primary / --bs-primary-rgb, which are the two tokens theme14
+   actually overrides. The -light and -bg-subtle families would have been easier to read but theme14
+   leaves them alone, so a tile using them would stay Metronic blue on a rebranded page. */
+:host {
+    --ms-accent: var(--bs-primary);
+    --ms-accent-text: color-mix(in srgb, var(--bs-primary) 50%, var(--bs-gray-900));
+    --ms-accent-soft: rgba(var(--bs-primary-rgb), 0.12);
+}
+
+.ms-card {
+    margin-bottom: 16px;
+}
+
+/* Cards that sit beside each other must end level. Without this the identity card -- which has less in
+   it than the assignment card -- stops short and leaves a step across the top of the page. */
+.ms-card-fill {
+    height: calc(100% - 16px);
+}
+
+/* ---------- identity ---------- */
+.ms-identity {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.ms-avatar {
+    flex: 0 0 auto;
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    background: var(--ms-accent);
+    color: var(--bs-primary-inverse);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.ms-identity-text {
+    min-width: 0;
+}
+
+/* Code above the name, in the accent colour, exactly as legacy has it. It is how HR and payroll refer
+   to a person, and it is the thing you read out on the phone. */
+.ms-identity-code {
+    font-family: 'IBM Plex Mono', SFMono-Regular, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ms-accent-text);
+}
+
+.ms-identity-name {
+    margin: 2px 0 0;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--bs-gray-900);
+}
+
+.ms-identity-job {
+    margin-top: 3px;
+    font-size: 13px;
+    color: var(--bs-gray-700);
+}
+
+/* ---------- card headings with an icon ---------- */
+.ms-head-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ms-head-row-split {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.ms-head-icon {
+    font-size: 20px;
+    color: var(--ms-accent);
+}
+
+.ms-head-icon:before {
+    font-size: 20px;
+}
+
+.ms-head-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--bs-gray-900);
+}
+
+.ms-head-sub {
+    font-size: 12px;
+    color: var(--bs-gray-600);
+}
+
+/* "Updated today" and similar: a statement about the data, not a control, so it is quiet and not
+   clickable-looking. */
+.ms-pill {
+    padding: 3px 12px;
+    border-radius: 12px;
+    background: var(--ms-accent-soft);
+    color: var(--ms-accent-text);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* ---------- employment details ---------- */
+.ms-org-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    margin-top: 16px;
+}
+
+/* Thin rules between the pairs, as legacy draws them: the grid is read as two rows of two, and without
+   a separator the four values run together into a list. */
+.ms-org-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 12px 18px;
+    border-top: 1px solid var(--bs-border-color);
+}
+
+.ms-org-item:nth-child(odd) {
+    border-inline-end: 1px solid var(--bs-border-color);
+    padding-inline-start: 0;
+}
+
+.ms-org-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--bs-gray-600);
+}
+
+.ms-org-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--bs-gray-900);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 575.98px) {
+    .ms-org-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ms-org-item:nth-child(odd) {
+        border-inline-end: 0;
+        padding-inline-start: 0;
+    }
+}
+
+.ms-section-head {
+    margin-bottom: 14px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--bs-gray-700);
+}
+
+/* ---------- quick actions ---------- */
+/* Square tiles at the size legacy uses. The previous 130px-wide text links with 22px glyphs were the
+   specific complaint -- at that scale the icon is decoration and the tile stops being a target. */
+.ms-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 14px;
+}
+
+.ms-action {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-height: 140px;
+    padding: 18px 12px;
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 6px;
+    color: var(--bs-gray-900);
+    text-align: center;
+    text-decoration: none;
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+}
+
+/* The glyph sits in its own tinted disc so it reads as an illustration rather than as a bullet, which
+   is what makes the legacy tiles legible from across the desk. */
+.ms-action-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--ms-accent-soft);
+}
+
+.ms-action-icon i,
+.ms-action-icon i:before {
+    font-size: 26px;
+    line-height: 1;
+    color: var(--ms-accent);
+}
+
+.ms-action-label {
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.ms-action:hover {
+    background: var(--ms-accent-soft);
+    border-color: var(--ms-accent);
+    box-shadow: 0 2px 8px rgba(var(--bs-primary-rgb), 0.12);
+    color: var(--ms-accent-text);
+}
+
+/* The approvals count. Warm rather than the page accent on purpose: it is the one number here that
+   means somebody else is blocked, and it should not blend into the tile it sits on. */
+.ms-action-badge {
+    position: absolute;
+    top: -6px;
+    inset-inline-end: -6px;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 11px;
+    background: var(--bs-danger);
+    color: var(--bs-danger-inverse);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 22px;
+    text-align: center;
+}
+
+/* ---------- leave balance ---------- */
+.ms-balances {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 12px;
+}
+
+/* One tinted card per leave type. The tint carries no meaning beyond "this is a different type" -- it
+   is there so three balances are told apart without reading three labels.
+
+   Each card is its brand colour at 12% over whatever is behind it, edged at 30%, with the figure
+   using the same halfway-to-the-ink trick as --ms-accent-text. All four therefore follow a rebrand.
+
+   The obvious shortcut here is Metronic's ready-made --bs-*-light backgrounds with the plain brand
+   colour on top -- that is what its own .badge-light-success does. Measured, it is unreadable:
+   success on success-light is 2.1:1 and warning on warning-light 2.0:1, and these are 28px figures
+   that are the entire point of the card. The mix lands at 5:1 or better in both colour modes. */
+.ms-balance {
+    padding: 14px 16px;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 6px;
+    background: var(--bs-gray-100);
+}
+
+.ms-balance-type {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--bs-gray-700);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ms-balance-value {
+    margin-top: 6px;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--ms-accent-text);
+}
+
+.ms-balance-unit {
+    margin-inline-start: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--bs-gray-600);
+    text-transform: uppercase;
+}
+
+.ms-balance-blue {
+    background: rgba(var(--bs-primary-rgb), 0.12);
+    border-color: rgba(var(--bs-primary-rgb), 0.3);
+}
+
+.ms-balance-blue .ms-balance-value {
+    color: color-mix(in srgb, var(--bs-primary) 50%, var(--bs-gray-900));
+}
+
+.ms-balance-green {
+    background: rgba(var(--bs-success-rgb), 0.12);
+    border-color: rgba(var(--bs-success-rgb), 0.3);
+}
+
+.ms-balance-green .ms-balance-value {
+    color: color-mix(in srgb, var(--bs-success) 50%, var(--bs-gray-900));
+}
+
+.ms-balance-purple {
+    background: rgba(var(--bs-info-rgb), 0.12);
+    border-color: rgba(var(--bs-info-rgb), 0.3);
+}
+
+.ms-balance-purple .ms-balance-value {
+    color: color-mix(in srgb, var(--bs-info) 50%, var(--bs-gray-900));
+}
+
+.ms-balance-amber {
+    background: rgba(var(--bs-warning-rgb), 0.12);
+    border-color: rgba(var(--bs-warning-rgb), 0.3);
+}
+
+.ms-balance-amber .ms-balance-value {
+    color: color-mix(in srgb, var(--bs-warning) 50%, var(--bs-gray-900));
+}
+
+.ms-balance-note {
+    margin: 12px 0 0;
+    font-size: 11.5px;
+    color: var(--bs-gray-600);
+}
+
+/* ---------- alerts / attendance rows ---------- */
+.ms-alert {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 0;
+    font-size: 13px;
+    color: var(--bs-gray-900);
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.ms-alert:first-of-type {
+    margin-top: 6px;
+}
+
+.ms-alert:last-child {
+    border-bottom: 0;
+}
+
+.ms-alert-count {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ms-accent-text);
+}
+
+.ms-punch {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--bs-gray-900);
+}
+
+.ms-in-badge {
+    padding: 2px 8px;
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ms-accent-text);
+    background: var(--ms-accent-soft);
+}
+
+.ms-empty {
+    margin: 10px 0 0;
+    font-size: 12.5px;
+    color: var(--bs-gray-600);
+}
+
+/* ---------- announcements ---------- */
+.ms-ann {
+    display: flex;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.ms-ann:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Date block echoes the legacy screen's calendar tile -- the posting date is how people tell one
+   announcement from another when the titles are similar. */
+.ms-ann-date {
+    flex: 0 0 auto;
+    width: 52px;
+    padding: 8px 0;
+    text-align: center;
+    background: var(--bs-gray-100);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 4px;
+}
+
+.ms-ann-day {
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--bs-gray-900);
+}
+
+.ms-ann-month {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--bs-gray-600);
+}
+
+.ms-ann-text {
+    min-width: 0;
+}
+
+.ms-ann-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--bs-gray-900);
+}
+
+.ms-ann-body {
+    margin: 4px 0 0;
+    font-size: 12.5px;
+    color: var(--bs-gray-700);
+    /* Clamped: an announcement can be several paragraphs, and one long post should not push the rest
+       of the dashboard off the screen. */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

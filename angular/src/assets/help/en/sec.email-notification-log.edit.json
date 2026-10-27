@@ -1,0 +1,123 @@
+{
+  "helpId": "sec.email-notification-log.edit",
+  "lang": "en",
+  "title": "Email Notification Logs — Create / Edit",
+  "entity": "HCMv3.SystemSecurity.EmailNotificationLog",
+  "overviewHtml": "<p>One email the system tried to send, and whether it went. Written by the system as it runs; there is normally no reason to add or change entries by hand.</p>",
+  "aliasIndex": {
+    "loc:Date": "EmailNotificationLog.Date",
+    "dom:EmailNotificationLog_Date": "EmailNotificationLog.Date",
+    "loc:Email": "EmailNotificationLog.Email",
+    "dom:EmailNotificationLog_Email": "EmailNotificationLog.Email",
+    "loc:Source": "EmailNotificationLog.Source",
+    "dom:EmailNotificationLog_Source": "EmailNotificationLog.Source",
+    "loc:Subject": "EmailNotificationLog.Subject",
+    "dom:EmailNotificationLog_Subject": "EmailNotificationLog.Subject",
+    "loc:IsSuccessful": "EmailNotificationLog.IsSuccessful",
+    "dom:EmailNotificationLog_IsSuccessful": "EmailNotificationLog.IsSuccessful",
+    "loc:Body": "EmailNotificationLog.Body",
+    "dom:EmailNotificationLog_Body": "EmailNotificationLog.Body",
+    "loc:Exception": "EmailNotificationLog.Exception",
+    "dom:EmailNotificationLog_Exception": "EmailNotificationLog.Exception"
+  },
+  "fields": [
+    {
+      "id": "EmailNotificationLog.Date",
+      "label": "Date",
+      "section": "EmailNotificationLogs",
+      "aliases": [
+        "loc:Date",
+        "dom:EmailNotificationLog_Date"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When it was sent.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailNotificationLog.Email",
+      "label": "Email",
+      "section": "EmailNotificationLogs",
+      "aliases": [
+        "loc:Email",
+        "dom:EmailNotificationLog_Email"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The address it was sent to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailNotificationLog.Source",
+      "label": "Source",
+      "section": "EmailNotificationLogs",
+      "aliases": [
+        "loc:Source",
+        "dom:EmailNotificationLog_Source"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What sent it.</p><p><strong>Example.</strong> Punch notification</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailNotificationLog.Subject",
+      "label": "Subject",
+      "section": "EmailNotificationLogs",
+      "aliases": [
+        "loc:Subject",
+        "dom:EmailNotificationLog_Subject"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The subject.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailNotificationLog.IsSuccessful",
+      "label": "IsSuccessful",
+      "section": "EmailNotificationLogs",
+      "aliases": [
+        "loc:IsSuccessful",
+        "dom:EmailNotificationLog_IsSuccessful"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether it was sent.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailNotificationLog.Body",
+      "label": "Body",
+      "section": "EmailNotificationLogs",
+      "aliases": [
+        "loc:Body",
+        "dom:EmailNotificationLog_Body"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The body.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailNotificationLog.Exception",
+      "label": "Exception",
+      "section": "EmailNotificationLogs",
+      "aliases": [
+        "loc:Exception",
+        "dom:EmailNotificationLog_Exception"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The error, if it failed.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

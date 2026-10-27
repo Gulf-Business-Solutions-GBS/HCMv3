@@ -1,0 +1,139 @@
+{
+  "helpId": "pa.news.edit",
+  "lang": "ar",
+  "title": "الإعلانات — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.News",
+  "overviewHtml": "<p>إعلان من الشركة للموظفين.</p><p>يرى الموظفون الإعلانات في لوحة الخدمة الذاتية بين تاريخ الإصدار وتاريخ الانتهاء. ويُحفظ خيارا الإشعار والبريد الإلكتروني، لكن الإعلانات لا تُرسل بإشعار أو بريد إلكتروني حالياً.</p>",
+  "aliasIndex": {
+    "loc:Title": "News.Title",
+    "dom:Announcement_Title": "News.Title",
+    "loc:TitleAr": "News.TitleAr",
+    "dom:Announcement_TitleAr": "News.TitleAr",
+    "loc:IssueDate": "News.IssueDate",
+    "dom:Announcement_IssueDate": "News.IssueDate",
+    "loc:ExpiryDate": "News.ExpiryDate",
+    "dom:Announcement_ExpiryDate": "News.ExpiryDate",
+    "loc:Summary": "News.Comments",
+    "dom:Announcement_Comments": "News.Comments",
+    "loc:SummaryAr": "News.CommentAr",
+    "dom:Announcement_CommentAr": "News.CommentAr",
+    "loc:SendNotification": "News.SendNotification",
+    "dom:Announcement_SendNotification": "News.SendNotification",
+    "loc:SendEmail": "News.SendEmail",
+    "dom:Announcement_SendEmail": "News.SendEmail"
+  },
+  "fields": [
+    {
+      "id": "News.Title",
+      "label": "Title",
+      "section": "Announcements",
+      "aliases": [
+        "loc:Title",
+        "dom:Announcement_Title"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنوان الإعلان بالإنجليزية.</p><p><strong>مثال.</strong> Office closed for National Day</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "News.TitleAr",
+      "label": "TitleAr",
+      "section": "Announcements",
+      "aliases": [
+        "loc:TitleAr",
+        "dom:Announcement_TitleAr"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنوان الإعلان بالعربية.</p><p><strong>مثال.</strong> إغلاق المكتب بمناسبة العيد الوطني</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "News.IssueDate",
+      "label": "IssueDate",
+      "section": "Announcements",
+      "aliases": [
+        "loc:IssueDate",
+        "dom:Announcement_IssueDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ بدء ظهور الإعلان.</p><p><strong>مثال.</strong> 20 فبراير 2027</p><p><strong>لماذا يهم.</strong> لا يجوز أن يأتي بعد تاريخ الانتهاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "News.ExpiryDate",
+      "label": "ExpiryDate",
+      "section": "Announcements",
+      "aliases": [
+        "loc:ExpiryDate",
+        "dom:Announcement_ExpiryDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ توقف ظهور الإعلان.</p><p><strong>مثال.</strong> 27 فبراير 2027</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "News.Comments",
+      "label": "Summary",
+      "section": "Announcements",
+      "aliases": [
+        "loc:Summary",
+        "dom:Announcement_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نص الإعلان بالإنجليزية.</p><p><strong>مثال.</strong> The office will be closed on 25 and 26 February.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "News.CommentAr",
+      "label": "SummaryAr",
+      "section": "Announcements",
+      "aliases": [
+        "loc:SummaryAr",
+        "dom:Announcement_CommentAr"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نص الإعلان بالعربية.</p><p><strong>مثال.</strong> سيُغلق المكتب يومي 25 و26 فبراير.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "News.SendNotification",
+      "label": "SendNotification",
+      "section": "Announcements",
+      "aliases": [
+        "loc:SendNotification",
+        "dom:Announcement_SendNotification"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يُبلَّغ الموظفون داخل التطبيق.</p><p><strong>لماذا يهم.</strong> يُحفظ فقط، ولا يُرسل أي إشعار حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "News.SendEmail",
+      "label": "SendEmail",
+      "section": "Announcements",
+      "aliases": [
+        "loc:SendEmail",
+        "dom:Announcement_SendEmail"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يُرسل بريد إلكتروني للموظفين.</p><p><strong>لماذا يهم.</strong> يُحفظ فقط، ولا يُرسل أي بريد حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

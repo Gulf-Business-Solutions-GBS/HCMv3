@@ -1,0 +1,321 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'WorkflowTransactionTypes' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'WorkflowTransactionTypes' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="WorkflowTransactionType_Code">{{ 'Code' | localize }}</label>
+                                <input
+                                    id="WorkflowTransactionType_Code"
+                                    #codeInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="Code"
+                                    maxlength="128"
+                                    [ngModel]="record().code"
+                                    (ngModelChange)="updateField('code', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="codeInput" />
+
+                                <!-- Said on the form, because getting it wrong produces no error anywhere:
+                                     the resolver simply never finds the row and the type behaves as if it
+                                     were not catalogued. -->
+                                <div class="form-text">{{ 'TransactionTypeCodeHint' | localize }}</div>
+                            </div>
+
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="WorkflowTransactionType_DisplayOrder">{{ 'DisplayOrder' | localize }}</label>
+                                <input
+                                    id="WorkflowTransactionType_DisplayOrder"
+                                    type="number"
+                                    class="form-control"
+                                    name="DisplayOrder"
+                                    [ngModel]="record().displayOrder"
+                                    (ngModelChange)="updateField('displayOrder', $event)" />
+                            </div>
+
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="WorkflowTransactionType_NameEn">{{ 'NameEn' | localize }}</label>
+                                <input
+                                    id="WorkflowTransactionType_NameEn"
+                                    #nameEnInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameEn"
+                                    maxlength="256"
+                                    [ngModel]="record().nameEn"
+                                    (ngModelChange)="updateField('nameEn', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameEnInput" />
+                            </div>
+
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="WorkflowTransactionType_NameAr">{{ 'NameAr' | localize }}</label>
+                                <input
+                                    id="WorkflowTransactionType_NameAr"
+                                    #nameArInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameAr"
+                                    maxlength="256"
+                                    [ngModel]="record().nameAr"
+                                    (ngModelChange)="updateField('nameAr', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameArInput" />
+                            </div>
+
+                            <!-- The chain. Everything above is labelling; this is what decides whether a
+                                 request ever reaches an approver. -->
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="WorkflowTransactionType_DefaultRequestMasterId">
+                                    {{ 'DefaultRequestMaster' | localize }}
+                                </label>
+                                <select
+                                    id="WorkflowTransactionType_DefaultRequestMasterId"
+                                    class="form-select"
+                                    name="DefaultRequestMasterId"
+                                    [ngModel]="record().defaultRequestMasterId"
+                                    (ngModelChange)="updateField('defaultRequestMasterId', $event)">
+                                    <option [ngValue]="undefined">{{ 'NotSet' | localize }}</option>
+                                    @for (master of requestMasters(); track master.id) {
+                                        <option [ngValue]="master.id">
+                                            {{ master.nameEn }} ({{ master.workflowSteps }} {{ 'Steps' | localize }})
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+
+                            @if (isEnabledWithoutChain()) {
+                                <!-- Warned, not blocked: the two fields are often set in either order, and
+                                     refusing the intermediate state makes the form fight the person filling
+                                     it in. Saying so is enough. -->
+                                <div class="col-md-12 mb-5">
+                                    <div class="alert alert-warning mb-0">
+                                        {{ 'WorkflowEnabledWithoutChainWarning' | localize }}
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="WorkflowTransactionType_EssRoute">{{ 'EssRoute' | localize }}</label>
+                                <input
+                                    id="WorkflowTransactionType_EssRoute"
+                                    type="text"
+                                    class="form-control"
+                                    name="EssRoute"
+                                    maxlength="256"
+                                    [ngModel]="record().essRoute"
+                                    (ngModelChange)="updateField('essRoute', $event)" />
+                            </div>
+
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="WorkflowTransactionType_EssPermissionName">
+                                    {{ 'EssPermissionName' | localize }}
+                                </label>
+                                <input
+                                    id="WorkflowTransactionType_EssPermissionName"
+                                    type="text"
+                                    class="form-control"
+                                    name="EssPermissionName"
+                                    maxlength="256"
+                                    [ngModel]="record().essPermissionName"
+                                    (ngModelChange)="updateField('essPermissionName', $event)" />
+                            </div>
+
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="WorkflowTransactionType_IconClass">{{ 'IconClass' | localize }}</label>
+                                <input
+                                    id="WorkflowTransactionType_IconClass"
+                                    type="text"
+                                    class="form-control"
+                                    name="IconClass"
+                                    maxlength="128"
+                                    [ngModel]="record().iconClass"
+                                    (ngModelChange)="updateField('iconClass', $event)" />
+                            </div>
+
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="WorkflowTransactionType_SubTypeSource">{{ 'SubTypeSource' | localize }}</label>
+                                <select
+                                    id="WorkflowTransactionType_SubTypeSource"
+                                    class="form-select"
+                                    name="SubTypeSource"
+                                    [ngModel]="record().subTypeSource ?? null"
+                                    (ngModelChange)="changeSubTypeSource($event)">
+                                    <option [ngValue]="null">{{ 'NoSubType' | localize }}</option>
+                                    @for (source of subTypeSources(); track source) {
+                                        <option [ngValue]="source">{{ sourceLabel(source) }}</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-check form-switch form-check-custom form-check-solid mb-4">
+                                    <input
+                                        id="WorkflowTransactionType_IsActive"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="IsActive"
+                                        [ngModel]="record().isActive"
+                                        (ngModelChange)="updateField('isActive', $event)" />
+                                    <label class="form-check-label" for="WorkflowTransactionType_IsActive">{{ 'Active' | localize }}</label>
+                                </div>
+
+                                <div class="form-check form-switch form-check-custom form-check-solid mb-4">
+                                    <input
+                                        id="WorkflowTransactionType_IsWorkflowEnabled"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="IsWorkflowEnabled"
+                                        [ngModel]="record().isWorkflowEnabled"
+                                        (ngModelChange)="updateField('isWorkflowEnabled', $event)" />
+                                    <label class="form-check-label" for="WorkflowTransactionType_IsWorkflowEnabled">
+                                        {{ 'WorkflowEnabled' | localize }}
+                                    </label>
+                                </div>
+
+                                <!-- Only meaningful while routing is on: with workflow off every entry is
+                                     already direct, so the switch would promise a choice that does not
+                                     exist. Hidden rather than disabled, for the same reason. -->
+                                @if (record().isWorkflowEnabled) {
+                                    <div class="form-check form-switch form-check-custom form-check-solid mb-4">
+                                        <input
+                                            id="WorkflowTransactionType_AllowDirectEntry"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="AllowDirectEntry"
+                                            [ngModel]="record().allowDirectEntry"
+                                            (ngModelChange)="updateField('allowDirectEntry', $event)" />
+                                        <label class="form-check-label" for="WorkflowTransactionType_AllowDirectEntry">
+                                            {{ 'AllowDirectEntry' | localize }}
+                                        </label>
+                                    </div>
+
+                                    <div class="form-text mb-4">{{ 'AllowDirectEntryHint' | localize }}</div>
+                                }
+
+                                <div class="form-check form-switch form-check-custom form-check-solid mb-4">
+                                    <input
+                                        id="WorkflowTransactionType_IsEssEnabled"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="IsEssEnabled"
+                                        [ngModel]="record().isEssEnabled"
+                                        (ngModelChange)="updateField('isEssEnabled', $event)" />
+                                    <label class="form-check-label" for="WorkflowTransactionType_IsEssEnabled">{{ 'EssEnabled' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- The same for every type: a chain for a sub type (Sick Leave), an action
+                             (Cancellation), or both. Anything no rule covers follows the default chain. -->
+                        <hr />
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h6 class="mb-0">{{ 'ApprovalChainRules' | localize }}</h6>
+                            <button type="button" class="btn btn-sm btn-light-primary" (click)="addRule()">
+                                <i class="fa fa-plus"></i>
+                                {{ 'AddRule' | localize }}
+                            </button>
+                        </div>
+                        <div class="form-text mb-4">{{ 'ApprovalChainRulesHint' | localize }}</div>
+
+                        @if ((record().rules ?? []).length > 0) {
+                            <table class="table table-row-dashed align-middle mb-0">
+                                <thead>
+                                    <tr class="fw-bold text-muted">
+                                        <th>{{ 'SubType' | localize }}</th>
+                                        <th>{{ 'Action' | localize }}</th>
+                                        <th>{{ 'ApprovalChain' | localize }}</th>
+                                        <th style="width: 50px"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (rule of record().rules; track $index; let i = $index) {
+                                        <tr>
+                                            <td>
+                                                <select
+                                                    class="form-select form-select-sm"
+                                                    [name]="'RuleSubType' + i"
+                                                    [disabled]="!record().subTypeSource"
+                                                    [ngModel]="rule.requestSubTypeId ?? null"
+                                                    (ngModelChange)="updateRule(i, 'requestSubTypeId', $event)">
+                                                    <option [ngValue]="null">{{ 'Any' | localize }}</option>
+                                                    @for (option of subTypeOptions(); track option.id) {
+                                                        <option [ngValue]="option.id">{{ option.nameEn }}</option>
+                                                    }
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select
+                                                    class="form-select form-select-sm"
+                                                    [name]="'RuleAction' + i"
+                                                    [ngModel]="rule.requestAction ?? null"
+                                                    (ngModelChange)="updateRule(i, 'requestAction', $event)">
+                                                    <option [ngValue]="null">{{ 'Any' | localize }}</option>
+                                                    @for (option of actionOptions(); track option.value) {
+                                                        <option [ngValue]="option.value">{{ option.key | localize }}</option>
+                                                    }
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select
+                                                    class="form-select form-select-sm"
+                                                    [class.is-invalid]="!rule.requestMasterId"
+                                                    [name]="'RuleChain' + i"
+                                                    [ngModel]="rule.requestMasterId ?? null"
+                                                    (ngModelChange)="updateRule(i, 'requestMasterId', $event)">
+                                                    <option [ngValue]="null"></option>
+                                                    @for (master of requestMasters(); track master.id) {
+                                                        <option [ngValue]="master.id">
+                                                            {{ master.nameEn }} ({{ master.workflowSteps }} {{ 'Steps' | localize }})
+                                                        </option>
+                                                    }
+                                                </select>
+                                            </td>
+                                            <td class="text-end">
+                                                <button type="button" class="btn btn-sm btn-icon btn-light-danger" (click)="removeRule(i)" [attr.title]="l('Delete')">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary fw-bold" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary fw-bold" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || !rulesComplete()">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

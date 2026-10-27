@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-abs-quota-forfeit.edit",
+  "lang": "ar",
+  "title": "إسقاط حصص إجازات الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAbsQuotaForfeit",
+  "overviewHtml": "<p>سجل يدوي لأيام إجازة فقدها الموظف من نوع إجازة.</p><p>يؤدي حفظه إلى إضافة الأيام إلى رقم المُسقَط في حصة الإجازة السنوية للموظف التي تغطي تاريخ السريان، فينقص رصيد الإجازات؛ وعند تعديله تُرد أولاً الأيام المحفوظة سابقاً، وعند حذفه تُرد كلها. ولا تحرّك الحصةَ إلا أنواع الإجازة السنوية، وتكون الحصة دائماً حصة نوع الإجازة السنوية ذي الرمز 1. ولا يتحرك شيء لتاريخ يسبق أقدم تاريخ تقييم في إعدادات الوقت. ويُرفض الحفظ إذا زادت الأيام على الرصيد، أو إذا لم تكن للموظف حصة إجازة سنوية في ذلك التاريخ.</p><p><strong>عدم تحديث رصيد الإجازات</strong> — أشِّر عليه لحفظ السجل دون المساس بالحصة. وهو لا يُحفظ: إذ يظهر دائماً دون تأشير عند فتح النموذج، ويؤدي الحذف دائماً إلى رد الأيام. وتحتفظ احتسابات إسقاط الإجازات بسجلات الإسقاط الخاصة بها.</p>",
+  "aliasIndex": {
+    "loc:EffectiveDate": "EmployeeAbsQuotaForfeit.EffectiveDate",
+    "dom:EmployeeAbsQuotaForfeit_EffectiveDate": "EmployeeAbsQuotaForfeit.EffectiveDate",
+    "loc:AbsenceTypeId": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
+    "dom:EmployeeAbsQuotaForfeit_AbsenceTypeId": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
+    "loc:QuotaForfeited": "EmployeeAbsQuotaForfeit.QuotaForfeited",
+    "dom:EmployeeAbsQuotaForfeit_QuotaForfeited": "EmployeeAbsQuotaForfeit.QuotaForfeited",
+    "loc:Comments": "EmployeeAbsQuotaForfeit.Comments",
+    "dom:EmployeeAbsQuotaForfeit_Comments": "EmployeeAbsQuotaForfeit.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAbsQuotaForfeit.EffectiveDate",
+      "label": "EffectiveDate",
+      "section": "EmployeeAbsQuotaForfeits",
+      "aliases": [
+        "loc:EffectiveDate",
+        "dom:EmployeeAbsQuotaForfeit_EffectiveDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ سريان الإسقاط.</p><p><strong>مثال.</strong> 31 مارس 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
+      "label": "AbsenceTypeId",
+      "section": "EmployeeAbsQuotaForfeits",
+      "aliases": [
+        "loc:AbsenceTypeId",
+        "dom:EmployeeAbsQuotaForfeit_AbsenceTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الإجازات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة الذي تُسقط منه الأيام.</p><p><strong>مثال.</strong> إجازة سنوية</p>",
+      "adminHtml": "<p>تُدار من إدارة الرواتب ← أنواع الإجازات.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsQuotaForfeit.QuotaForfeited",
+      "label": "QuotaForfeited",
+      "section": "EmployeeAbsQuotaForfeits",
+      "aliases": [
+        "loc:QuotaForfeited",
+        "dom:EmployeeAbsQuotaForfeit_QuotaForfeited"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأيام المُسقطة.</p><p><strong>مثال.</strong> 3</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsQuotaForfeit.Comments",
+      "label": "Comments",
+      "section": "EmployeeAbsQuotaForfeits",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeAbsQuotaForfeit_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

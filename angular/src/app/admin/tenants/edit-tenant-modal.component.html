@@ -1,0 +1,170 @@
+<div
+    appBsModal
+    #editModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="editModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (tenant() && active()) {
+                <form #tenantEditForm="ngForm" role="form" novalidate class="form-validation" (submit)="save()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <span>{{ 'EditTenant' | localize }}: {{ tenant().tenancyName }}</span>
+                        </h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label required" for="Name">{{ 'TenantName' | localize }}</label>
+                            <input
+                                id="Name"
+                                #nameInput="ngModel"
+                                type="text"
+                                name="Name"
+                                class="form-control"
+                                [ngClass]="{ edited: tenant().name }"
+                                [ngModel]="tenant().name"
+                                (ngModelChange)="updateTenantProperty('name', $event)"
+                                required
+                                maxlength="128"
+                                pattern="^[a-zA-Z][a-zA-Z0-9_\-]{1,}$" />
+                            <validation-messages
+                                [formCtrl]="nameInput"
+                                [customMessages]="{ pattern: 'Name_Regex_Description' }" />
+                        </div>
+                        @if (currentConnectionString) {
+                            <div class="mb-5">
+                                <label class="form-label required" for="DatabaseConnectionString">
+                                    {{ 'DatabaseConnectionString' | localize }}
+                                </label>
+                                <input
+                                    id="DatabaseConnectionString"
+                                    #connectionStringInput="ngModel"
+                                    type="text"
+                                    name="ConnectionString"
+                                    class="form-control"
+                                    [ngModel]="tenant().connectionString"
+                                    (ngModelChange)="updateTenantProperty('connectionString', $event)"
+                                    required
+                                    maxlength="1024" />
+                                <validation-messages [formCtrl]="connectionStringInput" />
+                            </div>
+                        }
+                        @if (currentConnectionString) {
+                            <div>
+                                <span class="help-block text-warning">
+                                    {{ 'TenantDatabaseConnectionStringChangeWarningMessage' | localize }}
+                                </span>
+                            </div>
+                        }
+                        <div class="mb-5">
+                            <label class="form-label" for="edition">{{ 'Edition' | localize }}</label>
+                            <select
+                                id="edition"
+                                name="edition"
+                                class="form-select"
+                                [ngModel]="tenant().editionId"
+                                (ngModelChange)="updateTenantProperty('editionId', $event); onEditionChange()">
+                                @for (edition of editions(); track edition) {
+                                    <option [value]="edition.value">
+                                        {{ edition.displayText }}
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                        <label
+                            class="form-check form-check-custom form-check-solid py-1"
+                            [hidden]="!isSubscriptionFieldsVisible">
+                            <input
+                                id="CreateTenant_IsUnlimited"
+                                type="checkbox"
+                                name="IsUnlimited"
+                                [(ngModel)]="isUnlimited"
+                                class="form-check-input"
+                                (ngModelChange)="onUnlimitedChange()" />
+                            <span class="form-check-label">
+                                {{ 'UnlimitedTimeSubscription' | localize }}
+                            </span>
+                        </label>
+                        <div
+                            [hidden]="isUnlimited || !isSubscriptionFieldsVisible"
+                            class="mb-5 mt-5"
+                            [ngClass]="{ 'has-error': !subscriptionEndDateUtcIsValid }">
+                            <label class="form-label" for="SubscriptionEndDateUtc">
+                                {{ 'SubscriptionEndDateUtc' | localize }}
+                            </label>
+                            <p-datepicker
+                                dateFormat="dd/mm/yy"
+                                inputId="SubscriptionEndDateUtc"
+                                name="SubscriptionEndDateUtc"
+                                datePickerLuxonModifier
+                                [date]="tenant().subscriptionEndDateUtc"
+                                (dateChange)="subscriptionEndDateChange($event)"
+                                [isUtc]="true"
+                                [showIcon]="true"
+                                [iconDisplay]="'input'"
+                                appendTo="body"
+                                [baseZIndex]="10000"
+                                styleClass="w-100" />
+                        </div>
+                        <label
+                            class="form-check form-check-custom form-check-solid py-1"
+                            [hidden]="isUnlimited || !isSubscriptionFieldsVisible">
+                            <input
+                                id="CreateTenant_IsInTrialPeriod"
+                                type="checkbox"
+                                name="IsInTrialPeriod"
+                                [disabled]="selectedEditionIsFree()"
+                                [ngModel]="tenant().isInTrialPeriod"
+                                (ngModelChange)="updateTenantProperty('isInTrialPeriod', $event)"
+                                class="form-check-input" />
+                            <span class="form-check-label">
+                                {{ 'IsInTrialPeriod' | localize }}
+                            </span>
+                        </label>
+                        <label class="form-check form-check-custom form-check-solid py-1">
+                            <input
+                                id="EditTenant_IsActive"
+                                type="checkbox"
+                                name="IsActive"
+                                [ngModel]="tenant().isActive"
+                                (ngModelChange)="updateTenantProperty('isActive', $event)"
+                                class="form-check-input" />
+                            <span class="form-check-label">
+                                {{ 'Active' | localize }}
+                            </span>
+                        </label>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            [disabled]="saving()"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!tenantEditForm.form.valid || saving() || !subscriptionEndDateUtcIsValid">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

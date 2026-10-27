@@ -1,0 +1,103 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditOnbTask' : 'CreateNewOnbTask') | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required" for="OnbTask_TaskNameEn">{{ 'TaskNameEn' | localize }}</label>
+                                <input
+                                    id="OnbTask_TaskNameEn"
+                                    #taskNameEnInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="TaskNameEn"
+                                    [ngModel]="record().taskNameEn"
+                                    (ngModelChange)="updateField('taskNameEn', $event)"
+                                    required
+                                    maxlength="200" />
+                                <validation-messages [formCtrl]="taskNameEnInput" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required" for="OnbTask_TaskNameAr">{{ 'TaskNameAr' | localize }}</label>
+                                <input
+                                    id="OnbTask_TaskNameAr"
+                                    #taskNameArInput="ngModel"
+                                    type="text"
+                                    dir="rtl"
+                                    class="form-control"
+                                    name="TaskNameAr"
+                                    [ngModel]="record().taskNameAr"
+                                    (ngModelChange)="updateField('taskNameAr', $event)"
+                                    required
+                                    maxlength="200" />
+                                <validation-messages [formCtrl]="taskNameArInput" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="OnbTask_OnbTemplateId">{{ 'OnbTemplates' | localize }}</label>
+                                <select
+                                    id="OnbTask_OnbTemplateId"
+                                    class="form-select"
+                                    name="OnbTemplateId"
+                                    [ngModel]="record().onbTemplateId"
+                                    (ngModelChange)="updateField('onbTemplateId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of onbTemplates(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.templateTitle }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="OnbTask_DueDays">{{ 'DueDays' | localize }}</label>
+                                <input
+                                    id="OnbTask_DueDays"
+                                    type="number"
+                                    min="0"
+                                    class="form-control"
+                                    name="DueDays"
+                                    [ngModel]="record().dueDays"
+                                    (ngModelChange)="updateField('dueDays', $event)" />
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="OnbTask_Guideline">{{ 'Guideline' | localize }}</label>
+                                <textarea
+                                    id="OnbTask_Guideline"
+                                    class="form-control"
+                                    name="Guideline"
+                                    rows="3"
+                                    [ngModel]="record().guideline"
+                                    (ngModelChange)="updateField('guideline', $event)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            [buttonBusy]="saving()"
+                            [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

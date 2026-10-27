@@ -1,0 +1,43 @@
+{
+  "helpId": "rec.cvlanguage.edit",
+  "lang": "ar",
+  "title": "اللغات في السيرة الذاتية — إنشاء / تحرير",
+  "entity": "HCMv3.Recruitment.CVLanguage",
+  "overviewHtml": "<p>لغة في السيرة الذاتية.</p>",
+  "aliasIndex": {
+    "loc:LanguageInfo": "CVLanguage.LanguageInfoId",
+    "dom:CVLanguage_LanguageInfoId": "CVLanguage.LanguageInfoId",
+    "loc:Proficiency": "CVLanguage.Proficiency",
+    "dom:CVLanguage_Proficiency": "CVLanguage.Proficiency"
+  },
+  "fields": [
+    {
+      "id": "CVLanguage.LanguageInfoId",
+      "label": "LanguageInfo",
+      "section": "CVLanguages",
+      "aliases": [
+        "loc:LanguageInfo",
+        "dom:CVLanguage_LanguageInfoId"
+      ],
+      "rules": "اختياري. يُختار من قائمة اللغات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اللغة.</p><p><strong>مثال.</strong> الإنجليزية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVLanguage.Proficiency",
+      "label": "Proficiency",
+      "section": "CVLanguages",
+      "aliases": [
+        "loc:Proficiency",
+        "dom:CVLanguage_Proficiency"
+      ],
+      "rules": "إلزامي. إحدى القيم: Novice، Intermediate، Advanced.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدى إتقان المرشح لها.</p><p><strong>مثال.</strong> متقدم</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

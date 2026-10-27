@@ -1,0 +1,16 @@
+// Balance cards read as a row of numbers, so the headline figure needs to be the one that matters --
+// Bookable, not Remaining.
+.card-custom .h2 {
+    font-weight: 600;
+}
+
+// The requests under a leave: set in from the edge and shaded, so they read as belonging to the row above
+// rather than as leaves of their own.
+tr.leave-requests > td {
+    background: var(--bs-gray-100);
+    padding-inline-start: 3rem !important;
+}
+
+tr.leave-requests table {
+    background: transparent;
+}
