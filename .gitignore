@@ -54,3 +54,15 @@ artifacts/
 
 # The build's version and change log, generated from git on every build (tools/release-log).
 aspnet-core/src/HCMv3.Core/Releases/release-log.json
+
+# Claude Code local state (per machine, never shared)
+**/.claude/scheduled_tasks.lock
+**/.claude/scheduled_tasks.json
+**/.claude/routines/.state/
+**/.claude/worktrees/
+**/.claude/checkpoints/
+**/.claude/mailbox/
+**/.claude/agent-registry.json
+**/.claude/agent-memory-local
+**/.claude/first-run
+**/.claude/assistant-daemon-state.json
