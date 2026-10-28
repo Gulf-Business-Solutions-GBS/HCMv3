@@ -166,6 +166,12 @@ public class TicketTypesAppService : HCMv3AppServiceBase, ITicketTypesAppService
         {
             throw new UserFriendlyException(L("WageTypeRequired"));
         }
+
+        // Not in legacy: mirrors the AbsenceType ReInitializeAfter rule; 0 would hang the air ticket accrual.
+        if (entity.Lapse && entity.LapseAfter <= 0)
+        {
+            throw new UserFriendlyException(L("LapseAfterMustBeGreaterThanZero"));
+        }
     }
 
     private static TicketTypeDto ToDto(TicketType entity)

@@ -179,6 +179,57 @@ public class AccrualServiceTests : AppTestBase
 
     #endregion
 
+    #region GetAirTicketAccrualStartEnd
+
+    private int CreateLapsingTicketType(int lapseAfter)
+    {
+        return UsingDbContext(context =>
+        {
+            var ticketType = new TicketType
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                Code = "1",
+                NameEn = "Annual Ticket",
+                NameAr = "تذكرة سنوية",
+                Lapse = true,
+                LapseAfter = lapseAfter
+            };
+            context.Set<TicketType>().Add(ticketType);
+            context.SaveChanges();
+            return ticketType.Id;
+        });
+    }
+
+    [Fact]
+    public async Task GetAirTicketAccrualStartEndAsync_Should_Treat_Zero_LapseAfter_As_One_Instead_Of_Looping()
+    {
+        var employeeId = CreateEmployee(new DateTime(2020, 3, 15));
+        var ticketTypeId = CreateLapsingTicketType(lapseAfter: 0);
+
+        // Before the guard this never returned; the timeout turns a hang into a test failure.
+        var (start, end) = await Task.Run(() => _accrualService.GetAirTicketAccrualStartEndAsync(
+                employeeId, ticketTypeId, AccrualPeriod.CalendarYear, new DateTime(2024, 6, 1)))
+            .WaitAsync(TimeSpan.FromSeconds(30));
+
+        start.ShouldBe(new DateTime(2024, 1, 1));
+        end.ShouldBe(new DateTime(2024, 12, 31));
+    }
+
+    [Fact]
+    public async Task GetAirTicketAccrualStartEndAsync_Should_Cycle_Every_LapseAfter_Years()
+    {
+        var employeeId = CreateEmployee(new DateTime(2020, 3, 15));
+        var ticketTypeId = CreateLapsingTicketType(lapseAfter: 2);
+
+        var (start, end) = await _accrualService.GetAirTicketAccrualStartEndAsync(
+            employeeId, ticketTypeId, AccrualPeriod.CalendarYear, new DateTime(2024, 6, 1));
+
+        start.ShouldBe(new DateTime(2024, 1, 1));
+        end.ShouldBe(new DateTime(2025, 12, 31));
+    }
+
+    #endregion
+
     #region GetAsOnDateQuota
 
     [Fact]

@@ -1083,7 +1083,7 @@ function cmdBuild(argv) {
             }
             const { head } = splitExisting(read(rel));
             // Each language names the page itself; the registry title is the English fallback.
-            const overviewMd = head.split(/\n## Overview\n/)[1] || '';
+            const overviewMd = head.split(/\r?\n## Overview\r?\n/)[1] || '';
 
             const fields = [];
             const aliasIndex = {};

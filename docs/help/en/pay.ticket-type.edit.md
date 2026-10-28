@@ -50,7 +50,7 @@ A kind of air ticket -- the employee's own, or one for a kind of dependant -- an
 **Rules.** Optional. Whole number.
 
 :::admin
-With **Lapse** ticked, set this to at least 1. The form accepts 0, but 0 makes the ticket calculation never finish, which stops the time engine for employees with this ticket type.
+With **Lapse** ticked, this must be at least 1; the form refuses 0 and shows an error. A ticket type saved with 0 before this rule existed is calculated as 1 year, so check any old ticket types that have **Lapse** ticked.
 :::
 
 ## StopDependantAccrualAfter {#TicketType.StopDependantAccrualAfter}

@@ -665,7 +665,8 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
 
             if (ticketType.Lapse)
             {
-                var reInitializeAfter = ticketType.LapseAfter;
+                // Crash guard, same as leave: LapseAfter 0 never advances the cycle and would loop forever.
+                var reInitializeAfter = ticketType.LapseAfter <= 0 ? 1 : ticketType.LapseAfter;
                 deductionStartDate = joiningDate;
                 deductionEndDate = joiningDate.AddYears(reInitializeAfter).AddDays(-1);
                 while (deductionEndDate < endDate)

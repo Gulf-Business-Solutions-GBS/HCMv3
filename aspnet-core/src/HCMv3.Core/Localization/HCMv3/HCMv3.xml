@@ -3065,6 +3065,7 @@
     <text name="TicketBasisFixedDays">Ticket Basis Fixed Days</text>
     <text name="Lapse">Lapse</text>
     <text name="LapseAfter">Lapse After</text>
+    <text name="LapseAfterMustBeGreaterThanZero">Lapse After must be greater than zero when Lapse is ticked.</text>
     <text name="StopDependantAccrualAfter">Stop Dependant Accrual After</text>
     <text name="MinCompensation">Min Compensation</text>
     <text name="DeductionPeriod">Deduction Period</text>

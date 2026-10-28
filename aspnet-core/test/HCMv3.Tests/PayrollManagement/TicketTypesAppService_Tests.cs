@@ -56,4 +56,40 @@ public class TicketTypesAppService_Tests : PayrollManagementAppServiceTestBase
                 NameAr = "تذكرة عائلية"
             }));
     }
+
+    [Fact]
+    public async Task Should_Refuse_Lapse_With_Zero_LapseAfter()
+    {
+        var wageTypeId = CreateWageType("WT1");
+        var service = CreateAppService();
+
+        await Should.ThrowAsync<UserFriendlyException>(async () =>
+            await service.CreateOrEdit(new CreateOrEditTicketTypeDto
+            {
+                NameEn = "Annual Ticket",
+                NameAr = "تذكرة سنوية",
+                Lapse = true,
+                LapseAfter = 0,
+                WageTypeId = wageTypeId
+            }));
+    }
+
+    [Fact]
+    public async Task Should_Accept_Zero_LapseAfter_When_Lapse_Unticked()
+    {
+        var wageTypeId = CreateWageType("WT1");
+        var service = CreateAppService();
+
+        await service.CreateOrEdit(new CreateOrEditTicketTypeDto
+        {
+            NameEn = "Annual Ticket",
+            NameAr = "تذكرة سنوية",
+            Lapse = false,
+            LapseAfter = 0,
+            WageTypeId = wageTypeId
+        });
+
+        var result = await service.GetAll(new GetAllTicketTypesInput());
+        result.TotalCount.ShouldBe(1);
+    }
 }
