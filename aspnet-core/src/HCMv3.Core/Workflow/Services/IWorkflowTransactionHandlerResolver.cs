@@ -16,4 +16,7 @@ public interface IWorkflowTransactionHandlerResolver
     /// </para>
     /// </summary>
     IWorkflowTransactionHandler Resolve(string requestType);
+
+    /// <summary>Every registered handler, for setup screens that list what the types can do.</summary>
+    System.Collections.Generic.IReadOnlyCollection<IWorkflowTransactionHandler> GetAll();
 }

@@ -47,6 +47,10 @@ public class CreateOrEditRequestDetailDto
 
     public WorkflowApproverPersonType ApproverPerson { get; set; }
 
+    /// <summary>Required when <c>ApproverPerson</c> is <c>PersonOnRequest</c>; a <c>WorkflowRequestPersonFields</c> code.</summary>
+    [StringLength(WorkflowRequestPersonFields.MaxCodeLength)]
+    public string RequestPersonField { get; set; }
+
     public WorkflowRoleGroup WorkflowRoleGroup { get; set; }
 
     public int? WorkflowRoleOrgId { get; set; }

@@ -100,9 +100,11 @@ public class EmployeeAbsence : FullAuditedEntity, IMustHaveTenant, IHasEmployeeI
     /// A plain id with no navigation, like the two below: three more paths into <c>Employee</c> from one table
     /// would each need a cascade exception and nothing here ever loads the row through them.
     /// </summary>
+    [HCMv3.Workflow.RequestPersonField]
     public virtual int? PrimaryDelegateId { get; set; }
 
     /// <summary>Legacy <c>AbsenceRequest.SecondaryDelegation</c>: the fallback for the primary delegate.</summary>
+    [HCMv3.Workflow.RequestPersonField]
     public virtual int? SecondaryDelegateId { get; set; }
 
     /// <summary>
@@ -110,6 +112,7 @@ public class EmployeeAbsence : FullAuditedEntity, IMustHaveTenant, IHasEmployeeI
     /// away. Unlike legacy, which only stored the name, approving the leave creates an
     /// <see cref="EmployeeDelegation"/> for the leave dates, so the delegate really does receive them.
     /// </summary>
+    [HCMv3.Workflow.RequestPersonField]
     public virtual int? ApproverDelegateId { get; set; }
 
     /// <summary>

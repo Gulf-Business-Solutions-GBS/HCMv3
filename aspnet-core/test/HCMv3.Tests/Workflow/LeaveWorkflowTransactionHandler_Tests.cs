@@ -359,4 +359,87 @@ public class LeaveWorkflowTransactionHandler_Tests : AppTestBase
         await Assert.ThrowsAsync<UserFriendlyException>(() =>
             InUnitOfWorkAsync(() => _handler.ValidateBeforeSubmitAsync(context)));
     }
+
+    // ------------------------------------------------------------------ "Person on Request" steps
+
+    private const string PrimaryDelegateField = nameof(EmployeeAbsence.PrimaryDelegateId);
+    private const string SecondaryDelegateField = nameof(EmployeeAbsence.SecondaryDelegateId);
+    private const string ApproverDelegateField = nameof(EmployeeAbsence.ApproverDelegateId);
+
+    private int CreateLeaveWithDelegates(int employeeId, string suffix, int? primary, int? secondary, int? approver)
+    {
+        var leaveId = CreateLeave(employeeId, CreateAbsenceType("Annual" + suffix), new DateTime(2026, 4, 1), new DateTime(2026, 4, 3));
+        UsingDbContext(context =>
+        {
+            var leave = context.Set<EmployeeAbsence>().IgnoreQueryFilters().Single(a => a.Id == leaveId);
+            leave.PrimaryDelegateId = primary;
+            leave.SecondaryDelegateId = secondary;
+            leave.ApproverDelegateId = approver;
+        });
+
+        return leaveId;
+    }
+
+    [Fact]
+    public void Should_Offer_The_Three_Delegate_Fields()
+    {
+        _handler.RequestPersonFields.ShouldContain(PrimaryDelegateField);
+        _handler.RequestPersonFields.ShouldContain(SecondaryDelegateField);
+        _handler.RequestPersonFields.ShouldContain(ApproverDelegateField);
+
+        // The requester is never a field a step can route to.
+        _handler.RequestPersonFields.ShouldNotContain(nameof(EmployeeAbsence.EmployeeId));
+    }
+
+    [Theory]
+    [InlineData(PrimaryDelegateField, 0)]
+    [InlineData(SecondaryDelegateField, 1)]
+    [InlineData(ApproverDelegateField, 2)]
+    public async Task Should_Name_The_Delegate_In_Each_Field(string fieldCode, int expectedIndex)
+    {
+        var employeeId = CreateEmployee("LRP" + expectedIndex);
+        var delegates = new[]
+        {
+            CreateEmployee("LRPA" + expectedIndex),
+            CreateEmployee("LRPB" + expectedIndex),
+            CreateEmployee("LRPC" + expectedIndex)
+        };
+        var leaveId = CreateLeaveWithDelegates(employeeId, "RP" + expectedIndex, delegates[0], delegates[1], delegates[2]);
+        var context = CreateContext(employeeId, leaveId);
+
+        var personId = await InUnitOfWorkAsync(() => _handler.GetRequestPersonAsync(context, fieldCode));
+
+        personId.ShouldBe(delegates[expectedIndex]);
+    }
+
+    [Fact]
+    public async Task Should_Name_Nobody_When_The_Field_Is_Empty()
+    {
+        var employeeId = CreateEmployee("LRPE");
+        var leaveId = CreateLeaveWithDelegates(employeeId, "RPE", null, null, null);
+        var context = CreateContext(employeeId, leaveId);
+
+        var personId = await InUnitOfWorkAsync(() =>
+            _handler.GetRequestPersonAsync(context, PrimaryDelegateField));
+
+        personId.ShouldBeNull();
+    }
+
+    [Theory]
+    [InlineData(WorkflowRequestAction.Amendment)]
+    [InlineData(WorkflowRequestAction.Cancellation)]
+    [InlineData(WorkflowRequestAction.Return)]
+    public async Task Should_Name_Nobody_For_A_Change_To_An_Approved_Leave(WorkflowRequestAction action)
+    {
+        var employeeId = CreateEmployee("LRPX" + (int)action);
+        var leaveId = CreateLeaveWithDelegates(employeeId, "RPX" + (int)action, CreateEmployee("LRPY" + (int)action), null, null);
+        var context = CreateContext(employeeId, leaveId);
+        context.Request.RequestAction = action;
+        context.Request.IsAmendment = action == WorkflowRequestAction.Amendment;
+
+        var personId = await InUnitOfWorkAsync(() =>
+            _handler.GetRequestPersonAsync(context, PrimaryDelegateField));
+
+        personId.ShouldBeNull();
+    }
 }

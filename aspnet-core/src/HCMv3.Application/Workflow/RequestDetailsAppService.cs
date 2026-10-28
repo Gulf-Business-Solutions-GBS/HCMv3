@@ -12,6 +12,7 @@ using HCMv3.Authorization;
 using HCMv3.SystemSettings.Services;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.Workflow.Dto;
+using HCMv3.Workflow.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,17 +42,80 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
     private readonly IRepository<RequestMaster> _requestMasterRepository;
     private readonly IRepository<NotificationConfig> _notificationConfigRepository;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly IWorkflowTransactionHandlerResolver _handlerResolver;
+    private readonly IRepository<WorkflowTransactionType> _transactionTypeRepository;
 
     public RequestDetailsAppService(
         IRepository<RequestDetail> repository,
         IRepository<RequestMaster> requestMasterRepository,
         IRepository<NotificationConfig> notificationConfigRepository,
-        ISysSettingsAccessor sysSettingsAccessor)
+        ISysSettingsAccessor sysSettingsAccessor,
+        IWorkflowTransactionHandlerResolver handlerResolver,
+        IRepository<WorkflowTransactionType> transactionTypeRepository)
     {
         _repository = repository;
         _requestMasterRepository = requestMasterRepository;
         _notificationConfigRepository = notificationConfigRepository;
         _sysSettingsAccessor = sysSettingsAccessor;
+        _handlerResolver = handlerResolver;
+        _transactionTypeRepository = transactionTypeRepository;
+    }
+
+    /// <summary>
+    /// Every employee field on every transaction type, for the step dialog's Request Field dropdown --
+    /// "Leave Request – Primary Delegation", "Document Withdrawal – Guarantor". Discovered from the types'
+    /// entities, so a new employee field on a transaction appears here without a code change.
+    /// </summary>
+    public async Task<List<RequestPersonFieldOptionDto>> GetRequestPersonFieldOptions()
+    {
+        return (await BuildRequestPersonFieldOptionsAsync())
+            .OrderBy(o => o.AppliesTo)
+            .ThenBy(o => o.FieldName)
+            .ToList();
+    }
+
+    private async Task<List<RequestPersonFieldOptionDto>> BuildRequestPersonFieldOptionsAsync()
+    {
+        var handlers = _handlerResolver.GetAll();
+
+        var typeNames = await _transactionTypeRepository.GetAll()
+            .Select(t => new { t.Code, t.NameEn, t.NameAr })
+            .ToListAsync();
+
+        var isArabic = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
+
+        string NameOf(string code)
+        {
+            var type = typeNames.FirstOrDefault(t => string.Equals(t.Code, code, System.StringComparison.OrdinalIgnoreCase));
+            if (type == null)
+            {
+                return code;
+            }
+
+            return isArabic && !type.NameAr.IsNullOrWhiteSpace() ? type.NameAr : type.NameEn;
+        }
+
+        return handlers
+            .SelectMany(h => h.RequestPersonFields.Select(property => new RequestPersonFieldOptionDto
+            {
+                Code = WorkflowRequestPersonFields.Compose(h.RequestType, property),
+                DisplayName = NameOf(h.RequestType) + " – " + FieldLabel(property),
+                FieldName = FieldLabel(property),
+                AppliesTo = NameOf(h.RequestType)
+            }))
+            .ToList();
+    }
+
+    /// <summary>
+    /// The field's own label, reusing the key its form already shows ("GuarantorId" -> "Guarantor",
+    /// "PrimaryDelegateId" -> "PrimaryDelegate"), or the property name split into words when there is none.
+    /// </summary>
+    private string FieldLabel(string propertyName)
+    {
+        var key = propertyName.EndsWith("Id") ? propertyName.Substring(0, propertyName.Length - 2) : propertyName;
+
+        return LocalizationSource.GetStringOrNull(key)
+               ?? System.Text.RegularExpressions.Regex.Replace(key, "(?<=[a-z])(?=[A-Z])", " ");
     }
 
     [HttpPost]
@@ -188,6 +252,7 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
             EnableReadLog = source.EnableReadLog,
             Person = source.Person,
             ApproverPerson = source.ApproverPerson,
+            RequestPersonField = source.RequestPersonField,
             WorkflowRoleGroup = source.WorkflowRoleGroup,
             WorkflowRoleOrgId = source.WorkflowRoleOrgId,
             ApprovalRequire = source.ApprovalRequire,
@@ -377,6 +442,7 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
         entity.EnableReadLog = input.EnableReadLog ?? true;
         entity.Person = input.Person;
         entity.ApproverPerson = NormalizeApproverPerson(input.ApproverPerson, input.WorkflowRoleId);
+        ApplyRequestPersonField(entity, input.RequestPersonField);
         entity.WorkflowRoleGroup = input.WorkflowRoleGroup;
         entity.WorkflowRoleOrgId = input.WorkflowRoleOrgId;
         entity.ApprovalRequire = input.ApprovalRequire;
@@ -414,6 +480,38 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
         return approverPerson == WorkflowApproverPersonType.None && workflowRoleId.HasValue
             ? WorkflowApproverPersonType.Person
             : approverPerson;
+    }
+
+    /// <summary>
+    /// A "Person on Request" step must say which field names its approver; every other step carries none.
+    ///
+    /// <para>
+    /// The workflow role is cleared on such a step rather than kept: the engine routes it to the named person
+    /// alone, and a role left showing on the screen would read as a second approver that is never asked.
+    /// </para>
+    /// </summary>
+    private void ApplyRequestPersonField(RequestDetail entity, string requestPersonField)
+    {
+        if (entity.ApproverPerson != WorkflowApproverPersonType.PersonOnRequest)
+        {
+            entity.RequestPersonField = null;
+            return;
+        }
+
+        if (!IsKnownRequestPersonField(requestPersonField))
+        {
+            throw new UserFriendlyException(L("RequestPersonFieldIsRequired"));
+        }
+
+        entity.RequestPersonField = requestPersonField;
+        entity.WorkflowRoleId = null;
+    }
+
+    /// <summary>A field some transaction type actually has: its type has a handler, and the handler offers it.</summary>
+    private bool IsKnownRequestPersonField(string code)
+    {
+        return WorkflowRequestPersonFields.TryParse(code, out var requestType, out var propertyName)
+               && _handlerResolver.Resolve(requestType)?.RequestPersonFields.Contains(propertyName) == true;
     }
 
     /// <summary>
@@ -479,6 +577,7 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
             EnableReadLog = entity.EnableReadLog,
             Person = entity.Person,
             ApproverPerson = entity.ApproverPerson,
+            RequestPersonField = entity.RequestPersonField,
             WorkflowRoleGroup = entity.WorkflowRoleGroup,
             WorkflowRoleOrgId = entity.WorkflowRoleOrgId,
             ApprovalRequire = entity.ApprovalRequire,
@@ -515,6 +614,7 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
             EnableReadLog = entity.EnableReadLog,
             Person = entity.Person,
             ApproverPerson = entity.ApproverPerson,
+            RequestPersonField = entity.RequestPersonField,
             WorkflowRoleGroup = entity.WorkflowRoleGroup,
             WorkflowRoleOrgId = entity.WorkflowRoleOrgId,
             ApprovalRequire = entity.ApprovalRequire,

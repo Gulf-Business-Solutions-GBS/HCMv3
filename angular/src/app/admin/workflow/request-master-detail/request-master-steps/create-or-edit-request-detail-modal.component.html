@@ -57,6 +57,7 @@
                                     id="RequestDetail_WorkflowRoleId"
                                     class="form-select"
                                     name="WorkflowRoleId"
+                                    [disabled]="isPersonOnRequest()"
                                     [ngModel]="record().workflowRoleId"
                                     (ngModelChange)="updateField('workflowRoleId', $event)">
                                     <option [ngValue]="undefined"></option>
@@ -156,6 +157,41 @@
                                 }
                             </div>
                         </div>
+                        <!-- "Person on Request": the approver is whoever the requester names in a field of the
+                             request, such as a leave's responsibility delegate. -->
+                        @if (isPersonOnRequest()) {
+                            <div class="row">
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label required" for="RequestDetail_RequestPersonField">{{ 'RequestPersonField' | localize }}</label>
+                                    <select
+                                        id="RequestDetail_RequestPersonField"
+                                        #requestPersonFieldInput="ngModel"
+                                        class="form-select"
+                                        name="RequestPersonField"
+                                        [ngModel]="record().requestPersonField"
+                                        (ngModelChange)="updateField('requestPersonField', $event)"
+                                        required>
+                                        <option [ngValue]="undefined"></option>
+                                        @for (group of requestPersonFieldGroups(); track group.type) {
+                                            <optgroup [label]="group.type">
+                                                @for (option of group.options; track option.code) {
+                                                    <option [ngValue]="option.code">{{ option.fieldName }}</option>
+                                                }
+                                            </optgroup>
+                                        }
+                                    </select>
+                                    <validation-messages [formCtrl]="requestPersonFieldInput" />
+                                </div>
+                                <div class="col-md-8 mb-5 d-flex flex-column justify-content-end">
+                                    <div class="text-muted fs-7">{{ 'RequestPersonFieldHint' | localize }}</div>
+                                    @if (selectedRequestPersonField(); as option) {
+                                        <div class="text-muted fs-7">
+                                            {{ l('RequestPersonFieldAppliesTo', option.appliesTo) }}
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
 
                         <hr />
                         <h6>{{ 'Escalate' | localize }}</h6>

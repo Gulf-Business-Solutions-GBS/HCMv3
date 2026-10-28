@@ -15,6 +15,7 @@ import {
     RequestDetailsServiceProxy,
     RequestMasterDto,
     RequestMastersServiceProxy,
+    RequestPersonFieldOptionDto,
     WorkflowApproverPersonType,
     WorkflowPersonScope,
     WorkflowRoleDto,
@@ -99,7 +100,6 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
 
     readonly approverPersonTypes = [
         { value: WorkflowApproverPersonType.None, key: 'WorkflowApproverPersonTypeNone' },
-        { value: WorkflowApproverPersonType.Person, key: 'WorkflowApproverPersonTypePerson' },
         { value: WorkflowApproverPersonType.PersonManager, key: 'WorkflowApproverPersonTypePersonManager' },
         { value: WorkflowApproverPersonType.ManagerLevel2, key: 'WorkflowApproverPersonTypeManagerLevel2' },
         { value: WorkflowApproverPersonType.ManagerLevel3, key: 'WorkflowApproverPersonTypeManagerLevel3' },
@@ -107,7 +107,35 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
         { value: WorkflowApproverPersonType.ManagerLevel5, key: 'WorkflowApproverPersonTypeManagerLevel5' },
         { value: WorkflowApproverPersonType.ManagerLevel6, key: 'WorkflowApproverPersonTypeManagerLevel6' },
         { value: WorkflowApproverPersonType.ManagerLevel7, key: 'WorkflowApproverPersonTypeManagerLevel7' },
+        { value: WorkflowApproverPersonType.PersonOnRequest, key: 'WorkflowApproverPersonTypePersonOnRequest' },
     ];
+
+    /** The person fields a "Person on Request" step can name, each with the transaction types that fill it. */
+    readonly requestPersonFieldOptions = signal<RequestPersonFieldOptionDto[]>([]);
+
+    /** True when the step's approver is whoever the request names in a field, rather than a role or a manager. */
+    readonly isPersonOnRequest = computed(
+        () => this.record().approverPerson === WorkflowApproverPersonType.PersonOnRequest
+    );
+
+    /** The fields grouped under their transaction type, for the dropdown's option groups. The server sends them sorted. */
+    readonly requestPersonFieldGroups = computed(() => {
+        const groups: { type: string; options: RequestPersonFieldOptionDto[] }[] = [];
+        for (const option of this.requestPersonFieldOptions()) {
+            let group = groups.find((g) => g.type === option.appliesTo);
+            if (!group) {
+                group = { type: option.appliesTo, options: [] };
+                groups.push(group);
+            }
+            group.options.push(option);
+        }
+        return groups;
+    });
+
+    /** The chosen field's option, for the "filled on" hint under the dropdown. */
+    readonly selectedRequestPersonField = computed(() =>
+        this.requestPersonFieldOptions().find((o) => o.code === this.record().requestPersonField)
+    );
 
     readonly approvalRequires = [
         { value: ApprovalRequire.Single, key: 'ApprovalRequireSingle' },
@@ -197,6 +225,7 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
                     result.items.some((d) => d.approverPerson === WorkflowApproverPersonType.None && d.id !== id)
                 );
             });
+        this._service.getRequestPersonFieldOptions().subscribe((result) => this.requestPersonFieldOptions.set(result));
         this._workflowRolesService
             .getAll(new GetAllWorkflowRolesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => this.workflowRoles.set(result.items));
@@ -226,7 +255,7 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
             this.modal().show();
         } else {
             this._service.getRequestDetailForEdit(id).subscribe((result) => {
-                this.record.set(result.requestDetail);
+                this.record.set(this.withRoleShownAsNone(result.requestDetail));
                 this.openNotificationsIfCustomised();
                 this.modal().show();
             });
@@ -247,6 +276,7 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
         this._service.getRequestDetailForEdit(sourceId).subscribe((result) => {
             const copy = new CreateOrEditRequestDetailDto();
             Object.assign(copy, result.requestDetail);
+            this.withRoleShownAsNone(copy);
             copy.id = undefined;
             copy.approverPerson = undefined;
             copy.workflowRoleId = undefined;
@@ -285,6 +315,18 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
         }
     }
 
+    /**
+     * Shows a role-holder step the way legacy did: Approver Person None with a Workflow Role chosen. There is no
+     * separate "role holders" choice in the dropdown; the server stores None + role as a role-holder step.
+     */
+    private withRoleShownAsNone(record: CreateOrEditRequestDetailDto): CreateOrEditRequestDetailDto {
+        if (record.approverPerson === WorkflowApproverPersonType.Person) {
+            record.approverPerson = WorkflowApproverPersonType.None;
+        }
+
+        return record;
+    }
+
     onShown(): void {
         // The chain field is read-only now, so focus goes to the first thing worth typing into.
         document.getElementById('RequestDetail_Step')?.focus();
@@ -318,6 +360,17 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
     updateField(field: keyof CreateOrEditRequestDetailDto, value: any): void {
         const current = this.record();
         (current as any)[field] = value;
+
+        // A "Person on Request" step goes to the named person alone, so the role goes; any other approver
+        // type has no request field. The server enforces both -- this keeps the form showing what will be saved.
+        if (field === 'approverPerson') {
+            if (value === WorkflowApproverPersonType.PersonOnRequest) {
+                current.workflowRoleId = undefined;
+            } else {
+                current.requestPersonField = undefined;
+            }
+        }
+
         const next = new CreateOrEditRequestDetailDto();
         Object.assign(next, current);
         this.record.set(next);

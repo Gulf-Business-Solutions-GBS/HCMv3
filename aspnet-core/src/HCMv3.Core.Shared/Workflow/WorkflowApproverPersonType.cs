@@ -14,5 +14,13 @@ public enum WorkflowApproverPersonType
     ManagerLevel4 = 5,
     ManagerLevel5 = 6,
     ManagerLevel6 = 7,
-    ManagerLevel7 = 8
+    ManagerLevel7 = 8,
+
+    /// <summary>
+    /// The employee named in a field of the request itself -- for a leave, the person it hands the
+    /// requester's responsibilities to, or a document withdrawal's guarantor. Which field is
+    /// <c>RequestDetail.RequestPersonField</c>, a <see cref="WorkflowRequestPersonFields"/> code. A request that leaves the field empty, or names the
+    /// requester, skips the step.
+    /// </summary>
+    PersonOnRequest = 9
 }

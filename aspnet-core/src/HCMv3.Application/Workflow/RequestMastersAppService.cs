@@ -174,6 +174,7 @@ public class RequestMastersAppService : HCMv3AppServiceBase, IRequestMastersAppS
             EnableReadLog = source.EnableReadLog,
             Person = source.Person,
             ApproverPerson = source.ApproverPerson,
+            RequestPersonField = source.RequestPersonField,
             WorkflowRoleGroup = source.WorkflowRoleGroup,
             WorkflowRoleOrgId = source.WorkflowRoleOrgId,
             ApprovalRequire = source.ApprovalRequire,

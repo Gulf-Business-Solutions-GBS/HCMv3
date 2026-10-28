@@ -34872,6 +34872,10 @@ namespace HCMv3.Migrations
                     b.Property<int>("RequestMasterId")
                         .HasColumnType("int");
 
+                    b.Property<string>("RequestPersonField")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
                     b.Property<int?>("SendBackNotificationConfigId")
                         .HasColumnType("int");
 

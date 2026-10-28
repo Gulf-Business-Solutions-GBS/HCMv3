@@ -120,6 +120,26 @@ public abstract class WorkflowTransactionHandlerBase<TEntity> : HCMv3DomainServi
             : System.Array.Empty<WorkflowRequestAction>();
 
     /// <inheritdoc/>
+    /// <remarks>Discovered from <typeparamref name="TEntity"/>; see <see cref="RequestPersonFieldDiscovery"/>.</remarks>
+    public virtual System.Collections.Generic.IReadOnlyCollection<string> RequestPersonFields =>
+        RequestPersonFieldDiscovery.For(typeof(TEntity));
+
+    /// <inheritdoc/>
+    /// <remarks>
+    /// New requests only. An amendment, cancellation or return acts on a transaction the named person has
+    /// already approved, and asking them again for a change to it would be asking the wrong question.
+    /// </remarks>
+    public virtual async Task<int?> GetRequestPersonAsync(WorkflowTransactionContext context, string fieldCode)
+    {
+        if (context.Request == null || context.IsAmendment || context.Request.RequestAction != WorkflowRequestAction.New)
+        {
+            return null;
+        }
+
+        return RequestPersonFieldDiscovery.Read(typeof(TEntity), await GetTargetAsync(context), fieldCode);
+    }
+
+    /// <inheritdoc/>
     public virtual Task<string> BuildSnapshotAsync(WorkflowTransactionContext context)
     {
         return Task.FromResult<string>(null);

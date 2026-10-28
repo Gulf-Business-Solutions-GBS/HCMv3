@@ -111,6 +111,12 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         // approver. See IWorkflowStepSequence for why "start at 2" would be just as wrong as "start at 1".
         var firstApproverStep = _stepSequence.GetFirstApproverStep(requestMaster);
 
+        // Past any "Person on Request" step whose field this request leaves empty. If every step is skipped,
+        // the first one stays and AssignApproversForStepAsync refuses the submission exactly as for any other
+        // chain that resolves nobody -- an unapproved request must not slip through as approved.
+        firstApproverStep = SkipStepsWithNoPersonOnRequest(request, requestMaster, firstApproverStep, actingEmployeeId)
+                            ?? firstApproverStep;
+
         request.WorkflowStep = firstApproverStep;
         request.RequestStatus = RequestStatus.Open;
 
@@ -226,6 +232,14 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         // definition of complete. Walking off the end instead would strand the request on a step that
         // resolves nobody.
         var nextStep = _stepSequence.GetNextApproverStep(requestMaster, currentStep);
+
+        // A "Person on Request" step the request leaves empty is passed over; passing over the last one means
+        // this approval completes the chain.
+        if (nextStep.HasValue)
+        {
+            nextStep = SkipStepsWithNoPersonOnRequest(request, requestMaster, nextStep.Value, actingEmployeeId);
+        }
+
         var isFinalApproval = !nextStep.HasValue;
 
         if (isFinalApproval)
@@ -845,6 +859,38 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             .ToList();
 
         return steps.Count == 0 ? fallback : steps.Min();
+    }
+
+    /// <summary>
+    /// <paramref name="step"/>, or the first approver step after it, skipping every
+    /// <see cref="WorkflowApproverPersonType.PersonOnRequest"/> step this request names nobody for. Null when
+    /// that skips past the end of the chain.
+    ///
+    /// <para>
+    /// Only that kind of step is ever skipped. Any other step that resolves nobody is a setup fault and still
+    /// fails loudly in <see cref="AssignApproversForStepAsync"/>; a leave with no delegate is not a fault, it
+    /// is simply a leave where nobody has to accept a handover.
+    /// </para>
+    /// </summary>
+    private int? SkipStepsWithNoPersonOnRequest(
+        WorkflowRequest request, RequestMaster requestMaster, int step, int actingEmployeeId)
+    {
+        int? candidate = step;
+
+        while (candidate.HasValue)
+        {
+            var requestDetail = GetRequestDetail(requestMaster.Id, candidate.Value);
+
+            if (requestDetail?.ApproverPerson != WorkflowApproverPersonType.PersonOnRequest
+                || ResolveApproversForStep(request, requestMaster, requestDetail, actingEmployeeId).Count > 0)
+            {
+                return candidate;
+            }
+
+            candidate = _stepSequence.GetNextApproverStep(requestMaster, candidate.Value);
+        }
+
+        return null;
     }
 
     private List<int> ResolveApproversForStep(

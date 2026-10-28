@@ -36,6 +36,8 @@ public class RequestDetailDto : EntityDto<int>
 
     public WorkflowApproverPersonType ApproverPerson { get; set; }
 
+    public string RequestPersonField { get; set; }
+
     public WorkflowRoleGroup WorkflowRoleGroup { get; set; }
 
     public int? WorkflowRoleOrgId { get; set; }

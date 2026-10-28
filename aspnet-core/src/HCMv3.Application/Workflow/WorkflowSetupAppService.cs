@@ -197,6 +197,7 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
                 Steps = approverSteps.Select(s => new WorkflowSetupStepDto
                 {
                     ApproverPerson = s.ApproverPerson,
+                    RequestPersonField = s.RequestPersonField,
                     WorkflowRoleId = s.WorkflowRoleId,
                     WorkflowRoleName = s.WorkflowRoleId.HasValue
                         ? roles.FirstOrDefault(r => r.Id == s.WorkflowRoleId.Value)?.NameEn
@@ -293,6 +294,7 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
         return new WorkflowSetupStepDto
         {
             ApproverPerson = step.ApproverPerson,
+            RequestPersonField = step.RequestPersonField,
             WorkflowRoleId = step.WorkflowRoleId,
             WorkflowRoleName = step.WorkflowRoleId.HasValue
                 ? roles.FirstOrDefault(r => r.Id == step.WorkflowRoleId.Value)?.NameEn
@@ -609,6 +611,13 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
             });
         }
 
+        // A "Person on Request" step picked in the grid has no field to route by, and would be skipped for every
+        // request. Refused here, so the administrator is sent to the step screen rather than left with a dead step.
+        if (steps.Any(s => s.ApproverPerson == WorkflowApproverPersonType.PersonOnRequest && s.RequestPersonField.IsNullOrWhiteSpace()))
+        {
+            throw new UserFriendlyException(L("RequestPersonFieldChooseOnStepScreen"));
+        }
+
         foreach (var step in steps)
         {
             await _requestDetailRepository.InsertAsync(new RequestDetail
@@ -617,6 +626,12 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
                 RequestMasterId = masterId,
                 Step = stepNumber++,
                 ApproverPerson = step.ApproverPerson,
+
+                // Carried through unchanged: the grid shows a "Person on Request" step but its field is chosen on the
+                // detailed step screen. See the check above the loop.
+                RequestPersonField = step.ApproverPerson == WorkflowApproverPersonType.PersonOnRequest
+                    ? step.RequestPersonField
+                    : null,
 
                 // Only meaningful for Person. A manager position carries no role, and leaving one on it
                 // would show in the detailed screens as a setting that does nothing.
