@@ -126,7 +126,7 @@
       "rules": "Optional. Whole number.",
       "when": null,
       "html": "<p><strong>What it is.</strong> How many years each ticket cycle lasts before unused entitlement lapses.</p><p><strong>Example.</strong> <code>2</code></p>",
-      "adminHtml": "<p>With <strong>Lapse</strong> ticked, set this to at least 1. The form accepts 0, but 0 makes the ticket calculation never finish, which stops the time engine for employees with this ticket type.</p>",
+      "adminHtml": "<p>With <strong>Lapse</strong> ticked, this must be at least 1; the form refuses 0 and shows an error. A ticket type saved with 0 before this rule existed is calculated as 1 year, so check any old ticket types that have <strong>Lapse</strong> ticked.</p>",
       "stub": false
     },
     {

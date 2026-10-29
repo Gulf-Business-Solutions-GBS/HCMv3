@@ -927,7 +927,7 @@ function frontmatter(page, lang) {
 
 /** The Markdown under a head's `## Overview` heading, or null when the head has none. */
 function overviewOf(head) {
-    const parts = head.split(/\n## Overview\n/);
+    const parts = head.split(/\r?\n## Overview\r?\n/);
     return parts.length > 1 ? parts[1] : null;
 }
 

@@ -3161,6 +3161,7 @@
     <text name="TicketBasisFixedDays">الأيام الثابتة لأساس التذكرة</text>
     <text name="Lapse">السقوط</text>
     <text name="LapseAfter">السقوط بعد</text>
+    <text name="LapseAfterMustBeGreaterThanZero">يجب أن تكون قيمة السقوط بعد أكبر من صفر عند التأشير على السقوط.</text>
     <text name="StopDependantAccrualAfter">إيقاف تراكم العائل بعد</text>
     <text name="MinCompensation">الحد الأدنى للتعويض</text>
     <text name="DeductionPeriod">فترة الخصم</text>
