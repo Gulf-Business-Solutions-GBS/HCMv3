@@ -8,6 +8,7 @@ using HCMv3.SystemSettings.Services;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.Workflow;
 using HCMv3.Workflow.Dto;
+using HCMv3.Workflow.Services;
 using NSubstitute;
 using Shouldly;
 using Xunit;
@@ -34,7 +35,9 @@ public class RequestDetailsAppService_Tests : WorkflowAppServiceTestBase
             // The tenant's default notification configurations. Empty here: these tests are about step
             // numbering, and a step saved with no defaults to find simply keeps its nulls.
             FakeRepository.For<NotificationConfig>(Context),
-            _sysSettingsAccessor));
+            _sysSettingsAccessor,
+            Resolve<IWorkflowTransactionHandlerResolver>(),
+            FakeRepository.For<WorkflowTransactionType>(Context)));
     }
 
     private int CreateRequestMaster()
@@ -488,5 +491,130 @@ public class RequestDetailsAppService_Tests : WorkflowAppServiceTestBase
         var saved = Context.RequestDetails.Single(d => d.RequestMasterId == requestMasterId);
         saved.ApproverPerson.ShouldBe(WorkflowApproverPersonType.PersonManager);
         saved.WorkflowRoleId.ShouldNotBeNull();
+    }
+
+    // ------------------------------------------------------------------ "Person on Request" steps
+
+    private static readonly string PrimaryDelegateField = WorkflowRequestPersonFields.Compose("EmployeeAbsence", "PrimaryDelegateId");
+    private static readonly string SecondaryDelegateField = WorkflowRequestPersonFields.Compose("EmployeeAbsence", "SecondaryDelegateId");
+    private static readonly string GuarantorField = WorkflowRequestPersonFields.Compose("EmployeeDocumentMvmt", "GuarantorId");
+
+    [Fact]
+    public async Task Should_Save_A_Person_On_Request_Step_With_Its_Field()
+    {
+        var requestMasterId = CreateRequestMaster();
+        var service = CreateAppService();
+
+        var step = NewStep(requestMasterId, 1);
+        step.ApproverPerson = WorkflowApproverPersonType.PersonOnRequest;
+        step.RequestPersonField = PrimaryDelegateField;
+        await service.CreateOrEdit(step);
+
+        var saved = Context.RequestDetails.Single(d => d.RequestMasterId == requestMasterId);
+        saved.ApproverPerson.ShouldBe(WorkflowApproverPersonType.PersonOnRequest);
+        saved.RequestPersonField.ShouldBe(PrimaryDelegateField);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("NotARealField")]
+    [InlineData("EmployeeAbsence:NotARealFieldId")]
+    [InlineData("NoSuchType:GuarantorId")]
+    [InlineData("EmployeeAbsence:EmployeeId")]
+    public async Task Should_Refuse_A_Person_On_Request_Step_Without_A_Known_Field(string requestPersonField)
+    {
+        var requestMasterId = CreateRequestMaster();
+        var service = CreateAppService();
+
+        var step = NewStep(requestMasterId, 1);
+        step.ApproverPerson = WorkflowApproverPersonType.PersonOnRequest;
+        step.RequestPersonField = requestPersonField;
+
+        await Should.ThrowAsync<UserFriendlyException>(() => service.CreateOrEdit(step));
+    }
+
+    [Fact]
+    public async Task Should_Drop_The_Role_From_A_Person_On_Request_Step()
+    {
+        var requestMasterId = CreateRequestMaster();
+        var service = CreateAppService();
+
+        var step = NewStep(requestMasterId, 1);
+        step.ApproverPerson = WorkflowApproverPersonType.PersonOnRequest;
+        step.RequestPersonField = PrimaryDelegateField;
+        step.WorkflowRoleId = CreateWorkflowRole();
+        await service.CreateOrEdit(step);
+
+        Context.RequestDetails.Single(d => d.RequestMasterId == requestMasterId).WorkflowRoleId.ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task Should_Clear_The_Field_When_The_Step_Is_Not_Person_On_Request()
+    {
+        var requestMasterId = CreateRequestMaster();
+        var service = CreateAppService();
+
+        var step = NewStep(requestMasterId, 1);
+        step.RequestPersonField = PrimaryDelegateField;
+        await service.CreateOrEdit(step);
+
+        Context.RequestDetails.Single(d => d.RequestMasterId == requestMasterId).RequestPersonField.ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task Should_Copy_The_Field_With_The_Step()
+    {
+        var requestMasterId = CreateRequestMaster();
+        var service = CreateAppService();
+
+        var step = NewStep(requestMasterId, 1);
+        step.ApproverPerson = WorkflowApproverPersonType.PersonOnRequest;
+        step.RequestPersonField = SecondaryDelegateField;
+        await service.CreateOrEdit(step);
+        var sourceId = Context.RequestDetails.Single(d => d.RequestMasterId == requestMasterId).Id;
+
+        var copy = await service.CopyStep(new EntityDto(sourceId));
+
+        Context.RequestDetails.Single(d => d.Id == copy.Id).RequestPersonField
+            .ShouldBe(SecondaryDelegateField);
+    }
+
+    [Fact]
+    public async Task Should_List_Employee_Fields_Discovered_On_The_Transaction_Types()
+    {
+        Context.WorkflowTransactionTypes.Add(new WorkflowTransactionType
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            Code = "EmployeeDocumentMvmt",
+            NameEn = "Document Withdrawal",
+            NameAr = "سحب مستند"
+        });
+        Context.SaveChanges();
+
+        var options = await CreateAppService().GetRequestPersonFieldOptions();
+
+        // A leave's delegates are tagged ids; a withdrawal's guarantor is found through its Employee link.
+        options.Select(o => o.Code).ShouldContain(PrimaryDelegateField);
+        options.Select(o => o.Code).ShouldContain(GuarantorField);
+        options.Select(o => o.Code).ShouldNotContain(c => c.EndsWith(":EmployeeId"));
+
+        var guarantor = options.Single(o => o.Code == GuarantorField);
+        guarantor.AppliesTo.ShouldBe("Document Withdrawal");
+        guarantor.DisplayName.ShouldBe("Document Withdrawal – Guarantor");
+        guarantor.FieldName.ShouldBe("Guarantor");
+    }
+
+    [Fact]
+    public async Task Should_Save_A_Step_Routed_To_The_Guarantor()
+    {
+        var requestMasterId = CreateRequestMaster();
+        var service = CreateAppService();
+
+        var step = NewStep(requestMasterId, 1);
+        step.ApproverPerson = WorkflowApproverPersonType.PersonOnRequest;
+        step.RequestPersonField = GuarantorField;
+        await service.CreateOrEdit(step);
+
+        Context.RequestDetails.Single(d => d.RequestMasterId == requestMasterId).RequestPersonField.ShouldBe(GuarantorField);
     }
 }

@@ -159,7 +159,8 @@ public class WorkflowApprovalService_Tests : WorkflowAppServiceTestBase
             Substitute.For<Abp.Domain.Repositories.IRepository<HCMv3.OrganizationManagement.OrganizationUnitType>>(),
             CreateDelegationResolver(),
             settingsAccessor,
-            Substitute.For<HCMv3.OrganizationManagement.Services.IOrgHierarchyService>());
+            Substitute.For<HCMv3.OrganizationManagement.Services.IOrgHierarchyService>(),
+            Substitute.For<Abp.Dependency.IIocResolver>());
     }
 
     /// <summary>

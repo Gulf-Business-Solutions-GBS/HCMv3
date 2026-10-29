@@ -185,6 +185,18 @@ public interface IWorkflowTransactionHandler : IDomainService
     /// </para>
     /// </summary>
     Task ApplyAmendmentAsync(WorkflowTransactionContext context);
+
+    /// <summary>
+    /// The employee fields of this type's entity a <see cref="WorkflowApproverPersonType.PersonOnRequest"/> step
+    /// can route to, as property names. Discovered, not listed: see <see cref="RequestPersonFieldDiscovery"/>.
+    /// </summary>
+    System.Collections.Generic.IReadOnlyCollection<string> RequestPersonFields { get; }
+
+    /// <summary>
+    /// The employee the request names in <paramref name="fieldCode"/> (a property name), or null when the field is empty or this
+    /// type has no such field. Read-only: it is asked while approvers are being resolved.
+    /// </summary>
+    Task<int?> GetRequestPersonAsync(WorkflowTransactionContext context, string fieldCode);
 }
 
 /// <summary>What was done at a step, for <see cref="IWorkflowTransactionHandler.OnStepActionAsync"/>.</summary>

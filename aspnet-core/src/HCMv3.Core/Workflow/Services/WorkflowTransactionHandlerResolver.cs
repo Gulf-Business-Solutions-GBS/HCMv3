@@ -44,4 +44,9 @@ public class WorkflowTransactionHandlerResolver : HCMv3DomainServiceBase, IWorkf
 
         return _handlersByRequestType.TryGetValue(requestType, out var handler) ? handler : null;
     }
+
+    public IReadOnlyCollection<IWorkflowTransactionHandler> GetAll()
+    {
+        return _handlersByRequestType.Values.ToList();
+    }
 }

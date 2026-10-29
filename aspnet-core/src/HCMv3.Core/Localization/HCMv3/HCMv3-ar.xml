@@ -3551,6 +3551,12 @@
     <text name="WorkflowApproverPersonTypeManagerLevel5">المدير من المستوى 5</text>
     <text name="WorkflowApproverPersonTypeManagerLevel6">المدير من المستوى 6</text>
     <text name="WorkflowApproverPersonTypeManagerLevel7">المدير من المستوى 7</text>
+    <text name="WorkflowApproverPersonTypePersonOnRequest">الشخص المحدد في الطلب</text>
+    <text name="RequestPersonField">حقل الطلب</text>
+    <text name="RequestPersonFieldIsRequired">يرجى اختيار حقل الطلب الذي يحدد المعتمد في خطوة الشخص المحدد في الطلب.</text>
+    <text name="RequestPersonFieldChooseOnStepScreen">تحتاج خطوة الشخص المحدد في الطلب إلى تحديد حقل الطلب. يرجى تحديده من شاشة خطوات سلسلة الاعتماد، ثم العودة إلى هنا.</text>
+    <text name="RequestPersonFieldAppliesTo">هذا الحقل موجود في طلبات {0}. أي نوع معاملة آخر يستخدم هذه السلسلة يتخطى هذه الخطوة.</text>
+    <text name="RequestPersonFieldHint">يُرسل الطلب إلى الموظف الذي يحدده مقدم الطلب في هذا الحقل. إذا كان الحقل فارغًا أو يحدد مقدم الطلب نفسه، تُتخطى الخطوة.</text>
     <text name="ApprovalRequire">الاعتماد المطلوب</text>
     <text name="ApprovalRequireSingle">واحد</text>
     <text name="ApprovalRequireAll">الجميع</text>
@@ -7020,6 +7026,7 @@
     <text name="WorkflowApproverPersonType_ManagerLevel5">خمسة مستويات أعلى</text>
     <text name="WorkflowApproverPersonType_ManagerLevel6">ستة مستويات أعلى</text>
     <text name="WorkflowApproverPersonType_ManagerLevel7">سبعة مستويات أعلى</text>
+    <text name="WorkflowApproverPersonType_PersonOnRequest">الشخص المحدد في الطلب</text>
     <text name="WorkflowPersonScope_Themselves">لنفسه فقط</text>
     <text name="WorkflowPersonScope_Department">لأي موظف في إدارته</text>
     <text name="WorkflowPersonScope_SelfSubordinates">لنفسه ولفريقه</text>

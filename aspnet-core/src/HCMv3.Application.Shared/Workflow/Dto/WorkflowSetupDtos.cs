@@ -22,6 +22,9 @@ public class WorkflowSetupStepDto
 {
     public WorkflowApproverPersonType ApproverPerson { get; set; }
 
+    /// <summary>For <c>PersonOnRequest</c>: which request field names the approver (a <c>WorkflowRequestPersonFields</c> code).</summary>
+    public string RequestPersonField { get; set; }
+
     public int? WorkflowRoleId { get; set; }
 
     public string WorkflowRoleName { get; set; }

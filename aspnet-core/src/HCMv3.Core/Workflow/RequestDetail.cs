@@ -60,6 +60,13 @@ public class RequestDetail : FullAuditedEntity, IMustHaveTenant
 
     public virtual WorkflowApproverPersonType ApproverPerson { get; set; }
 
+    /// <summary>
+    /// For <see cref="WorkflowApproverPersonType.PersonOnRequest"/>: which person field of the request names
+    /// the approver, as a <see cref="WorkflowRequestPersonFields"/> code. Null for every other approver type.
+    /// </summary>
+    [System.ComponentModel.DataAnnotations.StringLength(WorkflowRequestPersonFields.MaxCodeLength)]
+    public virtual string RequestPersonField { get; set; }
+
     public virtual WorkflowRoleGroup WorkflowRoleGroup { get; set; }
 
     public virtual int? WorkflowRoleOrgId { get; set; }

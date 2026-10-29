@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Abp.Dependency;
 using Abp.Domain.Repositories;
 using Abp.Threading;
 using HCMv3.OrganizationManagement;
@@ -66,6 +67,8 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
     private readonly IWorkflowDelegationResolver _delegationResolver;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
     private readonly IOrgHierarchyService _orgHierarchyService;
+    private readonly IIocResolver _iocResolver;
+    private IWorkflowTransactionHandlerResolver _handlerResolver;
 
     public WorkflowApproverResolver(
         IRepository<EmployeeWorkflowRole> employeeWorkflowRoleRepository,
@@ -76,8 +79,10 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
         IRepository<OrganizationUnitType> organizationUnitTypeRepository,
         IWorkflowDelegationResolver delegationResolver,
         ISysSettingsAccessor sysSettingsAccessor,
-        IOrgHierarchyService orgHierarchyService)
+        IOrgHierarchyService orgHierarchyService,
+        IIocResolver iocResolver)
     {
+        _iocResolver = iocResolver;
         _employeeWorkflowRoleRepository = employeeWorkflowRoleRepository;
         _employeeManagerRepository = employeeManagerRepository;
         _orgAssignmentRepository = orgAssignmentRepository;
@@ -88,6 +93,14 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
         _sysSettingsAccessor = sysSettingsAccessor;
         _orgHierarchyService = orgHierarchyService;
     }
+
+    /// <summary>
+    /// The transaction handlers, looked up on first use rather than injected. Handlers send email, email looks
+    /// up approvers, and approvers are resolved here: injecting the handlers would close that loop and stop the
+    /// container building any of them. Only a "Person on Request" step needs them, so most requests never pay.
+    /// </summary>
+    private IWorkflowTransactionHandlerResolver HandlerResolver =>
+        _handlerResolver ??= _iocResolver.Resolve<IWorkflowTransactionHandlerResolver>();
 
     public List<int> ResolveForStep(
         WorkflowRequest request,
@@ -155,6 +168,13 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
             return new StepApprovers(candidates, delegatedFrom);
         }
 
+        // A "Person on Request" step that names nobody is skipped by the engine, not handed to the fallback:
+        // a leave without a delegate has no handover for anyone to accept, least of all the chain's catch-all.
+        if (requestDetail?.ApproverPerson == WorkflowApproverPersonType.PersonOnRequest)
+        {
+            return new StepApprovers(new List<int>(), new Dictionary<int, int>());
+        }
+
         // Last resort, exactly as legacy: better one nominated fallback than a request nobody can act on.
         if (requestMaster?.DefaultApproverId != null)
         {
@@ -219,6 +239,11 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
             return new List<int>();
         }
 
+        if (requestDetail.ApproverPerson == WorkflowApproverPersonType.PersonOnRequest)
+        {
+            return PersonNamedOnRequest(request, requestDetail.RequestPersonField);
+        }
+
         if (requestDetail.ApproverPerson == WorkflowApproverPersonType.Person)
         {
             if (!requestDetail.WorkflowRoleId.HasValue)
@@ -261,6 +286,44 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
         }
 
         return candidates;
+    }
+
+    /// <summary>
+    /// The employee the request names in <paramref name="fieldCode"/>, asked of the type's own handler, since
+    /// only it knows which column of which row that is. Nobody when the type has no handler or no such
+    /// field, when the field is empty, or when it names the requester -- approving your own request is not
+    /// an approval.
+    ///
+    /// <para>
+    /// Not narrowed by org scope and not tied to a role: the requester chose this person for this request,
+    /// and that choice is the whole authority of the step.
+    /// </para>
+    /// </summary>
+    private List<int> PersonNamedOnRequest(WorkflowRequest request, string fieldCode)
+    {
+        // The step names a field of ONE transaction type. A chain shared with other types skips it for them.
+        if (string.IsNullOrWhiteSpace(request?.RequestType)
+            || !WorkflowRequestPersonFields.TryParse(fieldCode, out var fieldRequestType, out var propertyName)
+            || !string.Equals(fieldRequestType, request.RequestType, StringComparison.OrdinalIgnoreCase))
+        {
+            return new List<int>();
+        }
+
+        var handler = HandlerResolver.Resolve(request.RequestType);
+        if (handler == null || !handler.RequestPersonFields.Contains(propertyName))
+        {
+            return new List<int>();
+        }
+
+        var personId = AsyncHelper.RunSync(() =>
+            handler.GetRequestPersonAsync(new WorkflowTransactionContext(request, request.EmployeeId ?? 0), propertyName));
+
+        if (!personId.HasValue || personId == request.EmployeeId)
+        {
+            return new List<int>();
+        }
+
+        return new List<int> { personId.Value };
     }
 
     /// <summary>

@@ -38,7 +38,8 @@ public class WorkflowApproverResolver_ManagerAndRole_Tests : WorkflowAppServiceT
                 FakeRepository.For<EmployeeDelegation>(Context),
                 FakeRepository.For<Employee>(Context)),
             settingsAccessor,
-            Substitute.For<HCMv3.OrganizationManagement.Services.IOrgHierarchyService>());
+            Substitute.For<HCMv3.OrganizationManagement.Services.IOrgHierarchyService>(),
+            Substitute.For<Abp.Dependency.IIocResolver>());
     }
 
     private int CreateRoleHeldBy(int employeeId)

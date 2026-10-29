@@ -20,4 +20,7 @@ public interface IRequestDetailsAppService : IApplicationService
 
     /// <summary>Duplicates a step onto the end of its chain, returning the new step's id.</summary>
     Task<EntityDto> CopyStep(EntityDto input);
+
+    /// <summary>The request person fields a "Person on Request" step can name, and which transaction types fill each.</summary>
+    Task<System.Collections.Generic.List<RequestPersonFieldOptionDto>> GetRequestPersonFieldOptions();
 }

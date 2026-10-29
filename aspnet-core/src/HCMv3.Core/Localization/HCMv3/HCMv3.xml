@@ -3602,6 +3602,12 @@
     <text name="WorkflowApproverPersonTypeManagerLevel5">Manager Level 5</text>
     <text name="WorkflowApproverPersonTypeManagerLevel6">Manager Level 6</text>
     <text name="WorkflowApproverPersonTypeManagerLevel7">Manager Level 7</text>
+    <text name="WorkflowApproverPersonTypePersonOnRequest">Person on Request</text>
+    <text name="RequestPersonField">Request Field</text>
+    <text name="RequestPersonFieldIsRequired">Choose the Request Field that names the approver for a Person on Request step.</text>
+    <text name="RequestPersonFieldChooseOnStepScreen">A Person on Request step needs its Request Field. Set it on the chain's step screen (Request Master steps), then come back here.</text>
+    <text name="RequestPersonFieldAppliesTo">This field is on {0} requests. Any other transaction type that uses this chain skips this step.</text>
+    <text name="RequestPersonFieldHint">The request goes to the employee the requester names in this field. If the field is empty, or names the requester, the step is skipped.</text>
     <text name="ApprovalRequire">Approval Required</text>
     <text name="ApprovalRequireSingle">Single</text>
     <text name="ApprovalRequireAll">All</text>
@@ -7185,6 +7191,7 @@
     <text name="WorkflowApproverPersonType_ManagerLevel5">5 levels up</text>
     <text name="WorkflowApproverPersonType_ManagerLevel6">6 levels up</text>
     <text name="WorkflowApproverPersonType_ManagerLevel7">7 levels up</text>
+    <text name="WorkflowApproverPersonType_PersonOnRequest">Person on request</text>
     <text name="WorkflowPersonScope_Themselves">Only for themselves</text>
     <text name="WorkflowPersonScope_Department">Anyone in their department</text>
     <text name="WorkflowPersonScope_SelfSubordinates">Themselves and their team</text>

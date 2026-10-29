@@ -85,6 +85,7 @@ export class WorkflowSetupComponent extends AppComponentBase implements OnInit {
         { value: WorkflowApproverPersonType.ManagerLevel5, key: 'WorkflowApproverPersonType_ManagerLevel5' },
         { value: WorkflowApproverPersonType.ManagerLevel6, key: 'WorkflowApproverPersonType_ManagerLevel6' },
         { value: WorkflowApproverPersonType.ManagerLevel7, key: 'WorkflowApproverPersonType_ManagerLevel7' },
+        { value: WorkflowApproverPersonType.PersonOnRequest, key: 'WorkflowApproverPersonType_PersonOnRequest' },
     ];
 
     readonly raisedByOptions = [
@@ -189,6 +190,7 @@ export class WorkflowSetupComponent extends AppComponentBase implements OnInit {
                 (s) =>
                     new WorkflowSetupStepDto({
                         approverPerson: s.approverPerson,
+                        requestPersonField: s.requestPersonField,
                         workflowRoleId: s.workflowRoleId,
                         workflowRoleName: s.workflowRoleName,
                         approvalRequire: s.approvalRequire,
@@ -269,6 +271,12 @@ export class WorkflowSetupComponent extends AppComponentBase implements OnInit {
             step.workflowRoleId = undefined;
             step.workflowRoleName = undefined;
             step.currentHolderCount = 0;
+        }
+
+        // The field of a "Person on Request" step is chosen on the detailed step screen; the grid only carries it.
+        // Any other kind of step names no field.
+        if (step.approverPerson !== WorkflowApproverPersonType.PersonOnRequest) {
+            step.requestPersonField = undefined;
         }
 
         this.touch(row.code);

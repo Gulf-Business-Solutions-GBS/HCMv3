@@ -49,6 +49,10 @@ public class WorkflowTestDbContext : DbContext
     // step at one.
     public DbSet<HCMv3.GeneralMasterInfo.NotificationConfig> NotificationConfigs { get; set; }
 
+    // The transaction catalog, which RequestDetailsAppService reads to say which types fill a request person
+    // field.
+    public DbSet<WorkflowTransactionType> WorkflowTransactionTypes { get; set; }
+
     public WorkflowTestDbContext(DbContextOptions<WorkflowTestDbContext> options) : base(options)
     {
     }
