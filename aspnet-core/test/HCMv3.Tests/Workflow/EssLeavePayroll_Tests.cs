@@ -235,6 +235,10 @@ public class EssLeavePayroll_Tests : EssLeaveWorkflowTestBase
             AsyncHelper.RunSync(() => seeder.SeedPackAsync(pack, TenantId));
         }
 
+        // The leaves below sit on fixed September 2026 dates; lift the backdating window so they stay valid
+        // whatever day the suite runs.
+        UsingDbContext(context => context.Set<AbsenceType>().Single(t => t.Code == "1").AllowBackDatedDays = -1);
+
         await _goLive.LoadEmployees(new GoLiveLoadEmployeesInput
         {
             OrganizationUnitName = "ABC Holding",

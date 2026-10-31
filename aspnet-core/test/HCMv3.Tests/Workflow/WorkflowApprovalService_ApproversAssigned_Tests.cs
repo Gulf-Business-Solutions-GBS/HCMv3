@@ -45,7 +45,8 @@ public class WorkflowApprovalService_ApproversAssigned_Tests : WorkflowAppServic
             Substitute.For<Abp.Domain.Repositories.IRepository<HCMv3.OrganizationManagement.OrganizationUnitType>>(),
             new WorkflowDelegationResolver(FakeRepository.For<EmployeeDelegation>(Context), FakeRepository.For<Employee>(Context)),
             settings,
-            Substitute.For<HCMv3.OrganizationManagement.Services.IOrgHierarchyService>());
+            Substitute.For<HCMv3.OrganizationManagement.Services.IOrgHierarchyService>(),
+            Substitute.For<Abp.Dependency.IIocResolver>());
 
         var scope = Substitute.For<IEmployeeScopeProvider>();
         scope.GetCurrentEmployeeIdAsync().Returns(Task.FromResult((int?)null));
