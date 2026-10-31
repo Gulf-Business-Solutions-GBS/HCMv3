@@ -66,3 +66,5 @@ aspnet-core/src/HCMv3.Core/Releases/release-log.json
 **/.claude/agent-memory-local
 **/.claude/first-run
 **/.claude/assistant-daemon-state.json
+aspnet-core/src/HCMv3.Web.Host/appsettings.Production.json
+aspnet-core/src/HCMv3.Migrator/appsettings.json
