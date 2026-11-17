@@ -133608,6 +133608,64 @@ export class RequestDetailsServiceProxy {
     }
 
     /**
+     * @return OK
+     */
+    getRequestPersonFieldOptions(): Observable<RequestPersonFieldOptionDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/RequestDetails/GetRequestPersonFieldOptions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRequestPersonFieldOptions(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRequestPersonFieldOptions(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<RequestPersonFieldOptionDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<RequestPersonFieldOptionDto[]>;
+        }));
+    }
+
+    protected processGetRequestPersonFieldOptions(response: HttpResponseBase): Observable<RequestPersonFieldOptionDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(RequestPersonFieldOptionDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return OK
      */
@@ -204170,6 +204228,7 @@ export class CreateOrEditRequestDetailDto implements ICreateOrEditRequestDetailD
     enableReadLog!: boolean | undefined;
     person!: WorkflowPersonScope;
     approverPerson!: WorkflowApproverPersonType;
+    requestPersonField!: string | undefined;
     workflowRoleGroup!: WorkflowRoleGroup;
     workflowRoleOrgId!: number | undefined;
     approvalRequire!: ApprovalRequire;
@@ -204211,6 +204270,7 @@ export class CreateOrEditRequestDetailDto implements ICreateOrEditRequestDetailD
             this.enableReadLog = _data["enableReadLog"];
             this.person = _data["person"];
             this.approverPerson = _data["approverPerson"];
+            this.requestPersonField = _data["requestPersonField"];
             this.workflowRoleGroup = _data["workflowRoleGroup"];
             this.workflowRoleOrgId = _data["workflowRoleOrgId"];
             this.approvalRequire = _data["approvalRequire"];
@@ -204252,6 +204312,7 @@ export class CreateOrEditRequestDetailDto implements ICreateOrEditRequestDetailD
         data["enableReadLog"] = this.enableReadLog;
         data["person"] = this.person;
         data["approverPerson"] = this.approverPerson;
+        data["requestPersonField"] = this.requestPersonField;
         data["workflowRoleGroup"] = this.workflowRoleGroup;
         data["workflowRoleOrgId"] = this.workflowRoleOrgId;
         data["approvalRequire"] = this.approvalRequire;
@@ -204286,6 +204347,7 @@ export interface ICreateOrEditRequestDetailDto {
     enableReadLog: boolean | undefined;
     person: WorkflowPersonScope;
     approverPerson: WorkflowApproverPersonType;
+    requestPersonField: string | undefined;
     workflowRoleGroup: WorkflowRoleGroup;
     workflowRoleOrgId: number | undefined;
     approvalRequire: ApprovalRequire;
@@ -346938,6 +347000,7 @@ export class RequestDetailDto implements IRequestDetailDto {
     enableReadLog!: boolean;
     person!: WorkflowPersonScope;
     approverPerson!: WorkflowApproverPersonType;
+    requestPersonField!: string | undefined;
     workflowRoleGroup!: WorkflowRoleGroup;
     workflowRoleOrgId!: number | undefined;
     approvalRequire!: ApprovalRequire;
@@ -346980,6 +347043,7 @@ export class RequestDetailDto implements IRequestDetailDto {
             this.enableReadLog = _data["enableReadLog"];
             this.person = _data["person"];
             this.approverPerson = _data["approverPerson"];
+            this.requestPersonField = _data["requestPersonField"];
             this.workflowRoleGroup = _data["workflowRoleGroup"];
             this.workflowRoleOrgId = _data["workflowRoleOrgId"];
             this.approvalRequire = _data["approvalRequire"];
@@ -347022,6 +347086,7 @@ export class RequestDetailDto implements IRequestDetailDto {
         data["enableReadLog"] = this.enableReadLog;
         data["person"] = this.person;
         data["approverPerson"] = this.approverPerson;
+        data["requestPersonField"] = this.requestPersonField;
         data["workflowRoleGroup"] = this.workflowRoleGroup;
         data["workflowRoleOrgId"] = this.workflowRoleOrgId;
         data["approvalRequire"] = this.approvalRequire;
@@ -347057,6 +347122,7 @@ export interface IRequestDetailDto {
     enableReadLog: boolean;
     person: WorkflowPersonScope;
     approverPerson: WorkflowApproverPersonType;
+    requestPersonField: string | undefined;
     workflowRoleGroup: WorkflowRoleGroup;
     workflowRoleOrgId: number | undefined;
     approvalRequire: ApprovalRequire;
@@ -347913,6 +347979,54 @@ export interface IRequestPassportWithdrawalInput {
     guarantorId: number | undefined;
     withdrawalReason: string | undefined;
     comments: string | undefined;
+}
+
+export class RequestPersonFieldOptionDto implements IRequestPersonFieldOptionDto {
+    code!: string | undefined;
+    displayName!: string | undefined;
+    fieldName!: string | undefined;
+    appliesTo!: string | undefined;
+
+    constructor(data?: IRequestPersonFieldOptionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.displayName = _data["displayName"];
+            this.fieldName = _data["fieldName"];
+            this.appliesTo = _data["appliesTo"];
+        }
+    }
+
+    static fromJS(data: any): RequestPersonFieldOptionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RequestPersonFieldOptionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["displayName"] = this.displayName;
+        data["fieldName"] = this.fieldName;
+        data["appliesTo"] = this.appliesTo;
+        return data;
+    }
+}
+
+export interface IRequestPersonFieldOptionDto {
+    code: string | undefined;
+    displayName: string | undefined;
+    fieldName: string | undefined;
+    appliesTo: string | undefined;
 }
 
 export class RequestPersonalDataChangeInput implements IRequestPersonalDataChangeInput {
@@ -368215,6 +368329,7 @@ export enum WorkflowApproverPersonType {
     ManagerLevel5 = 6,
     ManagerLevel6 = 7,
     ManagerLevel7 = 8,
+    PersonOnRequest = 9,
 }
 
 export class WorkflowDashboardDto implements IWorkflowDashboardDto {
@@ -370081,6 +370196,7 @@ export interface IWorkflowSetupRowDto {
 
 export class WorkflowSetupStepDto implements IWorkflowSetupStepDto {
     approverPerson!: WorkflowApproverPersonType;
+    requestPersonField!: string | undefined;
     workflowRoleId!: number | undefined;
     workflowRoleName!: string | undefined;
     approvalRequire!: ApprovalRequire;
@@ -370098,6 +370214,7 @@ export class WorkflowSetupStepDto implements IWorkflowSetupStepDto {
     init(_data?: any) {
         if (_data) {
             this.approverPerson = _data["approverPerson"];
+            this.requestPersonField = _data["requestPersonField"];
             this.workflowRoleId = _data["workflowRoleId"];
             this.workflowRoleName = _data["workflowRoleName"];
             this.approvalRequire = _data["approvalRequire"];
@@ -370115,6 +370232,7 @@ export class WorkflowSetupStepDto implements IWorkflowSetupStepDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["approverPerson"] = this.approverPerson;
+        data["requestPersonField"] = this.requestPersonField;
         data["workflowRoleId"] = this.workflowRoleId;
         data["workflowRoleName"] = this.workflowRoleName;
         data["approvalRequire"] = this.approvalRequire;
@@ -370125,6 +370243,7 @@ export class WorkflowSetupStepDto implements IWorkflowSetupStepDto {
 
 export interface IWorkflowSetupStepDto {
     approverPerson: WorkflowApproverPersonType;
+    requestPersonField: string | undefined;
     workflowRoleId: number | undefined;
     workflowRoleName: string | undefined;
     approvalRequire: ApprovalRequire;

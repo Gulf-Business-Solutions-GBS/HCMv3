@@ -24,7 +24,7 @@
 /* The manager and focus cards share one width so the stem between them lines up down the centre --
    capped at the frame so a narrow phone gets a full-width card instead of horizontal overflow. */
 .employee-org-chart__node {
-    width: min(340px, 100%);
+    width: ~'min(340px, 100%)';
 }
 
 .employee-org-chart__connector {
@@ -41,7 +41,7 @@
 .employee-org-chart__reports {
     display: grid;
     /* min() inside minmax so the track never demands more width than the screen actually has. */
-    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 340px));
+    grid-template-columns: ~'repeat(auto-fit, minmax(min(300px, 100%), 340px))';
     justify-content: center;
     gap: 16px;
     width: 100%;
