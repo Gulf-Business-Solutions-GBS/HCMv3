@@ -191931,6 +191931,7 @@ export class CreateOrEditEmployeeDto implements ICreateOrEditEmployeeDto {
     photo!: string | undefined;
     joiningDate!: DateTime;
     probationDays!: number;
+    probationEndDate!: DateTime | undefined;
     copyWageAccountsFromEmployeeId!: number | undefined;
 
     constructor(data?: ICreateOrEditEmployeeDto) {
@@ -192003,6 +192004,7 @@ export class CreateOrEditEmployeeDto implements ICreateOrEditEmployeeDto {
             this.photo = _data["photo"];
             this.joiningDate = _data["joiningDate"] ? DateTime.fromISO(_data["joiningDate"].toString()) : undefined as any;
             this.probationDays = _data["probationDays"];
+            this.probationEndDate = _data["probationEndDate"] ? DateTime.fromISO(_data["probationEndDate"].toString()) : undefined as any;
             this.copyWageAccountsFromEmployeeId = _data["copyWageAccountsFromEmployeeId"];
         }
     }
@@ -192075,6 +192077,7 @@ export class CreateOrEditEmployeeDto implements ICreateOrEditEmployeeDto {
         data["photo"] = this.photo;
         data["joiningDate"] = this.joiningDate ? this.joiningDate.toString() : undefined as any;
         data["probationDays"] = this.probationDays;
+        data["probationEndDate"] = this.probationEndDate ? this.probationEndDate.toString() : undefined as any;
         data["copyWageAccountsFromEmployeeId"] = this.copyWageAccountsFromEmployeeId;
         return data;
     }
@@ -192140,6 +192143,7 @@ export interface ICreateOrEditEmployeeDto {
     photo: string | undefined;
     joiningDate: DateTime;
     probationDays: number;
+    probationEndDate: DateTime | undefined;
     copyWageAccountsFromEmployeeId: number | undefined;
 }
 

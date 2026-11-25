@@ -844,6 +844,17 @@
                                     (ngModelChange)="updateField('probationDays', $event)" />
                             </div>
                             <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Employee_ProbationEndDate">{{ 'ProbationEndDate' | localize }}</label>
+                                <input
+                                    id="Employee_ProbationEndDate"
+                                    class="form-control"
+                                    type="date"
+                                    [ngModel]="probationEndDate()?.toISODate()"
+                                    [ngModelOptions]="{ standalone: true }"
+                                    readonly
+                                    disabled />
+                            </div>
+                            <div class="col-md-6 mb-5">
                                 <label class="form-label" for="Employee_RecruitmentTypeId">{{ 'RecruitmentType' | localize }}</label>
                                 <select
                                     id="Employee_RecruitmentTypeId"

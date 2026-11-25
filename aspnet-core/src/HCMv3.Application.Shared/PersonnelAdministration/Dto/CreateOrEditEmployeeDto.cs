@@ -136,6 +136,12 @@ public class CreateOrEditEmployeeDto
     public int ProbationDays { get; set; }
 
     /// <summary>
+    /// Read-only, for display on the edit form: the stored probation end date. Ignored on save -- the
+    /// server recomputes it from <see cref="JoiningDate"/> and <see cref="ProbationDays"/>.
+    /// </summary>
+    public DateTime? ProbationEndDate { get; set; }
+
+    /// <summary>
     /// New employees only, and only with <c>ManagePersonnelSettings.AutoWageAssignOnHire</c> on: the employee
     /// whose open-ended wage accounts are copied to the new hire (legacy "Copy Wage Account" prompt,
     /// <c>Employee.AddAutoWageAccount</c>). Not stored.

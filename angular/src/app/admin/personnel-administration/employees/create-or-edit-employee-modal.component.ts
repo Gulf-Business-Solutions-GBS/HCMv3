@@ -1,5 +1,5 @@
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
-import { Component, inject, output, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     CitiesServiceProxy,
@@ -77,6 +77,18 @@ export class CreateOrEditEmployeeModalComponent extends AppComponentBase {
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly employee = signal<CreateOrEditEmployeeDto>(new CreateOrEditEmployeeDto());
+
+    /**
+     * Read-only. The stored end date when editing; otherwise (new employee, or joining date / probation days
+     * just changed) a calendar-days preview, which is what the server stores on save.
+     */
+    readonly probationEndDate = computed<DateTime | undefined>(() => {
+        const e = this.employee();
+        if (e.probationEndDate) {
+            return e.probationEndDate;
+        }
+        return e.joiningDate ? e.joiningDate.plus({ days: Number(e.probationDays) || 0 }) : undefined;
+    });
 
     /**
      * The form's six groups, with the controls in each.
@@ -446,6 +458,10 @@ export class CreateOrEditEmployeeModalComponent extends AppComponentBase {
     updateField(field: keyof CreateOrEditEmployeeDto, value: any): void {
         const current = this.employee();
         (current as any)[field] = value;
+        if (field === 'joiningDate' || field === 'probationDays') {
+            // The stored date no longer applies; fall back to the preview below until the server recomputes it.
+            current.probationEndDate = undefined;
+        }
         const next = new CreateOrEditEmployeeDto();
         Object.assign(next, current);
         this.employee.set(next);

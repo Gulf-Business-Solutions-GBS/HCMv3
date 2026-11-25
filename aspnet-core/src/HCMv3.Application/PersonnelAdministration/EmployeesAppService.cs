@@ -514,7 +514,8 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
             BusinessExtension = employee.BusinessExtension,
             RecruitmentTypeId = employee.RecruitmentTypeId,
             JoiningDate = employee.JoiningDate,
-            ProbationDays = employee.ProbationDays
+            ProbationDays = employee.ProbationDays,
+            ProbationEndDate = employee.ProbationEndDate
         };
     }
 }

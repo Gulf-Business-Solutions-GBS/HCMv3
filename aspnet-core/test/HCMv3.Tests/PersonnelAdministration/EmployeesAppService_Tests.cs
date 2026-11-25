@@ -371,6 +371,39 @@ public class EmployeesAppService_Tests : AppTestBase
     }
 
     [Fact]
+    public async Task Should_Return_Probation_End_Date_For_Edit()
+    {
+        //Arrange
+        var nationality = CreateTestNationality();
+        await _employeesAppService.CreateOrEdit(ValidCreateDto(nationality.Id, "E107"));
+        var id = UsingDbContext(context => context.Set<Employee>().Single(e => e.Code == "E107").Id);
+
+        //Act
+        var output = await _employeesAppService.GetEmployeeForEdit(new EntityDto(id));
+
+        //Assert
+        output.Employee.ProbationEndDate.ShouldBe(new DateTime(2020, 1, 1).AddDays(90));
+    }
+
+    [Fact]
+    public async Task Should_Ignore_Probation_End_Date_Sent_On_Save()
+    {
+        //Arrange
+        var nationality = CreateTestNationality();
+        await _employeesAppService.CreateOrEdit(ValidCreateDto(nationality.Id, "E108"));
+        var id = UsingDbContext(context => context.Set<Employee>().Single(e => e.Code == "E108").Id);
+        var forEdit = await _employeesAppService.GetEmployeeForEdit(new EntityDto(id));
+        forEdit.Employee.ProbationEndDate = new DateTime(2030, 1, 1);
+
+        //Act
+        await _employeesAppService.CreateOrEdit(forEdit.Employee);
+
+        //Assert
+        UsingDbContext(context => context.Set<Employee>().Single(e => e.Id == id).ProbationEndDate)
+            .ShouldBe(new DateTime(2020, 1, 1).AddDays(90));
+    }
+
+    [Fact]
     public async Task Should_Delete_Employee()
     {
         //Arrange
