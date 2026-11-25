@@ -8094,5 +8094,12 @@
     <text name="PostJvRunQueued">Posting the journal voucher has started. Its progress is shown below.</text>
     <text name="NonPayrollWageTypeNotAllowed">This wage type cannot be used on a non-payroll transaction.</text>
     <text name="Retro">Retro</text>
+    <text name="CopyLoanType">Copy Loan Type</text>
+    <text name="WageTypeForCopy">Wage type for the copy</text>
+    <text name="WageTypeCopyOption_Link">Use the same wage type</text>
+    <text name="WageTypeCopyOption_CopyAndCreate">Copy it as a new wage type</text>
+    <text name="NewWageTypeName">New wage type name</text>
+    <text name="NewWageTypeNameRequired">Enter a name for the new wage type.</text>
+    <text name="LoanTypeCopied">Loan type copied.</text>
   </texts>
 </localizationDictionary>

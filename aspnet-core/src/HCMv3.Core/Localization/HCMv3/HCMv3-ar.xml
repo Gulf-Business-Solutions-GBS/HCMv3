@@ -7929,5 +7929,12 @@
     <text name="PostJvRunQueued">بدأ ترحيل قيد اليومية، ويظهر تقدّمه أدناه.</text>
     <text name="NonPayrollWageTypeNotAllowed">لا يمكن استخدام نوع الأجر هذا في معاملة خارج الرواتب.</text>
     <text name="Retro">بأثر رجعي</text>
+    <text name="CopyLoanType">نسخ نوع القرض</text>
+    <text name="WageTypeForCopy">نوع الأجر للنسخة</text>
+    <text name="WageTypeCopyOption_Link">استخدام نفس نوع الأجر</text>
+    <text name="WageTypeCopyOption_CopyAndCreate">نسخه كنوع أجر جديد</text>
+    <text name="NewWageTypeName">اسم نوع الأجر الجديد</text>
+    <text name="NewWageTypeNameRequired">أدخل اسماً لنوع الأجر الجديد.</text>
+    <text name="LoanTypeCopied">تم نسخ نوع القرض.</text>
   </texts>
 </localizationDictionary>

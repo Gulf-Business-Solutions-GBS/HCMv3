@@ -8,8 +8,8 @@ import {
     RequestStatus,
 } from '@shared/service-proxies/service-proxies';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { EMPTY, Observable, of } from 'rxjs';
+import { catchError, finalize, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from './shared/ess-request-detail-modal.component';
 
 /**
@@ -169,10 +169,22 @@ export abstract class MyRequestComponentBase<
      * a second error toast for the same setup gap only adds noise.</p>
      */
     protected loadContext(): void {
-        this._essSessionService.getEssContext().subscribe({
-            next: (result) => this.context.set(result),
-            error: () => undefined,
-        });
+        this.essContext().subscribe();
+    }
+
+    /** The context, fetched once per screen however many callers ask; undefined if it could not be read. */
+    private contextRequest: Observable<EssContextDto | undefined> | undefined;
+
+    private essContext(): Observable<EssContextDto | undefined> {
+        if (!this.contextRequest) {
+            this.contextRequest = this._essSessionService.getEssContext().pipe(
+                catchError(() => of(undefined)),
+                tap((result) => result && this.context.set(result)),
+                shareReplay(1)
+            );
+        }
+
+        return this.contextRequest;
     }
 
     /** "1042 - Ahmad Al Sayed", or just the name when the code is missing. */
@@ -201,10 +213,28 @@ export abstract class MyRequestComponentBase<
     reload(): void {
         this.loading.set(true);
 
-        this.fetch(
-            new GetMyRequestsInput({ includeHistory: false, maxResultCount: 200, skipCount: 0, sorting: undefined })
-        )
-            .pipe(finalize(() => this.loading.set(false)))
+        // Asked first, so an account the server already says is unlinked never makes the list call: that
+        // call throws, and ABP's HTTP interceptor shows its error dialog on top of the banner below whatever
+        // this screen does with the error. If the context itself cannot be read, the list call still goes.
+        this.essContext()
+            .pipe(
+                switchMap((context) => {
+                    if (context && !context.isLinkedToEmployee) {
+                        this.notLinked.set(true);
+                        return EMPTY;
+                    }
+
+                    return this.fetch(
+                        new GetMyRequestsInput({
+                            includeHistory: false,
+                            maxResultCount: 200,
+                            skipCount: 0,
+                            sorting: undefined,
+                        })
+                    );
+                }),
+                finalize(() => this.loading.set(false))
+            )
             .subscribe({
                 next: (result) => {
                     this.rows.set(result.items);

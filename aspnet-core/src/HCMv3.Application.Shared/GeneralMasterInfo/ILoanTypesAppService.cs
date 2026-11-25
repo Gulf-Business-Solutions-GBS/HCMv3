@@ -20,4 +20,10 @@ public interface ILoanTypesAppService : IApplicationService
     /// the loan type's current wage type, listed even if it no longer passes the filter.
     /// </summary>
     Task<ListResultDto<LoanDeductionWageTypeDto>> GetDeductionWageTypes(NullableIdDto input);
+
+    /// <summary>
+    /// Copy Loan Type (legacy <c>ObjectCopyController</c> "Copy LoanType"): a new loan type with the source's
+    /// settings and wage-type percentages, linked to the same wage type or to a new copy of it. Returns the new id.
+    /// </summary>
+    Task<int> Copy(CopyLoanTypeInput input);
 }

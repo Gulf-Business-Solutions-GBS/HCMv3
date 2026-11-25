@@ -11,6 +11,7 @@ import { Tooltip } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { CreateOrEditLoanTypeModalComponent } from './create-or-edit-loan-type-modal.component';
+import { CopyLoanTypeModalComponent } from './copy-loan-type-modal.component';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '../../../../shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
@@ -29,6 +30,7 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
         TieredMenu,
         Tooltip,
         CreateOrEditLoanTypeModalComponent,
+        CopyLoanTypeModalComponent,
         LocalizePipe,
         PermissionPipe,
         PermissionAnyPipe,
@@ -38,6 +40,7 @@ export class LoanTypesComponent extends AppComponentBase implements OnInit {
     private _loanTypesService = inject(LoanTypesServiceProxy);
 
     readonly createOrEditModal = viewChild<CreateOrEditLoanTypeModalComponent>('createOrEditModal');
+    readonly copyModal = viewChild<CopyLoanTypeModalComponent>('copyModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 
@@ -95,6 +98,14 @@ export class LoanTypesComponent extends AppComponentBase implements OnInit {
                 label: this.l('Edit'),
                 icon: 'pi pi-pencil',
                 command: () => this.createOrEditModal().show(record.id),
+            });
+        }
+
+        if (this.permission.isGranted('Pages.GeneralMasterInfo.LoanTypes.Create')) {
+            items.push({
+                label: this.l('Copy'),
+                icon: 'pi pi-copy',
+                command: () => this.copyModal().show(record),
             });
         }
 

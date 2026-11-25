@@ -372,7 +372,14 @@ export class MenuSearchBarComponent extends AppComponentBase {
             .then((navigated) => {
                 this.selected.set('');
 
-                if (!navigated) {
+                // Also FALSE when the target is the screen already open: the router skips a same-URL
+                // navigation and reports it as not navigated. That is not a refusal, so say nothing.
+                const alreadyThere = this.router.isActive(
+                    this.router.createUrlTree([route], { queryParams: parameters }),
+                    { paths: 'exact', queryParams: 'subset', fragment: 'ignored', matrixParams: 'ignored' }
+                );
+
+                if (!navigated && !alreadyThere) {
                     // navigate() resolves FALSE when a guard blocks -- it does not reject. AppRouteGuard
                     // redirects a denied user to the "best route", which is usually the dashboard, so
                     // somebody already on the dashboard sees the overlay close and nothing else happen.

@@ -10,6 +10,7 @@ using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.GeneralMasterInfo.Dto;
 using HCMv3.PayrollManagement;
+using HCMv3.PayrollManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,19 +33,90 @@ public class LoanTypesAppService : HCMv3AppServiceBase, ILoanTypesAppService
     private readonly IRepository<AbsenceType> _absenceTypeRepository;
     private readonly IRepository<OvertimeType> _overtimeTypeRepository;
     private readonly IRepository<DisciplinaryType> _disciplinaryTypeRepository;
+    private readonly IRepository<LoanTypeDetail> _loanTypeDetailRepository;
+    private readonly IWageTypeCopyService _wageTypeCopyService;
 
     public LoanTypesAppService(
         IRepository<LoanType> repository,
         IRepository<WageType> wageTypeRepository,
         IRepository<AbsenceType> absenceTypeRepository,
         IRepository<OvertimeType> overtimeTypeRepository,
-        IRepository<DisciplinaryType> disciplinaryTypeRepository)
+        IRepository<DisciplinaryType> disciplinaryTypeRepository,
+        IRepository<LoanTypeDetail> loanTypeDetailRepository,
+        IWageTypeCopyService wageTypeCopyService)
     {
         _repository = repository;
         _wageTypeRepository = wageTypeRepository;
         _absenceTypeRepository = absenceTypeRepository;
         _overtimeTypeRepository = overtimeTypeRepository;
         _disciplinaryTypeRepository = disciplinaryTypeRepository;
+        _loanTypeDetailRepository = loanTypeDetailRepository;
+        _wageTypeCopyService = wageTypeCopyService;
+    }
+
+    /// <summary>
+    /// Legacy <c>pwsaCopyLoanType_Execute</c>: copies the settings and the <see cref="LoanTypeDetail"/> rows; the
+    /// code is auto-assigned. With <see cref="WageTypeCopyOption.CopyAndCreate"/> the deduction wage type is cloned
+    /// too; a source with no wage type gives a copy with none, as in legacy.
+    /// </summary>
+    [AbpAuthorize(AppPermissions.Pages_GeneralMasterInfo_LoanTypes_Create)]
+    public async Task<int> Copy(CopyLoanTypeInput input)
+    {
+        var source = await _repository.GetAsync(input.LoanTypeId);
+
+        var nameEn = input.NameEn?.Trim();
+        var nameAr = input.NameAr.IsNullOrWhiteSpace() ? nameEn : input.NameAr.Trim();
+        var wageTypeName = input.WageTypeName?.Trim();
+        var createWageType = input.WageTypeOption == WageTypeCopyOption.CopyAndCreate;
+
+        if (nameEn.IsNullOrWhiteSpace())
+        {
+            throw new UserFriendlyException(L("NameEn") + ": " + L("ThisFieldIsRequired"));
+        }
+
+        if (createWageType && wageTypeName.IsNullOrWhiteSpace())
+        {
+            throw new UserFriendlyException(L("NewWageTypeNameRequired"));
+        }
+
+        var copy = new LoanType
+        {
+            NameEn = nameEn,
+            NameAr = nameAr,
+            LoanDeductionType = source.LoanDeductionType,
+            RecoveryOption = source.RecoveryOption,
+            EligiblePeriod = source.EligiblePeriod,
+            EligibleCountPerYear = source.EligibleCountPerYear,
+            MaxInstallments = source.MaxInstallments,
+            EligibleAmount = source.EligibleAmount,
+            EligibleAmountNumber = source.EligibleAmountNumber,
+            WageTypeId = source.WageTypeId,
+            TenantId = AbpSession.TenantId ?? 0
+        };
+
+        await AssignCodeIfEmptyAsync(copy);
+        await ValidateUniquenessAsync(copy);
+
+        if (createWageType && source.WageTypeId.HasValue)
+        {
+            copy.WageTypeId = await _wageTypeCopyService.CopyAsync(source.WageTypeId.Value, wageTypeName);
+        }
+
+        var copyId = await _repository.InsertAndGetIdAsync(copy);
+
+        var details = await _loanTypeDetailRepository.GetAllListAsync(d => d.LoanTypeId == source.Id);
+        foreach (var detail in details)
+        {
+            await _loanTypeDetailRepository.InsertAsync(new LoanTypeDetail
+            {
+                LoanTypeId = copyId,
+                WageTypeId = detail.WageTypeId,
+                Percent = detail.Percent,
+                TenantId = copy.TenantId
+            });
+        }
+
+        return copyId;
     }
 
     /// <summary>

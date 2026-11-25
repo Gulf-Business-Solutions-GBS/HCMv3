@@ -86807,6 +86807,63 @@ export class LoanTypesServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return OK
+     */
+    copy(body?: CopyLoanTypeInput | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/LoanTypes/Copy";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCopy(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCopy(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processCopy(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return OK
      */
@@ -184262,6 +184319,58 @@ export interface ICompetencyTypeDto {
     nameAr: string | undefined;
     backColor: string | undefined;
     foreColor: string | undefined;
+}
+
+export class CopyLoanTypeInput implements ICopyLoanTypeInput {
+    loanTypeId!: number;
+    nameEn!: string;
+    nameAr!: string | undefined;
+    wageTypeOption!: WageTypeCopyOption;
+    wageTypeName!: string | undefined;
+
+    constructor(data?: ICopyLoanTypeInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.loanTypeId = _data["loanTypeId"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.wageTypeOption = _data["wageTypeOption"];
+            this.wageTypeName = _data["wageTypeName"];
+        }
+    }
+
+    static fromJS(data: any): CopyLoanTypeInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new CopyLoanTypeInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["loanTypeId"] = this.loanTypeId;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["wageTypeOption"] = this.wageTypeOption;
+        data["wageTypeName"] = this.wageTypeName;
+        return data;
+    }
+}
+
+export interface ICopyLoanTypeInput {
+    loanTypeId: number;
+    nameEn: string;
+    nameAr: string | undefined;
+    wageTypeOption: WageTypeCopyOption;
+    wageTypeName: string | undefined;
 }
 
 export class CopyMyAppraisalKpiInput implements ICopyMyAppraisalKpiInput {
@@ -367021,6 +367130,11 @@ export interface IWageAccountDto {
     costElement6Id: number | undefined;
     costElement7Id: number | undefined;
     costPercentage: number;
+}
+
+export enum WageTypeCopyOption {
+    Link = 0,
+    CopyAndCreate = 1,
 }
 
 export class WageTypeDto implements IWageTypeDto {

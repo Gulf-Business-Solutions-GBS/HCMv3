@@ -1,0 +1,132 @@
+<div
+    appBsModal
+    #copyModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="copyModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #copyForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ 'CopyLoanType' | localize }}: {{ source()?.code }} - {{ source()?.nameEn }}
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label required" for="CopyLoanType_NameEn">{{ 'NameEn' | localize }}</label>
+                            <input
+                                id="CopyLoanType_NameEn"
+                                #nameEnInput="ngModel"
+                                class="form-control"
+                                type="text"
+                                name="NameEn"
+                                [ngModel]="nameEn()"
+                                (ngModelChange)="nameEn.set($event)"
+                                required
+                                maxlength="200" />
+                            <validation-messages [formCtrl]="nameEnInput" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="CopyLoanType_NameAr">{{ 'NameAr' | localize }}</label>
+                            <input
+                                id="CopyLoanType_NameAr"
+                                class="form-control"
+                                type="text"
+                                name="NameAr"
+                                dir="rtl"
+                                [ngModel]="nameAr()"
+                                (ngModelChange)="nameAr.set($event)"
+                                [placeholder]="nameEn()"
+                                maxlength="200" />
+                        </div>
+
+                        @if (hasWageType()) {
+                            <div class="mb-5">
+                                <label class="form-label">{{ 'WageTypeForCopy' | localize }}</label>
+                                <div class="text-muted mb-2">
+                                    {{ source()?.wageTypeCode }} - {{ source()?.wageTypeNameEn }}
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input
+                                        id="CopyLoanType_WageType_Link"
+                                        class="form-check-input"
+                                        type="radio"
+                                        name="WageTypeOption"
+                                        [value]="WageTypeCopyOption.Link"
+                                        [ngModel]="wageTypeOption()"
+                                        (ngModelChange)="wageTypeOption.set($event)" />
+                                    <label class="form-check-label" for="CopyLoanType_WageType_Link">
+                                        {{ 'WageTypeCopyOption_Link' | localize }}
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input
+                                        id="CopyLoanType_WageType_CopyAndCreate"
+                                        class="form-check-input"
+                                        type="radio"
+                                        name="WageTypeOption"
+                                        [value]="WageTypeCopyOption.CopyAndCreate"
+                                        [ngModel]="wageTypeOption()"
+                                        (ngModelChange)="wageTypeOption.set($event)" />
+                                    <label class="form-check-label" for="CopyLoanType_WageType_CopyAndCreate">
+                                        {{ 'WageTypeCopyOption_CopyAndCreate' | localize }}
+                                    </label>
+                                </div>
+                            </div>
+                        }
+
+                        @if (createsWageType()) {
+                            <div class="mb-5">
+                                <label class="form-label required" for="CopyLoanType_WageTypeName">
+                                    {{ 'NewWageTypeName' | localize }}
+                                </label>
+                                <input
+                                    id="CopyLoanType_WageTypeName"
+                                    #wageTypeNameInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="WageTypeName"
+                                    [ngModel]="wageTypeName()"
+                                    (ngModelChange)="wageTypeName.set($event)"
+                                    required
+                                    maxlength="193" />
+                                <validation-messages [formCtrl]="wageTypeNameInput" />
+                            </div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!copyForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-copy"></i>
+                            <span>{{ 'Copy' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

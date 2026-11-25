@@ -59,6 +59,7 @@
                                         [hidden]="
                                             !(
                                                 [
+                                                    'Pages.GeneralMasterInfo.LoanTypes.Create',
                                                     'Pages.GeneralMasterInfo.LoanTypes.Edit',
                                                     'Pages.GeneralMasterInfo.LoanTypes.Delete',
                                                 ] | permissionAny
@@ -87,6 +88,7 @@
                                         [hidden]="
                                             !(
                                                 [
+                                                    'Pages.GeneralMasterInfo.LoanTypes.Create',
                                                     'Pages.GeneralMasterInfo.LoanTypes.Edit',
                                                     'Pages.GeneralMasterInfo.LoanTypes.Delete',
                                                 ] | permissionAny
@@ -137,4 +139,5 @@
     </div>
 
     <createOrEditLoanTypeModal #createOrEditModal (modalSave)="reloadPage()" />
+    <copyLoanTypeModal #copyModal (modalSave)="reloadPage()" />
 </div>
