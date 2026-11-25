@@ -94,7 +94,11 @@ public class CreateOrEditEmployeeDto
 
     public string BloodGroup { get; set; }
 
-    public long CivilID { get; set; }
+    /// <summary>
+    /// Required (legacy "CivilID must be specified"). Nullable here only so an empty box reaches the server and is
+    /// answered with that message: as a plain <c>long</c>, a blank failed JSON reading with a technical error.
+    /// </summary>
+    public long? CivilID { get; set; }
 
     public string LoginID { get; set; }
 

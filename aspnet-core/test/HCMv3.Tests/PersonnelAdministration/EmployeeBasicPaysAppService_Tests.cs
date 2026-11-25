@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.UI;
@@ -120,5 +121,111 @@ public class EmployeeBasicPaysAppService_Tests : AppTestBase
         //Assert
         var result = await _appService.GetAll(new GetAllEmployeeBasicPaysInput { EmployeeId = employee.Id });
         result.TotalCount.ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task Should_Return_Id_Of_Created_BasicPay()
+    {
+        //Arrange
+        var employee = CreateTestEmployee("BP400");
+
+        //Act
+        var id = await CreateAsync(employee.Id, new DateTime(2024, 1, 1));
+
+        //Assert
+        var edit = await _appService.GetEmployeeBasicPayForEdit(new EntityDto(id));
+        edit.EmployeeBasicPay.EmployeeId.ShouldBe(employee.Id);
+        edit.EmployeeBasicPay.StartDate.ShouldBe(new DateTime(2024, 1, 1));
+    }
+
+    [Fact]
+    public async Task Should_End_Previous_BasicPay_The_Day_Before_A_Later_One()
+    {
+        //Arrange
+        var employee = CreateTestEmployee("BP500");
+        await CreateAsync(employee.Id, new DateTime(2024, 1, 1));
+
+        //Act
+        await CreateAsync(employee.Id, new DateTime(2024, 7, 1));
+
+        //Assert
+        var records = await GetPeriodsAsync(employee.Id);
+        records[0].EndDate.ShouldBe(new DateTime(2024, 6, 30));
+        records[1].EndDate.ShouldBe(new DateTime(9999, 12, 31));
+    }
+
+    [Fact]
+    public async Task Should_End_Inserted_Earlier_BasicPay_The_Day_Before_The_Next_One()
+    {
+        //Arrange
+        var employee = CreateTestEmployee("BP600");
+        await CreateAsync(employee.Id, new DateTime(2024, 7, 1));
+
+        //Act
+        await CreateAsync(employee.Id, new DateTime(2024, 1, 1));
+
+        //Assert
+        var records = await GetPeriodsAsync(employee.Id);
+        records[0].EndDate.ShouldBe(new DateTime(2024, 6, 30));
+        records[1].EndDate.ShouldBe(new DateTime(9999, 12, 31));
+    }
+
+    [Fact]
+    public async Task Should_Recalculate_End_Dates_When_Effective_Date_Is_Edited()
+    {
+        //Arrange
+        var employee = CreateTestEmployee("BP700");
+        await CreateAsync(employee.Id, new DateTime(2024, 1, 1));
+        var laterId = await CreateAsync(employee.Id, new DateTime(2024, 7, 1));
+
+        //Act
+        var edit = (await _appService.GetEmployeeBasicPayForEdit(new EntityDto(laterId))).EmployeeBasicPay;
+        edit.StartDate = new DateTime(2024, 4, 1);
+        await _appService.CreateOrEdit(edit);
+
+        //Assert
+        var records = await GetPeriodsAsync(employee.Id);
+        records[0].EndDate.ShouldBe(new DateTime(2024, 3, 31));
+        records[1].StartDate.ShouldBe(new DateTime(2024, 4, 1));
+        records[1].EndDate.ShouldBe(new DateTime(9999, 12, 31));
+    }
+
+    [Fact]
+    public async Task Should_Reopen_Previous_BasicPay_When_Latest_Is_Deleted()
+    {
+        //Arrange
+        var employee = CreateTestEmployee("BP800");
+        await CreateAsync(employee.Id, new DateTime(2024, 1, 1));
+        var laterId = await CreateAsync(employee.Id, new DateTime(2024, 7, 1));
+
+        //Act
+        await _appService.Delete(new EntityDto(laterId));
+
+        //Assert
+        var records = await GetPeriodsAsync(employee.Id);
+        records.Count.ShouldBe(1);
+        records[0].EndDate.ShouldBe(new DateTime(9999, 12, 31));
+    }
+
+    private Task<int> CreateAsync(int employeeId, DateTime effectiveDate)
+    {
+        return _appService.CreateOrEdit(new CreateOrEditEmployeeBasicPayDto
+        {
+            EmployeeId = employeeId,
+            StartDate = effectiveDate,
+            PayType = PayType.Regular,
+            PayInterval = PayInterval.Monthly
+        });
+    }
+
+    private async Task<System.Collections.Generic.List<EmployeeBasicPayDto>> GetPeriodsAsync(int employeeId)
+    {
+        var result = await _appService.GetAll(new GetAllEmployeeBasicPaysInput
+        {
+            EmployeeId = employeeId,
+            Sorting = "StartDate",
+            MaxResultCount = 100
+        });
+        return result.Items.ToList();
     }
 }

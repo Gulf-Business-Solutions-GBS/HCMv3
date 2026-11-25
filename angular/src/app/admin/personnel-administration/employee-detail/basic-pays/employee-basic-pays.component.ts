@@ -78,7 +78,10 @@ export class EmployeeBasicPaysComponent extends AppComponentBase implements OnIn
     }
 
     getRecords(event?: LazyLoadEvent): void {
-        if (!this.employeeId()) {
+        // The table lives inside the list/detail @if, so it can be missing when the employeeId effect fires;
+        // its (onLazyLoad) does the first load once it is rendered.
+        const table = this.dataTable();
+        if (!this.employeeId() || !table) {
             return;
         }
 
@@ -93,7 +96,7 @@ export class EmployeeBasicPaysComponent extends AppComponentBase implements OnIn
             .getAll(
                 new GetAllEmployeeBasicPaysInput({
                     employeeId: this.employeeId(),
-                    sorting: this.primengTableHelper.getSorting(this.dataTable()),
+                    sorting: this.primengTableHelper.getSorting(table),
                     maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),
                     skipCount: this.primengTableHelper.getSkipCount(this.paginator(), event),
                 })
@@ -116,6 +119,15 @@ export class EmployeeBasicPaysComponent extends AppComponentBase implements OnIn
 
     createRecord(): void {
         this.createOrEditModal()?.show(this.employeeId());
+    }
+
+    /** A new basic pay opens straight away, as in the legacy HRMS, so its Basic Pay Detail lines can be added. */
+    onCreated(id: number): void {
+        if (id) {
+            this.setSelectedBasicPay(id);
+        } else {
+            this.reloadPage();
+        }
     }
 
     openDetail(record: EmployeeBasicPayDto): void {

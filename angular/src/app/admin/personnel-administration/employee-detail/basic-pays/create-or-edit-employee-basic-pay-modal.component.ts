@@ -24,7 +24,8 @@ export class CreateOrEditEmployeeBasicPayModalComponent extends AppComponentBase
     private _service = inject(EmployeeBasicPaysServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
-    readonly modalSave = output<void>();
+    /** Emits the saved basic pay's id, so the section can open it to add its Basic Pay Detail lines. */
+    readonly modalSave = output<number>();
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
@@ -75,10 +76,10 @@ export class CreateOrEditEmployeeBasicPayModalComponent extends AppComponentBase
         this._service
             .createOrEdit(this.record())
             .pipe(finalize(() => this.saving.set(false)))
-            .subscribe(() => {
+            .subscribe((id) => {
                 this.notify.info(this.l('SavedSuccessfully'));
                 this.close();
-                this.modalSave.emit();
+                this.modalSave.emit(id);
             });
     }
 

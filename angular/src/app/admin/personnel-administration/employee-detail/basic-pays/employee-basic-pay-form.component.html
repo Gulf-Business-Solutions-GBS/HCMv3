@@ -1,7 +1,7 @@
 <fieldset class="employee-basic-pay-form" [disabled]="readOnly()">
     <div class="row">
         <div class="col-md-6 mb-5">
-            <label class="form-label required" for="EmployeeBasicPay_StartDate">{{ 'StartDate' | localize }}</label>
+            <label class="form-label required" for="EmployeeBasicPay_StartDate">{{ 'EffectiveDate' | localize }}</label>
             <input
                 id="EmployeeBasicPay_StartDate"
                 #startDateInput="ngModel"
@@ -12,19 +12,6 @@
                 (ngModelChange)="updateDateField('startDate', $event)"
                 required />
             <validation-messages [formCtrl]="startDateInput" />
-        </div>
-        <div class="col-md-6 mb-5">
-            <label class="form-label required" for="EmployeeBasicPay_EndDate">{{ 'EndDate' | localize }}</label>
-            <input
-                id="EmployeeBasicPay_EndDate"
-                #endDateInput="ngModel"
-                type="date"
-                class="form-control"
-                name="EndDate"
-                [ngModel]="record().endDate?.toISODate()"
-                (ngModelChange)="updateDateField('endDate', $event)"
-                required />
-            <validation-messages [formCtrl]="endDateInput" />
         </div>
     </div>
     <div class="row">

@@ -157,8 +157,6 @@ public class ChangeBasicPayAiPendingActionHandler : AiPendingActionHandlerBase
             throw ChangedSinceDraft();
         }
 
-        var newEndDate = OpenEnded;
-
         if (payload.SourceBasicPayId.HasValue)
         {
             var source = records.FirstOrDefault(r => r.Id == payload.SourceBasicPayId.Value
@@ -167,35 +165,20 @@ public class ChangeBasicPayAiPendingActionHandler : AiPendingActionHandlerBase
                          ?? throw ChangedSinceDraft();
 
             EnsureUnchanged(payload, await LoadLinesAsync(source.Id));
-
-            if (payload.CloseSourceRecord)
-            {
-                var edit = (await _basicPays.GetEmployeeBasicPayForEdit(new EntityDto(source.Id))).EmployeeBasicPay;
-                edit.EndDate = payload.EffectiveDate.AddDays(-1);
-                await _basicPays.CreateOrEdit(edit);
-
-                // The new record takes over the old one's end, so a record that was itself due to end keeps doing so.
-                newEndDate = source.EndDate.Date;
-            }
         }
 
-        await _basicPays.CreateOrEdit(new CreateOrEditEmployeeBasicPayDto
+        // The basic pay service ends the record in force the day before the new one starts (legacy end-date cascade).
+        var createdId = await _basicPays.CreateOrEdit(new CreateOrEditEmployeeBasicPayDto
         {
             EmployeeId = payload.EmployeeId,
             StartDate = payload.EffectiveDate,
-            EndDate = newEndDate,
             PayType = payload.PayType,
             PayInterval = payload.PayInterval
         });
 
-        // CreateOrEdit returns no id; StartDate is unique per employee, so read the new record back by it.
-        await _unitOfWorkManager.Current.SaveChangesAsync();
-        var created = (await _basicPays.GetAll(new GetAllEmployeeBasicPaysInput { EmployeeId = payload.EmployeeId, MaxResultCount = 1000 }))
-            .Items.Single(r => r.StartDate.Date == payload.EffectiveDate);
-
         foreach (var line in payload.After)
         {
-            await _basicPayDetails.CreateOrEdit(ToDetail(line, created.Id));
+            await _basicPayDetails.CreateOrEdit(ToDetail(line, createdId));
         }
     }
 

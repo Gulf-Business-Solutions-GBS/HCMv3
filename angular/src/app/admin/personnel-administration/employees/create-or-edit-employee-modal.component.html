@@ -329,14 +329,18 @@
                                     maxlength="20" />
                             </div>
                             <div class="col-md-6 mb-5">
-                                <label class="form-label" for="Employee_CivilID">{{ 'CivilID' | localize }}</label>
+                                <label class="form-label required" for="Employee_CivilID">{{ 'CivilID' | localize }}</label>
                                 <input
                                     id="Employee_CivilID"
+                                    #civilIdInput="ngModel"
                                     class="form-control"
                                     type="number"
                                     name="CivilID"
+                                    min="1"
                                     [ngModel]="employee().civilID"
-                                    (ngModelChange)="updateField('civilID', $event)" />
+                                    (ngModelChange)="updateField('civilID', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="civilIdInput" />
                             </div>
                             <div class="col-md-6 mb-5">
                                 <label class="form-label" for="Employee_BirthPlaceId">{{ 'BirthPlace' | localize }}</label>

@@ -1,0 +1,63 @@
+<div class="row align-items-center">
+    <!--<Primeng-TurboTable-Start>-->
+    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+        <p-table
+            #dataTable
+            sortMode="multiple"
+            (onLazyLoad)="getRecords($event)"
+            [value]="primengTableHelper.records()"
+            [rows]="100"
+            [paginator]="false"
+            [lazy]="true"
+            [scrollable]="true"
+            scrollDirection="horizontal"
+            [resizableColumns]="primengTableHelper.resizableColumns">
+            <ng-template #header>
+                <tr>
+                    <th style="min-width: 260px" pSortableColumn="WageType.PayrollOrder">
+                        {{ 'WageTypeId' | localize }}
+                        <p-sortIcon field="WageType.PayrollOrder" />
+                    </th>
+                    <th style="min-width: 120px" class="text-end" pSortableColumn="rate">
+                        {{ 'Rate' | localize }}
+                        <p-sortIcon field="rate" />
+                    </th>
+                    <th style="min-width: 100px" class="text-end" pSortableColumn="number">
+                        {{ 'Number' | localize }}
+                        <p-sortIcon field="number" />
+                    </th>
+                    <th style="min-width: 140px" class="text-end" pSortableColumn="amount">
+                        {{ 'Amount' | localize }}
+                        <p-sortIcon field="amount" />
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-record="$implicit">
+                <tr [class]="rowClass(record)">
+                    <td style="min-width: 260px">
+                        {{ record.wageTypeCode }}@if (record.wageTypeName) { - {{ record.wageTypeName }}}
+                    </td>
+                    <td style="min-width: 120px" class="text-end">{{ record.rate | number: '1.3-3' }}</td>
+                    <td style="min-width: 100px" class="text-end">{{ record.number | number: '1.0-3' }}</td>
+                    <td style="min-width: 140px" class="text-end">{{ record.amount | number: '1.3-3' }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        @if (primengTableHelper.totalRecordsCount() == 0) {
+            <div class="primeng-no-data">
+                {{ 'NoData' | localize }}
+            </div>
+        }
+        <div class="primeng-paging-container">
+            <p-paginator
+                [rows]="100"
+                #paginator
+                (onPageChange)="getRecords($event)"
+                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                [rowsPerPageOptions]="[25, 50, 100, 500]"
+                [showCurrentPageReport]="true"
+                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+        </div>
+    </div>
+    <!--<Primeng-TurboTable-End>-->
+</div>

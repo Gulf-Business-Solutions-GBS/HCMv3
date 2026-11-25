@@ -229,4 +229,82 @@ public class SalaryRegistersAppService_Tests : PayrollManagementAppServiceTestBa
         await Should.ThrowAsync<UserFriendlyException>(async () =>
             await service.Delete(new Abp.Application.Services.Dto.EntityDto(registerId)));
     }
+
+    private int CreateNamedEmployee(string code, string fullNameEn)
+    {
+        var employeeId = CreateEmployee();
+        var employee = Context.Employees.Find(employeeId);
+        employee.Code = code;
+        employee.FullNameEn = fullNameEn;
+        Context.SaveChanges();
+        return employeeId;
+    }
+
+    /// <summary>
+    /// The register's own page shows the employee as code and name and, as legacy did, the payroll area of
+    /// the employee's current org assignment.
+    /// </summary>
+    [Fact]
+    public async Task Should_Return_One_Register_With_Employee_Name_And_Current_Payroll_Area()
+    {
+        var tenantId = AbpSession.TenantId ?? 1;
+        var period = new PayrollPeriod { TenantId = tenantId, Code = "SR1-PP", NameEn = "SR1-PP", NameAr = "SR1-PP" };
+        var currency = new HCMv3.GeneralMasterInfo.Currency { TenantId = tenantId, Code = "KWD", NameEn = "KWD", NameAr = "KWD" };
+        Context.PayrollPeriods.Add(period);
+        Context.Currencies.Add(currency);
+        Context.SaveChanges();
+        var area = new PayrollArea
+        {
+            TenantId = tenantId, Code = "SR1-PA", Name = "Admin. Office", PayrollPeriodId = period.Id, CurrencyId = currency.Id
+        };
+        Context.PayrollAreas.Add(area);
+        Context.SaveChanges();
+
+        var employeeId = CreateNamedEmployee("5363", "Test Employee");
+        Context.EmployeeOrgAssignments.Add(new EmployeeOrgAssignment
+        {
+            TenantId = tenantId,
+            EmployeeId = employeeId,
+            StartDate = new DateTime(2020, 1, 1),
+            EndDate = new DateTime(9999, 12, 31),
+            PayrollAreaId = area.Id
+        });
+        Context.SaveChanges();
+        var registerId = CreateSalaryRegister(employeeId, CreatePayrollReasonType("SR_ONE"), locked: false);
+
+        var service = CreateAppService();
+        service.EmployeeOrgAssignmentRepository = FakeRepository.For<EmployeeOrgAssignment>(Context);
+
+        var result = await service.GetSalaryRegister(new Abp.Application.Services.Dto.EntityDto(registerId));
+
+        result.Id.ShouldBe(registerId);
+        result.EmployeeCode.ShouldBe("5363");
+        result.EmployeeName.ShouldBe("Test Employee");
+        result.PayrollReasonTypeName.ShouldBe("SR_ONE");
+        result.PayrollAreaName.ShouldBe("Admin. Office");
+    }
+
+    [Fact]
+    public async Task Should_Throw_When_Getting_A_Register_That_Does_Not_Exist()
+    {
+        var service = CreateAppService();
+
+        await Should.ThrowAsync<Abp.Domain.Entities.EntityNotFoundException>(async () =>
+            await service.GetSalaryRegister(new Abp.Application.Services.Dto.EntityDto(987654)));
+    }
+
+    /// <summary>The edit dialog shows the employee as code and name instead of the raw employee id.</summary>
+    [Fact]
+    public async Task Should_Return_Employee_Code_And_Name_For_Edit()
+    {
+        var employeeId = CreateNamedEmployee("5364", "Edit Employee");
+        var registerId = CreateSalaryRegister(employeeId, CreatePayrollReasonType("SR_EDIT"), locked: false);
+        var service = CreateAppService();
+
+        var result = await service.GetSalaryRegisterForEdit(new Abp.Application.Services.Dto.EntityDto(registerId));
+
+        result.SalaryRegister.EmployeeId.ShouldBe(employeeId);
+        result.EmployeeCode.ShouldBe("5364");
+        result.EmployeeName.ShouldBe("Edit Employee");
+    }
 }

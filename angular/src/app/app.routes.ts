@@ -1515,6 +1515,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PayrollManagement.SalaryRegisters' },
                     },
                     {
+                        path: 'salary-registers/:id',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/salary-registers/salary-register-detail/salary-register-detail.component').then(
+                                (m) => m.SalaryRegisterDetailComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.SalaryRegisters' },
+                    },
+                    {
                         path: 'salary-register-details',
                         loadComponent: () =>
                             import('./admin/payroll-management/salary-register-details/salary-register-details.component').then(

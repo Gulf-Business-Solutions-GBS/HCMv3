@@ -39,12 +39,8 @@
                                 {{ 'Actions' | localize }}
                             </th>
                             <th pSortableColumn="startDate">
-                                {{ 'StartDate' | localize }}
+                                {{ 'EffectiveDate' | localize }}
                                 <p-sortIcon field="startDate" />
-                            </th>
-                            <th pSortableColumn="endDate">
-                                {{ 'EndDate' | localize }}
-                                <p-sortIcon field="endDate" />
                             </th>
                             <th>{{ 'Amount' | localize }}</th>
                             <th>{{ 'PayType' | localize }}</th>
@@ -73,7 +69,6 @@
                             <td>
                                 <a href="javascript:;" (click)="openDetail(record)">{{ record.startDate | luxonFormat: 'yyyy-MM-dd' }}</a>
                             </td>
-                            <td>{{ record.endDate | luxonFormat: 'yyyy-MM-dd' }}</td>
                             <td>{{ record.amount }}</td>
                             <td>{{ record.payType }}</td>
                             <td>{{ record.payInterval }}</td>
@@ -98,4 +93,4 @@
     </div>
 }
 
-<createOrEditEmployeeBasicPayModal #createOrEditModal (modalSave)="reloadPage()" />
+<createOrEditEmployeeBasicPayModal #createOrEditModal (modalSave)="onCreated($event)" />

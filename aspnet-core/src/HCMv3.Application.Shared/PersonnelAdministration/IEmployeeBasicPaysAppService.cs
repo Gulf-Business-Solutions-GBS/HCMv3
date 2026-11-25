@@ -11,7 +11,8 @@ public interface IEmployeeBasicPaysAppService : IApplicationService
 
     Task<GetEmployeeBasicPayForEditOutput> GetEmployeeBasicPayForEdit(EntityDto input);
 
-    Task CreateOrEdit(CreateOrEditEmployeeBasicPayDto input);
+    /// <summary>Saves the basic pay and returns its id.</summary>
+    Task<int> CreateOrEdit(CreateOrEditEmployeeBasicPayDto input);
 
     Task Delete(EntityDto input);
 }

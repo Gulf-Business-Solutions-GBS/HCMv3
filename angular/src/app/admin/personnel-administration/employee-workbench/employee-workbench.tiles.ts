@@ -73,7 +73,8 @@ export interface WorkbenchCellContext {
 /** The shape every Employee Detail create/edit form already has. */
 export interface WorkbenchForm {
     show(employeeId: number, id?: number): void;
-    readonly modalSave: OutputEmitterRef<void>;
+    /** Some forms emit the saved record's id; the workbench only needs to know a save happened. */
+    readonly modalSave: OutputEmitterRef<unknown>;
 }
 
 export type WorkbenchRowTone = 'danger' | 'warning' | null;

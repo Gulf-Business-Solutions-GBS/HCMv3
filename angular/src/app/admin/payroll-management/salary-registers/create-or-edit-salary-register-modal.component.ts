@@ -44,6 +44,9 @@ export class CreateOrEditSalaryRegisterModalComponent extends AppComponentBase {
 
     readonly payrollReasonTypes = signal<SimpleLookupDto[]>([]);
 
+    /** "code - name" of an existing register's employee; the employee of a register is not changed here. */
+    readonly employeeDisplay = signal<string>('');
+
     readonly payrollRunTypes = [
         { value: PayrollRunType.Regular, name: 'Regular' },
         { value: PayrollRunType.OffCycle, name: 'OffCycle' },
@@ -69,11 +72,15 @@ export class CreateOrEditSalaryRegisterModalComponent extends AppComponentBase {
             )
             .subscribe((result) => this.payrollReasonTypes.set(result.items));
 
+        this.employeeDisplay.set('');
         if (!salaryRegisterId) {
             this.salaryRegister.set(new CreateOrEditSalaryRegisterDto());
             this.modal().show();
         } else {
             this._salaryRegistersService.getSalaryRegisterForEdit(salaryRegisterId).subscribe((result) => {
+                this.employeeDisplay.set(
+                    [result.employeeCode, result.employeeName].filter((part) => !!part).join(' - ')
+                );
                 this.salaryRegister.set(result.salaryRegister);
                 this.modal().show();
             });
@@ -107,6 +114,11 @@ export class CreateOrEditSalaryRegisterModalComponent extends AppComponentBase {
         const next = new CreateOrEditSalaryRegisterDto();
         Object.assign(next, current);
         this.salaryRegister.set(next);
+    }
+
+    /** yyyy-MM-dd for a date input; DateTime.MinValue (01/01/0001) is the backend's "not set" and shows blank. */
+    isoDate(date: DateTime | undefined): string {
+        return date && date.year > 1 ? date.toISODate() : '';
     }
 
     updateDateField(field: keyof CreateOrEditSalaryRegisterDto, value: string): void {

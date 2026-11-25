@@ -2,10 +2,12 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using HCMv3.EngineRuns;
+using HCMv3.PayrollManagement;
 using HCMv3.PersonnelAdministration;
 using HCMv3.TimeManagement;
 using HCMv3.TimeManagement.Services;
 using HCMv3.Tests.EngineRuns;
+using NSubstitute;
 using Shouldly;
 using Xunit;
 
@@ -53,6 +55,10 @@ public class TimeEngineService_DayFailures_Tests
             StartDate = new DateTime(2020, 1, 15),
             EndDate = new DateTime(9999, 12, 31)
         }, 1);
+
+        // In a payroll area, so the employee reaches the day loop (an employee without one fails before it).
+        _harness.PayrollAreaResolver.GetEmployeePayrollAreaAsync(1, Arg.Any<DateTime>())
+            .Returns(Task.FromResult(new PayrollArea { Name = "Area A" }));
     }
 
     [Fact]

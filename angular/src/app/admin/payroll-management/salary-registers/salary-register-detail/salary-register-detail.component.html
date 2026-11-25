@@ -1,0 +1,90 @@
+<div [@routerTransition]>
+    <sub-header [title]="title()" [description]="'PayrollManagement' | localize">
+        <div role="actions">
+            @if (canEdit && register()) {
+                <button type="button" class="btn btn-primary float-end ms-2" (click)="edit()">
+                    <i class="fa fa-edit btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'Edit' | localize }}
+                    </span>
+                </button>
+            }
+            <button type="button" class="btn btn-light-primary float-end" (click)="goBack()">
+                <i class="fa fa-arrow-left btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">
+                    {{ 'Back' | localize }}
+                </span>
+            </button>
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom mb-5" [busyIf]="loading()">
+            <div class="card-body">
+                @if (register(); as register) {
+                    <div class="row">
+                        <div class="col-md-3 mb-5">
+                            <label class="form-label">{{ 'Employee' | localize }}</label>
+                            <div class="form-control-plaintext fw-bold">
+                                {{ register.employeeCode }}@if (register.employeeName) { - {{ register.employeeName }}}
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-5">
+                            <label class="form-label">{{ 'PayrollArea' | localize }}</label>
+                            <div class="form-control-plaintext fw-bold">{{ register.payrollAreaName }}</div>
+                        </div>
+                        <div class="col-md-3 mb-5">
+                            <label class="form-label">{{ 'ForPeriod' | localize }}</label>
+                            <div class="form-control-plaintext fw-bold">{{ register.forPeriod | luxonFormat: 'DD' }}</div>
+                        </div>
+                        <div class="col-md-3 mb-5">
+                            <label class="form-label">{{ 'InPeriod' | localize }}</label>
+                            <div class="form-control-plaintext fw-bold">{{ register.inPeriod | luxonFormat: 'DD' }}</div>
+                        </div>
+                        <div class="col-md-3 mb-5">
+                            <label class="form-label">{{ 'PayrollRunType' | localize }}</label>
+                            <div class="form-control-plaintext fw-bold">
+                                {{ register.payrollRunType === 0 ? ('Regular' | localize) : ('OffCycle' | localize) }}
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-5">
+                            <label class="form-label">{{ 'PayrollResultType' | localize }}</label>
+                            <div class="form-control-plaintext fw-bold">{{ payrollResultTypeKey(register.payrollResultType) | localize }}</div>
+                        </div>
+                        <div class="col-md-3 mb-5">
+                            <label class="form-label">{{ 'PayrollReasonTypeId' | localize }}</label>
+                            <div class="form-control-plaintext fw-bold">{{ register.payrollReasonTypeName }}</div>
+                        </div>
+                        <div class="col-md-3 mb-5">
+                            <label class="form-label">{{ 'OffCyclePaymentDate' | localize }}</label>
+                            <div class="form-control-plaintext fw-bold">
+                                @if (isSet(register.offCyclePaymentDate)) {
+                                    {{ register.offCyclePaymentDate | luxonFormat: 'DD' }}
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-5">
+                            <label class="form-label">{{ 'Locked' | localize }}</label>
+                            <div class="form-control-plaintext fw-bold">{{ (register.locked ? 'Yes' : 'No') | localize }}</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        @if (registerId(); as id) {
+            @if (canSeeLines) {
+                <div class="card card-custom">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ 'SalaryRegisterDetails' | localize }}</h3>
+                    </div>
+                    <div class="card-body">
+                        <salaryRegisterLines [salaryRegisterId]="id" />
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <createOrEditSalaryRegisterModal #editModal (modalSave)="reload()" />
+</div>

@@ -2367,6 +2367,7 @@
     <text name="BloodGroup">Blood Group</text>
     <text name="CivilID">Civil ID</text>
     <text name="CivilId">Civil ID</text>
+    <text name="CivilIDMustBeSpecified">Civil ID must be specified.</text>
     <text name="LoginID">Login ID</text>
     <text name="AccessID">Access ID</text>
     <text name="AccessId">Access Id</text>
@@ -3493,6 +3494,7 @@
     <text name="FTELimitMustBeGreaterThanZero">FTE limit must be greater than 0.</text>
     <text name="PositionFTELimitExceeded">This position's FTE limit ({0}) would be exceeded for the given date range.</text>
     <text name="PositionCannotBeBlank">Position cannot be blank.</text>
+    <text name="PayrollAreaCannotBeBlank">Payroll Area cannot be blank.</text>
     <text name="SalaryOutOfPositionRange">The amount for {0} must be between the position's minimum ({1}) and maximum ({2}) salary.</text>
     <text name="ManpowerPlanningRequestAlreadyProcessed">This manpower planning request has already been approved or rejected.</text>
     <text name="ManpowerPlanningMustHaveAtLeastOneLine">A manpower plan must have at least one planned line before it can be submitted for approval.</text>
@@ -4988,6 +4990,7 @@
     <text name="LastWorkingDay">Last Working Day</text>
     <text name="Allowance">Allowance</text>
     <text name="BasicPay">Basic Pay</text>
+    <text name="BasicPayDetail">Basic Pay Detail</text>
     <text name="ParameterStartDate">Parameter Start Date</text>
     <text name="ParameterEndDate">Parameter End Date</text>
     <text name="OldTotal">Old Total</text>
@@ -8090,5 +8093,6 @@
     <text name="CostingFileRunQueued">The costing file run has started. Its progress is shown below.</text>
     <text name="PostJvRunQueued">Posting the journal voucher has started. Its progress is shown below.</text>
     <text name="NonPayrollWageTypeNotAllowed">This wage type cannot be used on a non-payroll transaction.</text>
+    <text name="Retro">Retro</text>
   </texts>
 </localizationDictionary>

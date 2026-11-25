@@ -86,12 +86,18 @@ public class PositionOccupancy_Tests : AppTestBase
         UsingDbContext(context => context.Set<EmployeeOrgAssignment>()
             .Single(a => a.EmployeeId == employeeId && a.StartDate == startDate).Id);
 
+    private int? _payrollAreaId;
+
+    /// <summary>An assignment cannot be saved without a payroll area; these tests are not about which one.</summary>
+    private int PayrollAreaId => _payrollAreaId ??= _data.CreatePayrollArea("PA-POS", "Monthly").Id;
+
     private Task AssignAsync(int employeeId, DateTime startDate, int? positionId) =>
         _appService.CreateOrEdit(new CreateOrEditEmployeeOrgAssignmentDto
         {
             EmployeeId = employeeId,
             StartDate = startDate,
-            PositionId = positionId
+            PositionId = positionId,
+            PayrollAreaId = PayrollAreaId
         });
 
     [Fact]
@@ -190,7 +196,8 @@ public class PositionOccupancy_Tests : AppTestBase
             Id = AssignmentId(employee.Id, Today.AddDays(-10)),
             EmployeeId = employee.Id,
             StartDate = Today.AddDays(-10),
-            PositionId = second.Id
+            PositionId = second.Id,
+            PayrollAreaId = PayrollAreaId
         });
 
         Holders(employee.Id).ShouldHaveSingleItem().PositionId.ShouldBe(second.Id);
@@ -311,7 +318,8 @@ public class PositionOccupancy_Tests : AppTestBase
             EmployeeId = employee.Id,
             StartDate = Today.AddDays(-10),
             EmployeeGroupId = oldGroupId,
-            EmployeeSubGroupId = oldSubGroupId
+            EmployeeSubGroupId = oldSubGroupId,
+            PayrollAreaId = PayrollAreaId
         });
         await AssignAsync(employee.Id, Today.AddDays(-5), position.Id);
 

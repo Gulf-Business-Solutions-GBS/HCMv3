@@ -371,6 +371,36 @@ public class EmployeesAppService_Tests : AppTestBase
     }
 
     [Fact]
+    public async Task Should_Throw_Friendly_Message_When_CivilID_Is_Blank()
+    {
+        //Arrange
+        var nationality = CreateTestNationality();
+        var dto = ValidCreateDto(nationality.Id, "E109");
+        dto.CivilID = null;
+
+        //Act
+        var exception = await Should.ThrowAsync<UserFriendlyException>(() => _employeesAppService.CreateOrEdit(dto));
+
+        //Assert
+        exception.Message.ShouldBe("Civil ID must be specified.");
+    }
+
+    [Fact]
+    public async Task Should_Throw_Friendly_Message_When_CivilID_Is_Zero()
+    {
+        //Arrange
+        var nationality = CreateTestNationality();
+        var dto = ValidCreateDto(nationality.Id, "E110");
+        dto.CivilID = 0;
+
+        //Act
+        var exception = await Should.ThrowAsync<UserFriendlyException>(() => _employeesAppService.CreateOrEdit(dto));
+
+        //Assert
+        exception.Message.ShouldBe("Civil ID must be specified.");
+    }
+
+    [Fact]
     public async Task Should_Return_Probation_End_Date_For_Edit()
     {
         //Arrange

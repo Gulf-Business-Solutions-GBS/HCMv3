@@ -16,6 +16,7 @@ import { TieredMenu } from 'primeng/tieredmenu';
 import { MenuItem } from 'primeng/api';
 import { Tooltip } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { CreateOrEditSalaryRegisterModalComponent } from './create-or-edit-salary-register-modal.component';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
@@ -32,6 +33,7 @@ import { LuxonFormatPipe } from '../../../../shared/utils/luxon-format.pipe';
         SubHeaderComponent,
         BusyIfDirective,
         FormsModule,
+        RouterLink,
         TableModule,
         PaginatorModule,
         TieredMenu,
@@ -46,6 +48,7 @@ import { LuxonFormatPipe } from '../../../../shared/utils/luxon-format.pipe';
 export class SalaryRegistersComponent extends AppComponentBase implements OnInit {
     private _salaryRegistersService = inject(SalaryRegistersServiceProxy);
     private _payrollAreasService = inject(PayrollAreasServiceProxy);
+    private _router = inject(Router);
 
     readonly createOrEditModal = viewChild<CreateOrEditSalaryRegisterModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
@@ -110,7 +113,13 @@ export class SalaryRegistersComponent extends AppComponentBase implements OnInit
     }
 
     getMenuItems(record: SalaryRegisterDto): MenuItem[] {
-        const items: MenuItem[] = [];
+        const items: MenuItem[] = [
+            {
+                label: this.l('View'),
+                icon: 'pi pi-eye',
+                command: () => this._router.navigate(['/app/admin/salary-registers', record.id]),
+            },
+        ];
 
         if (this.permission.isGranted('Pages.PayrollManagement.SalaryRegisters.Edit')) {
             items.push({

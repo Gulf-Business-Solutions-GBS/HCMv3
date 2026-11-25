@@ -152,4 +152,76 @@ public class SalaryRegisterDetailsAppService_Tests : PayrollManagementAppService
         await Should.ThrowAsync<UserFriendlyException>(async () =>
             await service.Delete(new Abp.Application.Services.Dto.EntityDto(detail.Id)));
     }
+
+    private int CreateWageType(string code, int payrollOrder)
+    {
+        var id = CreateWageType(code);
+        Context.WageTypes.Find(id).PayrollOrder = payrollOrder;
+        Context.SaveChanges();
+        return id;
+    }
+
+    private void AddDetail(int registerId, int wageTypeId, double amount)
+    {
+        Context.SalaryRegisterDetails.Add(new SalaryRegisterDetail
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            SalaryRegisterId = registerId,
+            WageTypeId = wageTypeId,
+            Rate = amount,
+            Number = 1,
+            Amount = amount
+        });
+        Context.SaveChanges();
+    }
+
+    /// <summary>
+    /// The register page lists only that register's lines, in payslip (wage type payroll order) order, with
+    /// the wage type code, whatever order the lines were written in.
+    /// </summary>
+    [Fact]
+    public async Task Should_List_A_Registers_Lines_In_Payroll_Order_With_Wage_Type_Code()
+    {
+        var employeeId = CreateEmployee();
+        var reasonTypeId = CreatePayrollReasonType("SRD_ORD");
+        var registerId = CreateSalaryRegister(employeeId, reasonTypeId, locked: false);
+        var otherRegisterId = CreateSalaryRegister(employeeId, reasonTypeId, locked: false);
+        var late = CreateWageType("SRD_LATE", payrollOrder: 20);
+        var early = CreateWageType("SRD_EARLY", payrollOrder: 10);
+        AddDetail(registerId, late, 200);
+        AddDetail(registerId, early, 100);
+        AddDetail(otherRegisterId, early, 999);
+        var service = CreateAppService();
+
+        var result = await service.GetAll(new GetAllSalaryRegisterDetailsInput { SalaryRegisterId = registerId });
+
+        result.TotalCount.ShouldBe(2);
+        result.Items[0].WageTypeCode.ShouldBe("SRD_EARLY");
+        result.Items[0].PayrollOrder.ShouldBe(10);
+        result.Items[0].Amount.ShouldBe(100);
+        result.Items[1].WageTypeCode.ShouldBe("SRD_LATE");
+    }
+
+    /// <summary>
+    /// Each line carries its wage type's billing type and "don't impact net pay" flag, which the register
+    /// page uses to colour earnings and deductions as legacy did.
+    /// </summary>
+    [Fact]
+    public async Task Should_Return_Billing_Type_And_Net_Pay_Impact_For_Row_Colours()
+    {
+        var registerId = CreateSalaryRegister(CreateEmployee(), CreatePayrollReasonType("SRD_CLR"), locked: false);
+        var deductionId = CreateWageType("SRD_DED", payrollOrder: 1);
+        var deduction = Context.WageTypes.Find(deductionId);
+        deduction.BillingType = BillingType.Deduction;
+        deduction.DontImpactNetPay = true;
+        Context.SaveChanges();
+        AddDetail(registerId, deductionId, 25);
+        var service = CreateAppService();
+
+        var result = await service.GetAll(new GetAllSalaryRegisterDetailsInput { SalaryRegisterId = registerId });
+
+        result.Items.Count.ShouldBe(1);
+        result.Items[0].BillingType.ShouldBe(BillingType.Deduction);
+        result.Items[0].DontImpactNetPay.ShouldBeTrue();
+    }
 }

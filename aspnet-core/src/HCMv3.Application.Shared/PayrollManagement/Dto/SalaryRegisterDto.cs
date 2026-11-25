@@ -12,6 +12,8 @@ public class SalaryRegisterDto : EntityDto<int>
 
     public string EmployeeCode { get; set; }
 
+    public string EmployeeName { get; set; }
+
     public DateTime ForPeriod { get; set; }
 
     public DateTime InPeriod { get; set; }

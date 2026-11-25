@@ -133,6 +133,12 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
 
     public async Task CreateOrEdit(CreateOrEditEmployeeDto input)
     {
+        // Legacy RuleRequiredField "CivilID must be specified" plus its NotEquals "0" rule.
+        if (!input.CivilID.HasValue || input.CivilID.Value <= 0)
+        {
+            throw new UserFriendlyException(L("CivilIDMustBeSpecified"));
+        }
+
         if (input.Id.HasValue)
         {
             await UpdateAsync(input);
@@ -326,7 +332,7 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         employee.MotherNameAr = input.MotherNameAr;
         employee.QualificationId = input.QualificationId;
         employee.BloodGroup = input.BloodGroup;
-        employee.CivilID = input.CivilID;
+        employee.CivilID = input.CivilID ?? 0;
         employee.LoginID = input.LoginID;
         employee.AccessID = input.AccessID;
         employee.Email = input.Email;
@@ -496,7 +502,8 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
             MotherNameAr = employee.MotherNameAr,
             QualificationId = employee.QualificationId,
             BloodGroup = employee.BloodGroup,
-            CivilID = employee.CivilID,
+            // 0 is "never entered": shown as an empty box, so the form asks for it instead of offering 0.
+            CivilID = employee.CivilID == 0 ? null : employee.CivilID,
             LoginID = employee.LoginID,
             AccessID = employee.AccessID,
             Email = employee.Email,

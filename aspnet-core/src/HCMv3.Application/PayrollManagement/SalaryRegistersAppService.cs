@@ -96,14 +96,38 @@ public class SalaryRegistersAppService : HCMv3AppServiceBase, ISalaryRegistersAp
         }
     }
 
+    /// <summary>One register with its display names and current payroll area, for the register's own page.</summary>
+    public async Task<SalaryRegisterDto> GetSalaryRegister(EntityDto input)
+    {
+        var entity = await GetWithNamesAsync(input.Id);
+
+        var today = Clock.Now.Date;
+        var dtos = new List<SalaryRegisterDto> { ToDto(entity) };
+        await FillCurrentPayrollAreasAsync(dtos, EmployeeOrgAssignmentRepository?.GetAll()
+            .Where(a => a.StartDate <= today && a.EndDate >= today));
+
+        return dtos[0];
+    }
+
     public async Task<GetSalaryRegisterForEditOutput> GetSalaryRegisterForEdit(EntityDto input)
     {
-        var entity = await _salaryRegisterRepository.GetAsync(input.Id);
+        var entity = await GetWithNamesAsync(input.Id);
 
         return new GetSalaryRegisterForEditOutput
         {
-            SalaryRegister = ToCreateOrEditDto(entity)
+            SalaryRegister = ToCreateOrEditDto(entity),
+            EmployeeCode = entity.Employee?.Code,
+            EmployeeName = entity.Employee?.FullNameEn
         };
+    }
+
+    private async Task<SalaryRegister> GetWithNamesAsync(int id)
+    {
+        return await _salaryRegisterRepository.GetAll()
+                   .Include(r => r.Employee)
+                   .Include(r => r.PayrollReasonType)
+                   .FirstOrDefaultAsync(r => r.Id == id)
+               ?? throw new Abp.Domain.Entities.EntityNotFoundException(typeof(SalaryRegister), id);
     }
 
     public async Task CreateOrEdit(CreateOrEditSalaryRegisterDto input)
@@ -176,6 +200,7 @@ public class SalaryRegistersAppService : HCMv3AppServiceBase, ISalaryRegistersAp
             Id = entity.Id,
             EmployeeId = entity.EmployeeId,
             EmployeeCode = entity.Employee?.Code,
+            EmployeeName = entity.Employee?.FullNameEn,
             ForPeriod = entity.ForPeriod,
             InPeriod = entity.InPeriod,
             PayrollRunType = entity.PayrollRunType,

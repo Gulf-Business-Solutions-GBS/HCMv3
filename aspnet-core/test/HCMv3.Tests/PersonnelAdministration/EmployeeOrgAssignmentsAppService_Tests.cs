@@ -61,6 +61,14 @@ public class EmployeeOrgAssignmentsAppService_Tests : AppTestBase
         return employee;
     }
 
+    private int? _defaultPayrollAreaId;
+
+    /// <summary>
+    /// A payroll area for tests that are not about it: an assignment cannot be saved without one, so a first
+    /// assignment (nothing earlier to carry it from) has to name it.
+    /// </summary>
+    private int DefaultPayrollAreaId => _defaultPayrollAreaId ??= CreateTestPayrollArea("PADEF").Id;
+
     private JobTitle CreateTestJobTitle(string code)
     {
         JobTitle jobTitle = null;
@@ -88,7 +96,8 @@ public class EmployeeOrgAssignmentsAppService_Tests : AppTestBase
         {
             EmployeeId = employee.Id,
             StartDate = new DateTime(2020, 1, 1),
-            JobTitleId = jobTitle.Id
+            JobTitleId = jobTitle.Id,
+            PayrollAreaId = DefaultPayrollAreaId
         });
 
         //Act - a later record with no JobTitle specified should prefill from previous
@@ -120,7 +129,8 @@ public class EmployeeOrgAssignmentsAppService_Tests : AppTestBase
         await _appService.CreateOrEdit(new CreateOrEditEmployeeOrgAssignmentDto
         {
             EmployeeId = employee.Id,
-            StartDate = new DateTime(2020, 1, 1)
+            StartDate = new DateTime(2020, 1, 1),
+            PayrollAreaId = DefaultPayrollAreaId
         });
 
         //Act
@@ -236,6 +246,7 @@ public class EmployeeOrgAssignmentsAppService_Tests : AppTestBase
     /// <summary>Written straight to the database, the way Go-Live creates an employee's first assignment.</summary>
     private void SeedAssignment(int employeeId, DateTime startDate, Action<EmployeeOrgAssignment> configure)
     {
+        var defaultPayrollAreaId = DefaultPayrollAreaId;
         UsingDbContext(context =>
         {
             var assignment = new EmployeeOrgAssignment
@@ -246,6 +257,7 @@ public class EmployeeOrgAssignmentsAppService_Tests : AppTestBase
                 EndDate = new DateTime(9999, 12, 31)
             };
             configure(assignment);
+            assignment.PayrollAreaId ??= defaultPayrollAreaId;
             context.Set<EmployeeOrgAssignment>().Add(assignment);
         });
     }
@@ -491,7 +503,8 @@ public class EmployeeOrgAssignmentsAppService_Tests : AppTestBase
                 EmployeeId = employee.Id,
                 StartDate = new DateTime(2020, 1, 1),
                 EmployeeGroupId = otherSubGroup.EmployeeGroupId,
-                EmployeeSubGroupId = subGroup.Id
+                EmployeeSubGroupId = subGroup.Id,
+                PayrollAreaId = DefaultPayrollAreaId
             }));
     }
 
@@ -507,7 +520,8 @@ public class EmployeeOrgAssignmentsAppService_Tests : AppTestBase
         {
             EmployeeId = employee.Id,
             StartDate = new DateTime(2020, 1, 1),
-            EmployeeSubGroupId = subGroup.Id
+            EmployeeSubGroupId = subGroup.Id,
+            PayrollAreaId = DefaultPayrollAreaId
         });
 
         //Assert
@@ -587,7 +601,8 @@ public class EmployeeOrgAssignmentsAppService_Tests : AppTestBase
         await _appService.CreateOrEdit(new CreateOrEditEmployeeOrgAssignmentDto
         {
             EmployeeId = employee.Id,
-            StartDate = new DateTime(2020, 1, 1)
+            StartDate = new DateTime(2020, 1, 1),
+            PayrollAreaId = DefaultPayrollAreaId
         });
 
         //Act & Assert
@@ -595,7 +610,48 @@ public class EmployeeOrgAssignmentsAppService_Tests : AppTestBase
             await _appService.CreateOrEdit(new CreateOrEditEmployeeOrgAssignmentDto
             {
                 EmployeeId = employee.Id,
+                StartDate = new DateTime(2020, 1, 1),
+                PayrollAreaId = DefaultPayrollAreaId
+            }));
+    }
+
+    [Fact]
+    public async Task Should_Throw_When_PayrollArea_Is_Cleared_On_Edit()
+    {
+        //Arrange
+        var employee = CreateTestEmployee("O1500");
+        SeedAssignment(employee.Id, new DateTime(2020, 1, 1), _ => { });
+        var id = GetAssignment(employee.Id, new DateTime(2020, 1, 1)).Id;
+
+        //Act
+        var exception = await Assert.ThrowsAsync<UserFriendlyException>(async () =>
+            await _appService.CreateOrEdit(new CreateOrEditEmployeeOrgAssignmentDto
+            {
+                Id = id,
+                EmployeeId = employee.Id,
+                StartDate = new DateTime(2020, 1, 1),
+                PayrollAreaId = null
+            }));
+
+        //Assert
+        exception.Message.ShouldBe("Payroll Area cannot be blank.");
+        GetAssignment(employee.Id, new DateTime(2020, 1, 1)).PayrollAreaId.ShouldBe(DefaultPayrollAreaId);
+    }
+
+    [Fact]
+    public async Task Should_Throw_When_A_First_Assignment_Has_No_PayrollArea_To_Take()
+    {
+        //Arrange - no earlier assignment and no org unit to take a payroll area from
+        var employee = CreateTestEmployee("O1600");
+
+        //Act & Assert
+        var exception = await Assert.ThrowsAsync<UserFriendlyException>(async () =>
+            await _appService.CreateOrEdit(new CreateOrEditEmployeeOrgAssignmentDto
+            {
+                EmployeeId = employee.Id,
                 StartDate = new DateTime(2020, 1, 1)
             }));
+
+        exception.Message.ShouldBe("Payroll Area cannot be blank.");
     }
 }

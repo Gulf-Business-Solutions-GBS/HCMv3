@@ -136,7 +136,11 @@ public class SalaryRegisterDetailsAppService : HCMv3AppServiceBase, ISalaryRegis
             Id = entity.Id,
             SalaryRegisterId = entity.SalaryRegisterId,
             WageTypeId = entity.WageTypeId,
+            WageTypeCode = entity.WageType?.Code,
             WageTypeName = entity.WageType?.NameEn,
+            PayrollOrder = entity.WageType?.PayrollOrder ?? 0,
+            BillingType = entity.WageType?.BillingType ?? BillingType.Earning,
+            DontImpactNetPay = entity.WageType?.DontImpactNetPay ?? false,
             Rate = entity.Rate,
             Number = entity.Number,
             Amount = entity.Amount

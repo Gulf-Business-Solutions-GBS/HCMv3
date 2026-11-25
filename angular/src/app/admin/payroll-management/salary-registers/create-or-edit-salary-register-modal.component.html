@@ -29,6 +29,18 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
+                            @if (salaryRegister().id) {
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="SalaryRegister_Employee">{{ 'Employee' | localize }}</label>
+                                <input
+                                    id="SalaryRegister_Employee"
+                                    class="form-control"
+                                    type="text"
+                                    name="EmployeeDisplay"
+                                    [value]="employeeDisplay()"
+                                    readonly />
+                            </div>
+                            } @else {
                             <div class="col-md-4 mb-5">
                                 <label class="form-label required" for="SalaryRegister_EmployeeId">{{ 'EmployeeId' | localize }}</label>
                                 <input
@@ -42,6 +54,7 @@
                                     required />
                                 <validation-messages [formCtrl]="employeeIdInput" />
                             </div>
+                            }
                             <div class="col-md-4 mb-5">
                                 <label class="form-label required" for="SalaryRegister_ForPeriod">{{ 'ForPeriod' | localize }}</label>
                                 <input
@@ -97,15 +110,14 @@
                                 </select>
                             </div>
                             <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="SalaryRegister_PayrollReasonTypeId">{{ 'PayrollReasonTypeId' | localize }}</label>
+                                <label class="form-label" for="SalaryRegister_PayrollReasonTypeId">{{ 'PayrollReasonTypeId' | localize }}</label>
                                 <select
                                     id="SalaryRegister_PayrollReasonTypeId"
                                     #payrollReasonTypeIdInput="ngModel"
                                     class="form-select"
                                     name="PayrollReasonTypeId"
                                     [ngModel]="salaryRegister().payrollReasonTypeId"
-                                    (ngModelChange)="updateField('payrollReasonTypeId', $event)"
-                                    required>
+                                    (ngModelChange)="updateField('payrollReasonTypeId', $event)">
                                     <option [ngValue]="undefined"></option>
                                     @for (reason of payrollReasonTypes(); track reason.id) {
                                         <option [ngValue]="reason.id">{{ reason.nameEn }}</option>
@@ -122,7 +134,7 @@
                                     class="form-control"
                                     type="date"
                                     name="OffCyclePaymentDate"
-                                    [ngModel]="salaryRegister().offCyclePaymentDate?.toISODate()"
+                                    [ngModel]="isoDate(salaryRegister().offCyclePaymentDate)"
                                     (ngModelChange)="updateDateField('offCyclePaymentDate', $event)" />
                             </div>
                             <div class="col-md-4 mb-5 form-check form-switch align-self-center mt-8">

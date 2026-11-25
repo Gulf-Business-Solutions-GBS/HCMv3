@@ -537,12 +537,13 @@ public class GoLiveEmployeeLoader : AbpServiceBase, ITransientDependency
             EmployeeId = employee.Id,
             StartDate = employee.JoiningDate,
             OrganizationUnitId = targets.OrganizationUnitId,
+            // Passed up front: the assignment service refuses an assignment without a payroll area.
+            PayrollAreaId = targets.PayrollAreaId,
         });
         await CurrentUnitOfWork.SaveChangesAsync();
 
         var saved = await _assignmentRepository.FirstOrDefaultAsync(a => a.EmployeeId == employee.Id && a.StartDate == employee.JoiningDate);
         saved.EndDate = OpenEnded;
-        saved.PayrollAreaId = targets.PayrollAreaId;
         saved.EmployeeGroupId = targets.EmployeeGroupId;
         saved.EmployeeSubGroupId = targets.EmployeeSubGroupId;
         await CurrentUnitOfWork.SaveChangesAsync();
@@ -568,7 +569,6 @@ public class GoLiveEmployeeLoader : AbpServiceBase, ITransientDependency
             {
                 EmployeeId = employee.Id,
                 StartDate = employee.JoiningDate,
-                EndDate = OpenEnded,
                 PayType = PayType.Regular,
                 PayInterval = PayInterval.Monthly,
             });

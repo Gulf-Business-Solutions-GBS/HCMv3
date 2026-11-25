@@ -2342,6 +2342,7 @@
     <text name="BloodGroup">فصيلة الدم</text>
     <text name="CivilID">البطاقة المدنية</text>
     <text name="CivilId">البطاقة المدنية</text>
+    <text name="CivilIDMustBeSpecified">يجب إدخال الرقم المدني.</text>
     <text name="LoginID">رمز الدخول</text>
     <text name="AccessID">معرّف الوصول</text>
     <text name="AccessId">معرّف الوصول</text>
@@ -3446,6 +3447,7 @@
     <text name="FTELimitMustBeGreaterThanZero">يجب أن يكون حد الوظائف بدوام كامل أكبر من 0.</text>
     <text name="PositionFTELimitExceeded">سيتم تجاوز حد الوظائف بدوام كامل لهذه الوظيفة ({0}) خلال الفترة المحددة.</text>
     <text name="PositionCannotBeBlank">يجب تحديد الوظيفة.</text>
+    <text name="PayrollAreaCannotBeBlank">يجب تحديد منطقة الرواتب.</text>
     <text name="SalaryOutOfPositionRange">يجب أن يكون مبلغ {0} بين الحد الأدنى ({1}) والحد الأقصى ({2}) لراتب الوظيفة.</text>
     <text name="ManpowerPlanningRequestAlreadyProcessed">تم اعتماد أو رفض طلب خطة القوى العاملة هذا مسبقاً.</text>
     <text name="ManpowerPlanningMustHaveAtLeastOneLine">يجب أن تحتوي خطة القوى العاملة على بند مخطط واحد على الأقل قبل إرسالها للاعتماد.</text>
@@ -4887,6 +4889,7 @@
     <text name="LastWorkingDay">آخر يوم عمل</text>
     <text name="Allowance">البدل</text>
     <text name="BasicPay">الراتب الأساسي</text>
+    <text name="BasicPayDetail">تفاصيل الراتب الأساسي</text>
     <text name="ParameterStartDate">تاريخ بداية المعيار</text>
     <text name="ParameterEndDate">تاريخ نهاية المعيار</text>
     <text name="OldTotal">الإجمالي القديم</text>
@@ -7925,5 +7928,6 @@
     <text name="CostingFileRunQueued">بدأ تشغيل ملف التكاليف، ويظهر تقدّمه أدناه.</text>
     <text name="PostJvRunQueued">بدأ ترحيل قيد اليومية، ويظهر تقدّمه أدناه.</text>
     <text name="NonPayrollWageTypeNotAllowed">لا يمكن استخدام نوع الأجر هذا في معاملة خارج الرواتب.</text>
+    <text name="Retro">بأثر رجعي</text>
   </texts>
 </localizationDictionary>

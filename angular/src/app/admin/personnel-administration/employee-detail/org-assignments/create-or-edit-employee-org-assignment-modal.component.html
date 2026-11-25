@@ -162,18 +162,21 @@
                             </select>
                         </div>
                         <div class="mb-5">
-                            <label class="form-label" for="EmployeeOrgAssignment_PayrollAreaId">{{ 'PayrollArea' | localize }}</label>
+                            <label class="form-label required" for="EmployeeOrgAssignment_PayrollAreaId">{{ 'PayrollArea' | localize }}</label>
                             <select
                                 id="EmployeeOrgAssignment_PayrollAreaId"
+                                #payrollAreaInput="ngModel"
                                 class="form-select"
                                 name="PayrollAreaId"
                                 [ngModel]="record().payrollAreaId"
-                                (ngModelChange)="updateField('payrollAreaId', $event)">
+                                (ngModelChange)="updateField('payrollAreaId', $event)"
+                                required>
                                 <option [ngValue]="undefined"></option>
                                 @for (item of payrollAreas(); track item.id) {
                                     <option [ngValue]="item.id">{{ item.name }}</option>
                                 }
                             </select>
+                            <validation-messages [formCtrl]="payrollAreaInput" />
                         </div>
                         <div class="mb-5">
                             <label class="form-label" for="EmployeeOrgAssignment_WorkflowGroupId">{{ 'WorkflowGroup' | localize }}</label>

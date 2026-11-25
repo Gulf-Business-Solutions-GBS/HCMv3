@@ -35208,7 +35208,7 @@ export class EmployeeBasicPaysServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    createOrEdit(body?: CreateOrEditEmployeeBasicPayDto | undefined): Observable<void> {
+    createOrEdit(body?: CreateOrEditEmployeeBasicPayDto | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/services/app/EmployeeBasicPays/CreateOrEdit";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -35220,6 +35220,7 @@ export class EmployeeBasicPaysServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
@@ -35230,14 +35231,14 @@ export class EmployeeBasicPaysServiceProxy {
                 try {
                     return this.processCreateOrEdit(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<number>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<number>;
         }));
     }
 
-    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -35246,7 +35247,11 @@ export class EmployeeBasicPaysServiceProxy {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -140115,6 +140120,62 @@ export class SalaryRegistersServiceProxy {
      * @param id (optional) 
      * @return OK
      */
+    getSalaryRegister(id?: number | undefined): Observable<SalaryRegisterDto> {
+        let url_ = this.baseUrl + "/api/services/app/SalaryRegisters/GetSalaryRegister?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSalaryRegister(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSalaryRegister(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SalaryRegisterDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SalaryRegisterDto>;
+        }));
+    }
+
+    protected processGetSalaryRegister(response: HttpResponseBase): Observable<SalaryRegisterDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SalaryRegisterDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
     getSalaryRegisterForEdit(id?: number | undefined): Observable<GetSalaryRegisterForEditOutput> {
         let url_ = this.baseUrl + "/api/services/app/SalaryRegisters/GetSalaryRegisterForEdit?";
         if (id === null)
@@ -191051,7 +191112,6 @@ export class CreateOrEditEmployeeBasicPayDto implements ICreateOrEditEmployeeBas
     id!: number | undefined;
     employeeId!: number;
     startDate!: DateTime;
-    endDate!: DateTime;
     payType!: PayType;
     payInterval!: PayInterval;
     employeeActionId!: number | undefined;
@@ -191070,7 +191130,6 @@ export class CreateOrEditEmployeeBasicPayDto implements ICreateOrEditEmployeeBas
             this.id = _data["id"];
             this.employeeId = _data["employeeId"];
             this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
-            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
             this.payType = _data["payType"];
             this.payInterval = _data["payInterval"];
             this.employeeActionId = _data["employeeActionId"];
@@ -191089,7 +191148,6 @@ export class CreateOrEditEmployeeBasicPayDto implements ICreateOrEditEmployeeBas
         data["id"] = this.id;
         data["employeeId"] = this.employeeId;
         data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
-        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
         data["payType"] = this.payType;
         data["payInterval"] = this.payInterval;
         data["employeeActionId"] = this.employeeActionId;
@@ -191101,7 +191159,6 @@ export interface ICreateOrEditEmployeeBasicPayDto {
     id: number | undefined;
     employeeId: number;
     startDate: DateTime;
-    endDate: DateTime;
     payType: PayType;
     payInterval: PayInterval;
     employeeActionId: number | undefined;
@@ -191911,7 +191968,7 @@ export class CreateOrEditEmployeeDto implements ICreateOrEditEmployeeDto {
     motherNameAr!: string | undefined;
     qualificationId!: number | undefined;
     bloodGroup!: string | undefined;
-    civilID!: number;
+    civilID!: number | undefined;
     loginID!: string | undefined;
     accessID!: string | undefined;
     email!: string | undefined;
@@ -192123,7 +192180,7 @@ export interface ICreateOrEditEmployeeDto {
     motherNameAr: string | undefined;
     qualificationId: number | undefined;
     bloodGroup: string | undefined;
-    civilID: number;
+    civilID: number | undefined;
     loginID: string | undefined;
     accessID: string | undefined;
     email: string | undefined;
@@ -277488,6 +277545,8 @@ export interface IGetSalaryRegisterDetailForEditOutput {
 
 export class GetSalaryRegisterForEditOutput implements IGetSalaryRegisterForEditOutput {
     salaryRegister!: CreateOrEditSalaryRegisterDto;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
 
     constructor(data?: IGetSalaryRegisterForEditOutput) {
         if (data) {
@@ -277501,6 +277560,8 @@ export class GetSalaryRegisterForEditOutput implements IGetSalaryRegisterForEdit
     init(_data?: any) {
         if (_data) {
             this.salaryRegister = _data["salaryRegister"] ? CreateOrEditSalaryRegisterDto.fromJS(_data["salaryRegister"]) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
         }
     }
 
@@ -277514,12 +277575,16 @@ export class GetSalaryRegisterForEditOutput implements IGetSalaryRegisterForEdit
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["salaryRegister"] = this.salaryRegister ? this.salaryRegister.toJSON() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
         return data;
     }
 }
 
 export interface IGetSalaryRegisterForEditOutput {
     salaryRegister: CreateOrEditSalaryRegisterDto;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
 }
 
 export class GetSalaryRegisterReportInput implements IGetSalaryRegisterReportInput {
@@ -352008,7 +352073,11 @@ export class SalaryRegisterDetailDto implements ISalaryRegisterDetailDto {
     id!: number;
     salaryRegisterId!: number;
     wageTypeId!: number;
+    wageTypeCode!: string | undefined;
     wageTypeName!: string | undefined;
+    payrollOrder!: number;
+    billingType!: BillingType;
+    dontImpactNetPay!: boolean;
     rate!: number;
     number!: number;
     amount!: number;
@@ -352027,7 +352096,11 @@ export class SalaryRegisterDetailDto implements ISalaryRegisterDetailDto {
             this.id = _data["id"];
             this.salaryRegisterId = _data["salaryRegisterId"];
             this.wageTypeId = _data["wageTypeId"];
+            this.wageTypeCode = _data["wageTypeCode"];
             this.wageTypeName = _data["wageTypeName"];
+            this.payrollOrder = _data["payrollOrder"];
+            this.billingType = _data["billingType"];
+            this.dontImpactNetPay = _data["dontImpactNetPay"];
             this.rate = _data["rate"];
             this.number = _data["number"];
             this.amount = _data["amount"];
@@ -352046,7 +352119,11 @@ export class SalaryRegisterDetailDto implements ISalaryRegisterDetailDto {
         data["id"] = this.id;
         data["salaryRegisterId"] = this.salaryRegisterId;
         data["wageTypeId"] = this.wageTypeId;
+        data["wageTypeCode"] = this.wageTypeCode;
         data["wageTypeName"] = this.wageTypeName;
+        data["payrollOrder"] = this.payrollOrder;
+        data["billingType"] = this.billingType;
+        data["dontImpactNetPay"] = this.dontImpactNetPay;
         data["rate"] = this.rate;
         data["number"] = this.number;
         data["amount"] = this.amount;
@@ -352058,7 +352135,11 @@ export interface ISalaryRegisterDetailDto {
     id: number;
     salaryRegisterId: number;
     wageTypeId: number;
+    wageTypeCode: string | undefined;
     wageTypeName: string | undefined;
+    payrollOrder: number;
+    billingType: BillingType;
+    dontImpactNetPay: boolean;
     rate: number;
     number: number;
     amount: number;
@@ -352068,6 +352149,7 @@ export class SalaryRegisterDto implements ISalaryRegisterDto {
     id!: number;
     employeeId!: number;
     employeeCode!: string | undefined;
+    employeeName!: string | undefined;
     forPeriod!: DateTime;
     inPeriod!: DateTime;
     payrollRunType!: PayrollRunType;
@@ -352093,6 +352175,7 @@ export class SalaryRegisterDto implements ISalaryRegisterDto {
             this.id = _data["id"];
             this.employeeId = _data["employeeId"];
             this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
             this.forPeriod = _data["forPeriod"] ? DateTime.fromISO(_data["forPeriod"].toString()) : undefined as any;
             this.inPeriod = _data["inPeriod"] ? DateTime.fromISO(_data["inPeriod"].toString()) : undefined as any;
             this.payrollRunType = _data["payrollRunType"];
@@ -352118,6 +352201,7 @@ export class SalaryRegisterDto implements ISalaryRegisterDto {
         data["id"] = this.id;
         data["employeeId"] = this.employeeId;
         data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
         data["forPeriod"] = this.forPeriod ? this.forPeriod.toString() : undefined as any;
         data["inPeriod"] = this.inPeriod ? this.inPeriod.toString() : undefined as any;
         data["payrollRunType"] = this.payrollRunType;
@@ -352136,6 +352220,7 @@ export interface ISalaryRegisterDto {
     id: number;
     employeeId: number;
     employeeCode: string | undefined;
+    employeeName: string | undefined;
     forPeriod: DateTime;
     inPeriod: DateTime;
     payrollRunType: PayrollRunType;

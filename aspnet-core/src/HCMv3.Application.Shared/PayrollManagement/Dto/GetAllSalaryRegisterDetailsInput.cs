@@ -18,7 +18,8 @@ public class GetAllSalaryRegisterDetailsInput : PagedAndSortedResultRequestDto, 
     {
         if (Sorting.IsNullOrWhiteSpace())
         {
-            Sorting = "Id ASC";
+            // Payslip order, as the register page lists its wage types.
+            Sorting = "WageType.PayrollOrder ASC, Id ASC";
         }
     }
 }

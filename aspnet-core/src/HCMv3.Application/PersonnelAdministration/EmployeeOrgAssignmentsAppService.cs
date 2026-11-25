@@ -412,6 +412,14 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
             throw new UserFriendlyException(L("StartDateAlreadyExists", entity.StartDate.ToString("dd/MM/yyyy")));
         }
 
+        // Not in legacy: an assignment without a payroll area drops the employee from payroll runs and from every
+        // report that filters on it. Checked after the create-time prefill, so a blank left on a new record that
+        // a previous assignment or the org unit can fill still saves; a payroll area cleared on edit does not.
+        if (!entity.PayrollAreaId.HasValue)
+        {
+            throw new UserFriendlyException(L("PayrollAreaCannotBeBlank"));
+        }
+
         // Legacy PerformValidation line 766: "Position cannot be blank." when positions are switched on.
         if (!entity.PositionId.HasValue)
         {

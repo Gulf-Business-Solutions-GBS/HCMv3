@@ -27,10 +27,12 @@ public class CreateOrEditEmployeeBasicPayDto
     [Required]
     public int EmployeeId { get; set; }
 
+    /// <summary>
+    /// Effective Date. There is no end date to enter: it runs to the day before the employee's next basic pay
+    /// (open-ended for the latest one) and is recomputed on every save and delete, as in the legacy HRMS.
+    /// </summary>
     [Required]
     public DateTime StartDate { get; set; }
-
-    public DateTime EndDate { get; set; }
 
     public PayType PayType { get; set; }
 

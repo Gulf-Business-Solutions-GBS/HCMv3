@@ -1,0 +1,20 @@
+/* Legacy salary register line colours (CustomizeAppearanceController), fixed so they read the same in dark mode. */
+:host ::ng-deep tr.sr-line-plain > td {
+    color: rgb(47, 79, 79);
+}
+
+:host ::ng-deep tr.sr-line-earning > td {
+    background-color: rgb(217, 229, 205) !important;
+    color: #000;
+}
+
+:host ::ng-deep tr.sr-line-deduction > td {
+    background-color: rgb(239, 200, 186) !important;
+    color: #000;
+}
+
+:host ::ng-deep tr.sr-line-net-pay > td {
+    background-color: rgb(112, 128, 144) !important; /* SlateGray */
+    color: #fff;
+    font-weight: 600;
+}

@@ -20,7 +20,7 @@ interface EmployeeBasicPayDetailTab {
 }
 
 const EMPLOYEE_BASIC_PAY_DETAIL_TABS: EmployeeBasicPayDetailTab[] = [
-    { id: 'wage-types', labelKey: 'WageTypes', permission: 'Pages.PersonnelAdministration.EmployeeBasicPayDetails' },
+    { id: 'wage-types', labelKey: 'BasicPayDetail', permission:'Pages.PersonnelAdministration.EmployeeBasicPayDetails' },
 ];
 
 /**
@@ -140,9 +140,8 @@ export class EmployeeBasicPayDetailViewComponent extends AppComponentBase {
         this.back.emit();
     }
 
+    /** The end date is derived by the backend from the next basic pay, so the title names the Effective Date only. */
     private setSavedPeriod(record: CreateOrEditEmployeeBasicPayDto): void {
-        const start = record?.startDate?.toFormat('yyyy-MM-dd') ?? '';
-        const end = record?.endDate?.toFormat('yyyy-MM-dd') ?? '';
-        this.savedPeriod.set(start || end ? `${start} - ${end}` : '');
+        this.savedPeriod.set(record?.startDate?.toFormat('yyyy-MM-dd') ?? '');
     }
 }

@@ -79,7 +79,8 @@ public class EmployeeOrgAssignmentAutoWageAccount_Tests : AppTestBase
         var oldLocation = _data.CreateCostElement("CC-OLD");
         var newLocation = _data.CreateCostElement("CC-NEW");
 
-        _data.CreateOrgAssignment(employee, null, new DateTime(2024, 1, 1), new DateTime(2099, 12, 31), costCenter: oldCostCentre);
+        var payrollArea = _data.CreatePayrollArea("PA-AWA100", "Monthly");
+        _data.CreateOrgAssignment(employee, payrollArea, new DateTime(2024, 1, 1), new DateTime(2099, 12, 31), costCenter: oldCostCentre);
         _data.CreateWageAccount(employee, wageType, account, costElement3: oldLocation, endDate: OpenEnded);
         _data.CreateWageAccount(employee, netPay, account, costElement3: oldLocation, endDate: OpenEnded);
 
@@ -113,7 +114,8 @@ public class EmployeeOrgAssignmentAutoWageAccount_Tests : AppTestBase
         var oldCostCentre = _data.CreateCostCenter("CC-OLD2");
         var newCostCentre = _data.CreateCostCenter("CC-NEW2");
 
-        _data.CreateOrgAssignment(employee, null, new DateTime(2024, 1, 1), new DateTime(2099, 12, 31), costCenter: oldCostCentre);
+        var payrollArea = _data.CreatePayrollArea("PA-AWA110", "Monthly");
+        _data.CreateOrgAssignment(employee, payrollArea, new DateTime(2024, 1, 1), new DateTime(2099, 12, 31), costCenter: oldCostCentre);
         _data.CreateWageAccount(employee, wageType, account, endDate: OpenEnded);
 
         await _appService.CreateOrEdit(new CreateOrEditEmployeeOrgAssignmentDto

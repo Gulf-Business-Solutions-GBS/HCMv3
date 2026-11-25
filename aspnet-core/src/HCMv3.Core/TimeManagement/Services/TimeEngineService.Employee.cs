@@ -132,16 +132,32 @@ public partial class TimeEngineService
 
         #endregion
 
+        #region << Check Payroll Area >>
+
+        // Not in legacy, which checked only the FIRST employee code's area on the screen and ran everyone else
+        // whether or not they had one. An employee with no payroll area cannot be paid for these days, so the run
+        // reports it against that employee instead of passing it silently. Taken as at the employee's own last day
+        // in the window (already narrowed to the contract end), so a leaver is judged on their last assignment.
+        var payrollArea = await _payrollAreaResolver.GetEmployeePayrollAreaAsync(employee.Id, timeEndDate);
+        if (payrollArea == null)
+        {
+            throw new Exception(string.Format(
+                "Employee payroll area not found on {0}.",
+                timeEndDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)));
+        }
+
+        #endregion
+
         #region << Check Cutoff Date >>
 
         // Legacy recomputes only when the payroll area differs from the previous employee's (see RunCursor).
-        var payrollAreaId = GetCurrentPayrollAreaId(employee, timeEndDate);
-        if (payrollAreaId != null && cursor.OldPayrollAreaId != payrollAreaId.Value)
+        // Legacy read emp.CurrentPayrollArea; this is the employee's own area resolved above. (It used to be taken
+        // from whichever control record covered the date, i.e. possibly another area's cutoff.)
+        if (cursor.OldPayrollAreaId != payrollArea.Id)
         {
-            cursor.OldPayrollAreaId = payrollAreaId.Value;
+            cursor.OldPayrollAreaId = payrollArea.Id;
 
-            var cutOffDay = _payrollAreaRepository.GetAll()
-                .Where(r => r.Id == payrollAreaId.Value).Select(r => r.CutOffDay).FirstOrDefault();
+            var cutOffDay = payrollArea.CutOffDay;
 
             if (cutOffDay != 0)
             {
@@ -272,22 +288,6 @@ public partial class TimeEngineService
 
         payrollStatus.Id = await _employeePayrollStatusRepository.InsertAndGetIdAsync(payrollStatus);
         return payrollStatus;
-    }
-
-    /// <summary>
-    /// PORT ADAPTATION for legacy <c>emp.CurrentPayrollArea</c> (a computed XPO property this port does not
-    /// have -- <see cref="EmployeeOrgAssignment"/> carries no PayrollArea FK either, same gap
-    /// <c>AccrualService.CalculateForfeitForPublicHolidayAsync</c> works around by taking
-    /// <c>payrollAreaId</c> explicitly). Resolved here from the <see cref="PayrollControlRecord"/> covering
-    /// <paramref name="asOnDate"/>; returns null when it cannot be determined, which makes the caller keep the
-    /// previous cutoff date -- exactly what legacy did when <c>CurrentPayrollArea</c> was null.
-    /// </summary>
-    private int? GetCurrentPayrollAreaId(Employee employee, DateTime asOnDate)
-    {
-        return _payrollControlRecordRepository.GetAll()
-            .Where(r => r.CalendarMonthStart <= asOnDate && r.CalendarMonthEnd >= asOnDate)
-            .Select(r => (int?)r.PayrollAreaId)
-            .FirstOrDefault();
     }
 
     /// <summary>

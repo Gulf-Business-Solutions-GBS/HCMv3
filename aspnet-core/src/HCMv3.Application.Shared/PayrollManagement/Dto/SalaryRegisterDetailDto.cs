@@ -11,7 +11,16 @@ public class SalaryRegisterDetailDto : EntityDto<int>
 
     public int WageTypeId { get; set; }
 
+    public string WageTypeCode { get; set; }
+
     public string WageTypeName { get; set; }
+
+    public int PayrollOrder { get; set; }
+
+    /// <summary>The wage type's billing type; with <see cref="DontImpactNetPay"/> it colours the line (legacy parity).</summary>
+    public BillingType BillingType { get; set; }
+
+    public bool DontImpactNetPay { get; set; }
 
     public double Rate { get; set; }
 
