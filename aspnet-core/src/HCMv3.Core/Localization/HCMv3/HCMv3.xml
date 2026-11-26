@@ -179,6 +179,8 @@
     <text name="ThroughPayroll">Through Payroll</text>
     <text name="External">External</text>
     <text name="Exemption">Exemption</text>
+    <text name="Installment">Installment</text>
+    <text name="Recovery">Recovery</text>
     <text name="ThroughExternal">Through External</text>
     <text name="BasicSalary">Basic Salary</text>
     <text name="CreatingNewLoanType">Creating new loan type</text>
@@ -2118,6 +2120,8 @@
     <text name="QuotaBalance">Quota Balance</text>
     <text name="AdjustmentType">Adjustment Type</text>
     <text name="EffectiveDate">Effective Date</text>
+    <text name="BasicInformation">Basic Information</text>
+    <text name="OrganizationHierarchy">Organization Hierarchy</text>
     <text name="AdjustmentPaymentType">Adjustment Payment Type</text>
     <text name="AttendanceTypeId">Attendance Type</text>
     <text name="AttendanceUnit">Attendance Unit</text>
@@ -8101,5 +8105,11 @@
     <text name="NewWageTypeName">New wage type name</text>
     <text name="NewWageTypeNameRequired">Enter a name for the new wage type.</text>
     <text name="LoanTypeCopied">Loan type copied.</text>
+    <text name="LeaveInformation">Leave Information</text>
+    <text name="PartialLeave">Partial Leave</text>
+    <text name="ExtraUnpaidLeaveInformation">Extra Unpaid Leave Information</text>
+    <text name="ReturnInformation">Return Information</text>
+    <text name="SickLeaveUnpaidInformation">Sick Leave Unpaid Information</text>
+    <text name="EmployeeLeaves">Employee Leaves</text>
   </texts>
 </localizationDictionary>

@@ -2345,16 +2345,19 @@ export class AppNavigationService {
                         '/app/admin/announcements'
                     ),
                     new AppMenuItem(
-                        'EmployeeLoanExemptions',
-                        'Pages.PersonnelAdministration.EmployeeLoanExemptions',
-                        'flaticon-list-3',
-                        '/app/admin/employee-loan-exemptions'
+                        'EmployeeLoans',
+                        'Pages.PersonnelAdministration.EmployeeLoans',
+                        'flaticon-piggy-bank',
+                        '/app/admin/employee-loans'
                     ),
+                    // A loan's installments, recoveries and exemptions are opened from the loan itself (Employee
+                    // Loans > Actions > Installments, Recoveries and Exemptions), so they have no menu entries.
+                    // Every employee's leave in one list (legacy "Leave Transaction"); also on each employee's Absences tab.
                     new AppMenuItem(
-                        'EmployeeLoanRecoveries',
-                        'Pages.PersonnelAdministration.EmployeeLoanRecoveries',
-                        'flaticon-list-3',
-                        '/app/admin/employee-loan-recoveries'
+                        'EmployeeLeaves',
+                        'Pages.PersonnelAdministration.EmployeeAbsences',
+                        'flaticon-calendar',
+                        '/app/admin/employee-absences'
                     ),
                     new AppMenuItem(
                         'EmployeeLetterRequests',
@@ -2379,12 +2382,6 @@ export class AppNavigationService {
                         'Pages.PersonnelAdministration.OvertimeBatches',
                         'flaticon-alarm',
                         '/app/admin/overtime-batches'
-                    ),
-                    new AppMenuItem(
-                        'LoanInstallments',
-                        'Pages.PersonnelAdministration.LoanInstallments',
-                        'flaticon-list-3',
-                        '/app/admin/loan-installments'
                     ),
                     new AppMenuItem(
                         'EmployeeFundDetails',

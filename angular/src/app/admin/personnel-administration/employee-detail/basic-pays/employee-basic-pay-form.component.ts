@@ -1,22 +1,16 @@
-import { Component, effect, inject, input, model, signal } from '@angular/core';
+import { Component, input, model } from '@angular/core';
 import { ControlContainer, FormsModule, NgForm } from '@angular/forms';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import {
-    CreateOrEditEmployeeBasicPayDto,
-    EmployeeActionDto,
-    EmployeeActionsServiceProxy,
-    GetAllEmployeeActionsInput,
-    PayInterval,
-    PayType,
-} from '@shared/service-proxies/service-proxies';
+import { CreateOrEditEmployeeBasicPayDto, PayInterval, PayType } from '@shared/service-proxies/service-proxies';
 import { ValidationMessagesComponent } from '@shared/utils/validation-messages.component';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
-import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { DateTime } from 'luxon';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 /**
  * A basic pay's own fields, shared by the Create/Edit modal and the basic pay detail view.
+ * Laid out as in the legacy HRMS: Effective Date | Pay Type, then Total Amount | Pay Interval.
+ * End Date and Employee Action are hidden there, so they are not shown here either (their values are kept).
  *
  * It holds no form of its own: the controls register with the host's `<form #...="ngForm">` through
  * the view provider below, so the host's Save button sees their validity.
@@ -25,17 +19,13 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
     selector: 'employeeBasicPayForm',
     templateUrl: './employee-basic-pay-form.component.html',
     viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
-    imports: [DateInputDirective, FormsModule, ValidationMessagesComponent, LocalizePipe, LuxonFormatPipe],
+    imports: [DateInputDirective, FormsModule, ValidationMessagesComponent, LocalizePipe],
 })
 export class EmployeeBasicPayFormComponent extends AppComponentBase {
-    private _employeeActionsService = inject(EmployeeActionsServiceProxy);
-
     readonly record = model.required<CreateOrEditEmployeeBasicPayDto>();
-    /** The employee whose actions fill the Employee Action dropdown. */
-    readonly employeeId = input<number>();
     readonly readOnly = input<boolean>(false);
-
-    readonly employeeActions = signal<EmployeeActionDto[]>([]);
+    /** Sum of the Basic Pay Detail lines; read-only, as in the legacy HRMS. Blank for a new basic pay. */
+    readonly totalAmount = input<number | undefined>(undefined);
 
     readonly payTypes = [
         { value: PayType.None, name: 'None' },
@@ -49,27 +39,6 @@ export class EmployeeBasicPayFormComponent extends AppComponentBase {
         { value: PayInterval.EndOfService, name: 'EndOfService' },
         { value: PayInterval.Yearly, name: 'Yearly' },
     ];
-
-    constructor() {
-        super();
-        effect(() => {
-            const employeeId = this.employeeId();
-            if (!employeeId) {
-                return;
-            }
-
-            this._employeeActionsService
-                .getAll(
-                    new GetAllEmployeeActionsInput({
-                        employeeId,
-                        maxResultCount: 1000,
-                        skipCount: 0,
-                        sorting: undefined,
-                    })
-                )
-                .subscribe((result) => this.employeeActions.set(result.items));
-        });
-    }
 
     updateField(field: keyof CreateOrEditEmployeeBasicPayDto, value: any): void {
         const next = new CreateOrEditEmployeeBasicPayDto();

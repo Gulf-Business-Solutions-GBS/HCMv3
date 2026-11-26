@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Extensions;
 using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
+using HCMv3.GeneralMasterInfo.Dto;
 using HCMv3.PersonnelAdministration.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -40,18 +42,49 @@ public class EmployeeLoansAppService : HCMv3AppServiceBase, IEmployeeLoansAppSer
     private readonly IAdminTransactionSubmitter _transactionSubmitter;
     private readonly IEmployeeLoanInstallmentService _installmentService;
     private readonly IPayrollRetroTrigger _retroTrigger;
+    private readonly IRepository<Employee> _employeeRepository;
 
     public EmployeeLoansAppService(IRepository<EmployeeLoan> repository,
         IRepository<EmployeeLoanInstallment> installmentRepository,
         IAdminTransactionSubmitter transactionSubmitter,
         IEmployeeLoanInstallmentService installmentService,
-        IPayrollRetroTrigger retroTrigger)
+        IPayrollRetroTrigger retroTrigger,
+        IRepository<Employee> employeeRepository)
     {
         _transactionSubmitter = transactionSubmitter;
         _repository = repository;
         _installmentRepository = installmentRepository;
         _installmentService = installmentService;
         _retroTrigger = retroTrigger;
+        _employeeRepository = employeeRepository;
+    }
+
+    /// <summary>
+    /// Every employee of the tenant, as a small projection: the full employee list is far too heavy to fill a
+    /// dropdown with. Ordered by code with shorter codes first, so numeric codes come in number order (2 before 10).
+    /// </summary>
+    [HttpPost]
+    public async Task<ListResultDto<SimpleLookupDto>> GetEmployeesForLookup(GetEmployeeLoanEmployeesInput input)
+    {
+        var filter = input.Filter?.Trim();
+
+        var items = await _employeeRepository.GetAll()
+            .WhereIf(!filter.IsNullOrWhiteSpace(), e =>
+                e.Code.Contains(filter) ||
+                e.FullNameEn.Contains(filter) ||
+                e.FullNameAr.Contains(filter))
+            .OrderBy(e => e.Code.Length)
+            .ThenBy(e => e.Code)
+            .Select(e => new SimpleLookupDto
+            {
+                Id = e.Id,
+                Code = e.Code,
+                NameEn = e.FullNameEn,
+                NameAr = e.FullNameAr
+            })
+            .ToListAsync();
+
+        return new ListResultDto<SimpleLookupDto>(items);
     }
 
     [HttpPost]
@@ -62,7 +95,13 @@ public class EmployeeLoansAppService : HCMv3AppServiceBase, IEmployeeLoansAppSer
         var query = _repository.GetAll()
             .Include(l => l.Employee)
             .Include(l => l.LoanType)
-            .WhereIf(input.EmployeeId.HasValue, l => l.EmployeeId == input.EmployeeId.Value);
+            .WhereIf(input.EmployeeId.HasValue, l => l.EmployeeId == input.EmployeeId.Value)
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), l =>
+                l.Employee.Code.Contains(input.Filter) ||
+                l.Employee.FullNameEn.Contains(input.Filter) ||
+                l.Employee.FullNameAr.Contains(input.Filter) ||
+                l.LoanType.NameEn.Contains(input.Filter) ||
+                l.LoanType.NameAr.Contains(input.Filter));
 
         var totalCount = await query.CountAsync();
 
@@ -76,10 +115,16 @@ public class EmployeeLoansAppService : HCMv3AppServiceBase, IEmployeeLoansAppSer
 
     public async Task<GetEmployeeLoanForEditOutput> GetEmployeeLoanForEdit(EntityDto input)
     {
-        var entity = await _repository.GetAsync(input.Id);
+        var entity = await _repository.GetAll()
+            .Include(l => l.Employee)
+            .FirstOrDefaultAsync(l => l.Id == input.Id)
+            ?? throw new Abp.Domain.Entities.EntityNotFoundException(typeof(EmployeeLoan), input.Id);
 
         return new GetEmployeeLoanForEditOutput
         {
+            EmployeeCode = entity.Employee?.Code,
+            EmployeeFullNameEn = entity.Employee?.FullNameEn,
+            BalanceDueAmount = entity.BalanceDueAmount,
             EmployeeLoan = new CreateOrEditEmployeeLoanDto
             {
                 Id = entity.Id,

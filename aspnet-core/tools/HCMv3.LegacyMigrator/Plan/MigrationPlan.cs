@@ -193,6 +193,26 @@ public static class MigrationPlan
         // assumed. Declared anyway: it is latent, not absent.
         Lookup("AttendanceTypes", "AttendanceType", s => s.LogicalForeignKeys["WageTypeId"] = "WageTypes");
         Lookup("DutyPeriods", "DutyPeriod");
+
+        // A duty period's weekly pattern: one row per week, naming the duty worked on each of its seven days.
+        // Absent from this plan until now, so every migrated duty period arrived with no days at all -- an
+        // employee could be given a duty period and the engine still had no shift for any date. Found on a
+        // migrated tenant where all 51 duty periods had zero detail rows.
+        //
+        // MUST follow DutyPeriods (DutyPeriodId is NOT NULL: unresolved DROPS the row) and Duties (Day1..7DutyId
+        // are nullable: unresolved would silently NULL a working day into "no duty", the OvertimeTypes failure
+        // mode). All eight columns carry real FK constraints and follow the Foo -> FooId convention
+        // (DutyPeriod, Day1Duty..Day7Duty), so no overrides or logical FKs are needed -- verified against
+        // sys.foreign_keys. Scoped to the parent so a detail of a deleted legacy duty period is not attempted.
+        plan.Add(new TableSpec
+        {
+            Target = "DutyPeriodDetails",
+            Source = "DutyPeriodDetail",
+            Scope = ScopeKind.Parent,
+            ScopeColumn = "DutyPeriod",
+            ScopeParentEntity = "DutyPeriods"
+        });
+
         Lookup("HolidayPeriods", "HolidayPeriod");
         Lookup("PayrollAreas", "PayrollArea");
         Lookup("EmployeeSubGroupAbsences", "EmployeeSubGroupAbsence");

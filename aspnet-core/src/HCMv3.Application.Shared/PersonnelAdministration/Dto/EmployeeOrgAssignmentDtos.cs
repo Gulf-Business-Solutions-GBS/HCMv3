@@ -114,3 +114,30 @@ public class PositionForOrgAssignmentDto : EntityDto<int>
     public int? CostCenterId { get; set; }
     public long? OrganizationUnitId { get; set; }
 }
+
+/// <summary>
+/// Which optional org assignment fields the tenant uses (legacy <c>OrgUnitCustomizeController</c> hid the
+/// Position, Posting Group and Budgeting Group editors and columns unless <c>ManageOrgSettings</c> switched them on).
+/// </summary>
+public class EmployeeOrgAssignmentFieldSettingsDto
+{
+    public bool EnablePosition { get; set; }
+
+    public bool EnablePostingGroup { get; set; }
+
+    public bool EnableBudgetingGroup { get; set; }
+}
+
+/// <summary>
+/// An organization unit for the legacy OrgLevel1..OrgLevel7 pickers: its level comes from its profile's
+/// Organization Unit Type code (<c>Level1</c>..<c>Level7</c>).
+/// </summary>
+public class OrgAssignmentOrgUnitDto : EntityDto<long>
+{
+    public long? ParentId { get; set; }
+
+    /// <summary>1..7.</summary>
+    public int Level { get; set; }
+
+    public string DisplayName { get; set; }
+}

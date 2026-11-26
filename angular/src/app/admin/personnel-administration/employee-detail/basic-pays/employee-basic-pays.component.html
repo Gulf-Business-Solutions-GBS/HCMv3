@@ -42,7 +42,7 @@
                                 {{ 'EffectiveDate' | localize }}
                                 <p-sortIcon field="startDate" />
                             </th>
-                            <th>{{ 'Amount' | localize }}</th>
+                            <th>{{ 'TotalAmount' | localize }}</th>
                             <th>{{ 'PayType' | localize }}</th>
                             <th>{{ 'PayInterval' | localize }}</th>
                         </tr>
@@ -70,8 +70,8 @@
                                 <a href="javascript:;" (click)="openDetail(record)">{{ record.startDate | luxonFormat: 'yyyy-MM-dd' }}</a>
                             </td>
                             <td>{{ record.amount }}</td>
-                            <td>{{ record.payType }}</td>
-                            <td>{{ record.payInterval }}</td>
+                            <td>{{ payTypeName(record.payType) }}</td>
+                            <td>{{ payIntervalName(record.payInterval) }}</td>
                         </tr>
                     </ng-template>
                 </p-table>

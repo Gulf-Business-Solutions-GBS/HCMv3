@@ -394,7 +394,7 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 load: (injector, employeeId) =>
                     injector
                         .get(EmployeeLoansServiceProxy)
-                        .getAll(new GetAllEmployeeLoansInput({ employeeId, ...lastRows }))
+                        .getAll(new GetAllEmployeeLoansInput({ employeeId, filter: undefined, ...lastRows }))
                         .pipe(map((r) => r.items)),
                 columns: [
                     { labelKey: 'LoanType', field: 'loanTypeName' },

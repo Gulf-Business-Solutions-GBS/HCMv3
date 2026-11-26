@@ -69,6 +69,7 @@ export class CreateOrEditEmployeeLoanRecoveryModalComponent extends AppComponent
             .getAll(
                 new GetAllEmployeeLoansInput({
                     employeeId: loanContext?.employeeId,
+                    filter: undefined,
                     maxResultCount: 1000,
                     skipCount: 0,
                     sorting: undefined,

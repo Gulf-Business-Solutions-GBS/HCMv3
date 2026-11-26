@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
+using HCMv3.GeneralMasterInfo.Dto;
 using HCMv3.PersonnelAdministration.Dto;
 
 namespace HCMv3.PersonnelAdministration;
@@ -8,6 +9,9 @@ namespace HCMv3.PersonnelAdministration;
 public interface IEmployeeAbsencesAppService : IApplicationService
 {
     Task<PagedResultDto<EmployeeAbsenceDto>> GetAll(GetAllEmployeeAbsencesInput input);
+
+    /// <summary>Every employee, "code - name", for the Employee Leaves list's dialog.</summary>
+    Task<ListResultDto<SimpleLookupDto>> GetEmployeesForLookup(GetEmployeeAbsenceEmployeesInput input);
 
     Task<GetEmployeeAbsenceForEditOutput> GetEmployeeAbsenceForEdit(EntityDto input);
 

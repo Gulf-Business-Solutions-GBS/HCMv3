@@ -129,11 +129,26 @@ public class CreateOrEditEmployeeAbsenceDto
 public class GetEmployeeAbsenceForEditOutput
 {
     public CreateOrEditEmployeeAbsenceDto EmployeeAbsence { get; set; }
+
+    /// <summary>Shown on the Employee Leaves list's dialog, where the employee is picked rather than given.</summary>
+    public string EmployeeCode { get; set; }
+
+    public string EmployeeFullNameEn { get; set; }
+}
+
+/// <summary>The employee dropdown on the Employee Leaves list's dialog.</summary>
+public class GetEmployeeAbsenceEmployeesInput
+{
+    /// <summary>Optional text matched against the employee's code and English and Arabic names.</summary>
+    public string Filter { get; set; }
 }
 
 public class GetAllEmployeeAbsencesInput : PagedAndSortedResultRequestDto, IShouldNormalize
 {
     public int? EmployeeId { get; set; }
+
+    /// <summary>Optional text matched against the employee's code and names and the leave type's names.</summary>
+    public string Filter { get; set; }
 
     public void Normalize()
     {

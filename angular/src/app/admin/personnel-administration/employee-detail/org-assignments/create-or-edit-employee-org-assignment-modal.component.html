@@ -7,7 +7,7 @@
     role="dialog"
     aria-hidden="true"
     [config]="{ backdrop: 'static', keyboard: !saving() }">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             @if (active()) {
                 <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
@@ -22,175 +22,196 @@
                         <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="mb-5">
-                            <label class="form-label required" for="EmployeeOrgAssignment_StartDate">{{ 'StartDate' | localize }}</label>
-                            <input
-                                id="EmployeeOrgAssignment_StartDate"
-                                #startDateInput="ngModel"
-                                class="form-control"
-                                type="date"
-                                name="StartDate"
-                                [ngModel]="record().startDate?.toISODate()"
-                                (ngModelChange)="updateStartDate($event)"
-                                required />
-                            <validation-messages [formCtrl]="startDateInput" />
-                        </div>
-                        <div class="mb-5">
-                            <label class="form-label" for="EmployeeOrgAssignment_PositionId">{{ 'Position' | localize }}</label>
-                            <select
-                                id="EmployeeOrgAssignment_PositionId"
-                                class="form-select"
-                                name="PositionId"
-                                [ngModel]="record().positionId"
-                                (ngModelChange)="updatePosition($event)">
-                                <option [ngValue]="undefined"></option>
-                                @for (item of positions(); track item.id) {
-                                    <option [ngValue]="item.id">{{ item.code }} - {{ item.nameEn }}</option>
+                        <!-- Legacy EmployeeOrgAssignment_DetailView: "Basic Information" on the left, "Organization Hierarchy" on the right. -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h5 class="mb-5">{{ 'BasicInformation' | localize }}</h5>
+                                <div class="mb-5">
+                                    <label class="form-label required" for="EmployeeOrgAssignment_StartDate">{{ 'EffectiveDate' | localize }}</label>
+                                    <input
+                                        id="EmployeeOrgAssignment_StartDate"
+                                        #startDateInput="ngModel"
+                                        class="form-control"
+                                        type="date"
+                                        name="StartDate"
+                                        [ngModel]="record().startDate?.toISODate()"
+                                        (ngModelChange)="updateStartDate($event)"
+                                        required />
+                                    <validation-messages [formCtrl]="startDateInput" />
+                                </div>
+                                <div class="mb-5">
+                                    <label class="form-label required" for="EmployeeOrgAssignment_PayrollAreaId">{{ 'PayrollArea' | localize }}</label>
+                                    <select
+                                        id="EmployeeOrgAssignment_PayrollAreaId"
+                                        #payrollAreaInput="ngModel"
+                                        class="form-select"
+                                        name="PayrollAreaId"
+                                        [ngModel]="record().payrollAreaId"
+                                        (ngModelChange)="updateField('payrollAreaId', $event)"
+                                        required>
+                                        <option [ngValue]="undefined"></option>
+                                        @for (item of payrollAreas(); track item.id) {
+                                            <option [ngValue]="item.id">{{ item.name }}</option>
+                                        }
+                                    </select>
+                                    <validation-messages [formCtrl]="payrollAreaInput" />
+                                </div>
+                                @if (fieldSettings().enablePosition) {
+                                    <div class="mb-5">
+                                        <label class="form-label required" for="EmployeeOrgAssignment_PositionId">{{ 'Position' | localize }}</label>
+                                        <select
+                                            id="EmployeeOrgAssignment_PositionId"
+                                            #positionInput="ngModel"
+                                            class="form-select"
+                                            name="PositionId"
+                                            [ngModel]="record().positionId"
+                                            (ngModelChange)="updatePosition($event)"
+                                            required>
+                                            <option [ngValue]="undefined"></option>
+                                            @for (item of positions(); track item.id) {
+                                                <option [ngValue]="item.id">{{ item.code }} - {{ item.nameEn }}</option>
+                                            }
+                                        </select>
+                                        <validation-messages [formCtrl]="positionInput" />
+                                    </div>
                                 }
-                            </select>
-                        </div>
-                        <div class="mb-5">
-                            <label class="form-label" for="EmployeeOrgAssignment_JobTitleId">{{ 'JobTitle' | localize }}</label>
-                            <select
-                                id="EmployeeOrgAssignment_JobTitleId"
-                                class="form-select"
-                                name="JobTitleId"
-                                [ngModel]="record().jobTitleId"
-                                (ngModelChange)="updateField('jobTitleId', $event)">
-                                <option [ngValue]="undefined"></option>
-                                @for (item of jobTitles(); track item.id) {
-                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                <div class="mb-5">
+                                    <label class="form-label" for="EmployeeOrgAssignment_JobTitleId">{{ 'JobTitle' | localize }}</label>
+                                    <select
+                                        id="EmployeeOrgAssignment_JobTitleId"
+                                        class="form-select"
+                                        name="JobTitleId"
+                                        [ngModel]="record().jobTitleId"
+                                        (ngModelChange)="updateField('jobTitleId', $event)">
+                                        <option [ngValue]="undefined"></option>
+                                        @for (item of jobTitles(); track item.id) {
+                                            <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-5">
+                                    <label class="form-label" for="EmployeeOrgAssignment_EmployeeGroupId">{{ 'EmployeeGroup' | localize }}</label>
+                                    <select
+                                        id="EmployeeOrgAssignment_EmployeeGroupId"
+                                        class="form-select"
+                                        name="EmployeeGroupId"
+                                        [ngModel]="record().employeeGroupId"
+                                        (ngModelChange)="updateEmployeeGroup($event)">
+                                        <option [ngValue]="undefined"></option>
+                                        @for (item of employeeGroups(); track item.id) {
+                                            <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-5">
+                                    <label class="form-label" for="EmployeeOrgAssignment_EmployeeSubGroupId">{{ 'EmployeeSubGroup' | localize }}</label>
+                                    <select
+                                        id="EmployeeOrgAssignment_EmployeeSubGroupId"
+                                        class="form-select"
+                                        name="EmployeeSubGroupId"
+                                        [ngModel]="record().employeeSubGroupId"
+                                        (ngModelChange)="updateField('employeeSubGroupId', $event)">
+                                        <option [ngValue]="undefined"></option>
+                                        @for (item of filteredEmployeeSubGroups(); track item.id) {
+                                            <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-5">
+                                    <label class="form-label" for="EmployeeOrgAssignment_WorkLocationId">{{ 'WorkLocation' | localize }}</label>
+                                    <select
+                                        id="EmployeeOrgAssignment_WorkLocationId"
+                                        class="form-select"
+                                        name="WorkLocationId"
+                                        [ngModel]="record().workLocationId"
+                                        (ngModelChange)="updateField('workLocationId', $event)">
+                                        <option [ngValue]="undefined"></option>
+                                        @for (item of workLocations(); track item.id) {
+                                            <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-5">
+                                    <label class="form-label" for="EmployeeOrgAssignment_CostCenterId">{{ 'CostCenter' | localize }}</label>
+                                    <select
+                                        id="EmployeeOrgAssignment_CostCenterId"
+                                        class="form-select"
+                                        name="CostCenterId"
+                                        [ngModel]="record().costCenterId"
+                                        (ngModelChange)="updateField('costCenterId', $event)">
+                                        <option [ngValue]="undefined"></option>
+                                        @for (item of costCenters(); track item.id) {
+                                            <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-5">
+                                    <label class="form-label" for="EmployeeOrgAssignment_WorkflowGroupId">{{ 'WorkflowGroup' | localize }}</label>
+                                    <select
+                                        id="EmployeeOrgAssignment_WorkflowGroupId"
+                                        class="form-select"
+                                        name="WorkflowGroupId"
+                                        [ngModel]="record().workflowGroupId"
+                                        (ngModelChange)="updateField('workflowGroupId', $event)">
+                                        <option [ngValue]="undefined"></option>
+                                        @for (item of workflowGroups(); track item.id) {
+                                            <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                        }
+                                    </select>
+                                </div>
+                                @if (fieldSettings().enableBudgetingGroup) {
+                                    <div class="mb-5">
+                                        <label class="form-label" for="EmployeeOrgAssignment_BudgetingGroupId">{{ 'BudgetingGroup' | localize }}</label>
+                                        <select
+                                            id="EmployeeOrgAssignment_BudgetingGroupId"
+                                            class="form-select"
+                                            name="BudgetingGroupId"
+                                            [ngModel]="record().budgetingGroupId"
+                                            (ngModelChange)="updateField('budgetingGroupId', $event)">
+                                            <option [ngValue]="undefined"></option>
+                                            @for (item of budgetingGroups(); track item.id) {
+                                                <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                            }
+                                        </select>
+                                    </div>
                                 }
-                            </select>
-                        </div>
-                        <div class="mb-5">
-                            <label class="form-label" for="EmployeeOrgAssignment_CostCenterId">{{ 'CostCenter' | localize }}</label>
-                            <select
-                                id="EmployeeOrgAssignment_CostCenterId"
-                                class="form-select"
-                                name="CostCenterId"
-                                [ngModel]="record().costCenterId"
-                                (ngModelChange)="updateField('costCenterId', $event)">
-                                <option [ngValue]="undefined"></option>
-                                @for (item of costCenters(); track item.id) {
-                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                @if (fieldSettings().enablePostingGroup) {
+                                    <div class="mb-5">
+                                        <label class="form-label" for="EmployeeOrgAssignment_PostingGroupId">{{ 'PostingGroup' | localize }}</label>
+                                        <select
+                                            id="EmployeeOrgAssignment_PostingGroupId"
+                                            class="form-select"
+                                            name="PostingGroupId"
+                                            [ngModel]="record().postingGroupId"
+                                            (ngModelChange)="updateField('postingGroupId', $event)">
+                                            <option [ngValue]="undefined"></option>
+                                            @for (item of postingGroups(); track item.id) {
+                                                <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                            }
+                                        </select>
+                                    </div>
                                 }
-                            </select>
-                        </div>
-                        <div class="mb-5">
-                            <label class="form-label" for="EmployeeOrgAssignment_WorkLocationId">{{ 'WorkLocation' | localize }}</label>
-                            <select
-                                id="EmployeeOrgAssignment_WorkLocationId"
-                                class="form-select"
-                                name="WorkLocationId"
-                                [ngModel]="record().workLocationId"
-                                (ngModelChange)="updateField('workLocationId', $event)">
-                                <option [ngValue]="undefined"></option>
-                                @for (item of workLocations(); track item.id) {
-                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                            </div>
+                            <div class="col-lg-6">
+                                <h5 class="mb-5">{{ 'OrganizationHierarchy' | localize }}</h5>
+                                <!-- Legacy OrgLevel1..OrgLevel7, captioned with the tenant's Organization Unit Type names; undefined levels hidden. -->
+                                @for (level of shownOrgLevels(); track level) {
+                                    <div class="mb-5">
+                                        <label class="form-label" [for]="'EmployeeOrgAssignment_OrgLevel' + level">{{ orgLevels.caption(level) }}</label>
+                                        <select
+                                            [id]="'EmployeeOrgAssignment_OrgLevel' + level"
+                                            class="form-select"
+                                            [name]="'OrgLevel' + level"
+                                            [ngModel]="selectedOrgLevels().get(level)?.id"
+                                            (ngModelChange)="updateOrgLevel(level, $event)">
+                                            <option [ngValue]="undefined"></option>
+                                            @for (item of orgLevelOptions().get(level); track item.id) {
+                                                <option [ngValue]="item.id">{{ item.displayName }}</option>
+                                            }
+                                        </select>
+                                    </div>
                                 }
-                            </select>
-                        </div>
-                        <div class="mb-5">
-                            <label class="form-label" for="EmployeeOrgAssignment_PostingGroupId">{{ 'PostingGroup' | localize }}</label>
-                            <select
-                                id="EmployeeOrgAssignment_PostingGroupId"
-                                class="form-select"
-                                name="PostingGroupId"
-                                [ngModel]="record().postingGroupId"
-                                (ngModelChange)="updateField('postingGroupId', $event)">
-                                <option [ngValue]="undefined"></option>
-                                @for (item of postingGroups(); track item.id) {
-                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="mb-5">
-                            <label class="form-label" for="EmployeeOrgAssignment_BudgetingGroupId">{{ 'BudgetingGroup' | localize }}</label>
-                            <select
-                                id="EmployeeOrgAssignment_BudgetingGroupId"
-                                class="form-select"
-                                name="BudgetingGroupId"
-                                [ngModel]="record().budgetingGroupId"
-                                (ngModelChange)="updateField('budgetingGroupId', $event)">
-                                <option [ngValue]="undefined"></option>
-                                @for (item of budgetingGroups(); track item.id) {
-                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="mb-5">
-                            <label class="form-label" for="EmployeeOrgAssignment_OrganizationUnitId">{{ 'OrganizationUnit' | localize }}</label>
-                            <select
-                                id="EmployeeOrgAssignment_OrganizationUnitId"
-                                class="form-select"
-                                name="OrganizationUnitId"
-                                [ngModel]="record().organizationUnitId"
-                                (ngModelChange)="updateField('organizationUnitId', $event)">
-                                <option [ngValue]="undefined"></option>
-                                @for (item of organizationUnits(); track item.id) {
-                                    <option [ngValue]="item.id">{{ item.displayName }}</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="mb-5">
-                            <label class="form-label" for="EmployeeOrgAssignment_EmployeeGroupId">{{ 'EmployeeGroup' | localize }}</label>
-                            <select
-                                id="EmployeeOrgAssignment_EmployeeGroupId"
-                                class="form-select"
-                                name="EmployeeGroupId"
-                                [ngModel]="record().employeeGroupId"
-                                (ngModelChange)="updateEmployeeGroup($event)">
-                                <option [ngValue]="undefined"></option>
-                                @for (item of employeeGroups(); track item.id) {
-                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="mb-5">
-                            <label class="form-label" for="EmployeeOrgAssignment_EmployeeSubGroupId">{{ 'EmployeeSubGroup' | localize }}</label>
-                            <select
-                                id="EmployeeOrgAssignment_EmployeeSubGroupId"
-                                class="form-select"
-                                name="EmployeeSubGroupId"
-                                [ngModel]="record().employeeSubGroupId"
-                                (ngModelChange)="updateField('employeeSubGroupId', $event)">
-                                <option [ngValue]="undefined"></option>
-                                @for (item of filteredEmployeeSubGroups(); track item.id) {
-                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="mb-5">
-                            <label class="form-label required" for="EmployeeOrgAssignment_PayrollAreaId">{{ 'PayrollArea' | localize }}</label>
-                            <select
-                                id="EmployeeOrgAssignment_PayrollAreaId"
-                                #payrollAreaInput="ngModel"
-                                class="form-select"
-                                name="PayrollAreaId"
-                                [ngModel]="record().payrollAreaId"
-                                (ngModelChange)="updateField('payrollAreaId', $event)"
-                                required>
-                                <option [ngValue]="undefined"></option>
-                                @for (item of payrollAreas(); track item.id) {
-                                    <option [ngValue]="item.id">{{ item.name }}</option>
-                                }
-                            </select>
-                            <validation-messages [formCtrl]="payrollAreaInput" />
-                        </div>
-                        <div class="mb-5">
-                            <label class="form-label" for="EmployeeOrgAssignment_WorkflowGroupId">{{ 'WorkflowGroup' | localize }}</label>
-                            <select
-                                id="EmployeeOrgAssignment_WorkflowGroupId"
-                                class="form-select"
-                                name="WorkflowGroupId"
-                                [ngModel]="record().workflowGroupId"
-                                (ngModelChange)="updateField('workflowGroupId', $event)">
-                                <option [ngValue]="undefined"></option>
-                                @for (item of workflowGroups(); track item.id) {
-                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
-                                }
-                            </select>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">

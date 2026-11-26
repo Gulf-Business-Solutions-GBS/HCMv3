@@ -57,6 +57,7 @@ export class CreateOrEditLoanInstallmentModalComponent extends AppComponentBase 
             .getAll(
                 new GetAllEmployeeLoansInput({
                     employeeId: undefined,
+                    filter: undefined,
                     maxResultCount: 1000,
                     skipCount: 0,
                     sorting: undefined,

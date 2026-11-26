@@ -23,105 +23,154 @@
                         <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body">
+                        <!-- Layout follows legacy (LHRMS) EmployeeLoan: three columns -- Employee / Loan Type /
+                             Include Loan Payment in Payroll; Loan Payment, Recovery Start and Recovery End dates;
+                             Actual / Due / Balance Due amounts -- then Recover Fraction and Comments. Fixed Amount is
+                             not shown: the instalment in force comes from the Installment tab. -->
                         <div class="row">
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="EmployeeLoan_StartDate">{{ 'LoanPaymentDate' | localize }}</label>
-                                <input
-                                    id="EmployeeLoan_StartDate"
-                                    #startDateInput="ngModel"
-                                    type="date"
-                                    class="form-control"
-                                    name="StartDate"
-                                    [ngModel]="record().startDate?.toISODate()"
-                                    (ngModelChange)="updateDateField('startDate', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="startDateInput" />
-                            </div>
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="EmployeeLoan_EndDate">{{ 'RecoveryEndDate' | localize }}</label>
-                                <input
-                                    id="EmployeeLoan_EndDate"
-                                    #endDateInput="ngModel"
-                                    type="date"
-                                    class="form-control"
-                                    name="EndDate"
-                                    [ngModel]="record().endDate?.toISODate()"
-                                    (ngModelChange)="updateDateField('endDate', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="endDateInput" />
-                            </div>
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="EmployeeLoan_LoanTypeId">{{ 'LoanTypeId' | localize }}</label>
-                                <select
-                                    id="EmployeeLoan_LoanTypeId"
-                                    #loanTypeIdInput="ngModel"
-                                    class="form-select"
-                                    name="LoanTypeId"
-                                    [ngModel]="record().loanTypeId"
-                                    (ngModelChange)="updateField('loanTypeId', $event)"
-                                    required>
-                                    <option [ngValue]="undefined"></option>
-                                    @for (type of loanTypes(); track type.id) {
-                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                            <div class="col-md-5">
+                                <div class="mb-5">
+                                    @if (choosesEmployee()) {
+                                        <label class="form-label required" for="EmployeeLoan_EmployeeId">{{ 'Employee' | localize }}</label>
+                                        <!-- Every employee; type in the dropdown's own box to find one by code or name.
+                                             Virtual scroll keeps a long list quick to open. -->
+                                        <p-select
+                                            inputId="EmployeeLoan_EmployeeId"
+                                            #employeeIdInput="ngModel"
+                                            name="EmployeeId"
+                                            styleClass="w-100"
+                                            appendTo="body"
+                                            [options]="employeeOptions()"
+                                            optionLabel="label"
+                                            optionValue="id"
+                                            [filter]="true"
+                                            filterBy="label"
+                                            [showClear]="true"
+                                            [virtualScroll]="true"
+                                            [virtualScrollItemSize]="38"
+                                            [ngModel]="record().employeeId"
+                                            (ngModelChange)="updateField('employeeId', $event)"
+                                            required />
+                                        <validation-messages [formCtrl]="employeeIdInput" />
+                                    } @else {
+                                        @let employee = currentEmployee();
+                                        <label class="form-label" for="EmployeeLoan_EmployeeName">{{ 'Employee' | localize }}</label>
+                                        <input
+                                            id="EmployeeLoan_EmployeeName"
+                                            class="form-control"
+                                            type="text"
+                                            [value]="employee ? employee.code + ' - ' + employee.nameEn : ''"
+                                            disabled />
                                     }
-                                </select>
-                                <validation-messages [formCtrl]="loanTypeIdInput" />
+                                </div>
+                                <div class="mb-5">
+                                    <label class="form-label required" for="EmployeeLoan_LoanTypeId">{{ 'LoanTypeId' | localize }}</label>
+                                    <select
+                                        id="EmployeeLoan_LoanTypeId"
+                                        #loanTypeIdInput="ngModel"
+                                        class="form-select"
+                                        name="LoanTypeId"
+                                        [ngModel]="record().loanTypeId"
+                                        (ngModelChange)="updateField('loanTypeId', $event)"
+                                        required>
+                                        <option [ngValue]="undefined"></option>
+                                        @for (type of loanTypes(); track type.id) {
+                                            <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                        }
+                                    </select>
+                                    <validation-messages [formCtrl]="loanTypeIdInput" />
+                                </div>
+                                <!-- In the slot legacy gave Fixed Amount, lined up with the inputs beside it. -->
+                                <div class="mb-5 pt-md-8">
+                                    <div class="form-check">
+                                        <input
+                                            id="EmployeeLoan_IncludeInLoanPay"
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            name="IncludeInLoanPay"
+                                            [ngModel]="record().includeInLoanPay"
+                                            (ngModelChange)="updateField('includeInLoanPay', $event)" />
+                                        <label class="form-check-label" for="EmployeeLoan_IncludeInLoanPay">{{ 'IncludeLoanPaymentInPayroll' | localize }}</label>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="EmployeeLoan_RecoveryStartDate">{{ 'RecoveryStartDate' | localize }}</label>
-                                <input
-                                    id="EmployeeLoan_RecoveryStartDate"
-                                    #recoveryStartDateInput="ngModel"
-                                    type="date"
-                                    class="form-control"
-                                    name="RecoveryStartDate"
-                                    [ngModel]="record().recoveryStartDate?.toISODate()"
-                                    (ngModelChange)="updateDateField('recoveryStartDate', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="recoveryStartDateInput" />
+                            <div class="col-md-4">
+                                <div class="mb-5">
+                                    <label class="form-label required" for="EmployeeLoan_StartDate">{{ 'LoanPaymentDate' | localize }}</label>
+                                    <input
+                                        id="EmployeeLoan_StartDate"
+                                        #startDateInput="ngModel"
+                                        type="date"
+                                        class="form-control"
+                                        name="StartDate"
+                                        [ngModel]="record().startDate?.toISODate()"
+                                        (ngModelChange)="updateDateField('startDate', $event)"
+                                        required />
+                                    <validation-messages [formCtrl]="startDateInput" />
+                                </div>
+                                <div class="mb-5">
+                                    <label class="form-label required" for="EmployeeLoan_RecoveryStartDate">{{ 'RecoveryStartDate' | localize }}</label>
+                                    <input
+                                        id="EmployeeLoan_RecoveryStartDate"
+                                        #recoveryStartDateInput="ngModel"
+                                        type="date"
+                                        class="form-control"
+                                        name="RecoveryStartDate"
+                                        [ngModel]="record().recoveryStartDate?.toISODate()"
+                                        (ngModelChange)="updateDateField('recoveryStartDate', $event)"
+                                        required />
+                                    <validation-messages [formCtrl]="recoveryStartDateInput" />
+                                </div>
+                                <div class="mb-5">
+                                    <label class="form-label required" for="EmployeeLoan_EndDate">{{ 'RecoveryEndDate' | localize }}</label>
+                                    <input
+                                        id="EmployeeLoan_EndDate"
+                                        #endDateInput="ngModel"
+                                        type="date"
+                                        class="form-control"
+                                        name="EndDate"
+                                        [ngModel]="record().endDate?.toISODate()"
+                                        (ngModelChange)="updateDateField('endDate', $event)"
+                                        required />
+                                    <validation-messages [formCtrl]="endDateInput" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-5">
+                                    <label class="form-label" for="EmployeeLoan_ActualAmount">{{ 'ActualAmount' | localize }}</label>
+                                    <input
+                                        id="EmployeeLoan_ActualAmount"
+                                        class="form-control"
+                                        type="number"
+                                        step="0.01"
+                                        name="ActualAmount"
+                                        [ngModel]="record().actualAmount"
+                                        (ngModelChange)="updateNumberField('actualAmount', $event)" />
+                                </div>
+                                <div class="mb-5">
+                                    <label class="form-label" for="EmployeeLoan_DueAmount">{{ 'DueAmount' | localize }}</label>
+                                    <input
+                                        id="EmployeeLoan_DueAmount"
+                                        class="form-control"
+                                        type="number"
+                                        step="0.01"
+                                        name="DueAmount"
+                                        [ngModel]="record().dueAmount"
+                                        (ngModelChange)="updateNumberField('dueAmount', $event)" />
+                                </div>
+                                <div class="mb-5">
+                                    <label class="form-label" for="EmployeeLoan_BalanceDueAmount">{{ 'BalanceDueAmount' | localize }}</label>
+                                    <input
+                                        id="EmployeeLoan_BalanceDueAmount"
+                                        class="form-control"
+                                        type="number"
+                                        [value]="balanceDueAmount() ?? 0"
+                                        disabled />
+                                </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label" for="EmployeeLoan_ActualAmount">{{ 'ActualAmount' | localize }}</label>
-                                <input
-                                    id="EmployeeLoan_ActualAmount"
-                                    class="form-control"
-                                    type="number"
-                                    step="0.01"
-                                    name="ActualAmount"
-                                    [ngModel]="record().actualAmount"
-                                    (ngModelChange)="updateNumberField('actualAmount', $event)" />
-                            </div>
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label" for="EmployeeLoan_DueAmount">{{ 'DueAmount' | localize }}</label>
-                                <input
-                                    id="EmployeeLoan_DueAmount"
-                                    class="form-control"
-                                    type="number"
-                                    step="0.01"
-                                    name="DueAmount"
-                                    [ngModel]="record().dueAmount"
-                                    (ngModelChange)="updateNumberField('dueAmount', $event)" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label" for="EmployeeLoan_FixedAmount">{{ 'FixedAmount' | localize }}</label>
-                                <input
-                                    id="EmployeeLoan_FixedAmount"
-                                    class="form-control"
-                                    type="number"
-                                    step="0.01"
-                                    name="FixedAmount"
-                                    [ngModel]="record().fixedAmount"
-                                    [disabled]="!!record().id"
-                                    (ngModelChange)="updateNumberField('fixedAmount', $event)" />
-                                <!-- Legacy keeps Fixed Amount read-only once the loan exists: changes go in as
-                                     effective-dated rows under Installments, Recoveries & Exemptions. -->
-                                <div class="form-text">{{ 'LoanInstallmentFixedAmountHint' | localize }}</div>
-                            </div>
-                            <div class="col-md-4 mb-5 d-flex align-items-end">
+                            <div class="col-md-5 mb-5">
                                 <div class="form-check">
                                     <input
                                         id="EmployeeLoan_RecoverFracInLastTrans"
@@ -131,18 +180,6 @@
                                         [ngModel]="record().recoverFracInLastTrans"
                                         (ngModelChange)="updateField('recoverFracInLastTrans', $event)" />
                                     <label class="form-check-label" for="EmployeeLoan_RecoverFracInLastTrans">{{ 'RecoverFracInLastTrans' | localize }}</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4 mb-5 d-flex align-items-end">
-                                <div class="form-check">
-                                    <input
-                                        id="EmployeeLoan_IncludeInLoanPay"
-                                        class="form-check-input"
-                                        type="checkbox"
-                                        name="IncludeInLoanPay"
-                                        [ngModel]="record().includeInLoanPay"
-                                        (ngModelChange)="updateField('includeInLoanPay', $event)" />
-                                    <label class="form-check-label" for="EmployeeLoan_IncludeInLoanPay">{{ 'IncludeLoanPaymentInPayroll' | localize }}</label>
                                 </div>
                             </div>
                         </div>
@@ -168,21 +205,32 @@
                             [value]="record().recordDirectly"
                             (valueChange)="updateField('recordDirectly', $event)" />
                     </div>
-                    <div class="modal-footer">
-                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
-                            {{ 'Cancel' | localize }}
-                        </button>
-                        <button
-                            type="submit"
-                            class="btn btn-primary fw-bold"
-                            [disabled]="!recordForm.form.valid"
-                            [buttonBusy]="saving()"
-                            [busyText]="l('SavingWithThreeDot')">
-                            <i class="fa fa-save"></i>
-                            <span>{{ 'Save' | localize }}</span>
-                        </button>
-                    </div>
                 </form>
+                <!-- Outside the form on purpose: the tabs open dialogs with forms of their own. A new loan has
+                     nothing under it yet, so they appear once it is saved (legacy showed them on the loan form). -->
+                @if (record().id) {
+                    <div class="modal-body pt-0">
+                        <employeeLoanDetails
+                            [loanId]="record().id"
+                            [employeeId]="record().employeeId"
+                            (changed)="detailsChanged.set(true)" />
+                    </div>
+                }
+                <div class="modal-footer">
+                    <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                        {{ 'Cancel' | localize }}
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-primary fw-bold"
+                        (click)="save()"
+                        [disabled]="!recordForm.form.valid"
+                        [buttonBusy]="saving()"
+                        [busyText]="l('SavingWithThreeDot')">
+                        <i class="fa fa-save"></i>
+                        <span>{{ 'Save' | localize }}</span>
+                    </button>
+                </div>
             }
         </div>
     </div>

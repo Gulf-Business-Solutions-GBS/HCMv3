@@ -23,7 +23,7 @@
                         <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body">
-                        <employeeBasicPayForm [(record)]="record" [employeeId]="employeeId()" />
+                        <employeeBasicPayForm [(record)]="record" />
                     </div>
                     <div class="modal-footer">
                         <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">

@@ -1,11 +1,13 @@
-import { Component, inject, output, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     CreateOrEditEmployeeLoanDto,
     EmployeeLoansServiceProxy,
     GetAllLoanTypesInput,
+    GetEmployeeLoanEmployeesInput,
     LoanTypeDto,
     LoanTypesServiceProxy,
+    SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
@@ -19,6 +21,8 @@ import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { RecordDirectlyCheckComponent } from '@app/shared/common/record-directly/record-directly-check.component';
 import { AttachmentsComponent } from '@app/shared/common/attachments/attachments.component';
+import { EmployeeLoanDetailsComponent } from './employee-loan-details.component';
+import { SelectModule } from 'primeng/select';
 
 @Component({
     selector: 'createOrEditEmployeeLoanModal',
@@ -32,6 +36,8 @@ import { AttachmentsComponent } from '@app/shared/common/attachments/attachments
         ButtonBusyDirective,
         LocalizePipe,
         AttachmentsComponent,
+        EmployeeLoanDetailsComponent,
+        SelectModule,
     ],
 })
 export class CreateOrEditEmployeeLoanModalComponent extends AppComponentBase {
@@ -62,9 +68,40 @@ export class CreateOrEditEmployeeLoanModalComponent extends AppComponentBase {
 
     readonly loanTypes = signal<LoanTypeDto[]>([]);
 
-    show(employeeId: number, id?: number): void {
+    /**
+     * True when the dialog was opened with no employee given -- from the Employee Loans list rather than from
+     * inside an employee's record -- so the employee is chosen here, on create and on edit (legacy lets the
+     * loan's employee be changed).
+     */
+    readonly choosesEmployee = signal<boolean>(false);
+
+    readonly employees = signal<SimpleLookupDto[]>([]);
+
+    /** The dropdown's entries, "code - name", searchable inside the dropdown itself. */
+    readonly employeeOptions = computed(() =>
+        this.employees().map((e) => ({ id: e.id, label: `${e.code} - ${e.nameEn}` }))
+    );
+
+    /** The loan's employee as loaded for edit; always offered in the dropdown, and shown when it is read-only. */
+    readonly currentEmployee = signal<SimpleLookupDto | undefined>(undefined);
+
+    /** Read-only on the form, as in legacy: payroll and recoveries keep it. */
+    readonly balanceDueAmount = signal<number | undefined>(undefined);
+
+    /** Set when something was saved in the instalments / recoveries / exemptions tabs under the loan. */
+    readonly detailsChanged = signal<boolean>(false);
+
+    show(employeeId: number | undefined, id?: number): void {
         this.isNew.set(!id);
+        this.detailsChanged.set(false);
+        this.choosesEmployee.set(!employeeId);
+        this.currentEmployee.set(undefined);
+        this.balanceDueAmount.set(undefined);
         this.active.set(true);
+
+        if (this.choosesEmployee()) {
+            this.loadEmployees();
+        }
 
         this._loanTypesService
             .getAll(
@@ -85,9 +122,35 @@ export class CreateOrEditEmployeeLoanModalComponent extends AppComponentBase {
         } else {
             this._service.getEmployeeLoanForEdit(id).subscribe((result) => {
                 this.record.set(result.employeeLoan);
+                this.balanceDueAmount.set(result.balanceDueAmount);
+                this.currentEmployee.set(
+                    new SimpleLookupDto({
+                        id: result.employeeLoan.employeeId,
+                        code: result.employeeCode,
+                        nameEn: result.employeeFullNameEn,
+                        nameAr: undefined,
+                    })
+                );
+                this.employees.set(this.withCurrentEmployee(this.employees()));
                 this.modal().show();
             });
         }
+    }
+
+    /** The loan's own employee stays selectable even if the lookup has not come back yet. */
+    private withCurrentEmployee(items: SimpleLookupDto[]): SimpleLookupDto[] {
+        const current = this.currentEmployee();
+        if (!current || items.some((e) => e.id === current.id)) {
+            return items;
+        }
+
+        return [current, ...items];
+    }
+
+    loadEmployees(): void {
+        this._service
+            .getEmployeesForLookup(new GetEmployeeLoanEmployeesInput({ filter: undefined }))
+            .subscribe((result) => this.employees.set(this.withCurrentEmployee(result.items)));
     }
 
     onShown(): void {
@@ -101,6 +164,7 @@ export class CreateOrEditEmployeeLoanModalComponent extends AppComponentBase {
             .pipe(finalize(() => this.saving.set(false)))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));
+                this.detailsChanged.set(false);
                 this.close();
                 this.modalSave.emit();
             });
@@ -109,6 +173,13 @@ export class CreateOrEditEmployeeLoanModalComponent extends AppComponentBase {
     close(): void {
         this.active.set(false);
         this.modal().hide();
+
+        // An instalment, recovery or exemption saved in the tabs is already stored even if the loan itself is
+        // cancelled, and it can move the loan's balance, so the list behind still needs to refresh.
+        if (this.detailsChanged()) {
+            this.detailsChanged.set(false);
+            this.modalSave.emit();
+        }
     }
 
     updateField(field: keyof CreateOrEditEmployeeLoanDto, value: any): void {

@@ -11,19 +11,7 @@
             <div class="card-body">
                 @if (loaded()) {
                     <form #basicPayForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
-                        <employeeBasicPayForm [(record)]="record" [employeeId]="employeeId()" [readOnly]="!canEdit" />
-                        <div class="row">
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label" for="EmployeeBasicPay_TotalAmount">{{ 'TotalAmount' | localize }}</label>
-                                <input
-                                    id="EmployeeBasicPay_TotalAmount"
-                                    type="text"
-                                    class="form-control"
-                                    readonly
-                                    disabled
-                                    [value]="totalAmount() ?? ''" />
-                            </div>
-                        </div>
+                        <employeeBasicPayForm [(record)]="record" [totalAmount]="totalAmount()" [readOnly]="!canEdit" />
                         @if (canEdit) {
                             <div class="d-flex justify-content-end">
                                 <button

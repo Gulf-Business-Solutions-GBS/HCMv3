@@ -70,6 +70,50 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
         _costCenterRepository = costCenterRepository;
     }
 
+    /// <inheritdoc />
+    public async Task<EmployeeOrgAssignmentFieldSettingsDto> GetFieldSettings()
+    {
+        var orgSettings = await _sysSettingsAccessor.GetOrgSettingsAsync();
+        return new EmployeeOrgAssignmentFieldSettingsDto
+        {
+            EnablePosition = orgSettings?.EnablePosition ?? false,
+            EnablePostingGroup = orgSettings?.EnablePostingGroup ?? false,
+            EnableBudgetingGroup = orgSettings?.EnableBudgetingGroup ?? false,
+        };
+    }
+
+    /// <inheritdoc />
+    public async Task<ListResultDto<OrgAssignmentOrgUnitDto>> GetOrgUnitsByLevel()
+    {
+        var levelCodes = HCMv3.GridReports.Employees.EmployeeOrgLevelNameResolver.LevelCodes;
+
+        var units = await _orgUnitProfileRepository.GetAll()
+            .Where(p => levelCodes.Contains(p.OrganizationUnitType.Code))
+            .OrderBy(p => p.OrganizationUnit.DisplayName)
+            .Select(p => new
+            {
+                p.OrganizationUnitId,
+                p.OrganizationUnit.ParentId,
+                p.OrganizationUnit.DisplayName,
+                TypeCode = p.OrganizationUnitType.Code
+            })
+            .ToListAsync();
+
+        var result = units
+            .GroupBy(u => u.OrganizationUnitId) // one profile per unit is expected; ignore stray duplicates
+            .Select(g => g.First())
+            .Select(u => new OrgAssignmentOrgUnitDto
+            {
+                Id = u.OrganizationUnitId,
+                ParentId = u.ParentId,
+                Level = Array.IndexOf(levelCodes, u.TypeCode) + 1,
+                DisplayName = u.DisplayName
+            })
+            .ToList();
+
+        return new ListResultDto<OrgAssignmentOrgUnitDto>(result);
+    }
+
     [HttpPost]
     public async Task<PagedResultDto<EmployeeOrgAssignmentDto>> GetAll(GetAllEmployeeOrgAssignmentsInput input)
     {

@@ -59,6 +59,7 @@ export class CreateOrEditEmployeeLoanExemptionModalComponent extends AppComponen
             .getAll(
                 new GetAllEmployeeLoansInput({
                     employeeId: loanContext?.employeeId,
+                    filter: undefined,
                     maxResultCount: 1000,
                     skipCount: 0,
                     sorting: undefined,

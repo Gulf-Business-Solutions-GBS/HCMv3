@@ -13,9 +13,7 @@
                 required />
             <validation-messages [formCtrl]="startDateInput" />
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 mb-5">
+        <div class="col-md-6 mb-5">
             <label class="form-label" for="EmployeeBasicPay_PayType">{{ 'PayType' | localize }}</label>
             <select
                 id="EmployeeBasicPay_PayType"
@@ -28,7 +26,19 @@
                 }
             </select>
         </div>
-        <div class="col-md-4 mb-5">
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label" for="EmployeeBasicPay_TotalAmount">{{ 'TotalAmount' | localize }}</label>
+            <input
+                id="EmployeeBasicPay_TotalAmount"
+                type="text"
+                class="form-control"
+                readonly
+                disabled
+                [value]="totalAmount() ?? ''" />
+        </div>
+        <div class="col-md-6 mb-5">
             <label class="form-label" for="EmployeeBasicPay_PayInterval">{{ 'PayInterval' | localize }}</label>
             <select
                 id="EmployeeBasicPay_PayInterval"
@@ -38,20 +48,6 @@
                 (ngModelChange)="updateField('payInterval', $event)">
                 @for (option of payIntervals; track option.value) {
                     <option [ngValue]="option.value">{{ option.name | localize }}</option>
-                }
-            </select>
-        </div>
-        <div class="col-md-4 mb-5">
-            <label class="form-label" for="EmployeeBasicPay_EmployeeActionId">{{ 'EmployeeActionId' | localize }}</label>
-            <select
-                id="EmployeeBasicPay_EmployeeActionId"
-                class="form-select"
-                name="EmployeeActionId"
-                [ngModel]="record().employeeActionId"
-                (ngModelChange)="updateField('employeeActionId', $event)">
-                <option [ngValue]="undefined"></option>
-                @for (action of employeeActions(); track action.id) {
-                    <option [ngValue]="action.id">{{ action.personalActionName }} - {{ action.startDate | luxonFormat: 'yyyy-MM-dd' }}</option>
                 }
             </select>
         </div>

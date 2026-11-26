@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Extensions;
 using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
+using HCMv3.GeneralMasterInfo.Dto;
 using HCMv3.PersonnelAdministration.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +47,7 @@ public class EmployeeAbsencesAppService : HCMv3AppServiceBase, IEmployeeAbsences
     private readonly Services.ILeaveReturnProcessor _returnProcessor;
     private readonly Services.IProbationEndDateService _probation;
     private readonly Services.IEmployeeAbsencePreviewService _previewService;
+    private readonly IRepository<Employee> _employeeRepository;
 
     public EmployeeAbsencesAppService(
         IRepository<EmployeeAbsence> repository,
@@ -54,8 +57,10 @@ public class EmployeeAbsencesAppService : HCMv3AppServiceBase, IEmployeeAbsences
         Services.ILeaveReturnProcessor returnProcessor,
         Services.IProbationEndDateService probation,
         IAdminTransactionSubmitter transactionSubmitter,
-        Services.IEmployeeAbsencePreviewService previewService)
+        Services.IEmployeeAbsencePreviewService previewService,
+        IRepository<Employee> employeeRepository)
     {
+        _employeeRepository = employeeRepository;
         _transactionSubmitter = transactionSubmitter;
         _repository = repository;
         _leaveRuleValidator = leaveRuleValidator;
@@ -149,7 +154,13 @@ public class EmployeeAbsencesAppService : HCMv3AppServiceBase, IEmployeeAbsences
                 .Include(a => a.Employee)
                 .Include(a => a.AbsenceType)
                 .Include(a => a.ExtAbsenceType)
-                .WhereIf(input.EmployeeId.HasValue, a => a.EmployeeId == input.EmployeeId.Value);
+                .WhereIf(input.EmployeeId.HasValue, a => a.EmployeeId == input.EmployeeId.Value)
+                .WhereIf(!input.Filter.IsNullOrWhiteSpace(), a =>
+                    a.Employee.Code.Contains(input.Filter) ||
+                    a.Employee.FullNameEn.Contains(input.Filter) ||
+                    a.Employee.FullNameAr.Contains(input.Filter) ||
+                    a.AbsenceType.NameEn.Contains(input.Filter) ||
+                    a.AbsenceType.NameAr.Contains(input.Filter));
 
             var totalCount = await query.CountAsync();
 
@@ -170,6 +181,8 @@ public class EmployeeAbsencesAppService : HCMv3AppServiceBase, IEmployeeAbsences
         {
             entity = await _repository.GetAsync(input.Id);
         }
+
+        var employee = await _employeeRepository.FirstOrDefaultAsync(entity.EmployeeId);
 
         return new GetEmployeeAbsenceForEditOutput
         {
@@ -193,8 +206,34 @@ public class EmployeeAbsencesAppService : HCMv3AppServiceBase, IEmployeeAbsences
                 ExtAbsenceTypeId = entity.ExtAbsenceTypeId,
                 ExtStartDate = entity.ExtStartDate,
                 ExtEndDate = entity.ExtEndDate
-            }
+            },
+            EmployeeCode = employee?.Code,
+            EmployeeFullNameEn = employee?.FullNameEn
         };
+    }
+
+    [HttpPost]
+    public async Task<ListResultDto<SimpleLookupDto>> GetEmployeesForLookup(GetEmployeeAbsenceEmployeesInput input)
+    {
+        var filter = input.Filter?.Trim();
+
+        var items = await _employeeRepository.GetAll()
+            .WhereIf(!filter.IsNullOrWhiteSpace(), e =>
+                e.Code.Contains(filter) ||
+                e.FullNameEn.Contains(filter) ||
+                e.FullNameAr.Contains(filter))
+            .OrderBy(e => e.Code.Length)
+            .ThenBy(e => e.Code)
+            .Select(e => new SimpleLookupDto
+            {
+                Id = e.Id,
+                Code = e.Code,
+                NameEn = e.FullNameEn,
+                NameAr = e.FullNameAr
+            })
+            .ToListAsync();
+
+        return new ListResultDto<SimpleLookupDto>(items);
     }
 
     public async Task CreateOrEdit(CreateOrEditEmployeeAbsenceDto input)

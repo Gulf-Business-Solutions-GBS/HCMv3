@@ -3,7 +3,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
-    DependantUnit,
     EmployeeBasicPayDetailDto,
     EmployeeBasicPayDetailsServiceProxy,
     GetAllEmployeeBasicPayDetailsInput,
@@ -104,11 +103,6 @@ export class EmployeeBasicPayLinesTabComponent extends AppComponentBase implemen
 
     createRecord(): void {
         this.createOrEditModal().show(undefined, this.employeeBasicPayId());
-    }
-
-    dependantUnitName(unit: DependantUnit): string {
-        const name = DependantUnit[unit];
-        return name ? this.l(name) : '';
     }
 
     showMenu(event: Event, record: EmployeeBasicPayDetailDto, menu: any): void {

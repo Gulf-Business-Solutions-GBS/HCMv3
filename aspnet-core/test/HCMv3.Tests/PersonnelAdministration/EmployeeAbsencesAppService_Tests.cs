@@ -107,6 +107,120 @@ public class EmployeeAbsencesAppService_Tests : AppTestBase
         result.Items[0].TotalLeaveDays.ShouldBe(5);
     }
 
+    // ---- Employee Leaves list (every employee's leave on one screen) ----
+
+    private async Task CreateLeave(Employee employee, AbsenceType absenceType, DateTime start)
+    {
+        await _appService.CreateOrEdit(new CreateOrEditEmployeeAbsenceDto
+        {
+            EmployeeId = employee.Id,
+            AbsenceTypeId = absenceType.Id,
+            StartDate = start,
+            EndDate = start.AddDays(1)
+        });
+    }
+
+    private void RenameEmployee(Employee employee, string nameEn, string nameAr)
+    {
+        UsingDbContext(context =>
+        {
+            var row = context.Set<Employee>().Single(e => e.Id == employee.Id);
+            row.FullNameEn = nameEn;
+            row.FullNameAr = nameAr;
+        });
+    }
+
+    [Fact]
+    public async Task Should_List_Leaves_Of_Every_Employee_When_No_Employee_Is_Given()
+    {
+        // Arrange
+        var first = CreateTestEmployee("ELL01");
+        var second = CreateTestEmployee("ELL02");
+        var type = CreateTestAbsenceType("ELLT1");
+        await CreateLeave(first, type, new DateTime(2024, 2, 1));
+        await CreateLeave(second, type, new DateTime(2024, 2, 1));
+
+        // Act
+        var result = await _appService.GetAll(new GetAllEmployeeAbsencesInput { Filter = "ELL0", MaxResultCount = 100 });
+
+        // Assert
+        result.Items.Select(i => i.EmployeeCode).OrderBy(c => c).ShouldBe(new[] { "ELL01", "ELL02" });
+    }
+
+    [Theory]
+    [InlineData("ELF77")]
+    [InlineData("Zainab")]
+    [InlineData("زينب")]
+    [InlineData("ELFTYPE")]
+    public async Task Should_Filter_Leaves_By_Employee_Code_Name_Or_Leave_Type(string filter)
+    {
+        // Arrange
+        var wanted = CreateTestEmployee("ELF77");
+        RenameEmployee(wanted, "Zainab Hadi", "زينب هادي");
+        var other = CreateTestEmployee("ELF78");
+        await CreateLeave(wanted, CreateTestAbsenceType("ELFTYPE"), new DateTime(2024, 3, 1));
+        await CreateLeave(other, CreateTestAbsenceType("ELFOTHER"), new DateTime(2024, 3, 1));
+
+        // Act
+        var result = await _appService.GetAll(new GetAllEmployeeAbsencesInput { Filter = filter, MaxResultCount = 100 });
+
+        // Assert
+        result.TotalCount.ShouldBe(1);
+        result.Items[0].EmployeeCode.ShouldBe("ELF77");
+    }
+
+    [Theory]
+    [InlineData("ELK55")]
+    [InlineData("Omar")]
+    [InlineData("عمر")]
+    public async Task Should_Find_Employees_For_Lookup_By_Code_Or_Name(string filter)
+    {
+        // Arrange
+        var wanted = CreateTestEmployee("ELK55");
+        RenameEmployee(wanted, "Omar Fahd", "عمر فهد");
+        CreateTestEmployee("ELK56");
+
+        // Act
+        var result = await _appService.GetEmployeesForLookup(new GetEmployeeAbsenceEmployeesInput { Filter = filter });
+
+        // Assert
+        result.Items.Count.ShouldBe(1);
+        result.Items[0].Code.ShouldBe("ELK55");
+        result.Items[0].NameEn.ShouldBe("Omar Fahd");
+    }
+
+    [Fact]
+    public async Task Should_Order_Lookup_Numeric_Codes_In_Number_Order()
+    {
+        // Arrange
+        CreateTestEmployee("ELQ9102");
+        CreateTestEmployee("ELQ91");
+        CreateTestEmployee("ELQ910");
+
+        // Act
+        var result = await _appService.GetEmployeesForLookup(new GetEmployeeAbsenceEmployeesInput { Filter = "ELQ91" });
+
+        // Assert
+        result.Items.Select(i => i.Code).ShouldBe(new[] { "ELQ91", "ELQ910", "ELQ9102" });
+    }
+
+    [Fact]
+    public async Task Should_Return_Employee_Code_And_Name_For_Edit()
+    {
+        // Arrange
+        var employee = CreateTestEmployee("ELE01");
+        RenameEmployee(employee, "Huda Saleh", "هدى صالح");
+        await CreateLeave(employee, CreateTestAbsenceType("ELET1"), new DateTime(2024, 4, 1));
+        var id = (await _appService.GetAll(new GetAllEmployeeAbsencesInput { EmployeeId = employee.Id })).Items[0].Id;
+
+        // Act
+        var result = await _appService.GetEmployeeAbsenceForEdit(new Abp.Application.Services.Dto.EntityDto(id));
+
+        // Assert
+        result.EmployeeCode.ShouldBe("ELE01");
+        result.EmployeeFullNameEn.ShouldBe("Huda Saleh");
+    }
+
     private void SetAutoHalfDayLeave(bool enabled)
     {
         UsingDbContext(context =>

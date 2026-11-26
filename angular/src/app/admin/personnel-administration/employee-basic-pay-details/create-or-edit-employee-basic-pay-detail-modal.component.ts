@@ -1,6 +1,7 @@
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
+    BasicPayWageTypeLookupDto,
     CreateOrEditEmployeeBasicPayDetailDto,
     CurrenciesServiceProxy,
     CurrencyDto,
@@ -10,12 +11,11 @@ import {
     EmployeeBasicPaysServiceProxy,
     GetAllCurrenciesInput,
     GetAllEmployeeBasicPaysInput,
-    GetAllWageTypesInput,
-    WageTypeDto,
-    WageTypesServiceProxy,
+    GetSelectableBasicPayWageTypesInput,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { finalize } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { finalize, map, switchMap } from 'rxjs/operators';
 import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.directive';
 import { FormsModule } from '@angular/forms';
 import { ValidationMessagesComponent } from '@shared/utils/validation-messages.component';
@@ -38,7 +38,6 @@ import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 export class CreateOrEditEmployeeBasicPayDetailModalComponent extends AppComponentBase {
     private _service = inject(EmployeeBasicPayDetailsServiceProxy);
     private _employeeBasicPaysService = inject(EmployeeBasicPaysServiceProxy);
-    private _wageTypesService = inject(WageTypesServiceProxy);
     private _currenciesService = inject(CurrenciesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
@@ -51,16 +50,17 @@ export class CreateOrEditEmployeeBasicPayDetailModalComponent extends AppCompone
     readonly presetEmployeeBasicPayId = signal<number | undefined>(undefined);
 
     readonly employeeBasicPays = signal<EmployeeBasicPayDto[]>([]);
-    readonly wageTypes = signal<WageTypeDto[]>([]);
+    /**
+     * Legacy HRMS lookup, filtered by the backend: active earning wage types included in basic pay, and not
+     * arrear or calculated ones. The line's own wage type is always included, so an older line never shows blank.
+     */
+    readonly wageTypes = signal<BasicPayWageTypeLookupDto[]>([]);
     readonly currencies = signal<CurrencyDto[]>([]);
 
-    readonly dependantUnits = [
-        { value: DependantUnit.None, name: 'None' },
-        { value: DependantUnit.Percentage, name: 'Percentage' },
-    ];
+    /** True while the record and its dropdown lists are loading; the dialog opens only once all have arrived. */
+    readonly loading = signal<boolean>(false);
 
     show(id?: number, employeeBasicPayId?: number): void {
-        this.active.set(true);
         this.presetEmployeeBasicPayId.set(employeeBasicPayId || undefined);
 
         if (!this.presetEmployeeBasicPayId()) {
@@ -76,32 +76,47 @@ export class CreateOrEditEmployeeBasicPayDetailModalComponent extends AppCompone
                 .subscribe((result) => this.employeeBasicPays.set(result.items));
         }
 
-        this._wageTypesService
-            .getAll(
-                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
-            )
-            .subscribe((result) => this.wageTypes.set(result.items));
+        const record$ = id
+            ? this._service.getEmployeeBasicPayDetailForEdit(id).pipe(map((result) => result.employeeBasicPayDetail))
+            : of(this.newRecord());
 
-        this._currenciesService
-            .getAll(
-                new GetAllCurrenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+        // Load the record first, then its lists, and open the dialog only when every field can show its value.
+        this.loading.set(true);
+        record$
+            .pipe(
+                switchMap((record) =>
+                    forkJoin({
+                        wageTypes: this._service.getSelectableWageTypes(
+                            new GetSelectableBasicPayWageTypesInput({ currentWageTypeId: record.wageTypeId })
+                        ),
+                        currencies: this._currenciesService.getAll(
+                            new GetAllCurrenciesInput({
+                                maxResultCount: 1000,
+                                skipCount: 0,
+                                sorting: undefined,
+                                filter: undefined,
+                            })
+                        ),
+                    }).pipe(map((lists) => ({ record, ...lists })))
+                ),
+                finalize(() => this.loading.set(false))
             )
-            .subscribe((result) => this.currencies.set(result.items));
-
-        if (!id) {
-            const record = new CreateOrEditEmployeeBasicPayDetailDto();
-            record.amount = 0;
-            record.dependantNumber = 0;
-            record.dependantUnit = DependantUnit.None;
-            record.employeeBasicPayId = this.presetEmployeeBasicPayId();
-            this.record.set(record);
-            this.modal().show();
-        } else {
-            this._service.getEmployeeBasicPayDetailForEdit(id).subscribe((result) => {
-                this.record.set(result.employeeBasicPayDetail);
+            .subscribe(({ record, wageTypes, currencies }) => {
+                this.wageTypes.set(wageTypes);
+                this.currencies.set(currencies.items);
+                this.record.set(record);
+                this.active.set(true);
                 this.modal().show();
             });
-        }
+    }
+
+    private newRecord(): CreateOrEditEmployeeBasicPayDetailDto {
+        const record = new CreateOrEditEmployeeBasicPayDetailDto();
+        record.amount = 0;
+        record.dependantNumber = 0;
+        record.dependantUnit = DependantUnit.None;
+        record.employeeBasicPayId = this.presetEmployeeBasicPayId();
+        return record;
     }
 
     onShown(): void {

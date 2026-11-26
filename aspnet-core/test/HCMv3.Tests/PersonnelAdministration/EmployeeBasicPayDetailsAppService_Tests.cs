@@ -222,4 +222,66 @@ public class EmployeeBasicPayDetailsAppService_Tests : AppTestBase
         var result = await _basicPaysAppService.GetAll(new GetAllEmployeeBasicPaysInput { EmployeeId = employeeId });
         return result.Items.Single().Amount;
     }
+
+    private WageType CreateLookupWageType(string code, Action<WageType> configure)
+    {
+        WageType wageType = null;
+        UsingDbContext(context =>
+        {
+            var entity = new WageType
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                Code = code,
+                NameEn = code,
+                NameAr = code,
+                Status = true,
+                IncludeInBasicPay = true,
+                BillingType = BillingType.Earning
+            };
+            configure(entity);
+            wageType = context.Set<WageType>().Add(entity).Entity;
+        });
+        return wageType;
+    }
+
+    [Fact]
+    public async Task Should_List_Active_Earning_BasicPay_WageTypes_Only()
+    {
+        //Arrange
+        var eligible = CreateLookupWageType("LKP-OK", _ => { });
+        var inactive = CreateLookupWageType("LKP-OFF", w => w.Status = false);
+        var notBasicPay = CreateLookupWageType("LKP-NBP", w => w.IncludeInBasicPay = false);
+        var arrear = CreateLookupWageType("LKP-ARR", w => w.IncludeInArrearPay = true);
+        var calculated = CreateLookupWageType("LKP-CALC", w => w.IncludeInCalculatedPay = true);
+        var deduction = CreateLookupWageType("LKP-DED", w => w.BillingType = BillingType.Deduction);
+
+        //Act
+        var result = await _appService.GetSelectableWageTypes(new GetSelectableBasicPayWageTypesInput());
+
+        //Assert
+        var ids = result.Select(w => w.Id).ToList();
+        ids.ShouldContain(eligible.Id);
+        ids.ShouldNotContain(inactive.Id);
+        ids.ShouldNotContain(notBasicPay.Id);
+        ids.ShouldNotContain(arrear.Id);
+        ids.ShouldNotContain(calculated.Id);
+        ids.ShouldNotContain(deduction.Id);
+        result.Single(w => w.Id == eligible.Id).NameEn.ShouldBe("LKP-OK");
+    }
+
+    [Fact]
+    public async Task Should_Keep_Current_WageType_In_Lookup_When_It_No_Longer_Qualifies()
+    {
+        //Arrange
+        var inactive = CreateLookupWageType("LKP-CUR", w => w.Status = false);
+
+        //Act
+        var result = await _appService.GetSelectableWageTypes(new GetSelectableBasicPayWageTypesInput
+        {
+            CurrentWageTypeId = inactive.Id
+        });
+
+        //Assert
+        result.Select(w => w.Id).ShouldContain(inactive.Id);
+    }
 }

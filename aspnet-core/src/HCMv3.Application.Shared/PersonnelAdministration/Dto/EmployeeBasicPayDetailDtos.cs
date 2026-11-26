@@ -61,3 +61,21 @@ public class GetAllEmployeeBasicPayDetailsInput : PagedAndSortedResultRequestDto
         }
     }
 }
+
+/// <summary>
+/// A wage type that may be chosen on a Basic Pay Detail line (legacy <c>EmployeeBasicPayDetail.WageType</c> lookup).
+/// </summary>
+public class BasicPayWageTypeLookupDto : EntityDto<int>
+{
+    public string Code { get; set; }
+
+    public string NameEn { get; set; }
+
+    public string NameAr { get; set; }
+}
+
+public class GetSelectableBasicPayWageTypesInput
+{
+    /// <summary>The wage type already on the line being edited; kept in the list even if it no longer qualifies.</summary>
+    public int? CurrentWageTypeId { get; set; }
+}

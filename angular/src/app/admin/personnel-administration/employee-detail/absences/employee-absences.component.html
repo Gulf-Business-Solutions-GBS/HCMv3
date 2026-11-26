@@ -35,7 +35,8 @@
                             ">
                             {{ 'Actions' | localize }}
                         </th>
-                        <th>{{ 'AbsenceTypeId' | localize }}</th>
+                        <!-- Columns in the order of the legacy (LHRMS) Leave Transaction list (Employee_Absence_ListView). -->
+                        <th>{{ 'LeaveType' | localize }}</th>
                         <th pSortableColumn="startDate">
                             {{ 'StartDate' | localize }}
                             <p-sortIcon field="startDate" />
@@ -44,8 +45,14 @@
                             {{ 'EndDate' | localize }}
                             <p-sortIcon field="endDate" />
                         </th>
-                        <th>{{ 'HalfdayType' | localize }}</th>
+                        <th>{{ 'StartTime' | localize }}</th>
+                        <th>{{ 'EndTime' | localize }}</th>
+                        <th>{{ 'AbsenceHours' | localize }}</th>
                         <th>{{ 'TotalLeaveDays' | localize }}</th>
+                        <th>{{ 'CalendarDays' | localize }}</th>
+                        <th>{{ 'PaymentDate' | localize }}</th>
+                        <th>{{ 'ReturnDate' | localize }}</th>
+                        <th>{{ 'IsTravelling' | localize }}</th>
                         <th>{{ 'LeavePaymentType' | localize }}</th>
                         <th>{{ 'IsReturned' | localize }}</th>
                     </tr>
@@ -72,9 +79,17 @@
                         <td>{{ record.absenceTypeName }}</td>
                         <td>{{ record.startDate | luxonFormat: 'yyyy-MM-dd' }}</td>
                         <td>{{ record.endDate | luxonFormat: 'yyyy-MM-dd' }}</td>
-                        <td>{{ record.halfdayType }}</td>
+                        <td>{{ formatTime(record.startTime) }}</td>
+                        <td>{{ formatTime(record.endTime) }}</td>
+                        <td>{{ record.absenceHours }}</td>
                         <td>{{ record.totalLeaveDays }}</td>
-                        <td>{{ record.leavePaymentType }}</td>
+                        <td>{{ record.calendarDays }}</td>
+                        <td>{{ formatDate(record.paymentDate) }}</td>
+                        <td>{{ formatDate(record.returnDate) }}</td>
+                        <td>
+                            <i class="fa" [class.fa-check]="record.isTravelling" [class.fa-times]="!record.isTravelling"></i>
+                        </td>
+                        <td>{{ leavePaymentTypeName(record.leavePaymentType) | localize }}</td>
                         <td>
                             <i class="fa" [class.fa-check]="record.isReturned" [class.fa-times]="!record.isReturned"></i>
                         </td>

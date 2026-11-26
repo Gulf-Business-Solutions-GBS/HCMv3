@@ -2964,6 +2964,22 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PersonnelAdministration.EmployeeBasicPayDetails' },
                     },
                     {
+                        path: 'employee-loans',
+                        loadComponent: () =>
+                            import('./admin/personnel-administration/employee-loans-list/employee-loans-list.component').then(
+                                (m) => m.EmployeeLoansListComponent
+                            ),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeLoans' },
+                    },
+                    {
+                        path: 'employee-absences',
+                        loadComponent: () =>
+                            import('./admin/personnel-administration/employee-absences-list/employee-absences-list.component').then(
+                                (m) => m.EmployeeAbsencesListComponent
+                            ),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeAbsences' },
+                    },
+                    {
                         path: 'employee-loan-exemptions',
                         loadComponent: () =>
                             import('./admin/personnel-administration/employee-loan-exemptions/employee-loan-exemptions.component').then(

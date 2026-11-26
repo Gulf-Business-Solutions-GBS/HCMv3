@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, output, signal, viewChild } from '@angular/core';
+import { Component, DestroyRef, computed, inject, output, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
@@ -9,9 +9,11 @@ import {
     EmployeeAbsencePreviewDto,
     EmployeeAbsencesServiceProxy,
     GetAllAbsenceTypesInput,
+    GetEmployeeAbsenceEmployeesInput,
     GetEmployeeAbsencePreviewInput,
     HalfdayType,
     LeavePaymentType,
+    SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Observable, Subject, of } from 'rxjs';
@@ -25,6 +27,7 @@ import { DateTime } from 'luxon';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { RecordDirectlyCheckComponent } from '@app/shared/common/record-directly/record-directly-check.component';
 import { AttachmentsComponent } from '@app/shared/common/attachments/attachments.component';
+import { SelectModule } from 'primeng/select';
 
 /**
  * The fields the server's calculation reads. A change to any of them refreshes the read-only panel -- legacy's
@@ -56,6 +59,7 @@ const PREVIEW_FIELDS: ReadonlyArray<keyof CreateOrEditEmployeeAbsenceDto> = [
         ButtonBusyDirective,
         LocalizePipe,
         AttachmentsComponent,
+        SelectModule,
     ],
 })
 export class CreateOrEditEmployeeAbsenceModalComponent extends AppComponentBase {
@@ -76,6 +80,9 @@ export class CreateOrEditEmployeeAbsenceModalComponent extends AppComponentBase 
     readonly preview = signal<EmployeeAbsencePreviewDto | undefined>(undefined);
 
     readonly DeductionUnitPercentage = DeductionUnit.Percentage;
+
+    /** The legacy form's bottom tab group: Return Information / Sick Leave Unpaid Information. */
+    readonly activeTab = signal<'return' | 'sick'>('return');
 
     private readonly _previewRequests = new Subject<CreateOrEditEmployeeAbsenceDto>();
 
@@ -105,9 +112,34 @@ export class CreateOrEditEmployeeAbsenceModalComponent extends AppComponentBase 
             .subscribe((preview) => this.preview.set(preview));
     }
 
-    show(employeeId: number, id?: number): void {
+    /**
+     * True when the dialog was opened with no employee given -- from the Employee Leaves list rather than from
+     * inside an employee's record -- so the employee is chosen here (legacy's first field, Employee).
+     */
+    readonly choosesEmployee = signal<boolean>(false);
+
+    readonly employees = signal<SimpleLookupDto[]>([]);
+
+    /** The dropdown's entries, "code - name", searchable inside the dropdown itself. */
+    readonly employeeOptions = computed(() =>
+        this.employees().map((e) => ({ id: e.id, label: `${e.code} - ${e.nameEn}` }))
+    );
+
+    /** The leave's employee as loaded for edit; always offered in the dropdown even before the lookup returns. */
+    readonly currentEmployee = signal<SimpleLookupDto | undefined>(undefined);
+
+    show(employeeId: number | undefined, id?: number): void {
         this.active.set(true);
         this.preview.set(undefined);
+        this.activeTab.set('return');
+        this.choosesEmployee.set(!employeeId);
+        this.currentEmployee.set(undefined);
+
+        if (this.choosesEmployee()) {
+            this._service
+                .getEmployeesForLookup(new GetEmployeeAbsenceEmployeesInput({ filter: undefined }))
+                .subscribe((result) => this.employees.set(this.withCurrentEmployee(result.items)));
+        }
 
         this._absenceTypesService
             .getAll(
@@ -130,10 +162,28 @@ export class CreateOrEditEmployeeAbsenceModalComponent extends AppComponentBase 
         } else {
             this._service.getEmployeeAbsenceForEdit(id).subscribe((result) => {
                 this.record.set(result.employeeAbsence);
+                this.currentEmployee.set(
+                    new SimpleLookupDto({
+                        id: result.employeeAbsence.employeeId,
+                        code: result.employeeCode,
+                        nameEn: result.employeeFullNameEn,
+                        nameAr: undefined,
+                    })
+                );
+                this.employees.set(this.withCurrentEmployee(this.employees()));
                 this.requestPreview();
                 this.modal().show();
             });
         }
+    }
+
+    private withCurrentEmployee(items: SimpleLookupDto[]): SimpleLookupDto[] {
+        const current = this.currentEmployee();
+        if (!current || items.some((e) => e.id === current.id)) {
+            return items;
+        }
+
+        return [current, ...items];
     }
 
     onShown(): void {

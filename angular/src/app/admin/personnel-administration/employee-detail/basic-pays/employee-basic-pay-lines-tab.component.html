@@ -51,9 +51,6 @@
                         <p-sortIcon field="amount" />
                     </th>
                     <th style="min-width: 130px">{{ 'CurrencyId' | localize }}</th>
-                    <th style="min-width: 130px">{{ 'DependantUnit' | localize }}</th>
-                    <th style="min-width: 130px">{{ 'DependantNumber' | localize }}</th>
-                    <th style="min-width: 200px">{{ 'DependantWageTypeId' | localize }}</th>
                 </tr>
             </ng-template>
             <ng-template #body let-record="$implicit">
@@ -76,9 +73,6 @@
                     <td style="min-width: 200px">{{ record.wageTypeName }}</td>
                     <td style="min-width: 130px">{{ record.amount }}</td>
                     <td style="min-width: 130px">{{ record.currencyName }}</td>
-                    <td style="min-width: 130px">{{ dependantUnitName(record.dependantUnit) }}</td>
-                    <td style="min-width: 130px">{{ record.dependantNumber }}</td>
-                    <td style="min-width: 200px">{{ record.dependantWageTypeName }}</td>
                 </tr>
             </ng-template>
         </p-table>

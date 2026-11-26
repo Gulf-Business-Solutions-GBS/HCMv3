@@ -33,13 +33,27 @@
                             ">
                             {{ 'Actions' | localize }}
                         </th>
-                        <th>{{ 'StartDate' | localize }}</th>
-                        <th>{{ 'EndDate' | localize }}</th>
-                        <th>{{ 'Position' | localize }}</th>
+                        <!-- Legacy EmployeeOrgAssignment_ListView column order; End Date was hidden there. -->
+                        <th>{{ 'EffectiveDate' | localize }}</th>
+                        <th>{{ 'PayrollArea' | localize }}</th>
+                        <th>{{ 'EmployeeGroup' | localize }}</th>
+                        <th>{{ 'EmployeeSubGroup' | localize }}</th>
+                        @if (fieldSettings().enablePosition) {
+                            <th>{{ 'Position' | localize }}</th>
+                        }
                         <th>{{ 'JobTitle' | localize }}</th>
-                        <th>{{ 'CostCenter' | localize }}</th>
                         <th>{{ 'WorkLocation' | localize }}</th>
-                        <th>{{ 'OrganizationUnit' | localize }}</th>
+                        <th>{{ 'CostCenter' | localize }}</th>
+                        @for (level of shownOrgLevels(); track level) {
+                            <th>{{ orgLevels.caption(level) }}</th>
+                        }
+                        @if (fieldSettings().enablePostingGroup) {
+                            <th>{{ 'PostingGroup' | localize }}</th>
+                        }
+                        @if (fieldSettings().enableBudgetingGroup) {
+                            <th>{{ 'BudgetingGroup' | localize }}</th>
+                        }
+                        <th>{{ 'WorkflowGroup' | localize }}</th>
                     </tr>
                 </ng-template>
                 <ng-template #body let-record="$implicit">
@@ -62,12 +76,25 @@
                             </button>
                         </td>
                         <td>{{ record.startDate | luxonFormat: 'DD' }}</td>
-                        <td>{{ record.endDate | luxonFormat: 'DD' }}</td>
-                        <td>{{ record.positionName }}</td>
+                        <td>{{ record.payrollAreaName }}</td>
+                        <td>{{ record.employeeGroupName }}</td>
+                        <td>{{ record.employeeSubGroupName }}</td>
+                        @if (fieldSettings().enablePosition) {
+                            <td>{{ record.positionName }}</td>
+                        }
                         <td>{{ record.jobTitleName }}</td>
-                        <td>{{ record.costCenterName }}</td>
                         <td>{{ record.workLocationName }}</td>
-                        <td>{{ record.organizationUnitName }}</td>
+                        <td>{{ record.costCenterName }}</td>
+                        @for (level of shownOrgLevels(); track level) {
+                            <td>{{ orgLevelName(record, level) }}</td>
+                        }
+                        @if (fieldSettings().enablePostingGroup) {
+                            <td>{{ record.postingGroupName }}</td>
+                        }
+                        @if (fieldSettings().enableBudgetingGroup) {
+                            <td>{{ record.budgetingGroupName }}</td>
+                        }
+                        <td>{{ record.workflowGroupName }}</td>
                     </tr>
                 </ng-template>
             </p-table>

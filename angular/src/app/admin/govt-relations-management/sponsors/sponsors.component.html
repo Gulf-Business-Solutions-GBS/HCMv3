@@ -50,7 +50,7 @@
                             [lazy]="true"
                             [scrollable]="true"
                             scrollDirection="horizontal"
-                            [tableStyle]="{ 'min-width': '70rem' }"
+                            [tableStyle]="{ 'min-width': '140rem' }"
                             [resizableColumns]="primengTableHelper.resizableColumns">
                             <ng-template #header>
                                 <tr>
@@ -71,16 +71,37 @@
                                         <p-sortIcon field="nameAr" />
                                     </th>
                                     <th style="min-width: 180px">
+                                        {{ 'Email' | localize }}
+                                    </th>
+                                    <th style="min-width: 130px">
+                                        {{ 'MOSALID' | localize }}
+                                    </th>
+                                    <th style="min-width: 150px">
+                                        {{ 'Profession' | localize }}
+                                    </th>
+                                    <th style="min-width: 150px">
+                                        {{ 'UnifiedNum' | localize }}
+                                    </th>
+                                    <th style="min-width: 130px">
+                                        {{ 'Telephone' | localize }}
+                                    </th>
+                                    <th style="min-width: 180px">
+                                        {{ 'SocialSecurityNum' | localize }}
+                                    </th>
+                                    <th style="min-width: 140px">
+                                        {{ 'PACINumber' | localize }}
+                                    </th>
+                                    <th style="min-width: 150px">
+                                        {{ 'Nationality' | localize }}
+                                    </th>
+                                    <th style="min-width: 180px">
                                         {{ 'BusinessType' | localize }}
                                     </th>
                                     <th style="min-width: 180px">
                                         {{ 'OrganizationUnit' | localize }}
                                     </th>
                                     <th style="min-width: 150px">
-                                        {{ 'Email' | localize }}
-                                    </th>
-                                    <th style="min-width: 150px">
-                                        {{ 'Telephone' | localize }}
+                                        {{ 'Governorate' | localize }}
                                     </th>
                                 </tr>
                             </ng-template>
@@ -107,16 +128,37 @@
                                         {{ record.nameAr }}
                                     </td>
                                     <td style="min-width: 180px">
+                                        {{ record.email }}
+                                    </td>
+                                    <td style="min-width: 130px">
+                                        {{ record.mosalid }}
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        {{ record.profession }}
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        {{ record.unifiedNum }}
+                                    </td>
+                                    <td style="min-width: 130px">
+                                        {{ record.telephone }}
+                                    </td>
+                                    <td style="min-width: 180px">
+                                        {{ record.socialSecurityNum }}
+                                    </td>
+                                    <td style="min-width: 140px">
+                                        {{ record.poBox }}
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        {{ record.nationalityName }}
+                                    </td>
+                                    <td style="min-width: 180px">
                                         {{ record.businessTypeName }}
                                     </td>
                                     <td style="min-width: 180px">
                                         {{ record.organizationUnitName }}
                                     </td>
                                     <td style="min-width: 150px">
-                                        {{ record.email }}
-                                    </td>
-                                    <td style="min-width: 150px">
-                                        {{ record.telephone }}
+                                        {{ record.governorateName }}
                                     </td>
                                 </tr>
                             </ng-template>

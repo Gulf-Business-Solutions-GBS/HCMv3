@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Abp.Extensions;
 using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
+using HCMv3.PayrollManagement;
 using HCMv3.PersonnelAdministration.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,13 +29,40 @@ public class EmployeeBasicPayDetailsAppService : HCMv3AppServiceBase, IEmployeeB
 {
     private readonly IRepository<EmployeeBasicPayDetail> _repository;
     private readonly IRepository<EmployeeBasicPay> _basicPayRepository;
+    private readonly IRepository<WageType> _wageTypeRepository;
 
     public EmployeeBasicPayDetailsAppService(
         IRepository<EmployeeBasicPayDetail> repository,
-        IRepository<EmployeeBasicPay> basicPayRepository)
+        IRepository<EmployeeBasicPay> basicPayRepository,
+        IRepository<WageType> wageTypeRepository)
     {
         _repository = repository;
         _basicPayRepository = basicPayRepository;
+        _wageTypeRepository = wageTypeRepository;
+    }
+
+    [HttpPost]
+    public async Task<List<BasicPayWageTypeLookupDto>> GetSelectableWageTypes(GetSelectableBasicPayWageTypesInput input)
+    {
+        var currentId = input?.CurrentWageTypeId;
+
+        return await _wageTypeRepository.GetAll()
+            .AsNoTracking()
+            .Where(w => (w.Status
+                         && w.IncludeInBasicPay
+                         && !w.IncludeInArrearPay
+                         && !w.IncludeInCalculatedPay
+                         && w.BillingType == BillingType.Earning)
+                        || (currentId.HasValue && w.Id == currentId.Value))
+            .OrderBy(w => w.NameEn)
+            .Select(w => new BasicPayWageTypeLookupDto
+            {
+                Id = w.Id,
+                Code = w.Code,
+                NameEn = w.NameEn,
+                NameAr = w.NameAr
+            })
+            .ToListAsync();
     }
 
     [HttpPost]

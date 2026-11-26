@@ -1324,6 +1324,8 @@
     <text name="ThroughPayroll">عن طريق الرواتب</text>
     <text name="External">خارجي</text>
     <text name="Exemption">إعفاء</text>
+    <text name="Installment">قسط</text>
+    <text name="Recovery">استرداد</text>
     <text name="ThroughExternal">عن طريق جهة خارجية</text>
     <text name="BasicSalary">الراتب الأساسي</text>
     <text name="CreatingNewLoanType">إنشاء نوع قرض جديد</text>
@@ -2099,6 +2101,8 @@
     <text name="QuotaBalance">رصيد الحصة</text>
     <text name="AdjustmentType">نوع التعديل</text>
     <text name="EffectiveDate">تاريخ السريان</text>
+    <text name="BasicInformation">المعلومات الأساسية</text>
+    <text name="OrganizationHierarchy">الهيكل التنظيمي</text>
     <text name="AdjustmentPaymentType">نوع سداد التعديل</text>
     <text name="AttendanceTypeId">نوع المواظبة</text>
     <text name="AttendanceUnit">وحدة المواظبة</text>
@@ -7936,5 +7940,11 @@
     <text name="NewWageTypeName">اسم نوع الأجر الجديد</text>
     <text name="NewWageTypeNameRequired">أدخل اسماً لنوع الأجر الجديد.</text>
     <text name="LoanTypeCopied">تم نسخ نوع القرض.</text>
+    <text name="LeaveInformation">معلومات الإجازة</text>
+    <text name="PartialLeave">إجازة جزئية</text>
+    <text name="ExtraUnpaidLeaveInformation">معلومات الإجازة الإضافية غير المدفوعة</text>
+    <text name="ReturnInformation">معلومات العودة</text>
+    <text name="SickLeaveUnpaidInformation">معلومات الإجازة المرضية غير المدفوعة</text>
+    <text name="EmployeeLeaves">إجازات الموظفين</text>
   </texts>
 </localizationDictionary>

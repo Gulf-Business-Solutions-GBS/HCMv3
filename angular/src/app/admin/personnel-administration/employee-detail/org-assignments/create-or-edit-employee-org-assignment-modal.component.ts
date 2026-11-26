@@ -7,6 +7,7 @@ import {
     CreateOrEditEmployeeOrgAssignmentDto,
     EmployeeGroupDto,
     EmployeeGroupsServiceProxy,
+    EmployeeOrgAssignmentFieldSettingsDto,
     EmployeeOrgAssignmentsServiceProxy,
     EmployeeSubGroupDto,
     EmployeeSubGroupsServiceProxy,
@@ -19,8 +20,7 @@ import {
     GetAllWorkLocationsInput,
     GetPositionsForOrgAssignmentInput,
     JobTitlesServiceProxy,
-    OrganizationUnitDto,
-    OrganizationUnitServiceProxy,
+    OrgAssignmentOrgUnitDto,
     PayrollAreaDto,
     PayrollAreasServiceProxy,
     PositionForOrgAssignmentDto,
@@ -41,6 +41,10 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
 import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
+import { injectOrgLevelCaptions } from '@app/admin/reports/analysis/shared/org-level-captions';
+import { isUnderOrgUnit, orgLevelPath } from './org-level-path';
+
+const ORG_LEVELS = [1, 2, 3, 4, 5, 6, 7];
 
 @Component({
     selector: 'createOrEditEmployeeOrgAssignmentModal',
@@ -61,7 +65,6 @@ export class CreateOrEditEmployeeOrgAssignmentModalComponent extends AppComponen
     private _workLocationsService = inject(WorkLocationsServiceProxy);
     private _postingGroupsService = inject(PostingGroupsServiceProxy);
     private _budgetingGroupsService = inject(BudgetingGroupsServiceProxy);
-    private _organizationUnitService = inject(OrganizationUnitServiceProxy);
     private _employeeGroupsService = inject(EmployeeGroupsServiceProxy);
     private _employeeSubGroupsService = inject(EmployeeSubGroupsServiceProxy);
     private _payrollAreasService = inject(PayrollAreasServiceProxy);
@@ -94,7 +97,6 @@ export class CreateOrEditEmployeeOrgAssignmentModalComponent extends AppComponen
     readonly workLocations = signal<WorkLocationDto[]>([]);
     readonly postingGroups = signal<SimpleLookupDto[]>([]);
     readonly budgetingGroups = signal<SimpleLookupDto[]>([]);
-    readonly organizationUnits = signal<OrganizationUnitDto[]>([]);
     readonly employeeGroups = signal<EmployeeGroupDto[]>([]);
     readonly employeeSubGroups = signal<EmployeeSubGroupDto[]>([]);
     readonly payrollAreas = signal<PayrollAreaDto[]>([]);
@@ -102,6 +104,58 @@ export class CreateOrEditEmployeeOrgAssignmentModalComponent extends AppComponen
 
     /** Legacy EmpPosition: active, vacant positions, plus the one this assignment already holds. */
     readonly positions = signal<PositionForOrgAssignmentDto[]>([]);
+
+    /** Legacy OrgUnitCustomizeController: Position, Posting Group and Budgeting Group show only when Org Settings switch them on. */
+    readonly fieldSettings = signal<EmployeeOrgAssignmentFieldSettingsDto>(new EmployeeOrgAssignmentFieldSettingsDto());
+
+    /**
+     * Legacy OrgLevel1..OrgLevel7: one picker per level the tenant defines, captioned with its Organization Unit
+     * Type name. HCMv3 stores only the deepest unit chosen; the levels above it are read from its parents.
+     */
+    readonly orgLevels = injectOrgLevelCaptions((key, ...args) => this.l(key, ...args));
+    readonly orgUnits = signal<OrgAssignmentOrgUnitDto[]>([]);
+    private readonly orgUnitById = computed(() => new Map(this.orgUnits().map((u) => [u.id, u] as const)));
+    readonly shownOrgLevels = computed(() => ORG_LEVELS.filter((level) => this.orgLevels.isShown(level)));
+
+    /** Level -> unit chosen at that level, from the stored unit and its parents. */
+    readonly selectedOrgLevels = computed(() => orgLevelPath(this.record().organizationUnitId, this.orgUnitById()));
+
+    /** Legacy OrgLevelNList: units of that level under the unit chosen at the level above; none until it is chosen. */
+    readonly orgLevelOptions = computed(() => {
+        const byId = this.orgUnitById();
+        const selected = this.selectedOrgLevels();
+        const options = new Map<number, OrgAssignmentOrgUnitDto[]>();
+        let parentId: number | undefined;
+        let hasLevelAbove = false;
+
+        for (const level of this.shownOrgLevels()) {
+            const units = this.orgUnits().filter((u) => u.level === level);
+            options.set(
+                level,
+                !hasLevelAbove ? units : parentId === undefined ? [] : units.filter((u) => isUnderOrgUnit(u, parentId, byId))
+            );
+            hasLevelAbove = true;
+            parentId = selected.get(level)?.id;
+        }
+
+        return options;
+    });
+
+    /** Choosing a level keeps it as the assignment's unit (clearing the levels below); clearing falls back to the level above. */
+    updateOrgLevel(level: number, unitId: number | undefined): void {
+        if (unitId) {
+            this.updateField('organizationUnitId', unitId);
+            return;
+        }
+
+        const selected = this.selectedOrgLevels();
+        const above = this.shownOrgLevels()
+            .filter((l) => l < level)
+            .reverse()
+            .map((l) => selected.get(l))
+            .find((u) => u);
+        this.updateField('organizationUnitId', above?.id);
+    }
 
     /** Only the chosen group's sub groups; the server rejects a sub group from another group. */
     readonly filteredEmployeeSubGroups = computed(() => {
@@ -164,6 +218,8 @@ export class CreateOrEditEmployeeOrgAssignmentModalComponent extends AppComponen
     }
 
     private loadLookups(): void {
+        this._service.getFieldSettings().subscribe((result) => this.fieldSettings.set(result));
+
         this._jobTitlesService
             .getAll(
                 new GetAllSimpleLookupsInput({
@@ -219,9 +275,7 @@ export class CreateOrEditEmployeeOrgAssignmentModalComponent extends AppComponen
             )
             .subscribe((result) => this.budgetingGroups.set(result.items));
 
-        this._organizationUnitService
-            .getOrganizationUnits()
-            .subscribe((result) => this.organizationUnits.set(result.items ?? []));
+        this._service.getOrgUnitsByLevel().subscribe((result) => this.orgUnits.set(result.items ?? []));
 
         this._employeeGroupsService
             .getAll(

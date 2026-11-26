@@ -4,6 +4,7 @@ import {
     EmployeeAbsenceDto,
     EmployeeAbsencesServiceProxy,
     GetAllEmployeeAbsencesInput,
+    LeavePaymentType,
 } from '@shared/service-proxies/service-proxies';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
@@ -17,6 +18,7 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { CreateOrEditEmployeeAbsenceModalComponent } from './create-or-edit-employee-absence-modal.component';
 import { WorkflowHistoryModalComponent } from '@app/shared/common/workflow-activity/workflow-history-modal.component';
+import { DateTime } from 'luxon';
 
 @Component({
     selector: 'employee-absences',
@@ -94,6 +96,23 @@ export class EmployeeAbsencesComponent extends AppComponentBase {
 
     createRecord(): void {
         this.createOrEditModal()?.show(this.employeeId());
+    }
+
+    /** The server sends an unset DateTime as 0001-01-01; legacy's list showed those as blank. */
+    formatDate(value: DateTime | undefined): string {
+        return value?.isValid && value.year > 1 ? value.toFormat('yyyy-MM-dd') : '';
+    }
+
+    formatTime(value: DateTime | undefined): string {
+        if (!value?.isValid || (value.year <= 1 && value.hour === 0 && value.minute === 0)) {
+            return '';
+        }
+        return value.toFormat('HH:mm');
+    }
+
+    /** Localization key of the payment type, as used in the edit form's drop-down. */
+    leavePaymentTypeName(value: LeavePaymentType): string {
+        return LeavePaymentType[value] ?? '';
     }
 
     showMenu(event: Event, record: EmployeeAbsenceDto, menu: any): void {

@@ -6,6 +6,8 @@ import {
     EmployeeBasicPayDto,
     EmployeeBasicPaysServiceProxy,
     GetAllEmployeeBasicPaysInput,
+    PayInterval,
+    PayType,
 } from '@shared/service-proxies/service-proxies';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
@@ -119,6 +121,16 @@ export class EmployeeBasicPaysComponent extends AppComponentBase implements OnIn
 
     createRecord(): void {
         this.createOrEditModal()?.show(this.employeeId());
+    }
+
+    payTypeName(value: PayType): string {
+        const name = PayType[value];
+        return name ? this.l(name) : '';
+    }
+
+    payIntervalName(value: PayInterval): string {
+        const name = PayInterval[value];
+        return name ? this.l(name) : '';
     }
 
     /** A new basic pay opens straight away, as in the legacy HRMS, so its Basic Pay Detail lines can be added. */

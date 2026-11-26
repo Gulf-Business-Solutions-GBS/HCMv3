@@ -1,10 +1,16 @@
-import { Component, effect, inject, input, signal, viewChild } from '@angular/core';
+import { Component, computed, effect, inject, input, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     EmployeeOrgAssignmentDto,
+    EmployeeOrgAssignmentFieldSettingsDto,
     EmployeeOrgAssignmentsServiceProxy,
     GetAllEmployeeOrgAssignmentsInput,
+    OrgAssignmentOrgUnitDto,
 } from '@shared/service-proxies/service-proxies';
+import { injectOrgLevelCaptions } from '@app/admin/reports/analysis/shared/org-level-captions';
+import { orgLevelPath } from './org-level-path';
+
+const ORG_LEVELS = [1, 2, 3, 4, 5, 6, 7];
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { Table, TableModule } from 'primeng/table';
@@ -43,8 +49,25 @@ export class EmployeeOrgAssignmentsComponent extends AppComponentBase {
 
     readonly activeMenuItems = signal<MenuItem[]>([]);
 
+    /** Legacy OrgUnitCustomizeController: Position, Posting Group and Budgeting Group columns follow Org Settings. */
+    readonly fieldSettings = signal<EmployeeOrgAssignmentFieldSettingsDto>(new EmployeeOrgAssignmentFieldSettingsDto());
+
+    /** Legacy OrgLevel1..OrgLevel7 columns, captioned with the tenant's Organization Unit Type names. */
+    readonly orgLevels = injectOrgLevelCaptions((key, ...args) => this.l(key, ...args));
+    readonly shownOrgLevels = computed(() => ORG_LEVELS.filter((level) => this.orgLevels.isShown(level)));
+    private readonly orgUnitById = signal<ReadonlyMap<number, OrgAssignmentOrgUnitDto>>(new Map());
+
+    /** Name of the unit at `level` in the record's org unit path. */
+    orgLevelName(record: EmployeeOrgAssignmentDto, level: number): string {
+        return orgLevelPath(record.organizationUnitId, this.orgUnitById()).get(level)?.displayName ?? '';
+    }
+
     constructor() {
         super();
+        this._service.getFieldSettings().subscribe((result) => this.fieldSettings.set(result));
+        this._service
+            .getOrgUnitsByLevel()
+            .subscribe((result) => this.orgUnitById.set(new Map((result.items ?? []).map((u) => [u.id, u] as const))));
         effect(() => {
             if (this.employeeId()) {
                 this.reloadPage();

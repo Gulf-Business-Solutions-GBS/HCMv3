@@ -247,6 +247,8 @@ public static class ScreenCatalog
         new("app.admin.employee-dependant-exceptions", "SPA002", "PersonnelAdministration", "EmployeeDependantExceptions", "/app/admin/employee-dependant-exceptions", "Pages.PersonnelAdministration.EmployeeDependantExceptions"),
         new("app.admin.employee-fund-details", "SPA003", "PersonnelAdministration", "EmployeeFundDetails", "/app/admin/employee-fund-details", "Pages.PersonnelAdministration.EmployeeFundDetails"),
         new("app.admin.employee-fund-exemptions", "SPA004", "PersonnelAdministration", "EmployeeFundExemptions", "/app/admin/employee-fund-exemptions", "Pages.PersonnelAdministration.EmployeeFundExemptions"),
+        new("app.admin.employee-loans", "SPA016", "PersonnelAdministration", "EmployeeLoans", "/app/admin/employee-loans", "Pages.PersonnelAdministration.EmployeeLoans"),
+        new("app.admin.employee-absences", "SPA017", "PersonnelAdministration", "EmployeeLeaves", "/app/admin/employee-absences", "Pages.PersonnelAdministration.EmployeeAbsences"),
         new("app.admin.employee-loan-exemptions", "SPA005", "PersonnelAdministration", "EmployeeLoanExemptions", "/app/admin/employee-loan-exemptions", "Pages.PersonnelAdministration.EmployeeLoanExemptions"),
         new("app.admin.employee-loan-recoveries", "SPA006", "PersonnelAdministration", "EmployeeLoanRecoveries", "/app/admin/employee-loan-recoveries", "Pages.PersonnelAdministration.EmployeeLoanRecoveries"),
         new("app.admin.announcements", "SPA009", "PersonnelAdministration", "Announcements", "/app/admin/announcements", "Pages.PersonnelAdministration.News"),
