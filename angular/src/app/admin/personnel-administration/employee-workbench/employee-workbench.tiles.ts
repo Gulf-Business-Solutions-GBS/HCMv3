@@ -445,7 +445,7 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 load: (injector, employeeId) =>
                     injector
                         .get(EmployeeTicketsServiceProxy)
-                        .getAll(new GetAllEmployeeTicketsInput({ employeeId, ...lastRows }))
+                        .getAll(new GetAllEmployeeTicketsInput({ employeeId, filter: undefined, ...lastRows }))
                         .pipe(map((r) => r.items)),
                 columns: [
                     { labelKey: 'TicketTypeId', field: 'ticketTypeName' },

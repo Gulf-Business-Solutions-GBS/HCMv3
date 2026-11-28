@@ -59767,6 +59767,62 @@ export class EmployeeTicketsServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getEmployeesForLookup(body?: GetEmployeeTicketEmployeesInput | undefined): Observable<ListResultDtoOfSimpleLookupDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeTickets/GetEmployeesForLookup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployeesForLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeesForLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfSimpleLookupDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfSimpleLookupDto>;
+        }));
+    }
+
+    protected processGetEmployeesForLookup(response: HttpResponseBase): Observable<ListResultDtoOfSimpleLookupDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfSimpleLookupDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return OK
      */
@@ -60552,6 +60608,118 @@ export class EmployeeTktAdjustmentsServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = GetEmployeeTktAdjustmentForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getEmployeesForLookup(body?: GetEmployeeTktAdjustmentEmployeesInput | undefined): Observable<ListResultDtoOfSimpleLookupDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeTktAdjustments/GetEmployeesForLookup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployeesForLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeesForLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfSimpleLookupDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfSimpleLookupDto>;
+        }));
+    }
+
+    protected processGetEmployeesForLookup(response: HttpResponseBase): Observable<ListResultDtoOfSimpleLookupDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfSimpleLookupDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getQuota(body?: GetEmployeeTktAdjustmentQuotaInput | undefined): Observable<EmployeeTktAdjustmentQuotaDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeTktAdjustments/GetQuota";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetQuota(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetQuota(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EmployeeTktAdjustmentQuotaDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EmployeeTktAdjustmentQuotaDto>;
+        }));
+    }
+
+    protected processGetQuota(response: HttpResponseBase): Observable<EmployeeTktAdjustmentQuotaDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EmployeeTktAdjustmentQuotaDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -230193,6 +230361,70 @@ export interface IEmployeeTktAdjustmentDto {
     comments: string | undefined;
 }
 
+export class EmployeeTktAdjustmentQuotaDto implements IEmployeeTktAdjustmentQuotaDto {
+    quotaFound!: boolean;
+    entitlementFrom!: DateTime | undefined;
+    entitlementTo!: DateTime | undefined;
+    quotaAccrued!: number;
+    quotaUsed!: number;
+    quotaAdjusted!: number;
+    quotaBalance!: number;
+    availableBalance!: number;
+
+    constructor(data?: IEmployeeTktAdjustmentQuotaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.quotaFound = _data["quotaFound"];
+            this.entitlementFrom = _data["entitlementFrom"] ? DateTime.fromISO(_data["entitlementFrom"].toString()) : undefined as any;
+            this.entitlementTo = _data["entitlementTo"] ? DateTime.fromISO(_data["entitlementTo"].toString()) : undefined as any;
+            this.quotaAccrued = _data["quotaAccrued"];
+            this.quotaUsed = _data["quotaUsed"];
+            this.quotaAdjusted = _data["quotaAdjusted"];
+            this.quotaBalance = _data["quotaBalance"];
+            this.availableBalance = _data["availableBalance"];
+        }
+    }
+
+    static fromJS(data: any): EmployeeTktAdjustmentQuotaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeTktAdjustmentQuotaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["quotaFound"] = this.quotaFound;
+        data["entitlementFrom"] = this.entitlementFrom ? this.entitlementFrom.toString() : undefined as any;
+        data["entitlementTo"] = this.entitlementTo ? this.entitlementTo.toString() : undefined as any;
+        data["quotaAccrued"] = this.quotaAccrued;
+        data["quotaUsed"] = this.quotaUsed;
+        data["quotaAdjusted"] = this.quotaAdjusted;
+        data["quotaBalance"] = this.quotaBalance;
+        data["availableBalance"] = this.availableBalance;
+        return data;
+    }
+}
+
+export interface IEmployeeTktAdjustmentQuotaDto {
+    quotaFound: boolean;
+    entitlementFrom: DateTime | undefined;
+    entitlementTo: DateTime | undefined;
+    quotaAccrued: number;
+    quotaUsed: number;
+    quotaAdjusted: number;
+    quotaBalance: number;
+    availableBalance: number;
+}
+
 export class EmployeeTrainingCertificationLookupDto implements IEmployeeTrainingCertificationLookupDto {
     id!: number;
     displayName!: string | undefined;
@@ -240479,6 +240711,7 @@ export class GetAllEmployeeAbsAdjustmentsInput implements IGetAllEmployeeAbsAdju
     skipCount!: number;
     sorting!: string | undefined;
     employeeId!: number | undefined;
+    filter!: string | undefined;
 
     constructor(data?: IGetAllEmployeeAbsAdjustmentsInput) {
         if (data) {
@@ -240495,6 +240728,7 @@ export class GetAllEmployeeAbsAdjustmentsInput implements IGetAllEmployeeAbsAdju
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.employeeId = _data["employeeId"];
+            this.filter = _data["filter"];
         }
     }
 
@@ -240511,6 +240745,7 @@ export class GetAllEmployeeAbsAdjustmentsInput implements IGetAllEmployeeAbsAdju
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["employeeId"] = this.employeeId;
+        data["filter"] = this.filter;
         return data;
     }
 }
@@ -240520,6 +240755,7 @@ export interface IGetAllEmployeeAbsAdjustmentsInput {
     skipCount: number;
     sorting: string | undefined;
     employeeId: number | undefined;
+    filter: string | undefined;
 }
 
 export class GetAllEmployeeAbsQuotaForfeitsInput implements IGetAllEmployeeAbsQuotaForfeitsInput {
@@ -244999,6 +245235,7 @@ export class GetAllEmployeeTicketsInput implements IGetAllEmployeeTicketsInput {
     skipCount!: number;
     sorting!: string | undefined;
     employeeId!: number | undefined;
+    filter!: string | undefined;
 
     constructor(data?: IGetAllEmployeeTicketsInput) {
         if (data) {
@@ -245015,6 +245252,7 @@ export class GetAllEmployeeTicketsInput implements IGetAllEmployeeTicketsInput {
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.employeeId = _data["employeeId"];
+            this.filter = _data["filter"];
         }
     }
 
@@ -245031,6 +245269,7 @@ export class GetAllEmployeeTicketsInput implements IGetAllEmployeeTicketsInput {
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["employeeId"] = this.employeeId;
+        data["filter"] = this.filter;
         return data;
     }
 }
@@ -245040,6 +245279,7 @@ export interface IGetAllEmployeeTicketsInput {
     skipCount: number;
     sorting: string | undefined;
     employeeId: number | undefined;
+    filter: string | undefined;
 }
 
 export class GetAllEmployeeTimePoliciesInput implements IGetAllEmployeeTimePoliciesInput {
@@ -245143,6 +245383,7 @@ export class GetAllEmployeeTktAdjustmentsInput implements IGetAllEmployeeTktAdju
     skipCount!: number;
     sorting!: string | undefined;
     employeeId!: number | undefined;
+    filter!: string | undefined;
 
     constructor(data?: IGetAllEmployeeTktAdjustmentsInput) {
         if (data) {
@@ -245159,6 +245400,7 @@ export class GetAllEmployeeTktAdjustmentsInput implements IGetAllEmployeeTktAdju
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.employeeId = _data["employeeId"];
+            this.filter = _data["filter"];
         }
     }
 
@@ -245175,6 +245417,7 @@ export class GetAllEmployeeTktAdjustmentsInput implements IGetAllEmployeeTktAdju
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["employeeId"] = this.employeeId;
+        data["filter"] = this.filter;
         return data;
     }
 }
@@ -245184,6 +245427,7 @@ export interface IGetAllEmployeeTktAdjustmentsInput {
     skipCount: number;
     sorting: string | undefined;
     employeeId: number | undefined;
+    filter: string | undefined;
 }
 
 export class GetAllEmployeeTrainingsInput implements IGetAllEmployeeTrainingsInput {
@@ -259852,6 +260096,7 @@ export interface IGetEmpTalentMatrixDataForEditOutput {
 
 export class GetEmployeeAbsAdjustmentForEditOutput implements IGetEmployeeAbsAdjustmentForEditOutput {
     employeeAbsAdjustment!: CreateOrEditEmployeeAbsAdjustmentDto;
+    employeeCodeWithFullNameEn!: string | undefined;
 
     constructor(data?: IGetEmployeeAbsAdjustmentForEditOutput) {
         if (data) {
@@ -259865,6 +260110,7 @@ export class GetEmployeeAbsAdjustmentForEditOutput implements IGetEmployeeAbsAdj
     init(_data?: any) {
         if (_data) {
             this.employeeAbsAdjustment = _data["employeeAbsAdjustment"] ? CreateOrEditEmployeeAbsAdjustmentDto.fromJS(_data["employeeAbsAdjustment"]) : undefined as any;
+            this.employeeCodeWithFullNameEn = _data["employeeCodeWithFullNameEn"];
         }
     }
 
@@ -259878,12 +260124,14 @@ export class GetEmployeeAbsAdjustmentForEditOutput implements IGetEmployeeAbsAdj
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["employeeAbsAdjustment"] = this.employeeAbsAdjustment ? this.employeeAbsAdjustment.toJSON() : undefined as any;
+        data["employeeCodeWithFullNameEn"] = this.employeeCodeWithFullNameEn;
         return data;
     }
 }
 
 export interface IGetEmployeeAbsAdjustmentForEditOutput {
     employeeAbsAdjustment: CreateOrEditEmployeeAbsAdjustmentDto;
+    employeeCodeWithFullNameEn: string | undefined;
 }
 
 export class GetEmployeeAbsQuotaForfeitForEditOutput implements IGetEmployeeAbsQuotaForfeitForEditOutput {
@@ -266254,6 +266502,42 @@ export interface IGetEmployeeTaskForEditOutput {
     employeeTask: CreateOrEditEmployeeTaskDto;
 }
 
+export class GetEmployeeTicketEmployeesInput implements IGetEmployeeTicketEmployeesInput {
+    filter!: string | undefined;
+
+    constructor(data?: IGetEmployeeTicketEmployeesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.filter = _data["filter"];
+        }
+    }
+
+    static fromJS(data: any): GetEmployeeTicketEmployeesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmployeeTicketEmployeesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filter"] = this.filter;
+        return data;
+    }
+}
+
+export interface IGetEmployeeTicketEmployeesInput {
+    filter: string | undefined;
+}
+
 export class GetEmployeeTicketForEditOutput implements IGetEmployeeTicketForEditOutput {
     employeeTicket!: CreateOrEditEmployeeTicketDto;
 
@@ -266434,8 +266718,46 @@ export interface IGetEmployeeTimesheetForEditOutput {
     employeeTimesheet: CreateOrEditEmployeeTimesheetDto;
 }
 
+export class GetEmployeeTktAdjustmentEmployeesInput implements IGetEmployeeTktAdjustmentEmployeesInput {
+    filter!: string | undefined;
+
+    constructor(data?: IGetEmployeeTktAdjustmentEmployeesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.filter = _data["filter"];
+        }
+    }
+
+    static fromJS(data: any): GetEmployeeTktAdjustmentEmployeesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmployeeTktAdjustmentEmployeesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filter"] = this.filter;
+        return data;
+    }
+}
+
+export interface IGetEmployeeTktAdjustmentEmployeesInput {
+    filter: string | undefined;
+}
+
 export class GetEmployeeTktAdjustmentForEditOutput implements IGetEmployeeTktAdjustmentForEditOutput {
     employeeTktAdjustment!: CreateOrEditEmployeeTktAdjustmentDto;
+    employeeCode!: string | undefined;
+    employeeFullNameEn!: string | undefined;
 
     constructor(data?: IGetEmployeeTktAdjustmentForEditOutput) {
         if (data) {
@@ -266449,6 +266771,8 @@ export class GetEmployeeTktAdjustmentForEditOutput implements IGetEmployeeTktAdj
     init(_data?: any) {
         if (_data) {
             this.employeeTktAdjustment = _data["employeeTktAdjustment"] ? CreateOrEditEmployeeTktAdjustmentDto.fromJS(_data["employeeTktAdjustment"]) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeFullNameEn = _data["employeeFullNameEn"];
         }
     }
 
@@ -266462,12 +266786,64 @@ export class GetEmployeeTktAdjustmentForEditOutput implements IGetEmployeeTktAdj
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["employeeTktAdjustment"] = this.employeeTktAdjustment ? this.employeeTktAdjustment.toJSON() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeFullNameEn"] = this.employeeFullNameEn;
         return data;
     }
 }
 
 export interface IGetEmployeeTktAdjustmentForEditOutput {
     employeeTktAdjustment: CreateOrEditEmployeeTktAdjustmentDto;
+    employeeCode: string | undefined;
+    employeeFullNameEn: string | undefined;
+}
+
+export class GetEmployeeTktAdjustmentQuotaInput implements IGetEmployeeTktAdjustmentQuotaInput {
+    employeeId!: number;
+    ticketTypeId!: number;
+    effectiveDate!: DateTime;
+    id!: number | undefined;
+
+    constructor(data?: IGetEmployeeTktAdjustmentQuotaInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.ticketTypeId = _data["ticketTypeId"];
+            this.effectiveDate = _data["effectiveDate"] ? DateTime.fromISO(_data["effectiveDate"].toString()) : undefined as any;
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): GetEmployeeTktAdjustmentQuotaInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmployeeTktAdjustmentQuotaInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["ticketTypeId"] = this.ticketTypeId;
+        data["effectiveDate"] = this.effectiveDate ? this.effectiveDate.toString() : undefined as any;
+        data["id"] = this.id;
+        return data;
+    }
+}
+
+export interface IGetEmployeeTktAdjustmentQuotaInput {
+    employeeId: number;
+    ticketTypeId: number;
+    effectiveDate: DateTime;
+    id: number | undefined;
 }
 
 export class GetEmployeeTrainingCertificationsInput implements IGetEmployeeTrainingCertificationsInput {
