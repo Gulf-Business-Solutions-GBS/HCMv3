@@ -109,6 +109,8 @@ public class EmployeeRejoinService : HCMv3DomainServiceBase, IEmployeeRejoinServ
     private readonly IEmployeeValidator _employeeValidator;
     private readonly ICurrencyService _currencyService;
     private readonly HCMv3.Licensing.IActiveEmployeeLimitChecker _activeEmployeeLimitChecker;
+    private readonly IEmployeeGratuityQuotaService _gratuityQuotaService;
+    private readonly IEmployeeTktAdjustmentQuotaService _tktAdjustmentQuotaService;
 
     public EmployeeRejoinService(
         IRepository<Employee> employeeRepository,
@@ -135,7 +137,9 @@ public class EmployeeRejoinService : HCMv3DomainServiceBase, IEmployeeRejoinServ
         IEmployeeCodeGenerator employeeCodeGenerator,
         IEmployeeValidator employeeValidator,
         ICurrencyService currencyService,
-        HCMv3.Licensing.IActiveEmployeeLimitChecker activeEmployeeLimitChecker)
+        HCMv3.Licensing.IActiveEmployeeLimitChecker activeEmployeeLimitChecker,
+        IEmployeeGratuityQuotaService gratuityQuotaService,
+        IEmployeeTktAdjustmentQuotaService tktAdjustmentQuotaService)
     {
         _employeeRepository = employeeRepository;
         _rejoinRepository = rejoinRepository;
@@ -162,6 +166,8 @@ public class EmployeeRejoinService : HCMv3DomainServiceBase, IEmployeeRejoinServ
         _employeeValidator = employeeValidator;
         _currencyService = currencyService;
         _activeEmployeeLimitChecker = activeEmployeeLimitChecker;
+        _gratuityQuotaService = gratuityQuotaService;
+        _tktAdjustmentQuotaService = tktAdjustmentQuotaService;
     }
 
     #region << Validation >>
@@ -534,7 +540,7 @@ public class EmployeeRejoinService : HCMv3DomainServiceBase, IEmployeeRejoinServ
 
         if (!current.CreateNewEmployeeCode && !current.CarryForwardIndemnityBalance)
         {
-            await _gratuityRepository.InsertAsync(new EmployeeGratuity
+            var nilGratuity = new EmployeeGratuity
             {
                 TenantId = old.TenantId,
                 EmployeeId = old.Id,
@@ -542,7 +548,11 @@ public class EmployeeRejoinService : HCMv3DomainServiceBase, IEmployeeRejoinServ
                 GratuityPaidDate = dayBefore,
                 ResetGratuityCalc = true,
                 Comments = NilQuotaComment
-            });
+            };
+
+            // Legacy empGratuity.Save() -> EmployeeGratuity.UpdateQuotaBalance charges the quota.
+            await _gratuityQuotaService.ApplyAsync(nilGratuity, previous: null);
+            await _gratuityRepository.InsertAsync(nilGratuity);
         }
         else if (current.CreateNewEmployeeCode && current.CarryForwardIndemnityBalance)
         {
@@ -583,7 +593,7 @@ public class EmployeeRejoinService : HCMv3DomainServiceBase, IEmployeeRejoinServ
 
         if (!current.CreateNewEmployeeCode && !current.CarryForwardTicketBalance)
         {
-            await _tktAdjustmentRepository.InsertAsync(new EmployeeTktAdjustment
+            var nilAdjustment = new EmployeeTktAdjustment
             {
                 TenantId = old.TenantId,
                 EmployeeId = old.Id,
@@ -594,7 +604,12 @@ public class EmployeeRejoinService : HCMv3DomainServiceBase, IEmployeeRejoinServ
                 QuotaAdjusted = balance,
                 TicketPaymentType = TicketPaymentType.PayInAdvance,
                 Comments = NilQuotaComment
-            });
+            };
+
+            // Legacy EmployeeTktAdjustment.OnSaving (fired by empTktAdjustment.Save()): the balance is taken
+            // from the quota, leaving it at nil.
+            await _tktAdjustmentQuotaService.ApplyAsync(null, nilAdjustment);
+            await _tktAdjustmentRepository.InsertAsync(nilAdjustment);
         }
         else if (current.CreateNewEmployeeCode && current.CarryForwardTicketBalance)
         {
@@ -775,6 +790,8 @@ public class EmployeeRejoinService : HCMv3DomainServiceBase, IEmployeeRejoinServ
                 .FirstOrDefault();
             if (gratuity != null)
             {
+                // Legacy empIndemnity.Delete() -> EmployeeGratuity.OnDeleting gives the days back.
+                await _gratuityQuotaService.ReverseAsync(gratuity);
                 await _gratuityRepository.DeleteAsync(gratuity);
             }
         }
@@ -796,6 +813,8 @@ public class EmployeeRejoinService : HCMv3DomainServiceBase, IEmployeeRejoinServ
                     .FirstOrDefault();
                 if (adjustment != null)
                 {
+                    // Legacy EmployeeTktAdjustment.OnDeleting: the nil-balance count goes back to the quota.
+                    await _tktAdjustmentQuotaService.ReverseAsync(TktAdjustmentQuotaSnapshot.Of(adjustment));
                     await _tktAdjustmentRepository.DeleteAsync(adjustment);
                 }
             }

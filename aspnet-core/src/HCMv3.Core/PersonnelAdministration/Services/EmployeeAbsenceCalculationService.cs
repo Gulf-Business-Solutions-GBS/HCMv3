@@ -585,6 +585,75 @@ public class EmployeeAbsenceCalculationService : HCMv3DomainServiceBase, IEmploy
 
     #endregion
 
+    public async Task<(DateTime StartTime, DateTime EndTime)?> ResolveHalfDayTimesAsync(
+        int employeeId, DateTime day, HCMv3.PersonnelAdministration.HalfdayType halfdayType)
+    {
+        if (halfdayType == HCMv3.PersonnelAdministration.HalfdayType.None || day == default)
+        {
+            return null;
+        }
+
+        var duty = await TryGetEmployeeDutyAsync(employeeId, day.Date);
+        if (duty == null)
+        {
+            return null;
+        }
+
+        var halfMinutes = GetPlannedMinutes(duty) / 2;
+        var dutyStart = day.Date + duty.StartTime;
+        var dutyEnd = duty.IsNightShift && duty.EndTime <= duty.StartTime
+            ? day.Date.AddDays(1) + duty.EndTime
+            : day.Date + duty.EndTime;
+
+        return halfdayType == HCMv3.PersonnelAdministration.HalfdayType.StartOfDuty
+            ? (dutyStart, dutyStart.AddMinutes(halfMinutes))
+            : (dutyEnd.AddMinutes(-halfMinutes), dutyEnd);
+    }
+
+    /// <summary>Legacy <c>Duty.GetPlannedMinutes</c> (Duty.cs 316-321).</summary>
+    private double GetPlannedMinutes(Duty duty)
+    {
+        if (duty.IsWeeklyOff || duty.IsRestDay)
+        {
+            return 0;
+        }
+
+        var breakShift = duty.BreakShift
+                         ?? (duty.BreakShiftId.HasValue
+                             ? _breakShiftRepository.GetAll().FirstOrDefault(b => b.Id == duty.BreakShiftId.Value)
+                             : null);
+
+        return breakShift == null
+            ? (duty.EndTime - duty.StartTime).TotalMinutes
+            : (breakShift.StartTime - duty.StartTime).TotalMinutes + (duty.EndTime - breakShift.EndTime).TotalMinutes;
+    }
+
+    public async Task<DateTime> DefaultPaymentDateAsync(DateTime startDate)
+    {
+        if (startDate == default)
+        {
+            return default;
+        }
+
+        var payrollSettings = await _sysSettingsAccessor.GetPayrollSettingsAsync();
+        if (payrollSettings == null)
+        {
+            return default;
+        }
+
+        if (startDate.Day <= 15 && payrollSettings.LeaveAdvPaymentdateBefore15)
+        {
+            return new DateTime(startDate.Year, startDate.Month, 1);
+        }
+
+        if (startDate.Day > 15 && payrollSettings.LeaveAdvPaymentdateAfter15)
+        {
+            return new DateTime(startDate.Year, startDate.Month, 16);
+        }
+
+        return default;
+    }
+
     private Employee GetEmployeeOrThrow(int employeeId)
     {
         return _employeeRepository.GetAll().FirstOrDefault(r => r.Id == employeeId)

@@ -1,0 +1,138 @@
+<!-- Tabs as on the legacy (LHRMS) Fund form: Fund Detail, Fund Exemption. -->
+<ul class="nav nav-tabs mb-3 fs-6">
+    @if ('Pages.PersonnelAdministration.EmployeeFundDetails' | permission) {
+        <li class="nav-item">
+            <a
+                class="nav-link"
+                href="javascript:;"
+                [class.active]="activeTab() === 'details'"
+                (click)="activeTab.set('details')">
+                <i class="fa fa-hand-holding-usd text-primary me-1"></i>
+                {{ 'FundDetail' | localize }}
+            </a>
+        </li>
+    }
+    @if ('Pages.PersonnelAdministration.EmployeeFundExemptions' | permission) {
+        <li class="nav-item">
+            <a
+                class="nav-link"
+                href="javascript:;"
+                [class.active]="activeTab() === 'exemptions'"
+                (click)="activeTab.set('exemptions')">
+                <i class="fa fa-hand-holding-usd text-primary me-1"></i>
+                {{ 'FundExemption' | localize }}
+            </a>
+        </li>
+    }
+</ul>
+
+@if (activeTab() === 'details' && ('Pages.PersonnelAdministration.EmployeeFundDetails' | permission)) {
+    <div class="d-flex justify-content-end mb-3">
+        @if ('Pages.PersonnelAdministration.EmployeeFundDetails.Create' | permission) {
+            <button type="button" class="btn btn-primary" (click)="createDetail()">
+                <i class="fa fa-plus btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">{{ 'CreateNew' | localize }}</span>
+            </button>
+        }
+    </div>
+    <div class="primeng-datatable-container" [busyIf]="loadingDetails()">
+        <p-table [value]="details()" [paginator]="details().length > 10" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template #header>
+                <tr>
+                    <th style="width: 100px">{{ 'Actions' | localize }}</th>
+                    <th>{{ 'TransactionDate' | localize }}</th>
+                    <th>{{ 'Amount' | localize }}</th>
+                    <th>{{ 'FundPayType' | localize }}</th>
+                    <th>{{ 'Comments' | localize }}</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-record="$implicit">
+                <tr>
+                    <td class="text-nowrap">
+                        @if ('Pages.PersonnelAdministration.EmployeeFundDetails.Edit' | permission) {
+                            <button
+                                type="button"
+                                class="btn btn-icon btn-sm btn-light-primary me-1"
+                                [title]="'Edit' | localize"
+                                (click)="editDetail(record)">
+                                <i class="fa fa-pen"></i>
+                            </button>
+                        }
+                        @if ('Pages.PersonnelAdministration.EmployeeFundDetails.Delete' | permission) {
+                            <button
+                                type="button"
+                                class="btn btn-icon btn-sm btn-light-danger"
+                                [title]="'Delete' | localize"
+                                (click)="deleteDetail(record)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        }
+                    </td>
+                    <td>{{ record.transactionDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                    <td>{{ record.amount }}</td>
+                    <td>{{ fundPayTypeName(record.fundPayType) | localize }}</td>
+                    <td>{{ record.comments }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        @if (!loadingDetails() && details().length === 0) {
+            <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+        }
+    </div>
+}
+
+@if (activeTab() === 'exemptions' && ('Pages.PersonnelAdministration.EmployeeFundExemptions' | permission)) {
+    <div class="d-flex justify-content-end mb-3">
+        @if ('Pages.PersonnelAdministration.EmployeeFundExemptions.Create' | permission) {
+            <button type="button" class="btn btn-primary" (click)="createExemption()">
+                <i class="fa fa-plus btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">{{ 'CreateNew' | localize }}</span>
+            </button>
+        }
+    </div>
+    <div class="primeng-datatable-container" [busyIf]="loadingExemptions()">
+        <p-table [value]="exemptions()" [paginator]="exemptions().length > 10" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template #header>
+                <tr>
+                    <th style="width: 100px">{{ 'Actions' | localize }}</th>
+                    <th>{{ 'StartDate' | localize }}</th>
+                    <th>{{ 'EndDate' | localize }}</th>
+                    <th>{{ 'Comments' | localize }}</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-record="$implicit">
+                <tr>
+                    <td class="text-nowrap">
+                        @if ('Pages.PersonnelAdministration.EmployeeFundExemptions.Edit' | permission) {
+                            <button
+                                type="button"
+                                class="btn btn-icon btn-sm btn-light-primary me-1"
+                                [title]="'Edit' | localize"
+                                (click)="editExemption(record)">
+                                <i class="fa fa-pen"></i>
+                            </button>
+                        }
+                        @if ('Pages.PersonnelAdministration.EmployeeFundExemptions.Delete' | permission) {
+                            <button
+                                type="button"
+                                class="btn btn-icon btn-sm btn-light-danger"
+                                [title]="'Delete' | localize"
+                                (click)="deleteExemption(record)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        }
+                    </td>
+                    <td>{{ record.startDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                    <td>{{ record.endDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                    <td>{{ record.comments }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        @if (!loadingExemptions() && exemptions().length === 0) {
+            <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+        }
+    </div>
+}
+
+<createOrEditEmployeeFundDetailModal #detailModal (modalSave)="onDetailSaved()" />
+<createOrEditEmployeeFundExemptionModal #exemptionModal (modalSave)="onExemptionSaved()" />

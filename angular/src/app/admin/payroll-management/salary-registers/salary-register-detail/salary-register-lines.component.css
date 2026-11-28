@@ -1,6 +1,18 @@
-/* Legacy salary register line colours (CustomizeAppearanceController), fixed so they read the same in dark mode. */
+/* Legacy salary register detail grid (CustomizeAppearanceController): compact rows, grid lines both ways,
+   alternating rows, and wage type colours fixed so they read the same in dark mode. */
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th,
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    border: 1px solid #d9d9d9;
+    padding: 0.35rem 0.6rem;
+    font-size: 0.85rem;
+}
+
 :host ::ng-deep tr.sr-line-plain > td {
     color: rgb(47, 79, 79);
+}
+
+:host ::ng-deep tr.sr-line-plain:nth-child(even) > td {
+    background-color: rgb(237, 243, 250);
 }
 
 :host ::ng-deep tr.sr-line-earning > td {

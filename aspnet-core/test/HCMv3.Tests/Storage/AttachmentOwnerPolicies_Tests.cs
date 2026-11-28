@@ -181,6 +181,7 @@ public class AttachmentOwnerPolicies_Tests : AppTestBase
     [InlineData("OrganizationDocument")]
     [InlineData("Asset")]
     [InlineData("EmployeeAssetInvoice")]
+    [InlineData("EmployeePayment")]
     public void Should_Register_Exactly_One_Policy_For_The_Entity_Type(string entityType)
     {
         var policies = LocalIocManager.ResolveAll<IAttachmentOwnerPolicy>();

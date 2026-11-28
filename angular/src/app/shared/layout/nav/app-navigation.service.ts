@@ -2062,18 +2062,8 @@ export class AppNavigationService {
                         'flaticon-list-3',
                         '/app/admin/salary-registers'
                     ),
-                    new AppMenuItem(
-                        'SalaryRegisterDetails',
-                        'Pages.PayrollManagement.SalaryRegisterDetails',
-                        'flaticon-list-3',
-                        '/app/admin/salary-register-details'
-                    ),
-                    new AppMenuItem(
-                        'SalaryRegisterDaysDetails',
-                        'Pages.PayrollManagement.SalaryRegisterDaysDetails',
-                        'flaticon-list-3',
-                        '/app/admin/salary-register-days-details'
-                    ),
+                    // Salary Register Details / Days Details have no menu item: a register's lines are shown on
+                    // the register's own page (legacy parity). Their routes stay for direct links.
                     new AppMenuItem(
                         'SimulationSalaryRegisters',
                         'Pages.PayrollManagement.SimulationSalaryRegisters',
@@ -2350,6 +2340,45 @@ export class AppNavigationService {
                         'flaticon-piggy-bank',
                         '/app/admin/employee-loans'
                     ),
+                    // Every employee's one-off payments (legacy "Payment" transaction); also on each employee's Payments tab.
+                    new AppMenuItem(
+                        'EmployeePayments',
+                        'Pages.PersonnelAdministration.EmployeePayments',
+                        'flaticon-coins',
+                        '/app/admin/employee-payments'
+                    ),
+                    // Every employee's recurring payments (legacy "Recurring Payment" transaction); also on each
+                    // employee's Recurring Payments tab.
+                    new AppMenuItem(
+                        'EmployeeRecurringPayments',
+                        'Pages.PersonnelAdministration.EmployeeRecurringPayments',
+                        'flaticon-refresh',
+                        '/app/admin/employee-recurring-payments'
+                    ),
+                    // Every employee's overtime (legacy Transactions > Payroll Management > "Overtime"); also on
+                    // each employee's Overtime tab.
+                    new AppMenuItem(
+                        'EmployeeOvertimes',
+                        'Pages.PersonnelAdministration.EmployeeOvertimes',
+                        'flaticon-stopwatch',
+                        '/app/admin/employee-overtimes'
+                    ),
+                    // Every employee's tickets (legacy Transactions > Payroll Management > "Ticket"); also on each
+                    // employee's Tickets tab.
+                    new AppMenuItem(
+                        'EmployeeTickets',
+                        'Pages.PersonnelAdministration.EmployeeTickets',
+                        'flaticon-price-tag',
+                        '/app/admin/employee-tickets'
+                    ),
+                    // Every employee's ticket adjustments (legacy menu "Ticket Adjustment"); also on each employee's
+                    // Ticket Adjustments tab.
+                    new AppMenuItem(
+                        'EmployeeTktAdjustments',
+                        'Pages.PersonnelAdministration.EmployeeTktAdjustments',
+                        'flaticon-price-tag',
+                        '/app/admin/employee-tkt-adjustments'
+                    ),
                     // A loan's installments, recoveries and exemptions are opened from the loan itself (Employee
                     // Loans > Actions > Installments, Recoveries and Exemptions), so they have no menu entries.
                     // Every employee's leave in one list (legacy "Leave Transaction"); also on each employee's Absences tab.
@@ -2358,6 +2387,14 @@ export class AppNavigationService {
                         'Pages.PersonnelAdministration.EmployeeAbsences',
                         'flaticon-calendar',
                         '/app/admin/employee-absences'
+                    ),
+                    // Every employee's leave adjustments (legacy Payroll Transaction > "Leave Abs Adjustment"); also
+                    // on each employee's Abs Adjustment tab.
+                    new AppMenuItem(
+                        'LeaveAbsAdjustment',
+                        'Pages.PersonnelAdministration.EmployeeAbsAdjustments',
+                        'flaticon-calendar-2',
+                        '/app/admin/employee-abs-adjustments'
                     ),
                     new AppMenuItem(
                         'EmployeeLetterRequests',
@@ -2383,17 +2420,14 @@ export class AppNavigationService {
                         'flaticon-alarm',
                         '/app/admin/overtime-batches'
                     ),
+                    // Every employee's funds (legacy Personnel Administration "Fund"); also on each employee's
+                    // Funds tab. A fund's details and exemptions are tabs on the fund itself, so they have no menu
+                    // entries of their own.
                     new AppMenuItem(
-                        'EmployeeFundDetails',
-                        'Pages.PersonnelAdministration.EmployeeFundDetails',
-                        'flaticon-list-3',
-                        '/app/admin/employee-fund-details'
-                    ),
-                    new AppMenuItem(
-                        'EmployeeFundExemptions',
-                        'Pages.PersonnelAdministration.EmployeeFundExemptions',
-                        'flaticon-list-3',
-                        '/app/admin/employee-fund-exemptions'
+                        'Fund',
+                        'Pages.PersonnelAdministration.EmployeeFunds',
+                        'flaticon-coins',
+                        '/app/admin/employee-funds'
                     ),
                     new AppMenuItem(
                         'EmployeeDependantExceptions',

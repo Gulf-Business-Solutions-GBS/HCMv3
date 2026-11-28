@@ -17,13 +17,11 @@ namespace HCMv3.PersonnelAdministration;
 /// declared a duplicate PersonnelAdministration-scoped copy of this same enum, which was consolidated away
 /// after it caused a Swagger/NSwag schema-id collision (both were named "PayInterval").
 ///
-/// DELIBERATE SIMPLIFICATIONS: the legacy auto-EndDate-chaining/overlap-adjustment logic (based on
-/// <c>SysService.GetPayrollSettings(...).EnableEffectiveDateInRecPayment</c>), the retro-calculation
-/// <c>SetRetroDate</c> cascade, and the <c>IsPayrollSensitiveClass</c>/<c>IsSystemGenerated</c>
-/// earliest-master-data-change bookkeeping are Payroll-engine concerns not yet ported -- only the essential
-/// no-duplicate/overlap-per-employee-and-wagetype validation is ported (see
-/// <c>EmployeeRecurringPaymentsAppService</c>), same cross-record-cascade omission approach as every other
-/// ledger entity in this port.
+/// Legacy <c>OnSaving</c>/<c>OnDeleting</c> -- validations, overlap check, auto-EndDate chaining
+/// (<c>EnableEffectiveDateInRecPayment</c>) and the end-date-only retro date -- live in
+/// <c>EmployeeRecurringPaymentsAppService</c>; payroll pays these rows in
+/// <c>EmployeePaymentCalculationService</c> (Monthly: the full amount for every month the row overlaps;
+/// Yearly: the full amount in the month of its Start Date).
 /// </summary>
 public class EmployeeRecurringPayment : FullAuditedEntity, IMustHaveTenant
 {

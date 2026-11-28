@@ -23,6 +23,8 @@
                         <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body">
+                        <!-- Opened from a fund's own tab, the fund is fixed and not shown. -->
+                        @if (!fundFixed()) {
                         <div class="row">
                             <div class="col-md-12 mb-5">
                                 <label class="form-label required" for="EmployeeFundDetail_EmployeeFundId">{{ 'EmployeeFundId' | localize }}</label>
@@ -44,6 +46,7 @@
                                 <validation-messages [formCtrl]="employeeFundIdInput" />
                             </div>
                         </div>
+                        }
                         <div class="row">
                             <div class="col-md-4 mb-5">
                                 <label class="form-label required" for="EmployeeFundDetail_TransactionDate">{{ 'TransactionDate' | localize }}</label>

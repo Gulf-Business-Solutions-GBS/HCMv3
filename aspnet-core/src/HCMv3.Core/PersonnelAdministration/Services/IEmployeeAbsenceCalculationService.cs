@@ -154,4 +154,20 @@ public interface IEmployeeAbsenceCalculationService : IDomainService
     /// one-day window finds nothing.
     /// </summary>
     Task<DateTime?> GetFirstRegularDayAsync(int employeeId, int? absenceTypeId, DateTime fromDate, DateTime untilDate);
+
+    /// <summary>
+    /// Legacy <c>EmployeeAbsence.RecalculateDutyTimes</c> (lines 3370-3386): a half-day leave takes its times from
+    /// the day's duty -- StartOfDuty runs from the duty start for half the planned minutes, EndOfDuty ends at the
+    /// duty end. Planned minutes are legacy <c>Duty.GetPlannedMinutes</c>: the shift less its break shift, zero on
+    /// a week-off or rest day. Null when the leave is not a half day or no duty is configured (legacy returned
+    /// silently and left the times alone).
+    /// </summary>
+    Task<(DateTime StartTime, DateTime EndTime)?> ResolveHalfDayTimesAsync(int employeeId, DateTime day, HCMv3.PersonnelAdministration.HalfdayType halfdayType);
+
+    /// <summary>
+    /// Legacy <c>EmployeeAbsence.CalculatePaymentDate</c> (lines 270-303), filled in when StartDate changes and
+    /// PaymentDate is still empty: a leave starting on or before the 15th is paid on the 1st, a later one on the
+    /// 16th -- each only when the payroll settings say so, otherwise <c>default</c>.
+    /// </summary>
+    Task<DateTime> DefaultPaymentDateAsync(DateTime startDate);
 }

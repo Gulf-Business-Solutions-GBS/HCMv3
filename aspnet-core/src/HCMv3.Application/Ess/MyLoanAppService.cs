@@ -28,13 +28,16 @@ public class MyLoanAppService : MyTransactionAppServiceBase<EmployeeLoan>, IMyLo
         IEmployeeScopeProvider employeeScopeProvider,
         IRequestMasterResolver requestMasterResolver,
         IWorkflowApprovalService workflowApprovalService,
-        IEmployeeLoanInstallmentService installmentService)
+        IEmployeeLoanInstallmentService installmentService,
+        IEmployeeLoanRulesService loanRules)
         : base(repository, requestRepository, employeeScopeProvider, requestMasterResolver, workflowApprovalService)
     {
         _installmentService = installmentService;
+        _loanRules = loanRules;
     }
 
     private readonly IEmployeeLoanInstallmentService _installmentService;
+    private readonly IEmployeeLoanRulesService _loanRules;
 
     protected override string RequestType => LoanWorkflowTransactionHandler.LoanRequestType;
 
@@ -96,6 +99,13 @@ public class MyLoanAppService : MyTransactionAppServiceBase<EmployeeLoan>, IMyLo
                 IncludeInLoanPay = true
             },
             input.LoanTypeId);
+
+        // The loan type's limits, as on the admin screen and in legacy. The employee is only known once the
+        // request is built, so this runs after it; a refusal rolls the whole request back.
+        if (loan != null)
+        {
+            await _loanRules.ValidateEligibilityAsync(loan);
+        }
 
         // With workflow off for loans the loan is in force at once, so it gets its first instalment row now; a
         // routed one gets it on approval (LoanWorkflowTransactionHandler).

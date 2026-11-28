@@ -7,6 +7,7 @@ using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
+using HCMv3.PersonnelAdministration.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,19 +15,22 @@ namespace HCMv3.PersonnelAdministration;
 
 /// <summary>
 /// Application service for <see cref="EmployeeGratuity"/> (ported from legacy XAF EmployeeGratuity business
-/// object, Wave 2 deferred bucket, legacy display name "Indemnity"). Records the gratuity payment
-/// transaction itself; the legacy cascade that adds/subtracts <c>QuotaUsed</c> on the linked
-/// <see cref="EmployeeGratuityQuota"/> record (with balance validation) is NOT ported here -- see class
-/// remarks on <see cref="EmployeeGratuity"/>.
+/// object, legacy display name "Indemnity"). Every save and delete moves <c>QuotaUsed</c> on the
+/// <see cref="EmployeeGratuityQuota"/> covering the paid date, through <see cref="IEmployeeGratuityQuotaService"/>
+/// (legacy <c>UpdateQuotaBalance</c>/<c>OnDeleting</c>).
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeGratuities)]
 public class EmployeeGratuitiesAppService : HCMv3AppServiceBase, IEmployeeGratuitiesAppService
 {
     private readonly IRepository<EmployeeGratuity> _repository;
+    private readonly IEmployeeGratuityQuotaService _quotaService;
 
-    public EmployeeGratuitiesAppService(IRepository<EmployeeGratuity> repository)
+    public EmployeeGratuitiesAppService(
+        IRepository<EmployeeGratuity> repository,
+        IEmployeeGratuityQuotaService quotaService)
     {
         _repository = repository;
+        _quotaService = quotaService;
     }
 
     [HttpPost]
@@ -84,6 +88,7 @@ public class EmployeeGratuitiesAppService : HCMv3AppServiceBase, IEmployeeGratui
         var entity = MapToEntity(input, new EmployeeGratuity());
         entity.TenantId = AbpSession.TenantId ?? 0;
 
+        await _quotaService.ApplyAsync(entity, previous: null);
         await _repository.InsertAsync(entity);
     }
 
@@ -91,15 +96,20 @@ public class EmployeeGratuitiesAppService : HCMv3AppServiceBase, IEmployeeGratui
     protected virtual async Task UpdateAsync(CreateOrEditEmployeeGratuityDto input)
     {
         var entity = await _repository.GetAsync(input.Id.Value);
+        var previous = EmployeeGratuitySnapshot.Of(entity);
         MapToEntity(input, entity);
 
+        await _quotaService.ApplyAsync(entity, previous);
         await _repository.UpdateAsync(entity);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeGratuities_Delete)]
     public async Task Delete(EntityDto input)
     {
-        await _repository.DeleteAsync(input.Id);
+        var entity = await _repository.GetAsync(input.Id);
+
+        await _quotaService.ReverseAsync(entity);
+        await _repository.DeleteAsync(entity);
     }
 
     private static EmployeeGratuity MapToEntity(CreateOrEditEmployeeGratuityDto input, EmployeeGratuity entity)

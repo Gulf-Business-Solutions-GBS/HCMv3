@@ -43,6 +43,7 @@
                         <th>{{ 'OvertimeHours' | localize }}</th>
                         <th>{{ 'ActualOvertimeHours' | localize }}</th>
                         <th>{{ 'ApprovedOvertimeHours' | localize }}</th>
+                        <th>{{ 'Comments' | localize }}</th>
                         <th>{{ 'ExpectedOvertimeAmount' | localize }}</th>
                     </tr>
                 </ng-template>
@@ -70,6 +71,7 @@
                         <td>{{ record.overtimeHours }}</td>
                         <td>{{ record.actualOvertimeHours }}</td>
                         <td>{{ record.approvedOvertimeHours }}</td>
+                        <td>{{ record.comments }}</td>
                         <td>{{ record.expectedOvertimeAmount | number: '1.3-3' }}</td>
                     </tr>
                 </ng-template>

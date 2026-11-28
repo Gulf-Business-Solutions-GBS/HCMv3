@@ -103,4 +103,55 @@ public class LeaveRuleContext
 public interface ILeaveRuleValidator : IDomainService
 {
     Task ValidateAsync(LeaveRuleContext context);
+
+    /// <summary>
+    /// The days the balance rule measures this leave against -- the same figure <see cref="ValidateAsync"/>
+    /// refuses with, so a proposal built on it (HR's unpaid split) passes the save.
+    /// </summary>
+    Task<LeaveQuotaAvailability> GetQuotaAvailabilityAsync(LeaveRuleContext context);
+
+    /// <summary>
+    /// Legacy <c>EmployeeAbsence.PerformValidations</c> (line 1634): a type flagged as not returnable early
+    /// refuses any shortening of the leave. Throws for such a type; the caller decides it IS an early return.
+    /// </summary>
+    void EnsureEarlyReturnIsAllowed(int absenceTypeId);
+
+    /// <summary>
+    /// Legacy <c>ValidationService.ValidateDate(emp, ReturnDate, DayDateType.RejoiningDate)</c>
+    /// (<c>EmployeeAbsence</c> 1753-1757): the employee must rejoin on a regular day -- not a holiday, week-off
+    /// or rest day -- unless that day's duty allows a transaction to start on one.
+    /// </summary>
+    Task EnsureRejoiningDayIsRegularAsync(int employeeId, System.DateTime rejoiningDate);
+}
+
+/// <summary>How a leave type's balance is controlled for an employee, as the balance rule sees it.</summary>
+public enum LeaveQuotaKind
+{
+    /// <summary>No quota row and no allowance: unlimited, nothing is checked.</summary>
+    NotControlled = 0,
+
+    /// <summary>An <c>EmployeeAbsenceQuota</c> row (accrual): bookable balance plus allowed negative balance.</summary>
+    QuotaRow = 1,
+
+    /// <summary>A per-period allowance (salary profile or the type's <c>TotalDaysAllowed</c>) less what was used.</summary>
+    PeriodAllowance = 2
+}
+
+/// <summary>The result of <see cref="ILeaveRuleValidator.GetQuotaAvailabilityAsync"/>.</summary>
+public class LeaveQuotaAvailability
+{
+    public LeaveQuotaKind Kind { get; set; }
+
+    /// <summary>Days still available, including any negative balance the type allows.</summary>
+    public double Available { get; set; }
+
+    /// <summary><see cref="LeaveQuotaKind.PeriodAllowance"/> only: days already taken in the period.</summary>
+    public double Used { get; set; }
+
+    public System.DateTime PeriodStart { get; set; }
+
+    public System.DateTime PeriodEnd { get; set; }
+
+    /// <summary><see cref="LeaveQuotaKind.PeriodAllowance"/> only: the allowance came from the salary profile.</summary>
+    public bool FromSalaryProfile { get; set; }
 }

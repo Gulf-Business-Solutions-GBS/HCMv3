@@ -8,7 +8,7 @@
     aria-labelledby="createOrEditModal"
     aria-hidden="true"
     [config]="{ backdrop: 'static', keyboard: !saving() }">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             @if (active()) {
                 <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
@@ -23,107 +23,179 @@
                         <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label required" for="EmployeePayment_WageTypeId">{{ 'WageTypeId' | localize }}</label>
-                                <select
-                                    id="EmployeePayment_WageTypeId"
-                                    #wageTypeIdInput="ngModel"
-                                    class="form-select"
-                                    name="WageTypeId"
-                                    [ngModel]="record().wageTypeId"
-                                    (ngModelChange)="updateField('wageTypeId', $event)"
-                                    required>
-                                    <option [ngValue]="undefined"></option>
-                                    @for (type of wageTypes(); track type.id) {
-                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                        <!-- Layout follows the legacy (LHRMS) Payment screen: one panel with Employee / Wage Type /
+                             Payment Date / Currency, then Unit Type / Number / Billing Type, then Cost Center /
+                             Expected Amount; a second panel with Comments and the attachment grid. -->
+                        <div class="card card-bordered mb-5">
+                            <div class="card-body pb-0">
+                                <div class="row">
+                                    <div class="col-md-3 mb-5">
+                                        <label class="form-label required" for="EmployeePayment_EmployeeId">{{ 'Employee' | localize }}</label>
+                                        @if (choosesEmployee()) {
+                                            <!-- Active employees, plus separated ones still due a payment (legacy lookup rule). -->
+                                            <p-select
+                                                inputId="EmployeePayment_EmployeeId"
+                                                #employeeIdInput="ngModel"
+                                                name="EmployeeId"
+                                                styleClass="w-100"
+                                                [appendTo]="null"
+                                                [options]="employeeOptions()"
+                                                optionLabel="label"
+                                                optionValue="id"
+                                                [filter]="true"
+                                                filterBy="label"
+                                                [showClear]="true"
+                                                [virtualScroll]="true"
+                                                [virtualScrollItemSize]="38"
+                                                [ngModel]="record().employeeId"
+                                                (ngModelChange)="updateField('employeeId', $event)"
+                                                required />
+                                            <validation-messages [formCtrl]="employeeIdInput" />
+                                        } @else {
+                                            <input
+                                                id="EmployeePayment_EmployeeId"
+                                                class="form-control"
+                                                type="text"
+                                                [value]="employeeLabel()"
+                                                disabled />
+                                        }
+                                    </div>
+                                    <div class="col-md-3 mb-5">
+                                        <label class="form-label required" for="EmployeePayment_WageTypeId">{{ 'WageTypeId' | localize }}</label>
+                                        <select
+                                            id="EmployeePayment_WageTypeId"
+                                            #wageTypeIdInput="ngModel"
+                                            class="form-select"
+                                            name="WageTypeId"
+                                            [ngModel]="record().wageTypeId"
+                                            (ngModelChange)="updateField('wageTypeId', $event)"
+                                            required>
+                                            <option [ngValue]="undefined"></option>
+                                            @for (type of wageTypeOptions(); track type.id) {
+                                                <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                            }
+                                        </select>
+                                        <validation-messages [formCtrl]="wageTypeIdInput" />
+                                    </div>
+                                    <div class="col-md-2 mb-5">
+                                        <label class="form-label required" for="EmployeePayment_PaymentDate">{{ 'PaymentDate' | localize }}</label>
+                                        <input
+                                            id="EmployeePayment_PaymentDate"
+                                            #paymentDateInput="ngModel"
+                                            type="date"
+                                            class="form-control"
+                                            name="PaymentDate"
+                                            [ngModel]="record().paymentDate?.toISODate()"
+                                            (ngModelChange)="updateDateField('paymentDate', $event)"
+                                            required />
+                                        <validation-messages [formCtrl]="paymentDateInput" />
+                                    </div>
+                                    <div class="col-md-4 mb-5">
+                                        <label class="form-label required" for="EmployeePayment_CurrencyId">{{ 'CurrencyId' | localize }}</label>
+                                        <select
+                                            id="EmployeePayment_CurrencyId"
+                                            #currencyIdInput="ngModel"
+                                            class="form-select"
+                                            name="CurrencyId"
+                                            [ngModel]="record().currencyId"
+                                            (ngModelChange)="updateField('currencyId', $event)"
+                                            required>
+                                            <option [ngValue]="undefined"></option>
+                                            @for (currency of currencies(); track currency.id) {
+                                                <option [ngValue]="currency.id">{{ currency.nameEn }}</option>
+                                            }
+                                        </select>
+                                        <validation-messages [formCtrl]="currencyIdInput" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 mb-5">
+                                        <label class="form-label required" for="EmployeePayment_UnitType">{{ 'UnitType' | localize }}</label>
+                                        <select
+                                            id="EmployeePayment_UnitType"
+                                            class="form-select"
+                                            name="UnitType"
+                                            [ngModel]="record().unitType"
+                                            (ngModelChange)="updateField('unitType', $event)"
+                                            required>
+                                            @for (type of unitTypes; track type.value) {
+                                                <option [ngValue]="type.value">{{ type.name | localize }}</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-5">
+                                        <label class="form-label required" for="EmployeePayment_Amount">{{ 'Number' | localize }}</label>
+                                        <input
+                                            id="EmployeePayment_Amount"
+                                            #amountInput="ngModel"
+                                            class="form-control"
+                                            type="number"
+                                            step="any"
+                                            name="Amount"
+                                            [ngModel]="record().amount"
+                                            (ngModelChange)="updateNumberField('amount', $event)"
+                                            required />
+                                        <validation-messages [formCtrl]="amountInput" />
+                                    </div>
+                                    @if (showBillingType()) {
+                                        <div class="col-md-2 mb-5">
+                                            <label class="form-label" for="EmployeePayment_BillingType">{{ 'BillingType' | localize }}</label>
+                                            <input
+                                                id="EmployeePayment_BillingType"
+                                                class="form-control"
+                                                type="text"
+                                                [value]="billingType() ? (billingType() | localize) : ''"
+                                                disabled />
+                                        </div>
                                     }
-                                </select>
-                                <validation-messages [formCtrl]="wageTypeIdInput" />
-                            </div>
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label required" for="EmployeePayment_PaymentDate">{{ 'PaymentDate' | localize }}</label>
-                                <input
-                                    id="EmployeePayment_PaymentDate"
-                                    #paymentDateInput="ngModel"
-                                    type="date"
-                                    class="form-control"
-                                    name="PaymentDate"
-                                    [ngModel]="record().paymentDate?.toISODate()"
-                                    (ngModelChange)="updateDateField('paymentDate', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="paymentDateInput" />
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 mb-5">
+                                        <label class="form-label" for="EmployeePayment_CostCenterId">{{ 'CostCenterId' | localize }}</label>
+                                        <select
+                                            id="EmployeePayment_CostCenterId"
+                                            class="form-select"
+                                            name="CostCenterId"
+                                            [ngModel]="record().costCenterId"
+                                            (ngModelChange)="updateField('costCenterId', $event)">
+                                            <option [ngValue]="undefined"></option>
+                                            @for (costCenter of costCenters(); track costCenter.id) {
+                                                <option [ngValue]="costCenter.id">{{ costCenter.nameEn }}</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    @if (showExpectedAmount()) {
+                                        <div class="col-md-3 mb-5">
+                                            <label class="form-label" for="EmployeePayment_ExpectedAmount">{{ 'ExpectedAmount' | localize }}</label>
+                                            <input
+                                                id="EmployeePayment_ExpectedAmount"
+                                                class="form-control"
+                                                type="text"
+                                                [value]="expectedAmount().toFixed(3)"
+                                                disabled />
+                                        </div>
+                                    }
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="EmployeePayment_Amount">{{ 'Amount' | localize }}</label>
-                                <input
-                                    id="EmployeePayment_Amount"
-                                    #amountInput="ngModel"
-                                    class="form-control"
-                                    type="number"
-                                    step="0.01"
-                                    name="Amount"
-                                    [ngModel]="record().amount"
-                                    (ngModelChange)="updateNumberField('amount', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="amountInput" />
+                        <div class="card card-bordered">
+                            <div class="card-body">
+                                <div class="mb-5">
+                                    <label class="form-label" for="EmployeePayment_Comments">{{ 'Comments' | localize }}</label>
+                                    <textarea
+                                        id="EmployeePayment_Comments"
+                                        class="form-control"
+                                        rows="5"
+                                        maxlength="500"
+                                        name="Comments"
+                                        [ngModel]="record().comments"
+                                        (ngModelChange)="updateField('comments', $event)"></textarea>
+                                </div>
+                                <!-- Legacy DocAttachment grid. Files hang off the saved payment, so it appears once saved. -->
+                                @if (record().id) {
+                                    <app-attachments entityType="EmployeePayment" [entityId]="record().id" />
+                                }
                             </div>
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label" for="EmployeePayment_CurrencyId">{{ 'CurrencyId' | localize }}</label>
-                                <select
-                                    id="EmployeePayment_CurrencyId"
-                                    class="form-select"
-                                    name="CurrencyId"
-                                    [ngModel]="record().currencyId"
-                                    (ngModelChange)="updateField('currencyId', $event)">
-                                    <option [ngValue]="undefined"></option>
-                                    @for (currency of currencies(); track currency.id) {
-                                        <option [ngValue]="currency.id">{{ currency.nameEn }}</option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="EmployeePayment_UnitType">{{ 'UnitType' | localize }}</label>
-                                <select
-                                    id="EmployeePayment_UnitType"
-                                    class="form-select"
-                                    name="UnitType"
-                                    [ngModel]="record().unitType"
-                                    (ngModelChange)="updateField('unitType', $event)"
-                                    required>
-                                    @for (type of unitTypes; track type.value) {
-                                        <option [ngValue]="type.value">{{ type.name | localize }}</option>
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label" for="EmployeePayment_CostCenterId">{{ 'CostCenterId' | localize }}</label>
-                                <select
-                                    id="EmployeePayment_CostCenterId"
-                                    class="form-select"
-                                    name="CostCenterId"
-                                    [ngModel]="record().costCenterId"
-                                    (ngModelChange)="updateField('costCenterId', $event)">
-                                    <option [ngValue]="undefined"></option>
-                                    @for (costCenter of costCenters(); track costCenter.id) {
-                                        <option [ngValue]="costCenter.id">{{ costCenter.nameEn }}</option>
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mb-5">
-                            <label class="form-label" for="EmployeePayment_Comments">{{ 'Comments' | localize }}</label>
-                            <textarea
-                                id="EmployeePayment_Comments"
-                                class="form-control"
-                                rows="3"
-                                name="Comments"
-                                [ngModel]="record().comments"
-                                (ngModelChange)="updateField('comments', $event)"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

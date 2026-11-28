@@ -27,6 +27,14 @@ public interface IEmployeeOvertimeService
     Task EnsureNoOvertimeOnDateAsync(int employeeId, DateTime effectiveDate, int excludeId = 0);
 
     /// <summary>
+    /// Legacy <c>EmployeeOvertime.PerformValidations</c> (lines 176-194, skipped for system-generated rows): the
+    /// employee must have an org assignment covering the date, that assignment must have an employee sub group,
+    /// and the sub group must have <c>PayOvertime</c> ticked. Throws <see cref="Abp.UI.UserFriendlyException"/>
+    /// otherwise. The Time Engine writes its rows directly and does not call this, as in legacy.
+    /// </summary>
+    Task EnsureEmployeeEligibleForOvertimeAsync(int employeeId, DateTime effectiveDate);
+
+    /// <summary>
     /// The (employee, day) pairs in the range that already have an overtime row, so a screen can say so before
     /// anybody builds a batch around them.
     /// </summary>

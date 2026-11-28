@@ -575,6 +575,176 @@ public class EmployeeBasicPayCalculationServiceTests
 
     #endregion
 
+    #region << PayInterval = Daily / Hourly -- Remuneration (legacy lines 1035-1137) >>
+
+    private static EmployeeBasicPay BasicPay(PayInterval payInterval)
+    {
+        var basicPay = BasicPay();
+        basicPay.PayInterval = payInterval;
+        return basicPay;
+    }
+
+    private static EmployeeRemuneration Remuneration(DateTime date, double number, PaymentUnit unit, int employeeId = EmployeeId)
+    {
+        return new EmployeeRemuneration
+        {
+            TenantId = 1,
+            EmployeeId = employeeId,
+            PaymentDate = date,
+            PaymentNumber = number,
+            PaymentUnit = unit
+        };
+    }
+
+    private static ITimeDataService HoursInDay(double hours)
+    {
+        var timeData = Substitute.For<ITimeDataService>();
+        timeData.GetTotalHoursInDayAsync(Arg.Any<Employee>(), Arg.Any<DateTime>()).Returns(hours);
+        return timeData;
+    }
+
+    /// <summary>
+    /// Daily: Rate = daily amount x calendar days; Number = this month's Remuneration days (hours / hours-in-day);
+    /// Amount = daily amount x Number. Rows of other months and other employees are ignored.
+    /// </summary>
+    [Fact]
+    public async Task CalculateAsync_Should_Pay_Daily_Employee_For_This_Months_Remuneration_Days_And_Hours()
+    {
+        var service = Build(
+            basicPays: new[] { BasicPay(PayInterval.Daily) },
+            basicPayDetails: new[] { Detail(1, 100, 10) },
+            remunerations: new[]
+            {
+                Remuneration(new DateTime(2025, 3, 5), 3, PaymentUnit.Days),
+                Remuneration(new DateTime(2025, 3, 31), 4, PaymentUnit.Hours),
+                Remuneration(new DateTime(2025, 2, 28), 9, PaymentUnit.Days),
+                Remuneration(new DateTime(2025, 4, 1), 9, PaymentUnit.Days),
+                Remuneration(new DateTime(2025, 3, 6), 9, PaymentUnit.Days, employeeId: EmployeeId + 1)
+            },
+            timeDataService: HoursInDay(8));
+
+        await service.CalculateAsync(Context(Wage(100, "1001", billingMethod: BillingMethod.CalendarDaysPerMonth)));
+
+        var line = _store.Lines.Single(l => l.WageTypeId == 100);
+        line.Rate.ShouldBe(10 * 31);
+        line.Number.ShouldBe(3.5);
+        line.Amount.ShouldBe(35);
+    }
+
+    /// <summary>Hourly: per-day salary = hourly amount x hours-in-day; Rate scales by FixedDays.</summary>
+    [Fact]
+    public async Task CalculateAsync_Should_Pay_Hourly_Employee_Using_Hours_In_Day_And_FixedDays_Rate()
+    {
+        var service = Build(
+            basicPays: new[] { BasicPay(PayInterval.Hourly) },
+            basicPayDetails: new[] { Detail(1, 100, 2) },
+            remunerations: new[]
+            {
+                Remuneration(new DateTime(2025, 3, 1), 2, PaymentUnit.Days),
+                Remuneration(new DateTime(2025, 3, 20), 12, PaymentUnit.Hours)
+            },
+            timeDataService: HoursInDay(8));
+
+        await service.CalculateAsync(Context(Wage(100, "1001", billingMethod: BillingMethod.FixedDaysPerMonth, fixedDays: 26)));
+
+        var line = _store.Lines.Single(l => l.WageTypeId == 100);
+        line.Rate.ShouldBe(2 * 8 * 26);
+        line.Number.ShouldBe(3.5);
+        line.Amount.ShouldBe(2 * 8 * 3.5);
+    }
+
+    /// <summary>FixedAmountPerMonth leaves the Hourly rate at hourly amount x hours-in-day.</summary>
+    [Fact]
+    public async Task CalculateAsync_Should_Keep_Hourly_Rate_Unscaled_For_FixedAmountPerMonth()
+    {
+        var service = Build(
+            basicPays: new[] { BasicPay(PayInterval.Hourly) },
+            basicPayDetails: new[] { Detail(1, 100, 3) },
+            remunerations: new[] { Remuneration(new DateTime(2025, 3, 10), 1, PaymentUnit.Days) },
+            timeDataService: HoursInDay(10));
+
+        await service.CalculateAsync(Context(Wage(100, "1001", billingMethod: BillingMethod.FixedAmountPerMonth)));
+
+        var line = _store.Lines.Single(l => l.WageTypeId == 100);
+        line.Rate.ShouldBe(30);
+        line.Number.ShouldBe(1);
+        line.Amount.ShouldBe(30);
+    }
+
+    /// <summary>No shift hours for the day: legacy falls back to default_Working_Hours.</summary>
+    [Fact]
+    public async Task CalculateAsync_Should_Use_Default_Working_Hours_When_Employee_Has_No_Shift_Hours()
+    {
+        var service = Build(
+            basicPays: new[] { BasicPay(PayInterval.Daily) },
+            basicPayDetails: new[] { Detail(1, 100, 12) },
+            remunerations: new[] { Remuneration(new DateTime(2025, 3, 10), 6, PaymentUnit.Hours) },
+            timeDataService: HoursInDay(0));
+
+        var context = Context(Wage(100, "1001", billingMethod: BillingMethod.FixedAmountPerMonth));
+        context.Settings.DefaultWorkingHours = 12;
+
+        await service.CalculateAsync(context);
+
+        var line = _store.Lines.Single(l => l.WageTypeId == 100);
+        line.Rate.ShouldBe(12);
+        line.Number.ShouldBe(0.5);
+        line.Amount.ShouldBe(6);
+    }
+
+    /// <summary>Legacy: on hold still writes the Rate, but not Number or Amount.</summary>
+    [Fact]
+    public async Task CalculateAsync_Should_Write_Only_The_Rate_For_Daily_Employee_On_Hold()
+    {
+        var service = Build(
+            basicPays: new[] { BasicPay(PayInterval.Daily) },
+            basicPayDetails: new[] { Detail(1, 100, 10) },
+            remunerations: new[] { Remuneration(new DateTime(2025, 3, 10), 5, PaymentUnit.Days) },
+            timeDataService: HoursInDay(8));
+
+        var context = Context(Wage(100, "1001", billingMethod: BillingMethod.CalendarDaysPerMonth));
+        context.OnHold.BasicPay = true;
+
+        await service.CalculateAsync(context);
+
+        var line = _store.Lines.Single(l => l.WageTypeId == 100);
+        line.Rate.ShouldBe(310);
+        line.Number.ShouldBe(0);
+        line.Amount.ShouldBe(0);
+    }
+
+    [Fact]
+    public void SumPayDays_Should_Count_Days_As_Is_And_Hours_Over_Hours_In_Day()
+    {
+        var days = RemunerationPayDaysCalculator.SumPayDays(new[]
+        {
+            Remuneration(PayDate, 2, PaymentUnit.Days),
+            Remuneration(PayDate, 6, PaymentUnit.Hours)
+        }, 8);
+
+        days.ShouldBe(2.75);
+    }
+
+    [Fact]
+    public void SumPayDays_Should_Skip_Hours_When_Hours_In_Day_Is_Zero()
+    {
+        var days = RemunerationPayDaysCalculator.SumPayDays(new[]
+        {
+            Remuneration(PayDate, 2, PaymentUnit.Days),
+            Remuneration(PayDate, 6, PaymentUnit.Hours)
+        }, 0);
+
+        days.ShouldBe(2);
+    }
+
+    [Fact]
+    public void SumPayDays_Should_Be_Zero_For_No_Remuneration()
+    {
+        RemunerationPayDaysCalculator.SumPayDays(Array.Empty<EmployeeRemuneration>(), 8).ShouldBe(0);
+    }
+
+    #endregion
+
     #region << GetRecoveryPeriods (legacy Program.cs line 2922) >>
 
     [Fact]

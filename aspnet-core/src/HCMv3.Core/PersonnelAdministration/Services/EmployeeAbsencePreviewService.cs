@@ -82,16 +82,55 @@ public class EmployeeAbsencePreviewService : HCMv3DomainServiceBase, IEmployeeAb
         var start = request.StartDate.Date;
         var end = request.EndDate.Date;
 
+        // RecalculateDutyTimes, lines 3370-3386: a half day's times come from the duty, not from the user.
+        var startTime = request.StartTime;
+        var endTime = request.EndTime;
+        if (request.EmployeeId > 0 && start != default)
+        {
+            var halfDay = await _calculation.ResolveHalfDayTimesAsync(request.EmployeeId, start, request.HalfdayType);
+            if (halfDay.HasValue)
+            {
+                (startTime, endTime) = halfDay.Value;
+            }
+        }
+
         var preview = new EmployeeAbsencePreview
         {
             // UpdateCalendarDays, lines 2911-2917.
             CalendarDays = start != default && end != default ? (end - start).TotalDays + 1 : 0,
 
             // UpdateAbsenceHours, lines 2935-2941.
-            AbsenceHours = request.StartTime != default && request.EndTime != default
-                ? Math.Round((request.EndTime - request.StartTime).TotalHours, 3)
-                : 0
+            AbsenceHours = startTime != default && endTime != default
+                ? Math.Round((endTime - startTime).TotalHours, 3)
+                : 0,
+
+            StartTime = startTime == default ? null : startTime,
+            EndTime = endTime == default ? null : endTime
         };
+
+        // CalculatePaymentDate (270-303), applied as legacy's OnChanged did: only while PaymentDate is empty.
+        if (request.PaymentDate.HasValue && request.PaymentDate.Value.Year > 1)
+        {
+            preview.PaymentDate = request.PaymentDate.Value;
+        }
+        else
+        {
+            var suggested = await _calculation.DefaultPaymentDateAsync(start);
+            preview.PaymentDate = suggested == default ? null : suggested;
+        }
+
+        // ExtCalendarDays (670-679) and ExtTotalLeaveDays (EAC 834-838 / EA 4621-4625): the main type's exclusions.
+        var extStart = request.ExtStartDate?.Date ?? default;
+        var extEnd = request.ExtEndDate?.Date ?? default;
+        if (extStart != default && extEnd != default && extEnd >= extStart)
+        {
+            preview.ExtCalendarDays = (extEnd - extStart).TotalDays + 1;
+            if (request.EmployeeId > 0 && request.AbsenceTypeId > 0)
+            {
+                preview.ExtTotalLeaveDays = preview.ExtCalendarDays
+                    - (double)await _calculation.ActualLeaveDaysAsync(request.EmployeeId, extStart, extEnd, request.AbsenceTypeId);
+            }
+        }
 
         // RecalculateTotalLeaveDays, lines 2942-2969 -- the service the save itself uses.
         preview.TotalLeaveDays = await _calculation.CalculateTotalLeaveDaysAsync(
@@ -108,6 +147,13 @@ public class EmployeeAbsencePreviewService : HCMv3DomainServiceBase, IEmployeeAb
                 : await GetOtherLeaveQuotaAsync(employee, absenceType, start, end);
 
         var returnDateEntered = request.ReturnDate.Year != 1;
+
+        // DaysDifference, lines 731-758 -- measured from EndDate, as legacy's EmployeeAbsence did.
+        if (returnDateEntered && end != default && employee != null && absenceType != null)
+        {
+            preview.DaysDifference = await _calculation.GetReturnDaysDifferenceAsync(
+                employee.Id, absenceType.Id, end, request.ReturnDate.Date);
+        }
 
         // Paid_CalendarDays (820-835) / DeductFromQuota (839-866).
         var paidStart = request.PaidStartDate?.Date ?? default;

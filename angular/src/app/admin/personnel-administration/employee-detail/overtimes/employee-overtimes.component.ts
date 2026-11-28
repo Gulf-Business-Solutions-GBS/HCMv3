@@ -70,6 +70,7 @@ export class EmployeeOvertimesComponent extends AppComponentBase {
             .getAll(
                 new GetAllEmployeeOvertimesInput({
                     employeeId: this.employeeId(),
+                    filter: undefined,
                     sorting: this.primengTableHelper.getSorting(this.dataTable()),
                     maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),
                     skipCount: this.primengTableHelper.getSkipCount(this.paginator(), event),

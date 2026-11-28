@@ -330,19 +330,7 @@ public class FundDeductionWageTypeCalculator : HCMv3DomainServiceBase, IWageType
     /// <summary>Legacy lines 3743-3748 / 3816-3822 (identical): Math.Round(..., 2) on all three totals.</summary>
     private void RetotalFund(EmployeeFund empFund)
     {
-        var details = DetailsOf(empFund.Id);
-
-        empFund.Amount = Math.Round(details
-            .Where(r => r.FundPayType == FundPayType.Opening
-                        || r.FundPayType == FundPayType.Deduction
-                        || r.FundPayType == FundPayType.ExternalDeduction)
-            .Sum(r => r.Amount), 2);
-
-        empFund.PaidAmount = Math.Round(details
-            .Where(r => r.FundPayType == FundPayType.Payment)
-            .Sum(r => r.Amount), 2);
-
-        empFund.BalanceAmount = Math.Round(empFund.Amount - empFund.PaidAmount, 2);
+        EmployeeFundTotals.Apply(empFund, DetailsOf(empFund.Id));
     }
 
     private List<EmployeeFundDetail> DetailsOf(int employeeFundId)

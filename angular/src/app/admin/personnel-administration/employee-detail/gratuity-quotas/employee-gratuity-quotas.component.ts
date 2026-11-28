@@ -1,4 +1,5 @@
 import { Component, effect, inject, input, signal, viewChild } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     EmployeeGratuityQuotaDto,
@@ -30,6 +31,7 @@ import { CreateOrEditEmployeeGratuityQuotaModalComponent } from './create-or-edi
         PermissionPipe,
         PermissionAnyPipe,
         CreateOrEditEmployeeGratuityQuotaModalComponent,
+        DecimalPipe,
     ],
 })
 export class EmployeeGratuityQuotasComponent extends AppComponentBase {

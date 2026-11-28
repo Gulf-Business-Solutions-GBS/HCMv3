@@ -64,6 +64,36 @@ public class CreateOrEditEmployeeTicketDto
     public bool RecordDirectly { get; set; }
 }
 
+public class GetEmployeeTicketEmployeesInput
+{
+    /// <summary>Optional text matched against the employee's code and English and Arabic names.</summary>
+    public string Filter { get; set; }
+}
+
+public class CalculateEmployeeTicketAmountInput
+{
+    [Required]
+    public int EmployeeId { get; set; }
+
+    [Required]
+    public int TicketTypeId { get; set; }
+
+    [Required]
+    public DateTime PaymentDate { get; set; }
+
+    public double Compensate { get; set; }
+
+    /// <summary>The amount on the form; the actual amount for the ActualAmount pay types (0 = use MaxAmount).</summary>
+    public double Amount { get; set; }
+}
+
+public class EmployeeTicketAmountDto
+{
+    public double Amount { get; set; }
+
+    public bool OverrideAmount { get; set; }
+}
+
 public class GetEmployeeTicketForEditOutput
 {
     public CreateOrEditEmployeeTicketDto EmployeeTicket { get; set; }
@@ -72,6 +102,9 @@ public class GetEmployeeTicketForEditOutput
 public class GetAllEmployeeTicketsInput : PagedAndSortedResultRequestDto, IShouldNormalize
 {
     public int? EmployeeId { get; set; }
+
+    /// <summary>Optional text matched against employee code/names and the ticket type's names.</summary>
+    public string Filter { get; set; }
 
     public void Normalize()
     {

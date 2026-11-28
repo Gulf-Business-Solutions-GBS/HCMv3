@@ -54,9 +54,18 @@
                                                 [virtualScroll]="true"
                                                 [virtualScrollItemSize]="38"
                                                 [ngModel]="record().employeeId"
-                                                (ngModelChange)="updateField('employeeId', $event)"
+                                                (ngModelChange)="onEmployeeChanged($event)"
                                                 required />
                                             <validation-messages [formCtrl]="employeeIdInput" />
+                                        </div>
+                                    } @else if (currentEmployee(); as employee) {
+                                        <div class="col-md-8 mb-5">
+                                            <label class="form-label" for="EmployeeAbsence_EmployeeName">{{ 'Employee' | localize }}</label>
+                                            <input
+                                                id="EmployeeAbsence_EmployeeName"
+                                                class="form-control form-control-solid"
+                                                readonly
+                                                [value]="employee.code + ' - ' + employee.nameEn" />
                                         </div>
                                     }
                                     <div class="col-md-4 mb-5">
@@ -67,10 +76,10 @@
                                             class="form-select"
                                             name="AbsenceTypeId"
                                             [ngModel]="record().absenceTypeId"
-                                            (ngModelChange)="updateField('absenceTypeId', $event)"
+                                            (ngModelChange)="onLeaveTypeChanged($event)"
                                             required>
                                             <option [ngValue]="undefined"></option>
-                                            @for (type of absenceTypes(); track type.id) {
+                                            @for (type of leaveTypes(); track type.id) {
                                                 <option [ngValue]="type.id">{{ type.nameEn }}</option>
                                             }
                                         </select>
@@ -86,7 +95,7 @@
                                             type="date"
                                             class="form-control"
                                             name="StartDate"
-                                            [ngModel]="record().startDate?.toISODate()"
+                                            [ngModel]="dateValue(record().startDate)"
                                             (ngModelChange)="updateDateField('startDate', $event)"
                                             required />
                                         <validation-messages [formCtrl]="startDateInput" />
@@ -103,7 +112,7 @@
                                             name="LeavePaymentType"
                                             [ngModel]="record().leavePaymentType"
                                             (ngModelChange)="updateField('leavePaymentType', $event)">
-                                            @for (option of leavePaymentTypes; track option.value) {
+                                            @for (option of leavePaymentTypes(); track option.value) {
                                                 <option [ngValue]="option.value">{{ option.name | localize }}</option>
                                             }
                                         </select>
@@ -118,7 +127,7 @@
                                             type="date"
                                             class="form-control"
                                             name="EndDate"
-                                            [ngModel]="record().endDate?.toISODate()"
+                                            [ngModel]="dateValue(record().endDate)"
                                             (ngModelChange)="updateDateField('endDate', $event)"
                                             required />
                                         <validation-messages [formCtrl]="endDateInput" />
@@ -127,16 +136,19 @@
                                         <label class="form-label" for="EmployeeAbsence_TotalLeaveDays">{{ 'TotalLeaveDays' | localize }}</label>
                                         <input id="EmployeeAbsence_TotalLeaveDays" class="form-control form-control-solid" readonly [value]="formatNumber(calc?.totalLeaveDays)" />
                                     </div>
-                                    <div class="col-md-4 mb-5">
-                                        <label class="form-label" for="EmployeeAbsence_PaymentDate">{{ 'PaymentDate' | localize }}</label>
-                                        <input
-                                            id="EmployeeAbsence_PaymentDate"
-                                            class="form-control"
-                                            type="date"
-                                            name="PaymentDate"
-                                            [ngModel]="record().paymentDate?.toISODate()"
-                                            (ngModelChange)="updateDateField('paymentDate', $event)" />
-                                    </div>
+                                    @if (showPaymentDate()) {
+                                        <!-- Only for an advance / full payment; fills itself from the start date when empty. -->
+                                        <div class="col-md-4 mb-5">
+                                            <label class="form-label" for="EmployeeAbsence_PaymentDate">{{ 'PaymentDate' | localize }}</label>
+                                            <input
+                                                id="EmployeeAbsence_PaymentDate"
+                                                class="form-control"
+                                                type="date"
+                                                name="PaymentDate"
+                                                [ngModel]="dateValue(record().paymentDate)"
+                                                (ngModelChange)="updateDateField('paymentDate', $event)" />
+                                        </div>
+                                    }
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4 mb-5 d-flex align-items-end">
@@ -155,6 +167,20 @@
                                         <label class="form-label" for="EmployeeAbsence_CurrentBalance">{{ 'CurrentBalance' | localize }}</label>
                                         <input id="EmployeeAbsence_CurrentBalance" class="form-control form-control-solid" readonly [value]="formatNumber(calc?.currentBalance)" />
                                     </div>
+                                    @if (settings().enableSettleFractionalLeaveBalance) {
+                                        <div class="col-md-4 mb-5 d-flex align-items-end">
+                                            <div class="form-check">
+                                                <input
+                                                    id="EmployeeAbsence_SettleFractionalBalance"
+                                                    class="form-check-input"
+                                                    type="checkbox"
+                                                    name="SettleFractionalBalance"
+                                                    [ngModel]="record().settleFractionalBalance"
+                                                    (ngModelChange)="updateField('settleFractionalBalance', $event)" />
+                                                <label class="form-check-label" for="EmployeeAbsence_SettleFractionalBalance">{{ 'SettleFractionalBalance' | localize }}</label>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -166,19 +192,24 @@
                             </div>
                             <div class="card-body py-4">
                                 <div class="row">
-                                    <div class="col-md-3 mb-5">
-                                        <label class="form-label" for="EmployeeAbsence_HalfdayType">{{ 'HalfdayType' | localize }}</label>
-                                        <select
-                                            id="EmployeeAbsence_HalfdayType"
-                                            class="form-select"
-                                            name="HalfdayType"
-                                            [ngModel]="record().halfdayType"
-                                            (ngModelChange)="updateField('halfdayType', $event)">
-                                            @for (option of halfdayTypes; track option.value) {
-                                                <option [ngValue]="option.value">{{ option.name | localize }}</option>
-                                            }
-                                        </select>
-                                    </div>
+                                    <!-- Legacy: Half Day Type only with auto half-day leave on; half day and times only
+                                         for a type allowing partial leave; a half day's times come from the duty. -->
+                                    @if (showHalfDay()) {
+                                        <div class="col-md-3 mb-5">
+                                            <label class="form-label" for="EmployeeAbsence_HalfdayType">{{ 'HalfdayType' | localize }}</label>
+                                            <select
+                                                id="EmployeeAbsence_HalfdayType"
+                                                class="form-select"
+                                                name="HalfdayType"
+                                                [disabled]="!allowsPartial()"
+                                                [ngModel]="record().halfdayType"
+                                                (ngModelChange)="updateField('halfdayType', $event)">
+                                                @for (option of halfdayTypes; track option.value) {
+                                                    <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    }
                                     <div class="col-md-3 mb-5">
                                         <label class="form-label" for="EmployeeAbsence_StartTime">{{ 'StartTime' | localize }}</label>
                                         <input
@@ -187,6 +218,7 @@
                                             type="time"
                                             step="1"
                                             name="StartTime"
+                                            [disabled]="!allowsPartial() || isHalfDay()"
                                             [ngModel]="getTimeValue('startTime')"
                                             (ngModelChange)="updateTimeField('startTime', $event)" />
                                     </div>
@@ -198,6 +230,7 @@
                                             type="time"
                                             step="1"
                                             name="EndTime"
+                                            [disabled]="!allowsPartial() || isHalfDay()"
                                             [ngModel]="getTimeValue('endTime')"
                                             (ngModelChange)="updateTimeField('endTime', $event)" />
                                     </div>
@@ -216,39 +249,42 @@
                             </div>
                             <div class="card-body py-4">
                                 <div class="row">
-                                    <div class="col-md-4 mb-5">
-                                        <label class="form-label" for="EmployeeAbsence_ExtAbsenceTypeId">{{ 'LeaveType' | localize }}</label>
-                                        <select
-                                            id="EmployeeAbsence_ExtAbsenceTypeId"
-                                            class="form-select"
-                                            name="ExtAbsenceTypeId"
-                                            [ngModel]="record().extAbsenceTypeId"
-                                            (ngModelChange)="updateField('extAbsenceTypeId', $event)">
-                                            <option [ngValue]="undefined"></option>
-                                            @for (type of absenceTypes(); track type.id) {
-                                                <option [ngValue]="type.id">{{ type.nameEn }}</option>
-                                            }
-                                        </select>
+                                    <!-- Legacy keeps the type read-only: it is chosen by the quota-exceeded split on save. -->
+                                    <div class="col-md-3 mb-5">
+                                        <label class="form-label" for="EmployeeAbsence_ExtAbsenceTypeName">{{ 'LeaveType' | localize }}</label>
+                                        <input
+                                            id="EmployeeAbsence_ExtAbsenceTypeName"
+                                            class="form-control form-control-solid"
+                                            readonly
+                                            [value]="extAbsenceTypeName()" />
                                     </div>
-                                    <div class="col-md-4 mb-5">
+                                    <div class="col-md-3 mb-5">
                                         <label class="form-label" for="EmployeeAbsence_ExtStartDate">{{ 'StartDate' | localize }}</label>
                                         <input
                                             id="EmployeeAbsence_ExtStartDate"
                                             class="form-control"
                                             type="date"
                                             name="ExtStartDate"
-                                            [ngModel]="record().extStartDate?.toISODate()"
+                                            [ngModel]="dateValue(record().extStartDate)"
                                             (ngModelChange)="updateDateField('extStartDate', $event)" />
                                     </div>
-                                    <div class="col-md-4 mb-5">
+                                    <div class="col-md-2 mb-5">
                                         <label class="form-label" for="EmployeeAbsence_ExtEndDate">{{ 'EndDate' | localize }}</label>
                                         <input
                                             id="EmployeeAbsence_ExtEndDate"
                                             class="form-control"
                                             type="date"
                                             name="ExtEndDate"
-                                            [ngModel]="record().extEndDate?.toISODate()"
+                                            [ngModel]="dateValue(record().extEndDate)"
                                             (ngModelChange)="updateDateField('extEndDate', $event)" />
+                                    </div>
+                                    <div class="col-md-2 mb-5">
+                                        <label class="form-label" for="EmployeeAbsence_ExtTotalLeaveDays">{{ 'TotalLeaveDays' | localize }}</label>
+                                        <input id="EmployeeAbsence_ExtTotalLeaveDays" class="form-control form-control-solid" readonly [value]="formatNumber(calc?.extTotalLeaveDays)" />
+                                    </div>
+                                    <div class="col-md-2 mb-5">
+                                        <label class="form-label" for="EmployeeAbsence_ExtCalendarDays">{{ 'CalendarDays' | localize }}</label>
+                                        <input id="EmployeeAbsence_ExtCalendarDays" class="form-control form-control-solid" readonly [value]="formatNumber(calc?.extCalendarDays)" />
                                     </div>
                                 </div>
                             </div>
@@ -261,11 +297,14 @@
                                     {{ 'ReturnInformation' | localize }}
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="javascript:;" [class.active]="activeTab() === 'sick'" (click)="activeTab.set('sick')">
-                                    {{ 'SickLeaveUnpaidInformation' | localize }}
-                                </a>
-                            </li>
+                            <!-- Legacy shows this tab only for the sick-leave-unpaid type (Code "5"). -->
+                            @if (showSickTab()) {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:;" [class.active]="activeTab() === 'sick'" (click)="activeTab.set('sick')">
+                                        {{ 'SickLeaveUnpaidInformation' | localize }}
+                                    </a>
+                                </li>
+                            }
                         </ul>
                         @if (activeTab() === 'return') {
                             <div class="row">
@@ -276,20 +315,24 @@
                                         class="form-control"
                                         type="date"
                                         name="ReturnDate"
-                                        [ngModel]="record().returnDate?.toISODate()"
+                                        [ngModel]="dateValue(record().returnDate)"
                                         (ngModelChange)="updateDateField('returnDate', $event)" />
                                 </div>
+                                <!-- Set by the system on save, read-only as in legacy. -->
                                 <div class="col-md-3 mb-5 d-flex align-items-end">
                                     <div class="form-check">
                                         <input
                                             id="EmployeeAbsence_IsReturned"
                                             class="form-check-input"
                                             type="checkbox"
-                                            name="IsReturned"
-                                            [ngModel]="record().isReturned"
-                                            (ngModelChange)="updateField('isReturned', $event)" />
+                                            disabled
+                                            [checked]="record().isReturned" />
                                         <label class="form-check-label" for="EmployeeAbsence_IsReturned">{{ 'IsReturned' | localize }}</label>
                                     </div>
+                                </div>
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" for="EmployeeAbsence_DaysDifference">{{ 'DaysDifference' | localize }}</label>
+                                    <input id="EmployeeAbsence_DaysDifference" class="form-control form-control-solid" readonly [value]="hasReturnDate() ? formatNumber(calc?.daysDifference) : ''" />
                                 </div>
                             </div>
                             <!-- Late return split: which part of the gap is further paid leave and which is unpaid. -->
@@ -301,7 +344,7 @@
                                         class="form-control"
                                         type="date"
                                         name="PaidStartDate"
-                                        [ngModel]="record().paidStartDate?.toISODate()"
+                                        [ngModel]="dateValue(record().paidStartDate)"
                                         (ngModelChange)="updateDateField('paidStartDate', $event)" />
                                 </div>
                                 <div class="col-md-3 mb-5">
@@ -311,12 +354,12 @@
                                         class="form-control"
                                         type="date"
                                         name="PaidEndDate"
-                                        [ngModel]="record().paidEndDate?.toISODate()"
+                                        [ngModel]="dateValue(record().paidEndDate)"
                                         (ngModelChange)="updateDateField('paidEndDate', $event)" />
                                 </div>
                                 <div class="col-md-3 mb-5">
                                     <label class="form-label" for="EmployeeAbsence_PaidCalendarDays">{{ 'CalendarDays' | localize }}</label>
-                                    <input id="EmployeeAbsence_PaidCalendarDays" class="form-control form-control-solid" readonly [value]="hasReturnDate() ? formatNumber(calc?.paidCalendarDays) : ''" />
+                                    <input id="EmployeeAbsence_PaidCalendarDays" class="form-control form-control-solid" readonly [value]="formatNumber(calc?.paidCalendarDays)" />
                                 </div>
                                 <div class="col-md-3 mb-5">
                                     <label class="form-label" for="EmployeeAbsence_DeductFromQuota">{{ 'DeductFromQuota' | localize }}</label>
@@ -331,7 +374,7 @@
                                         class="form-control"
                                         type="date"
                                         name="UnpaidStartDate"
-                                        [ngModel]="record().unpaidStartDate?.toISODate()"
+                                        [ngModel]="dateValue(record().unpaidStartDate)"
                                         (ngModelChange)="updateDateField('unpaidStartDate', $event)" />
                                 </div>
                                 <div class="col-md-3 mb-5">
@@ -341,12 +384,12 @@
                                         class="form-control"
                                         type="date"
                                         name="UnpaidEndDate"
-                                        [ngModel]="record().unpaidEndDate?.toISODate()"
+                                        [ngModel]="dateValue(record().unpaidEndDate)"
                                         (ngModelChange)="updateDateField('unpaidEndDate', $event)" />
                                 </div>
                                 <div class="col-md-3 mb-5">
                                     <label class="form-label" for="EmployeeAbsence_UnpaidCalendarDays">{{ 'CalendarDays' | localize }}</label>
-                                    <input id="EmployeeAbsence_UnpaidCalendarDays" class="form-control form-control-solid" readonly [value]="hasReturnDate() ? formatNumber(calc?.unpaidCalendarDays) : ''" />
+                                    <input id="EmployeeAbsence_UnpaidCalendarDays" class="form-control form-control-solid" readonly [value]="formatNumber(calc?.unpaidCalendarDays)" />
                                 </div>
                                 <div class="col-md-3 mb-5">
                                     <label class="form-label" for="EmployeeAbsence_UnpaidDays">{{ 'UnpaidDays' | localize }}</label>
@@ -393,11 +436,15 @@
                                 [ngModel]="record().comments"
                                 (ngModelChange)="updateField('comments', $event)"></textarea>
                         </div>
-                        @if (record().id) {
-                            <div class="mb-5">
+                        <!-- Legacy let a file be attached before the leave was first saved: on a new leave the
+                             files are staged here and uploaded with the save. -->
+                        <div class="mb-5">
+                            @if (record().id) {
                                 <app-attachments entityType="EmployeeAbsence" [entityId]="record().id" />
-                            </div>
-                        }
+                            } @else {
+                                <app-attachments #stagedAttachments entityType="EmployeeAbsence" [entityId]="null" [showLimitsHint]="false" />
+                            }
+                        </div>
                         <!-- Shows itself only if this user may bypass approval AND the catalog allows it for
                              this type; otherwise the form is exactly as it was. -->
                         <record-directly-check

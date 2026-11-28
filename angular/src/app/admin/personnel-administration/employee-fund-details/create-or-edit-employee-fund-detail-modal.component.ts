@@ -52,24 +52,34 @@ export class CreateOrEditEmployeeFundDetailModalComponent extends AppComponentBa
         { value: FundPayType.ExternalDeduction, name: 'ExternalDeduction' },
     ];
 
-    show(id?: number): void {
-        this.active.set(true);
+    /** Opened from a fund's own Fund Detail tab: the row belongs to that fund and the fund is not offered. */
+    readonly fundFixed = signal<boolean>(false);
 
-        this._employeeFundsService
-            .getAll(
-                new GetAllEmployeeFundsInput({
-                    employeeId: undefined,
-                    maxResultCount: 1000,
-                    skipCount: 0,
-                    sorting: undefined,
-                })
-            )
-            .subscribe((result) => this.employeeFunds.set(result.items));
+    show(id?: number, fixedFundId?: number): void {
+        this.active.set(true);
+        this.fundFixed.set(!!fixedFundId);
+
+        if (!fixedFundId) {
+            this._employeeFundsService
+                .getAll(
+                    new GetAllEmployeeFundsInput({
+                        employeeId: undefined,
+                        filter: undefined,
+                        maxResultCount: 1000,
+                        skipCount: 0,
+                        sorting: undefined,
+                    })
+                )
+                .subscribe((result) => this.employeeFunds.set(result.items));
+        }
 
         if (!id) {
             const record = new CreateOrEditEmployeeFundDetailDto();
+            record.employeeFundId = fixedFundId;
             record.amount = 0;
             record.fundPayType = FundPayType.Deduction;
+            // Legacy EmployeeFundDetail.AfterConstruction: the transaction date starts as today.
+            record.transactionDate = DateTime.now().startOf('day');
             this.record.set(record);
             this.modal().show();
         } else {
@@ -81,7 +91,9 @@ export class CreateOrEditEmployeeFundDetailModalComponent extends AppComponentBa
     }
 
     onShown(): void {
-        document.getElementById('EmployeeFundDetail_EmployeeFundId')?.focus();
+        document
+            .getElementById(this.fundFixed() ? 'EmployeeFundDetail_TransactionDate' : 'EmployeeFundDetail_EmployeeFundId')
+            ?.focus();
     }
 
     save(): void {

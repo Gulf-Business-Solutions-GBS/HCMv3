@@ -48,6 +48,15 @@ public class EmployeeAbsencePreviewRequest
     public DateTime? UnpaidStartDate { get; set; }
 
     public DateTime? UnpaidEndDate { get; set; }
+
+    /// <summary>A half day takes its times from the duty (legacy <c>RecalculateDutyTimes</c>).</summary>
+    public HCMv3.PersonnelAdministration.HalfdayType HalfdayType { get; set; }
+
+    public DateTime? PaymentDate { get; set; }
+
+    public DateTime? ExtStartDate { get; set; }
+
+    public DateTime? ExtEndDate { get; set; }
 }
 
 /// <summary>The figures, each named after the legacy property it reproduces.</summary>
@@ -76,4 +85,24 @@ public class EmployeeAbsencePreview
 
     /// <summary>The same breakdown as data, for a screen that wants to lay it out itself.</summary>
     public List<SickLeaveDeductionSegment> SickLeaveSegments { get; set; } = new();
+
+    /// <summary>
+    /// Legacy <c>DaysDifference</c> (lines 731-758): 0 on time, negative when early, else the whole calendar gap
+    /// between EndDate and ReturnDate (a gap of only excluded days counts as on time). 0 without a ReturnDate.
+    /// </summary>
+    public double DaysDifference { get; set; }
+
+    /// <summary>Legacy <c>ExtCalendarDays</c> (lines 670-679).</summary>
+    public double ExtCalendarDays { get; set; }
+
+    /// <summary>Legacy <c>ExtTotalLeaveDays</c>: Ext calendar days less the days the MAIN leave type excludes.</summary>
+    public double ExtTotalLeaveDays { get; set; }
+
+    /// <summary>The payment date: the one entered, else legacy <c>CalculatePaymentDate</c>; null when neither.</summary>
+    public DateTime? PaymentDate { get; set; }
+
+    /// <summary>The leave times as legacy keeps them: derived from the duty for a half day, else as entered.</summary>
+    public DateTime? StartTime { get; set; }
+
+    public DateTime? EndTime { get; set; }
 }

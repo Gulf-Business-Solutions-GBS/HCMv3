@@ -8,6 +8,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
+using HCMv3.PersonnelAdministration.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,24 +16,26 @@ namespace HCMv3.PersonnelAdministration;
 
 /// <summary>
 /// Application service for <see cref="EmployeeLoanRecovery"/> (ported from legacy XAF EmployeeLoanRecovery
-/// business object, Wave 2 deferred bucket). Ports the essential active validations only (recovery amount
-/// not exceeding the loan's DueAmount, recovery date not earlier than the loan's RecoveryStartDate). The
-/// legacy LoanType RecoveryOption/MaxInstallments cross-checks and the cascade that recomputes
-/// <see cref="EmployeeLoan.BalanceDueAmount"/> are NOT ported -- see class remarks on
-/// <see cref="EmployeeLoanRecovery"/>.
+/// business object). Ports legacy's validations (recovery amount not exceeding the loan's DueAmount, recovery
+/// date not earlier than the loan's RecoveryStartDate, the loan type's RecoveryOption and MaxInstallments) and
+/// its <c>UpdateDueBalance</c>: every add, change or delete recomputes the loan's
+/// <see cref="EmployeeLoan.BalanceDueAmount"/>. See <see cref="IEmployeeLoanRulesService"/>.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeLoanRecoveries)]
 public class EmployeeLoanRecoveriesAppService : HCMv3AppServiceBase, IEmployeeLoanRecoveriesAppService
 {
     private readonly IRepository<EmployeeLoanRecovery> _repository;
     private readonly IRepository<EmployeeLoan> _loanRepository;
+    private readonly IEmployeeLoanRulesService _loanRules;
 
     public EmployeeLoanRecoveriesAppService(
         IRepository<EmployeeLoanRecovery> repository,
-        IRepository<EmployeeLoan> loanRepository)
+        IRepository<EmployeeLoan> loanRepository,
+        IEmployeeLoanRulesService loanRules)
     {
         _repository = repository;
         _loanRepository = loanRepository;
+        _loanRules = loanRules;
     }
 
     [HttpPost]
@@ -91,22 +94,35 @@ public class EmployeeLoanRecoveriesAppService : HCMv3AppServiceBase, IEmployeeLo
 
         await ValidateAsync(entity);
         await _repository.InsertAsync(entity);
+        await _loanRules.UpdateBalanceDueAsync(entity.EmployeeLoanId);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeLoanRecoveries_Edit)]
     protected virtual async Task UpdateAsync(CreateOrEditEmployeeLoanRecoveryDto input)
     {
         var entity = await _repository.GetAsync(input.Id.Value);
+        var previousLoanId = entity.EmployeeLoanId;
         MapToEntity(input, entity);
 
         await ValidateAsync(entity);
         await _repository.UpdateAsync(entity);
+        await _loanRules.UpdateBalanceDueAsync(entity.EmployeeLoanId);
+
+        // Moved to another loan: the one it left is owed more again.
+        if (previousLoanId != entity.EmployeeLoanId)
+        {
+            await _loanRules.UpdateBalanceDueAsync(previousLoanId);
+        }
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeLoanRecoveries_Delete)]
     public async Task Delete(EntityDto input)
     {
-        await _repository.DeleteAsync(input.Id);
+        var entity = await _repository.GetAsync(input.Id);
+        await _repository.DeleteAsync(entity);
+
+        // Legacy OnDeleting: the balance as though this recovery had never been made.
+        await _loanRules.UpdateBalanceDueAsync(entity.EmployeeLoanId, excludeRecoveryId: entity.Id);
     }
 
     private async Task ValidateAsync(EmployeeLoanRecovery entity)
@@ -126,6 +142,9 @@ public class EmployeeLoanRecoveriesAppService : HCMv3AppServiceBase, IEmployeeLo
         {
             throw new UserFriendlyException(L("RecoveryDateCannotBeEarlierThanRecoveryStartDate"));
         }
+
+        // The loan type's recovery option and instalment limit.
+        await _loanRules.ValidateRecoveryAsync(entity);
     }
 
     private static EmployeeLoanRecovery MapToEntity(CreateOrEditEmployeeLoanRecoveryDto input, EmployeeLoanRecovery entity)

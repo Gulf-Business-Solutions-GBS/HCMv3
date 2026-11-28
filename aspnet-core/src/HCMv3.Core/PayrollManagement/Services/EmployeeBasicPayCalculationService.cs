@@ -903,7 +903,7 @@ public class EmployeeBasicPayCalculationService : HCMv3DomainServiceBase, IEmplo
         payRate = await ScalePayRateByBillingMethodAsync(context, payRate);
 
         double perDaySalary = empBasicPayDetail.Amount;
-        double payWorkingdays = SumRemunerationDays(empRemunerationList, totalHoursInDay);
+        double payWorkingdays = RemunerationPayDaysCalculator.SumPayDays(empRemunerationList, totalHoursInDay);
 
         line.Rate = payRate;
         if (!context.OnHold.BasicPay)
@@ -937,7 +937,7 @@ public class EmployeeBasicPayCalculationService : HCMv3DomainServiceBase, IEmplo
         payRate = await ScalePayRateByBillingMethodAsync(context, payRate);
 
         double perDaySalary = empBasicPayDetail.Amount * totalHoursInDay;
-        double payWorkingdays = SumRemunerationDays(empRemunerationList, totalHoursInDay);
+        double payWorkingdays = RemunerationPayDaysCalculator.SumPayDays(empRemunerationList, totalHoursInDay);
 
         line.Rate = payRate;
         if (!context.OnHold.BasicPay)
@@ -974,26 +974,6 @@ public class EmployeeBasicPayCalculationService : HCMv3DomainServiceBase, IEmplo
 
         // FixedAmountPerMonth: legacy's "payRate = payRate" no-op.
         return payRate;
-    }
-
-    /// <summary>Legacy lines 1069-1075 / 1123-1129.</summary>
-    private static double SumRemunerationDays(List<EmployeeRemuneration> empRemunerationList, double totalHoursInDay)
-    {
-        double payWorkingdays = 0;
-
-        foreach (var empRemuneration in empRemunerationList)
-        {
-            if (empRemuneration.PaymentUnit == PaymentUnit.Days)
-            {
-                payWorkingdays += empRemuneration.PaymentNumber;
-            }
-            else if (empRemuneration.PaymentUnit == PaymentUnit.Hours && totalHoursInDay != 0)
-            {
-                payWorkingdays += empRemuneration.PaymentNumber / totalHoursInDay;
-            }
-        }
-
-        return payWorkingdays;
     }
 
     #endregion

@@ -12,13 +12,17 @@ public interface IEmployeeLoansAppService : IApplicationService
 
     Task<GetEmployeeLoanForEditOutput> GetEmployeeLoanForEdit(EntityDto input);
 
-    Task CreateOrEdit(CreateOrEditEmployeeLoanDto input);
+    /// <summary>
+    /// Saves the loan and returns its id, so a loan just added can go on to have instalments, recoveries and
+    /// exemptions recorded under it without closing the dialog.
+    /// </summary>
+    Task<int> CreateOrEdit(CreateOrEditEmployeeLoanDto input);
 
     Task Delete(EntityDto input);
 
     /// <summary>
-    /// Employees to pick from when adding a loan from the Employee Loans list: at most
-    /// <see cref="GetEmployeeLoanEmployeesInput.MaxResultCount"/> matches on code or name, ordered by code.
+    /// Employees to pick from when adding a loan from the Employee Loans list: every employee, optionally
+    /// narrowed by code or name, ordered by code.
     /// </summary>
     Task<ListResultDto<SimpleLookupDto>> GetEmployeesForLookup(GetEmployeeLoanEmployeesInput input);
 }

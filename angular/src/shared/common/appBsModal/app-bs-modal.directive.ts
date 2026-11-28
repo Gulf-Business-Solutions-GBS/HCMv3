@@ -33,8 +33,34 @@ export class AppBsModalDirective extends ModalDirective {
             this.onShown.subscribe(() => this.focusFirstField());
         }
 
+        this.liftOutOfEnclosingModal();
         super.showElement();
         this.setZIndexes();
+    }
+
+    /**
+     * A dialog declared inside another dialog (a child record's dialog opened from a tab of its parent's) is moved
+     * to the end of the page before it opens. Left where it is, its z-index only ranks it within the parent dialog,
+     * so its own backdrop -- always at the end of the page -- covered it, and it could be seen but not clicked or
+     * typed into. Angular still removes it when its component goes, wherever it now sits.
+     */
+    private liftOutOfEnclosingModal(): void {
+        const element = (this as any)._element?.nativeElement as HTMLElement | undefined;
+        if (element?.parentElement?.closest('.modal')) {
+            document.body.appendChild(element);
+            this.lifted = element;
+        }
+    }
+
+    /** Set when the dialog was moved out of its parent's, so it can be taken away with its component. */
+    private lifted: HTMLElement | undefined;
+
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
+
+        // Angular removes the component's host, which no longer contains this element once it has been moved.
+        this.lifted?.remove();
+        this.lifted = undefined;
     }
 
     /**

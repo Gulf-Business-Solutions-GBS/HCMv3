@@ -253,6 +253,11 @@ public abstract class FullAndFinalTestBase : AppTestBase
         }).Entity;
     }
 
+    /// <summary>Total <c>QuotaUsed</c> across the employee's live indemnity quotas.</summary>
+    protected double GratuityQuotaUsed(int employeeId)
+        => UsingDbContext(context => context.Set<EmployeeGratuityQuota>()
+            .Where(q => q.EmployeeId == employeeId && !q.IsDeleted).ToList().Sum(q => q.QuotaUsed));
+
     /// <summary>The indemnity quota balance the F&amp;F may compensate against.</summary>
     protected void SeedGratuityBalance(int employeeId, double accrued)
     {

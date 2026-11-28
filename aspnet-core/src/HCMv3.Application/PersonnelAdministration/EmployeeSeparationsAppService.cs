@@ -17,8 +17,7 @@ namespace HCMv3.PersonnelAdministration;
 /// <summary>
 /// Application service for <see cref="EmployeeSeparation"/> -- DELIBERATELY MINIMAL "record-keeping only"
 /// port of the legacy XAF EmployeeSeparation business object (Wave B). See the entity class remarks for
-/// the full list of dropped legacy behaviors (TimeRegister deletion, payroll-retro, advance-EoS indemnity
-/// accrual, FnF/Rejoin chain-blocking, interdependent date recompute). Required-field and
+/// the full list of dropped legacy behaviors (TimeRegister deletion, payroll-retro, FnF/Rejoin chain-blocking, interdependent date recompute). Required-field and
 /// LastDayInService &gt;= SubmissionDate validation is ported, and so is the on-hold block: saving the
 /// separation's on-hold flags creates/replaces/removes the matching <see cref="EmployeeOnHold"/> row through
 /// <see cref="ISeparationOnHoldService"/>, as legacy <c>SaveOtherInfo</c>/<c>OnDeleting</c> did.
@@ -32,11 +31,25 @@ public class EmployeeSeparationsAppService : HCMv3AppServiceBase, IEmployeeSepar
 
     private readonly ISeparationOnHoldService _separationOnHoldService;
 
+    private readonly IEmployeeIndemnityQuotaSyncService _indemnityQuotaSyncService;
+
+    /// <summary>
+    /// Legacy <c>SaveOtherInfo</c> "Advance EndOfService": a reason that allows advance end of service accrues the
+    /// employee's Indemnity Quota up to the last day in service, so indemnity can be paid before that day.
+    /// </summary>
+    private Task ApplyAdvanceEndOfServiceAsync(EmployeeSeparation entity)
+    {
+        return _indemnityQuotaSyncService.ApplyAdvanceEndOfServiceAsync(
+            entity.EmployeeId, entity.SeparationReasonId, entity.LastDayInService);
+    }
+
     public EmployeeSeparationsAppService(
         IRepository<EmployeeSeparation> repository,
         HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor,
-        ISeparationOnHoldService separationOnHoldService)
+        ISeparationOnHoldService separationOnHoldService,
+        IEmployeeIndemnityQuotaSyncService indemnityQuotaSyncService)
     {
+        _indemnityQuotaSyncService = indemnityQuotaSyncService;
         _repository = repository;
         _sysSettingsAccessor = sysSettingsAccessor;
         _separationOnHoldService = separationOnHoldService;
@@ -141,6 +154,7 @@ public class EmployeeSeparationsAppService : HCMv3AppServiceBase, IEmployeeSepar
         // Legacy order: PerformValidations, then SaveOtherInfo. A new separation has no previous values.
         await _separationOnHoldService.EnsureNoLaterOnHoldAsync(entity, null, null);
         await _separationOnHoldService.ApplyAsync(entity, null, null);
+        await ApplyAdvanceEndOfServiceAsync(entity);
 
         await _repository.InsertAsync(entity);
     }
@@ -161,6 +175,7 @@ public class EmployeeSeparationsAppService : HCMv3AppServiceBase, IEmployeeSepar
 
         await _separationOnHoldService.EnsureNoLaterOnHoldAsync(entity, previousEmployeeId, previousOnHoldFromDate);
         await _separationOnHoldService.ApplyAsync(entity, previousEmployeeId, previousOnHoldFromDate);
+        await ApplyAdvanceEndOfServiceAsync(entity);
 
         await _repository.UpdateAsync(entity);
     }

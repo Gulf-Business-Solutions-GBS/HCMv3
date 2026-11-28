@@ -872,8 +872,48 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
     private async Task EnsureQuotaIsAvailableAsync(
         LeaveRuleContext context, AbsenceType absenceType, DateTime start, DateTime end, double days)
     {
-        var required = days + context.DeductFromQuota;
+        var availability = await GetQuotaAvailabilityAsync(context, absenceType, start, end);
 
+        if (availability.Kind == LeaveQuotaKind.QuotaRow)
+        {
+            var required = days + context.DeductFromQuota;
+            if (required > availability.Available)
+            {
+                throw new UserFriendlyException(
+                    L("NotEnoughBookableLeaveBalance", $"{availability.Available:0.##}", $"{required:0.##}"));
+            }
+
+            return;
+        }
+
+        if (availability.Kind == LeaveQuotaKind.PeriodAllowance && days > availability.Available)
+        {
+            throw new UserFriendlyException(L(
+                "NotEnoughQuotaForTheDeductionPeriod",
+                absenceType.NameEn,
+                availability.PeriodStart.ToString("dd/MM/yyyy"),
+                availability.PeriodEnd.ToString("dd/MM/yyyy"),
+                $"{availability.Used:0.##}",
+                $"{availability.Available:0.##}",
+                $"{days:0.##}"));
+        }
+    }
+
+    public async Task<LeaveQuotaAvailability> GetQuotaAvailabilityAsync(LeaveRuleContext context)
+    {
+        var absenceType = _absenceTypeRepository.GetAll().FirstOrDefault(t => t.Id == context.AbsenceTypeId)
+                          ?? throw new UserFriendlyException(L("AbsenceTypeNotFound"));
+
+        return await GetQuotaAvailabilityAsync(context, absenceType, context.StartDate.Date, context.EndDate.Date);
+    }
+
+    /// <summary>
+    /// What <see cref="EnsureQuotaIsAvailableAsync"/> measures the leave against, worked out once so the save's
+    /// refusal and the HR form's unpaid-split proposal cannot disagree about how many days are left.
+    /// </summary>
+    private async Task<LeaveQuotaAvailability> GetQuotaAvailabilityAsync(
+        LeaveRuleContext context, AbsenceType absenceType, DateTime start, DateTime end)
+    {
         var balances = await _leaveBalanceService.GetBalancesAsync(context.EmployeeId, start, context.ExcludeWorkflowRequestId);
         var balance = balances.FirstOrDefault(b => b.AbsenceTypeId == context.AbsenceTypeId);
 
@@ -894,16 +934,10 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
                     start);
             }
 
-            if (required > available)
-            {
-                throw new UserFriendlyException(
-                    L("NotEnoughBookableLeaveBalance", $"{available:0.##}", $"{required:0.##}"));
-            }
-
-            return;
+            return new LeaveQuotaAvailability { Kind = LeaveQuotaKind.QuotaRow, Available = available };
         }
 
-        await EnsureNonAccrualQuotaAsync(context, absenceType, start, end, days);
+        return await GetNonAccrualAvailabilityAsync(context, absenceType, start, end);
     }
 
     /// <summary>
@@ -912,24 +946,26 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
     /// joiner, and what has already been taken in that period is subtracted. An allowance of zero means the
     /// type is unlimited and nothing is checked.
     /// </summary>
-    private async Task EnsureNonAccrualQuotaAsync(
-        LeaveRuleContext context, AbsenceType absenceType, DateTime start, DateTime end, double days)
+    private async Task<LeaveQuotaAvailability> GetNonAccrualAvailabilityAsync(
+        LeaveRuleContext context, AbsenceType absenceType, DateTime start, DateTime end)
     {
         var subGroupId = CurrentSubGroupId(context.EmployeeId, start);
 
-        var allowed = subGroupId.HasValue
+        var profileAllowance = subGroupId.HasValue
             ? _subGroupAbsenceRepository.GetAll()
                   .Where(a => a.EmployeeSubGroupId == subGroupId.Value
                               && a.AbsenceTypeId == context.AbsenceTypeId
                               && a.StartDate <= start
                               && a.EndDate >= start)
                   .Select(a => (double?)a.TotalDays)
-                  .FirstOrDefault() ?? absenceType.TotalDaysAllowed
-            : absenceType.TotalDaysAllowed;
+                  .FirstOrDefault()
+            : null;
+
+        var allowed = profileAllowance ?? absenceType.TotalDaysAllowed;
 
         if (allowed <= 0)
         {
-            return;
+            return new LeaveQuotaAvailability { Kind = LeaveQuotaKind.NotControlled };
         }
 
         var employee = _employeeRepository.GetAll().First(e => e.Id == context.EmployeeId);
@@ -971,17 +1007,36 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
             available += absenceType.NegativeBalanceLimit;
         }
 
-        if (days > available)
+        return new LeaveQuotaAvailability
         {
-            throw new UserFriendlyException(L(
-                "NotEnoughQuotaForTheDeductionPeriod",
-                absenceType.NameEn,
-                deductionStart.ToString("dd/MM/yyyy"),
-                periodEnd.ToString("dd/MM/yyyy"),
-                $"{used:0.##}",
-                $"{available:0.##}",
-                $"{days:0.##}"));
+            Kind = LeaveQuotaKind.PeriodAllowance,
+            Available = available,
+            Used = used,
+            PeriodStart = deductionStart,
+            PeriodEnd = periodEnd,
+            FromSalaryProfile = profileAllowance.HasValue
+        };
+    }
+
+    public void EnsureEarlyReturnIsAllowed(int absenceTypeId)
+    {
+        var absenceType = _absenceTypeRepository.GetAll().FirstOrDefault(t => t.Id == absenceTypeId);
+        if (absenceType == null || absenceType.AllowToReturnEarly)
+        {
+            return;
         }
+
+        throw new UserFriendlyException(L("EarlyReturnNotAllowedForLeaveType", absenceType.NameEn));
+    }
+
+    public async Task EnsureRejoiningDayIsRegularAsync(int employeeId, DateTime rejoiningDate)
+    {
+        var employee = _employeeRepository.GetAll().FirstOrDefault(e => e.Id == employeeId)
+                       ?? throw new UserFriendlyException(L("EmployeeCannotBeBlank"));
+
+        // Legacy passed no absence type (ValidateDate(..., null, ...)): the rejoining day is judged by the
+        // employee's own calendar, not by what the leave type counts.
+        await EnsureRegularDayAsync(employee, null, rejoiningDate.Date, "LeaveRejoiningDateShouldBeARegularDay");
     }
 
     private async Task<double> YearlyQuotaAsync(int employeeId, AbsenceType absenceType, DateTime asOf)

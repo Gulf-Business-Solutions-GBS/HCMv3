@@ -46,6 +46,7 @@
                         <th>{{ 'Amount' | localize }}</th>
                         <th>{{ 'PaidAmount' | localize }}</th>
                         <th>{{ 'BalanceAmount' | localize }}</th>
+                        <th>{{ 'Comments' | localize }}</th>
                     </tr>
                 </ng-template>
                 <ng-template #body let-record="$implicit">
@@ -72,6 +73,7 @@
                         <td>{{ record.amount }}</td>
                         <td>{{ record.paidAmount }}</td>
                         <td>{{ record.balanceAmount }}</td>
+                        <td class="text-truncate" style="max-width: 300px" [title]="record.comments ?? ''">{{ record.comments }}</td>
                     </tr>
                 </ng-template>
             </p-table>

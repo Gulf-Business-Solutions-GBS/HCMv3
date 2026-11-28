@@ -4,6 +4,7 @@ import {
     EmployeeRemunerationDto,
     EmployeeRemunerationsServiceProxy,
     GetAllEmployeeRemunerationsInput,
+    PaymentUnit,
 } from '@shared/service-proxies/service-proxies';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
@@ -14,6 +15,7 @@ import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
+import { DecimalPipe } from '@angular/common';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { CreateOrEditEmployeeRemunerationModalComponent } from './create-or-edit-employee-remuneration-modal.component';
 
@@ -25,6 +27,7 @@ import { CreateOrEditEmployeeRemunerationModalComponent } from './create-or-edit
         TableModule,
         PaginatorModule,
         TieredMenu,
+        DecimalPipe,
         LuxonFormatPipe,
         LocalizePipe,
         PermissionPipe,
@@ -87,6 +90,11 @@ export class EmployeeRemunerationsComponent extends AppComponentBase {
             ? paginator.rows || this.primengTableHelper.defaultRecordsCountPerPage
             : this.primengTableHelper.defaultRecordsCountPerPage;
         this.getRecords({ first: (paginator ? paginator.getPage() : 0) * rows, rows } as LazyLoadEvent);
+    }
+
+    /** Localization key for the enum value (LHRMS shows the unit name, not its number). */
+    paymentUnitName(unit: PaymentUnit): string {
+        return unit === PaymentUnit.Hours ? 'Hours' : 'Days';
     }
 
     createRecord(): void {

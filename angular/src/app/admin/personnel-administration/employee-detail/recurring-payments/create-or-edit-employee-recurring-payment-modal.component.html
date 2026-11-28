@@ -23,6 +23,61 @@
                         <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body">
+                        <!-- Legacy field order: (Employee,) Start Date, End Date, Wage Type, Amount, Comments, Pay Interval. -->
+                        @if (choosesEmployee()) {
+                            <div class="mb-5">
+                                <label class="form-label required" for="EmployeeRecurringPayment_EmployeeId">{{ 'Employee' | localize }}</label>
+                                <p-select
+                                    inputId="EmployeeRecurringPayment_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    name="EmployeeId"
+                                    styleClass="w-100"
+                                    [appendTo]="null"
+                                    [options]="employeeOptions()"
+                                    optionLabel="label"
+                                    optionValue="id"
+                                    [filter]="true"
+                                    filterBy="label"
+                                    [showClear]="true"
+                                    [virtualScroll]="true"
+                                    [virtualScrollItemSize]="38"
+                                    [ngModel]="record().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                        }
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeRecurringPayment_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="EmployeeRecurringPayment_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeRecurringPayment_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="EmployeeRecurringPayment_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                                @if (endDateBeforeStartDate()) {
+                                    <div class="form-text text-danger">{{ 'EndDateCannotBeEarlierThanStartDate' | localize }}</div>
+                                }
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-6 mb-5">
                                 <label class="form-label required" for="EmployeeRecurringPayment_WageTypeId">{{ 'WageTypeId' | localize }}</label>
@@ -42,6 +97,37 @@
                                 <validation-messages [formCtrl]="wageTypeIdInput" />
                             </div>
                             <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeRecurringPayment_Amount">{{ 'Amount' | localize }}</label>
+                                <input
+                                    id="EmployeeRecurringPayment_Amount"
+                                    #amountInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.001"
+                                    min="0"
+                                    name="Amount"
+                                    [ngModel]="record().amount"
+                                    (ngModelChange)="updateNumberField('amount', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="amountInput" />
+                                @if (!(record().amount > 0)) {
+                                    <div class="form-text text-danger">{{ 'AmountMustBeGreaterThanZero' | localize }}</div>
+                                }
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeRecurringPayment_Comments">{{ 'Comments' | localize }}</label>
+                            <textarea
+                                id="EmployeeRecurringPayment_Comments"
+                                class="form-control"
+                                rows="3"
+                                maxlength="500"
+                                name="Comments"
+                                [ngModel]="record().comments"
+                                (ngModelChange)="updateField('comments', $event)"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
                                 <label class="form-label required" for="EmployeeRecurringPayment_PayInterval">{{ 'PayInterval' | localize }}</label>
                                 <select
                                     id="EmployeeRecurringPayment_PayInterval"
@@ -56,60 +142,6 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="EmployeeRecurringPayment_StartDate">{{ 'StartDate' | localize }}</label>
-                                <input
-                                    id="EmployeeRecurringPayment_StartDate"
-                                    #startDateInput="ngModel"
-                                    type="date"
-                                    class="form-control"
-                                    name="StartDate"
-                                    [ngModel]="record().startDate?.toISODate()"
-                                    (ngModelChange)="updateDateField('startDate', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="startDateInput" />
-                            </div>
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="EmployeeRecurringPayment_EndDate">{{ 'EndDate' | localize }}</label>
-                                <input
-                                    id="EmployeeRecurringPayment_EndDate"
-                                    #endDateInput="ngModel"
-                                    type="date"
-                                    class="form-control"
-                                    name="EndDate"
-                                    [ngModel]="record().endDate?.toISODate()"
-                                    (ngModelChange)="updateDateField('endDate', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="endDateInput" />
-                            </div>
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="EmployeeRecurringPayment_Amount">{{ 'Amount' | localize }}</label>
-                                <input
-                                    id="EmployeeRecurringPayment_Amount"
-                                    #amountInput="ngModel"
-                                    class="form-control"
-                                    type="number"
-                                    step="0.001"
-                                    min="0"
-                                    name="Amount"
-                                    [ngModel]="record().amount"
-                                    (ngModelChange)="updateNumberField('amount', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="amountInput" />
-                            </div>
-                        </div>
-                        <div class="mb-5">
-                            <label class="form-label" for="EmployeeRecurringPayment_Comments">{{ 'Comments' | localize }}</label>
-                            <textarea
-                                id="EmployeeRecurringPayment_Comments"
-                                class="form-control"
-                                rows="3"
-                                maxlength="500"
-                                name="Comments"
-                                [ngModel]="record().comments"
-                                (ngModelChange)="updateField('comments', $event)"></textarea>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
@@ -118,7 +150,7 @@
                         <button
                             type="submit"
                             class="btn btn-primary fw-bold"
-                            [disabled]="!recordForm.form.valid"
+                            [disabled]="!recordForm.form.valid || endDateBeforeStartDate() || !(record().amount > 0)"
                             [buttonBusy]="saving()"
                             [busyText]="l('SavingWithThreeDot')">
                             <i class="fa fa-save"></i>

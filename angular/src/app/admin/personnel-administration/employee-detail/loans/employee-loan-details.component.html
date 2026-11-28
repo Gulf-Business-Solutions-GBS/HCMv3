@@ -1,4 +1,5 @@
-<!-- Tabs as on the legacy (LHRMS) loan form: Installment, Recovery, Exemption, each with a round "+" to add. -->
+<!-- Tabs as on the legacy (LHRMS) loan form: Installment, Recovery, Exemption. "Create new" is styled and placed
+     as on the Employee Loans list. -->
 <ul class="nav nav-tabs mb-3 fs-6">
     <li class="nav-item">
         <a
@@ -37,10 +38,11 @@
 </ul>
 
 @if (activeTab() === 'installments') {
-    <div class="mb-3">
+    <div class="d-flex justify-content-end mb-3">
         @if ('Pages.PersonnelAdministration.EmployeeLoans.Edit' | permission) {
-            <button type="button" class="btn btn-icon btn-primary rounded-circle" [title]="'CreateNew' | localize" (click)="createInstallment()">
-                <i class="fa fa-plus"></i>
+            <button type="button" class="btn btn-primary" (click)="createInstallment()">
+                <i class="fa fa-plus btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">{{ 'CreateNew' | localize }}</span>
             </button>
         }
     </div>
@@ -75,8 +77,8 @@
                             </button>
                         }
                     </td>
-                    <td>{{ record.startDate | luxonFormat: 'MMM yyyy' }}</td>
-                    <td>{{ isOpenEnded(record) ? '' : (record.endDate | luxonFormat: 'yyyy-MM-dd') }}</td>
+                    <td>{{ record.startDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                    <td>{{ installmentEndDate(record) | luxonFormat: 'yyyy-MM-dd' }}</td>
                     <td>{{ record.amount }}</td>
                     <td>{{ record.remark }}</td>
                 </tr>
@@ -89,10 +91,11 @@
 }
 
 @if (activeTab() === 'recoveries' && ('Pages.PersonnelAdministration.EmployeeLoanRecoveries' | permission)) {
-    <div class="mb-3">
+    <div class="d-flex justify-content-end mb-3">
         @if ('Pages.PersonnelAdministration.EmployeeLoanRecoveries.Create' | permission) {
-            <button type="button" class="btn btn-icon btn-primary rounded-circle" [title]="'CreateNew' | localize" (click)="createRecovery()">
-                <i class="fa fa-plus"></i>
+            <button type="button" class="btn btn-primary" (click)="createRecovery()">
+                <i class="fa fa-plus btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">{{ 'CreateNew' | localize }}</span>
             </button>
         }
     </div>
@@ -150,10 +153,11 @@
 }
 
 @if (activeTab() === 'exemptions' && ('Pages.PersonnelAdministration.EmployeeLoanExemptions' | permission)) {
-    <div class="mb-3">
+    <div class="d-flex justify-content-end mb-3">
         @if ('Pages.PersonnelAdministration.EmployeeLoanExemptions.Create' | permission) {
-            <button type="button" class="btn btn-icon btn-primary rounded-circle" [title]="'CreateNew' | localize" (click)="createExemption()">
-                <i class="fa fa-plus"></i>
+            <button type="button" class="btn btn-primary" (click)="createExemption()">
+                <i class="fa fa-plus btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">{{ 'CreateNew' | localize }}</span>
             </button>
         }
     </div>

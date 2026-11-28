@@ -43,9 +43,26 @@
                             {{ 'EntitlementTo' | localize }}
                             <p-sortIcon field="entitlementTo" />
                         </th>
-                        <th>{{ 'QuotaAccrued' | localize }}</th>
-                        <th>{{ 'QuotaUsed' | localize }}</th>
-                        <th>{{ 'QuotaAdjusted' | localize }}</th>
+                        <th pSortableColumn="deductionFrom">
+                            {{ 'DeductionFrom' | localize }}
+                            <p-sortIcon field="deductionFrom" />
+                        </th>
+                        <th pSortableColumn="deductionTo">
+                            {{ 'DeductionTo' | localize }}
+                            <p-sortIcon field="deductionTo" />
+                        </th>
+                        <th pSortableColumn="quotaAccrued">
+                            {{ 'QuotaAccrued' | localize }}
+                            <p-sortIcon field="quotaAccrued" />
+                        </th>
+                        <th pSortableColumn="quotaUsed">
+                            {{ 'QuotaUsed' | localize }}
+                            <p-sortIcon field="quotaUsed" />
+                        </th>
+                        <th pSortableColumn="quotaAdjusted">
+                            {{ 'QuotaAdjusted' | localize }}
+                            <p-sortIcon field="quotaAdjusted" />
+                        </th>
                         <th>{{ 'QuotaBalance' | localize }}</th>
                     </tr>
                 </ng-template>
@@ -70,10 +87,12 @@
                         </td>
                         <td>{{ record.entitlementFrom | luxonFormat: 'yyyy-MM-dd' }}</td>
                         <td>{{ record.entitlementTo | luxonFormat: 'yyyy-MM-dd' }}</td>
-                        <td>{{ record.quotaAccrued }}</td>
-                        <td>{{ record.quotaUsed }}</td>
-                        <td>{{ record.quotaAdjusted }}</td>
-                        <td>{{ record.quotaBalance }}</td>
+                        <td>{{ record.deductionFrom | luxonFormat: 'yyyy-MM-dd' }}</td>
+                        <td>{{ record.deductionTo | luxonFormat: 'yyyy-MM-dd' }}</td>
+                        <td>{{ record.quotaAccrued | number: '1.3-3' }}</td>
+                        <td>{{ record.quotaUsed | number: '1.3-3' }}</td>
+                        <td>{{ record.quotaAdjusted | number: '1.3-3' }}</td>
+                        <td>{{ record.quotaBalance | number: '1.3-3' }}</td>
                     </tr>
                 </ng-template>
             </p-table>

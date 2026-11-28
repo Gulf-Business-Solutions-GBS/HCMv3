@@ -632,3 +632,23 @@ public class EmployeeAssetInvoiceAttachmentOwnerPolicy : ScreenPermissionAttachm
 
     protected override string EditPermission => AppPermissions.Pages_PersonnelAdministration_EmployeeAssetInvoices_Edit;
 }
+
+/// <summary>
+/// Supporting documents on a one-off payment (legacy <c>EmployeePayment.DocAttachment</c>, the attachment grid
+/// under Comments on the LHRMS Payment screen). No workflow: the Payment screen permissions decide.
+/// </summary>
+public class EmployeePaymentAttachmentOwnerPolicy : ScreenPermissionAttachmentOwnerPolicy<EmployeePayment>
+{
+    public const string Type = "EmployeePayment";
+
+    public EmployeePaymentAttachmentOwnerPolicy(IRepository<EmployeePayment> repository, IPermissionChecker permissionChecker)
+        : base(repository, permissionChecker)
+    {
+    }
+
+    public override string EntityType => Type;
+
+    protected override string ViewPermission => AppPermissions.Pages_PersonnelAdministration_EmployeePayments;
+
+    protected override string EditPermission => AppPermissions.Pages_PersonnelAdministration_EmployeePayments_Edit;
+}

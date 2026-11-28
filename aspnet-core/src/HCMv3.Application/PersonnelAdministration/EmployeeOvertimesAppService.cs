@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Extensions;
 using Abp.Linq.Extensions;
+using HCMv3.GeneralMasterInfo.Dto;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
@@ -19,9 +21,9 @@ namespace HCMv3.PersonnelAdministration;
 /// <summary>
 /// Application service for <see cref="EmployeeOvertime"/> (ported from legacy XAF EmployeeOvertime business
 /// object, Wave 4 deferred bucket). Ports the essential active validation only: required fields and no
-/// duplicate Employee+EffectiveDate. The legacy read-only <c>ExpectedOvertimeAmount</c> is calculated on read by
-/// <see cref="IExpectedOvertimeAmountService"/>. The EmployeeSubGroup.PayOvertime cross-check is NOT ported -- see
-/// <see cref="EmployeeOvertime"/>.
+/// duplicate Employee+EffectiveDate, plus the org assignment / EmployeeSubGroup.PayOvertime check. The legacy
+/// read-only <c>ExpectedOvertimeAmount</c> is calculated by <see cref="IExpectedOvertimeAmountService"/>, on read
+/// and live from the form through <see cref="GetExpectedOvertimeAmount"/>.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeOvertimes)]
 public class EmployeeOvertimesAppService : HCMv3AppServiceBase, IEmployeeOvertimesAppService
@@ -30,12 +32,15 @@ public class EmployeeOvertimesAppService : HCMv3AppServiceBase, IEmployeeOvertim
     private readonly IAdminTransactionSubmitter _transactionSubmitter;
     private readonly IExpectedOvertimeAmountService _expectedOvertimeAmountService;
     private readonly IEmployeeOvertimeService _employeeOvertimeService;
+    private readonly IRepository<Employee> _employeeRepository;
 
     public EmployeeOvertimesAppService(IRepository<EmployeeOvertime> repository,
         IAdminTransactionSubmitter transactionSubmitter,
         IExpectedOvertimeAmountService expectedOvertimeAmountService,
-        IEmployeeOvertimeService employeeOvertimeService)
+        IEmployeeOvertimeService employeeOvertimeService,
+        IRepository<Employee> employeeRepository)
     {
+        _employeeRepository = employeeRepository;
         _transactionSubmitter = transactionSubmitter;
         _repository = repository;
         _expectedOvertimeAmountService = expectedOvertimeAmountService;
@@ -50,7 +55,13 @@ public class EmployeeOvertimesAppService : HCMv3AppServiceBase, IEmployeeOvertim
         var query = _repository.GetAll()
             .Include(e => e.Employee)
             .Include(e => e.OvertimeType)
-            .WhereIf(input.EmployeeId.HasValue, e => e.EmployeeId == input.EmployeeId.Value);
+            .WhereIf(input.EmployeeId.HasValue, e => e.EmployeeId == input.EmployeeId.Value)
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), e =>
+                e.Employee.Code.Contains(input.Filter) ||
+                e.Employee.FullNameEn.Contains(input.Filter) ||
+                e.Employee.FullNameAr.Contains(input.Filter) ||
+                e.OvertimeType.NameEn.Contains(input.Filter) ||
+                e.OvertimeType.NameAr.Contains(input.Filter));
 
         var totalCount = await query.CountAsync();
 
@@ -71,9 +82,40 @@ public class EmployeeOvertimesAppService : HCMv3AppServiceBase, IEmployeeOvertim
         return new PagedResultDto<EmployeeOvertimeDto>(totalCount, dtos);
     }
 
+    /// <summary>
+    /// Every employee, for the form's dropdown when it is opened from the Employee Overtime list (legacy menu
+    /// Transactions > Payroll Management > Overtime). Under this screen's own permission.
+    /// </summary>
+    [HttpPost]
+    public async Task<ListResultDto<SimpleLookupDto>> GetEmployeesForLookup(GetEmployeeOvertimeEmployeesInput input)
+    {
+        var filter = input.Filter?.Trim();
+
+        var items = await _employeeRepository.GetAll()
+            .WhereIf(!filter.IsNullOrWhiteSpace(), e =>
+                e.Code.Contains(filter) ||
+                e.FullNameEn.Contains(filter) ||
+                e.FullNameAr.Contains(filter))
+            .OrderBy(e => e.Code.Length)
+            .ThenBy(e => e.Code)
+            .Select(e => new SimpleLookupDto
+            {
+                Id = e.Id,
+                Code = e.Code,
+                NameEn = e.FullNameEn,
+                NameAr = e.FullNameAr
+            })
+            .ToListAsync();
+
+        return new ListResultDto<SimpleLookupDto>(items);
+    }
+
     public async Task<GetEmployeeOvertimeForEditOutput> GetEmployeeOvertimeForEdit(EntityDto input)
     {
-        var entity = await _repository.GetAsync(input.Id);
+        var entity = await _repository.GetAll()
+            .Include(e => e.Employee)
+            .FirstOrDefaultAsync(e => e.Id == input.Id)
+            ?? throw new Abp.Domain.Entities.EntityNotFoundException(typeof(EmployeeOvertime), input.Id);
 
         return new GetEmployeeOvertimeForEditOutput
         {
@@ -88,6 +130,8 @@ public class EmployeeOvertimesAppService : HCMv3AppServiceBase, IEmployeeOvertim
                 ApprovedOvertimeHours = entity.ApprovedOvertimeHours,
                 Comments = entity.Comments
             },
+            EmployeeCode = entity.Employee?.Code,
+            EmployeeFullNameEn = entity.Employee?.FullNameEn,
             ExpectedOvertimeAmount = await _expectedOvertimeAmountService.GetExpectedOvertimeAmountAsync(
                 entity.EmployeeId, entity.OvertimeTypeId, entity.EffectiveDate, entity.ApprovedOvertimeHours)
         };
@@ -134,6 +178,13 @@ public class EmployeeOvertimesAppService : HCMv3AppServiceBase, IEmployeeOvertim
         await _repository.UpdateAsync(entity);
     }
 
+    [HttpPost]
+    public Task<double> GetExpectedOvertimeAmount(GetExpectedOvertimeAmountInput input)
+    {
+        return _expectedOvertimeAmountService.GetExpectedOvertimeAmountAsync(
+            input.EmployeeId, input.OvertimeTypeId, input.EffectiveDate.Date, input.ApprovedOvertimeHours);
+    }
+
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeOvertimes_Delete)]
     public async Task Delete(EntityDto input)
     {
@@ -144,8 +195,11 @@ public class EmployeeOvertimesAppService : HCMv3AppServiceBase, IEmployeeOvertim
     /// One row per employee per day -- shared with the overtime batch, whose approval writes rows too.
     /// See <see cref="IEmployeeOvertimeService"/>.
     /// </summary>
-    private Task ValidateEntityAsync(EmployeeOvertime entity) =>
-        _employeeOvertimeService.EnsureNoOvertimeOnDateAsync(entity.EmployeeId, entity.EffectiveDate, entity.Id);
+    private async Task ValidateEntityAsync(EmployeeOvertime entity)
+    {
+        await _employeeOvertimeService.EnsureNoOvertimeOnDateAsync(entity.EmployeeId, entity.EffectiveDate, entity.Id);
+        await _employeeOvertimeService.EnsureEmployeeEligibleForOvertimeAsync(entity.EmployeeId, entity.EffectiveDate);
+    }
 
     private static EmployeeOvertime MapToEntity(CreateOrEditEmployeeOvertimeDto input, EmployeeOvertime entity)
     {

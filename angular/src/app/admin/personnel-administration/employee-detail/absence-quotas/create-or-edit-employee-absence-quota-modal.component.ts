@@ -1,4 +1,4 @@
-import { Component, inject, output, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     AbsenceTypeDto,
@@ -43,14 +43,18 @@ export class CreateOrEditEmployeeAbsenceQuotaModalComponent extends AppComponent
     readonly absenceTypes = signal<AbsenceTypeDto[]>([]);
 
     /**
-     * Read-only balance, shown on edit. The edit DTO does not carry it, so the list passes in the value
-     * from its row (EmployeeAbsenceQuotaDto); it is as of the last save, not recalculated here.
+     * Read-only balance, as legacy's non-persistent QuotaBalance:
+     * QuotaAccrued - (QuotaUsed + QuotaAdjusted + QuotaForfeited), rounded to 2 decimals.
+     * On save the server may still lower QuotaAccrued when the balance is over the sub group's max limit.
      */
-    readonly quotaBalance = signal<number | undefined>(undefined);
+    readonly quotaBalance = computed(() => {
+        const r = this.record();
+        const balance = (r.quotaAccrued ?? 0) - ((r.quotaUsed ?? 0) + (r.quotaAdjusted ?? 0) + (r.quotaForfeited ?? 0));
+        return Math.round(balance * 100) / 100;
+    });
 
-    show(employeeId: number, id?: number, quotaBalance?: number): void {
+    show(employeeId: number, id?: number): void {
         this.active.set(true);
-        this.quotaBalance.set(quotaBalance);
 
         this._absenceTypesService
             .getAll(

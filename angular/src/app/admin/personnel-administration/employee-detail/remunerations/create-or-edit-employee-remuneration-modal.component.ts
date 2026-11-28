@@ -3,10 +3,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     CreateOrEditEmployeeRemunerationDto,
     EmployeeRemunerationsServiceProxy,
-    GetAllWageTypesInput,
     PaymentUnit,
-    WageTypeDto,
-    WageTypesServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
@@ -32,7 +29,6 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 })
 export class CreateOrEditEmployeeRemunerationModalComponent extends AppComponentBase {
     private _service = inject(EmployeeRemunerationsServiceProxy);
-    private _wageTypesService = inject(WageTypesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -40,8 +36,6 @@ export class CreateOrEditEmployeeRemunerationModalComponent extends AppComponent
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditEmployeeRemunerationDto>(new CreateOrEditEmployeeRemunerationDto());
-
-    readonly wageTypes = signal<WageTypeDto[]>([]);
 
     readonly paymentUnits = [
         { value: PaymentUnit.Days, name: 'Days' },
@@ -51,15 +45,11 @@ export class CreateOrEditEmployeeRemunerationModalComponent extends AppComponent
     show(employeeId: number, id?: number): void {
         this.active.set(true);
 
-        this._wageTypesService
-            .getAll(
-                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
-            )
-            .subscribe((result) => this.wageTypes.set(result.items));
-
         if (!id) {
             const record = new CreateOrEditEmployeeRemunerationDto();
             record.employeeId = employeeId;
+            // LHRMS AfterConstruction: PaymentDate = today.
+            record.paymentDate = DateTime.now().startOf('day');
             record.paymentNumber = 0;
             record.paymentUnit = PaymentUnit.Days;
             this.record.set(record);
@@ -73,7 +63,7 @@ export class CreateOrEditEmployeeRemunerationModalComponent extends AppComponent
     }
 
     onShown(): void {
-        document.getElementById('EmployeeRemuneration_WageTypeId')?.focus();
+        document.getElementById('EmployeeRemuneration_PaymentDate')?.focus();
     }
 
     save(): void {

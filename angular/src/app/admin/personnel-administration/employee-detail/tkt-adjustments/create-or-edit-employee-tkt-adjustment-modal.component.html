@@ -8,7 +8,7 @@
     aria-labelledby="createOrEditModal"
     aria-hidden="true"
     [config]="{ backdrop: 'static', keyboard: !saving() }">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             @if (active()) {
                 <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
@@ -23,88 +23,185 @@
                         <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body">
+                        <!-- Layout follows legacy (LHRMS) EmployeeTktAdjustment_DetailView: column 1 Employee / Ticket Type /
+                             Adjustment Type / Effective Date; column 2 Quota Accrued / Quota Adjusted / Ticket Payment
+                             Type; then Comments. -->
                         <div class="row">
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label required" for="EmployeeTktAdjustment_EffectiveDate">{{ 'EffectiveDate' | localize }}</label>
-                                <input
-                                    id="EmployeeTktAdjustment_EffectiveDate"
-                                    #effectiveDateInput="ngModel"
-                                    type="date"
-                                    class="form-control"
-                                    name="EffectiveDate"
-                                    [ngModel]="record().effectiveDate?.toISODate()"
-                                    (ngModelChange)="updateDateField('effectiveDate', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="effectiveDateInput" />
-                            </div>
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label required" for="EmployeeTktAdjustment_TicketTypeId">{{ 'TicketTypeId' | localize }}</label>
-                                <select
-                                    id="EmployeeTktAdjustment_TicketTypeId"
-                                    #ticketTypeIdInput="ngModel"
-                                    class="form-select"
-                                    name="TicketTypeId"
-                                    [ngModel]="record().ticketTypeId"
-                                    (ngModelChange)="updateField('ticketTypeId', $event)"
-                                    required>
-                                    <option [ngValue]="undefined"></option>
-                                    @for (type of ticketTypes(); track type.id) {
-                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                            <div class="col-md-5">
+                                <div class="mb-5">
+                                    @if (choosesEmployee()) {
+                                        <label class="form-label required" for="EmployeeTktAdjustment_EmployeeId">{{ 'Employee' | localize }}</label>
+                                        <p-select
+                                            inputId="EmployeeTktAdjustment_EmployeeId"
+                                            #employeeIdInput="ngModel"
+                                            name="EmployeeId"
+                                            styleClass="w-100"
+                                            [appendTo]="null"
+                                            [options]="employeeOptions()"
+                                            optionLabel="label"
+                                            optionValue="id"
+                                            [filter]="true"
+                                            filterBy="label"
+                                            [showClear]="true"
+                                            [virtualScroll]="true"
+                                            [virtualScrollItemSize]="38"
+                                            [ngModel]="record().employeeId"
+                                            (ngModelChange)="updateField('employeeId', $event)"
+                                            required />
+                                        <validation-messages [formCtrl]="employeeIdInput" />
+                                    } @else if (currentEmployee(); as employee) {
+                                        <label class="form-label" for="EmployeeTktAdjustment_EmployeeName">{{ 'Employee' | localize }}</label>
+                                        <input
+                                            id="EmployeeTktAdjustment_EmployeeName"
+                                            class="form-control"
+                                            type="text"
+                                            [value]="employee.code + ' - ' + employee.nameEn"
+                                            disabled />
                                     }
-                                </select>
-                                <validation-messages [formCtrl]="ticketTypeIdInput" />
+                                </div>
+                                <div class="mb-5">
+                                    <label class="form-label required" for="EmployeeTktAdjustment_TicketTypeId">{{ 'TicketTypeId' | localize }}</label>
+                                    <select
+                                        id="EmployeeTktAdjustment_TicketTypeId"
+                                        #ticketTypeIdInput="ngModel"
+                                        class="form-select"
+                                        name="TicketTypeId"
+                                        [ngModel]="record().ticketTypeId"
+                                        (ngModelChange)="updateField('ticketTypeId', $event)"
+                                        required>
+                                        <option [ngValue]="undefined"></option>
+                                        @for (type of ticketTypes(); track type.id) {
+                                            <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                        }
+                                    </select>
+                                    <validation-messages [formCtrl]="ticketTypeIdInput" />
+                                </div>
+                                <div class="mb-5">
+                                    <label class="form-label" for="EmployeeTktAdjustment_AdjustmentType">{{ 'AdjustmentType' | localize }}</label>
+                                    <select
+                                        id="EmployeeTktAdjustment_AdjustmentType"
+                                        class="form-select"
+                                        name="AdjustmentType"
+                                        [ngModel]="record().adjustmentType"
+                                        (ngModelChange)="updateField('adjustmentType', $event)">
+                                        @for (option of adjustmentTypes; track option.value) {
+                                            <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-5">
+                                    <label class="form-label required" for="EmployeeTktAdjustment_EffectiveDate">{{ 'EffectiveDate' | localize }}</label>
+                                    <input
+                                        id="EmployeeTktAdjustment_EffectiveDate"
+                                        #effectiveDateInput="ngModel"
+                                        type="date"
+                                        class="form-control"
+                                        name="EffectiveDate"
+                                        [ngModel]="record().effectiveDate?.toISODate()"
+                                        (ngModelChange)="updateDateField('effectiveDate', $event)"
+                                        required />
+                                    <validation-messages [formCtrl]="effectiveDateInput" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label" for="EmployeeTktAdjustment_AdjustmentType">{{ 'AdjustmentType' | localize }}</label>
-                                <select
-                                    id="EmployeeTktAdjustment_AdjustmentType"
-                                    class="form-select"
-                                    name="AdjustmentType"
-                                    [ngModel]="record().adjustmentType"
-                                    (ngModelChange)="updateField('adjustmentType', $event)">
-                                    @for (option of adjustmentTypes; track option.value) {
-                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                            <div class="col-md-3">
+                                <div class="mb-5">
+                                    <label class="form-label" for="EmployeeTktAdjustment_QuotaAccrued">{{ 'QuotaAccrued' | localize }}</label>
+                                    <input
+                                        id="EmployeeTktAdjustment_QuotaAccrued"
+                                        class="form-control"
+                                        type="number"
+                                        step="any"
+                                        name="QuotaAccrued"
+                                        [ngModel]="record().quotaAccrued"
+                                        (ngModelChange)="updateNumberField('quotaAccrued', $event)" />
+                                </div>
+                                <div class="mb-5">
+                                    <label class="form-label" for="EmployeeTktAdjustment_QuotaAdjusted">{{ 'QuotaAdjusted' | localize }}</label>
+                                    <div class="input-group">
+                                        <input
+                                            id="EmployeeTktAdjustment_QuotaAdjusted"
+                                            class="form-control"
+                                            [class.is-invalid]="exceedsBalance() || missingQuota()"
+                                            type="number"
+                                            step="any"
+                                            name="QuotaAdjusted"
+                                            [ngModel]="record().quotaAdjusted"
+                                            (ngModelChange)="updateNumberField('quotaAdjusted', $event)" />
+                                        @if (quota()?.quotaFound) {
+                                            <button
+                                                type="button"
+                                                class="btn btn-light-primary"
+                                                [title]="'AvailableBalance' | localize"
+                                                (click)="useAvailableBalance()">
+                                                {{ quota()!.availableBalance | number: '1.0-3' }}
+                                            </button>
+                                        }
+                                    </div>
+                                    @if (exceedsBalance()) {
+                                        <div class="text-danger small mt-1">
+                                            {{ 'AvailableBalance' | localize }}: {{ quota()!.availableBalance | number: '1.0-3' }}
+                                        </div>
                                     }
-                                </select>
+                                </div>
+                                <div class="mb-5">
+                                    <label class="form-label" for="EmployeeTktAdjustment_TicketPaymentType">{{ 'TicketPaymentType' | localize }}</label>
+                                    <select
+                                        id="EmployeeTktAdjustment_TicketPaymentType"
+                                        class="form-select"
+                                        name="TicketPaymentType"
+                                        [ngModel]="record().ticketPaymentType"
+                                        (ngModelChange)="updateField('ticketPaymentType', $event)">
+                                        @for (option of ticketPaymentTypes; track option.value) {
+                                            <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                        }
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label" for="EmployeeTktAdjustment_TicketPaymentType">{{ 'TicketPaymentType' | localize }}</label>
-                                <select
-                                    id="EmployeeTktAdjustment_TicketPaymentType"
-                                    class="form-select"
-                                    name="TicketPaymentType"
-                                    [ngModel]="record().ticketPaymentType"
-                                    (ngModelChange)="updateField('ticketPaymentType', $event)">
-                                    @for (option of ticketPaymentTypes; track option.value) {
-                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label" for="EmployeeTktAdjustment_QuotaAccrued">{{ 'QuotaAccrued' | localize }}</label>
-                                <input
-                                    id="EmployeeTktAdjustment_QuotaAccrued"
-                                    class="form-control"
-                                    type="number"
-                                    step="0.01"
-                                    name="QuotaAccrued"
-                                    [ngModel]="record().quotaAccrued"
-                                    (ngModelChange)="updateNumberField('quotaAccrued', $event)" />
-                            </div>
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label" for="EmployeeTktAdjustment_QuotaAdjusted">{{ 'QuotaAdjusted' | localize }}</label>
-                                <input
-                                    id="EmployeeTktAdjustment_QuotaAdjusted"
-                                    class="form-control"
-                                    type="number"
-                                    step="0.01"
-                                    name="QuotaAdjusted"
-                                    [ngModel]="record().quotaAdjusted"
-                                    (ngModelChange)="updateNumberField('quotaAdjusted', $event)" />
+                            <div class="col-md-4">
+                                <!-- The quota this adjustment draws on (entitlement period covering the effective date). -->
+                                @if (quota(); as q) {
+                                    <div class="border rounded p-4 bg-light">
+                                        <div class="fw-bold mb-3">{{ 'TicketQuotaForEffectiveDate' | localize }}</div>
+                                        @if (q.quotaFound) {
+                                            <table class="table table-sm mb-0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>{{ 'EntitlementFrom' | localize }}</td>
+                                                        <td class="text-end">{{ q.entitlementFrom | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{{ 'EntitlementTo' | localize }}</td>
+                                                        <td class="text-end">{{ q.entitlementTo | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{{ 'QuotaAccrued' | localize }}</td>
+                                                        <td class="text-end">{{ q.quotaAccrued | number: '1.0-3' }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{{ 'QuotaUsed' | localize }}</td>
+                                                        <td class="text-end">{{ q.quotaUsed | number: '1.0-3' }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{{ 'QuotaAdjusted' | localize }}</td>
+                                                        <td class="text-end">{{ q.quotaAdjusted | number: '1.0-3' }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{{ 'QuotaBalance' | localize }}</td>
+                                                        <td class="text-end">{{ q.quotaBalance | number: '1.0-3' }}</td>
+                                                    </tr>
+                                                    <tr class="fw-bold">
+                                                        <td>{{ 'AvailableBalance' | localize }}</td>
+                                                        <td class="text-end">{{ q.availableBalance | number: '1.0-3' }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        } @else {
+                                            <div [class.text-danger]="missingQuota()" [class.text-muted]="!missingQuota()">
+                                                {{ 'NoTicketQuotaForEffectiveDate' | localize }}
+                                            </div>
+                                        }
+                                    </div>
+                                }
                             </div>
                         </div>
                         <div class="mb-5">
@@ -112,7 +209,8 @@
                             <textarea
                                 id="EmployeeTktAdjustment_Comments"
                                 class="form-control"
-                                rows="3"
+                                rows="4"
+                                maxlength="500"
                                 name="Comments"
                                 [ngModel]="record().comments"
                                 (ngModelChange)="updateField('comments', $event)"></textarea>

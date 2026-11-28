@@ -15,7 +15,7 @@ import { DateTime } from 'luxon';
 
 /**
  * One row of a loan's instalment schedule: the amount recovered from a month onward. Always opened from inside
- * its loan, so the loan is fixed. The month picker only offers whole months, which is the server's rule too
+ * its loan, so the loan is fixed. The date picked is moved to the 1st of its month, which is the server's rule
  * (the effective date is the first of a month); the end date is never typed -- the server closes each row the
  * day before the next one.
  */
@@ -54,16 +54,27 @@ export class CreateOrEditEmployeeLoanInstallmentModalComponent extends AppCompon
         document.getElementById('EmployeeLoanInstallment_StartDate')?.focus();
     }
 
-    /** The month picker's value, yyyy-MM. */
-    month(): string {
-        return this.record().startDate?.toFormat('yyyy-MM') ?? '';
+    /** The date picker's value, yyyy-MM-dd. */
+    startDateValue(): string {
+        return this.record().startDate?.toISODate() ?? '';
     }
 
-    updateMonth(value: string): void {
-        this.updateField('startDate', value ? DateTime.fromISO(value + '-01') : undefined);
+    /** Kept as typed while the field is being edited: moving it mid-typing would overwrite a half-typed year. */
+    updateStartDate(value: string): void {
+        this.updateField('startDate', value ? DateTime.fromISO(value) : undefined);
+    }
+
+    /** Any day may be entered; on leaving the field it moves to the 1st of its month, the only date the server accepts. */
+    snapStartDateToMonth(): void {
+        const date = this.record().startDate;
+        if (date?.isValid && date.day !== 1) {
+            this.updateField('startDate', date.startOf('month'));
+        }
     }
 
     save(): void {
+        // Enter in the date field submits without a blur.
+        this.snapStartDateToMonth();
         this.saving.set(true);
         this._service
             .createOrEdit(this.record())

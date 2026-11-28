@@ -35,6 +35,8 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
     private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
     private readonly IRepository<HCMv3.PayrollManagement.EmployeeWageAccount> _employeeWageAccountRepository;
     private readonly IActiveEmployeeLimitChecker _activeEmployeeLimitChecker;
+    private readonly HCMv3.PersonnelAdministration.Services.IEmployeeIndemnityQuotaSyncService _indemnityQuotaSyncService;
+    private readonly HCMv3.PersonnelAdministration.Services.IEmployeeLeaveQuotaRealignService _leaveQuotaRealignService;
 
     public EmployeesAppService(
         IRepository<Employee> employeeRepository,
@@ -43,8 +45,12 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         IEntityImageStore imageStore,
         HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor,
         IRepository<HCMv3.PayrollManagement.EmployeeWageAccount> employeeWageAccountRepository,
-        IActiveEmployeeLimitChecker activeEmployeeLimitChecker)
+        IActiveEmployeeLimitChecker activeEmployeeLimitChecker,
+        HCMv3.PersonnelAdministration.Services.IEmployeeIndemnityQuotaSyncService indemnityQuotaSyncService,
+        HCMv3.PersonnelAdministration.Services.IEmployeeLeaveQuotaRealignService leaveQuotaRealignService)
     {
+        _indemnityQuotaSyncService = indemnityQuotaSyncService;
+        _leaveQuotaRealignService = leaveQuotaRealignService;
         _activeEmployeeLimitChecker = activeEmployeeLimitChecker;
         _employeeWageAccountRepository = employeeWageAccountRepository;
         _employeeRepository = employeeRepository;
@@ -227,6 +233,7 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         var employee = await _employeeRepository.GetAsync(input.Id.Value);
         var previousEmploymentType = employee.EmploymentType;
         var wasActive = employee.Status == EmployeeStatus.Active;
+        var previousJoiningDate = employee.JoiningDate;
         MapToEntity(input, employee);
 
         // Edition feature Max Active Employees (legacy licence line "Active Employees"): only a change TO active is
@@ -248,6 +255,13 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         employee.PhotoPath = await _imageStore.SaveIfChangedAsync(
             EntityImageKinds.EmployeePhoto, employee.TenantId, employee.Id, employee.PhotoPath, input.Photo);
 
+        // Legacy Employee.OnSaving "Update Indemnity StartDate": the first Indemnity Quota follows the joining date.
+        if (employee.JoiningDate.Date != previousJoiningDate.Date)
+        {
+            await _indemnityQuotaSyncService.AlignToJoiningDateAsync(employee.Id, employee.JoiningDate);
+            // Legacy "Update LeaveQuota EntitlmentFrom and DeductionFrom": the first Leave Quota follows it too.
+            await _leaveQuotaRealignService.RealignAsync(employee.Id, employee.JoiningDate);
+        }
 
         await _employeeRepository.UpdateAsync(employee);
     }

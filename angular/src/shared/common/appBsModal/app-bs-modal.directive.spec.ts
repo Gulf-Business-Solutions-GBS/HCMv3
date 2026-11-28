@@ -104,4 +104,79 @@ describe('AppBsModalDirective', () => {
 
         expect(document.activeElement?.tagName).not.toBe('BUTTON');
     });
+
+    it('leaves a dialog that is not inside another one where it is', async () => {
+        const element = (host.modal() as any)._element.nativeElement as HTMLElement;
+        const parent = element.parentElement;
+
+        await open();
+
+        expect(element.parentElement).toBe(parent);
+    });
+});
+
+/**
+ * A child record's dialog declared inside its parent's dialog -- as the loan's installment dialog sits inside the
+ * loan dialog. Left in place, its backdrop (always at the end of the page) covered it.
+ */
+@Component({
+    standalone: true,
+    imports: [AppBsModalDirective],
+    template: `
+        <div appBsModal #outer="bs-modal" class="modal fade" tabindex="-1" role="dialog" [config]="config">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    @if (childShown()) {
+                        <div appBsModal #inner="bs-modal" id="InnerDialog" class="modal fade" tabindex="-1" role="dialog" [config]="config">
+                            <div class="modal-dialog"><div class="modal-content"><input id="InnerField" type="text" /></div></div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    `,
+})
+class NestedHostComponent {
+    readonly outer = viewChild.required<AppBsModalDirective>('outer');
+    readonly inner = viewChild<AppBsModalDirective>('inner');
+    readonly config = { backdrop: 'static' as const, animated: false };
+    readonly childShown = signal(true);
+}
+
+describe('AppBsModalDirective inside another dialog', () => {
+    let fixture: ComponentFixture<NestedHostComponent>;
+    let host: NestedHostComponent;
+
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({ imports: [NestedHostComponent] }).compileComponents();
+
+        fixture = TestBed.createComponent(NestedHostComponent);
+        host = fixture.componentInstance;
+        fixture.autoDetectChanges(true);
+        await fixture.whenStable();
+    });
+
+    afterEach(() => {
+        fixture.destroy();
+        document.querySelectorAll('.modal-backdrop').forEach((b) => b.remove());
+    });
+
+    it('moves to the end of the page when it opens, so it sits above its own backdrop', async () => {
+        host.outer().show();
+        host.inner()!.show();
+        await fixture.whenStable();
+
+        expect(document.getElementById('InnerDialog')?.parentElement).toBe(document.body);
+    });
+
+    it('is taken away with its component once it has been moved', async () => {
+        host.outer().show();
+        host.inner()!.show();
+        await fixture.whenStable();
+
+        host.childShown.set(false);
+        await fixture.whenStable();
+
+        expect(document.getElementById('InnerDialog')).toBeNull();
+    });
 });

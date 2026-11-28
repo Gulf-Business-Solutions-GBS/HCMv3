@@ -80,38 +80,49 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4 mb-5">
+                            <div class="col-md-3 mb-5">
                                 <label class="form-label" for="EmployeeGratuityQuota_QuotaAccrued">{{ 'QuotaAccrued' | localize }}</label>
                                 <input
                                     id="EmployeeGratuityQuota_QuotaAccrued"
                                     class="form-control"
                                     type="number"
-                                    step="0.01"
+                                    step="0.001"
                                     name="QuotaAccrued"
                                     [ngModel]="record().quotaAccrued"
                                     (ngModelChange)="updateNumberField('quotaAccrued', $event)" />
                             </div>
-                            <div class="col-md-4 mb-5">
+                            <div class="col-md-3 mb-5">
                                 <label class="form-label" for="EmployeeGratuityQuota_QuotaUsed">{{ 'QuotaUsed' | localize }}</label>
                                 <input
                                     id="EmployeeGratuityQuota_QuotaUsed"
                                     class="form-control"
                                     type="number"
-                                    step="0.01"
+                                    step="0.001"
                                     name="QuotaUsed"
                                     [ngModel]="record().quotaUsed"
                                     (ngModelChange)="updateNumberField('quotaUsed', $event)" />
                             </div>
-                            <div class="col-md-4 mb-5">
+                            <div class="col-md-3 mb-5">
                                 <label class="form-label" for="EmployeeGratuityQuota_QuotaAdjusted">{{ 'QuotaAdjusted' | localize }}</label>
                                 <input
                                     id="EmployeeGratuityQuota_QuotaAdjusted"
                                     class="form-control"
                                     type="number"
-                                    step="0.01"
+                                    step="0.001"
                                     name="QuotaAdjusted"
                                     [ngModel]="record().quotaAdjusted"
                                     (ngModelChange)="updateNumberField('quotaAdjusted', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="EmployeeGratuityQuota_QuotaBalance">{{ 'QuotaBalance' | localize }}</label>
+                                <input
+                                    id="EmployeeGratuityQuota_QuotaBalance"
+                                    class="form-control"
+                                    type="number"
+                                    name="QuotaBalance"
+                                    [value]="quotaBalance()"
+                                    readonly
+                                    disabled />
                             </div>
                         </div>
                     </div>

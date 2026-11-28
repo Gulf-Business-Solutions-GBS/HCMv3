@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 using Abp.Extensions;
@@ -124,6 +125,15 @@ public class CreateOrEditEmployeeAbsenceDto
     /// </para>
     /// </summary>
     public bool RecordDirectly { get; set; }
+
+    /// <summary>Files staged on the form before the first save, attached once the leave exists.</summary>
+    public List<string> AttachmentFileTokens { get; set; }
+
+    /// <summary>
+    /// Legacy <c>SettleFractionalBalance</c> (non-persistent): settle the fraction left in the balance with a
+    /// Fractional leave adjustment on save. Shown only when the time settings enable it.
+    /// </summary>
+    public bool SettleFractionalBalance { get; set; }
 }
 
 public class GetEmployeeAbsenceForEditOutput
@@ -157,4 +167,36 @@ public class GetAllEmployeeAbsencesInput : PagedAndSortedResultRequestDto, IShou
             Sorting = "StartDate DESC";
         }
     }
+}
+
+/// <summary>
+/// A leave type HR may book for this employee: legacy <c>EmployeeAbsence.EmpAbsenceType</c> (lines 73-127) --
+/// active, suiting the employee's gender and religion, and on their salary profile when the type requires it.
+/// </summary>
+public class EmployeeAbsenceLeaveTypeDto : EntityDto<int>
+{
+    public string Code { get; set; }
+
+    public string NameEn { get; set; }
+
+    public string NameAr { get; set; }
+
+    /// <summary>Partial leave (times / half day) allowed: the type's flag, and not a full-day-only type.</summary>
+    public bool AllowPartialLeave { get; set; }
+
+    public HCMv3.PayrollManagement.LeaveDurationType LeaveDurationType { get; set; }
+}
+
+/// <summary>The settings that switch fields of HR's leave form on and off (legacy controller lines 58-150).</summary>
+public class EmployeeAbsenceFormSettingsDto
+{
+    /// <summary>Half Day Type is shown only when this is on.</summary>
+    public bool EnableAutoHalfDayLeave { get; set; }
+
+    public bool EnablePayFullWithPayroll { get; set; }
+
+    /// <summary>Settle Fractional Balance is shown only when this is on.</summary>
+    public bool EnableSettleFractionalLeaveBalance { get; set; }
+
+    public LeavePaymentType DefaultLeavePaymentType { get; set; }
 }

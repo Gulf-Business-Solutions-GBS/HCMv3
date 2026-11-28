@@ -20,6 +20,7 @@ import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
+import { DateTime } from 'luxon';
 import { CreateOrEditEmployeeLoanRecoveryModalComponent } from '../../employee-loan-recoveries/create-or-edit-employee-loan-recovery-modal.component';
 import { CreateOrEditEmployeeLoanExemptionModalComponent } from '../../employee-loan-exemptions/create-or-edit-employee-loan-exemption-modal.component';
 import { CreateOrEditEmployeeLoanInstallmentModalComponent } from './create-or-edit-employee-loan-installment-modal.component';
@@ -63,6 +64,15 @@ export class EmployeeLoanDetailsComponent extends AppComponentBase {
     readonly loanId = input<number>();
     readonly employeeId = input<number>();
 
+    /** The loan's recovery end date: where the last, open-ended instalment actually stops. */
+    readonly recoveryEndDate = input<DateTime>();
+
+    /**
+     * For a loan not saved yet: saves it and gives its id, or undefined if it could not be saved. Called when
+     * "Create new" is pressed on a tab of a new loan, as legacy let rows be added before the loan was saved.
+     */
+    readonly ensureLoan = input<() => Promise<number | undefined>>();
+
     /** Raised when anything under the loan changed, so whoever shows the loan can refresh its balances. */
     readonly changed = output<void>();
 
@@ -78,16 +88,36 @@ export class EmployeeLoanDetailsComponent extends AppComponentBase {
     readonly loadingRecoveries = signal<boolean>(false);
     readonly loadingExemptions = signal<boolean>(false);
 
+    private shownLoanId: number | undefined;
+
     constructor() {
         super();
         effect(() => {
-            if (this.loanId()) {
+            const loanId = this.loanId();
+
+            // Back to the first tab for a different loan -- but not when a new loan has just been saved from one
+            // of its own tabs, where the tab in use must stay open.
+            if (this.shownLoanId && loanId !== this.shownLoanId) {
                 this.activeTab.set('installments');
+            }
+
+            this.shownLoanId = loanId;
+
+            if (loanId) {
                 this.loadInstallments();
                 this.loadRecoveries();
                 this.loadExemptions();
+            } else {
+                this.installments.set([]);
+                this.recoveries.set([]);
+                this.exemptions.set([]);
             }
         });
+    }
+
+    /** The loan to add under: this one, or a new loan saved first. Undefined when that save did not happen. */
+    private async resolveLoanId(): Promise<number | undefined> {
+        return this.loanId() ?? (await this.ensureLoan()?.());
     }
 
     // ------------------------------------------------------------------ installments
@@ -112,13 +142,20 @@ export class EmployeeLoanDetailsComponent extends AppComponentBase {
             .subscribe((result) => this.installments.set(result.items));
     }
 
-    /** The last row runs on with no end (31/12/9999); shown blank rather than as a date nobody means. */
-    isOpenEnded(record: EmployeeLoanInstallmentDto): boolean {
-        return !record.endDate || record.endDate.year >= 9999;
+    /**
+     * Each row ends the day before the next one starts (worked out by the server). The last row is stored with no
+     * end (31/12/9999) and in practice runs until the loan is recovered, so it shows the loan's recovery end date.
+     */
+    installmentEndDate(record: EmployeeLoanInstallmentDto): DateTime | undefined {
+        const openEnded = !record.endDate || record.endDate.year >= 9999;
+        return openEnded ? this.recoveryEndDate() : record.endDate;
     }
 
-    createInstallment(): void {
-        this.installmentModal()?.show(this.loanId());
+    async createInstallment(): Promise<void> {
+        const loanId = await this.resolveLoanId();
+        if (loanId) {
+            this.installmentModal()?.show(loanId);
+        }
     }
 
     editInstallment(record: EmployeeLoanInstallmentDto): void {
@@ -171,8 +208,11 @@ export class EmployeeLoanDetailsComponent extends AppComponentBase {
         return LoanRecoveryMethod[value] ?? '';
     }
 
-    createRecovery(): void {
-        this.recoveryModal()?.show(undefined, { employeeLoanId: this.loanId(), employeeId: this.employeeId() });
+    async createRecovery(): Promise<void> {
+        const loanId = await this.resolveLoanId();
+        if (loanId) {
+            this.recoveryModal()?.show(undefined, { employeeLoanId: loanId, employeeId: this.employeeId() });
+        }
     }
 
     editRecovery(record: EmployeeLoanRecoveryDto): void {
@@ -229,8 +269,11 @@ export class EmployeeLoanDetailsComponent extends AppComponentBase {
         return value === undefined || value === null ? '' : this.l('RequestStatus' + RequestStatus[value]);
     }
 
-    createExemption(): void {
-        this.exemptionModal()?.show(undefined, { employeeLoanId: this.loanId(), employeeId: this.employeeId() });
+    async createExemption(): Promise<void> {
+        const loanId = await this.resolveLoanId();
+        if (loanId) {
+            this.exemptionModal()?.show(undefined, { employeeLoanId: loanId, employeeId: this.employeeId() });
+        }
     }
 
     editExemption(record: EmployeeLoanExemptionDto): void {

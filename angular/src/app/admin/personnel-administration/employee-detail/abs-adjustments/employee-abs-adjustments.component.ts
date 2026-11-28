@@ -16,6 +16,7 @@ import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { CreateOrEditEmployeeAbsAdjustmentModalComponent } from './create-or-edit-employee-abs-adjustment-modal.component';
+import { adjustmentPaymentTypeKey, adjustmentTypeKey } from './abs-adjustment-labels';
 
 @Component({
     selector: 'employee-abs-adjustments',
@@ -42,6 +43,9 @@ export class EmployeeAbsAdjustmentsComponent extends AppComponentBase {
     readonly paginator = viewChild<Paginator>('paginator');
 
     readonly activeMenuItems = signal<MenuItem[]>([]);
+
+    readonly adjustmentTypeName = adjustmentTypeKey;
+    readonly adjustmentPaymentTypeName = adjustmentPaymentTypeKey;
 
     constructor() {
         super();

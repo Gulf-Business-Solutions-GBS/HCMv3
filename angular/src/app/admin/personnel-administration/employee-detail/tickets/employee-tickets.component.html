@@ -47,7 +47,6 @@
                         <th>{{ 'Compensate' | localize }}</th>
                         <th>{{ 'TicketPaymentType' | localize }}</th>
                         <th>{{ 'Amount' | localize }}</th>
-                        <th>{{ 'AdvancedTicketPaid' | localize }}</th>
                         <th>{{ 'OverrideAmount' | localize }}</th>
                     </tr>
                 </ng-template>
@@ -74,10 +73,9 @@
                         <td>{{ record.ticketDate | luxonFormat: 'yyyy-MM-dd' }}</td>
                         <td>{{ record.paymentDate | luxonFormat: 'yyyy-MM-dd' }}</td>
                         <td>{{ record.compensate }}</td>
-                        <td>{{ record.ticketPaymentType }}</td>
-                        <td>{{ record.amount }}</td>
-                        <td>{{ record.advancedTicketPaid }}</td>
-                        <td>{{ record.overrideAmount }}</td>
+                        <td>{{ (record.ticketPaymentType === 1 ? 'PayInAdvance' : 'PayWithPayroll') | localize }}</td>
+                        <td>{{ record.amount | number: '1.3-3' }}</td>
+                        <td>{{ (record.overrideAmount ? 'Yes' : 'No') | localize }}</td>
                     </tr>
                 </ng-template>
             </p-table>

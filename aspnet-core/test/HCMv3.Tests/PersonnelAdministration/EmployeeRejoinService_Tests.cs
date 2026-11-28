@@ -83,6 +83,7 @@ public class EmployeeRejoinService_Tests : FullAndFinalTestBase
         gratuity.GratuityPaidDate.ShouldBe(DayBefore);
         gratuity.ResetGratuityCalc.ShouldBeTrue();
         gratuity.Comments.ShouldBe(EmployeeRejoinService.NilQuotaComment);
+        GratuityQuotaUsed(oldId).ShouldBe(50); // legacy Save() cascade: balance now nil
     }
 
     /// <summary>
@@ -104,6 +105,7 @@ public class EmployeeRejoinService_Tests : FullAndFinalTestBase
         adjustment.EffectiveDate.ShouldBe(DayBefore);
         adjustment.TicketPaymentType.ShouldBe(TicketPaymentType.PayInAdvance);
         adjustment.Comments.ShouldBe(EmployeeRejoinService.NilQuotaComment);
+        TicketQuotaAdjusted(oldId).ShouldBe(2); // legacy Save() cascade: ticket balance now nil
     }
 
     /// <summary>Legacy 684-693: each OPEN loan is recovered externally, dated on that loan's own end date.</summary>
@@ -165,6 +167,7 @@ public class EmployeeRejoinService_Tests : FullAndFinalTestBase
         LiveTktAdjustments(oldId).ShouldBeEmpty();
         LiveRecoveries(oldId).ShouldBeEmpty();
         Loan(loan).BalanceDueAmount.ShouldBe(120);
+        TicketQuotaAdjusted(oldId).ShouldBe(0); // legacy OnDeleting gives the ticket balance back
     }
 
     /// <summary>An edit undoes the previous save first, so moving the date moves the zeroing record -- never doubles it.</summary>
@@ -760,6 +763,9 @@ public class EmployeeRejoinService_Tests : FullAndFinalTestBase
 
     private List<EmployeeTktAdjustment> LiveTktAdjustments(int employeeId)
         => UsingDbContext(c => c.Set<EmployeeTktAdjustment>().Where(r => r.EmployeeId == employeeId && !r.IsDeleted).ToList());
+
+    private double TicketQuotaAdjusted(int employeeId)
+        => UsingDbContext(c => c.Set<EmployeeTicketQuota>().Where(q => q.EmployeeId == employeeId && !q.IsDeleted).Sum(q => q.QuotaAdjusted));
 
     private List<EmployeeLoanRecovery> LiveRecoveries(int employeeId)
         => UsingDbContext(c => c.Set<EmployeeLoanRecovery>().Where(r => r.EmployeeLoan.EmployeeId == employeeId && !r.IsDeleted).ToList());

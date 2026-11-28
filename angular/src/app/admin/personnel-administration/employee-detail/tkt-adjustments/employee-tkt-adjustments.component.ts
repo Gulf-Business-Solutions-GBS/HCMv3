@@ -10,12 +10,14 @@ import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { Table, TableModule } from 'primeng/table';
 import { TieredMenu } from 'primeng/tieredmenu';
 import { finalize } from 'rxjs/operators';
+import { DecimalPipe } from '@angular/common';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { CreateOrEditEmployeeTktAdjustmentModalComponent } from './create-or-edit-employee-tkt-adjustment-modal.component';
+import { tktAdjustmentTypeKey, tktPaymentTypeKey } from './tkt-adjustment-labels';
 
 @Component({
     selector: 'employee-tkt-adjustments',
@@ -26,6 +28,7 @@ import { CreateOrEditEmployeeTktAdjustmentModalComponent } from './create-or-edi
         PaginatorModule,
         TieredMenu,
         LuxonFormatPipe,
+        DecimalPipe,
         LocalizePipe,
         PermissionPipe,
         PermissionAnyPipe,
@@ -36,6 +39,9 @@ export class EmployeeTktAdjustmentsComponent extends AppComponentBase {
     private _service = inject(EmployeeTktAdjustmentsServiceProxy);
 
     readonly employeeId = input<number>();
+
+    readonly adjustmentTypeKey = tktAdjustmentTypeKey;
+    readonly paymentTypeKey = tktPaymentTypeKey;
 
     readonly createOrEditModal = viewChild<CreateOrEditEmployeeTktAdjustmentModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
@@ -68,6 +74,7 @@ export class EmployeeTktAdjustmentsComponent extends AppComponentBase {
             .getAll(
                 new GetAllEmployeeTktAdjustmentsInput({
                     employeeId: this.employeeId(),
+                    filter: undefined,
                     sorting: this.primengTableHelper.getSorting(this.dataTable()),
                     maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),
                     skipCount: this.primengTableHelper.getSkipCount(this.paginator(), event),

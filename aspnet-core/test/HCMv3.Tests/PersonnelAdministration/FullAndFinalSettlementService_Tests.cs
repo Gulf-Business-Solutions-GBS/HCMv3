@@ -346,12 +346,14 @@ public class FullAndFinalSettlementService_Tests : FullAndFinalTestBase
     {
         var seeded = SeedLeaver(new DateTime(2020, 7, 1), LastDay, SeparationType.Resignation);
 
+        SeedGratuityBalance(seeded.EmployeeId, 100);
         await _service.ApplyAsync(Values(seeded.EmployeeId, gratuity: 30.021), null);
 
         var gratuity = UsingDbContext(context => context.Set<EmployeeGratuity>().Single(g => g.EmployeeId == seeded.EmployeeId));
         gratuity.GratuityPaidDate.ShouldBe(LastDay);
         gratuity.GratuityPaidDays.ShouldBe(30.021);
         gratuity.Comments.ShouldBe(FullAndFinalSettlementService.EndOfServiceComment);
+        GratuityQuotaUsed(seeded.EmployeeId).ShouldBe(30.021, 0.0001);
     }
 
     [Fact]
@@ -375,6 +377,8 @@ public class FullAndFinalSettlementService_Tests : FullAndFinalTestBase
 
             var ticket = context.Set<EmployeeTktAdjustment>().Single(a => a.EmployeeId == seeded.EmployeeId);
             ticket.QuotaAdjusted.ShouldBe(1);
+            // Legacy EmployeeTktAdjustment.OnSaving: the encashed count is taken from the ticket quota.
+            context.Set<EmployeeTicketQuota>().Single(q => q.EmployeeId == seeded.EmployeeId && !q.IsDeleted).QuotaAdjusted.ShouldBe(1);
 
             context.Set<Employee>().Find(seeded.EmployeeId).Status.ShouldBe(EmployeeStatus.Inactive);
         });
@@ -388,6 +392,7 @@ public class FullAndFinalSettlementService_Tests : FullAndFinalTestBase
     public async Task Should_Move_Not_Duplicate_The_Gratuity_Row_On_Edit()
     {
         var seeded = SeedLeaver(new DateTime(2020, 7, 1), LastDay, SeparationType.Termination);
+        SeedGratuityBalance(seeded.EmployeeId, 100);
         var previous = Values(seeded.EmployeeId, gratuity: 60);
         await _service.ApplyAsync(previous, null);
 
@@ -399,6 +404,7 @@ public class FullAndFinalSettlementService_Tests : FullAndFinalTestBase
         rows.Count.ShouldBe(1);
         rows[0].GratuityPaidDate.ShouldBe(new DateTime(2024, 7, 15));
         rows[0].GratuityPaidDays.ShouldBe(55);
+        GratuityQuotaUsed(seeded.EmployeeId).ShouldBe(55);
     }
 
     [Fact]
@@ -406,6 +412,7 @@ public class FullAndFinalSettlementService_Tests : FullAndFinalTestBase
     {
         var seeded = SeedLeaver(new DateTime(2020, 7, 1), LastDay, SeparationType.Termination);
         SeedLeaveBalance(seeded.EmployeeId, 30);
+        SeedGratuityBalance(seeded.EmployeeId, 100);
         var values = Values(seeded.EmployeeId, gratuity: 60);
         values.LeaveCompensateDays = 12;
         await _service.ApplyAsync(values, null);
@@ -415,6 +422,7 @@ public class FullAndFinalSettlementService_Tests : FullAndFinalTestBase
         UsingDbContext(context =>
         {
             context.Set<EmployeeGratuity>().Any(g => g.EmployeeId == seeded.EmployeeId && !g.IsDeleted).ShouldBeFalse();
+            context.Set<EmployeeGratuityQuota>().Single(q => q.EmployeeId == seeded.EmployeeId).QuotaUsed.ShouldBe(0);
             context.Set<EmployeeAbsAdjustment>().Any(a => a.EmployeeId == seeded.EmployeeId && !a.IsDeleted).ShouldBeFalse();
             context.Set<Employee>().Find(seeded.EmployeeId).Status.ShouldBe(EmployeeStatus.Active);
         });

@@ -60,23 +60,36 @@ export class CreateOrEditEmployeeFundExemptionModalComponent extends AppComponen
 
     readonly employeeFunds = signal<EmployeeFundDto[]>([]);
 
-    show(id?: number): void {
+    /** Opened from a fund's own Fund Exemption tab: the row belongs to that fund and the fund is not offered. */
+    readonly fundFixed = signal<boolean>(false);
+
+    show(id?: number, fixedFundId?: number): void {
         this.isNew.set(!id);
         this.active.set(true);
+        this.fundFixed.set(!!fixedFundId);
 
-        this._employeeFundsService
-            .getAll(
-                new GetAllEmployeeFundsInput({
-                    employeeId: undefined,
-                    maxResultCount: 1000,
-                    skipCount: 0,
-                    sorting: undefined,
-                })
-            )
-            .subscribe((result) => this.employeeFunds.set(result.items));
+        if (!fixedFundId) {
+            this._employeeFundsService
+                .getAll(
+                    new GetAllEmployeeFundsInput({
+                        employeeId: undefined,
+                        filter: undefined,
+                        maxResultCount: 1000,
+                        skipCount: 0,
+                        sorting: undefined,
+                    })
+                )
+                .subscribe((result) => this.employeeFunds.set(result.items));
+        }
 
         if (!id) {
-            this.record.set(new CreateOrEditEmployeeFundExemptionDto());
+            const record = new CreateOrEditEmployeeFundExemptionDto();
+            record.employeeFundId = fixedFundId;
+            // Legacy EmployeeFundExemption.AfterConstruction: both dates start as today.
+            const today = DateTime.now().startOf('day');
+            record.startDate = today;
+            record.endDate = today;
+            this.record.set(record);
             this.modal().show();
         } else {
             this._service.getEmployeeFundExemptionForEdit(id).subscribe((result) => {
@@ -87,7 +100,9 @@ export class CreateOrEditEmployeeFundExemptionModalComponent extends AppComponen
     }
 
     onShown(): void {
-        document.getElementById('EmployeeFundExemption_EmployeeFundId')?.focus();
+        document
+            .getElementById(this.fundFixed() ? 'EmployeeFundExemption_StartDate' : 'EmployeeFundExemption_EmployeeFundId')
+            ?.focus();
     }
 
     save(): void {

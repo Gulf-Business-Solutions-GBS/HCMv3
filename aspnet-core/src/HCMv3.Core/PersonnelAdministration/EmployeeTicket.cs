@@ -16,12 +16,10 @@ namespace HCMv3.PersonnelAdministration;
 /// <list type="bullet">
 /// <item><description>The legacy <c>DocAttachment</c> FK is dropped per instruction (document-attachment
 /// infrastructure is not ported).</description></item>
-/// <item><description>The legacy <c>prevXxx</c> change-tracking fields and the entire quota-balance
-/// cascade (<c>UpdateQuotaBalance</c> against <see cref="EmployeeTicketQuota"/>, age-limit/dependant/benefit
-/// exception checks, auto-computed <c>Amount</c> via <c>TicketFare.GetAirTicketRate</c>) are NOT ported
-/// on the entity (same cross-entity-cascade omission approach as Wave 1's <c>EmployeeAbsAdjustment</c>);
-/// <c>Amount</c> here is a plain persisted field, accepted as client input rather than
-/// server-recomputed.</description></item>
+/// <item><description>The legacy <c>OnSaving</c> logic (auto-computed <c>Amount</c> via
+/// <c>TicketFare.GetAirTicketRate</c>, age-limit/dependant/benefit-exception checks, quota balance) lives in
+/// <c>Services.EmployeeTicketCalculationService</c>, called by the admin Ticket screen on every save; the
+/// <c>prevXxx</c> fields become that service's previous-value parameters.</description></item>
 /// </list>
 /// </summary>
 public class EmployeeTicket : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkflowEnabledEntity

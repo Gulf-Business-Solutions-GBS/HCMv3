@@ -24,7 +24,9 @@ namespace HCMv3.PersonnelAdministration;
 /// Application service for <see cref="EmployeeLoan"/> (ported from legacy XAF EmployeeLoan business object,
 /// Wave 2 deferred bucket). Ports the essential active validations only (required fields, EndDate not
 /// earlier than StartDate, RecoveryStartDate not earlier than StartDate, ActualAmount not less than
-/// DueAmount). The legacy loan-eligibility-period/eligible-count-per-year/eligible-amount checks are NOT ported.
+/// DueAmount, DueAmount above zero) and the loan type's eligibility limits (eligible period, count per year,
+/// eligible amount -- see <see cref="IEmployeeLoanRulesService"/>). The balance due is recomputed on every save as
+/// the due amount less the recoveries, as legacy's <c>UpdateDueBalance</c> did.
 ///
 /// <para>
 /// The recovery end date IS recalculated on save when the payroll setting <c>AutoUpdateLoanRecoveryEndDate</c> is
@@ -43,13 +45,15 @@ public class EmployeeLoansAppService : HCMv3AppServiceBase, IEmployeeLoansAppSer
     private readonly IEmployeeLoanInstallmentService _installmentService;
     private readonly IPayrollRetroTrigger _retroTrigger;
     private readonly IRepository<Employee> _employeeRepository;
+    private readonly IEmployeeLoanRulesService _loanRules;
 
     public EmployeeLoansAppService(IRepository<EmployeeLoan> repository,
         IRepository<EmployeeLoanInstallment> installmentRepository,
         IAdminTransactionSubmitter transactionSubmitter,
         IEmployeeLoanInstallmentService installmentService,
         IPayrollRetroTrigger retroTrigger,
-        IRepository<Employee> employeeRepository)
+        IRepository<Employee> employeeRepository,
+        IEmployeeLoanRulesService loanRules)
     {
         _transactionSubmitter = transactionSubmitter;
         _repository = repository;
@@ -57,6 +61,7 @@ public class EmployeeLoansAppService : HCMv3AppServiceBase, IEmployeeLoansAppSer
         _installmentService = installmentService;
         _retroTrigger = retroTrigger;
         _employeeRepository = employeeRepository;
+        _loanRules = loanRules;
     }
 
     /// <summary>
@@ -143,20 +148,19 @@ public class EmployeeLoansAppService : HCMv3AppServiceBase, IEmployeeLoansAppSer
         };
     }
 
-    public async Task CreateOrEdit(CreateOrEditEmployeeLoanDto input)
+    public async Task<int> CreateOrEdit(CreateOrEditEmployeeLoanDto input)
     {
         if (input.Id.HasValue)
         {
             await UpdateAsync(input);
+            return input.Id.Value;
         }
-        else
-        {
-            await CreateAsync(input);
-        }
+
+        return await CreateAsync(input);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeLoans_Create)]
-    protected virtual async Task CreateAsync(CreateOrEditEmployeeLoanDto input)
+    protected virtual async Task<int> CreateAsync(CreateOrEditEmployeeLoanDto input)
     {
         var entity = MapToEntity(input, new EmployeeLoan());
         entity.TenantId = AbpSession.TenantId ?? 0;
@@ -165,6 +169,7 @@ public class EmployeeLoansAppService : HCMv3AppServiceBase, IEmployeeLoansAppSer
         await ApplyCalculatedRecoveryEndDateAsync(entity);
 
         ValidateEntity(entity);
+        await _loanRules.ValidateEligibilityAsync(entity);
         // Routed for approval when the catalog says so, and simply filed when it does not -- the same
         // question the self-service form asks, so the answer no longer depends on which screen was used.
         // recordDirectly is refused unless the type permits a bypass AND the user holds the permission.
@@ -181,6 +186,8 @@ public class EmployeeLoansAppService : HCMv3AppServiceBase, IEmployeeLoansAppSer
         {
             await _installmentService.EnsureInitialInstallmentAsync(entity);
         }
+
+        return entity.Id;
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeLoans_Edit)]
@@ -213,6 +220,11 @@ public class EmployeeLoansAppService : HCMv3AppServiceBase, IEmployeeLoansAppSer
         }
 
         ValidateEntity(entity);
+        await _loanRules.ValidateEligibilityAsync(entity);
+
+        // Legacy UpdateDueBalance on every save: a changed due amount moves the balance by the same.
+        entity.BalanceDueAmount = await _loanRules.CalculateBalanceDueAsync(entity);
+
         await _repository.UpdateAsync(entity);
     }
 
@@ -248,6 +260,12 @@ public class EmployeeLoansAppService : HCMv3AppServiceBase, IEmployeeLoansAppSer
         if (entity.RecoveryStartDate < entity.StartDate)
         {
             throw new UserFriendlyException(L("RecoveryStartDateCannotBeEarlierThanStartDate"));
+        }
+
+        // Legacy: "DueAmount should not be blank" -- a loan with nothing owed cannot be recovered.
+        if (entity.DueAmount <= 0)
+        {
+            throw new UserFriendlyException(L("LoanDueAmountMustBeGreaterThanZero"));
         }
 
         if (entity.ActualAmount < entity.DueAmount)

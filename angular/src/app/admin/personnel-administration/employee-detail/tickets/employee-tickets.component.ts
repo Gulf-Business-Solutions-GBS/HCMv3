@@ -15,6 +15,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
+import { DecimalPipe } from '@angular/common';
 import { CreateOrEditEmployeeTicketModalComponent } from './create-or-edit-employee-ticket-modal.component';
 
 @Component({
@@ -26,6 +27,7 @@ import { CreateOrEditEmployeeTicketModalComponent } from './create-or-edit-emplo
         PaginatorModule,
         TieredMenu,
         LuxonFormatPipe,
+        DecimalPipe,
         LocalizePipe,
         PermissionPipe,
         PermissionAnyPipe,

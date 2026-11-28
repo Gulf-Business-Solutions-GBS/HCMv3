@@ -13,20 +13,25 @@ using Microsoft.EntityFrameworkCore;
 namespace HCMv3.PersonnelAdministration;
 
 /// <summary>
-/// Application service for <see cref="EmployeeFundDetail"/> (ported from legacy XAF EmployeeFundDetail
-/// business object, Wave 2 deferred bucket). Records the fund transaction row itself; the legacy source has
-/// no active validation (its <c>PerformValidation</c> body is empty) and the cascade that recomputes the
-/// parent <see cref="EmployeeFund"/> totals is NOT ported -- see class remarks on
-/// <see cref="EmployeeFundDetail"/>.
+/// Application service for <see cref="EmployeeFundDetail"/> -- the "Fund Detail" tab of legacy (LHRMS) Fund.
+/// Legacy has no validation on the row itself (its <c>PerformValidation</c> is empty).
+///
+/// Every save and delete re-totals the parent <see cref="EmployeeFund"/> (legacy
+/// <c>EmployeeFundDetail.UpdateDueBalance</c>, run on saving and on deleting): Amount, Paid Amount and Balance
+/// Amount by <see cref="EmployeeFundTotals"/>. When a row is moved to another fund, both funds are re-totalled.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeFundDetails)]
 public class EmployeeFundDetailsAppService : HCMv3AppServiceBase, IEmployeeFundDetailsAppService
 {
     private readonly IRepository<EmployeeFundDetail> _repository;
+    private readonly IRepository<EmployeeFund> _fundRepository;
 
-    public EmployeeFundDetailsAppService(IRepository<EmployeeFundDetail> repository)
+    public EmployeeFundDetailsAppService(
+        IRepository<EmployeeFundDetail> repository,
+        IRepository<EmployeeFund> fundRepository)
     {
         _repository = repository;
+        _fundRepository = fundRepository;
     }
 
     [HttpPost]
@@ -84,21 +89,50 @@ public class EmployeeFundDetailsAppService : HCMv3AppServiceBase, IEmployeeFundD
         entity.TenantId = AbpSession.TenantId ?? 0;
 
         await _repository.InsertAsync(entity);
+        await RetotalFundAsync(entity.EmployeeFundId);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeFundDetails_Edit)]
     protected virtual async Task UpdateAsync(CreateOrEditEmployeeFundDetailDto input)
     {
         var entity = await _repository.GetAsync(input.Id.Value);
+        var previousFundId = entity.EmployeeFundId;
         MapToEntity(input, entity);
 
         await _repository.UpdateAsync(entity);
+        await RetotalFundAsync(entity.EmployeeFundId);
+
+        if (previousFundId != entity.EmployeeFundId)
+        {
+            await RetotalFundAsync(previousFundId);
+        }
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeFundDetails_Delete)]
     public async Task Delete(EntityDto input)
     {
-        await _repository.DeleteAsync(input.Id);
+        var entity = await _repository.GetAsync(input.Id);
+        await _repository.DeleteAsync(entity);
+        await RetotalFundAsync(entity.EmployeeFundId);
+    }
+
+    /// <summary>Legacy <c>UpdateDueBalance</c>: the fund's totals from the rows it has once this change is stored.</summary>
+    private async Task RetotalFundAsync(int employeeFundId)
+    {
+        await CurrentUnitOfWork.SaveChangesAsync();
+
+        var fund = await _fundRepository.FirstOrDefaultAsync(employeeFundId);
+        if (fund == null)
+        {
+            return;
+        }
+
+        var details = await _repository.GetAll()
+            .Where(d => d.EmployeeFundId == employeeFundId)
+            .ToListAsync();
+
+        EmployeeFundTotals.Apply(fund, details);
+        await _fundRepository.UpdateAsync(fund);
     }
 
     private static EmployeeFundDetail MapToEntity(CreateOrEditEmployeeFundDetailDto input, EmployeeFundDetail entity)

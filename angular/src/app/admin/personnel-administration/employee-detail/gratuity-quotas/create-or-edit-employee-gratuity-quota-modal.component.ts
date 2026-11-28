@@ -1,4 +1,4 @@
-import { Component, inject, output, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     CreateOrEditEmployeeGratuityQuotaDto,
@@ -35,6 +35,13 @@ export class CreateOrEditEmployeeGratuityQuotaModalComponent extends AppComponen
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditEmployeeGratuityQuotaDto>(new CreateOrEditEmployeeGratuityQuotaDto());
+
+    /** Legacy EmployeeGratuityQuota.QuotaBalance: Round(Accrued - (Used + Adjusted), 3), read-only. */
+    readonly quotaBalance = computed(() => {
+        const r = this.record();
+        const value = (r.quotaAccrued || 0) - ((r.quotaUsed || 0) + (r.quotaAdjusted || 0));
+        return Math.round(value * 1000) / 1000;
+    });
 
     show(employeeId: number, id?: number): void {
         this.active.set(true);

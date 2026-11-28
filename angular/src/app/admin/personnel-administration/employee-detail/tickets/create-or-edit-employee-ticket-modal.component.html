@@ -23,6 +23,33 @@
                         <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body">
+                        <!-- Legacy field order: Employee first. Chosen here only when opened from the Employee
+                             Tickets list; inside an employee's record the employee is fixed. -->
+                        @if (choosesEmployee()) {
+                            <div class="row">
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label required" for="EmployeeTicket_EmployeeId">{{ 'Employee' | localize }}</label>
+                                    <p-select
+                                        inputId="EmployeeTicket_EmployeeId"
+                                        #employeeIdInput="ngModel"
+                                        name="EmployeeId"
+                                        styleClass="w-100"
+                                        [appendTo]="null"
+                                        [options]="employeeOptions()"
+                                        optionLabel="label"
+                                        optionValue="id"
+                                        [filter]="true"
+                                        filterBy="label"
+                                        [showClear]="true"
+                                        [virtualScroll]="true"
+                                        [virtualScrollItemSize]="38"
+                                        [ngModel]="record().employeeId"
+                                        (ngModelChange)="updateField('employeeId', $event)"
+                                        required />
+                                    <validation-messages [formCtrl]="employeeIdInput" />
+                                </div>
+                            </div>
+                        }
                         <div class="row">
                             <div class="col-md-6 mb-5">
                                 <label class="form-label required" for="EmployeeTicket_TicketTypeId">{{ 'TicketTypeId' | localize }}</label>
@@ -70,15 +97,19 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3 mb-5">
-                                <label class="form-label" for="EmployeeTicket_Compensate">{{ 'Compensate' | localize }}</label>
+                                <label class="form-label required" for="EmployeeTicket_Compensate">{{ 'Compensate' | localize }}</label>
                                 <input
                                     id="EmployeeTicket_Compensate"
+                                    #compensateInput="ngModel"
                                     class="form-control"
                                     type="number"
                                     step="0.01"
+                                    min="0.01"
                                     name="Compensate"
                                     [ngModel]="record().compensate"
-                                    (ngModelChange)="updateNumberField('compensate', $event)" />
+                                    (ngModelChange)="updateNumberField('compensate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="compensateInput" />
                             </div>
                             <div class="col-md-3 mb-5">
                                 <label class="form-label" for="EmployeeTicket_TicketPaymentType">{{ 'TicketPaymentType' | localize }}</label>
@@ -93,40 +124,17 @@
                                     }
                                 </select>
                             </div>
-                            <div class="col-md-3 mb-5">
+                            <div class="col-md-6 mb-5">
                                 <label class="form-label" for="EmployeeTicket_Amount">{{ 'Amount' | localize }}</label>
                                 <input
                                     id="EmployeeTicket_Amount"
                                     class="form-control"
                                     type="number"
-                                    step="0.01"
+                                    step="0.001"
                                     name="Amount"
                                     [ngModel]="record().amount"
                                     (ngModelChange)="updateNumberField('amount', $event)" />
-                            </div>
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label" for="EmployeeTicket_AdvancedTicketPaid">{{ 'AdvancedTicketPaid' | localize }}</label>
-                                <input
-                                    id="EmployeeTicket_AdvancedTicketPaid"
-                                    class="form-control"
-                                    type="number"
-                                    name="AdvancedTicketPaid"
-                                    [ngModel]="record().advancedTicketPaid"
-                                    (ngModelChange)="updateNumberField('advancedTicketPaid', $event)" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3 mb-5">
-                                <div class="form-check mt-8">
-                                    <input
-                                        id="EmployeeTicket_OverrideAmount"
-                                        class="form-check-input"
-                                        type="checkbox"
-                                        name="OverrideAmount"
-                                        [ngModel]="record().overrideAmount"
-                                        (ngModelChange)="updateField('overrideAmount', $event)" />
-                                    <label class="form-check-label" for="EmployeeTicket_OverrideAmount">{{ 'OverrideAmount' | localize }}</label>
-                                </div>
+                                <div class="form-text">{{ 'TicketAmountCalculatedOnSave' | localize }}</div>
                             </div>
                         </div>
                         <div class="mb-5">
@@ -138,6 +146,19 @@
                                 name="Comments"
                                 [ngModel]="record().comments"
                                 (ngModelChange)="updateField('comments', $event)"></textarea>
+                        </div>
+                        <div class="mb-5">
+                            <!-- Calculated: set when an employee/dependant ticket exception supplies the amount. -->
+                            <div class="form-check">
+                                <input
+                                    id="EmployeeTicket_OverrideAmount"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="OverrideAmount"
+                                    [ngModel]="record().overrideAmount"
+                                    disabled />
+                                <label class="form-check-label" for="EmployeeTicket_OverrideAmount">{{ 'OverrideAmount' | localize }}</label>
+                            </div>
                         </div>
                         @if (record().id) {
                             <div class="mb-5">

@@ -64,6 +64,11 @@ public class GetEmployeeOvertimeForEditOutput
 {
     public CreateOrEditEmployeeOvertimeDto EmployeeOvertime { get; set; }
 
+    /// <summary>The record's employee, shown on the form when it is opened from the Employee Overtime list.</summary>
+    public string EmployeeCode { get; set; }
+
+    public string EmployeeFullNameEn { get; set; }
+
     /// <summary>
     /// Read-only, for display in the edit form. Kept out of <see cref="CreateOrEditEmployeeOvertimeDto"/> so
     /// it is never posted back. See <see cref="EmployeeOvertimeDto.ExpectedOvertimeAmount"/>.
@@ -71,9 +76,31 @@ public class GetEmployeeOvertimeForEditOutput
     public double ExpectedOvertimeAmount { get; set; }
 }
 
+/// <summary>What the overtime form currently holds, sent to <c>GetExpectedOvertimeAmount</c>. Nothing is saved.</summary>
+public class GetExpectedOvertimeAmountInput
+{
+    public int EmployeeId { get; set; }
+
+    public int OvertimeTypeId { get; set; }
+
+    public DateTime EffectiveDate { get; set; }
+
+    public double ApprovedOvertimeHours { get; set; }
+}
+
+/// <summary>Employees offered in the overtime form's dropdown when it is opened from the Employee Overtime list.</summary>
+public class GetEmployeeOvertimeEmployeesInput
+{
+    /// <summary>Optional text matched against the employee's code and English and Arabic names.</summary>
+    public string Filter { get; set; }
+}
+
 public class GetAllEmployeeOvertimesInput : PagedAndSortedResultRequestDto, IShouldNormalize
 {
     public int? EmployeeId { get; set; }
+
+    /// <summary>Optional text matched against employee code / names and the overtime type's names.</summary>
+    public string Filter { get; set; }
 
     public void Normalize()
     {

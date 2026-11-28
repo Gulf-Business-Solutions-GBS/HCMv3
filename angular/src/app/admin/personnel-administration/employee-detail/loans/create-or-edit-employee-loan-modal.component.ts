@@ -12,7 +12,7 @@ import {
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.directive';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ValidationMessagesComponent } from '@shared/utils/validation-messages.component';
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
@@ -45,6 +45,7 @@ export class CreateOrEditEmployeeLoanModalComponent extends AppComponentBase {
     private _loanTypesService = inject(LoanTypesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
+    readonly recordForm = viewChild<NgForm>('recordForm');
     readonly modalSave = output<void>();
 
     readonly active = signal<boolean>(false);
@@ -115,6 +116,11 @@ export class CreateOrEditEmployeeLoanModalComponent extends AppComponentBase {
             record.actualAmount = 0;
             record.dueAmount = 0;
             record.fixedAmount = 0;
+            // Legacy EmployeeLoan.AfterConstruction: all three dates start as today.
+            const today = DateTime.now().startOf('day');
+            record.startDate = today;
+            record.recoveryStartDate = today;
+            record.endDate = today;
             record.recoverFracInLastTrans = false;
             record.includeInLoanPay = true;
             this.record.set(record);
@@ -168,6 +174,56 @@ export class CreateOrEditEmployeeLoanModalComponent extends AppComponentBase {
                 this.close();
                 this.modalSave.emit();
             });
+    }
+
+    /**
+     * Saves a new loan so a tab can add a row under it, and keeps the dialog open on the saved loan. Undefined
+     * when the form is incomplete (it says so) or the save fails (the server's message is already shown).
+     */
+    readonly saveForDetails = (): Promise<number | undefined> => {
+        const form = this.recordForm();
+        if (form && !form.valid) {
+            form.control.markAllAsTouched();
+            this.notify.warn(this.l('InvalidFormMessage'));
+            return Promise.resolve(undefined);
+        }
+
+        this.saving.set(true);
+        return new Promise((resolve) => {
+            this._service
+                .createOrEdit(this.record())
+                .pipe(finalize(() => this.saving.set(false)))
+                .subscribe({
+                    next: (id) => {
+                        this.notify.info(this.l('SavedSuccessfully'));
+                        this.isNew.set(false);
+                        this.updateField('id', id);
+                        // The list behind has a new row, whatever happens next in this dialog.
+                        this.detailsChanged.set(true);
+                        resolve(id);
+                    },
+                    error: () => resolve(undefined),
+                });
+        });
+    };
+
+    /**
+     * An instalment, recovery or exemption was saved: the server has recalculated the loan's recovery end date and
+     * balance due, so those two are fetched again -- as legacy's form showed them change at once. The rest of the
+     * form is left as the user has it.
+     */
+    onDetailsChanged(): void {
+        this.detailsChanged.set(true);
+
+        const id = this.record().id;
+        if (!id) {
+            return;
+        }
+
+        this._service.getEmployeeLoanForEdit(id).subscribe((result) => {
+            this.updateField('endDate', result.employeeLoan.endDate);
+            this.balanceDueAmount.set(result.balanceDueAmount);
+        });
     }
 
     close(): void {

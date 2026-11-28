@@ -29,11 +29,12 @@
                                 <input
                                     id="EmployeeLoanInstallment_StartDate"
                                     #startDateInput="ngModel"
-                                    type="month"
+                                    type="date"
                                     class="form-control"
                                     name="StartDate"
-                                    [ngModel]="month()"
-                                    (ngModelChange)="updateMonth($event)"
+                                    [ngModel]="startDateValue()"
+                                    (ngModelChange)="updateStartDate($event)"
+                                    (blur)="snapStartDateToMonth()"
                                     required />
                                 <div class="form-text">{{ 'LoanInstallmentEffectiveDateHint' | localize }}</div>
                                 <validation-messages [formCtrl]="startDateInput" />

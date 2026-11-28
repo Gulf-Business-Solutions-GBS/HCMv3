@@ -35,7 +35,17 @@
                             ">
                             {{ 'Actions' | localize }}
                         </th>
-                        <th>{{ 'WageTypeId' | localize }}</th>
+                        <!-- LHRMS Employee_Remuneration_ListView: EmpCode, Employee, PaymentDate, PaymentNumber,
+                             PaymentUnit, Comments (WageType hidden). -->
+                        <th style="width: 100px" pSortableColumn="employee.code">
+                            {{ 'EmpCode' | localize }}
+                            <p-sortIcon field="employee.code" />
+                        </th>
+                        <th pSortableColumn="employee.fullNameEn">
+                            {{ 'Employee' | localize }}
+                            <p-sortIcon field="employee.fullNameEn" />
+                        </th>
+| localize }}</th>
                         <th pSortableColumn="paymentDate">
                             {{ 'PaymentDate' | localize }}
                             <p-sortIcon field="paymentDate" />
@@ -64,10 +74,11 @@
                                 {{ 'Actions' | localize }}
                             </button>
                         </td>
-                        <td>{{ record.wageTypeNameEn }}</td>
+                        <td>{{ record.employeeCode }}</td>
+                        <td>{{ record.employeeFullNameEn }}</td>
                         <td>{{ record.paymentDate | luxonFormat: 'yyyy-MM-dd' }}</td>
-                        <td>{{ record.paymentNumber }}</td>
-                        <td>{{ record.paymentUnit }}</td>
+                        <td>{{ record.paymentNumber | number: '1.0-10' }}</td>
+                        <td>{{ paymentUnitName(record.paymentUnit) | localize }}</td>
                         <td>{{ record.comments }}</td>
                     </tr>
                 </ng-template>

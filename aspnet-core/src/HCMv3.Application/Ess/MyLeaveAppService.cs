@@ -57,6 +57,7 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
     private readonly IRepository<EmployeeWorkflowRole> _employeeWorkflowRoleRepository;
     private readonly IRepository<RequestLog> _requestLogRepository;
     private readonly HCMv3.Storage.ITempFileCacheManager _tempFileCacheManager;
+    private readonly ILeaveUnpaidSplitPlanner _splitPlanner;
 
     public MyLeaveAppService(
         IRepository<EmployeeAbsence> absenceRepository,
@@ -81,8 +82,10 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         IRepository<EmployeeManager> employeeManagerRepository,
         IRepository<EmployeeWorkflowRole> employeeWorkflowRoleRepository,
         IRepository<RequestLog> requestLogRepository,
-        HCMv3.Storage.ITempFileCacheManager tempFileCacheManager)
+        HCMv3.Storage.ITempFileCacheManager tempFileCacheManager,
+        ILeaveUnpaidSplitPlanner splitPlanner)
     {
+        _splitPlanner = splitPlanner;
         _attachmentManager = attachmentManager;
         _employeeRepository = employeeRepository;
         _religionRepository = religionRepository;
@@ -1835,9 +1838,8 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
     /// 2503-2553): the leave is paid for as long as the balance lasts, and the remainder becomes unpaid leave.
     ///
     /// <para>
-    /// The paid part ends on the day that makes its COUNTABLE days equal the whole days of balance -- walking
-    /// past week-offs and holidays, which is why it is a date walk rather than "start + balance". The unpaid
-    /// part runs from the next day to the end the employee asked for.
+    /// The walk itself is <see cref="ILeaveUnpaidSplitPlanner"/>, shared with HR's leave form; what ESS decides
+    /// is the balance (BOOKABLE, i.e. less what is awaiting approval) and the unpaid type (code "2").
     /// </para>
     /// </summary>
     private async Task<LeaveSplitPreviewDto> PlanSplitAsync(int employeeId, ApplyForLeaveInput input)
@@ -1845,19 +1847,18 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         var start = input.StartDate.Date;
         var end = input.EndDate.Date;
 
-        var requestedDays = await _absenceCalculationService.CalculateTotalLeaveDaysAsync(
-            employeeId, input.AbsenceTypeId, start, end, 0);
-
         var balances = await _leaveBalanceService.GetBalancesAsync(employeeId, start);
         var bookable = balances.FirstOrDefault(b => b.AbsenceTypeId == input.AbsenceTypeId)?.Bookable ?? 0;
 
         var preview = new LeaveSplitPreviewDto { Bookable = bookable };
 
-        if (requestedDays <= bookable)
+        var plan = await _splitPlanner.PlanAsync(employeeId, input.AbsenceTypeId, start, end, bookable);
+
+        if (plan.FitsWithinBalance)
         {
             preview.FitsWithinBalance = true;
             preview.PaidEndDate = end;
-            preview.PaidLeaveDays = requestedDays;
+            preview.PaidLeaveDays = plan.RequestedDays;
             return preview;
         }
 
@@ -1872,35 +1873,11 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
             return preview;
         }
 
-        // Whole days only: legacy takes floor(balance), so a half day of balance is not split across two rows.
-        var paidDays = Math.Max(0, Math.Floor(bookable));
-
-        DateTime? paidEnd = null;
-        if (paidDays > 0)
-        {
-            paidEnd = await _absenceCalculationService.CalcLeaveEndDateAsync(
-                employeeId, input.AbsenceTypeId, start.AddDays(-1), paidDays);
-        }
-
-        if (paidEnd >= end)
-        {
-            preview.FitsWithinBalance = true;
-            preview.PaidEndDate = end;
-            preview.PaidLeaveDays = requestedDays;
-            return preview;
-        }
-
-        preview.PaidEndDate = paidEnd;
-        preview.PaidLeaveDays = paidEnd == null
-            ? 0
-            : await _absenceCalculationService.CalculateTotalLeaveDaysAsync(employeeId, input.AbsenceTypeId, start, paidEnd.Value, 0);
-
-        preview.UnpaidStartDate = (paidEnd ?? start.AddDays(-1)).AddDays(1);
-        preview.UnpaidEndDate = end;
-
-        // Counted with the MAIN type's week-off and holiday rules, as legacy's SaveAdditionalUnpaidLeave did.
-        preview.UnpaidLeaveDays = await _absenceCalculationService.CalculateTotalLeaveDaysAsync(
-            employeeId, input.AbsenceTypeId, preview.UnpaidStartDate.Value, end, 0);
+        preview.PaidEndDate = plan.PaidEndDate;
+        preview.PaidLeaveDays = plan.PaidLeaveDays;
+        preview.UnpaidStartDate = plan.UnpaidStartDate;
+        preview.UnpaidEndDate = plan.UnpaidEndDate;
+        preview.UnpaidLeaveDays = plan.UnpaidLeaveDays;
 
         return preview;
     }

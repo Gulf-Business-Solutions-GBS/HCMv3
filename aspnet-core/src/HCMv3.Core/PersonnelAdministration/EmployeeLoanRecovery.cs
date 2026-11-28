@@ -8,11 +8,9 @@ namespace HCMv3.PersonnelAdministration;
 /// <summary>
 /// Employee loan recovery (installment payment) transaction record (ported from legacy XAF
 /// <c>HCM10.Module.BusinessObjects.PersonnelAdministration.EmployeeLoanRecovery</c>, Wave 2 deferred
-/// bucket). Ports the essential active validations only (recovery amount not exceeding balance due, recovery
-/// date not earlier than recovery start date). The legacy cascade that recomputes the parent
-/// <see cref="EmployeeLoan.BalanceDueAmount"/> on save/delete is NOT ported (same cross-entity-cascade
-/// omission approach as Wave 1's <c>EmployeeAbsAdjustment</c>) -- see
-/// <c>EmployeeLoanRecoveriesAppService</c>.
+/// bucket). Legacy's validations and its cascade that recomputes the parent
+/// <see cref="EmployeeLoan.BalanceDueAmount"/> on save/delete are applied by <c>EmployeeLoanRecoveriesAppService</c>
+/// through <c>IEmployeeLoanRulesService</c>.
 /// </summary>
 public class EmployeeLoanRecovery : FullAuditedEntity, IMustHaveTenant
 {

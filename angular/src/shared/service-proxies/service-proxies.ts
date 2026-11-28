@@ -31300,6 +31300,62 @@ export class EmployeeAbsencesServiceProxy {
      * @param body (optional) 
      * @return OK
      */
+    getUnpaidSplitProposal(body?: GetEmployeeAbsencePreviewInput | undefined): Observable<EmployeeAbsenceUnpaidSplitDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeAbsences/GetUnpaidSplitProposal";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUnpaidSplitProposal(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUnpaidSplitProposal(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EmployeeAbsenceUnpaidSplitDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EmployeeAbsenceUnpaidSplitDto>;
+        }));
+    }
+
+    protected processGetUnpaidSplitProposal(response: HttpResponseBase): Observable<EmployeeAbsenceUnpaidSplitDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EmployeeAbsenceUnpaidSplitDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
     getAll(body?: GetAllEmployeeAbsencesInput | undefined): Observable<PagedResultDtoOfEmployeeAbsenceDto> {
         let url_ = this.baseUrl + "/api/services/app/EmployeeAbsences/GetAll";
         url_ = url_.replace(/[?&]$/, "");
@@ -31398,6 +31454,169 @@ export class EmployeeAbsencesServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = GetEmployeeAbsenceForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getEmployeesForLookup(body?: GetEmployeeAbsenceEmployeesInput | undefined): Observable<ListResultDtoOfSimpleLookupDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeAbsences/GetEmployeesForLookup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployeesForLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeesForLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfSimpleLookupDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfSimpleLookupDto>;
+        }));
+    }
+
+    protected processGetEmployeesForLookup(response: HttpResponseBase): Observable<ListResultDtoOfSimpleLookupDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfSimpleLookupDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getLeaveTypesForEmployee(id?: number | undefined): Observable<ListResultDtoOfEmployeeAbsenceLeaveTypeDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeAbsences/GetLeaveTypesForEmployee?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLeaveTypesForEmployee(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLeaveTypesForEmployee(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfEmployeeAbsenceLeaveTypeDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfEmployeeAbsenceLeaveTypeDto>;
+        }));
+    }
+
+    protected processGetLeaveTypesForEmployee(response: HttpResponseBase): Observable<ListResultDtoOfEmployeeAbsenceLeaveTypeDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfEmployeeAbsenceLeaveTypeDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getLeaveFormSettings(): Observable<EmployeeAbsenceFormSettingsDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeAbsences/GetLeaveFormSettings";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLeaveFormSettings(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLeaveFormSettings(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EmployeeAbsenceFormSettingsDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EmployeeAbsenceFormSettingsDto>;
+        }));
+    }
+
+    protected processGetLeaveFormSettings(response: HttpResponseBase): Observable<EmployeeAbsenceFormSettingsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EmployeeAbsenceFormSettingsDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -41520,7 +41739,7 @@ export class EmployeeFundsServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    createOrEdit(body?: CreateOrEditEmployeeFundDto | undefined): Observable<void> {
+    createOrEdit(body?: CreateOrEditEmployeeFundDto | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/services/app/EmployeeFunds/CreateOrEdit";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -41532,6 +41751,7 @@ export class EmployeeFundsServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
@@ -41542,14 +41762,14 @@ export class EmployeeFundsServiceProxy {
                 try {
                     return this.processCreateOrEdit(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<number>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<number>;
         }));
     }
 
-    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -41558,7 +41778,11 @@ export class EmployeeFundsServiceProxy {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -41611,6 +41835,62 @@ export class EmployeeFundsServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getEmployeesForLookup(body?: GetEmployeeFundEmployeesInput | undefined): Observable<ListResultDtoOfSimpleLookupDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeFunds/GetEmployeesForLookup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployeesForLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeesForLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfSimpleLookupDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfSimpleLookupDto>;
+        }));
+    }
+
+    protected processGetEmployeesForLookup(response: HttpResponseBase): Observable<ListResultDtoOfSimpleLookupDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfSimpleLookupDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -45680,7 +45960,7 @@ export class EmployeeLoansServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    createOrEdit(body?: CreateOrEditEmployeeLoanDto | undefined): Observable<void> {
+    createOrEdit(body?: CreateOrEditEmployeeLoanDto | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/services/app/EmployeeLoans/CreateOrEdit";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -45692,6 +45972,7 @@ export class EmployeeLoansServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
@@ -45702,14 +45983,14 @@ export class EmployeeLoansServiceProxy {
                 try {
                     return this.processCreateOrEdit(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<number>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<number>;
         }));
     }
 
-    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -45718,7 +45999,11 @@ export class EmployeeLoansServiceProxy {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -47597,6 +47882,62 @@ export class EmployeeOvertimesServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getEmployeesForLookup(body?: GetEmployeeOvertimeEmployeesInput | undefined): Observable<ListResultDtoOfSimpleLookupDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeOvertimes/GetEmployeesForLookup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployeesForLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeesForLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfSimpleLookupDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfSimpleLookupDto>;
+        }));
+    }
+
+    protected processGetEmployeesForLookup(response: HttpResponseBase): Observable<ListResultDtoOfSimpleLookupDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfSimpleLookupDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return OK
      */
@@ -47695,6 +48036,63 @@ export class EmployeeOvertimesServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getExpectedOvertimeAmount(body?: GetExpectedOvertimeAmountInput | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeOvertimes/GetExpectedOvertimeAmount";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetExpectedOvertimeAmount(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetExpectedOvertimeAmount(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processGetExpectedOvertimeAmount(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -48566,6 +48964,221 @@ export class EmployeePaymentsServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getExpectedAmount(body?: GetExpectedPaymentAmountInput | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeePayments/GetExpectedAmount";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetExpectedAmount(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetExpectedAmount(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processGetExpectedAmount(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getEmployeesForLookup(body?: GetEmployeePaymentEmployeesInput | undefined): Observable<ListResultDtoOfSimpleLookupDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeePayments/GetEmployeesForLookup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployeesForLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeesForLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfSimpleLookupDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfSimpleLookupDto>;
+        }));
+    }
+
+    protected processGetEmployeesForLookup(response: HttpResponseBase): Observable<ListResultDtoOfSimpleLookupDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfSimpleLookupDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getWageTypesForLookup(): Observable<ListResultDtoOfEmployeePaymentWageTypeLookupDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeePayments/GetWageTypesForLookup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetWageTypesForLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetWageTypesForLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfEmployeePaymentWageTypeLookupDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfEmployeePaymentWageTypeLookupDto>;
+        }));
+    }
+
+    protected processGetWageTypesForLookup(response: HttpResponseBase): Observable<ListResultDtoOfEmployeePaymentWageTypeLookupDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfEmployeePaymentWageTypeLookupDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getScreenSettings(): Observable<EmployeePaymentScreenSettingsDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeePayments/GetScreenSettings";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetScreenSettings(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetScreenSettings(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EmployeePaymentScreenSettingsDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EmployeePaymentScreenSettingsDto>;
+        }));
+    }
+
+    protected processGetScreenSettings(response: HttpResponseBase): Observable<EmployeePaymentScreenSettingsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EmployeePaymentScreenSettingsDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -49866,6 +50479,62 @@ export class EmployeeRecurringPaymentsServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getEmployeesForLookup(body?: GetEmployeeRecurringPaymentEmployeesInput | undefined): Observable<ListResultDtoOfSimpleLookupDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeRecurringPayments/GetEmployeesForLookup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployeesForLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeesForLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfSimpleLookupDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfSimpleLookupDto>;
+        }));
+    }
+
+    protected processGetEmployeesForLookup(response: HttpResponseBase): Observable<ListResultDtoOfSimpleLookupDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfSimpleLookupDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
     }
 
     /**
@@ -59196,6 +59865,62 @@ export class EmployeeTicketsServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    calculateAmount(body?: CalculateEmployeeTicketAmountInput | undefined): Observable<EmployeeTicketAmountDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeTickets/CalculateAmount";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCalculateAmount(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCalculateAmount(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EmployeeTicketAmountDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EmployeeTicketAmountDto>;
+        }));
+    }
+
+    protected processCalculateAmount(response: HttpResponseBase): Observable<EmployeeTicketAmountDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EmployeeTicketAmountDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -182248,6 +182973,58 @@ export interface ICacheDto {
     name: string | undefined;
 }
 
+export class CalculateEmployeeTicketAmountInput implements ICalculateEmployeeTicketAmountInput {
+    employeeId!: number;
+    ticketTypeId!: number;
+    paymentDate!: DateTime;
+    compensate!: number;
+    amount!: number;
+
+    constructor(data?: ICalculateEmployeeTicketAmountInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.ticketTypeId = _data["ticketTypeId"];
+            this.paymentDate = _data["paymentDate"] ? DateTime.fromISO(_data["paymentDate"].toString()) : undefined as any;
+            this.compensate = _data["compensate"];
+            this.amount = _data["amount"];
+        }
+    }
+
+    static fromJS(data: any): CalculateEmployeeTicketAmountInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new CalculateEmployeeTicketAmountInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["ticketTypeId"] = this.ticketTypeId;
+        data["paymentDate"] = this.paymentDate ? this.paymentDate.toString() : undefined as any;
+        data["compensate"] = this.compensate;
+        data["amount"] = this.amount;
+        return data;
+    }
+}
+
+export interface ICalculateEmployeeTicketAmountInput {
+    employeeId: number;
+    ticketTypeId: number;
+    paymentDate: DateTime;
+    compensate: number;
+    amount: number;
+}
+
 export class CalculateExpectedPerDiemInput implements ICalculateExpectedPerDiemInput {
     travelDetailId!: number;
     employeeGroupId!: number;
@@ -190594,6 +191371,8 @@ export class CreateOrEditEmployeeAbsenceDto implements ICreateOrEditEmployeeAbse
     unpaidStartDate!: DateTime | undefined;
     unpaidEndDate!: DateTime | undefined;
     recordDirectly!: boolean;
+    attachmentFileTokens!: string[] | undefined;
+    settleFractionalBalance!: boolean;
 
     constructor(data?: ICreateOrEditEmployeeAbsenceDto) {
         if (data) {
@@ -190629,6 +191408,12 @@ export class CreateOrEditEmployeeAbsenceDto implements ICreateOrEditEmployeeAbse
             this.unpaidStartDate = _data["unpaidStartDate"] ? DateTime.fromISO(_data["unpaidStartDate"].toString()) : undefined as any;
             this.unpaidEndDate = _data["unpaidEndDate"] ? DateTime.fromISO(_data["unpaidEndDate"].toString()) : undefined as any;
             this.recordDirectly = _data["recordDirectly"];
+            if (Array.isArray(_data["attachmentFileTokens"])) {
+                this.attachmentFileTokens = [] as any;
+                for (let item of _data["attachmentFileTokens"])
+                    this.attachmentFileTokens!.push(item);
+            }
+            this.settleFractionalBalance = _data["settleFractionalBalance"];
         }
     }
 
@@ -190664,6 +191449,12 @@ export class CreateOrEditEmployeeAbsenceDto implements ICreateOrEditEmployeeAbse
         data["unpaidStartDate"] = this.unpaidStartDate ? this.unpaidStartDate.toString() : undefined as any;
         data["unpaidEndDate"] = this.unpaidEndDate ? this.unpaidEndDate.toString() : undefined as any;
         data["recordDirectly"] = this.recordDirectly;
+        if (Array.isArray(this.attachmentFileTokens)) {
+            data["attachmentFileTokens"] = [];
+            for (let item of this.attachmentFileTokens)
+                data["attachmentFileTokens"].push(item);
+        }
+        data["settleFractionalBalance"] = this.settleFractionalBalance;
         return data;
     }
 }
@@ -190692,6 +191483,8 @@ export interface ICreateOrEditEmployeeAbsenceDto {
     unpaidStartDate: DateTime | undefined;
     unpaidEndDate: DateTime | undefined;
     recordDirectly: boolean;
+    attachmentFileTokens: string[] | undefined;
+    settleFractionalBalance: boolean;
 }
 
 export class CreateOrEditEmployeeAbsenceQuotaDto implements ICreateOrEditEmployeeAbsenceQuotaDto {
@@ -215575,6 +216368,110 @@ export interface IEmployeeAbsenceDto {
     workflowStatus: RequestStatus;
 }
 
+export class EmployeeAbsenceFormSettingsDto implements IEmployeeAbsenceFormSettingsDto {
+    enableAutoHalfDayLeave!: boolean;
+    enablePayFullWithPayroll!: boolean;
+    enableSettleFractionalLeaveBalance!: boolean;
+    defaultLeavePaymentType!: LeavePaymentType;
+
+    constructor(data?: IEmployeeAbsenceFormSettingsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.enableAutoHalfDayLeave = _data["enableAutoHalfDayLeave"];
+            this.enablePayFullWithPayroll = _data["enablePayFullWithPayroll"];
+            this.enableSettleFractionalLeaveBalance = _data["enableSettleFractionalLeaveBalance"];
+            this.defaultLeavePaymentType = _data["defaultLeavePaymentType"];
+        }
+    }
+
+    static fromJS(data: any): EmployeeAbsenceFormSettingsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeAbsenceFormSettingsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["enableAutoHalfDayLeave"] = this.enableAutoHalfDayLeave;
+        data["enablePayFullWithPayroll"] = this.enablePayFullWithPayroll;
+        data["enableSettleFractionalLeaveBalance"] = this.enableSettleFractionalLeaveBalance;
+        data["defaultLeavePaymentType"] = this.defaultLeavePaymentType;
+        return data;
+    }
+}
+
+export interface IEmployeeAbsenceFormSettingsDto {
+    enableAutoHalfDayLeave: boolean;
+    enablePayFullWithPayroll: boolean;
+    enableSettleFractionalLeaveBalance: boolean;
+    defaultLeavePaymentType: LeavePaymentType;
+}
+
+export class EmployeeAbsenceLeaveTypeDto implements IEmployeeAbsenceLeaveTypeDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    allowPartialLeave!: boolean;
+    leaveDurationType!: LeaveDurationType;
+
+    constructor(data?: IEmployeeAbsenceLeaveTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.allowPartialLeave = _data["allowPartialLeave"];
+            this.leaveDurationType = _data["leaveDurationType"];
+        }
+    }
+
+    static fromJS(data: any): EmployeeAbsenceLeaveTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeAbsenceLeaveTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["allowPartialLeave"] = this.allowPartialLeave;
+        data["leaveDurationType"] = this.leaveDurationType;
+        return data;
+    }
+}
+
+export interface IEmployeeAbsenceLeaveTypeDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    allowPartialLeave: boolean;
+    leaveDurationType: LeaveDurationType;
+}
+
 export class EmployeeAbsencePreviewDto implements IEmployeeAbsencePreviewDto {
     calendarDays!: number;
     absenceHours!: number;
@@ -215586,6 +216483,12 @@ export class EmployeeAbsencePreviewDto implements IEmployeeAbsencePreviewDto {
     unpaidDays!: number;
     sickLeaveUnpaidInfo!: string | undefined;
     sickLeaveSegments!: SickLeaveDeductionSegmentDto[] | undefined;
+    daysDifference!: number;
+    extCalendarDays!: number;
+    extTotalLeaveDays!: number;
+    paymentDate!: DateTime | undefined;
+    startTime!: DateTime | undefined;
+    endTime!: DateTime | undefined;
 
     constructor(data?: IEmployeeAbsencePreviewDto) {
         if (data) {
@@ -215612,6 +216515,12 @@ export class EmployeeAbsencePreviewDto implements IEmployeeAbsencePreviewDto {
                 for (let item of _data["sickLeaveSegments"])
                     this.sickLeaveSegments!.push(SickLeaveDeductionSegmentDto.fromJS(item));
             }
+            this.daysDifference = _data["daysDifference"];
+            this.extCalendarDays = _data["extCalendarDays"];
+            this.extTotalLeaveDays = _data["extTotalLeaveDays"];
+            this.paymentDate = _data["paymentDate"] ? DateTime.fromISO(_data["paymentDate"].toString()) : undefined as any;
+            this.startTime = _data["startTime"] ? DateTime.fromISO(_data["startTime"].toString()) : undefined as any;
+            this.endTime = _data["endTime"] ? DateTime.fromISO(_data["endTime"].toString()) : undefined as any;
         }
     }
 
@@ -215638,6 +216547,12 @@ export class EmployeeAbsencePreviewDto implements IEmployeeAbsencePreviewDto {
             for (let item of this.sickLeaveSegments)
                 data["sickLeaveSegments"].push(item ? item.toJSON() : undefined as any);
         }
+        data["daysDifference"] = this.daysDifference;
+        data["extCalendarDays"] = this.extCalendarDays;
+        data["extTotalLeaveDays"] = this.extTotalLeaveDays;
+        data["paymentDate"] = this.paymentDate ? this.paymentDate.toString() : undefined as any;
+        data["startTime"] = this.startTime ? this.startTime.toString() : undefined as any;
+        data["endTime"] = this.endTime ? this.endTime.toString() : undefined as any;
         return data;
     }
 }
@@ -215653,6 +216568,12 @@ export interface IEmployeeAbsencePreviewDto {
     unpaidDays: number;
     sickLeaveUnpaidInfo: string | undefined;
     sickLeaveSegments: SickLeaveDeductionSegmentDto[] | undefined;
+    daysDifference: number;
+    extCalendarDays: number;
+    extTotalLeaveDays: number;
+    paymentDate: DateTime | undefined;
+    startTime: DateTime | undefined;
+    endTime: DateTime | undefined;
 }
 
 export class EmployeeAbsenceQuotaDto implements IEmployeeAbsenceQuotaDto {
@@ -215753,6 +216674,98 @@ export interface IEmployeeAbsenceQuotaDto {
     quotaForfeited: number;
     notificationSent: boolean;
     quotaBalance: number;
+}
+
+export class EmployeeAbsenceUnpaidSplitDto implements IEmployeeAbsenceUnpaidSplitDto {
+    needsSplit!: boolean;
+    message!: string | undefined;
+    availableDays!: number;
+    appliedDays!: number;
+    isMaxLimitSplit!: boolean;
+    unpaidLeaveTypeMissing!: boolean;
+    endDate!: DateTime | undefined;
+    totalLeaveDays!: number;
+    calendarDays!: number;
+    extAbsenceTypeId!: number | undefined;
+    extAbsenceTypeName!: string | undefined;
+    extStartDate!: DateTime | undefined;
+    extEndDate!: DateTime | undefined;
+    extTotalLeaveDays!: number;
+    extCalendarDays!: number;
+
+    constructor(data?: IEmployeeAbsenceUnpaidSplitDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.needsSplit = _data["needsSplit"];
+            this.message = _data["message"];
+            this.availableDays = _data["availableDays"];
+            this.appliedDays = _data["appliedDays"];
+            this.isMaxLimitSplit = _data["isMaxLimitSplit"];
+            this.unpaidLeaveTypeMissing = _data["unpaidLeaveTypeMissing"];
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.totalLeaveDays = _data["totalLeaveDays"];
+            this.calendarDays = _data["calendarDays"];
+            this.extAbsenceTypeId = _data["extAbsenceTypeId"];
+            this.extAbsenceTypeName = _data["extAbsenceTypeName"];
+            this.extStartDate = _data["extStartDate"] ? DateTime.fromISO(_data["extStartDate"].toString()) : undefined as any;
+            this.extEndDate = _data["extEndDate"] ? DateTime.fromISO(_data["extEndDate"].toString()) : undefined as any;
+            this.extTotalLeaveDays = _data["extTotalLeaveDays"];
+            this.extCalendarDays = _data["extCalendarDays"];
+        }
+    }
+
+    static fromJS(data: any): EmployeeAbsenceUnpaidSplitDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeAbsenceUnpaidSplitDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["needsSplit"] = this.needsSplit;
+        data["message"] = this.message;
+        data["availableDays"] = this.availableDays;
+        data["appliedDays"] = this.appliedDays;
+        data["isMaxLimitSplit"] = this.isMaxLimitSplit;
+        data["unpaidLeaveTypeMissing"] = this.unpaidLeaveTypeMissing;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["totalLeaveDays"] = this.totalLeaveDays;
+        data["calendarDays"] = this.calendarDays;
+        data["extAbsenceTypeId"] = this.extAbsenceTypeId;
+        data["extAbsenceTypeName"] = this.extAbsenceTypeName;
+        data["extStartDate"] = this.extStartDate ? this.extStartDate.toString() : undefined as any;
+        data["extEndDate"] = this.extEndDate ? this.extEndDate.toString() : undefined as any;
+        data["extTotalLeaveDays"] = this.extTotalLeaveDays;
+        data["extCalendarDays"] = this.extCalendarDays;
+        return data;
+    }
+}
+
+export interface IEmployeeAbsenceUnpaidSplitDto {
+    needsSplit: boolean;
+    message: string | undefined;
+    availableDays: number;
+    appliedDays: number;
+    isMaxLimitSplit: boolean;
+    unpaidLeaveTypeMissing: boolean;
+    endDate: DateTime | undefined;
+    totalLeaveDays: number;
+    calendarDays: number;
+    extAbsenceTypeId: number | undefined;
+    extAbsenceTypeName: string | undefined;
+    extStartDate: DateTime | undefined;
+    extEndDate: DateTime | undefined;
+    extTotalLeaveDays: number;
+    extCalendarDays: number;
 }
 
 export class EmployeeAccommodationDto implements IEmployeeAccommodationDto {
@@ -224354,6 +225367,7 @@ export class EmployeePaymentDto implements IEmployeePaymentDto {
     employeeFullNameEn!: string | undefined;
     wageTypeId!: number;
     wageTypeNameEn!: string | undefined;
+    billingType!: string | undefined;
     amount!: number;
     currencyId!: number | undefined;
     currencyNameEn!: string | undefined;
@@ -224362,6 +225376,7 @@ export class EmployeePaymentDto implements IEmployeePaymentDto {
     unitType!: UnitType;
     costCenterId!: number | undefined;
     costCenterNameEn!: string | undefined;
+    expectedAmount!: number;
 
     constructor(data?: IEmployeePaymentDto) {
         if (data) {
@@ -224380,6 +225395,7 @@ export class EmployeePaymentDto implements IEmployeePaymentDto {
             this.employeeFullNameEn = _data["employeeFullNameEn"];
             this.wageTypeId = _data["wageTypeId"];
             this.wageTypeNameEn = _data["wageTypeNameEn"];
+            this.billingType = _data["billingType"];
             this.amount = _data["amount"];
             this.currencyId = _data["currencyId"];
             this.currencyNameEn = _data["currencyNameEn"];
@@ -224388,6 +225404,7 @@ export class EmployeePaymentDto implements IEmployeePaymentDto {
             this.unitType = _data["unitType"];
             this.costCenterId = _data["costCenterId"];
             this.costCenterNameEn = _data["costCenterNameEn"];
+            this.expectedAmount = _data["expectedAmount"];
         }
     }
 
@@ -224406,6 +225423,7 @@ export class EmployeePaymentDto implements IEmployeePaymentDto {
         data["employeeFullNameEn"] = this.employeeFullNameEn;
         data["wageTypeId"] = this.wageTypeId;
         data["wageTypeNameEn"] = this.wageTypeNameEn;
+        data["billingType"] = this.billingType;
         data["amount"] = this.amount;
         data["currencyId"] = this.currencyId;
         data["currencyNameEn"] = this.currencyNameEn;
@@ -224414,6 +225432,7 @@ export class EmployeePaymentDto implements IEmployeePaymentDto {
         data["unitType"] = this.unitType;
         data["costCenterId"] = this.costCenterId;
         data["costCenterNameEn"] = this.costCenterNameEn;
+        data["expectedAmount"] = this.expectedAmount;
         return data;
     }
 }
@@ -224425,6 +225444,7 @@ export interface IEmployeePaymentDto {
     employeeFullNameEn: string | undefined;
     wageTypeId: number;
     wageTypeNameEn: string | undefined;
+    billingType: string | undefined;
     amount: number;
     currencyId: number | undefined;
     currencyNameEn: string | undefined;
@@ -224433,6 +225453,7 @@ export interface IEmployeePaymentDto {
     unitType: UnitType;
     costCenterId: number | undefined;
     costCenterNameEn: string | undefined;
+    expectedAmount: number;
 }
 
 export class EmployeePaymentReportRowDto implements IEmployeePaymentReportRowDto {
@@ -224541,6 +225562,94 @@ export interface IEmployeePaymentReportRowDto {
     currencyShortForm: string | undefined;
     costCenterName: string | undefined;
     expectedAmount: number;
+}
+
+export class EmployeePaymentScreenSettingsDto implements IEmployeePaymentScreenSettingsDto {
+    defaultCurrencyId!: number | undefined;
+    showBillingType!: boolean;
+
+    constructor(data?: IEmployeePaymentScreenSettingsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.defaultCurrencyId = _data["defaultCurrencyId"];
+            this.showBillingType = _data["showBillingType"];
+        }
+    }
+
+    static fromJS(data: any): EmployeePaymentScreenSettingsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeePaymentScreenSettingsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["defaultCurrencyId"] = this.defaultCurrencyId;
+        data["showBillingType"] = this.showBillingType;
+        return data;
+    }
+}
+
+export interface IEmployeePaymentScreenSettingsDto {
+    defaultCurrencyId: number | undefined;
+    showBillingType: boolean;
+}
+
+export class EmployeePaymentWageTypeLookupDto implements IEmployeePaymentWageTypeLookupDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    billingType!: string | undefined;
+
+    constructor(data?: IEmployeePaymentWageTypeLookupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.billingType = _data["billingType"];
+        }
+    }
+
+    static fromJS(data: any): EmployeePaymentWageTypeLookupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeePaymentWageTypeLookupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["billingType"] = this.billingType;
+        return data;
+    }
+}
+
+export interface IEmployeePaymentWageTypeLookupDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    billingType: string | undefined;
 }
 
 export class EmployeePayrollStatusDto implements IEmployeePayrollStatusDto {
@@ -228578,6 +229687,46 @@ export interface IEmployeeTaskDto {
     monitoringCount: number;
     monitoringUnit: number;
     comments: string | undefined;
+}
+
+export class EmployeeTicketAmountDto implements IEmployeeTicketAmountDto {
+    amount!: number;
+    overrideAmount!: boolean;
+
+    constructor(data?: IEmployeeTicketAmountDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.amount = _data["amount"];
+            this.overrideAmount = _data["overrideAmount"];
+        }
+    }
+
+    static fromJS(data: any): EmployeeTicketAmountDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeTicketAmountDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["amount"] = this.amount;
+        data["overrideAmount"] = this.overrideAmount;
+        return data;
+    }
+}
+
+export interface IEmployeeTicketAmountDto {
+    amount: number;
+    overrideAmount: boolean;
 }
 
 export class EmployeeTicketDto implements IEmployeeTicketDto {
@@ -239474,6 +240623,7 @@ export class GetAllEmployeeAbsencesInput implements IGetAllEmployeeAbsencesInput
     skipCount!: number;
     sorting!: string | undefined;
     employeeId!: number | undefined;
+    filter!: string | undefined;
 
     constructor(data?: IGetAllEmployeeAbsencesInput) {
         if (data) {
@@ -239490,6 +240640,7 @@ export class GetAllEmployeeAbsencesInput implements IGetAllEmployeeAbsencesInput
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.employeeId = _data["employeeId"];
+            this.filter = _data["filter"];
         }
     }
 
@@ -239506,6 +240657,7 @@ export class GetAllEmployeeAbsencesInput implements IGetAllEmployeeAbsencesInput
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["employeeId"] = this.employeeId;
+        data["filter"] = this.filter;
         return data;
     }
 }
@@ -239515,6 +240667,7 @@ export interface IGetAllEmployeeAbsencesInput {
     skipCount: number;
     sorting: string | undefined;
     employeeId: number | undefined;
+    filter: string | undefined;
 }
 
 export class GetAllEmployeeAccommodationsInput implements IGetAllEmployeeAccommodationsInput {
@@ -241046,6 +242199,7 @@ export class GetAllEmployeeFundsInput implements IGetAllEmployeeFundsInput {
     skipCount!: number;
     sorting!: string | undefined;
     employeeId!: number | undefined;
+    filter!: string | undefined;
 
     constructor(data?: IGetAllEmployeeFundsInput) {
         if (data) {
@@ -241062,6 +242216,7 @@ export class GetAllEmployeeFundsInput implements IGetAllEmployeeFundsInput {
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.employeeId = _data["employeeId"];
+            this.filter = _data["filter"];
         }
     }
 
@@ -241078,6 +242233,7 @@ export class GetAllEmployeeFundsInput implements IGetAllEmployeeFundsInput {
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["employeeId"] = this.employeeId;
+        data["filter"] = this.filter;
         return data;
     }
 }
@@ -241087,6 +242243,7 @@ export interface IGetAllEmployeeFundsInput {
     skipCount: number;
     sorting: string | undefined;
     employeeId: number | undefined;
+    filter: string | undefined;
 }
 
 export class GetAllEmployeeGratuitiesInput implements IGetAllEmployeeGratuitiesInput {
@@ -241978,6 +243135,7 @@ export class GetAllEmployeeOvertimesInput implements IGetAllEmployeeOvertimesInp
     skipCount!: number;
     sorting!: string | undefined;
     employeeId!: number | undefined;
+    filter!: string | undefined;
 
     constructor(data?: IGetAllEmployeeOvertimesInput) {
         if (data) {
@@ -241994,6 +243152,7 @@ export class GetAllEmployeeOvertimesInput implements IGetAllEmployeeOvertimesInp
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.employeeId = _data["employeeId"];
+            this.filter = _data["filter"];
         }
     }
 
@@ -242010,6 +243169,7 @@ export class GetAllEmployeeOvertimesInput implements IGetAllEmployeeOvertimesInp
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["employeeId"] = this.employeeId;
+        data["filter"] = this.filter;
         return data;
     }
 }
@@ -242019,6 +243179,7 @@ export interface IGetAllEmployeeOvertimesInput {
     skipCount: number;
     sorting: string | undefined;
     employeeId: number | undefined;
+    filter: string | undefined;
 }
 
 export class GetAllEmployeePaymentBatchesInput implements IGetAllEmployeePaymentBatchesInput {
@@ -242090,6 +243251,7 @@ export class GetAllEmployeePaymentsInput implements IGetAllEmployeePaymentsInput
     skipCount!: number;
     sorting!: string | undefined;
     employeeId!: number | undefined;
+    filter!: string | undefined;
 
     constructor(data?: IGetAllEmployeePaymentsInput) {
         if (data) {
@@ -242106,6 +243268,7 @@ export class GetAllEmployeePaymentsInput implements IGetAllEmployeePaymentsInput
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.employeeId = _data["employeeId"];
+            this.filter = _data["filter"];
         }
     }
 
@@ -242122,6 +243285,7 @@ export class GetAllEmployeePaymentsInput implements IGetAllEmployeePaymentsInput
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["employeeId"] = this.employeeId;
+        data["filter"] = this.filter;
         return data;
     }
 }
@@ -242131,6 +243295,7 @@ export interface IGetAllEmployeePaymentsInput {
     skipCount: number;
     sorting: string | undefined;
     employeeId: number | undefined;
+    filter: string | undefined;
 }
 
 export class GetAllEmployeePayrollStatusesInput implements IGetAllEmployeePayrollStatusesInput {
@@ -242334,6 +243499,7 @@ export class GetAllEmployeeRecurringPaymentsInput implements IGetAllEmployeeRecu
     skipCount!: number;
     sorting!: string | undefined;
     employeeId!: number | undefined;
+    filter!: string | undefined;
 
     constructor(data?: IGetAllEmployeeRecurringPaymentsInput) {
         if (data) {
@@ -242350,6 +243516,7 @@ export class GetAllEmployeeRecurringPaymentsInput implements IGetAllEmployeeRecu
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.employeeId = _data["employeeId"];
+            this.filter = _data["filter"];
         }
     }
 
@@ -242366,6 +243533,7 @@ export class GetAllEmployeeRecurringPaymentsInput implements IGetAllEmployeeRecu
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["employeeId"] = this.employeeId;
+        data["filter"] = this.filter;
         return data;
     }
 }
@@ -242375,6 +243543,7 @@ export interface IGetAllEmployeeRecurringPaymentsInput {
     skipCount: number;
     sorting: string | undefined;
     employeeId: number | undefined;
+    filter: string | undefined;
 }
 
 export class GetAllEmployeeRejoinsInput implements IGetAllEmployeeRejoinsInput {
@@ -258753,8 +259922,46 @@ export interface IGetEmployeeAbsQuotaForfeitForEditOutput {
     employeeAbsQuotaForfeit: CreateOrEditEmployeeAbsQuotaForfeitDto;
 }
 
+export class GetEmployeeAbsenceEmployeesInput implements IGetEmployeeAbsenceEmployeesInput {
+    filter!: string | undefined;
+
+    constructor(data?: IGetEmployeeAbsenceEmployeesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.filter = _data["filter"];
+        }
+    }
+
+    static fromJS(data: any): GetEmployeeAbsenceEmployeesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmployeeAbsenceEmployeesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filter"] = this.filter;
+        return data;
+    }
+}
+
+export interface IGetEmployeeAbsenceEmployeesInput {
+    filter: string | undefined;
+}
+
 export class GetEmployeeAbsenceForEditOutput implements IGetEmployeeAbsenceForEditOutput {
     employeeAbsence!: CreateOrEditEmployeeAbsenceDto;
+    employeeCode!: string | undefined;
+    employeeFullNameEn!: string | undefined;
 
     constructor(data?: IGetEmployeeAbsenceForEditOutput) {
         if (data) {
@@ -258768,6 +259975,8 @@ export class GetEmployeeAbsenceForEditOutput implements IGetEmployeeAbsenceForEd
     init(_data?: any) {
         if (_data) {
             this.employeeAbsence = _data["employeeAbsence"] ? CreateOrEditEmployeeAbsenceDto.fromJS(_data["employeeAbsence"]) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeFullNameEn = _data["employeeFullNameEn"];
         }
     }
 
@@ -258781,12 +259990,16 @@ export class GetEmployeeAbsenceForEditOutput implements IGetEmployeeAbsenceForEd
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["employeeAbsence"] = this.employeeAbsence ? this.employeeAbsence.toJSON() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeFullNameEn"] = this.employeeFullNameEn;
         return data;
     }
 }
 
 export interface IGetEmployeeAbsenceForEditOutput {
     employeeAbsence: CreateOrEditEmployeeAbsenceDto;
+    employeeCode: string | undefined;
+    employeeFullNameEn: string | undefined;
 }
 
 export class GetEmployeeAbsencePreviewInput implements IGetEmployeeAbsencePreviewInput {
@@ -258801,6 +260014,11 @@ export class GetEmployeeAbsencePreviewInput implements IGetEmployeeAbsencePrevie
     paidEndDate!: DateTime | undefined;
     unpaidStartDate!: DateTime | undefined;
     unpaidEndDate!: DateTime | undefined;
+    halfdayType!: HalfdayType;
+    paymentDate!: DateTime | undefined;
+    extStartDate!: DateTime | undefined;
+    extEndDate!: DateTime | undefined;
+    employeeAbsenceId!: number | undefined;
 
     constructor(data?: IGetEmployeeAbsencePreviewInput) {
         if (data) {
@@ -258824,6 +260042,11 @@ export class GetEmployeeAbsencePreviewInput implements IGetEmployeeAbsencePrevie
             this.paidEndDate = _data["paidEndDate"] ? DateTime.fromISO(_data["paidEndDate"].toString()) : undefined as any;
             this.unpaidStartDate = _data["unpaidStartDate"] ? DateTime.fromISO(_data["unpaidStartDate"].toString()) : undefined as any;
             this.unpaidEndDate = _data["unpaidEndDate"] ? DateTime.fromISO(_data["unpaidEndDate"].toString()) : undefined as any;
+            this.halfdayType = _data["halfdayType"];
+            this.paymentDate = _data["paymentDate"] ? DateTime.fromISO(_data["paymentDate"].toString()) : undefined as any;
+            this.extStartDate = _data["extStartDate"] ? DateTime.fromISO(_data["extStartDate"].toString()) : undefined as any;
+            this.extEndDate = _data["extEndDate"] ? DateTime.fromISO(_data["extEndDate"].toString()) : undefined as any;
+            this.employeeAbsenceId = _data["employeeAbsenceId"];
         }
     }
 
@@ -258847,6 +260070,11 @@ export class GetEmployeeAbsencePreviewInput implements IGetEmployeeAbsencePrevie
         data["paidEndDate"] = this.paidEndDate ? this.paidEndDate.toString() : undefined as any;
         data["unpaidStartDate"] = this.unpaidStartDate ? this.unpaidStartDate.toString() : undefined as any;
         data["unpaidEndDate"] = this.unpaidEndDate ? this.unpaidEndDate.toString() : undefined as any;
+        data["halfdayType"] = this.halfdayType;
+        data["paymentDate"] = this.paymentDate ? this.paymentDate.toString() : undefined as any;
+        data["extStartDate"] = this.extStartDate ? this.extStartDate.toString() : undefined as any;
+        data["extEndDate"] = this.extEndDate ? this.extEndDate.toString() : undefined as any;
+        data["employeeAbsenceId"] = this.employeeAbsenceId;
         return data;
     }
 }
@@ -258863,6 +260091,11 @@ export interface IGetEmployeeAbsencePreviewInput {
     paidEndDate: DateTime | undefined;
     unpaidStartDate: DateTime | undefined;
     unpaidEndDate: DateTime | undefined;
+    halfdayType: HalfdayType;
+    paymentDate: DateTime | undefined;
+    extStartDate: DateTime | undefined;
+    extEndDate: DateTime | undefined;
+    employeeAbsenceId: number | undefined;
 }
 
 export class GetEmployeeAbsenceQuotaForEditOutput implements IGetEmployeeAbsenceQuotaForEditOutput {
@@ -261177,6 +262410,42 @@ export interface IGetEmployeeFundDetailForEditOutput {
     employeeFundDetail: CreateOrEditEmployeeFundDetailDto;
 }
 
+export class GetEmployeeFundEmployeesInput implements IGetEmployeeFundEmployeesInput {
+    filter!: string | undefined;
+
+    constructor(data?: IGetEmployeeFundEmployeesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.filter = _data["filter"];
+        }
+    }
+
+    static fromJS(data: any): GetEmployeeFundEmployeesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmployeeFundEmployeesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filter"] = this.filter;
+        return data;
+    }
+}
+
+export interface IGetEmployeeFundEmployeesInput {
+    filter: string | undefined;
+}
+
 export class GetEmployeeFundExemptionForEditOutput implements IGetEmployeeFundExemptionForEditOutput {
     employeeFundExemption!: CreateOrEditEmployeeFundExemptionDto;
 
@@ -261215,6 +262484,11 @@ export interface IGetEmployeeFundExemptionForEditOutput {
 
 export class GetEmployeeFundForEditOutput implements IGetEmployeeFundForEditOutput {
     employeeFund!: CreateOrEditEmployeeFundDto;
+    employeeCode!: string | undefined;
+    employeeFullNameEn!: string | undefined;
+    amount!: number;
+    paidAmount!: number;
+    balanceAmount!: number;
 
     constructor(data?: IGetEmployeeFundForEditOutput) {
         if (data) {
@@ -261228,6 +262502,11 @@ export class GetEmployeeFundForEditOutput implements IGetEmployeeFundForEditOutp
     init(_data?: any) {
         if (_data) {
             this.employeeFund = _data["employeeFund"] ? CreateOrEditEmployeeFundDto.fromJS(_data["employeeFund"]) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeFullNameEn = _data["employeeFullNameEn"];
+            this.amount = _data["amount"];
+            this.paidAmount = _data["paidAmount"];
+            this.balanceAmount = _data["balanceAmount"];
         }
     }
 
@@ -261241,12 +262520,22 @@ export class GetEmployeeFundForEditOutput implements IGetEmployeeFundForEditOutp
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["employeeFund"] = this.employeeFund ? this.employeeFund.toJSON() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeFullNameEn"] = this.employeeFullNameEn;
+        data["amount"] = this.amount;
+        data["paidAmount"] = this.paidAmount;
+        data["balanceAmount"] = this.balanceAmount;
         return data;
     }
 }
 
 export interface IGetEmployeeFundForEditOutput {
     employeeFund: CreateOrEditEmployeeFundDto;
+    employeeCode: string | undefined;
+    employeeFullNameEn: string | undefined;
+    amount: number;
+    paidAmount: number;
+    balanceAmount: number;
 }
 
 export class GetEmployeeGratuityForEditOutput implements IGetEmployeeGratuityForEditOutput {
@@ -262661,8 +263950,46 @@ export interface IGetEmployeeOrgChartNodeInput {
     employeeId: number | undefined;
 }
 
+export class GetEmployeeOvertimeEmployeesInput implements IGetEmployeeOvertimeEmployeesInput {
+    filter!: string | undefined;
+
+    constructor(data?: IGetEmployeeOvertimeEmployeesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.filter = _data["filter"];
+        }
+    }
+
+    static fromJS(data: any): GetEmployeeOvertimeEmployeesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmployeeOvertimeEmployeesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filter"] = this.filter;
+        return data;
+    }
+}
+
+export interface IGetEmployeeOvertimeEmployeesInput {
+    filter: string | undefined;
+}
+
 export class GetEmployeeOvertimeForEditOutput implements IGetEmployeeOvertimeForEditOutput {
     employeeOvertime!: CreateOrEditEmployeeOvertimeDto;
+    employeeCode!: string | undefined;
+    employeeFullNameEn!: string | undefined;
     expectedOvertimeAmount!: number;
 
     constructor(data?: IGetEmployeeOvertimeForEditOutput) {
@@ -262677,6 +264004,8 @@ export class GetEmployeeOvertimeForEditOutput implements IGetEmployeeOvertimeFor
     init(_data?: any) {
         if (_data) {
             this.employeeOvertime = _data["employeeOvertime"] ? CreateOrEditEmployeeOvertimeDto.fromJS(_data["employeeOvertime"]) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeFullNameEn = _data["employeeFullNameEn"];
             this.expectedOvertimeAmount = _data["expectedOvertimeAmount"];
         }
     }
@@ -262691,6 +264020,8 @@ export class GetEmployeeOvertimeForEditOutput implements IGetEmployeeOvertimeFor
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["employeeOvertime"] = this.employeeOvertime ? this.employeeOvertime.toJSON() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeFullNameEn"] = this.employeeFullNameEn;
         data["expectedOvertimeAmount"] = this.expectedOvertimeAmount;
         return data;
     }
@@ -262698,6 +264029,8 @@ export class GetEmployeeOvertimeForEditOutput implements IGetEmployeeOvertimeFor
 
 export interface IGetEmployeeOvertimeForEditOutput {
     employeeOvertime: CreateOrEditEmployeeOvertimeDto;
+    employeeCode: string | undefined;
+    employeeFullNameEn: string | undefined;
     expectedOvertimeAmount: number;
 }
 
@@ -262813,8 +264146,49 @@ export interface IGetEmployeePaymentBatchForEditOutput {
     isEditable: boolean;
 }
 
+export class GetEmployeePaymentEmployeesInput implements IGetEmployeePaymentEmployeesInput {
+    filter!: string | undefined;
+
+    constructor(data?: IGetEmployeePaymentEmployeesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.filter = _data["filter"];
+        }
+    }
+
+    static fromJS(data: any): GetEmployeePaymentEmployeesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmployeePaymentEmployeesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filter"] = this.filter;
+        return data;
+    }
+}
+
+export interface IGetEmployeePaymentEmployeesInput {
+    filter: string | undefined;
+}
+
 export class GetEmployeePaymentForEditOutput implements IGetEmployeePaymentForEditOutput {
     employeePayment!: CreateOrEditEmployeePaymentDto;
+    employeeCode!: string | undefined;
+    employeeFullNameEn!: string | undefined;
+    wageTypeNameEn!: string | undefined;
+    billingType!: string | undefined;
+    expectedAmount!: number;
 
     constructor(data?: IGetEmployeePaymentForEditOutput) {
         if (data) {
@@ -262828,6 +264202,11 @@ export class GetEmployeePaymentForEditOutput implements IGetEmployeePaymentForEd
     init(_data?: any) {
         if (_data) {
             this.employeePayment = _data["employeePayment"] ? CreateOrEditEmployeePaymentDto.fromJS(_data["employeePayment"]) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeFullNameEn = _data["employeeFullNameEn"];
+            this.wageTypeNameEn = _data["wageTypeNameEn"];
+            this.billingType = _data["billingType"];
+            this.expectedAmount = _data["expectedAmount"];
         }
     }
 
@@ -262841,12 +264220,22 @@ export class GetEmployeePaymentForEditOutput implements IGetEmployeePaymentForEd
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["employeePayment"] = this.employeePayment ? this.employeePayment.toJSON() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeFullNameEn"] = this.employeeFullNameEn;
+        data["wageTypeNameEn"] = this.wageTypeNameEn;
+        data["billingType"] = this.billingType;
+        data["expectedAmount"] = this.expectedAmount;
         return data;
     }
 }
 
 export interface IGetEmployeePaymentForEditOutput {
     employeePayment: CreateOrEditEmployeePaymentDto;
+    employeeCode: string | undefined;
+    employeeFullNameEn: string | undefined;
+    wageTypeNameEn: string | undefined;
+    billingType: string | undefined;
+    expectedAmount: number;
 }
 
 export class GetEmployeePaymentReportInput implements IGetEmployeePaymentReportInput {
@@ -263175,6 +264564,42 @@ export class GetEmployeeProjectForEditOutput implements IGetEmployeeProjectForEd
 
 export interface IGetEmployeeProjectForEditOutput {
     employeeProject: CreateOrEditEmployeeProjectDto;
+}
+
+export class GetEmployeeRecurringPaymentEmployeesInput implements IGetEmployeeRecurringPaymentEmployeesInput {
+    filter!: string | undefined;
+
+    constructor(data?: IGetEmployeeRecurringPaymentEmployeesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.filter = _data["filter"];
+        }
+    }
+
+    static fromJS(data: any): GetEmployeeRecurringPaymentEmployeesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmployeeRecurringPaymentEmployeesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filter"] = this.filter;
+        return data;
+    }
+}
+
+export interface IGetEmployeeRecurringPaymentEmployeesInput {
+    filter: string | undefined;
 }
 
 export class GetEmployeeRecurringPaymentForEditOutput implements IGetEmployeeRecurringPaymentForEditOutput {
@@ -265911,6 +267336,106 @@ export interface IGetExecutionLogReportInput {
     employeeCode: string | undefined;
     employeeStatus: EmployeeStatus;
     logUserName: string | undefined;
+}
+
+export class GetExpectedOvertimeAmountInput implements IGetExpectedOvertimeAmountInput {
+    employeeId!: number;
+    overtimeTypeId!: number;
+    effectiveDate!: DateTime;
+    approvedOvertimeHours!: number;
+
+    constructor(data?: IGetExpectedOvertimeAmountInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.overtimeTypeId = _data["overtimeTypeId"];
+            this.effectiveDate = _data["effectiveDate"] ? DateTime.fromISO(_data["effectiveDate"].toString()) : undefined as any;
+            this.approvedOvertimeHours = _data["approvedOvertimeHours"];
+        }
+    }
+
+    static fromJS(data: any): GetExpectedOvertimeAmountInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetExpectedOvertimeAmountInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["overtimeTypeId"] = this.overtimeTypeId;
+        data["effectiveDate"] = this.effectiveDate ? this.effectiveDate.toString() : undefined as any;
+        data["approvedOvertimeHours"] = this.approvedOvertimeHours;
+        return data;
+    }
+}
+
+export interface IGetExpectedOvertimeAmountInput {
+    employeeId: number;
+    overtimeTypeId: number;
+    effectiveDate: DateTime;
+    approvedOvertimeHours: number;
+}
+
+export class GetExpectedPaymentAmountInput implements IGetExpectedPaymentAmountInput {
+    employeeId!: number;
+    wageTypeId!: number;
+    paymentDate!: DateTime;
+    unitType!: UnitType;
+    amount!: number;
+
+    constructor(data?: IGetExpectedPaymentAmountInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.wageTypeId = _data["wageTypeId"];
+            this.paymentDate = _data["paymentDate"] ? DateTime.fromISO(_data["paymentDate"].toString()) : undefined as any;
+            this.unitType = _data["unitType"];
+            this.amount = _data["amount"];
+        }
+    }
+
+    static fromJS(data: any): GetExpectedPaymentAmountInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetExpectedPaymentAmountInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["wageTypeId"] = this.wageTypeId;
+        data["paymentDate"] = this.paymentDate ? this.paymentDate.toString() : undefined as any;
+        data["unitType"] = this.unitType;
+        data["amount"] = this.amount;
+        return data;
+    }
+}
+
+export interface IGetExpectedPaymentAmountInput {
+    employeeId: number;
+    wageTypeId: number;
+    paymentDate: DateTime;
+    unitType: UnitType;
+    amount: number;
 }
 
 export class GetExpiringTenantsOutput implements IGetExpiringTenantsOutput {
@@ -293877,6 +295402,94 @@ export class ListResultDtoOfEditionListDto implements IListResultDtoOfEditionLis
 
 export interface IListResultDtoOfEditionListDto {
     items: EditionListDto[] | undefined;
+}
+
+export class ListResultDtoOfEmployeeAbsenceLeaveTypeDto implements IListResultDtoOfEmployeeAbsenceLeaveTypeDto {
+    items!: EmployeeAbsenceLeaveTypeDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfEmployeeAbsenceLeaveTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(EmployeeAbsenceLeaveTypeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfEmployeeAbsenceLeaveTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfEmployeeAbsenceLeaveTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfEmployeeAbsenceLeaveTypeDto {
+    items: EmployeeAbsenceLeaveTypeDto[] | undefined;
+}
+
+export class ListResultDtoOfEmployeePaymentWageTypeLookupDto implements IListResultDtoOfEmployeePaymentWageTypeLookupDto {
+    items!: EmployeePaymentWageTypeLookupDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfEmployeePaymentWageTypeLookupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(EmployeePaymentWageTypeLookupDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfEmployeePaymentWageTypeLookupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfEmployeePaymentWageTypeLookupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfEmployeePaymentWageTypeLookupDto {
+    items: EmployeePaymentWageTypeLookupDto[] | undefined;
 }
 
 export class ListResultDtoOfEmployeeTrainingCertificationLookupDto implements IListResultDtoOfEmployeeTrainingCertificationLookupDto {

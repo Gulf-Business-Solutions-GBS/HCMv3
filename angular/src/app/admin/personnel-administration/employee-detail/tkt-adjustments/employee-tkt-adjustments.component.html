@@ -35,6 +35,8 @@
                             ">
                             {{ 'Actions' | localize }}
                         </th>
+                        <th>{{ 'EmployeeCode' | localize }}</th>
+                        <th>{{ 'Employee' | localize }}</th>
                         <th>{{ 'TicketTypeId' | localize }}</th>
                         <th>{{ 'AdjustmentType' | localize }}</th>
                         <th pSortableColumn="effectiveDate">
@@ -44,6 +46,7 @@
                         <th>{{ 'QuotaAccrued' | localize }}</th>
                         <th>{{ 'QuotaAdjusted' | localize }}</th>
                         <th>{{ 'TicketPaymentType' | localize }}</th>
+                        <th>{{ 'Comments' | localize }}</th>
                     </tr>
                 </ng-template>
                 <ng-template #body let-record="$implicit">
@@ -65,12 +68,15 @@
                                 {{ 'Actions' | localize }}
                             </button>
                         </td>
+                        <td>{{ record.employeeCode }}</td>
+                        <td>{{ record.employeeFullNameEn }}</td>
                         <td>{{ record.ticketTypeName }}</td>
-                        <td>{{ record.adjustmentType }}</td>
+                        <td>{{ adjustmentTypeKey(record.adjustmentType) | localize }}</td>
                         <td>{{ record.effectiveDate | luxonFormat: 'yyyy-MM-dd' }}</td>
-                        <td>{{ record.quotaAccrued }}</td>
-                        <td>{{ record.quotaAdjusted }}</td>
-                        <td>{{ record.ticketPaymentType }}</td>
+                        <td>{{ record.quotaAccrued | number: '1.0-3' }}</td>
+                        <td>{{ record.quotaAdjusted | number: '1.0-3' }}</td>
+                        <td>{{ paymentTypeKey(record.ticketPaymentType) | localize }}</td>
+                        <td class="text-truncate" style="max-width: 300px" [title]="record.comments ?? ''">{{ record.comments }}</td>
                     </tr>
                 </ng-template>
             </p-table>

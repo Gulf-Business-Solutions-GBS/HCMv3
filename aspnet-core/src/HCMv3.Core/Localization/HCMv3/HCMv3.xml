@@ -2092,11 +2092,21 @@
     <text name="EmployeeFunds">Employee Funds</text>
     <text name="EmployeeFundDetails">Employee Fund Details</text>
     <text name="EmployeeFundExemptions">Employee Fund Exemptions</text>
+    <text name="Fund">Fund</text>
+    <text name="FundDetail">Fund Detail</text>
+    <text name="FundExemption">Fund Exemption</text>
     <text name="WageTypeAlreadyExistsForBasicPay">A basic pay detail record for this wagetype already exists.</text>
     <text name="RecoveryStartDateCannotBeEarlierThanStartDate">Recovery start date cannot be earlier than start date.</text>
     <text name="ActualAmountCannotBeLessThanDueAmount">Actual amount cannot be less than due amount.</text>
     <text name="ExemptionAlreadyExistsForMonth">An exemption already exists for this loan for the same month.</text>
     <text name="RecoveryAmountExceedsDueAmount">Recovery amount should be less than or equal to the balance due amount.</text>
+    <text name="LoanDueAmountMustBeGreaterThanZero">Due amount should be greater than zero.</text>
+    <text name="LoanStartDateBeforeEligiblePeriod">A {0} loan can only be given {1} months after joining. The employee joined on {2}, so the loan payment date should be on or after {3}.</text>
+    <text name="LoanCountPerYearExceeded">{0} allows {1} loan(s) per year. Between {2} and {3} this employee would have {4}.</text>
+    <text name="LoanDueAmountAboveEligibleAmount">Due amount {0} is more than the eligible loan amount {1} for {2} ({3} x basic salary).</text>
+    <text name="LoanTypeDoesNotAllowPayrollRecovery">Loan type {0} does not allow recovery through payroll.</text>
+    <text name="LoanTypeDoesNotAllowExternalRecovery">Loan type {0} does not allow recovery through an external source.</text>
+    <text name="LoanTypeMaxInstallmentsExceeded">Loan type {0} allows at most {1} installments; this loan would have {2}.</text>
     <text name="RecoveryDateCannotBeEarlierThanRecoveryStartDate">Recovery date cannot be earlier than the recovery start date.</text>
     <!-- PersonnelAdministration Employee-detail tabs field labels (Wave 1/2 deferred bucket) -->
     <text name="HalfdayType">Half Day Type</text>
@@ -2142,8 +2152,8 @@
     <text name="OnHoldAllEarnings">On Hold All Earnings</text>
     <text name="OnHoldAllDeductions">On Hold All Deductions</text>
     <text name="BankTransfer">Bank Transfer</text>
-    <text name="GratuityPaidDate">Gratuity Paid Date</text>
-    <text name="ResetGratuityCalc">Reset Gratuity Calculation</text>
+    <text name="GratuityPaidDate">Indemnity Paid Date</text>
+    <text name="ResetGratuityCalc">Reset Indemnity Calculation</text>
     <text name="LoanTypeId">Loan Type</text>
     <text name="EmployeeLoanId">Employee Loan</text>
     <text name="EmployeeFundId">Employee Fund</text>
@@ -2199,6 +2209,11 @@
     <text name="EmployeeTicketQuotas">Employee Ticket Quotas</text>
     <text name="EmployeeTicketRoutes">Employee Ticket Routes</text>
     <text name="EmployeeTktAdjustments">Employee Ticket Adjustments</text>
+    <text name="TicketQuotaNotFoundForAdjustment">No ticket quota found for employee: '{0}' for ticket type: '{1}' covering the effective date.</text>
+    <text name="TicketQuotaNotAvailableForAdjustment">Ticket quota not available. Only {0} available for employee: {1} for ticket type: {2}.</text>
+    <text name="TicketQuotaForEffectiveDate">Ticket quota on the effective date</text>
+    <text name="NoTicketQuotaForEffectiveDate">No ticket quota covers this effective date. An adjustment other than 0 cannot be saved.</text>
+    <text name="AvailableBalance">Available Balance</text>
     <text name="EmployeeSocialSecurities">Employee Social Securities</text>
     <text name="EmployeeSocialSecurityClaims">Employee Social Security Claims</text>
     <text name="EmployeeDependants">Employee Dependants</text>
@@ -2319,6 +2334,7 @@
     <text name="Low">Low</text>
     <text name="High">High</text>
     <text name="AmountCannotBeZero">Amount cannot be zero.</text>
+    <text name="PaymentNumberCannotBeZero">Payment Number cannot be blank or zero.</text>
     <text name="AmountMustBeGreaterThanZero">Amount must be greater than zero.</text>
     <text name="SubmissionDate">Submission Date</text>
     <text name="LastDayInService">Last Day In Service</text>
@@ -2769,7 +2785,7 @@
     <text name="TicketAccrualOpeningBal">Ticket Accrual Opening Balance</text>
     <text name="TicketAccrualClosingBal">Ticket Accrual Closing Balance</text>
     <text name="AirTicketPaidDays">Air Ticket Paid Days</text>
-    <text name="GratuityPaidDays">Gratuity Paid Days</text>
+    <text name="GratuityPaidDays">Indemnity Paid Days</text>
     <text name="ActiveDays">Active Days</text>
     <text name="AdvanceLeavePaids">Advance Leave Paids</text>
     <text name="AdvanceTicketPaids">Advance Ticket Paids</text>
@@ -5119,9 +5135,10 @@
     <text name="LeaveProvisionAllowedMonths">This report may span at most {0} month(s).</text>
     <text name="IndemnityProvisionAllowedMonths">This report may span at most {0} month(s).</text>
     <text name="EmployeeCodeRequiredWhenAutoCodeDisabled">Employee Code is required: automatic employee codes are disabled in General Settings.</text>
-    <text name="RecurringPaymentMoreThanOneOverlap">More than one recurring payment overlaps this entry. There should be only one entry to apply the automatic end date.</text>
-    <text name="RecurringPaymentLastEntryMustBeOpenEnded">Recurring payment overlap found ({0} - {1}). The last entry should have End Date 31/12/9999.</text>
-    <text name="RecurringPaymentLastEntryStartDateMustBeEarlier">Recurring payment overlap found. The last entry's Start Date should be earlier than the current Start Date {0}.</text>
+    <text name="RecurringPaymentMoreThanOneOverlap">More than one recurring payment overlap found. Employee: {0}, Wage Type: {1}. There should be only one entry to apply the automatic end date.</text>
+    <text name="RecurringPaymentLastEntryMustBeOpenEnded">Recurring payment overlap found. Employee: {0}, Wage Type: {1}, Start Date: {2}, End Date: {3}. The last entry should have End Date 31/12/9999.</text>
+    <text name="RecurringPaymentLastEntryStartDateMustBeEarlier">Recurring payment overlap found. Employee: {0}, Wage Type: {1}, Start Date: {2}. The last entry's Start Date should be earlier than the current Start Date {3}.</text>
+    <text name="RecurringPaymentOverlapFound">Recurring payment overlap found. Employee: {0}, Wage Type: {1}, Start Date: {2}, End Date: {3}.</text>
     <text name="Difference">Difference</text>
     <text name="FromMonth">From Month</text>
     <text name="ToMonth">To Month</text>
@@ -5582,6 +5599,9 @@
     <text name="EmployeeShareAmount">Employee Share Amount</text>
     <text name="TotalOTHours">Total OT Hours</text>
     <text name="ExpectedOvertimeAmount">Expected Overtime Amount</text>
+    <text name="OvertimeOrgAssignmentNotFound">Employee Org Assignment not found for employee {0} on overtime date {1}.</text>
+    <text name="OvertimeEmployeeSubGroupNotFound">Employee Sub Group not found for employee {0}.</text>
+    <text name="EmployeeNotEligibleForOvertime">Employee {0} is not supposed to get overtime (Pay Overtime is not ticked on the Employee Sub Group).</text>
     <text name="Transferred">Transferred</text>
 
     <!-- ProjectReport / Recruitment / AccommodationReport analysis grid reports. -->
@@ -7253,6 +7273,7 @@
     <text name="WorkbenchView_Payslips">Payslips</text>
     <text name="WorkbenchView_EarningsDeductions">Earnings and deductions</text>
     <text name="WorkbenchView_Loans">Loans</text>
+    <text name="WorkbenchView_Overtime">Overtime</text>
     <text name="WorkbenchView_Indemnity">Indemnity accrual</text>
     <text name="WorkbenchView_IndemnityPaid">Indemnity paid</text>
     <text name="WorkbenchView_Exit">Exit</text>
@@ -7767,6 +7788,18 @@
     <text name="DutySchedule">Duty Schedule</text>
     <text name="RequestStatusCancelled">Cancelled</text>
     <text name="NoLeaveQuotaFoundForEmployeeAndAbsenceType">No leave quota found for employee '{0}' for absence type '{1}'.</text>
+    <text name="AbsenceQuotaNotAvailable">Absence Quota not available.</text>
+    <text name="AbsAdjustmentEmployeeLine">Employee : {0}</text>
+    <text name="AbsAdjustmentAbsenceTypeLine">AbsenceType : {0}</text>
+    <text name="AbsAdjustmentAvailableQuotaLine">Available Quota : {0} days</text>
+    <text name="AbsAdjustmentNegativeBalanceLimitLine">Negative Balance Limit : {0}</text>
+    <text name="AbsAdjustmentRemainingQuotaLine">Remaining Quota : {0}</text>
+    <text name="AbsAdjustmentAppliedQuotaLine">Applied Quota : {0} days</text>
+    <text name="EffectiveDateCannotBeEmpty">Effective Date cannot be empty.</text>
+    <text name="LeaveAbsAdjustment">Leave Abs Adjustment</text>
+    <text name="IndemnityPaidDateCannotBeNull">Indemnity Paid Date cannot be null.</text>
+    <text name="IndemnityQuotaNotFoundForEmployee">Indemnity Quota not found for Employee : '{0}'</text>
+    <text name="IndemnityQuotaNotAvailable">Indemnity Quota not available. Only {0} days available for Employee : {1}</text>
     <text name="AbsenceQuotaNotAvailableOnlyXDaysAvailable">Absence quota not available. Only {0} days available for employee {1} for absence type {2}.</text>
     <text name="DontUpdateQuotaBalance">Do not update quota balance</text>
     <text name="AttendanceDutyNotFoundForDate">Duty not found for date {0}.</text>
@@ -8111,5 +8144,42 @@
     <text name="ReturnInformation">Return Information</text>
     <text name="SickLeaveUnpaidInformation">Sick Leave Unpaid Information</text>
     <text name="EmployeeLeaves">Employee Leaves</text>
+    <text name="DaysDifference">Days Difference</text>
+    <text name="SettleFractionalBalance">Settle Fractional Balance</text>
+    <text name="UnpaidSplitAppliedReviewAndSave">The end date was cut back and the extra days moved to additional unpaid leave. Review the leave and save again.</text>
+    <text name="LeaveCannotSpanEarliestEvaluationDate">The leave cannot start before the earliest evaluation date ({0}) and run past it (start {1}, end {2}). The start date should be on or after {0}.</text>
+    <text name="LeaveRejoiningDateShouldBeARegularDay">The return date {0} is a week-off, holiday or rest day. The employee must rejoin on a regular day.</text>
+    <text name="ReturnDateMustBeAfterStartDate">The return date must be after the leave start date.</text>
+    <text name="ReturnDateConflictsWithAnotherLeave">Another leave of this employee already starts on {0}, so the leave cannot end on that day. Please check the return date.</text>
+    <text name="LeaveTypeExceptionViolated">{0} cannot be next to {1} ({2} - {3}): these leave types may not follow or precede each other.</text>
+    <text name="AdditionalUnpaidLeaveDatesRequired">Enter both the start and the end date of the additional unpaid leave.</text>
+    <text name="AdditionalUnpaidLeaveEndDateBeforeStartDate">The additional unpaid leave cannot end before it starts.</text>
+    <text name="AdditionalUnpaidLeaveOverlapsMainLeave">The additional unpaid leave dates overlap the leave's own start and end date.</text>
+    <text name="LeaveQuotaExceededSplitProposal">Leave quota is not available for '{0}': {1} day(s) available, {2} day(s) applied. The leave will end on {3}, and the additional {4} day(s) from {5} to {6} will be booked as '{7}'. Click Proceed to continue or Cancel to avoid creating the extra leave.</text>
+    <text name="LeaveMaxLimitExceededSplitProposal">'{0}' allows at most {1} day(s) per leave, {2} day(s) applied. The leave will end on {3}, and the additional {4} day(s) from {5} to {6} will be booked as '{7}'. Click Proceed to continue or Cancel to avoid creating the extra leave.</text>
+    <text name="AdditionalUnpaidLeaveTypeNotConfigured">Leave quota is not enough for '{0}' ({1} day(s) available, {2} day(s) applied), and no unpaid leave type is set up to take the extra days. Set up a leave type named 'Unpaid Leave' (or 'Sick Leave Unpaid' for sick leave), or one with code 2.</text>
+    <text name="PartialLeaveTimesOverlap">This employee already has a partial leave on {0} from {1} to {2} that overlaps these times.</text>
+    <text name="WageTypeCannotBeBlank">Wage type cannot be blank.</text>
+    <text name="CurrencyCannotBeBlank">Currency cannot be blank.</text>
+    <text name="PaymentDateCannotBeBlank">Payment date cannot be blank.</text>
+    <text name="SalaryRegister">Salary Register</text>
+    <text name="SalaryRegisterDetail">Salary Register Detail</text>
+    <text name="TicketDateCannotBeBlank">Ticket date cannot be blank.</text>
+    <text name="TicketCompensateCannotBeBlankOrZero">Compensate cannot be blank or zero.</text>
+    <text name="TicketCompensateBelowMinCompensation">Ticket type {0} has a minimum compensation of {1}. Please provide a valid compensation.</text>
+    <text name="TicketNotAllowedByBenefitException">Not allowed to take air ticket. Please check Ticket Exception information. Employee: {0}, Ticket Type: {1}, Exception Benefit Type: {2}, Start Date: {3}, End Date: {4}, Amount: {5}.</text>
+    <text name="TicketNotAllowedByDependantException">Not allowed to take air ticket. Please check Dependant Ticket Exception information. Employee: {0}, Ticket Type: {1}, Exception Benefit Type: {2}, Start Date: {3}, End Date: {4}, Amount: {5}.</text>
+    <text name="EmployeeSubGroupNotFound">Employee sub group not found.</text>
+    <text name="TicketTypeNotConfiguredInSalaryProfile">Ticket type not configured in salary profile for the selected payment date. Employee Sub Group: {0}, Ticket Type: {1}.</text>
+    <text name="DependantAgeLimitExceeds">Dependant age limit exceeds. Employee: {0}, Ticket Type: {1}, Age Limit: {2}, Dependant Age: {3}.</text>
+    <text name="NoAirTicketQuotaAssigned">No air ticket quota assigned. Please check Organization Assignment for employee: {0}.</text>
+    <text name="NotEnoughAirTicketQuota">Not enough air ticket quota. Employee: {0}, Ticket Type: {1}, Deduction Start Date: {2}, Deduction End Date: {3}, Used Ticket Count: {4}, Remaining Ticket Count: {5}, Applied Ticket Count: {6}.</text>
+    <text name="TicketClassNotFound">Ticket class not found.</text>
+    <text name="TicketRouteNotFound">Ticket route not found.</text>
+    <text name="TicketFareNotFoundFor">Ticket fare not found. Ticket Route: {0}, Ticket Class: {1}, Ticket Type: {2}, Ticket Pax Type: {3}, Pay Date: {4}.</text>
+    <text name="TicketDependantNotFound">Dependant not found. Employee: {0}, Ticket Type: {1}, Payment Date: {2}.</text>
+    <text name="TicketDependantBirthDateNotFound">Birth date not found for ticket type: {0}.</text>
+    <text name="TicketAmountCalculatedOnSave">Calculated from the ticket fare setup; recalculated when you save.</text>
+    <text name="WorkbenchView_Tickets">Tickets</text>
   </texts>
 </localizationDictionary>

@@ -56,6 +56,7 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
     private readonly IRepository<EmployeeDelegation> _delegationRepository;
     private readonly IRepository<Employee> _employeeRepository;
+    private readonly IAdditionalUnpaidLeaveService _additionalUnpaidLeave;
 
     /// <summary>Legacy hard-codes these absence type codes: "1" annual (paid late days are measured against
     /// it), "2" unpaid (late days beyond the balance are booked as it).</summary>
@@ -76,9 +77,11 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         IProbationEndDateService probation,
         ISysSettingsAccessor sysSettingsAccessor,
         IRepository<EmployeeDelegation> delegationRepository,
-        IRepository<Employee> employeeRepository)
+        IRepository<Employee> employeeRepository,
+        IAdditionalUnpaidLeaveService additionalUnpaidLeave)
         : base(repository, unitOfWorkManager)
     {
+        _additionalUnpaidLeave = additionalUnpaidLeave;
         _employeeRepository = employeeRepository;
         _delegationRepository = delegationRepository;
         _absenceTypeRepository = absenceTypeRepository;
@@ -282,13 +285,8 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             return;
         }
 
-        var absenceType = _absenceTypeRepository.GetAll().FirstOrDefault(t => t.Id == leave.AbsenceTypeId);
-        if (absenceType == null || absenceType.AllowToReturnEarly)
-        {
-            return;
-        }
-
-        throw new UserFriendlyException(L("EarlyReturnNotAllowedForLeaveType", absenceType.NameEn));
+        // The rule itself is shared with HR's own leave screen.
+        _leaveRuleValidator.EnsureEarlyReturnIsAllowed(leave.AbsenceTypeId);
     }
 
     /// <inheritdoc/>
@@ -766,40 +764,8 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
     /// </summary>
     private async Task SaveAdditionalUnpaidLeaveAsync(WorkflowTransactionContext context, EmployeeAbsence leave)
     {
-        if (leave.ExtAbsenceTypeId == null || leave.ExtStartDate == null || leave.ExtEndDate == null)
-        {
-            return;
-        }
-
-        var start = leave.ExtStartDate.Value.Date;
-        var end = leave.ExtEndDate.Value.Date;
-
-        var totalLeaveDays = leave.ExtTotalLeaveDays
-                             ?? await _absenceCalculationService.CalculateTotalLeaveDaysAsync(
-                                 leave.EmployeeId, leave.AbsenceTypeId, start, end, 0);
-
-        var unpaid = new EmployeeAbsence
-        {
-            TenantId = leave.TenantId,
-            EmployeeId = leave.EmployeeId,
-            AbsenceTypeId = leave.ExtAbsenceTypeId.Value,
-            StartDate = start,
-            EndDate = end,
-            InitialEndDate = end,
-            CalendarDays = (end - start).TotalDays + 1,
-            TotalLeaveDays = totalLeaveDays,
-            Comments = leave.Comments,
-            LeavePaymentType = LeavePaymentType.PayWithPayroll,
-            WorkflowStatus = RequestStatus.Approved,
-            WorkflowRequestId = context.Request?.Id
-        };
-
-        await Repository.InsertAsync(unpaid);
-        await _unitOfWorkManager.Current.SaveChangesAsync();
-
-        // Unpaid leave is normally not quota-controlled, so this is usually a no-op -- but if the tenant does
-        // keep a quota for it, it is charged like any other approved leave.
-        await ConsumeQuotaAsync(unpaid.EmployeeId, unpaid.AbsenceTypeId, totalLeaveDays, unpaid.StartDate);
+        // Shared with HR's own save, so the row is built and charged the same way whichever door it came through.
+        await _additionalUnpaidLeave.CreateAsync(leave, RequestStatus.Approved, context.Request?.Id);
     }
 
     /// <summary>

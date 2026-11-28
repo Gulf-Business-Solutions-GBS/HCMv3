@@ -91,6 +91,10 @@ export class SalaryRegisterDetailComponent extends AppComponentBase implements O
         this._router.navigate(['/app/admin/salary-registers']);
     }
 
+    employeeText(register: SalaryRegisterDto): string {
+        return [register.employeeCode, register.employeeName].filter((part) => !!part).join(' - ');
+    }
+
     /** DateTime.MinValue (01/01/0001) is the backend's "not set"; show it blank. */
     isSet(date: DateTime | undefined): boolean {
         return !!date && date.year > 1;

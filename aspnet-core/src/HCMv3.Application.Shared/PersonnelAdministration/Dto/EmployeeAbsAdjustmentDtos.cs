@@ -46,11 +46,17 @@ public class CreateOrEditEmployeeAbsAdjustmentDto
 public class GetEmployeeAbsAdjustmentForEditOutput
 {
     public CreateOrEditEmployeeAbsAdjustmentDto EmployeeAbsAdjustment { get; set; }
+
+    /// <summary>Legacy lookup display <c>Employee.CodeWithFullNameEn</c>.</summary>
+    public string EmployeeCodeWithFullNameEn { get; set; }
 }
 
 public class GetAllEmployeeAbsAdjustmentsInput : PagedAndSortedResultRequestDto, IShouldNormalize
 {
     public int? EmployeeId { get; set; }
+
+    /// <summary>Optional text matched against employee code/name and absence type name.</summary>
+    public string Filter { get; set; }
 
     public void Normalize()
     {

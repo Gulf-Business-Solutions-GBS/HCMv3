@@ -14,32 +14,31 @@
             [resizableColumns]="primengTableHelper.resizableColumns">
             <ng-template #header>
                 <tr>
-                    <th style="min-width: 260px" pSortableColumn="WageType.PayrollOrder">
+                    <th style="width: 50%; min-width: 240px" pSortableColumn="WageType.PayrollOrder">
                         {{ 'WageTypeId' | localize }}
                         <p-sortIcon field="WageType.PayrollOrder" />
                     </th>
-                    <th style="min-width: 120px" class="text-end" pSortableColumn="rate">
+                    <th style="width: 16%; min-width: 110px" pSortableColumn="rate">
                         {{ 'Rate' | localize }}
                         <p-sortIcon field="rate" />
                     </th>
-                    <th style="min-width: 100px" class="text-end" pSortableColumn="number">
+                    <th style="width: 17%; min-width: 110px" pSortableColumn="number">
                         {{ 'Number' | localize }}
                         <p-sortIcon field="number" />
                     </th>
-                    <th style="min-width: 140px" class="text-end" pSortableColumn="amount">
+                    <th style="width: 17%; min-width: 110px" pSortableColumn="amount">
                         {{ 'Amount' | localize }}
                         <p-sortIcon field="amount" />
                     </th>
                 </tr>
             </ng-template>
             <ng-template #body let-record="$implicit">
+                <!-- Legacy grid numbers: thousands separator, decimals only when present (up to 6), e.g. 3,542 / 33.246575 / -7. -->
                 <tr [class]="rowClass(record)">
-                    <td style="min-width: 260px">
-                        {{ record.wageTypeCode }}@if (record.wageTypeName) { - {{ record.wageTypeName }}}
-                    </td>
-                    <td style="min-width: 120px" class="text-end">{{ record.rate | number: '1.3-3' }}</td>
-                    <td style="min-width: 100px" class="text-end">{{ record.number | number: '1.0-3' }}</td>
-                    <td style="min-width: 140px" class="text-end">{{ record.amount | number: '1.3-3' }}</td>
+                    <td>{{ record.wageTypeName }}</td>
+                    <td class="text-end">{{ record.rate | number: '1.0-6' }}</td>
+                    <td class="text-end">{{ record.number | number: '1.0-6' }}</td>
+                    <td class="text-end">{{ record.amount | number: '1.0-6' }}</td>
                 </tr>
             </ng-template>
         </p-table>

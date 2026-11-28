@@ -33,13 +33,14 @@
                                     @if (choosesEmployee()) {
                                         <label class="form-label required" for="EmployeeLoan_EmployeeId">{{ 'Employee' | localize }}</label>
                                         <!-- Every employee; type in the dropdown's own box to find one by code or name.
-                                             Virtual scroll keeps a long list quick to open. -->
+                                             Virtual scroll keeps a long list quick to open. The list renders inside
+                                             the dialog: appended to <body> it would sit beneath the dialog. -->
                                         <p-select
                                             inputId="EmployeeLoan_EmployeeId"
                                             #employeeIdInput="ngModel"
                                             name="EmployeeId"
                                             styleClass="w-100"
-                                            appendTo="body"
+                                            [appendTo]="null"
                                             [options]="employeeOptions()"
                                             optionLabel="label"
                                             optionValue="id"
@@ -206,16 +207,16 @@
                             (valueChange)="updateField('recordDirectly', $event)" />
                     </div>
                 </form>
-                <!-- Outside the form on purpose: the tabs open dialogs with forms of their own. A new loan has
-                     nothing under it yet, so they appear once it is saved (legacy showed them on the loan form). -->
-                @if (record().id) {
-                    <div class="modal-body pt-0">
-                        <employeeLoanDetails
-                            [loanId]="record().id"
-                            [employeeId]="record().employeeId"
-                            (changed)="detailsChanged.set(true)" />
-                    </div>
-                }
+                <!-- Outside the form on purpose: the tabs open dialogs with forms of their own. Shown for a new
+                     loan too, as in legacy: "Create new" on a tab saves the loan first, then adds the row under it. -->
+                <div class="modal-body pt-0">
+                    <employeeLoanDetails
+                        [loanId]="record().id"
+                        [employeeId]="record().employeeId"
+                        [ensureLoan]="saveForDetails"
+                        [recoveryEndDate]="record().endDate"
+                        (changed)="onDetailsChanged()" />
+                </div>
                 <div class="modal-footer">
                     <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
                         {{ 'Cancel' | localize }}

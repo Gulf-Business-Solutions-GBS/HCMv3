@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.UI;
@@ -97,6 +98,50 @@ public class EmployeeLoansAppService_Tests : AppTestBase
         result.TotalCount.ShouldBe(1);
         result.Items[0].BalanceDueAmount.ShouldBe(5000);
     }
+
+    [Fact]
+    public async Task Should_Return_The_New_Loan_Id_On_Create()
+    {
+        // Arrange
+        var employee = CreateTestEmployee("LN150");
+        var loanType = CreateTestLoanType("LT150");
+
+        // Act
+        var id = await _appService.CreateOrEdit(NewLoan(employee.Id, loanType.Id));
+
+        // Assert
+        var result = await _appService.GetAll(new GetAllEmployeeLoansInput { EmployeeId = employee.Id });
+        result.Items.Single().Id.ShouldBe(id);
+    }
+
+    [Fact]
+    public async Task Should_Return_The_Same_Loan_Id_On_Edit()
+    {
+        // Arrange
+        var employee = CreateTestEmployee("LN151");
+        var loanType = CreateTestLoanType("LT151");
+        var id = await _appService.CreateOrEdit(NewLoan(employee.Id, loanType.Id));
+        var edit = NewLoan(employee.Id, loanType.Id);
+        edit.Id = id;
+        edit.Comments = "Edited";
+
+        // Act
+        var returnedId = await _appService.CreateOrEdit(edit);
+
+        // Assert
+        returnedId.ShouldBe(id);
+    }
+
+    private static CreateOrEditEmployeeLoanDto NewLoan(int employeeId, int loanTypeId) => new()
+    {
+        EmployeeId = employeeId,
+        LoanTypeId = loanTypeId,
+        StartDate = new DateTime(2024, 1, 1),
+        RecoveryStartDate = new DateTime(2024, 2, 1),
+        EndDate = new DateTime(2024, 12, 31),
+        ActualAmount = 5000,
+        DueAmount = 5000
+    };
 
     [Fact]
     public async Task Should_Throw_When_ActualAmount_Less_Than_DueAmount()

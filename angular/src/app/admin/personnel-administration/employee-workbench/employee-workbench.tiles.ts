@@ -11,8 +11,10 @@ import {
     EmployeeLoansServiceProxy,
     EmployeeManagersServiceProxy,
     EmployeeOrgAssignmentsServiceProxy,
+    EmployeeOvertimesServiceProxy,
     EmployeePaymentsServiceProxy,
     EmployeeSeparationsServiceProxy,
+    EmployeeTicketsServiceProxy,
     EmployeeWorkbenchServiceProxy,
     GetAllEmployeeAbsenceQuotasInput,
     GetAllEmployeeAbsencesInput,
@@ -23,8 +25,10 @@ import {
     GetAllEmployeeLoansInput,
     GetAllEmployeeManagersInput,
     GetAllEmployeeOrgAssignmentsInput,
+    GetAllEmployeeOvertimesInput,
     GetAllEmployeePaymentsInput,
     GetAllEmployeeSeparationsInput,
+    GetAllEmployeeTicketsInput,
     GetAllGratuityAccrualSummariesInput,
     GetAllSalaryRegistersInput,
     GratuityAccrualSummariesServiceProxy,
@@ -249,7 +253,7 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 load: (injector, employeeId) =>
                     injector
                         .get(EmployeeAbsencesServiceProxy)
-                        .getAll(new GetAllEmployeeAbsencesInput({ employeeId, ...lastRows }))
+                        .getAll(new GetAllEmployeeAbsencesInput({ employeeId, filter: undefined, ...lastRows }))
                         .pipe(map((r) => r.items)),
                 columns: [
                     { labelKey: 'AbsenceType', field: 'absenceTypeName' },
@@ -371,7 +375,7 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 load: (injector, employeeId) =>
                     injector
                         .get(EmployeePaymentsServiceProxy)
-                        .getAll(new GetAllEmployeePaymentsInput({ employeeId, ...lastRows }))
+                        .getAll(new GetAllEmployeePaymentsInput({ employeeId, filter: undefined, ...lastRows }))
                         .pipe(map((r) => r.items)),
                 columns: [
                     { labelKey: 'PaymentDate', field: 'paymentDate', type: 'date' },
@@ -405,6 +409,53 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 form: () =>
                     import('../employee-detail/loans/create-or-edit-employee-loan-modal.component').then(
                         (m) => m.CreateOrEditEmployeeLoanModalComponent
+                    ),
+            },
+            {
+                id: 'overtimes',
+                labelKey: 'WorkbenchView_Overtime',
+                permission: 'Pages.PersonnelAdministration.EmployeeOvertimes',
+                createPermission: 'Pages.PersonnelAdministration.EmployeeOvertimes.Create',
+                editPermission: 'Pages.PersonnelAdministration.EmployeeOvertimes.Edit',
+                detailSectionId: 'overtimes',
+                load: (injector, employeeId) =>
+                    injector
+                        .get(EmployeeOvertimesServiceProxy)
+                        .getAll(new GetAllEmployeeOvertimesInput({ employeeId, filter: undefined, ...lastRows }))
+                        .pipe(map((r) => r.items)),
+                columns: [
+                    { labelKey: 'EffectiveDate', field: 'effectiveDate', type: 'date' },
+                    { labelKey: 'OvertimeTypeId', field: 'overtimeTypeNameEn' },
+                    { labelKey: 'ApprovedOvertimeHours', field: 'approvedOvertimeHours', type: 'number' },
+                    { labelKey: 'ExpectedOvertimeAmount', field: 'expectedOvertimeAmount', type: 'amount' },
+                ],
+                form: () =>
+                    import('../employee-detail/overtimes/create-or-edit-employee-overtime-modal.component').then(
+                        (m) => m.CreateOrEditEmployeeOvertimeModalComponent
+                    ),
+            },
+            {
+                // Legacy "Payroll Management > Ticket" (EmployeeTicket_ListView).
+                id: 'tickets',
+                labelKey: 'WorkbenchView_Tickets',
+                permission: 'Pages.PersonnelAdministration.EmployeeTickets',
+                createPermission: 'Pages.PersonnelAdministration.EmployeeTickets.Create',
+                editPermission: 'Pages.PersonnelAdministration.EmployeeTickets.Edit',
+                detailSectionId: 'tickets',
+                load: (injector, employeeId) =>
+                    injector
+                        .get(EmployeeTicketsServiceProxy)
+                        .getAll(new GetAllEmployeeTicketsInput({ employeeId, ...lastRows }))
+                        .pipe(map((r) => r.items)),
+                columns: [
+                    { labelKey: 'TicketTypeId', field: 'ticketTypeName' },
+                    { labelKey: 'PaymentDate', field: 'paymentDate', type: 'date' },
+                    { labelKey: 'Compensate', field: 'compensate', type: 'number' },
+                    { labelKey: 'Amount', field: 'amount', type: 'amount' },
+                ],
+                form: () =>
+                    import('../employee-detail/tickets/create-or-edit-employee-ticket-modal.component').then(
+                        (m) => m.CreateOrEditEmployeeTicketModalComponent
                     ),
             },
         ],

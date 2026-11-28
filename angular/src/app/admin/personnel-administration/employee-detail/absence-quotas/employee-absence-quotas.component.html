@@ -35,6 +35,8 @@
                             ">
                             {{ 'Actions' | localize }}
                         </th>
+                        <th>{{ 'EmpCode' | localize }}</th>
+                        <th>{{ 'EmployeeName' | localize }}</th>
                         <th>{{ 'AbsenceTypeId' | localize }}</th>
                         <th pSortableColumn="entitlementFrom">
                             {{ 'EntitlementFrom' | localize }}
@@ -44,8 +46,17 @@
                             {{ 'EntitlementTo' | localize }}
                             <p-sortIcon field="entitlementTo" />
                         </th>
+                        <th pSortableColumn="deductionFrom">
+                            {{ 'DeductionFrom' | localize }}
+                            <p-sortIcon field="deductionFrom" />
+                        </th>
+                        <th pSortableColumn="deductionTo">
+                            {{ 'DeductionTo' | localize }}
+                            <p-sortIcon field="deductionTo" />
+                        </th>
                         <th>{{ 'QuotaAccrued' | localize }}</th>
                         <th>{{ 'QuotaUsed' | localize }}</th>
+                        <th>{{ 'QuotaAdjusted' | localize }}</th>
                         <th>{{ 'QuotaForfeited' | localize }}</th>
                         <th>{{ 'QuotaBalance' | localize }}</th>
                     </tr>
@@ -69,11 +80,16 @@
                                 {{ 'Actions' | localize }}
                             </button>
                         </td>
+                        <td>{{ record.employeeCode }}</td>
+                        <td>{{ record.employeeFullNameEn }}</td>
                         <td>{{ record.absenceTypeName }}</td>
                         <td>{{ record.entitlementFrom | luxonFormat: 'yyyy-MM-dd' }}</td>
                         <td>{{ record.entitlementTo | luxonFormat: 'yyyy-MM-dd' }}</td>
+                        <td>{{ record.deductionFrom | luxonFormat: 'yyyy-MM-dd' }}</td>
+                        <td>{{ record.deductionTo | luxonFormat: 'yyyy-MM-dd' }}</td>
                         <td>{{ record.quotaAccrued }}</td>
                         <td>{{ record.quotaUsed }}</td>
+                        <td>{{ record.quotaAdjusted }}</td>
                         <td>{{ record.quotaForfeited }}</td>
                         <td>{{ record.quotaBalance }}</td>
                     </tr>

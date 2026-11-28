@@ -50,9 +50,18 @@ public class GetEmployeeRecurringPaymentForEditOutput
     public CreateOrEditEmployeeRecurringPaymentDto EmployeeRecurringPayment { get; set; }
 }
 
+public class GetEmployeeRecurringPaymentEmployeesInput
+{
+    /// <summary>Optional text matched against the employee's code and English and Arabic names.</summary>
+    public string Filter { get; set; }
+}
+
 public class GetAllEmployeeRecurringPaymentsInput : PagedAndSortedResultRequestDto, IShouldNormalize
 {
     public int? EmployeeId { get; set; }
+
+    /// <summary>Optional text matched against the employee's code and names and the wage type's names.</summary>
+    public string Filter { get; set; }
 
     public void Normalize()
     {

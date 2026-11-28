@@ -43,8 +43,12 @@ export class EmployeePaymentsComponent extends AppComponentBase {
 
     readonly activeMenuItems = signal<MenuItem[]>([]);
 
+    /** Payroll setting "Show Billing Type In Payment Screen" (legacy list column visibility). */
+    readonly showBillingType = signal<boolean>(false);
+
     constructor() {
         super();
+        this._service.getScreenSettings().subscribe((settings) => this.showBillingType.set(settings.showBillingType));
         effect(() => {
             if (this.employeeId()) {
                 this.reloadPage();
@@ -68,6 +72,7 @@ export class EmployeePaymentsComponent extends AppComponentBase {
             .getAll(
                 new GetAllEmployeePaymentsInput({
                     employeeId: this.employeeId(),
+                    filter: undefined,
                     sorting: this.primengTableHelper.getSorting(this.dataTable()),
                     maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),
                     skipCount: this.primengTableHelper.getSkipCount(this.paginator(), event),

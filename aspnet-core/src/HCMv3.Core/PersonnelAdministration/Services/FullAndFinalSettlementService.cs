@@ -111,6 +111,8 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
     private readonly ICurrencyService _currencyService;
     private readonly IEmployeePayrollAreaResolver _payrollAreaResolver;
     private readonly IFullAndFinalExitService _exitService;
+    private readonly IEmployeeGratuityQuotaService _gratuityQuotaService;
+    private readonly IEmployeeTktAdjustmentQuotaService _tktAdjustmentQuotaService;
 
     public FullAndFinalSettlementService(
         IRepository<Employee> employeeRepository,
@@ -140,7 +142,9 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
         IAccrualService accrualService,
         ICurrencyService currencyService,
         IEmployeePayrollAreaResolver payrollAreaResolver,
-        IFullAndFinalExitService exitService)
+        IFullAndFinalExitService exitService,
+        IEmployeeGratuityQuotaService gratuityQuotaService,
+        IEmployeeTktAdjustmentQuotaService tktAdjustmentQuotaService)
     {
         _employeeRepository = employeeRepository;
         _separationRepository = separationRepository;
@@ -170,6 +174,8 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
         _currencyService = currencyService;
         _payrollAreaResolver = payrollAreaResolver;
         _exitService = exitService;
+        _gratuityQuotaService = gratuityQuotaService;
+        _tktAdjustmentQuotaService = tktAdjustmentQuotaService;
     }
 
     #region << Balances and the indemnity suggestion >>
@@ -780,11 +786,15 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
                 .Where(r => r.EmployeeId == current.EmployeeId && r.GratuityPaidDate == PreviousCompensationDate(previous))
                 .OrderBy(r => r.Id)
                 .FirstOrDefault() ?? new EmployeeGratuity { TenantId = TenantOf(current.EmployeeId) };
+            var previousGratuity = gratuity.Id == 0 ? null : EmployeeGratuitySnapshot.Of(gratuity);
 
             gratuity.EmployeeId = current.EmployeeId;
             gratuity.GratuityPaidDate = current.CompensationDate;
             gratuity.GratuityPaidDays = current.GratuityCompensateDays;
             gratuity.Comments = EndOfServiceComment;
+
+            // Legacy empIndemnity.Save() -> EmployeeGratuity.UpdateQuotaBalance moves the quota.
+            await _gratuityQuotaService.ApplyAsync(gratuity, previousGratuity);
             await _gratuityRepository.InsertOrUpdateAsync(gratuity);
         }
 
@@ -877,6 +887,8 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
             .FirstOrDefault();
         if (gratuity != null)
         {
+            // Legacy empIndemnity.Delete() -> EmployeeGratuity.OnDeleting gives the days back.
+            await _gratuityQuotaService.ReverseAsync(gratuity);
             await _gratuityRepository.DeleteAsync(gratuity);
         }
 
@@ -890,6 +902,8 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
                 .FirstOrDefault();
             if (ticket != null)
             {
+                // Legacy EmployeeTktAdjustment.OnDeleting: the compensated count goes back to the ticket quota.
+                await _tktAdjustmentQuotaService.ReverseAsync(TktAdjustmentQuotaSnapshot.Of(ticket));
                 await _tktAdjustmentRepository.DeleteAsync(ticket);
             }
         }
@@ -919,12 +933,17 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
             .OrderBy(r => r.Id)
             .FirstOrDefault() ?? new EmployeeTktAdjustment { TenantId = TenantOf(current.EmployeeId) };
 
+        var previousValues = adjustment.Id == 0 ? null : TktAdjustmentQuotaSnapshot.Of(adjustment);
+
         adjustment.EmployeeId = current.EmployeeId;
         adjustment.TicketTypeId = ticketType?.Id ?? 0;
         adjustment.AdjustmentType = AdjustmentType.Encashment;
         adjustment.EffectiveDate = current.CompensationDate;
         adjustment.QuotaAdjusted = count;
         adjustment.Comments = EndOfServiceComment;
+
+        // Legacy EmployeeTktAdjustment.OnSaving: the compensated count is taken from the ticket quota.
+        await _tktAdjustmentQuotaService.ApplyAsync(previousValues, adjustment);
         await _tktAdjustmentRepository.InsertOrUpdateAsync(adjustment);
     }
 

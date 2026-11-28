@@ -109,7 +109,7 @@ public class EmployeeRemunerationsAppService : HCMv3AppServiceBase, IEmployeeRem
     {
         if (entity.PaymentNumber == 0)
         {
-            throw new UserFriendlyException(L("AmountCannotBeZero"));
+            throw new UserFriendlyException(L("PaymentNumberCannotBeZero"));
         }
     }
 

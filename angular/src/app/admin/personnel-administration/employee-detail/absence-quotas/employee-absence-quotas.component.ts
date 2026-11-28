@@ -105,7 +105,7 @@ export class EmployeeAbsenceQuotasComponent extends AppComponentBase {
             items.push({
                 label: this.l('Edit'),
                 icon: 'pi pi-pencil',
-                command: () => this.createOrEditModal()?.show(this.employeeId(), record.id, record.quotaBalance),
+                command: () => this.createOrEditModal()?.show(this.employeeId(), record.id),
             });
         }
 

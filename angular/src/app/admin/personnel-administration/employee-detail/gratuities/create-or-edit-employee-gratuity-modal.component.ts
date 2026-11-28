@@ -42,6 +42,7 @@ export class CreateOrEditEmployeeGratuityModalComponent extends AppComponentBase
         if (!id) {
             const record = new CreateOrEditEmployeeGratuityDto();
             record.employeeId = employeeId;
+            record.gratuityPaidDate = DateTime.local().startOf('day');
             record.gratuityPaidDays = 0;
             this.record.set(record);
             this.modal().show();

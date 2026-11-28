@@ -19,53 +19,54 @@
     </sub-header>
 
     <div [class]="containerClass">
+        <!-- Legacy SalaryRegister_DetailView layout: four columns of two fields each. -->
         <div class="card card-custom mb-5" [busyIf]="loading()">
-            <div class="card-body">
+            <div class="card-header min-h-50px">
+                <h3 class="card-title fs-6">{{ 'SalaryRegister' | localize }}</h3>
+            </div>
+            <div class="card-body py-4">
                 @if (register(); as register) {
-                    <div class="row">
-                        <div class="col-md-3 mb-5">
-                            <label class="form-label">{{ 'Employee' | localize }}</label>
-                            <div class="form-control-plaintext fw-bold">
-                                {{ register.employeeCode }}@if (register.employeeName) { - {{ register.employeeName }}}
-                            </div>
+                    <div class="row g-4 sr-header">
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'Employee' | localize }}:</label>
+                            <input class="form-control form-control-sm" readonly [value]="employeeText(register)" />
                         </div>
-                        <div class="col-md-3 mb-5">
-                            <label class="form-label">{{ 'PayrollArea' | localize }}</label>
-                            <div class="form-control-plaintext fw-bold">{{ register.payrollAreaName }}</div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'ForPeriod' | localize }}:</label>
+                            <input class="form-control form-control-sm" readonly [value]="register.forPeriod | luxonFormat: 'dd/MM/yyyy'" />
                         </div>
-                        <div class="col-md-3 mb-5">
-                            <label class="form-label">{{ 'ForPeriod' | localize }}</label>
-                            <div class="form-control-plaintext fw-bold">{{ register.forPeriod | luxonFormat: 'DD' }}</div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'PayrollRunType' | localize }}:</label>
+                            <input
+                                class="form-control form-control-sm"
+                                readonly
+                                [value]="(register.payrollRunType === 0 ? 'Regular' : 'OffCycle') | localize" />
                         </div>
-                        <div class="col-md-3 mb-5">
-                            <label class="form-label">{{ 'InPeriod' | localize }}</label>
-                            <div class="form-control-plaintext fw-bold">{{ register.inPeriod | luxonFormat: 'DD' }}</div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'PayrollReasonTypeId' | localize }}:</label>
+                            <input class="form-control form-control-sm" readonly [value]="register.payrollReasonTypeName ?? ''" />
                         </div>
-                        <div class="col-md-3 mb-5">
-                            <label class="form-label">{{ 'PayrollRunType' | localize }}</label>
-                            <div class="form-control-plaintext fw-bold">
-                                {{ register.payrollRunType === 0 ? ('Regular' | localize) : ('OffCycle' | localize) }}
-                            </div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'PayrollArea' | localize }}:</label>
+                            <input class="form-control form-control-sm" readonly [value]="register.payrollAreaName ?? ''" />
                         </div>
-                        <div class="col-md-3 mb-5">
-                            <label class="form-label">{{ 'PayrollResultType' | localize }}</label>
-                            <div class="form-control-plaintext fw-bold">{{ payrollResultTypeKey(register.payrollResultType) | localize }}</div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'InPeriod' | localize }}:</label>
+                            <input class="form-control form-control-sm" readonly [value]="register.inPeriod | luxonFormat: 'dd/MM/yyyy'" />
                         </div>
-                        <div class="col-md-3 mb-5">
-                            <label class="form-label">{{ 'PayrollReasonTypeId' | localize }}</label>
-                            <div class="form-control-plaintext fw-bold">{{ register.payrollReasonTypeName }}</div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'PayrollResultType' | localize }}:</label>
+                            <input
+                                class="form-control form-control-sm"
+                                readonly
+                                [value]="payrollResultTypeKey(register.payrollResultType) | localize" />
                         </div>
-                        <div class="col-md-3 mb-5">
-                            <label class="form-label">{{ 'OffCyclePaymentDate' | localize }}</label>
-                            <div class="form-control-plaintext fw-bold">
-                                @if (isSet(register.offCyclePaymentDate)) {
-                                    {{ register.offCyclePaymentDate | luxonFormat: 'DD' }}
-                                }
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-5">
-                            <label class="form-label">{{ 'Locked' | localize }}</label>
-                            <div class="form-control-plaintext fw-bold">{{ (register.locked ? 'Yes' : 'No') | localize }}</div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'OffCyclePaymentDate' | localize }}:</label>
+                            <input
+                                class="form-control form-control-sm"
+                                readonly
+                                [value]="isSet(register.offCyclePaymentDate) ? (register.offCyclePaymentDate | luxonFormat: 'dd/MM/yyyy') : ''" />
                         </div>
                     </div>
                 }
@@ -75,10 +76,10 @@
         @if (registerId(); as id) {
             @if (canSeeLines) {
                 <div class="card card-custom">
-                    <div class="card-header">
-                        <h3 class="card-title">{{ 'SalaryRegisterDetails' | localize }}</h3>
+                    <div class="card-header min-h-50px">
+                        <h3 class="card-title fs-6">{{ 'SalaryRegisterDetail' | localize }}</h3>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body py-4">
                         <salaryRegisterLines [salaryRegisterId]="id" />
                     </div>
                 </div>

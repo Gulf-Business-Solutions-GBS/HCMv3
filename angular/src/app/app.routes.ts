@@ -2964,12 +2964,68 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PersonnelAdministration.EmployeeBasicPayDetails' },
                     },
                     {
+                        path: 'employee-funds',
+                        loadComponent: () =>
+                            import('./admin/personnel-administration/employee-funds-list/employee-funds-list.component').then(
+                                (m) => m.EmployeeFundsListComponent
+                            ),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeFunds' },
+                    },
+                    {
                         path: 'employee-loans',
                         loadComponent: () =>
                             import('./admin/personnel-administration/employee-loans-list/employee-loans-list.component').then(
                                 (m) => m.EmployeeLoansListComponent
                             ),
                         data: { permission: 'Pages.PersonnelAdministration.EmployeeLoans' },
+                    },
+                    {
+                        path: 'employee-recurring-payments',
+                        loadComponent: () =>
+                            import('./admin/personnel-administration/employee-recurring-payments-list/employee-recurring-payments-list.component').then(
+                                (m) => m.EmployeeRecurringPaymentsListComponent
+                            ),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeRecurringPayments' },
+                    },
+                    {
+                        path: 'employee-abs-adjustments',
+                        loadComponent: () =>
+                            import('./admin/personnel-administration/employee-abs-adjustments-list/employee-abs-adjustments-list.component').then(
+                                (m) => m.EmployeeAbsAdjustmentsListComponent
+                            ),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeAbsAdjustments' },
+                    },
+                    {
+                        path: 'employee-payments',
+                        loadComponent: () =>
+                            import('./admin/personnel-administration/employee-payments-list/employee-payments-list.component').then(
+                                (m) => m.EmployeePaymentsListComponent
+                            ),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeePayments' },
+                    },
+                    {
+                        path: 'employee-overtimes',
+                        loadComponent: () =>
+                            import('./admin/personnel-administration/employee-overtimes-list/employee-overtimes-list.component').then(
+                                (m) => m.EmployeeOvertimesListComponent
+                            ),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeOvertimes' },
+                    },
+                    {
+                        path: 'employee-tickets',
+                        loadComponent: () =>
+                            import('./admin/personnel-administration/employee-tickets-list/employee-tickets-list.component').then(
+                                (m) => m.EmployeeTicketsListComponent
+                            ),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeTickets' },
+                    },
+                    {
+                        path: 'employee-tkt-adjustments',
+                        loadComponent: () =>
+                            import('./admin/personnel-administration/employee-tkt-adjustments-list/employee-tkt-adjustments-list.component').then(
+                                (m) => m.EmployeeTktAdjustmentsListComponent
+                            ),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeTktAdjustments' },
                     },
                     {
                         path: 'employee-absences',
